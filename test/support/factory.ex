@@ -1,0 +1,96 @@
+defmodule Keila.Factory do
+  @moduledoc """
+  The idea behind this simple Factory module comes straight from the
+  [Ecto documentation](https://hexdocs.pm/ecto/test-factories.html)
+  """
+  alias Keila.Repo
+
+  defp do_build(:user) do
+    %Keila.Auth.User{
+      email: "foo-#{get_counter_value()}@bar.com",
+      password_hash: Argon2.hash_pwd_salt("BatteryHorseStaple")
+    }
+  end
+
+  defp do_build(:group) do
+    %Keila.Auth.Group{
+      name: "group-#{get_counter_value()}"
+    }
+  end
+
+  defp do_build(:role) do
+    %Keila.Auth.Role{}
+  end
+
+  defp do_build(:user_group) do
+    %Keila.Auth.UserGroup{}
+  end
+
+  defp do_build(:user_group_role) do
+    %Keila.Auth.UserGroupRole{}
+  end
+
+  defp do_build(:permission) do
+    %Keila.Auth.Permission{
+      name: "permission-#{get_counter_value()}"
+    }
+  end
+
+  defp do_build(:role_permission) do
+    %Keila.Auth.RolePermission{}
+  end
+
+  @doc """
+  Builds a struct with optional attributes
+  """
+  def build(name, attributes \\ []) do
+    if nil == Process.whereis(Keila.Factory.Counter), do: start_counter()
+    increment_counter()
+    name |> do_build() |> struct(attributes)
+  end
+
+  def build_n(name, n, attribute_fn \\ fn n -> [] end) do
+    for i <- 1..n do
+      build(name, attribute_fn.(i))
+    end
+  end
+
+  @doc """
+  Build and persists a struct with optional attributes
+  """
+  def insert!(name, attributes \\ []) do
+    name |> build(attributes) |> Repo.insert!()
+  end
+
+  def insert_n!(name, n, attribute_fn \\ fn n -> [] end) do
+    for i <- 1..n do
+      insert!(name, attribute_fn.(i))
+    end
+  end
+
+  @doc """
+  Builds params for a struct with optional attributes
+  """
+  def params(name, attributs \\ []) do
+    build(name, attributs)
+    |> maybe_to_map()
+  end
+
+  defp maybe_to_map(struct) when is_struct(struct) do
+    struct
+    |> Map.from_struct()
+    |> Enum.map(fn {key, value} -> {to_string(key), maybe_to_map(value)} end)
+    |> Enum.into(%{})
+  end
+
+  defp maybe_to_map(other), do: other
+
+  defp start_counter,
+    do: Agent.start_link(fn -> :rand.uniform(10_000) end, name: Keila.Factory.Counter)
+
+  defp increment_counter,
+    do: Agent.update(Keila.Factory.Counter, &(&1 + 1))
+
+  defp get_counter_value,
+    do: Agent.get(Keila.Factory.Counter, & &1)
+end
