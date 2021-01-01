@@ -59,6 +59,9 @@ defmodule Keila.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:ex_doc, "~> 0.23", only: :dev, runtime: false},
+      {:swoosh, "~> 1.0"},
+      # Unpatched version of gen_smtp currently broken, see https://github.com/gen-smtp/gen_smtp/pull/227
+      {:gen_smtp, git: "https://github.com/pentacent/gen_smtp/", override: true}
     ]
   end
 

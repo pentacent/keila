@@ -74,3 +74,6 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
+
+# Configure Swoosh
+config :keila, Keila.Mailer, adapter: Swoosh.Adapters.Local

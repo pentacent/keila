@@ -20,3 +20,6 @@ config :keila, KeilaWeb.Endpoint,
 
 # Print only warnings and errors during test
 config :logger, level: :warn
+
+# Configure Swoosh
+config :keila, Keila.Mailer, adapter: Swoosh.Adapters.Test
