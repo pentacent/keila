@@ -10,7 +10,10 @@ defmodule Keila.MixProject do
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      name: "Keila",
+      homepage_url: "https://keila.io",
+      docs: docs()
     ]
   end
 
@@ -27,6 +30,14 @@ defmodule Keila.MixProject do
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "test/support"]
   defp elixirc_paths(_), do: ["lib"]
+
+  # Specifies settings for ex_doc
+  defp docs do
+    [
+      main: "Keila",
+      extras: ["README.md"]
+    ]
+  end
 
   # Specifies your project dependencies.
   #
@@ -46,7 +57,8 @@ defmodule Keila.MixProject do
       {:telemetry_poller, "~> 0.4"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      {:ex_doc, "~> 0.23", only: :dev, runtime: false},
     ]
   end
 
