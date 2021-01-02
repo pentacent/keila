@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+      branches:
+      - main
+
+jobs:
+  mix_test:
+    name: Test Elixir ${{matrix.version}}
+    runs-on: ubuntu-latest
+    container: elixir:${{ matrix.version }}-alpine
+    strategy:
+      matrix:
+        include:
+          - version: "1.11"
+          - version: "1.10"
+    steps:
+      - uses: actions/checkout@v2
+      - name: mix deps.get
+        run: |
+          mix local.rebar --force
+          mix local.hex --force
+          mix deps.get
+      - name: mix test
+        run: mix test
