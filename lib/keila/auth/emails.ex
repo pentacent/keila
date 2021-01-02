@@ -57,8 +57,8 @@ defmodule Keila.Auth.Emails do
     )
   end
 
-  @spec build(:reset, %{url: String.t(), user: Keila.Auth.User.t()}) :: term() | no_return()
-  def build(:reset, %{user: user, url: url}) do
+  @spec build(:password_reset_link, %{url: String.t(), user: Keila.Auth.User.t()}) :: term() | no_return()
+  def build(:password_reset_link, %{user: user, url: url}) do
     new()
     |> subject(dgettext("auth", "Your Account Reset Link"))
     |> to(user.email)
@@ -76,6 +76,29 @@ defmodule Keila.Auth.Emails do
         %{url}
 
         If you weren’t trying to reset your password, simply ignore this message.
+        """,
+        url: url
+      )
+    )
+  end
+
+  @spec build(:login_link, %{url: String.t(), user: Keila.Auth.User.t()}) :: term() | no_return()
+  def build(:login_link, %{user: user, url: url}) do
+    new()
+    |> subject(dgettext("auth", "Your Login Link"))
+    |> to(user.email)
+    |> from({"hello@keila.io", "Keila"})
+    |> text_body(
+      dgettext(
+        "auth",
+        """
+        Hey there,
+
+        you can login to Keila with the following link:
+
+        %{url}
+
+        If you haven’t requested a login, simply ignore this message.
         """,
         url: url
       )
