@@ -1,6 +1,9 @@
 /* This file is for your main application css. */
-@import "./phoenix.css";
 @import "../node_modules/nprogress/nprogress.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* LiveView specific classes for your customizations */
 .phx-no-feedback.invalid-feedback,

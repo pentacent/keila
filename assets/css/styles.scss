@@ -1,0 +1,26 @@
+.container {
+    @apply mx-auto max-w-5xl px-2 md:px-4;
+}
+
+.button {
+    @apply rounded flex flex-nowrap flex-row px-2 py-1 gap-2 outline-none;
+    @apply ring-2 ring-green-500 ring-opacity-50;
+    @apply hover:ring-opacity-100;
+    @apply hover:ring-green-700;
+
+    svg {
+        @apply w-6;
+    }
+
+    &.button--cta {
+        @apply bg-green-700 text-white;
+        @apply ring-0;
+        @apply hover:ring-1 hover:ring-green-400;
+        @apply active:bg-green-800;
+    }
+
+    &.button--large {
+        @apply px-4 py-2;
+    }
+}
+
