@@ -20,6 +20,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: mix deps.get
         run: |
+          apk add build-base git
           mix local.rebar --force
           mix local.hex --force
           mix deps.get
