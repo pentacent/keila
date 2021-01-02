@@ -34,7 +34,7 @@ jobs:
             ~/_build
             ~/deps
             ~/assets/node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
+          key: ${{ runner.os }}-${{ hashFiles('mix.lock') }}
       - name: mix deps.get
         env:
           MIX_ENV: test
