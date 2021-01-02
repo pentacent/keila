@@ -18,7 +18,16 @@ jobs:
           - version: "1.10"
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/_build
+            ~/deps
+            ~/assets/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
       - name: mix deps.get
+        env:
+          MIX_ENV: test
         run: |
           apk add build-base git
           mix local.rebar --force
