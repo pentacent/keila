@@ -46,8 +46,8 @@ jobs:
       - name: mix ecto.create && ecto.migrate
         env:
           MIX_ENV: test
-          run: |
-            mix ecto.create
-            mix ecto.migrate
+        run: |
+          mix ecto.create
+          mix ecto.migrate
       - name: mix test
         run: mix test
