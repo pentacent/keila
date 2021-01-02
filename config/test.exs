@@ -23,3 +23,6 @@ config :logger, level: :warn
 
 # Configure Swoosh
 config :keila, Keila.Mailer, adapter: Swoosh.Adapters.Test
+
+# Configure Argon2 for performance (not security)
+config :argon2_elixir, t_cost: 1, m_cost: 8
