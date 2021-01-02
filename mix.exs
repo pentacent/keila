@@ -37,7 +37,7 @@ defmodule Keila.MixProject do
       main: "Keila",
       extras: ["README.md"],
       groups_for_modules: [
-        "Auth": [~r/^Keila.Auth/]
+        Auth: [~r/^Keila.Auth/]
       ]
     ]
   end

@@ -66,7 +66,6 @@ defmodule Keila.Auth do
     Permission,
     UserGroup,
     UserGroupRole,
-    RolePermission,
     Token
   }
 
@@ -328,7 +327,9 @@ defmodule Keila.Auth do
         user = Repo.get(User, token.user_id)
         params = %{email: token.data["email"]}
         Repo.update(User.update_changeset(user, params))
-      _ -> :error
+
+      _ ->
+        :error
     end
   end
 

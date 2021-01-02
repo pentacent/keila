@@ -20,7 +20,7 @@ defmodule Keila.AuthTest.Permissions do
   @tag :auth
   test "Update a Group" do
     group = insert!(:group)
-    assert {:ok, group = %Auth.Group{}} = Auth.update_group(group.id, params(:group))
+    assert {:ok, %Auth.Group{}} = Auth.update_group(group.id, params(:group))
   end
 
   @tag :auth

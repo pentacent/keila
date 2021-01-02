@@ -57,7 +57,8 @@ defmodule Keila.Auth.Emails do
     )
   end
 
-  @spec build(:password_reset_link, %{url: String.t(), user: Keila.Auth.User.t()}) :: term() | no_return()
+  @spec build(:password_reset_link, %{url: String.t(), user: Keila.Auth.User.t()}) ::
+          term() | no_return()
   def build(:password_reset_link, %{user: user, url: url}) do
     new()
     |> subject(dgettext("auth", "Your Account Reset Link"))

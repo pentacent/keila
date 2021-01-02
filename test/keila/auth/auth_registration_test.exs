@@ -14,19 +14,29 @@ defmodule Keila.AuthTest.Registration do
 
   @tag :auth
   test "Create user and send activation email" do
-    assert {:ok, user = %User{activated_at: nil}} = Auth.create_user(%{"email" => "foo@bar.com", "password" => @password}, &"~~key#{&1}~~")
+    assert {:ok, user = %User{activated_at: nil}} =
+             Auth.create_user(
+               %{"email" => "foo@bar.com", "password" => @password},
+               &"~~key#{&1}~~"
+             )
+
     user_id = user.id
+
     receive do
       {:email, email} ->
         [_, token] = Regex.run(~r{~~key(.+)~~}, email.text_body)
-        assert {:ok, %User{id: ^user_id, activated_at: %DateTime{}}} = Auth.activate_user_from_token(token)
+
+        assert {:ok, %User{id: ^user_id, activated_at: %DateTime{}}} =
+                 Auth.activate_user_from_token(token)
     end
   end
 
   @tag :auth
   test "Emails have to be unique" do
     user = insert!(:user, %{"email" => "foo@bar.com"})
-    assert {:error, %Ecto.Changeset{}} = Auth.create_user(%{"email" => user.email, "password" => @password})
+
+    assert {:error, %Ecto.Changeset{}} =
+             Auth.create_user(%{"email" => user.email, "password" => @password})
   end
 
   @tag :auth
@@ -50,7 +60,9 @@ defmodule Keila.AuthTest.Registration do
 
   @tag :auth
   test "Activate user" do
-    assert {:ok, %User{id: id, activated_at: nil}} = Auth.create_user(%{"email" => "foo@bar.com", "password" => @password})
+    assert {:ok, %User{id: id, activated_at: nil}} =
+             Auth.create_user(%{"email" => "foo@bar.com", "password" => @password})
+
     assert {:ok, %User{activated_at: %DateTime{}}} = Auth.activate_user(id)
   end
 
@@ -60,16 +72,20 @@ defmodule Keila.AuthTest.Registration do
 
     {:ok, token = %Auth.Token{}} =
       Auth.update_user_email(user.id, %{"email" => "new@foo.bar"}, & &1)
-      assert_email_sent(Auth.Emails.build(:update_email, %{user: user, url: token.key}))
 
-      assert {:ok, %User{email: "new@foo.bar"}} = Auth.update_user_email_from_token(token.key)
+    assert_email_sent(Auth.Emails.build(:update_email, %{user: user, url: token.key}))
+
+    assert {:ok, %User{email: "new@foo.bar"}} = Auth.update_user_email_from_token(token.key)
   end
 
   @tag :auth
   test "Change user password" do
     user = insert!(:user, %{password_hash: Argon2.hash_pwd_salt(@password)})
 
-    Auth.update_user_password(user.id, %{current_password: @password, password: @password <> "_new"})
+    Auth.update_user_password(user.id, %{
+      current_password: @password,
+      password: @password <> "_new"
+    })
   end
 
   @tag :auth
@@ -119,7 +135,7 @@ defmodule Keila.AuthTest.Registration do
     user = insert!(:user)
 
     assert :ok = Auth.send_login_link(user.id, &"~~key#{&1}~~")
-    user_id = user.id
+
     receive do
       {:email, email} ->
         [_, key] = Regex.run(~r{~~key(.+)~~}, email.text_body)
@@ -132,7 +148,7 @@ defmodule Keila.AuthTest.Registration do
     user = insert!(:user)
 
     assert :ok = Auth.send_password_reset_link(user.id, &"~~key#{&1}~~")
-    user_id = user.id
+
     receive do
       {:email, email} ->
         [_, key] = Regex.run(~r{~~key(.+)~~}, email.text_body)
