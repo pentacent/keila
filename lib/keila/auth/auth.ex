@@ -24,10 +24,10 @@ defmodule Keila.Auth do
   ### User Management
 
   #### Send password reset link
-      :ok = Auth.send_password_reset_message(user_id, &url_fn/1)
+      :ok = Auth.send_password_reset_link(user_id, &url_fn/1)
 
   #### Send login link (for passwordless login)
-      :ok = Auth.send_login_link_message(user_id, &url_fn/1)
+      :ok = Auth.send_login_link(user_id, &url_fn/1)
 
   #### Change user email
   This uses a token to confirm the user’s new email address. The token
@@ -299,7 +299,7 @@ defmodule Keila.Auth do
 
   @spec update_user_email(User.id(), %{:email => String.t()}, token_url_fn) ::
           {:ok, Token.t()} | {:ok, User.t()} | {:error, Changeset.t(User.t())}
-  def update_user_email(id, params, url_fn) do
+  def update_user_email(id, params, url_fn \\ &default_url_function/1) do
     user = Repo.get(User, id)
     changeset = User.update_changeset(user, params)
 
@@ -399,5 +399,33 @@ defmodule Keila.Auth do
       {0, _} -> nil
       {1, [token]} -> token
     end
+  end
+
+  @doc """
+  Sends an email with a password reset token to given User.
+
+  Verify the token with `find_and_delete_token("auth.password_reset", token_key)`
+  """
+  @spec send_password_reset_link(User.id(), token_url_fn) :: :ok
+  def send_password_reset_link(id, url_fn \\ &default_url_function/1) do
+    user = Repo.get(User, id)
+    {:ok, token} = create_token(%{scope: "auth.password_reset", user_id: user.id})
+    Emails.send!(:password_reset_link, %{user: user, url: url_fn.(token.key)})
+    :ok
+  end
+
+  @doc """
+  Sends an email with a login token to given User.
+
+  This can be useful for implementing a "magic link" login.
+
+  Verify the token with `find_and_delete_token("auth.login", token_key)`
+  """
+  @spec send_login_link(User.id(), token_url_fn) :: :ok
+  def send_login_link(id, url_fn \\ &default_url_function/1) do
+    user = Repo.get(User, id)
+    {:ok, token} = create_token(%{scope: "auth.login", user_id: user.id})
+    Emails.send!(:login_link, %{user: user, url: url_fn.(token.key)})
+    :ok
   end
 end

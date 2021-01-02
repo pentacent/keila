@@ -113,4 +113,30 @@ defmodule Keila.AuthTest.Registration do
   test "Invalid tokens fail gracefully" do
     assert nil == Auth.find_token("invalid-token", "foo:bar")
   end
+
+  @tag :auth
+  test "Send login link" do
+    user = insert!(:user)
+
+    assert :ok = Auth.send_login_link(user.id, &"~~key#{&1}~~")
+    user_id = user.id
+    receive do
+      {:email, email} ->
+        [_, key] = Regex.run(~r{~~key(.+)~~}, email.text_body)
+        assert %Token{} = Auth.find_token(key, "auth.login")
+    end
+  end
+
+  @tag :auth
+  test "Send password reset link" do
+    user = insert!(:user)
+
+    assert :ok = Auth.send_password_reset_link(user.id, &"~~key#{&1}~~")
+    user_id = user.id
+    receive do
+      {:email, email} ->
+        [_, key] = Regex.run(~r{~~key(.+)~~}, email.text_body)
+        assert %Token{} = Auth.find_token(key, "auth.password_reset")
+    end
+  end
 end
