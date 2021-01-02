@@ -16,6 +16,16 @@ jobs:
         include:
           - version: "1.11"
           - version: "1.10"
+    services:
+      postgres:
+        image: postgres:13-alpine
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@v2
       - uses: actions/cache@v2
@@ -33,5 +43,11 @@ jobs:
           mix local.rebar --force
           mix local.hex --force
           mix deps.get
+      - name: mix ecto.create && ecto.migrate
+        env:
+          MIX_ENV: test
+          run: |
+            mix ecto.create
+            mix ecto.migrate
       - name: mix test
         run: mix test
