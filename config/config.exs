@@ -18,6 +18,12 @@ config :keila, KeilaWeb.Endpoint,
   pubsub_server: Keila.PubSub,
   live_view: [signing_salt: "kH+cT7XL"]
 
+config :keila, :ids,
+  separator: "_",
+  alphabet: "abcdefghijkmnopqrstuvwxyz23456789ABCDEFGHJKLMNPQRSTUVWXYZ_",
+  salt: "FIXME: Make salt configurable",
+  min_len: 8
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
