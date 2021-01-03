@@ -24,11 +24,15 @@
     }
 }
 
-.form-error {
+.form-errors {
     @apply italic;
 }
 
-.form-error-before + input {
+.form-error-indicator + input {
     @apply bg-red-300;
 }
 
+.form-error-indicator + div.h-captcha iframe {
+    border: none;
+    @apply ring-2 ring-red-300;
+}

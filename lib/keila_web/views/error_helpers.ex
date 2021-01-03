@@ -10,14 +10,14 @@ defmodule KeilaWeb.ErrorHelpers do
   """
   def with_validation(form, field, [{:do, content}]) do
     case get_errors(form, field) do
-      nil ->
+      [] ->
         [content]
 
       errors ->
         [
-          content_tag(:span, nil, class: "form-error-before"),
+          content_tag(:span, nil, class: "form-error-indicator"),
           content,
-          content_tag(:p, class: "form-error") do
+          content_tag(:p, class: "form-errors") do
             errors
           end
         ]
