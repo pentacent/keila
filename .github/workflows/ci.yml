@@ -26,6 +26,9 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+    env:
+      MIX_ENV: test
+      DB_URL: postgres://postgres:postgres@postgres/keila
     steps:
       - uses: actions/checkout@v2
       - uses: actions/cache@v2
@@ -36,16 +39,12 @@ jobs:
             ~/assets/node_modules
           key: ${{ runner.os }}-${{ hashFiles('mix.lock') }}
       - name: mix deps.get
-        env:
-          MIX_ENV: test
         run: |
           apk add build-base git
           mix local.rebar --force
           mix local.hex --force
           mix deps.get
       - name: mix ecto.create && ecto.migrate
-        env:
-          MIX_ENV: test
         run: |
           mix ecto.create
           mix ecto.migrate
