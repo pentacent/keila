@@ -7,7 +7,8 @@ import Config
 # Run `mix help test` for more information.
 # URL can be overwritten with the DB_URL environment variable.
 config :keila, Keila.Repo,
-  url: "ecto://postgres:postgres@localhost:5432/keila_test#{System.get_env("MIX_TEST_PARTITION")}",
+  url:
+    "ecto://postgres:postgres@localhost:5432/keila_test#{System.get_env("MIX_TEST_PARTITION")}",
   pool: Ecto.Adapters.SQL.Sandbox
 
 # We don't run a server during test. If one is required,

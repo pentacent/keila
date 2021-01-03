@@ -24,6 +24,12 @@ config :keila, :ids,
   salt: "FIXME: Make salt configurable",
   min_len: 8
 
+# Staging configuration for hCaptcha
+config :keila, :hcaptcha,
+  secret_key: "0x0000000000000000000000000000000000000000",
+  site_key: "10000000-ffff-ffff-ffff-000000000001",
+  url: "https://hcaptcha.com/siteverify"
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

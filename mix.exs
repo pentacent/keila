@@ -67,7 +67,8 @@ defmodule Keila.MixProject do
       {:gen_smtp, git: "https://github.com/pentacent/gen_smtp/", override: true},
       {:hackney, "~> 1.9"},
       {:hashids, "~> 2.0"},
-      {:argon2_elixir, "~> 2.3"}
+      {:argon2_elixir, "~> 2.3"},
+      {:httpoison, "~> 1.7"}
     ]
   end
 

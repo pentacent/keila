@@ -24,6 +24,7 @@ defmodule KeilaWeb do
       import Plug.Conn
       import KeilaWeb.Gettext
       import KeilaWeb.Meta, only: [put_meta: 3]
+      import KeilaWeb.Hcaptcha, only: [captcha_valid?: 1]
       alias KeilaWeb.Router.Helpers, as: Routes
     end
   end
@@ -39,6 +40,7 @@ defmodule KeilaWeb do
         only: [get_flash: 1, get_flash: 2, view_module: 1, view_template: 1]
 
       import KeilaWeb.Meta, only: [get_meta: 3]
+      import KeilaWeb.Hcaptcha, only: [captcha_tag: 0]
 
       # Include shared imports and aliases for views
       unquote(view_helpers())

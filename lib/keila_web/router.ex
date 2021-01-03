@@ -8,7 +8,7 @@ defmodule KeilaWeb.Router do
     plug :put_root_layout, {KeilaWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug KeilaWeb.MetaPlug
+    plug KeilaWeb.Meta.Plug
   end
 
   pipeline :api do
