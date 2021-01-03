@@ -2,6 +2,9 @@ defmodule Keila.Factory do
   @moduledoc """
   The idea behind this simple Factory module comes straight from the
   [Ecto documentation](https://hexdocs.pm/ecto/test-factories.html)
+
+  You must call Keila.Factory.start_counter/0 in `text_helpers.exs` to
+  enable the build counter.
   """
   alias Keila.Repo
 
@@ -44,7 +47,6 @@ defmodule Keila.Factory do
   Builds a struct with optional attributes
   """
   def build(name, attributes \\ []) do
-    if nil == Process.whereis(Keila.Factory.Counter), do: start_counter()
     increment_counter()
     name |> do_build() |> struct(attributes)
   end
@@ -85,7 +87,7 @@ defmodule Keila.Factory do
 
   defp maybe_to_map(other), do: other
 
-  defp start_counter,
+  def start_counter,
     do: Agent.start_link(fn -> :rand.uniform(10_000) end, name: Keila.Factory.Counter)
 
   defp increment_counter,
