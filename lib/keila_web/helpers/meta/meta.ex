@@ -1,6 +1,9 @@
-defmodule KeilaWeb.MetaPlug do
+defmodule KeilaWeb.Meta do
   @moduledoc """
-  Simple Plug for holding page meta information (title, description, etc).no_return()
+  Helper module for handling page meta information (title,
+  description, etc).
+
+  Must be used with `KeilaWeb.Meta.Plug`
 
   Usage in controllers:
       put_meta(:title, gettext("Title"))
@@ -8,18 +11,6 @@ defmodule KeilaWeb.MetaPlug do
   Usage in templates:
       get_meta(@conn, "Title", "Default")
   """
-  import Plug.Conn
-
-  @spec init(term()) :: term()
-  def init(_opts) do
-    nil
-  end
-
-  @spec call(Plug.Conn.t(), term) :: Plug.Conn.t()
-  def call(conn, _opts) do
-    conn
-    |> put_private(:keila_meta, %{})
-  end
 
   @spec put_meta(Plug.Conn.t(), atom(), term()) :: Plug.Conn.t()
   def put_meta(conn, key, value) do
