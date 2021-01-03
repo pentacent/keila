@@ -13,7 +13,7 @@
     }
 
     &.button--cta {
-        @apply bg-green-700 text-white;
+        @apply bg-green-700 text-white ring-0;
         @apply ring-0;
         @apply hover:ring-1 hover:ring-green-400;
         @apply active:bg-green-800;
@@ -22,5 +22,13 @@
     &.button--large {
         @apply px-4 py-2;
     }
+}
+
+.form-error {
+    @apply italic;
+}
+
+.form-error-before + input {
+    @apply bg-red-300;
 }
 

@@ -8,7 +8,23 @@ defmodule KeilaWeb.ErrorHelpers do
   @doc """
   Generates tag for inlined form input errors.
   """
-  def error_tag(form, field) do
+  def with_validation(form, field, [{:do, content}]) do
+    case get_errors(form, field) do
+      nil ->
+        [content]
+
+      errors ->
+        [
+          content_tag(:span, nil, class: "form-error-before"),
+          content,
+          content_tag(:p, class: "form-error") do
+            errors
+          end
+        ]
+    end
+  end
+
+  defp get_errors(form, field) do
     Enum.map(Keyword.get_values(form.errors, field), fn error ->
       content_tag(:span, translate_error(error),
         class: "invalid-feedback",

@@ -8,6 +8,7 @@ defmodule KeilaWeb.Router do
     plug :put_root_layout, {KeilaWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug KeilaWeb.MetaPlug
   end
 
   pipeline :api do
@@ -18,6 +19,18 @@ defmodule KeilaWeb.Router do
     pipe_through :browser
 
     live "/", PageLive, :index
+  end
+
+  # Unauthenticated Routes
+  scope "/", KeilaWeb do
+    pipe_through [:browser]
+
+    get "/auth/register", AuthController, :register
+    post "/auth/register", AuthController, :post_register
+    get "/auth/register/:token", AuthController, :activate
+    get "/auth/logout", AuthController, :login
+    get "/auth/reset", AuthController, :reset
+    post "/auth/reset", AuthController, :post_reset
   end
 
   # Other scopes may use custom stacks.
