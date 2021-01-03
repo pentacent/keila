@@ -5,6 +5,7 @@ defmodule KeilaWeb.AuthControllerTest do
   alias Keila.{Repo, Auth}
 
   @sign_up_params %{"email" => "foo@bar.com", "password" => "BatteryHorseStaple"}
+  @valid_hcaptcha "10000000-aaaa-bbbb-cccc-000000000001"
 
   describe "sign up form" do
     @tag :auth_controller
@@ -14,11 +15,23 @@ defmodule KeilaWeb.AuthControllerTest do
     end
 
     @tag :auth_controller
-    test "allows registration with valid params", %{conn: conn} do
-      conn = post(conn, Routes.auth_path(conn, :register), user: @sign_up_params)
+    test "allows registration with valid params and captcha", %{conn: conn} do
+      conn =
+        post(conn, Routes.auth_path(conn, :register),
+          user: @sign_up_params,
+          "h-captcha-response": @valid_hcaptcha
+        )
+
       assert html_response(conn, 200) =~ ~r{Check your inbox!\s*</h1>}
       assert_email_sent()
       assert %{activated_at: nil} = Repo.one(Auth.User)
+    end
+
+    @tag :auth_controller
+    test "shows error with missing captcha", %{conn: conn} do
+      conn = post(conn, Routes.auth_path(conn, :register), user: @sign_up_params)
+      assert html_response(conn, 400) =~ ~r{Please complete the Captcha.}
+      assert_no_email_sent()
     end
 
     @tag :auth_controller
@@ -26,30 +39,39 @@ defmodule KeilaWeb.AuthControllerTest do
       conn = post(conn, Routes.auth_path(conn, :register))
       assert html_response(conn, 400) =~ "Register your Keila account now"
 
-      conn = post(conn, Routes.auth_path(conn, :register), user: %{})
+      params = %{user: %{}, "h-captcha-response": @valid_hcaptcha}
+      conn = post(conn, Routes.auth_path(conn, :register), params)
       assert html_response(conn, 400) =~ "Register your Keila account now"
 
-      conn =
-        post(conn, Routes.auth_path(conn, :register), user: %{"email" => "", "password" => ""})
-
-      assert html_response(conn, 400) =~ "Register your Keila account now"
-
-      conn =
-        post(conn, Routes.auth_path(conn, :register), user: Map.put(@sign_up_params, "email", ""))
+      params = %{user: %{"email" => "", "password" => ""}, "h-captcha-response": @valid_hcaptcha}
+      conn = post(conn, Routes.auth_path(conn, :register), params)
 
       assert html_response(conn, 400) =~ "Register your Keila account now"
 
-      conn =
-        post(conn, Routes.auth_path(conn, :register),
-          user: Map.put(@sign_up_params, "password", "")
-        )
+      params = %{
+        user: Map.put(@sign_up_params, "email", ""),
+        "h-captcha-response": @valid_hcaptcha
+      }
+
+      conn = post(conn, Routes.auth_path(conn, :register), params)
 
       assert html_response(conn, 400) =~ "Register your Keila account now"
 
-      conn =
-        post(conn, Routes.auth_path(conn, :register),
-          user: Map.put(@sign_up_params, "password", "too-short")
-        )
+      params = %{
+        user: Map.put(@sign_up_params, "password", ""),
+        "h-captcha-response": @valid_hcaptcha
+      }
+
+      conn = post(conn, Routes.auth_path(conn, :register), params)
+
+      assert html_response(conn, 400) =~ "Register your Keila account now"
+
+      params = %{
+        user: Map.put(@sign_up_params, "password", "too-short"),
+        "h-captcha-response": @valid_hcaptcha
+      }
+
+      conn = post(conn, Routes.auth_path(conn, :register), params)
 
       assert html_response(conn, 400) =~ "Register your Keila account now"
     end
