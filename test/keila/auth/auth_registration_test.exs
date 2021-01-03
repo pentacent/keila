@@ -152,7 +152,7 @@ defmodule Keila.AuthTest.Registration do
     receive do
       {:email, email} ->
         [_, key] = Regex.run(~r{~~key(.+)~~}, email.text_body)
-        assert %Token{} = Auth.find_token(key, "auth.password_reset")
+        assert %Token{} = Auth.find_token(key, "auth.reset")
     end
   end
 end

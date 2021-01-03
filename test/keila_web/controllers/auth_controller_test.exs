@@ -137,11 +137,16 @@ defmodule KeilaWeb.AuthControllerTest do
       params = %{"password" => "NewSecurePassword123"}
       conn = post(conn, Routes.auth_path(conn, :reset_change_password, key), user: params)
       assert html_response(conn, 200) =~ ~r{Your password was changed!\s*</h1>}
-      assert {:ok, %{id: ^user_id}} = Auth.find_user_by_credentials(%{"email" => user.email, "password" => "NewSecurePassword123"})
+
+      assert {:ok, %{id: ^user_id}} =
+               Auth.find_user_by_credentials(%{
+                 "email" => user.email,
+                 "password" => "NewSecurePassword123"
+               })
     end
 
     @tag :auth_controller
-    test "performs login after success", %{conn: conn} do
+    test "performs login after success", %{conn: _conn} do
       # TODO
     end
   end
