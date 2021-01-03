@@ -39,7 +39,7 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('mix.lock') }}
       - name: mix deps.get
         run: |
-          apk add build-base git
+          apk add build-base git tar
           mix local.rebar --force
           mix local.hex --force
           mix deps.get
