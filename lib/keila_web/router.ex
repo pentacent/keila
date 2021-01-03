@@ -25,12 +25,20 @@ defmodule KeilaWeb.Router do
   scope "/", KeilaWeb do
     pipe_through [:browser]
 
+    get "/auth/login", AuthController, :login
+    post "/auth/login", AuthController, :post_login
     get "/auth/register", AuthController, :register
     post "/auth/register", AuthController, :post_register
     get "/auth/register/:token", AuthController, :activate
-    get "/auth/logout", AuthController, :login
     get "/auth/reset", AuthController, :reset
     post "/auth/reset", AuthController, :post_reset
+    get "/auth/reset/:token", AuthController, :reset_change_password
+    post "/auth/reset/:token", AuthController, :post_reset_change_password
+  end
+
+  # TODO Authenticated Routes
+  scope "/", KeilaWeb do
+    get "/auth/logout", AuthController, :login
   end
 
   # Other scopes may use custom stacks.

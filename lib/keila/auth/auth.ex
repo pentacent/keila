@@ -405,12 +405,12 @@ defmodule Keila.Auth do
   @doc """
   Sends an email with a password reset token to given User.
 
-  Verify the token with `find_and_delete_token("auth.password_reset", token_key)`
+  Verify the token with `find_and_delete_token("auth.reset", token_key)`
   """
   @spec send_password_reset_link(User.id(), token_url_fn) :: :ok
   def send_password_reset_link(id, url_fn \\ &default_url_function/1) do
     user = Repo.get(User, id)
-    {:ok, token} = create_token(%{scope: "auth.password_reset", user_id: user.id})
+    {:ok, token} = create_token(%{scope: "auth.reset", user_id: user.id})
     Emails.send!(:password_reset_link, %{user: user, url: url_fn.(token.key)})
     :ok
   end
