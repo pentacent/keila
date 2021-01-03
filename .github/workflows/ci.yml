@@ -8,7 +8,7 @@ on:
 
 jobs:
   mix_test:
-    name: Test Elixir ${{matrix.version}}
+    name: Test Elixir ${{ matrix.version }}
     runs-on: ubuntu-latest
     container: elixir:${{ matrix.version }}-alpine
     strategy:
@@ -36,7 +36,7 @@ jobs:
             ~/_build
             ~/deps
             ~/assets/node_modules
-          key: ${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          key: keila-${{ runner.os }}-elixir-${{ matrix.version }}-${{ hashFiles('mix.lock') }}
       - name: mix deps.get
         run: |
           apk add build-base git tar
