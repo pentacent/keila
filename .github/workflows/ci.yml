@@ -15,7 +15,6 @@ jobs:
       matrix:
         include:
           - version: "1.11"
-          - version: "1.10"
     services:
       postgres:
         image: postgres:13-alpine
