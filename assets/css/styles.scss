@@ -1,11 +1,7 @@
-@import "~@fontsource/inter/index.css";
+@import "~@fontsource/inter/latin.css";
 
 body {
     font-family: Inter, Arial, Helvetica, sans-serif;
-}
-
-iframe[src="/phoenix/live_reload/frame"] {
-    display: none;
 }
 
 .container {
@@ -17,18 +13,18 @@ iframe[src="/phoenix/live_reload/frame"] {
     @apply ring-2 ring-green-500 ring-opacity-50;
     @apply hover:ring-opacity-100;
     @apply hover:ring-green-700;
-
+    
     svg {
         @apply w-6;
     }
-
+    
     &.button--cta {
         @apply bg-green-700 text-white ring-0;
         @apply ring-0;
         @apply hover:ring-1 hover:ring-green-400;
         @apply active:bg-green-800;
     }
-
+    
     &.button--large {
         @apply px-4 py-2;
     }
@@ -46,3 +42,12 @@ iframe[src="/phoenix/live_reload/frame"] {
     border: none;
     @apply ring-2 ring-red-300;
 }
+
+/*
+Fix for Phoenix during development
+*/
+iframe[src="/phoenix/live_reload/frame"] {
+    display: none;
+}
+
+@import "_header.scss"

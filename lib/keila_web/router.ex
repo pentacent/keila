@@ -16,12 +16,6 @@ defmodule KeilaWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", KeilaWeb do
-    pipe_through :browser
-
-    live "/", PageLive, :index
-  end
-
   # Unauthenticated Routes
   scope "/", KeilaWeb do
     pipe_through [:browser, KeilaWeb.AuthSession.RequireNoAuthPlug]
@@ -42,7 +36,8 @@ defmodule KeilaWeb.Router do
   scope "/", KeilaWeb do
     pipe_through [:browser, KeilaWeb.AuthSession.RequireAuthPlug]
 
-    get "/auth/logout", AuthController, :login
+    get "/", AuthController, :login
+    get "/auth/logout", AuthController, :logout
   end
 
   # Other scopes may use custom stacks.
