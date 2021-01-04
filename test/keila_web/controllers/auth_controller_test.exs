@@ -4,7 +4,8 @@ defmodule KeilaWeb.AuthControllerTest do
   import Keila.Factory
   alias Keila.{Repo, Auth}
 
-  @sign_up_params %{"email" => "foo@bar.com", "password" => "BatteryHorseStaple"}
+  @password "BatteryHorseStaple"
+  @sign_up_params %{"email" => "foo@bar.com", "password" => @password}
   @valid_hcaptcha "10000000-aaaa-bbbb-cccc-000000000001"
 
   describe "sign up form" do
@@ -170,6 +171,56 @@ defmodule KeilaWeb.AuthControllerTest do
     @tag :auth_controller
     test "performs login after success", %{conn: _conn} do
       # TODO
+    end
+  end
+
+  describe "login form" do
+    @tag :auth_controller
+    test "shows form", %{conn: conn} do
+      conn = get(conn, Routes.auth_path(conn, :login))
+      assert html_response(conn, 200) =~ ~r{Sign in.\s*</h1>}
+    end
+
+    @tag :auth_controller
+    test "accepts correct password", %{conn: conn} do
+      {:ok, user} = Auth.create_user(@sign_up_params)
+      Auth.activate_user(user.id)
+
+      conn = post(conn, Routes.auth_path(conn, :login, user: @sign_up_params))
+      conn = get(recycle(conn), "/")
+      assert conn.assigns.current_user
+    end
+
+    @tag :auth_controller
+    test "rejects incorrect or empty password", %{conn: conn} do
+      {:ok, user} = Auth.create_user(@sign_up_params)
+      Auth.activate_user(user.id)
+
+      params = Map.put(@sign_up_params, "password", "wrong")
+      conn = post(conn, Routes.auth_path(conn, :login, user: params))
+      conn = get(recycle(conn), "/")
+      refute conn.assigns.current_user
+
+      params = Map.put(@sign_up_params, "password", nil)
+      conn = post(conn, Routes.auth_path(conn, :login, user: params))
+      conn = get(recycle(conn), "/")
+      refute conn.assigns.current_user
+    end
+  end
+
+  describe "logout route" do
+    @tag :auth_controller
+    test "signs user out", %{conn: conn} do
+      {:ok, user} = Auth.create_user(@sign_up_params)
+      Auth.activate_user(user.id)
+
+      conn = post(conn, Routes.auth_path(conn, :login, user: @sign_up_params))
+      conn = get(recycle(conn), "/")
+      assert conn.assigns.current_user
+
+      conn = get(recycle(conn), Routes.auth_path(conn, :logout))
+      conn = get(recycle(conn), "/")
+      refute conn.assigns.current_user
     end
   end
 end
