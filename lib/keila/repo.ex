@@ -5,7 +5,8 @@ defmodule Keila.Repo do
 
   defmacro __using__(_opts) do
     quote do
-      alias Ecto.Repo
+      alias Ecto.Changeset
+      alias Keila.Repo
       require Ecto.Query
       import Ecto.Query
       import Ecto.Changeset

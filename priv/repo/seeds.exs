@@ -2,6 +2,11 @@
 #
 #     mix run priv/repo/seeds.exs
 #
+
+alias Keila.{Repo, Auth}
+
+Keila.Repo.insert!(%Auth.Group{name: "root"})
+
 # Inside the script, you can read and write to any of your
 # repositories directly:
 #

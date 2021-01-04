@@ -55,8 +55,7 @@ defmodule Keila.Auth do
   require Ecto.Query
   import Ecto.Query
 
-  alias Ecto.Changeset
-  alias Keila.Repo
+  use Keila.Repo
 
   alias Keila.Auth.{
     Emails,
@@ -76,11 +75,20 @@ defmodule Keila.Auth do
     token
   end
 
+  @doc """
+  Returns root group.
+  """
+  @spec root_group() :: Group.t()
+  def root_group() do
+    Group.root_query()
+    |> Repo.one!()
+  end
+
   @spec create_group(Ecto.Changeset.data()) ::
           {:ok, Group.t()} | {:error, Ecto.Changeset.t(Group.t())}
   def create_group(params) do
     params
-    |> Group.changeset()
+    |> Group.creation_changeset()
     |> Repo.insert()
   end
 
@@ -88,7 +96,7 @@ defmodule Keila.Auth do
           {:ok, Group.t()} | {:error, Ecto.Changeset.t(Group.t())}
   def update_group(id, params) do
     Repo.get(Group, id)
-    |> Group.changeset(params)
+    |> Group.update_changeset(params)
     |> Repo.update()
   end
 
@@ -376,7 +384,7 @@ defmodule Keila.Auth do
         }) :: {:ok, Token.t()} | {:error, Ecto.Changeset.t(Token.t())}
   def create_token(params) do
     Token.changeset(params)
-    |> Keila.Repo.insert()
+    |> Repo.insert()
   end
 
   @doc """
@@ -385,7 +393,7 @@ defmodule Keila.Auth do
   @spec find_token(String.t(), String.t()) :: Token.t() | nil
   def find_token(key, scope) do
     Token.find_token_query(key, scope)
-    |> Keila.Repo.one()
+    |> Repo.one()
   end
 
   @doc """
@@ -397,7 +405,7 @@ defmodule Keila.Auth do
   def find_and_delete_token(key, scope) do
     Token.find_token_query(key, scope)
     |> select([t], t)
-    |> Keila.Repo.delete_all(returning: :all)
+    |> Repo.delete_all(returning: :all)
     |> case do
       {0, _} -> nil
       {1, [token]} -> token

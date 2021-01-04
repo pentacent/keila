@@ -13,10 +13,6 @@ defmodule Keila.Auth.User do
     timestamps()
   end
 
-  @spec creation_changeset(
-          {map, map} | %{:__struct__ => atom | %{__changeset__: map}, optional(atom) => any},
-          :invalid | %{optional(:__struct__) => none, optional(atom | binary) => any}
-        ) :: Ecto.Changeset.t()
   @doc """
   Changeset for User creation.
   """

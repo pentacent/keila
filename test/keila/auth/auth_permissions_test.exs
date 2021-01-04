@@ -9,9 +9,30 @@ defmodule Keila.AuthTest.Permissions do
   end
 
   @tag :auth
+  test "Retrieve root group" do
+    group = insert!(:group, parent_id: nil)
+    assert group == Auth.root_group()
+  end
+
+  @tag :auth
+  test "There can only be one root group" do
+    insert!(:group, parent_id: nil)
+
+    assert_raise Ecto.ConstraintError, fn ->
+      insert!(:group, parent_id: nil)
+    end
+  end
+
+  @tag :auth
   test "Create a Group" do
-    assert {:ok, %Auth.Group{} = group} = Auth.create_group(params(:group))
+    root = insert!(:group)
+    assert {:ok, %Auth.Group{} = group} = Auth.create_group(params(:group, parent_id: root.id))
     assert {:ok, %Auth.Group{}} = Auth.create_group(params(:group, parent_id: group.id))
+  end
+
+  @tag :auth
+  test "Creating a group requires a valid parent group" do
+    assert {:error, %Ecto.Changeset{}} = Auth.create_group(params(:group, parent_id: nil))
 
     assert {:error, %Ecto.Changeset{}} =
              Auth.create_group(params(:group, parent_id: "ag_99999999"))
@@ -138,7 +159,8 @@ defmodule Keila.AuthTest.Permissions do
   @tag :auth
   test "Check direct permission" do
     user = insert!(:user, %{email: "foo@bar.com"})
-    groups = insert_n!(:group, 10, fn _n -> [children: build_n(:group, 10)] end)
+    root = insert!(:group)
+    groups = insert_n_groups_with_n_children(root, 10)
 
     role =
       insert!(:role, role_permissions: [build(:role_permission, permission: build(:permission))])
@@ -159,7 +181,8 @@ defmodule Keila.AuthTest.Permissions do
   @tag :auth
   test "Check inherited permission" do
     user = insert!(:user, %{email: "foo@bar.com"})
-    groups = insert_n!(:group, 10, fn _n -> [children: build_n(:group, 10)] end)
+    root = insert!(:group)
+    groups = insert_n_groups_with_n_children(root, 10)
 
     role =
       insert!(:role,
@@ -184,5 +207,14 @@ defmodule Keila.AuthTest.Permissions do
     for group <- groups_with_permission do
       assert group.id == parent_group.id || group.parent_id == parent_group.id
     end
+  end
+
+  defp insert_n_groups_with_n_children(root, n) do
+    insert_n!(:group, n, fn _n ->
+      [
+        parent_id: root.id,
+        children: build_n(:group, n, fn _n -> [parent_id: root.id] end)
+      ]
+    end)
   end
 end

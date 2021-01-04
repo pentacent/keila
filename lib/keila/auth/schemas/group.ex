@@ -9,16 +9,25 @@ defmodule Keila.Auth.Group do
     timestamps()
   end
 
-  @spec changeset(Ecto.Changeset.data()) :: Ecto.Changeset.t(t())
-  def changeset(struct \\ %__MODULE__{}, params) do
+  @spec creation_changeset(Ecto.Changeset.data()) :: Ecto.Changeset.t(t())
+  def creation_changeset(struct \\ %__MODULE__{}, params) do
     struct
     |> cast(params, [:name, :parent_id])
+    |> validate_required([:parent_id])
     |> foreign_key_constraint(:parent_id)
   end
 
+  @spec update_changeset(Ecto.Changeset.data()) :: Ecto.Changeset.t(t())
+  def update_changeset(struct \\ %__MODULE__{}, params) do
+    struct
+    |> cast(params, [:name, :parent_id])
+    |> foreign_key_constraint(:parent_id)
+    |> unique_constraint([:parent_id], name: "root_group")
+  end
+
   @doc """
-  Returns an Ecto Query for the team with the given `id` and all its
-  descendant teams.
+  Returns an Ecto Query for the group with the given `id` and all its
+  descendant groups.
   """
   @spec with_children(integer) :: Ecto.Query.t()
   def with_children(id) do
@@ -30,5 +39,15 @@ defmodule Keila.Auth.Group do
     |> recursive_ctes(true)
     |> with_cte("children", as: ^cte)
     |> select([g], %__MODULE__{id: g.id, parent_id: g.parent_id})
+  end
+
+  @doc """
+  Returns an Ecto Query for the group with no parent.
+
+  Use with `Repo.one!`.
+  """
+  @spec root_query() :: Ecto.Query.t()
+  def root_query() do
+    from(g in __MODULE__, where: is_nil(g.parent_id))
   end
 end
