@@ -25,6 +25,7 @@ defmodule KeilaWeb do
       import KeilaWeb.Gettext
       import KeilaWeb.Meta, only: [put_meta: 3]
       import KeilaWeb.Hcaptcha, only: [captcha_valid?: 1]
+      import KeilaWeb.AuthSession, only: [start_auth_session: 2, end_auth_session: 1]
       alias KeilaWeb.Router.Helpers, as: Routes
     end
   end
