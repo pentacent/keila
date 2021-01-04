@@ -71,7 +71,7 @@ defmodule Keila.Id do
         def dump(id), do: decode(id)
       end
 
-      @type id :: binary()
+      @type id :: binary() | integer()
       @primary_key {:id, Id, read_after_writes: true}
     end
   end

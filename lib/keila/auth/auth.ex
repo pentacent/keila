@@ -368,7 +368,7 @@ defmodule Keila.Auth do
   """
   @spec create_token(%{
           :scope => binary,
-          :user_id => integer,
+          :user_id => User.id(),
           optional(:data) => map(),
           optional(:expires_at) => DateTime.t()
         }) :: {:ok, Token.t()} | {:error, Ecto.Changeset.t(Token.t())}
