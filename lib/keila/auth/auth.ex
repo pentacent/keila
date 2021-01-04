@@ -356,7 +356,7 @@ defmodule Keila.Auth do
 
     case User.validate_password_changeset(user, params) do
       %{valid?: true} -> {:ok, user}
-      changeset -> {:error, changeset}
+      changeset -> Changeset.apply_action(changeset, :insert)
     end
   end
 
