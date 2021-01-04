@@ -57,6 +57,12 @@ defmodule KeilaWeb.AuthController do
     end
   end
 
+  def activation_required(conn, _) do
+    conn
+    |> put_meta(:title, dgettext("auth", "Activation required"))
+    |> render("activate_required.html")
+  end
+
   @spec reset(Plug.Conn.t(), map) :: Plug.Conn.t()
   def reset(conn, _params) do
     render_reset(conn, user_changeset())

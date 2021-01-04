@@ -9,6 +9,7 @@ defmodule KeilaWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug KeilaWeb.Meta.Plug
+    plug KeilaWeb.AuthSession.Plug
   end
 
   pipeline :api do
@@ -23,13 +24,14 @@ defmodule KeilaWeb.Router do
 
   # Unauthenticated Routes
   scope "/", KeilaWeb do
-    pipe_through [:browser]
+    pipe_through [:browser, KeilaWeb.AuthSession.RequireNoAuthPlug]
 
     get "/auth/login", AuthController, :login
     post "/auth/login", AuthController, :post_login
     get "/auth/register", AuthController, :register
     post "/auth/register", AuthController, :post_register
-    get "/auth/register/:token", AuthController, :activate
+    get "/auth/activate", AuthController, :activate_required
+    get "/auth/activate/:token", AuthController, :activate
     get "/auth/reset", AuthController, :reset
     post "/auth/reset", AuthController, :post_reset
     get "/auth/reset/:token", AuthController, :reset_change_password
@@ -38,6 +40,8 @@ defmodule KeilaWeb.Router do
 
   # TODO Authenticated Routes
   scope "/", KeilaWeb do
+    pipe_through [:browser, KeilaWeb.AuthSession.RequireAuthPlug]
+
     get "/auth/logout", AuthController, :login
   end
 
