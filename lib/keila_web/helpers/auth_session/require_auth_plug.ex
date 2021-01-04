@@ -7,7 +7,7 @@ defmodule KeilaWeb.AuthSession.RequireAuthPlug do
   been activated.
   """
 
-  alias Keila.Auth
+  alias Keila.Auth.User
   alias KeilaWeb.Router.Helpers, as: Routes
   import Plug.Conn
 
@@ -17,20 +17,15 @@ defmodule KeilaWeb.AuthSession.RequireAuthPlug do
   @spec call(Plug.Conn.t(), list()) :: Plug.Conn.t()
   def call(conn, _) do
     case conn.assigns.current_user do
-      nil ->
-        redirect_halt(conn, Routes.auth_path(conn, :login))
-
-      %Auth.User{activated_at: nil} ->
-        redirect_halt(conn, Routes.auth_path(conn, :activate_required))
-
-      %Auth.User{} ->
-        conn
+      nil -> redirect_halt(conn, :login)
+      %User{activated_at: nil} -> redirect_halt(conn, :activate_required)
+      %User{} -> conn
     end
   end
 
   defp redirect_halt(conn, path) do
     conn
-    |> Phoenix.Controller.redirect(to: path)
+    |> Phoenix.Controller.redirect(to: Routes.auth_path(conn, path))
     |> halt()
   end
 end

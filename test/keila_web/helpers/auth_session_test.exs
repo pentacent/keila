@@ -68,6 +68,15 @@ defmodule KeilaWeb.AuthSessionTest do
       conn = init_no_user_session(conn)
       assert conn == AuthSession.RequireNoAuthPlug.call(conn, [])
     end
+
+    @tag :auth_session
+    test "treats non-activated users as not logged in and nils @current_user", %{conn: conn} do
+      user = insert!(:user, activated_at: nil)
+      conn = init_user_session(conn, user) |> AuthSession.RequireNoAuthPlug.call([])
+
+      refute conn.halted
+      assert conn.assigns.current_user == nil
+    end
   end
 
   describe "AuthSession.RequireAuthPlug" do
