@@ -43,6 +43,7 @@ defmodule Keila.AuthTest.Registration do
   test "Find user by email" do
     user = insert!(:user)
     assert user == Auth.find_user_by_email(user.email)
+    assert nil == Auth.find_user_by_email(nil)
   end
 
   @tag :auth

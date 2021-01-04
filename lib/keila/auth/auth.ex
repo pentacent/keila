@@ -337,9 +337,11 @@ defmodule Keila.Auth do
   Returns `User` with given `email` or `nil` if no such `User` exists.
   """
   @spec find_user_by_email(String.t()) :: User.t() | nil
-  def find_user_by_email(email) do
+  def find_user_by_email(email) when is_binary(email) do
     Repo.one(from(u in User, where: u.email == ^email))
   end
+
+  def find_user_by_email(_), do: nil
 
   @doc """
   Returns `User` with given credentials or `nil` if no such `User` exists.
@@ -356,7 +358,7 @@ defmodule Keila.Auth do
 
     case User.validate_password_changeset(user, params) do
       %{valid?: true} -> {:ok, user}
-      changeset -> Changeset.apply_action(changeset, :insert)
+      changeset -> Changeset.apply_action(changeset, :update)
     end
   end
 
