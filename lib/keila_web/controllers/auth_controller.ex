@@ -134,6 +134,43 @@ defmodule KeilaWeb.AuthController do
     |> put_meta(:title, dgettext("auth", "Password reset"))
     |> render("reset_change_password.html")
   end
+
+  @spec login(Plug.Conn.t(), any) :: Plug.Conn.t()
+  def login(conn, _params) do
+    render_login(conn, user_changeset())
+  end
+
+  @spec post_login(Plug.Conn.t(), any) :: Plug.Conn.t()
+  def post_login(conn, %{"user" => params}) do
+    case Auth.find_user_by_credentials(params) do
+      {:ok, user} -> do_login(conn, user)
+      {:error, changeset} -> render_login(conn, 400, changeset)
+    end
+  end
+
+  def post_login(conn, _), do: post_login(conn, %{"user" => %{}})
+
+  defp render_login(conn, status \\ 200, changeset) do
+    conn
+    |> put_status(status)
+    |> assign(:changeset, changeset)
+    |> put_meta(:title, dgettext("auth", "Sign in"))
+    |> render("login.html")
+  end
+
+  defp do_login(conn, user) do
+    conn
+    |> start_auth_session(user.id)
+    |> redirect(to: "/")
+  end
+
+  @spec logout(Plug.Conn.t(), map) :: Plug.Conn.t()
+  def logout(conn, _params) do
+    conn
+    |> end_auth_session()
+    |> redirect(to: Routes.auth_path(conn, :login))
+  end
+
   defp render_404(conn) do
     conn
     |> put_status(404)
