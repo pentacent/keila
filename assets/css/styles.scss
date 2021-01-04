@@ -1,3 +1,13 @@
+@import "~@fontsource/inter/index.css";
+
+body {
+    font-family: Inter, Arial, Helvetica, sans-serif;
+}
+
+iframe[src="/phoenix/live_reload/frame"] {
+    display: none;
+}
+
 .container {
     @apply mx-auto max-w-5xl px-2 md:px-4;
 }
