@@ -4,6 +4,7 @@ defmodule Keila.Projects.Project do
   schema "projects" do
     field(:name, :string)
     belongs_to(:group, Keila.Auth.Group, type: Keila.Auth.Group.Id)
+    timestamps()
   end
 
   @spec creation_changeset(t() | Ecto.Changeset.data()) :: Ecto.Changeset.t(t)
