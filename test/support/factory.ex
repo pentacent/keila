@@ -43,6 +43,12 @@ defmodule Keila.Factory do
     %Keila.Auth.RolePermission{}
   end
 
+  defp do_build(:project) do
+    %Keila.Projects.Project{
+      name: "project-#{get_counter_value()}"
+    }
+  end
+
   @doc """
   Builds a struct with optional attributes
   """
