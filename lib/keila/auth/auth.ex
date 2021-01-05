@@ -185,6 +185,18 @@ defmodule Keila.Auth do
     |> idempotent_delete()
   end
 
+  @doc """
+  Returns a list with all `Groups` the User specified with `user_id`
+  has a direct membership in.
+  """
+  @spec list_user_groups(User.id()) :: [Group.t()]
+  def list_user_groups(user_id) do
+    from(g in Group)
+    |> join(:inner, [g], ug in UserGroup, on: ug.group_id == g.id)
+    |> where([g, ug], ug.user_id == ^user_id )
+    |> Repo.all()
+  end
+
   defp idempotent_insert(changeset) do
     changeset
     |> Repo.insert()
