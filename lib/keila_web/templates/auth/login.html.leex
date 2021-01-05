@@ -23,16 +23,16 @@
             <div class="flex justify-end mt-8">
                 <button class="button button--cta button--large">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" /></svg>
-                    <%= gettext("Sign in") %>
+                    <%= dgettext("auth", "Sign in") %>
                 </button>
             </div>
             <p>
-                <%= gettext("Don’t have an account?") %>
-                <a href="<%= Routes.auth_path(@conn, :register) %>" class="underline"><%= gettext("Sign up.") %></a>
+                <%= dgettext("auth", "Don’t have an account?") %>
+                <a href="<%= Routes.auth_path(@conn, :register) %>" class="underline"><%= dgettext("auth", "Sign up.") %></a>
             </p>
             <p>
-                <%= gettext("Forgot your password?") %>
-                <a href="<%= Routes.auth_path(@conn, :reset) %>" class="underline"><%= gettext("Reset your password.") %></a>
+                <%= dgettext("auth", "Forgot your password?") %>
+                <a href="<%= Routes.auth_path(@conn, :reset) %>" class="underline"><%= dgettext("auth", "Reset your password.") %></a>
             </p>
         </form>
     </div>
