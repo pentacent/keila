@@ -193,8 +193,20 @@ defmodule Keila.Auth do
   def list_user_groups(user_id) do
     from(g in Group)
     |> join(:inner, [g], ug in UserGroup, on: ug.group_id == g.id)
-    |> where([g, ug], ug.user_id == ^user_id )
+    |> where([g, ug], ug.user_id == ^user_id)
     |> Repo.all()
+  end
+
+  @doc """
+  Checks if User specified with `user_id` is a direct member of Group
+  specified with `group_id`. Returns `true` or `false` accordingly.
+  """
+  @spec user_in_group?(User.id(), Group.id()) :: boolean()
+  def user_in_group?(user_id, group_id) do
+    from(g in Group)
+    |> join(:inner, [g], ug in UserGroup, on: ug.group_id == g.id)
+    |> where([g, ug], g.id == ^group_id and ug.user_id == ^user_id)
+    |> Repo.exists?()
   end
 
   defp idempotent_insert(changeset) do
