@@ -2,7 +2,7 @@
     <header class="bg-gray-900">
         <div id="main-menu" class="container py-3 relative sm:flex sm:flex-row">
             <input id="main-menu-toggle" type="checkbox" aria-hidden="true" class="hidden">
-            <div class="absolute inset-y-0 h-14 left-1 flex items-center sm:hidden">
+            <div class="absolute inset-y-0 h-14 left-4 flex items-center sm:hidden">
                 <label id="show-main-menu" for="main-menu-toggle" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-expanded="false">
                     <span class="sr-only"><%= gettext("Open menu") %></span>
                     <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
@@ -12,18 +12,27 @@
                     <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                 </label>
             </div>
-        <div class="flex-shrink-0 flex items-center justify-center">
-            <a href="/">
-                <img class="h-8 w-auto mt-1 -mb-1" src="<%= Routes.static_path(@conn, "/images/logo.svg") %>" alt="Keila">
-            </a>
+            <div class="flex-shrink-0 flex items-center justify-center">
+                <a href="/">
+                    <img class="h-8 w-auto mt-1 -mb-1" src="<%= Routes.static_path(@conn, "/images/logo.svg") %>" alt="Keila">
+                </a>
+            </div>
+            <nav class="font-medium hidden flex-col gap-1 mt-2 sm:flex-grow sm:flex sm:flex-row sm:mt-0 sm:ml-6 sm:gap-0 sm:items-stretch">
+                <%= if is_nil(assigns[:current_project]) do %>
+                    <%= menu_link(@conn, "/", gettext("Dashboard")) %>
+                <% else %>
+                    <%= menu_link(@conn, Routes.project_path(@conn, :show, @current_project.id), @current_project.name) %>
+                    <%= menu_link(@conn, "/", gettext("Contacts")) %>
+                    <%= menu_link(@conn, "/", gettext("Channels")) %>
+                    <%= menu_link(@conn, "/", gettext("Forms")) %>
+                    <%= menu_link(@conn, "/", gettext("Campaigns")) %>
+                <% end %>
+                <!-- TODO Add real menu items -->
+                <div class="hidden sm:block sm:flex-grow"></div>
+                <%= menu_link(@conn, "/404", gettext("Account")) %>
+                <%= menu_link(@conn, Routes.auth_url(@conn, :logout), gettext("Sign out")) %>
+            </nav>
         </div>
-        <nav class="font-medium hidden flex-col gap-1 mt-2 sm:flex-grow sm:flex sm:flex-row sm:mt-0 sm:ml-6 sm:gap-0 sm:items-stretch">
-            <%= menu_link(@conn, "/", gettext("Dashboard")) %>
-            <!-- TODO Add real menu items -->
-            <div class="hidden sm:block sm:flex-grow"></div>
-            <%= menu_link(@conn, "/404", gettext("Account")) %>
-            <%= menu_link(@conn, Routes.auth_url(@conn, :logout), gettext("Sign out")) %>
-        </nav>
     </header>
 <% else %>
     <header class="bg-gray-900">
