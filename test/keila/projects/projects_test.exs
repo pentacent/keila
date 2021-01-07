@@ -43,4 +43,14 @@ defmodule Keila.ProjectsTest do
     assert :ok = Projects.delete_project(project.id)
     assert [] = Auth.list_user_groups(user.id)
   end
+
+  @tag :projects
+  test "Only auhtorized user can retrieve project with get_user_project/2" do
+    _root = insert!(:group)
+    user1 = insert!(:user)
+    user2 = insert!(:user)
+    {:ok, project} = Projects.create_project(user1.id, %{"name" => "My Project"})
+    assert project == Projects.get_user_project(user1.id, project.id)
+    assert nil == Projects.get_user_project(user2.id, project.id)
+  end
 end
