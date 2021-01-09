@@ -62,6 +62,14 @@ defmodule Keila.Factory do
     }
   end
 
+  defp do_build(:contact) do
+    %Keila.Contacts.Contact{
+      email: "contact-#{get_counter_value()}@example.org",
+      first_name: "First-#{get_counter_value()}",
+      last_name: "Last-#{get_counter_value()}"
+    }
+  end
+
   @doc """
   Builds a struct with optional attributes
   """
