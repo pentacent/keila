@@ -9,24 +9,43 @@ body {
 }
 
 .button {
-    @apply rounded flex flex-nowrap flex-row px-2 py-1 gap-2 outline-none;
-    @apply ring-2 ring-green-500 ring-opacity-50;
-    @apply hover:ring-opacity-100;
-    @apply hover:ring-green-700;
+    @apply rounded flex flex-nowrap px-2 py-1 gap-2 outline-none;
     
     svg {
         @apply w-6;
     }
     
+    &:not(.button--cta):not(&.button--warn):not(&.button--text) {
+        @apply
+            ring-2 ring-green-500
+            hover:ring-green-700;
+    }
+    
     &.button--cta {
-        @apply bg-green-700 text-white ring-0;
-        @apply ring-0;
-        @apply hover:ring-1 hover:ring-green-400;
-        @apply active:bg-green-800;
+        @apply
+            bg-green-700 text-white outline-none
+            hover:ring-2 hover:ring-green-400
+            focus:ring-2 hover:ring-green-400
+            active:bg-green-800;
+    }
+    
+    &.button--warn {
+        @apply
+            bg-red-700 text-white outline-none
+            hover:ring-2 hover:ring-red-400
+            focus:ring-2 focus:ring-red-400
+            active:bg-red-800;
     }
     
     &.button--large {
         @apply px-4 py-2;
+    }
+
+    &.button--text {
+        @apply
+            px-0
+            hover:underline
+            focus:ring-2;
     }
 }
 
