@@ -7,6 +7,7 @@
     "watch": "webpack --mode development --watch"
   },
   "dependencies": {
+    "alpinejs": "^2.8.0",
     "autoprefixer": "^10.1.0",
     "nprogress": "^0.2.0",
     "phoenix": "file:../deps/phoenix",

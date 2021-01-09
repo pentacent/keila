@@ -1,0 +1,18 @@
+<div class="flex flex-col">
+    <%= label(@form, :ses_region, "Region Endpoint") %>
+    <%= with_validation(@form, :ses_region) do %>
+        <%= text_input(@form, :ses_region, class: "text-black") %>
+    <% end %>
+</div>
+<div class="flex flex-col">
+    <%= label(@form, :ses_access_key, "Access Key") %>
+    <%= with_validation(@form, :ses_access_key) do %>
+        <%= text_input(@form, :ses_access_key, class: "text-black") %>
+    <% end %>
+</div>
+<div class="flex flex-col">
+    <%= label(@form, :ses_secret, "Secret") %>
+    <%= with_validation(@form, :ses_secret) do %>
+        <%= password_input(@form, :ses_secret, class: "text-black") %>
+    <% end %>
+</div>

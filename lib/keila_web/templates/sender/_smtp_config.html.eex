@@ -1,0 +1,32 @@
+<div class="flex flex-col">
+    <%= label(@form, :smtp_relay, "Server") %>
+    <%= with_validation(@form, :smtp_relay) do %>
+        <%= text_input(@form, :smtp_relay, placeholder: gettext("mail.example.org"), class: "text-black") %>
+    <% end %>
+</div>
+<div class="flex flex-col">
+    <%= label(@form, :smtp_relay, "Username") %>
+    <%= with_validation(@form, :smtp_username) do %>
+        <%= text_input(@form, :smtp_username, class: "text-black") %>
+    <% end %>
+</div>
+<div class="flex flex-col">
+    <%= label(@form, :smtp_password, "Password") %>
+    <%= with_validation(@form, :smtp_password) do %>
+        <%= password_input(@form, :smtp_password, autocomplete: "new-password", class: "text-black") %>
+    <% end %>
+</div>
+<div class="flex flex-col">
+    <%= label(@form, :smtp_password, "Port") %>
+    <%= with_validation(@form, :smtp_port) do %>
+        <%= number_input(@form, :smtp_port, class: "text-black") %>
+    <% end %>
+</div>
+<div class="flex flex-col">
+    <%= with_validation(@form, :smtp_tls) do %>
+        <%= label(@form, :smtp_tls) do %>
+            <%= checkbox(@form, :smtp_tls) %>
+            Require TLS
+        <% end %>
+    <% end %>
+</div>

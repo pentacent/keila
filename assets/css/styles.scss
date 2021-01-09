@@ -9,7 +9,7 @@ body {
 
     &.container--no-px {
         @apply px-0;
-}
+    }
 }
 
 .card {
@@ -18,11 +18,11 @@ body {
 
 .button {
     @apply rounded flex flex-nowrap px-2 py-1 gap-2 outline-none;
-    
+
     svg {
         @apply w-6;
     }
-    
+
     &:not(.button--cta):not(&.button--warn):not(&.button--text) {
         @apply
             ring-2 ring-green-500
@@ -61,6 +61,10 @@ body {
     @apply italic;
 }
 
+select {
+    color: black!important;
+}
+
 .form-error-indicator + input {
     @apply bg-red-300;
 }
@@ -68,6 +72,21 @@ body {
 .form-error-indicator + div.h-captcha iframe {
     border: none;
     @apply ring-2 ring-red-300;
+}
+
+.tabs {
+    .tab-label {
+        @apply inline-block bg-gray-600 px-2 py-2 rounded-t;
+
+        &.active {
+            @apply bg-gray-50 text-gray-900;
+        }
+    }
+
+    .tab-content {
+        @apply p-4 ring-1 ring-inset ring-gray-600 flex flex-col gap-4;
+
+    }
 }
 
 /*

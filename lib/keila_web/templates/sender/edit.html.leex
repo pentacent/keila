@@ -1,0 +1,103 @@
+<main role="main" class="static-container flex-grow bg-gray-800 text-gray-50">
+    <div class="bg-gray-900 text-gray-50">
+        <div class="container py-8 sm:py-6 md:py-12 lg:py-16 flex">
+            <div class="flex-grow">
+                <h1 class="text-2xl sm:text-5xl md:text-7xl mb-4">
+                    <%= if assigns[:sender] do %>
+                        <%= @sender.name %>
+                    <% else %>
+                        <%= gettext("New Sender") %>
+                    <% end %>
+                </h1>
+                <% path = case assigns[:sender] do
+                    nil -> Routes.sender_path(@conn, :post_new, @current_project.id)
+                    sender -> Routes.sender_path(@conn, :post_edit, @current_project.id, sender.id)
+                end %>
+                <%= f = form_for(@changeset, path, class: "mt-8 max-w-md flex flex-col gap-4") %>
+                    <div class="flex flex-col">
+                        <%= label(f, :name, "Sender name") %>
+                        <%= with_validation(f, :name) do %>
+                            <%= text_input(f, :name, placeholder: gettext("My Sender"), class: "text-black") %>
+                        <% end %>
+                    </div>
+                    <div class="flex flex-col">
+                        <%= label(f, :name, "From address") %>
+                        <%= with_validation(f, :from_email) do %>
+                            <%= text_input(f, :from_email, placeholder: gettext("newsletter@example.org"), class: "text-black") %>
+                        <% end %>
+                    </div>
+                    <div class="flex flex-col">
+                        <%= label(f, :name, "From name") %>
+                        <%= with_validation(f, :from_name) do %>
+                            <%= text_input(f, :from_name, placeholder: gettext("You, Inc"), class: "text-black") %>
+                        <% end %>
+                    </div>
+                    <div class="flex flex-col">
+                        <%= label(f, :name, "Reply-to address") %>
+                        <%= with_validation(f, :reply_to_email) do %>
+                            <%= text_input(f, :reply_to_email, placeholder: gettext("hello@example.org"), class: "text-black") %>
+                        <% end %>
+                    </div>
+                    <div class="flex flex-col">
+                        <%= label(f, :name, "Reply-to name") %>
+                        <%= with_validation(f, :reply_to_name) do %>
+                            <%= text_input(f, :reply_to_name, placeholder: gettext("You, Inc"), class: "text-black") %>
+                        <% end %>
+                    </div>
+
+
+                    <%= inputs_for f, :config, fn fc -> %>
+                        <div x-data="{ tab: $el.querySelector('#sender_config_type').value }" class="tabs">
+                            <%= select(fc, :type, ["smtp", "sendgrid", "ses"], x_model: "tab", x_show: "false") %>
+
+                            <a href="#" class="tab-label" :class="{ 'active': tab === 'smtp' }" @click.prevent="tab = 'smtp'">
+                                SMTP
+                            </a>
+                            <a href="#" class="tab-label" :class="{ 'active': tab === 'sendgrid' }" @click.prevent="tab = 'sendgrid'">
+                                Sendgrid
+                            </a>
+                            <a href="#" class="tab-label" :class="{ 'active': tab === 'ses' }" @click.prevent="tab = 'ses'">
+                                SES
+                            </a>
+
+                            <template x-if="tab === 'smtp'">
+                                <div class="tab-content">
+                                    <%= render("_smtp_config.html", form: fc) %>
+                                </div>
+                            </template>
+                            <template x-if="tab === 'sendgrid'">
+                                <div class="tab-content">
+                                    <%= render("_sendgrid_config.html", form: fc) %>
+                                </div>
+                            </template>
+                            <template x-if="tab === 'ses'">
+                                <div class="tab-content">
+                                    <%= render("_ses_config.html", form: fc) %>
+                                </div>
+                            </template>
+                        </div>
+
+                    <% end %>
+
+                    <div class="flex gap-4 mt-4">
+                        <a href="<%= Routes.sender_path(@conn, :index, @current_project.id) %>" class="button button--large button--text">
+                            <%= gettext("Cancel") %>
+                        </a>
+                        <%= if assigns[:sender] do %>
+                            <a href="<%= Routes.sender_path(@conn, :delete, @current_project.id, @sender.id) %>" class="button button--large button--text">
+                                <%= gettext("Delete") %>
+                            </a>
+                            <button class="button button--cta button--large">
+                                <%= gettext("Save") %>
+                            </button>
+                        <% else %>
+                            <button class="button button--cta button--large">
+                                <%= gettext("Create Sender") %>
+                            </button>
+                        <% end %>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>

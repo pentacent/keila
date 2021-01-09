@@ -49,6 +49,19 @@ defmodule Keila.Factory do
     }
   end
 
+  defp do_build(:mailings_sender) do
+    %Keila.Mailings.Sender{
+      name: "sender-#{get_counter_value()}",
+      from_email: "sender-#{get_counter_value()}@example.com",
+      config: %{
+        type: "smtp",
+        smtp_relay: "mail.example.com",
+        smtp_username: "foo",
+        smtp_password: "BatteryHorseStaple"
+      }
+    }
+  end
+
   @doc """
   Builds a struct with optional attributes
   """

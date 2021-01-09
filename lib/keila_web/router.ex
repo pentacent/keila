@@ -53,6 +53,14 @@ defmodule KeilaWeb.Router do
     put "/projects/:project_id/edit", ProjectController, :post_edit
     get "/projects/:project_id/delete", ProjectController, :delete
     put "/projects/:project_id/delete", ProjectController, :post_delete
+
+    get "/projects/:project_id/senders", SenderController, :index
+    get "/projects/:project_id/senders/new", SenderController, :new
+    post "/projects/:project_id/senders/new", SenderController, :post_new
+    get "/projects/:project_id/senders/:id", SenderController, :edit
+    put "/projects/:project_id/senders/:id", SenderController, :post_edit
+    get "/projects/:project_id/senders/:id/delete", SenderController, :delete
+    put "/projects/:project_id/senders/:id/delete", SenderController, :post_delete
   end
 
   # Other scopes may use custom stacks.

@@ -3,6 +3,7 @@
 // its own CSS file.
 import "../css/app.scss"
 import "../css/styles.scss"
+import 'alpinejs'
 
 // webpack automatically bundles all modules in your
 // entry points. Those entry points can be configured

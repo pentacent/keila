@@ -1,0 +1,45 @@
+<main role="main" class="static-container flex-grow bg-gray-800 text-gray-50">
+    <div class="bg-gray-900 text-gray-50">
+        <div class="container py-8 sm:py-6 md:py-12 lg:py-16 flex">
+            <div class="flex-grow">
+                <h1 class="text-2xl sm:text-5xl md:text-7xl mb-4">
+                    <%= gettext("Senders") %>
+                </h1>
+
+                <%= if Enum.empty?(@senders) do %>
+                    <p class="mt-4">
+                        <a href="<%= Routes.sender_path(@conn, :new, @current_project.id) %>" class="button button--cta button--large">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            <%= gettext("Create your first sender" %>
+                        </a>
+                    </p>
+                <% end %>
+            </div>
+            <%= if not Enum.empty?(@senders) do %>
+                <p class="mt-4">
+                    <a href="<%= Routes.sender_path(@conn, :new, @current_project.id) %>" class="button">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        <%= gettext("Create a new sender" %>
+                    </a>
+                </p>
+            <% end %>
+        </div>
+    </div>
+    <div class="container container--no-px md:grid md:grid-cols-2 gap-4 mt-4 md:gap-8 md:mt-8">
+        <%= for sender <- @senders do%>
+            <div class="card bg-gray-900">
+                <h2 class="font-light text-2xl flex items-center gap-2 mb-2">
+                    <%= sender.name %>
+                </h2>
+                <p> <p><%= sender.from_name %></p>
+                    &lt;<%= sender.from_email %>&gt;
+                </p>
+                <br>
+                <a href="<%= Routes.sender_path(@conn, :edit, @current_project.id, sender.id) %>" class="button button--large">
+                    <%= gettext("Settings") %>
+                </a>
+            </div>
+        <% end %>
+    </div>
+
+</main>
