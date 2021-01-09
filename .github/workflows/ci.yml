@@ -29,6 +29,8 @@ jobs:
       MIX_ENV: test
       DB_URL: postgres://postgres:postgres@postgres/keila
     steps:
+      - name: install system packages
+        run: apk add build-base git tar
       - uses: actions/checkout@v2
       - uses: actions/cache@v2
         with:
@@ -39,7 +41,6 @@ jobs:
           key: keila-${{ runner.os }}-elixir-${{ matrix.version }}-${{ hashFiles('mix.lock') }}
       - name: mix deps.get
         run: |
-          apk add build-base git tar
           mix local.rebar --force
           mix local.hex --force
           mix deps.get
