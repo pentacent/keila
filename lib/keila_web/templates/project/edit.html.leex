@@ -1,0 +1,30 @@
+<main role="main" class="static-container flex-grow bg-gray-800 text-gray-50">
+    <div class="bg-gray-900 text-gray-50">
+        <div class="container py-8 sm:py-6 md:py-12 lg:py-16 flex">
+            <div class="flex-grow">
+                <h1 class="text-2xl sm:text-5xl md:text-7xl mb-4">
+                    <%= @current_project.name %>
+                </h1>
+                <%= f = form_for(@changeset, Routes.project_path(@conn, :post_edit, @current_project.id), class: "mt-8 max-w-md flex flex-col gap-4") %>
+                    <div class="flex flex-col">
+                        <%= label(f, :name, "Project name") %>
+                        <%= with_validation(f, :name) do %>
+                            <%= text_input(f, :name, placeholder: gettext("My Newsletter Project"), class: "text-black") %>
+                        <% end %>
+                    </div>
+                    <div class="flex gap-4 mt-4">
+                        <a href="<%= Routes.project_path(@conn, :show, @current_project.id) %>" class="button button--large button--text">
+                            <%= gettext("Cancel") %>
+                        </a>
+                        <a href="<%= Routes.project_path(@conn, :delete, @current_project.id) %>" class="button button--large button--text">
+                            <%= gettext("Delete") %>
+                        </a>
+                        <button class="button button--cta button--large">
+                            <%= gettext("Save") %>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>

@@ -1,0 +1,38 @@
+<main role="main" class="static-container flex-grow bg-gray-800 text-gray-50">
+    <div class="bg-gray-900 text-gray-50">
+        <div class="container py-8 sm:py-6 md:py-12 lg:py-16 flex">
+            <div class="flex-grow">
+                <%= if Enum.empty?(@projects) do %>
+                    <h1 class="text-2xl sm:text-5xl md:text-7xl mb-4">
+                        <%= gettext("Ready to create your first newsletter?") %>
+                    </h1>
+                    <p>
+                        <a class="button button--cta button--large" href="<%= Routes.project_path(@conn, :new) %>">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            <%= gettext("Create your first project") %>
+                        </a>
+                    </p>
+                <% else %>
+                    <h1 class="text-2xl sm:text-5xl md:text-7xl mb-4">
+                        <%= gettext("Your Projects") %>
+                    </h1>
+                <% end %>
+            </div>
+            <%= if not Enum.empty?(@projects) do %>
+                <div>
+                    <a class="button button--cta button--large" href="<%= Routes.project_path(@conn, :new) %>">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        <%= gettext("Create a new project") %>
+                    </a>
+                </div>
+            <% end %>
+        </div>
+    </div>
+    <%= for project <- @projects do %>
+        <div class="container container--no-px md:grid md:grid-cols-2 gap-4 mt-4 md:gap-8 md:mt-8">
+            <a class="card bg-gray-900" href="<%= Routes.project_path(@conn, :show, project.id) %>">
+                <%= project.name %>
+            </a>
+        </div>
+    <% end %>
+</main>

@@ -5,7 +5,15 @@ body {
 }
 
 .container {
-    @apply mx-auto max-w-5xl px-2 md:px-4;
+    @apply mx-auto max-w-5xl px-4 md:px-8;
+
+    &.container--no-px {
+        @apply px-0;
+}
+}
+
+.card {
+    @apply max-w-5xl p-4 md:p-8;
 }
 
 .button {

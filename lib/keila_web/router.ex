@@ -32,12 +32,27 @@ defmodule KeilaWeb.Router do
     post "/auth/reset/:token", AuthController, :post_reset_change_password
   end
 
-  # TODO Authenticated Routes
+  # Authenticated Routes without a Project context
   scope "/", KeilaWeb do
     pipe_through [:browser, KeilaWeb.AuthSession.RequireAuthPlug]
 
     get "/", AuthController, :login
     get "/auth/logout", AuthController, :logout
+
+    get "/", ProjectController, :index
+    get "/projects/new", ProjectController, :new
+    post "/projects/new", ProjectController, :post_new
+  end
+
+  # Authenticated Routes within a Project context
+  scope "/", KeilaWeb do
+    pipe_through [:browser, KeilaWeb.AuthSession.RequireAuthPlug, KeilaWeb.ProjectPlug]
+
+    get "/projects/:project_id", ProjectController, :show
+    get "/projects/:project_id/edit", ProjectController, :edit
+    put "/projects/:project_id/edit", ProjectController, :post_edit
+    get "/projects/:project_id/delete", ProjectController, :delete
+    put "/projects/:project_id/delete", ProjectController, :post_delete
   end
 
   # Other scopes may use custom stacks.
