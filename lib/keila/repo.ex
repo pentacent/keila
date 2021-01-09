@@ -10,6 +10,18 @@ defmodule Keila.Repo do
       require Ecto.Query
       import Ecto.Query
       import Ecto.Changeset
+
+      defp stringize_params(params) do
+        case Enum.at(params, 0) do
+          {k, _} when is_atom(k) ->
+            params
+            |> Enum.map(fn {k, v} -> {to_string(k), v} end)
+            |> Enum.into(%{})
+
+          _ ->
+            params
+        end
+      end
     end
   end
 end
