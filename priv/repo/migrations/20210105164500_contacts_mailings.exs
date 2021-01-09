@@ -13,6 +13,8 @@ defmodule Keila.Repo.Migrations.ContactsMailings do
       add :gender, :string
       add :email, :string
       add :verified_at, :utc_datetime
+
+      timestamps()
     end
 
     create unique_index("contacts", [:email, :project_id])
