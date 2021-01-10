@@ -21,7 +21,7 @@ defmodule Keila.Pagination do
   def paginate(query, opts \\ []) do
     page = Keyword.get(opts, :page, 0)
     page_size = Keyword.get(opts, :page_size, 10)
-    page_count = Keila.Repo.aggregate(query, :count, :id) / page_size
+    page_count = ceil(Keila.Repo.aggregate(query, :count, :id) / page_size)
 
     data =
       query
