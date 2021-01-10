@@ -55,7 +55,8 @@ defmodule Keila.Contacts do
   Returns paginated Contacts for specified Project.
   """
   @spec get_project_contacts(Project.id(), list()) :: Keila.Pagination.t(Contact.t())
-  def get_project_contacts(project_id, pagination_opts \\ []) when is_binary(project_id) or is_integer(project_id) do
+  def get_project_contacts(project_id, pagination_opts \\ [])
+      when is_binary(project_id) or is_integer(project_id) do
     from(c in Contact, where: c.project_id == ^project_id)
     |> Keila.Pagination.paginate(pagination_opts)
   end
@@ -88,7 +89,8 @@ defmodule Keila.Contacts do
   """
   @spec(import_csv(Project.id(), String.t()) :: :ok, {:error, String.t()})
   def import_csv(project_id, filename, notify_pid \\ self()) do
-    Repo.transaction(fn ->
+    Repo.transaction(
+      fn ->
       try do
         import_csv!(project_id, filename, notify_pid)
       rescue
@@ -98,7 +100,10 @@ defmodule Keila.Contacts do
         e in Ecto.InvalidChangesetError ->
           Repo.rollback("invalid data: #{inspect(e.changeset.errors |> List.first())}")
       end
-    end)
+      end,
+      timeout: :infinity,
+      pool_timeout: :infinity
+    )
     |> case do
       {:ok, :ok} -> :ok
       {:error, reason} -> {:error, reason}
