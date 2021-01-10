@@ -15,6 +15,7 @@ defmodule Keila.Contacts.Contact do
     |> cast(params, [:email, :first_name, :last_name, :project_id])
     |> validate_required([:email, :project_id])
     |> validate_format(:email, ~r/^[^\s]+@[^\s]+$/, message: "must have the @ sign and no spaces")
+    |> unique_constraint([:email, :project_id])
   end
 
   @spec update_changeset(t(), Ecto.Changeset.data()) :: Ecto.Changeset.t(t())
