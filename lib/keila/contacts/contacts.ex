@@ -52,12 +52,12 @@ defmodule Keila.Contacts do
   end
 
   @doc """
-  Returns all Contacts for specified Project.
+  Returns paginated Contacts for specified Project.
   """
-  @spec get_project_contacts(Project.id()) :: [Contact.t()]
-  def get_project_contacts(project_id) when is_binary(project_id) or is_integer(project_id) do
+  @spec get_project_contacts(Project.id(), list()) :: Keila.Pagination.t(Contact.t())
+  def get_project_contacts(project_id, pagination_opts \\ []) when is_binary(project_id) or is_integer(project_id) do
     from(c in Contact, where: c.project_id == ^project_id)
-    |> Repo.all()
+    |> Keila.Pagination.paginate(pagination_opts)
   end
 
   @doc """
@@ -76,6 +76,9 @@ defmodule Keila.Contacts do
   @doc """
   Imports Contacts from an RFC 4180-compliant CSV file.
 
+  Progress is reported by sending messages to `notify_pid`
+  with the format `{:contacts_import_progress, imported_contacts, import_total}`
+
   The structure of the CSV file has to be:
   | Email        | First name | Last name  |
   | ------------ |------------| ---------- |
@@ -84,10 +87,10 @@ defmodule Keila.Contacts do
   The `First name` and `Last name` columns can be empty but must be present.
   """
   @spec(import_csv(Project.id(), String.t()) :: :ok, {:error, String.t()})
-  def import_csv(project_id, filename) do
+  def import_csv(project_id, filename, notify_pid \\ self()) do
     Repo.transaction(fn ->
       try do
-        import_csv!(project_id, filename)
+        import_csv!(project_id, filename, notify_pid)
       rescue
         e in NimbleCSV.ParseError ->
           Repo.rollback(e.message)
@@ -102,7 +105,14 @@ defmodule Keila.Contacts do
     end
   end
 
-  defp import_csv!(project_id, filename) do
+  defp import_csv!(project_id, filename, notify_pid) do
+    lines =
+      File.stream!(filename)
+      |> NimbleCSV.RFC4180.parse_stream()
+      |> Enum.count()
+
+    send(notify_pid, {:contacts_import_progress, 0, lines})
+
     File.stream!(filename)
     |> NimbleCSV.RFC4180.parse_stream()
     |> Stream.map(fn [email, first_name, last_name] ->
@@ -114,6 +124,11 @@ defmodule Keila.Contacts do
       })
     end)
     |> Stream.map(&Repo.insert!(&1))
-    |> Stream.run()
+    |> Stream.with_index()
+    |> Stream.map(fn {_, n} -> n end)
+    |> Enum.chunk_every(100)
+    |> Enum.each(fn ns ->
+      send(notify_pid, {:contacts_import_progress, List.last(ns) + 1, lines})
+    end)
   end
 end

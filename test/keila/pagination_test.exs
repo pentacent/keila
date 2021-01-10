@@ -10,7 +10,7 @@ defmodule Keila.PaginationTest do
 
   @tag :paginate
   test "paginate queries" do
-    user = insert_n!(:user, 100, fn n -> %{email: "#{n}@example.com"} end)
+    insert_n!(:user, 100, fn n -> %{email: "#{n}@example.com"} end)
 
     assert page = %Pagination{} = Pagination.paginate(User, page_size: 10)
     assert page.page_count == 10

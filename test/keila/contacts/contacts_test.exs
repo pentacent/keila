@@ -33,15 +33,19 @@ defmodule Keila.ContactsTest do
     contact2 = insert!(:contact, %{project_id: project.id})
     _contact3 = insert!(:contact)
 
-    assert contacts = [%Contact{}, %Contact{}] = Contacts.get_project_contacts(project.id)
+    assert %Keila.Pagination{data: contacts} = Contacts.get_project_contacts(project.id)
     assert contact1 in contacts
     assert contact2 in contacts
   end
 
-  @tag :contacts
+  @tag :contacts_import
   test "Import CSV", %{project: project} do
     assert :ok == Contacts.import_csv(project.id, "test/keila/contacts/import.csv")
-    assert [%Contact{}, %Contact{}, %Contact{}] = Contacts.get_project_contacts(project.id)
+    assert_received {:contacts_import_progress, 0, 201}
+    assert_received {:contacts_import_progress, 100, 201}
+    assert_received {:contacts_import_progress, 200, 201}
+    assert_received {:contacts_import_progress, 201, 201}
+    # assert [%Contact{}, %Contact{}, %Contact{}] = Contacts.get_project_contacts(project.id)
   end
 
   @tag :contacts
