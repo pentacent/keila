@@ -58,6 +58,6 @@ defmodule Keila.ContactsTest do
     assert {:error, message} =
              Contacts.import_csv(project.id, "test/keila/contacts/import_malformed2.csv")
 
-    assert message =~ "invalid data"
+    assert message =~ "Field email: can't be blank"
   end
 end

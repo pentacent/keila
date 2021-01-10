@@ -6,6 +6,8 @@ defmodule Keila.Contacts do
   """
   alias __MODULE__.Contact
   alias Keila.Projects.Project
+  import KeilaWeb.Gettext
+  alias Keila.Contacts.ImportError
   use Keila.Repo
 
   @doc """
@@ -91,15 +93,15 @@ defmodule Keila.Contacts do
   def import_csv(project_id, filename, notify_pid \\ self()) do
     Repo.transaction(
       fn ->
-      try do
-        import_csv!(project_id, filename, notify_pid)
-      rescue
-        e in NimbleCSV.ParseError ->
-          Repo.rollback(e.message)
+        try do
+          import_csv!(project_id, filename, notify_pid)
+        rescue
+          e in NimbleCSV.ParseError ->
+            Repo.rollback(e.message)
 
-        e in Ecto.InvalidChangesetError ->
-          Repo.rollback("invalid data: #{inspect(e.changeset.errors |> List.first())}")
-      end
+          e in Keila.Contacts.ImportError ->
+            Repo.rollback(e.message)
+        end
       end,
       timeout: :infinity,
       pool_timeout: :infinity
@@ -128,12 +130,35 @@ defmodule Keila.Contacts do
         project_id: project_id
       })
     end)
-    |> Stream.map(&Repo.insert!(&1))
     |> Stream.with_index()
-    |> Stream.map(fn {_, n} -> n end)
-    |> Enum.chunk_every(100)
+    |> Stream.map(fn {changeset, n} ->
+      case Repo.insert(changeset, returning: false) do
+        {:ok, _} -> n
+        {:error, changeset} -> raise_import_error!(changeset, n + 1)
+      end
+    end)
+    |> Stream.chunk_every(100)
     |> Enum.each(fn ns ->
       send(notify_pid, {:contacts_import_progress, List.last(ns) + 1, lines})
     end)
+  end
+
+  defp raise_import_error!(changeset, line) do
+    message =
+      case changeset.errors do
+        [{field, {message, _}} | _] ->
+          gettext("Field %{field}: %{message}", field: field, message: message)
+
+        _other ->
+          gettext("unknown data error")
+      end
+
+    raise ImportError,
+      message:
+        gettext("Error importing contact in line %{line}: %{message}",
+          line: line,
+          message: message
+        ),
+      line: line
   end
 end
