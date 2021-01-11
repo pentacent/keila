@@ -12,9 +12,12 @@
                     <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                 </label>
             </div>
-            <div class="flex-shrink-0 flex items-center justify-center">
-                <a href="/">
-                    <img class="h-8 w-auto mt-1 -mb-1" src="<%= Routes.static_path(@conn, "/images/logo.svg") %>" alt="Keila">
+            <div class="flex-shrink-0 flex-grow-0 flex items-center justify-center text-green-500">
+                <a href="/" class="flex align-start -mt-1">
+                    <svg class="h-10 w-10 -mb-2" xmlns="http://www.w3.org/2000/svg" width="257.71" height="236.73" viewBox="0 0 68.19 62.63">
+                        <path fill="currentColor" d="M2.42 0A2.42 2.42 0 000 2.42v35.76a2.42 2.42 0 002.42 2.41H37.3a41.54 41.54 0 0012 9.37v8.96h-17.1V51.9h4.54v-3.72h-5.83a2.42 2.42 0 00-2.42 2.42v9.62a2.42 2.42 0 002.42 2.41h19.7a2.42 2.42 0 002.4-2.41v-8.53a58.58 58.58 0 0014.66 3.89l.5-3.68c-6-.83-11-2.36-15.15-4.26V2.42A2.42 2.42 0 0050.6 0zm4.12 3.71h39.95L26.51 22.55zM3.72 6.16L16.8 18.5 3.7 33.73zm45.6 0v39.56c-11.7-6.5-15.09-16.1-15.28-16.65 0 0-1.14 4.02.83 7.81H5.9l13.61-15.83 5.35 5.04a2.4 2.4 0 003.31 0zm-7.39 19.6a2.8 2.8 0 100 5.6 2.8 2.8 0 000-5.6z"/>
+                    </svg>
+                    <span class="text-2xl font-light">Keila</span>
                 </a>
             </div>
             <nav class="font-medium hidden flex-col gap-1 mt-2 sm:flex-grow sm:flex sm:flex-row sm:mt-0 sm:ml-6 sm:gap-0 sm:items-stretch">
@@ -36,9 +39,12 @@
     </header>
 <% else %>
     <header class="bg-gray-900">
-        <div class="container text-center my-4">
+        <div class="container text-center my-4 text-green-500">
             <a href="/">
-                <img class="inline-block h-10 w-auto mt-1 -mb-1" src="<%= Routes.static_path(@conn, "/images/logo.svg") %>" alt="Keila">
+                <svg class="h-10 w-auto -mt-1 -mr-1 inline-block" xmlns="http://www.w3.org/2000/svg" width="257.71" height="236.73" viewBox="0 0 68.19 62.63">
+                    <path fill="currentColor" d="M2.42 0A2.42 2.42 0 000 2.42v35.76a2.42 2.42 0 002.42 2.41H37.3a41.54 41.54 0 0012 9.37v8.96h-17.1V51.9h4.54v-3.72h-5.83a2.42 2.42 0 00-2.42 2.42v9.62a2.42 2.42 0 002.42 2.41h19.7a2.42 2.42 0 002.4-2.41v-8.53a58.58 58.58 0 0014.66 3.89l.5-3.68c-6-.83-11-2.36-15.15-4.26V2.42A2.42 2.42 0 0050.6 0zm4.12 3.71h39.95L26.51 22.55zM3.72 6.16L16.8 18.5 3.7 33.73zm45.6 0v39.56c-11.7-6.5-15.09-16.1-15.28-16.65 0 0-1.14 4.02.83 7.81H5.9l13.61-15.83 5.35 5.04a2.4 2.4 0 003.31 0zm-7.39 19.6a2.8 2.8 0 100 5.6 2.8 2.8 0 000-5.6z"/>
+                </svg>
+                <span class="text-3xl font-light">Keila</span>
             </a>
         </div>
     </header>
