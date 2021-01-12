@@ -54,13 +54,28 @@ defmodule Keila.Contacts do
   end
 
   @doc """
-  Returns paginated Contacts for specified Project.
+  Returns Contacts for specified Project.
+
+  This function accepts options for the `Keila.Contacts.Query` and `Keila.Contacts.Pagination` modules:
+  - `:paginate` - `true` or Pagination options.
+  - `:filter` - Query filter options.
+  - `:sort` - Query sort options.
+
+  If `:pagination` is not `true` or a list of options, a list of all results is returned.
   """
-  @spec get_project_contacts(Project.id(), list()) :: Keila.Pagination.t(Contact.t())
-  def get_project_contacts(project_id, pagination_opts \\ [])
+  @spec get_project_contacts(Project.id(), filter: map(), sort: map(), paginate: true | list()) ::
+          Keila.Pagination.t(Contact.t()) | [Contact.t()]
+  def get_project_contacts(project_id, opts \\ [])
       when is_binary(project_id) or is_integer(project_id) do
+    query =
     from(c in Contact, where: c.project_id == ^project_id)
-    |> Keila.Pagination.paginate(pagination_opts)
+      |> Keila.Contacts.Query.apply(opts)
+
+    case Keyword.get(opts, :paginate) do
+      true -> Keila.Pagination.paginate(query)
+      opts when is_list(opts) -> Keila.Pagination.paginate(query, opts)
+      _ -> Repo.all(query)
+  end
   end
 
   @doc """
