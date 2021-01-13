@@ -1,13 +1,7 @@
 defmodule Keila.ProjectsTest do
-  use ExUnit.Case, async: true
-  import Keila.Factory
-
-  alias Keila.{Projects, Auth, Repo}
+  use Keila.DataCase
+  alias Keila.{Projects, Auth}
   alias Projects.Project
-
-  setup do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Repo)
-  end
 
   @tag :projects
   test "Creating a project also creates an Auth.Group and adds user to it" do

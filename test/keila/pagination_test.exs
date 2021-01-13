@@ -1,12 +1,6 @@
 defmodule Keila.PaginationTest do
-  use ExUnit.Case, async: true
-  import Keila.Factory
-
-  alias Keila.{Pagination, Auth.User, Repo}
-
-  setup do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Repo)
-  end
+  use Keila.DataCase
+  alias Keila.{Pagination, Auth.User}
 
   @tag :pagination
   test "paginate queries" do

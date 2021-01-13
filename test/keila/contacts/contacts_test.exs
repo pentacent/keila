@@ -1,12 +1,8 @@
 defmodule Keila.ContactsTest do
-  use ExUnit.Case, async: true
-  import Keila.Factory
-
-  alias Keila.{Contacts, Projects, Pagination, Repo}
-  alias Contacts.Contact
+  use Keila.DataCase
+  alias Keila.{Contacts, Contacts.Contact, Projects, Pagination}
 
   setup do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Repo)
     _root = insert!(:group)
     user = insert!(:user)
     {:ok, project} = Projects.create_project(user.id, params(:project))

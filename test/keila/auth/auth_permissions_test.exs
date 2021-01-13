@@ -1,12 +1,6 @@
 defmodule Keila.AuthTest.Permissions do
-  use ExUnit.Case, async: true
-  import Keila.Factory
-
-  alias Keila.{Auth, Repo}
-
-  setup do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Repo)
-  end
+  use Keila.DataCase
+  alias Keila.Auth
 
   @tag :auth
   test "Retrieve root group" do

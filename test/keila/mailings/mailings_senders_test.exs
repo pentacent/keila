@@ -1,15 +1,7 @@
 defmodule Keila.Mailings.SenderTest do
-  use ExUnit.Case, async: true
-  import Keila.Factory
-
-  alias Keila.{Mailings, Repo}
+  use Keila.DataCase
+  alias Keila.Mailings
   alias Mailings.Sender
-
-  setup do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Repo)
-
-    :ok
-  end
 
   @tag :mailings
   test "Create senders" do

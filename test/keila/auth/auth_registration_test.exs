@@ -1,14 +1,7 @@
 defmodule Keila.AuthTest.Registration do
-  use ExUnit.Case, async: true
-  import Keila.Factory
-  import Swoosh.TestAssertions
-
-  alias Keila.{Auth, Repo}
+  use Keila.DataCase
+  alias Keila.Auth
   alias Auth.{User, Token}
-
-  setup do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Repo)
-  end
 
   @password "BatteryHorseStaple"
 

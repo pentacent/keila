@@ -24,6 +24,8 @@ defmodule Keila.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import Keila.DataCase
+      import Swoosh.TestAssertions
+      import Keila.Factory
     end
   end
 
