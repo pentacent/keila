@@ -35,9 +35,9 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: |
-            ~/_build
-            ~/deps
-            ~/assets/node_modules
+            _build
+            deps
+            assets/node_modules
           key: keila-${{ runner.os }}-elixir-${{ matrix.version }}-${{ hashFiles('mix.lock') }}
       - name: mix deps.get
         run: |
