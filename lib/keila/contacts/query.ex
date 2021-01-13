@@ -24,21 +24,23 @@ defmodule Keila.Contacts.Query do
 
   ## Sorting
   Using the `:sort` option, you can supply MongoDB-style sorting options:
-  - `filter: %{"email" => 1}` will sort results by email in ascending order.
-  - `filter: %{"email" => -1}` will sort results by email in descending order.
+  - `sort: %{"email" => 1}` will sort results by email in ascending order.
+  - `sort: %{"email" => -1}` will sort results by email in descending order.
 
-  Defaults to sorting by `inserted_at`.
+  Defaults to sorting by `inserted_at` and `email`.
+
+  Sorting can be disabled by passing `sort: false`
   """
 
   use Keila.Repo
 
-  @fields ["email", "inserted_at", "first_name", "last_name"]
+  @fields ["id", "email", "inserted_at", "first_name", "last_name"]
 
   @spec apply(Ecto.Query.t(), filter: map(), sort: map()) :: Ecto.Query.t()
   def apply(query, opts) do
     query
     |> maybe_filter(opts)
-    |> sort(opts)
+    |> maybe_sort(opts)
   end
 
   defp maybe_filter(query, opts) do
@@ -105,16 +107,23 @@ defmodule Keila.Contacts.Query do
   defp build_condition(field, value),
     do: raise(~s{Unsupported filter "#{field}": "#{inspect(value)}"})
 
-  defp sort(query, opts) do
-    {sort_field, direction} =
-      Keyword.get(opts, :sort, %{"inserted_at" => 1})
-      |> Map.take(@fields)
-      |> Map.to_list()
-      |> List.first()
+  defp maybe_sort(query, opts) do
+    case Keyword.get(opts, :sort) do
+      false -> query
+      opts when is_map(opts) -> sort(query, opts)
+      _ -> sort(query, %{"inserted_at" => 1, "email" => 1})
+    end
+  end
 
-    sort_field = String.to_existing_atom(sort_field)
+  defp sort(query, input) do
+      input
+      |> Map.take(@fields)
+      |> Enum.reverse()
+    |> Enum.reduce(query, fn {field, direction}, query ->
+        field = String.to_existing_atom(field)
     direction = if direction == -1, do: :desc, else: :asc
 
-    order_by(query, [c], {^direction, field(c, ^sort_field)})
+        order_by(query, [c], [{^direction, field(c, ^field)}])
+      end)
   end
 end
