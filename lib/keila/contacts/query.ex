@@ -116,14 +116,14 @@ defmodule Keila.Contacts.Query do
   end
 
   defp sort(query, input) do
-      input
-      |> Map.take(@fields)
-      |> Enum.reverse()
+    input
+    |> Map.take(@fields)
+    |> Enum.reverse()
     |> Enum.reduce(query, fn {field, direction}, query ->
-        field = String.to_existing_atom(field)
-    direction = if direction == -1, do: :desc, else: :asc
+      field = String.to_existing_atom(field)
+      direction = if direction == -1, do: :desc, else: :asc
 
-        order_by(query, [c], [{^direction, field(c, ^field)}])
-      end)
+      order_by(query, [c], [{^direction, field(c, ^field)}])
+    end)
   end
 end

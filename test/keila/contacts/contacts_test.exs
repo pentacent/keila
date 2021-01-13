@@ -47,7 +47,12 @@ defmodule Keila.ContactsTest do
     contact5 = insert!(:contact, %{project_id: project.id, first_name: "E"})
     _contact6 = insert!(:contact)
 
-    opts = [paginate: true, sort: %{"first_name" => -1}, filter: %{"$or" => [%{"first_name" => "A"}, %{"first_name" => "E"}]}]
+    opts = [
+      paginate: true,
+      sort: %{"first_name" => -1},
+      filter: %{"$or" => [%{"first_name" => "A"}, %{"first_name" => "E"}]}
+    ]
+
     assert pagination = %Pagination{} = Contacts.get_project_contacts(project.id, opts)
     assert [contact5, contact1] == pagination.data
   end
@@ -60,6 +65,20 @@ defmodule Keila.ContactsTest do
     assert_received {:contacts_import_progress, 200, 201}
     assert_received {:contacts_import_progress, 201, 201}
     # assert [%Contact{}, %Contact{}, %Contact{}] = Contacts.get_project_contacts(project.id)
+  end
+
+  @tags :contacts
+  test "delete_contact and delete_project_contacts", %{project: project} do
+    contact1 = insert!(:contact, %{project_id: project.id})
+    contact2 = insert!(:contact, %{project_id: project.id})
+    contact3 = insert!(:contact)
+
+    assert :ok = Contacts.delete_project_contacts(project.id)
+    assert nil == Contacts.get_contact(contact1.id)
+
+    assert contact3 == Contacts.get_contact(contact3.id)
+    assert :ok = Contacts.delete_contact(contact3.id)
+    assert nil == Contacts.get_contact(contact3.id)
   end
 
   @tag :contacts
