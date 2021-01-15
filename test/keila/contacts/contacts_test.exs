@@ -53,17 +53,7 @@ defmodule Keila.ContactsTest do
     assert [contact5, contact1] == pagination.data
   end
 
-  @tag :contacts_import
-  test "Import CSV", %{project: project} do
-    assert :ok == Contacts.import_csv(project.id, "test/keila/contacts/import.csv")
-    assert_received {:contacts_import_progress, 0, 201}
-    assert_received {:contacts_import_progress, 100, 201}
-    assert_received {:contacts_import_progress, 200, 201}
-    assert_received {:contacts_import_progress, 201, 201}
-    # assert [%Contact{}, %Contact{}, %Contact{}] = Contacts.get_project_contacts(project.id)
-  end
-
-  @tags :contacts
+  @tag :contacts
   test "delete_contact and delete_project_contacts", %{project: project} do
     contact1 = insert!(:contact, %{project_id: project.id})
     contact2 = insert!(:contact, %{project_id: project.id})
@@ -75,6 +65,55 @@ defmodule Keila.ContactsTest do
     assert contact3 == Contacts.get_contact(contact3.id)
     assert :ok = Contacts.delete_contact(contact3.id)
     assert nil == Contacts.get_contact(contact3.id)
+  end
+
+  @import_names [
+    {"Joël", "Müller-Schultheiß"},
+    {"Eliška", "Þorláksson"}
+  ]
+
+  @tag :contacts
+  test "Import RFC 4180 CSV", %{project: project} do
+    assert :ok == Contacts.import_csv(project.id, "test/keila/contacts/import_rfc_4180.csv")
+    assert_received {:contacts_import_progress, 0, 201}
+    assert_received {:contacts_import_progress, 100, 201}
+    assert_received {:contacts_import_progress, 200, 201}
+    assert_received {:contacts_import_progress, 201, 201}
+
+    contacts = Contacts.get_project_contacts(project.id)
+
+    for {first_name, last_name} <- @import_names do
+      assert Enum.find(contacts, fn
+               %{first_name: ^first_name, last_name: ^last_name} -> true
+               _ -> false
+             end)
+    end
+  end
+
+  @tag :contacts
+  test "Import Excel TSV/CSV", %{project: project} do
+    assert :ok == Contacts.import_csv(project.id, "test/keila/contacts/import_excel.csv")
+    contacts = Contacts.get_project_contacts(project.id)
+
+    for {first_name, last_name} <- @import_names do
+      assert Enum.find(contacts, fn
+               %{first_name: ^first_name, last_name: ^last_name} -> true
+               _ -> false
+             end)
+    end
+  end
+
+  @tag :contacts
+  test "Import LibreOffice CSV", %{project: project} do
+    assert :ok == Contacts.import_csv(project.id, "test/keila/contacts/import_libreoffice.csv")
+    contacts = Contacts.get_project_contacts(project.id)
+
+    for {first_name, last_name} <- @import_names do
+      assert Enum.find(contacts, fn
+               %{first_name: ^first_name, last_name: ^last_name} -> true
+               _ -> false
+             end)
+    end
   end
 
   @tag :contacts

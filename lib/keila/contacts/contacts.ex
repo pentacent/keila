@@ -4,11 +4,9 @@ defmodule Keila.Contacts do
 
   Use this module to create/update/delete, verify, and import Contacts.
   """
-  alias __MODULE__.Contact
-  alias Keila.Projects.Project
-  import KeilaWeb.Gettext
-  alias Keila.Contacts.ImportError
   use Keila.Repo
+  alias Keila.Projects.Project
+  alias __MODULE__.{Contact, Import}
 
   @doc """
   Creates a new Contact within the given Project.
@@ -63,8 +61,7 @@ defmodule Keila.Contacts do
 
   If `:pagination` is not `true` or a list of options, a list of all results is returned.
   """
-  # TODO Fix Typespec with optional opts
-  @spec get_project_contacts(Project.id(), filter: map(), sort: map(), paginate: true | list()) ::
+  @spec get_project_contacts(Project.id(), [Query.opts() | {:paginate, boolean() | Keyword.t()}]) ::
           Keila.Pagination.t(Contact.t()) | [Contact.t()]
   def get_project_contacts(project_id, opts \\ [])
       when is_binary(project_id) or is_integer(project_id) do
@@ -121,77 +118,14 @@ defmodule Keila.Contacts do
   | foo@example.com | Foo     | Bar        |
 
   The `First name` and `Last name` columns can be empty but must be present.
+
+  ## Options
+  - `:notify` - PID of the process that is going to be sent progress notifications. Defaults to `self()`.
   """
-  @spec(import_csv(Project.id(), String.t()) :: :ok, {:error, String.t()})
-  def import_csv(project_id, filename, notify_pid \\ self()) do
-    Repo.transaction(
-      fn ->
-        try do
-          import_csv!(project_id, filename, notify_pid)
-        rescue
-          e in NimbleCSV.ParseError ->
-            Repo.rollback(e.message)
-
-          e in Keila.Contacts.ImportError ->
-            Repo.rollback(e.message)
-        end
-      end,
-      timeout: :infinity,
-      pool_timeout: :infinity
-    )
-    |> case do
-      {:ok, :ok} -> :ok
-      {:error, reason} -> {:error, reason}
-    end
-  end
-
-  defp import_csv!(project_id, filename, notify_pid) do
-    lines =
-      File.stream!(filename)
-      |> NimbleCSV.RFC4180.parse_stream()
-      |> Enum.count()
-
-    send(notify_pid, {:contacts_import_progress, 0, lines})
-
-    File.stream!(filename)
-    |> NimbleCSV.RFC4180.parse_stream()
-    |> Stream.map(fn [email, first_name, last_name] ->
-      Contact.creation_changeset(%{
-        email: email,
-        first_name: first_name,
-        last_name: last_name,
-        project_id: project_id
-      })
-    end)
-    |> Stream.with_index()
-    |> Stream.map(fn {changeset, n} ->
-      case Repo.insert(changeset, returning: false) do
-        {:ok, _} -> n
-        {:error, changeset} -> raise_import_error!(changeset, n + 1)
-      end
-    end)
-    |> Stream.chunk_every(100)
-    |> Enum.each(fn ns ->
-      send(notify_pid, {:contacts_import_progress, List.last(ns) + 1, lines})
-    end)
-  end
-
-  defp raise_import_error!(changeset, line) do
-    message =
-      case changeset.errors do
-        [{field, {message, _}} | _] ->
-          gettext("Field %{field}: %{message}", field: field, message: message)
-
-        _other ->
-          gettext("unknown data error")
-      end
-
-    raise ImportError,
-      message:
-        gettext("Error importing contact in line %{line}: %{message}",
-          line: line,
-          message: message
-        ),
-      line: line
+  @spec import_csv(Keila.Projects.Project.id(), String.t(), Keyword.t()) ::
+          :ok | {:error, String.t()}
+  def import_csv(project_id, filename, opts \\ []) do
+    opts = Keyword.put_new(opts, :notify, self())
+    Import.import_csv(project_id, filename, opts)
   end
 end

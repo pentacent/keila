@@ -36,7 +36,9 @@ defmodule Keila.Contacts.Query do
 
   @fields ["id", "email", "inserted_at", "first_name", "last_name"]
 
-  @spec apply(Ecto.Query.t(), filter: map(), sort: map()) :: Ecto.Query.t()
+  @type opts :: {:filter, map()} | {:sort, map()}
+
+  @spec apply(Ecto.Query.t(), [opts]) :: Ecto.Query.t()
   def apply(query, opts) do
     query
     |> maybe_filter(opts)
