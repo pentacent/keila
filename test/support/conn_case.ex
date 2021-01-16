@@ -26,6 +26,8 @@ defmodule KeilaWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import KeilaWeb.ConnCase
+      import Keila.Factory
+      import Swoosh.TestAssertions
 
       alias KeilaWeb.Router.Helpers, as: Routes
 
@@ -51,6 +53,15 @@ defmodule KeilaWeb.ConnCase do
         conn
         |> recycle()
         |> get(path)
+      end
+
+      defp setup_project(conn) do
+        _root = insert!(:group)
+
+        {:ok, project} =
+          Keila.Projects.create_project(conn.assigns.current_user.id, %{name: "Foo Bar"})
+
+        project
       end
     end
   end

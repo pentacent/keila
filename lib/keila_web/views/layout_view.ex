@@ -2,12 +2,18 @@ defmodule KeilaWeb.LayoutView do
   use KeilaWeb, :view
   use Phoenix.HTML
 
-  def menu_link(conn_or_socket, route, label) do
+  def menu_link(conn, route, label, opts \\ []) do
     class =
-      if conn_or_socket.request_path == route do
-        "menu-link menu-link--active"
-      else
-        "menu-link"
+      cond do
+        conn.request_path == route ->
+          "menu-link menu-link--active menu-link--active-exact"
+
+        Keyword.get(opts, :exact, false) == false and
+            String.starts_with?(conn.request_path, route) ->
+          "menu-link menu-link--active"
+
+        true ->
+          "menu-link"
       end
 
     content_tag(:a, label, href: route, class: class)

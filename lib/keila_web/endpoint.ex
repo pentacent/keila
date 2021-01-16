@@ -24,7 +24,7 @@ defmodule KeilaWeb.Endpoint do
     at: "/",
     from: :keila,
     gzip: false,
-    only: ~w(css fonts images js favicon.ico robots.txt)
+    only: ~w(css fonts images js favicon.ico robots.txt keila_import_template.csv keila_import_template.ods)
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.

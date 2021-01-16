@@ -67,7 +67,7 @@ defmodule Keila.Contacts do
       when is_binary(project_id) or is_integer(project_id) do
     query =
       from(c in Contact, where: c.project_id == ^project_id)
-      |> Keila.Contacts.Query.apply(opts)
+      |> Keila.Contacts.Query.apply(Keyword.take(opts, [:filter, :sort]))
 
     case Keyword.get(opts, :paginate) do
       true -> Keila.Pagination.paginate(query)

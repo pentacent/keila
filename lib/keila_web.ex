@@ -51,7 +51,8 @@ defmodule KeilaWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {KeilaWeb.LayoutView, "live.html"}
+        layout: {KeilaWeb.LayoutView, "live.html"},
+        container: {:main, class: "live-container flex-grow bg-gray-800 text-gray-50"}
 
       unquote(view_helpers())
     end

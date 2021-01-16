@@ -56,7 +56,7 @@ defmodule Keila.ContactsTest do
   @tag :contacts
   test "delete_contact and delete_project_contacts", %{project: project} do
     contact1 = insert!(:contact, %{project_id: project.id})
-    contact2 = insert!(:contact, %{project_id: project.id})
+    _contact2 = insert!(:contact, %{project_id: project.id})
     contact3 = insert!(:contact)
 
     assert :ok = Contacts.delete_project_contacts(project.id)

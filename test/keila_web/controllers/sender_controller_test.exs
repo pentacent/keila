@@ -1,6 +1,5 @@
 defmodule KeilaWeb.SenderControllerTest do
   use KeilaWeb.ConnCase
-  import Keila.Factory
 
   @tag :sender_controller
   test "index senders", %{conn: conn} do
@@ -106,14 +105,5 @@ defmodule KeilaWeb.SenderControllerTest do
 
     conn = with_login(conn) |> get(Routes.sender_path(conn, :edit, project.id, sender.id))
     assert conn.status == 404
-  end
-
-  defp setup_project(conn) do
-    _root = insert!(:group)
-
-    {:ok, project} =
-      Keila.Projects.create_project(conn.assigns.current_user.id, %{name: "Foo Bar"})
-
-    project
   end
 end

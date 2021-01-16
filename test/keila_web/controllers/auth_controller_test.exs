@@ -1,7 +1,5 @@
 defmodule KeilaWeb.AuthControllerTest do
   use KeilaWeb.ConnCase
-  import Swoosh.TestAssertions
-  import Keila.Factory
   alias Keila.{Repo, Auth}
 
   @password "BatteryHorseStaple"

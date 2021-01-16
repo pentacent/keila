@@ -1,0 +1,102 @@
+<main role="main" class="static-container flex-grow bg-gray-800 text-gray-50">
+    <div class="bg-gray-900 text-gray-50">
+        <div class="container py-8 sm:py-6 md:py-12 lg:py-16 flex">
+            <div class="flex-grow">
+                <h1 class="text-2xl sm:text-5xl mb-4">
+                    <%= gettext("Contacts") %>
+                </h1>
+
+                <%= if @contacts.page_count == 0 do %>
+                    <p class="mt-4">
+                        <%= gettext("Ready to get started? Import your existing contacts now.") %>
+                    </p>
+                    <br>
+                    <p class="flex gap-4">
+                        <a href="<%= Routes.contact_path(@conn, :import, @current_project.id) %>" class="button button--cta button--large">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" /></svg>
+                            <%= gettext("Import contacts") %>
+                        </a>
+
+                        <a href="<%= Routes.contact_path(@conn, :new, @current_project.id) %>" class="button button--large">
+                            <%= gettext("Create a contact") %>
+                        </a>
+                    </p>
+                <% else %>
+                    <p class="mt-4">
+                        <%= gettext("Here you can manage your contacts.") %>
+                    </p>
+                <% end %>
+            </div>
+            <%= if @contacts.page_count > 0 do %>
+                <p class="mt-4 flex gap-4 items-center">
+                    <a href="<%= Routes.contact_path(@conn, :import, @current_project.id) %>" class="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" /></svg>
+                        <%= gettext("Import contacts") %>
+                    </a>
+                    <a href="<%= Routes.contact_path(@conn, :new , @current_project.id) %>" class="button">
+                        <%= gettext("Create a contact") %>
+                    </a>
+                </p>
+            <% end %>
+        </div>
+    </div>
+    <%= if @contacts.page_count > 0 do %>
+        <div class="container py-4">
+            <%= f = form_for(@conn, Routes.contact_path(@conn, :delete, @current_project.id), as: :contact, method: :delete) %>
+                <%= hidden_input(f, :require_confirmation, value: "true") %>
+                <table x-data="{checked: false}" class="w-full">
+                    <tr class="text-left">
+                        <th><input type="checkbox" x-model="checked" class="text-green-500"></th>
+                        <th class="p-2">Email</th>
+                        <th class="p-2">First name</th>
+                        <th class="p-2">Last name</th>
+                        <th class="p-2">Added</th>
+                        <th class="p-2"></th>
+                    </tr>
+                    <%= for contact <- @contacts.data do %>
+                        <tr>
+                            <td>
+                                <%= checkbox(f, :id, hidden_input: false, "x_bind:checked": "checked", class: "text-green-500", checked_value: contact.id, name: "contact[id][]") %>
+                            </td>
+                            <td class="p-2">
+                                <%= contact.email %>
+                            </td>
+                            <td class="p-2">
+                                <%= contact.first_name %>
+                            </td>
+                            <td class="p-2">
+                                <%= contact.last_name %>
+                            </td>
+                            <td class="p-2">
+                                <%= Calendar.strftime(contact.inserted_at, "%c") %>
+                            </td>
+                            <td class="p-2 flex gap-2">
+                                <%= delete_button(contact.id) %>
+
+                                <a class="button button--text" href="<%= Routes.contact_path(@conn, :edit, @current_project.id, contact.id) %>">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                    </svg>
+                                </a>
+                            </td>
+                        </tr>
+                    <% end %>
+                </table>
+                <button class="button mt-4">
+                    <%= gettext("Delete all selected contacts") %>
+                </button>
+            </form>
+
+            <%= for contact <- @contacts.data do
+                delete_form(@conn, contact.id)
+            end %>
+
+            <%= if @contacts.page_count > 1 do %>
+                <div class="flex gap-3 justify-center py-8">
+                    <%= pagination_nav(@conn, @contacts) %>
+                </div>
+            <% end %>
+
+        </div>
+    <% end %>
+</main>

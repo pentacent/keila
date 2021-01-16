@@ -1,6 +1,5 @@
 defmodule KeilaWeb.ProjectControllerTest do
   use KeilaWeb.ConnCase
-  import Keila.Factory
 
   @tag :project_controller
   test "shows project form", %{conn: conn} do

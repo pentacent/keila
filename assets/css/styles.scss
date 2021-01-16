@@ -17,7 +17,7 @@ body {
 }
 
 .button {
-    @apply rounded flex flex-nowrap px-2 py-1 gap-2 outline-none items-center;
+    @apply rounded inline-flex flex-nowrap px-2 py-1 gap-2 outline-none items-center;
 
     svg {
         @apply w-6;

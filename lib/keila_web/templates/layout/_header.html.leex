@@ -22,10 +22,10 @@
             </div>
             <nav class="font-medium hidden flex-col gap-1 mt-2 sm:flex-grow sm:flex sm:flex-row sm:mt-0 sm:ml-6 sm:gap-0 sm:items-stretch">
                 <%= if is_nil(assigns[:current_project]) do %>
-                    <%= menu_link(@conn, "/", gettext("Dashboard")) %>
+                    <%= menu_link(@conn, "/", gettext("Dashboard"), exact: true) %>
                 <% else %>
-                    <%= menu_link(@conn, Routes.project_path(@conn, :show, @current_project.id), @current_project.name) %>
-                    <%= menu_link(@conn, "/", gettext("Contacts")) %>
+                    <%= menu_link(@conn, Routes.project_path(@conn, :show, @current_project.id), @current_project.name, exact: true) %>
+                    <%= menu_link(@conn, Routes.contact_path(@conn, :index, @current_project.id), gettext("Contacts")) %>
                     <%= menu_link(@conn, "/", gettext("Channels")) %>
                     <%= menu_link(@conn, "/", gettext("Forms")) %>
                     <%= menu_link(@conn, "/", gettext("Campaigns")) %>
