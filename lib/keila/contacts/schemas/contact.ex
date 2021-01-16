@@ -25,4 +25,21 @@ defmodule Keila.Contacts.Contact do
     |> validate_required([:email])
     |> validate_format(:email, ~r/^[^\s]+@[^\s]+$/, message: "must have the @ sign and no spaces")
   end
+
+  @spec dynamic_changeset(t(), Ecto.Changeset.data(), Keyword.t()) :: Ecto.Changeset.t(t())
+  def dynamic_changeset(struct \\ %__MODULE__{}, params, opts) do
+    required_fields = Keyword.get(opts, :required, [])
+    cast_fields = ([:email | Keyword.get(opts, :cast, [])] ++ required_fields) |> Enum.uniq()
+
+    struct
+    |> cast(params, cast_fields)
+    |> validate_dynamic_required(required_fields)
+    |> validate_required([:email])
+    |> validate_format(:email, ~r/^[^\s]+@[^\s]+$/, message: "must have the @ sign and no spaces")
+    |> unique_constraint([:email, :project_id])
+  end
+
+  defp validate_dynamic_required(changeset, required_fields)
+  defp validate_dynamic_required(changeset, []), do: changeset
+  defp validate_dynamic_required(changeset, fields), do: validate_required(changeset, fields)
 end

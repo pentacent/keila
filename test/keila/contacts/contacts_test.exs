@@ -16,6 +16,26 @@ defmodule Keila.ContactsTest do
   end
 
   @tag :contacts
+  test "Create contact with dynamic cast/validation options", %{project: project} do
+    params = %{email: email, first_name: first_name} = build(:contact) |> Map.from_struct()
+
+    {:ok, contact} = Contacts.create_contact(project.id, params, required: [:email])
+    assert %Contact{email: ^email, first_name: nil, last_name: nil} = contact
+
+    {:error, changeset} =
+      Contacts.create_contact(project.id, Map.take(params, [:email]),
+        required: [:email, :first_name]
+      )
+
+    assert [first_name: {_, [validation: :required]}] = changeset.errors
+
+    {:ok, contact} =
+      Contacts.create_contact(project.id, params, required: [:email], cast: [:first_name])
+
+    assert %Contact{email: ^email, first_name: ^first_name, last_name: nil} = contact
+  end
+
+  @tag :contacts
   test "Edit contact", %{project: project} do
     contact = insert!(:contact, %{project_id: project.id})
     params = params(:contact)

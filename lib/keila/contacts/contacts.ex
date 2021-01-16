@@ -22,6 +22,23 @@ defmodule Keila.Contacts do
   end
 
   @doc """
+  Creates a new Contact within the given Project with dynamic cast and validation options.
+
+  Options:
+  - `:required` - List of required fields. Defaults to `[:email]`.
+  - `:cast` - List of fields to be cast from params. Automatically includes fields specified as required.
+  """
+  @spec create_contact(Project.id(), map(), Keyword.t()) ::
+          {:ok, Contact.t()} | {:error, Changeset.t(Contact.t())}
+  def create_contact(project_id, params, opts) do
+    params
+    |> stringize_params()
+    |> Map.put("project_id", project_id)
+    |> Contact.dynamic_changeset(opts)
+    |> Repo.insert()
+  end
+
+  @doc """
   Updates the specified Contact.
   """
   @spec update_contact(Contact.id(), map()) :: {:ok, Contact} | {:error, Contact}
