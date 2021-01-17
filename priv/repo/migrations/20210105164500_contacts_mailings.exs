@@ -19,6 +19,14 @@ defmodule Keila.Repo.Migrations.ContactsMailings do
 
     create unique_index("contacts", [:email, :project_id])
 
+    create table("contacts_forms") do
+      add :project_id, references("projects", on_delete: :delete_all)
+
+      add :name, :string, null: false
+      add :field_settings, :json
+      add :settings, :json
+    end
+
     create table("mailings_senders") do
       add :project_id, references("projects", on_delete: :delete_all)
 
@@ -34,12 +42,6 @@ defmodule Keila.Repo.Migrations.ContactsMailings do
 
     create unique_index("mailings_senders", [:from_email])
     create unique_index("mailings_senders", [:name, :project_id])
-
-    create table("mailings_forms") do
-      add :project_id, references("projects", on_delete: :delete_all)
-
-      add :name, :string, null: false
-    end
 
     create table("mailings_campaigns") do
       add :project_id, references("projects", on_delete: :delete_all)

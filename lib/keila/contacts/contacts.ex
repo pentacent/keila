@@ -6,7 +6,7 @@ defmodule Keila.Contacts do
   """
   use Keila.Repo
   alias Keila.Projects.Project
-  alias __MODULE__.{Contact, Import}
+  alias __MODULE__.{Contact, Import, Form}
 
   @doc """
   Creates a new Contact within the given Project.
@@ -144,5 +144,71 @@ defmodule Keila.Contacts do
   def import_csv(project_id, filename, opts \\ []) do
     opts = Keyword.put_new(opts, :notify, self())
     Import.import_csv(project_id, filename, opts)
+  end
+
+  @doc """
+  Retrieves Form with specified `form_id`.
+  """
+  @spec get_form(Form.id()) :: Form.t() | nil
+  def get_form(id) when is_binary(id) or is_integer(id),
+    do: Repo.get(Form, id)
+
+  def get_form(_),
+    do: nil
+
+  @doc """
+  Retrieves Form with specified `form_id` if it belongs to the specified Project.
+  """
+  @spec get_project_form(Project.id(), Form.id()) :: Form.t() | nil
+  def get_project_form(project_id, form_id) do
+    case get_form(form_id) do
+      form = %Form{project_id: ^project_id} -> form
+      _other -> nil
+    end
+  end
+
+  @doc """
+  Retrieves all Forms for specified `project_id`.
+  """
+  @spec get_project_forms(Project.id()) :: [Form.t()]
+  def get_project_forms(project_id) do
+    from(f in Form, where: f.project_id == ^project_id)
+    |> Repo.all()
+  end
+
+  @doc """
+  Creates a new Form.
+  """
+  @spec create_form(Project.id(), map()) :: {:ok, Form.t()} | {:error, Changeset.t(Form.t())}
+  def create_form(project_id, params) do
+    params
+    |> stringize_params()
+    |> Map.put("project_id", project_id)
+    |> Form.creation_changeset()
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates the specified Form.
+  """
+  @spec update_form(Form.id(), map()) :: {:ok, Form.t()} | {:error, Changeset.t(Form.t())}
+  def update_form(form_id, params) do
+    form_id
+    |> get_form()
+    |> Form.update_changeset(params)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes the specified form.
+
+  This function is idempotent and always returns `:ok`.
+  """
+  @spec delete_form(Form.id()) :: :ok
+  def delete_form(form_id) do
+    from(f in Form, where: f.id == ^form_id)
+    |> Repo.delete_all()
+
+    :ok
   end
 end

@@ -70,6 +70,12 @@ defmodule Keila.Factory do
     }
   end
 
+  defp do_build(:contacts_form) do
+    %Keila.Contacts.Form{
+      name: "form-#{get_counter_value()}@example.org"
+    }
+  end
+
   @doc """
   Builds a struct with optional attributes
   """
