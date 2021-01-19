@@ -82,6 +82,8 @@ defmodule Keila.Contacts do
           Keila.Pagination.t(Contact.t()) | [Contact.t()]
   def get_project_contacts(project_id, opts \\ [])
       when is_binary(project_id) or is_integer(project_id) do
+    opts = Keyword.put_new(opts, :sort, %{"inserted_at" => -1})
+
     query =
       from(c in Contact, where: c.project_id == ^project_id)
       |> Keila.Contacts.Query.apply(Keyword.take(opts, [:filter, :sort]))
