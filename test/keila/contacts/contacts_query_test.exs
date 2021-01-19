@@ -131,4 +131,19 @@ defmodule Keila.ContactsQueryTest do
              |> Query.apply(filter: filter)
              |> Repo.all()
   end
+
+  @tag :contacts_query
+  test "filter for nil values. String 'null' is not treated as nil." do
+    c = insert!(:contact, %{first_name: nil})
+
+    assert [c] ==
+      from(Contact)
+      |> Query.apply(filter: %{"first_name" => nil})
+      |> Repo.all()
+
+    assert [] ==
+      from(Contact)
+      |> Query.apply(filter: %{"first_name" => "null"})
+      |> Repo.all()
+  end
 end

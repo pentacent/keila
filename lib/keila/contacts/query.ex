@@ -100,10 +100,10 @@ defmodule Keila.Contacts.Query do
   defp build_condition(field, %{"$in" => value}) when is_list(value),
     do: dynamic([c], field(c, ^field) in ^value)
 
-  defp build_condition(field, value) when value in ["null", nil],
+  defp build_condition(field, value) when value in [nil],
     do: dynamic([c], is_nil(field(c, ^field)))
 
-  defp build_condition(field, value) when is_binary(value) or is_number(value) or is_nil(value),
+  defp build_condition(field, value) when is_binary(value) or is_number(value),
     do: dynamic([c], field(c, ^field) == ^value)
 
   defp build_condition(field, value),
