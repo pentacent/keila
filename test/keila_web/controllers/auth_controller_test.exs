@@ -29,7 +29,7 @@ defmodule KeilaWeb.AuthControllerTest do
     @tag :auth_controller
     test "shows error with missing captcha", %{conn: conn} do
       conn = post(conn, Routes.auth_path(conn, :register), user: @sign_up_params)
-      assert html_response(conn, 400) =~ ~r{Please complete the Captcha.}
+      assert html_response(conn, 400) =~ ~r{Please complete the captcha.}
       assert_no_email_sent()
     end
 

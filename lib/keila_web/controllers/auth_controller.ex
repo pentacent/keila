@@ -24,7 +24,7 @@ defmodule KeilaWeb.AuthController do
       {:error, changeset} =
         params
         |> Auth.User.creation_changeset()
-        |> Ecto.Changeset.add_error(:hcaptcha, dgettext("auth", "Please complete the Captcha."))
+        |> Ecto.Changeset.add_error(:hcaptcha, dgettext("auth", "Please complete the captcha."))
         |> Ecto.Changeset.apply_action(:insert)
 
       conn
