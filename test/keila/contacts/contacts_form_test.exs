@@ -33,16 +33,18 @@ defmodule Keila.ContactsFormTest do
 
     assert {:ok, form} = Contacts.create_form(project.id, params)
 
-    assert %Contacts.Form{
-      name: "My Form",
-      settings: %Contacts.Form.Settings{
-        captcha_required: true
-      },
-      field_settings: %Contacts.Form.FieldSettings{
-        field: :email,
-        label: "Enter your email here"
-      }
-    }
+    assert %Form{
+             name: "My Form",
+             settings: %Form.Settings{
+               captcha_required: true
+             },
+             field_settings: [
+               %Form.FieldSettings{
+                 field: "email",
+                 label: "Enter your email here"
+               }
+             ]
+           } = form
   end
 
   @tag :contacts_form

@@ -30,7 +30,6 @@ defmodule Keila.HtmlFormat do
     do_format(html, @config)
   end
 
-
   defp do_format(html, config) do
     config = config
 

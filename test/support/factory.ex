@@ -72,7 +72,9 @@ defmodule Keila.Factory do
 
   defp do_build(:contacts_form) do
     %Keila.Contacts.Form{
-      name: "form-#{get_counter_value()}@example.org"
+      name: "form-#{get_counter_value()}@example.org",
+      settings: %{},
+      field_settings: [%{field: "email", cast: true, required: true}]
     }
   end
 

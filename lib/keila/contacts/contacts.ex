@@ -7,6 +7,7 @@ defmodule Keila.Contacts do
   use Keila.Repo
   alias Keila.Projects.Project
   alias __MODULE__.{Contact, Import, Form}
+  import KeilaWeb.Gettext
 
   @doc """
   Creates a new Contact within the given Project.
@@ -188,6 +189,46 @@ defmodule Keila.Contacts do
   end
 
   @doc """
+  Creates a new Form with default settings.
+  """
+  @spec create_empty_form(Project.id()) :: {:ok, Form.t()}
+  def create_empty_form(project_id) do
+    form = %Form{
+      project_id: project_id,
+      name: gettext("My New Form"),
+      settings:
+        Map.from_struct(%Form.Settings{
+          success_text: gettext("Thank you for signing up!")
+        }),
+      field_settings: [
+        Map.from_struct(%Form.FieldSettings{
+          field: "email",
+          label: gettext("Email"),
+          placeholder: "",
+          required: true,
+          cast: true
+        }),
+        Map.from_struct(%Form.FieldSettings{
+          field: "first_name",
+          label: gettext("First name"),
+          placeholder: "",
+          required: false,
+          cast: false
+        }),
+        Map.from_struct(%Form.FieldSettings{
+          field: "last_name",
+          label: gettext("Last name"),
+          placeholder: "",
+          required: false,
+          cast: false
+        })
+      ]
+    }
+
+    {:ok, Repo.insert!(form)}
+  end
+
+  @doc """
   Updates the specified Form.
   """
   @spec update_form(Form.id(), map()) :: {:ok, Form.t()} | {:error, Changeset.t(Form.t())}
@@ -206,6 +247,19 @@ defmodule Keila.Contacts do
   @spec delete_form(Form.id()) :: :ok
   def delete_form(form_id) do
     from(f in Form, where: f.id == ^form_id)
+    |> Repo.delete_all()
+
+    :ok
+  end
+
+  @doc """
+  Deletes the specified forms if they belong to the specified project.
+
+  This function is idempotent and always returns `:ok`.
+  """
+  @spec delete_project_forms(Project.id(), [Form.id()]) :: :ok
+  def delete_project_forms(project_id, form_ids) do
+    from(f in Form, where: f.id in ^form_ids and f.project_id == ^project_id)
     |> Repo.delete_all()
 
     :ok
