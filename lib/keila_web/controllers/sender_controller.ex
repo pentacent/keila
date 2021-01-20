@@ -7,7 +7,7 @@ defmodule KeilaWeb.SenderController do
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, _params) do
-    senders = Mailings.list_senders(current_project(conn).id)
+    senders = Mailings.get_project_senders(current_project(conn).id)
 
     conn
     |> assign(:senders, senders)

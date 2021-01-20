@@ -1,17 +1,11 @@
 defmodule Keila.Mailings do
   use Keila.Repo
   alias Keila.Project
-  alias Keila.Mailings.{Sender}
+  alias Keila.Mailings.Sender
 
   @moduledoc """
   Context for all functionalities related to sending email campaigns.
   """
-
-  @spec list_senders(Project.id()) :: [Project.t()]
-  def list_senders(project_id) when is_binary(project_id) or is_integer(project_id) do
-    from(s in Sender, where: s.project_id == ^project_id)
-    |> Repo.all()
-  end
 
   @spec get_sender(Sender.id()) :: Sender.t() | nil
   def get_sender(id) when is_binary(id) or is_integer(id),
@@ -26,6 +20,12 @@ defmodule Keila.Mailings do
       sender = %Sender{project_id: ^project_id} -> sender
       _other -> nil
     end
+  end
+
+  @spec get_project_senders(Project.id()) :: [Project.t()]
+  def get_project_senders(project_id) when is_binary(project_id) or is_integer(project_id) do
+    from(s in Sender, where: s.project_id == ^project_id)
+    |> Repo.all()
   end
 
   @spec create_sender(Project.id(), map()) ::
