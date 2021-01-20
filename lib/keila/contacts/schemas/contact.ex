@@ -1,5 +1,6 @@
 defmodule Keila.Contacts.Contact do
   use Keila.Schema, prefix: "c"
+  alias Keila.Contacts.Form
 
   schema "contacts" do
     field(:email, :string)
@@ -26,10 +27,17 @@ defmodule Keila.Contacts.Contact do
     |> validate_format(:email, ~r/^[^\s]+@[^\s]+$/, message: "must have the @ sign and no spaces")
   end
 
-  @spec dynamic_changeset(t(), Ecto.Changeset.data(), Keyword.t()) :: Ecto.Changeset.t(t())
-  def dynamic_changeset(struct \\ %__MODULE__{}, params, opts) do
-    required_fields = Keyword.get(opts, :required, [])
-    cast_fields = ([:email | Keyword.get(opts, :cast, [])] ++ required_fields) |> Enum.uniq()
+  @spec changeset_from_form(t(), Ecto.Changeset.data(), Form.t()) :: Ecto.Changeset.t(t())
+  def changeset_from_form(struct \\ %__MODULE__{}, params, form) do
+    cast_fields =
+      form.field_settings
+      |> Enum.filter(& &1.cast)
+      |> Enum.map(&String.to_existing_atom(&1.field))
+
+    required_fields =
+      form.field_settings
+      |> Enum.filter(&(&1.cast and &1.required))
+      |> Enum.map(&String.to_existing_atom(&1.field))
 
     struct
     |> cast(params, cast_fields)

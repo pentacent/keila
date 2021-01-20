@@ -137,13 +137,13 @@ defmodule Keila.ContactsQueryTest do
     c = insert!(:contact, %{first_name: nil})
 
     assert [c] ==
-      from(Contact)
-      |> Query.apply(filter: %{"first_name" => nil})
-      |> Repo.all()
+             from(Contact)
+             |> Query.apply(filter: %{"first_name" => nil})
+             |> Repo.all()
 
     assert [] ==
-      from(Contact)
-      |> Query.apply(filter: %{"first_name" => "null"})
-      |> Repo.all()
+             from(Contact)
+             |> Query.apply(filter: %{"first_name" => "null"})
+             |> Repo.all()
   end
 end
