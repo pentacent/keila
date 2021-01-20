@@ -26,9 +26,8 @@
                 <% else %>
                     <%= menu_link(@conn, Routes.project_path(@conn, :show, @current_project.id), @current_project.name, exact: true) %>
                     <%= menu_link(@conn, Routes.contact_path(@conn, :index, @current_project.id), gettext("Contacts")) %>
-                    <%= menu_link(@conn, "/", gettext("Channels")) %>
-                    <%= menu_link(@conn, "/", gettext("Forms")) %>
-                    <%= menu_link(@conn, "/", gettext("Campaigns")) %>
+                    <%= menu_link(@conn, Routes.form_path(@conn, :index, @current_project.id), gettext("Forms")) %>
+                    <%= menu_link(@conn, "/campaigns", gettext("Campaigns")) %>
                 <% end %>
                 <!-- TODO Add real menu items -->
                 <div class="hidden sm:block sm:flex-grow"></div>

@@ -70,6 +70,30 @@ defmodule KeilaWeb.Router do
     get "/projects/:project_id/contacts/:id", ContactController, :edit
     put "/projects/:project_id/contacts/:id", ContactController, :post_edit
     delete "/projects/:project_id/contacts", ContactController, :delete
+
+    get "/projects/:project_id/forms", FormController, :index
+    get "/projects/:project_id/forms/new", FormController, :new
+    post "/projects/:project_id/forms/new", FormController, :post_new
+    get "/projects/:project_id/forms/:id", FormController, :edit
+    put "/projects/:project_id/forms/:id", FormController, :post_edit
+    delete "/projects/:project_id/forms", FormController, :delete
+  end
+
+  # Form Routes
+  pipeline :browser_embeddable do
+    plug :accepts, ["html"]
+    plug :fetch_session
+    plug :fetch_live_flash
+    plug :put_root_layout, {KeilaWeb.FormLayoutView, :root}
+    plug :put_secure_browser_headers
+    plug KeilaWeb.Meta.Plug
+  end
+
+  scope "/forms/", KeilaWeb do
+    pipe_through [:browser_embeddable]
+
+    get "/:id", FormController, :display
+    post "/:id", FormController, :submit
   end
 
   # Other scopes may use custom stacks.
