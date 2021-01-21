@@ -14,7 +14,9 @@ defmodule Keila.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Keila.PubSub},
       # Start the Endpoint (http/https)
-      KeilaWeb.Endpoint
+      KeilaWeb.Endpoint,
+      # Start Oban
+      {Oban, oban_config()}
       # Start a worker by calling: Keila.Worker.start_link(arg)
       # {Keila.Worker, arg}
     ]
@@ -30,5 +32,9 @@ defmodule Keila.Application do
   def config_change(changed, _new, removed) do
     KeilaWeb.Endpoint.config_change(changed, removed)
     :ok
+  end
+
+  defp oban_config() do
+    Application.get_env(:keila, Oban)
   end
 end

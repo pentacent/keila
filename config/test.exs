@@ -25,3 +25,6 @@ config :keila, Keila.Mailer, adapter: Swoosh.Adapters.Test
 
 # Configure Argon2 for performance (not security)
 config :argon2_elixir, t_cost: 1, m_cost: 8
+
+# Disable Oban Queues
+config :keila, Oban, queues: false, plugins: false
