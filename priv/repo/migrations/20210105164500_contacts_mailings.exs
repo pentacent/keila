@@ -23,8 +23,8 @@ defmodule Keila.Repo.Migrations.ContactsMailings do
       add :project_id, references("projects", on_delete: :delete_all)
 
       add :name, :string, null: false
-      add :field_settings, :json
-      add :settings, :json
+      add :field_settings, :jsonb
+      add :settings, :jsonb
     end
 
     create table("mailings_senders") do
@@ -35,7 +35,7 @@ defmodule Keila.Repo.Migrations.ContactsMailings do
       add :from_name, :string
       add :reply_to_email, :string
       add :reply_to_name, :string
-      add :config, :json
+      add :config, :jsonb
 
       timestamps()
     end
@@ -50,11 +50,17 @@ defmodule Keila.Repo.Migrations.ContactsMailings do
       add :subject, :string, null: false
       add :html_body, :text
       add :text_body, :text
+
+      add :sent_at, :utc_datetime
+      timestamps()
     end
 
     create table("mailings_recipients") do
       add :campaign_id, references("mailings_campaigns", on_delete: :delete_all)
       add :contact_id, references("contacts", on_delete: :nilify_all)
+
+      add :sent_at, :utc_datetime
+      timestamps()
     end
   end
 end

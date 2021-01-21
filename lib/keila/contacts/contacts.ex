@@ -93,6 +93,17 @@ defmodule Keila.Contacts do
     end
   end
 
+  def stream_project_contacts(project_id, opts)
+      when is_binary(project_id) or is_integer(project_id) do
+    opts = Keyword.put_new(opts, :sort, %{"inserted_at" => -1})
+
+    query =
+      from(c in Contact, where: c.project_id == ^project_id)
+      |> Keila.Contacts.Query.apply(Keyword.take(opts, [:filter, :sort]))
+
+    Repo.stream(query, max_rows: Keyword.get(opts, :max_rows, 100_000))
+  end
+
   @doc """
   Deletes specified Contact.
 

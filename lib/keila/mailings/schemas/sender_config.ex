@@ -65,11 +65,12 @@ defmodule Keila.Mailings.Sender.Config do
   Converts the embedded schema to Keyword list for use with Swoosh.
   """
   @spec to_swoosh_config(t()) :: Keyword.t()
-  def to_swoosh_config(struct) do
+  def to_swoosh_config(struct = %__MODULE__{}) do
     case struct.type do
       "smtp" -> to_smtp_config(struct)
       "ses" -> to_ses_config(struct)
       "sendgrid" -> to_sendgrid_config(struct)
+      _ -> maybe_to_standard_config(struct)
     end
     |> Enum.filter(fn {_, v} -> not is_nil(v) end)
   end
@@ -100,5 +101,13 @@ defmodule Keila.Mailings.Sender.Config do
       adapter: Swoosh.Adapters.Sendgrid,
       api_key: struct.sendgrid_api_key
     ]
+  end
+
+  defp maybe_to_standard_config(_struct) do
+    if Mix.env() in [:test, :dev] do
+      []
+    else
+      raise "Missing configuration"
+    end
   end
 end
