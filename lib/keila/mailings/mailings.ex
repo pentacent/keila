@@ -18,7 +18,7 @@ defmodule Keila.Mailings do
   def get_project_sender(project_id, sender_id) do
     from(s in Sender, where: s.id == ^sender_id and s.project_id == ^project_id)
     |> Repo.one()
-    end
+  end
 
   @spec get_project_senders(Project.id()) :: [Project.t()]
   def get_project_senders(project_id) when is_binary(project_id) or is_integer(project_id) do
@@ -184,6 +184,5 @@ defmodule Keila.Mailings do
       |> change(sent_at: DateTime.truncate(DateTime.utc_now(), :second))
       |> Repo.update()
     end)
-  end
   end
 end
