@@ -1,5 +1,5 @@
 defmodule Keila.AuthTest.Registration do
-  use Keila.DataCase
+  use Keila.DataCase, async: true
   alias Keila.Auth
   alias Auth.{User, Token}
 

@@ -1,5 +1,5 @@
 defmodule Keila.ProjectsTest do
-  use Keila.DataCase
+  use Keila.DataCase, async: true
   alias Keila.{Projects, Auth}
   alias Projects.Project
 

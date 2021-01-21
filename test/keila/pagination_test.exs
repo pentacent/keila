@@ -1,5 +1,5 @@
 defmodule Keila.PaginationTest do
-  use Keila.DataCase
+  use Keila.DataCase, async: true
   alias Keila.{Pagination, Auth.User}
 
   @tag :pagination

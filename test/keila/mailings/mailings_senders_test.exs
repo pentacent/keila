@@ -1,5 +1,5 @@
 defmodule Keila.Mailings.SenderTest do
-  use Keila.DataCase
+  use Keila.DataCase, async: true
   alias Keila.Mailings
   alias Mailings.Sender
 

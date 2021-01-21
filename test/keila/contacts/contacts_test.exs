@@ -1,5 +1,5 @@
 defmodule Keila.ContactsTest do
-  use Keila.DataCase
+  use Keila.DataCase, async: true
   alias Keila.{Contacts, Contacts.Contact, Projects, Pagination}
 
   setup do
