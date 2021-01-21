@@ -11,6 +11,8 @@ defmodule Keila.Repo do
       import Ecto.Query
       import Ecto.Changeset
 
+      defguard is_id(x) when is_binary(x) or is_integer(x)
+
       defp stringize_params(params) do
         case Enum.at(params, 0) do
           {k, _} when is_atom(k) ->
