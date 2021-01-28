@@ -79,7 +79,7 @@ defmodule Keila.Mailings do
   """
   @spec get_project_campaigns(Project.id()) :: [Campaign.t()]
   def get_project_campaigns(project_id) when is_id(project_id) do
-    from(c in Campaign, where: c.project_id == ^project_id)
+    from(c in Campaign, where: c.project_id == ^project_id, order_by: [desc: c.updated_at])
     |> Repo.all()
   end
 
@@ -104,7 +104,7 @@ defmodule Keila.Mailings do
   def update_campaign(id, params) when is_id(id) do
     get_campaign(id)
     |> Campaign.update_changeset(params)
-    |> Repo.insert()
+    |> Repo.update()
   end
 
   @doc """
