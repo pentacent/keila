@@ -57,7 +57,13 @@ defmodule KeilaWeb.FormControllerTest do
     @tag :form_controller
     test "shows no error for non-existent contacts", %{conn: conn} do
       %{conn: conn, project: project} = setup_conn_and_project(conn)
-      conn = get(conn, Routes.form_path(conn, :unsubscribe, project.id, elem(Contacts.Contact.Id.cast(0), 1)))
+
+      conn =
+        get(
+          conn,
+          Routes.form_path(conn, :unsubscribe, project.id, elem(Contacts.Contact.Id.cast(0), 1))
+        )
+
       assert html_response(conn, 200) =~ "You have been unsubscribed"
     end
   end
