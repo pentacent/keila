@@ -136,6 +136,15 @@ defmodule KeilaWeb.FormView do
     content_tag(:div, form.settings.success_text || gettext("Thank you!"), class: "text-xl")
   end
 
+  def render_unsubscribe_form(form) do
+    form_styles = build_form_styles(form)
+
+    content_tag(:div, [class: @form_classes, style: form_styles]) do
+      gettext("You have been unsubscribed from this list.")
+    end
+
+  end
+
   def delete_form(conn, project_id, id) do
     route = Routes.form_path(conn, :delete, project_id)
 

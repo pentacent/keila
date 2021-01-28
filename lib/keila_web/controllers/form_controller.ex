@@ -5,7 +5,7 @@ defmodule KeilaWeb.FormController do
   import Phoenix.LiveView.Controller
 
   plug :fetch when action in [:display, :submit]
-  plug :authorize when not (action in [:index, :new, :display, :submit, :delete])
+  plug :authorize when not (action in [:index, :new, :display, :submit, :unsubscribe, :delete])
 
   @spec display(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def display(conn, _params) do
@@ -45,6 +45,22 @@ defmodule KeilaWeb.FormController do
     |> assign(:changeset, changeset)
     |> assign(:mode, :full)
     |> render("form.html")
+  end
+
+  @default_unsubscribe_form %Contacts.Form{settings: %Contacts.Form.Settings{}}
+  @spec unsubscribe(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def unsubscribe(conn, %{"project_id" => project_id, "contact_id" => contact_id}) do
+    form = (Contacts.get_project_forms(project_id) |> List.first()) || @default_unsubscribe_form
+    contact = Contacts.get_project_contact(project_id, contact_id)
+    if contact do
+      Contacts.delete_contact(contact.id)
+    end
+
+    conn
+    |> put_meta(:title, gettext("Unsubscribe"))
+    |> assign(:form, form)
+    |> assign(:mode, :full)
+    |> render("unsubscribe.html")
   end
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()

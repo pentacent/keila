@@ -89,11 +89,12 @@ defmodule KeilaWeb.Router do
     plug KeilaWeb.Meta.Plug
   end
 
-  scope "/forms/", KeilaWeb do
+  scope "/", KeilaWeb do
     pipe_through [:browser_embeddable]
 
-    get "/:id", FormController, :display
-    post "/:id", FormController, :submit
+    get "/forms/:id", FormController, :display
+    post "/forms/:id", FormController, :submit
+    get "/unsubscribe/:project_id/:contact_id", FormController, :unsubscribe
   end
 
   # Other scopes may use custom stacks.
