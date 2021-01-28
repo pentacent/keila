@@ -51,6 +51,8 @@ defmodule Keila.Repo.Migrations.ContactsMailings do
       add :html_body, :text
       add :text_body, :text
 
+      add :settings, :jsonb
+
       add :sent_at, :utc_datetime
       timestamps()
     end
