@@ -113,6 +113,10 @@ defmodule KeilaWeb.CampaignControllerTest do
 
       assert redirected_to(conn, 302) ==
                Routes.campaign_path(conn, :stats, project.id, campaign.id)
+
+      # Avoid database pool error when exiting test before transaction has
+      # finished
+      :timer.sleep(500)
     end
   end
 
