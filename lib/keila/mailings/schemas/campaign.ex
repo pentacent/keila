@@ -18,7 +18,7 @@ defmodule Keila.Mailings.Campaign do
     struct
     |> cast(params, [:subject, :text_body, :html_body, :sender_id, :project_id])
     |> cast_embed(:settings)
-    |> validate_required([:subject, :project_id])
+    |> validate_required([:subject, :project_id, :settings])
   end
 
   def update_changeset(struct = %__MODULE__{}, params) do

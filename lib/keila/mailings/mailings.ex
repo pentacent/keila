@@ -144,24 +144,52 @@ defmodule Keila.Mailings do
       |> stringize_params()
       |> Map.drop(["project_id"])
 
-    get_campaign(campaign_id)
+    campaign = get_campaign(campaign_id)
+    settings = campaign.settings
+
+    settings_params =
+      settings
+      |> Map.from_struct()
+      |> stringize_params()
+      |> Map.merge(params["settings"] || %{})
+
+    campaign
     |> Map.from_struct()
     |> stringize_params()
     |> Map.merge(params)
+    |> Map.put("settings", settings_params)
     |> Campaign.creation_changeset()
     |> Repo.insert()
   end
 
   @doc """
-  Duplicates campaign specified by `campaign_id` and optionally applies
-  changes given as `params`.
+  Delivers a campaign.
   """
   def deliver_campaign(id) when is_id(id) do
-    campaign = get_campaign(id)
+    {:ok, campaign} =
+      id
+      |> get_campaign()
+      |> change(sent_at: DateTime.truncate(DateTime.utc_now(), :second))
+      |> Repo.update()
+
     stream = Keila.Contacts.stream_project_contacts(campaign.project_id, [])
 
+    case do_deliver_campaign(stream, campaign) do
+      {:ok, result} ->
+        {:ok, result}
+
+      {:error, reason} ->
+        campaign
+        |> change(sent_at: nil)
+        |> Repo.update()
+
+        {:error, reason}
+    end
+  end
+
+  defp do_deliver_campaign(contacts_stream, campaign) do
     Repo.transaction(fn ->
-      stream
+      contacts_stream
       |> Enum.map(fn contact ->
         now = DateTime.utc_now() |> DateTime.truncate(:second) |> DateTime.to_naive()
         %{contact_id: contact.id, campaign_id: campaign.id, inserted_at: now, updated_at: now}
@@ -179,10 +207,40 @@ defmodule Keila.Mailings do
         |> Oban.insert_all()
       end)
       |> Stream.run()
-
-      campaign
-      |> change(sent_at: DateTime.truncate(DateTime.utc_now(), :second))
-      |> Repo.update()
     end)
+  end
+
+  @doc """
+  Starts the delivery of a campaign as a Task supervised by `Keila.TaskSupervisor`.
+  """
+  @spec deliver_campaign_async(Campaign.id()) :: DynamicSupervisor.on_start_child()
+  def deliver_campaign_async(id) when is_id(id) do
+    Task.Supervisor.start_child(Keila.TaskSupervisor, __MODULE__, :deliver_campaign, [id])
+  end
+
+  def get_campaign_stats(campaign_id) when is_id(campaign_id) do
+    campaign = get_campaign(campaign_id)
+
+    {recipients_count, sent_count} =
+      from(r in Recipient, where: r.campaign_id == ^campaign_id)
+      |> where([r], r.campaign_id == ^campaign_id)
+      |> select([r], {count(), sum(fragment("CASE WHEN sent_at IS NOT NULL THEN 1 ELSE 0 END"))})
+      |> Repo.one()
+
+    sent_count = sent_count || 0
+
+    status =
+      cond do
+        is_nil(campaign.sent_at) -> :unsent
+        not is_nil(campaign.sent_at) and recipients_count == 0 -> :preparing
+        recipients_count != sent_count -> :sending
+        recipients_count == sent_count -> :sent
+      end
+
+    %{
+      status: status,
+      recipients_count: recipients_count,
+      sent_count: sent_count
+    }
   end
 end

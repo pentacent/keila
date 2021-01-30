@@ -1,0 +1,93 @@
+<div class="bg-gray-900 text-gray-50" x-data="{showSendDialog: false}">
+    <div class="container py-4 lg:py-8 flex">
+        <div class="flex-grow">
+            <h1 class="text-2xl sm:text-5xl mb-4">
+                <%= gettext("Edit Campaign") %>
+            </h1>
+        </div>
+        <div class="flex justify-end gap-4 mb-2 items-center">
+            <a class="button button--text button--large" href="<%= Routes.campaign_path(@socket, :index, @current_project.id) %>">
+                <%= gettext("Cancel") %>
+            </a>
+            <button class="button button--text button--large" form="delete-form-<%= @campaign.id %>">
+                <%= gettext("Delete") %>
+            </a>
+            <%= delete_form(@socket, @current_project.id, @campaign.id) %>
+            <button class="button button--large" action="submit" form="campaign">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                </svg>
+                <%= gettext("Save") %>
+            </button>
+            <button class="button button--cta button--large" @click.prevent="showSendDialog = true">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                </svg>
+                <%= gettext("Send") %>
+            </button>
+        </div>
+    </div>
+
+    <div class="container pb-8">
+        <%= form_for(@changeset, Routes.campaign_path(@socket, :post_edit, @current_project.id, @campaign.id), [id: "campaign", class: "flex flex-col gap-4", phx_change: "form_updated"], fn f -> %>
+            <div class="flex flex-col">
+                <%= label(f, :sender_id, "Sender") %>
+
+                <%= if not Enum.empty?(@senders) do %>
+                    <%= with_validation(f, :sender_id) do %>
+                        <%= select(f, :sender_id, Enum.map(@senders, &{"#{&1.name} (#{&1.from_name} <#{&1.from_email}>)", &1.id}), class: "text-black") %>
+                    <% end %>
+                <% else %>
+                    <p>
+                        <%= gettext("Before you can send your campaign, you need to create a sender.") %><br>
+                        <a href="<%= Routes.sender_path(@socket, :new, @current_project.id) %>" class="button button--cta">
+                            <%= gettext("Create your first sender") %>
+                        </a>
+                    </p>
+                <% end %>
+            </div>
+
+            <div class="flex flex-col">
+                <%= label(f, :subject, "Subject") %>
+                <%= with_validation(f, :subject) do %>
+                    <%= text_input(f, :subject, placeholder: gettext("Your Campaign Subject"), class: "text-black") %>
+                <% end %>
+            </div>
+
+            <div class="flex flex-col mt-4">
+                <%= label(f, :text_body, "Content") %>
+                <%= inputs_for(f, :settings, fn fs -> %>
+                    <%= select(fs, :type, %{"Text only" => "text"}) %>
+                <% end) %>
+                <div class="flex gap-4 mt-4">
+                    <%= textarea(f, :text_body, rows: 20, class: "bg-gray-800 text-gray-50 border-none appearance-none resize-y flex-grow w-1/2") %>
+                    <div class="flex-grow w-1/2 whitespace-pre-wrap"><%= @preview %></div>
+                </div>
+            </div>
+
+        <% end) %>
+    </div>
+
+    <div class="fixed z-10 inset-0 overflow-y-auto bg-black bg-opacity-90" x-show.transition="showSendDialog" style="display: none">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full p-8" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
+            <h2 class="text-3xl">Ready to send your campaign?</h2>
+                <br>
+                <p>Are you ready to send your campaign <em><%= Ecto.Changeset.get_field(@changeset, :subject) %></em> to <%= @recipient_count %> contacts?</p>
+                <br>
+                <div class="flex justify-end gap-8">
+                    <button class="button button--text button--large" @click.prevent="showSendDialog = false">
+                        <%= gettext("Cancel") %>
+                    </button>
+                    <button class="button button--cta button--large" action="submit" form="campaign" name="campaign[send]" value="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                        </svg>
+                        <%= gettext("Send") %>
+                    </button>
+                </div>
+        </div>
+        </div>
+    </div>
+
+</div>

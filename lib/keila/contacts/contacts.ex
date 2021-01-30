@@ -93,6 +93,19 @@ defmodule Keila.Contacts do
     end
   end
 
+  @doc """
+  Returns number of Contacts in specified project
+  """
+  @spec get_project_contacts_count(Project.id(), [Query.opts()]) :: integer()
+  def get_project_contacts_count(project_id, opts \\ [])
+      when is_binary(project_id) or is_integer(project_id) do
+    opts = Keyword.put_new(opts, :sort, %{"inserted_at" => -1})
+
+    from(c in Contact, where: c.project_id == ^project_id)
+    |> Keila.Contacts.Query.apply(Keyword.take(opts, [:filter, :sort]))
+    |> Repo.aggregate(:count, :id)
+  end
+
   def stream_project_contacts(project_id, opts)
       when is_binary(project_id) or is_integer(project_id) do
     opts = Keyword.put_new(opts, :sort, %{"inserted_at" => -1})

@@ -1,0 +1,60 @@
+<main role="main" class="static-container flex-grow bg-gray-800 text-gray-50">
+    <div class="bg-gray-900 text-gray-50">
+        <div class="container py-8 sm:py-6 md:py-12 lg:py-16 flex">
+            <div class="flex-grow">
+                <h1 class="text-2xl sm:text-5xl mb-4">
+                    <%= gettext("Campaigns") %>
+                </h1>
+
+                <%= if Enum.empty?(@campaigns) do %>
+                    <p class="mt-4">
+                        <a href="<%= Routes.campaign_path(@conn, :new, @current_project.id) %>" class="button button--cta button--large">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            <%= gettext("Create your first campaign") %>
+                        </a>
+                    </p>
+                <% else %>
+                    <p class="mt-4">
+                        <%= gettext("Create and send your campaigns here.") %>
+                    </p>
+                <% end %>
+            </div>
+            <%= if not Enum.empty?(@campaigns) do %>
+                <p class="mt-4">
+                    <a href="<%= Routes.campaign_path(@conn, :new, @current_project.id) %>" class="button">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        <%= gettext("Create a new campaign") %>
+                    </a>
+                </p>
+            <% end %>
+        </div>
+    </div>
+    <div class="container container--no-px md:grid md:grid-cols-2 gap-4 mt-4 md:gap-8 md:mt-8">
+        <%= for campaign <- @campaigns do%>
+            <div class="card bg-gray-900">
+                <h2 class="font-light text-2xl flex items-center gap-2 mb-2">
+                    <%= campaign.subject %>
+                </h2>
+                <p class="text-sm">
+                    <%= gettext("Created at: %{date}", date: Calendar.strftime(campaign.inserted_at, "%a, %b %d %Y, %H:%M")) %>
+                </p>
+                <%= if campaign.sent_at do %>
+                    <p class="text-sm">
+                        <%= gettext("Sent at: %{date}", date: Calendar.strftime(campaign.sent_at, "%a, %b %d %Y, %H:%M")) %>
+                    </p>
+                <% end %>
+                <br>
+                <%= if is_nil(campaign.sent_at) do %>
+                    <a href="<%= Routes.campaign_path(@conn, :edit, @current_project.id, campaign.id) %>" class="button button--large">
+                        <%= gettext("Edit") %>
+                    </a>
+                <% else %>
+                    <a href="<%= Routes.campaign_path(@conn, :stats, @current_project.id, campaign.id) %>" class="button button--text">
+                        <%= gettext("Stats") %>
+                    </a>
+                <% end %>
+            </div>
+        <% end %>
+    </div>
+
+</main>

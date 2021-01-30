@@ -1,7 +1,6 @@
 defmodule Keila.Mailings.BuilderTest do
   use Keila.DataCase, async: true
   alias Keila.Mailings
-  alias Mailings.Sender
 
   @tag :mailings_builder
   test "Builds plain-text email" do

@@ -50,8 +50,9 @@ defmodule KeilaWeb.FormController do
   @default_unsubscribe_form %Contacts.Form{settings: %Contacts.Form.Settings{}}
   @spec unsubscribe(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def unsubscribe(conn, %{"project_id" => project_id, "contact_id" => contact_id}) do
-    form = (Contacts.get_project_forms(project_id) |> List.first()) || @default_unsubscribe_form
+    form = Contacts.get_project_forms(project_id) |> List.first() || @default_unsubscribe_form
     contact = Contacts.get_project_contact(project_id, contact_id)
+
     if contact do
       Contacts.delete_contact(contact.id)
     end

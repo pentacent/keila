@@ -139,10 +139,9 @@ defmodule KeilaWeb.FormView do
   def render_unsubscribe_form(form) do
     form_styles = build_form_styles(form)
 
-    content_tag(:div, [class: @form_classes, style: form_styles]) do
+    content_tag(:div, class: @form_classes, style: form_styles) do
       gettext("You have been unsubscribed from this list.")
     end
-
   end
 
   def delete_form(conn, project_id, id) do

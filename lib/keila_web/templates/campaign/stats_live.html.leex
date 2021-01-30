@@ -1,0 +1,58 @@
+<div class="bg-gray-900 text-gray-50" x-data="{showSendDialog: false}">
+    <div class="container py-4 lg:py-8 flex">
+        <div class="flex-grow">
+            <h1 class="text-2xl sm:text-5xl mb-4">
+                <%= @campaign.subject %><br>
+            </h1>
+        </div>
+        <div class="flex justify-end gap-4 mb-2 items-center">
+        </div>
+    </div>
+
+    <div class="container pb-8">
+        <%= case @stats.status do %>
+        <% :unsent -> %>
+            <p><%= gettext("This campaign has not yet been sent.") %></p>
+            <p class="mt-4">
+                <a href="<%= Routes.campaign_path(@socket, :edit, @current_project.id, @campaign.id) %>" class="button button--cta">
+                    <%= gettext("Edit this campaign") %>
+                </a>
+            </p>
+        <% :preparing -> %>
+            <p class="flex gap-4 items-center">
+                <svg class="animate-spin h-16 w-16 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" fill="none" stroke="currentColor" stroke-width="10" r="40" stroke-dasharray="164.93361431346415 56.97787143782138">
+                    </circle>
+                </svg>
+                <%= gettext("This campaign is currently being prepared for sending.") %>
+            </p>
+        <% :sending -> %>
+            <div class="flex gap-4 items-center">
+                <svg class="animate-spin h-16 w-16 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" fill="none" stroke="currentColor" stroke-width="10" r="40" stroke-dasharray="164.93361431346415 56.97787143782138">
+                    </circle>
+                </svg>
+                <div class="flex-grow">
+                    <p><%= gettext("This campaign is currently being sent out.") %></p>
+                    <div class="flex gap-4 items-center mt-4">
+                        <span><%= "#{@stats.sent_count}/#{@stats.recipients_count}" %></span>
+                        <div class="h-3 relative flex-grow rounded-full overflow-hidden">
+                            <div class="w-full h-full bg-gray-200 absolute"></div>
+                            <div class="h-full bg-green-500 absolute" style="transition: all 750ms; width:<%= @stats.sent_count / ( case @stats.recipients_count do 0 -> 1; other -> other; end) * 100 %>%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        <% :sent -> %>
+            <p class="flex gap-4 items-center">
+                <svg class="h-16" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z" />
+                </svg>
+                <%= gettext("This campaign has been successfully sent out to %{count} recipients.", count: @stats.sent_count) %>
+            </p>
+        <% end %>
+    </div>
+
+</div>

@@ -65,7 +65,10 @@ defmodule Keila.Factory do
   defp do_build(:mailings_campaign) do
     %Keila.Mailings.Campaign{
       subject: "subject-#{get_counter_value()}",
-      text_body: "body-#{get_counter_value()}"
+      text_body: "body-#{get_counter_value()}",
+      settings: %{
+        type: :text
+      }
     }
   end
 

@@ -16,7 +16,9 @@ defmodule Keila.Application do
       # Start the Endpoint (http/https)
       KeilaWeb.Endpoint,
       # Start Oban
-      {Oban, oban_config()}
+      {Oban, oban_config()},
+      # Keila Task Supervisor
+      {Task.Supervisor, name: Keila.TaskSupervisor}
       # Start a worker by calling: Keila.Worker.start_link(arg)
       # {Keila.Worker, arg}
     ]

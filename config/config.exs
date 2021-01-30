@@ -40,7 +40,7 @@ config :phoenix, :json_library, Jason
 
 config :keila, Oban,
   queues: [
-    mailers: [limit: 20, poll_interval: :timer.seconds(30)]
+    mailer: [limit: 50, poll_interval: :timer.seconds(30)]
   ],
   repo: Keila.Repo
 

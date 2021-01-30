@@ -17,7 +17,7 @@ body {
 }
 
 .button {
-    @apply rounded inline-flex flex-nowrap px-2 py-1 gap-2 outline-none items-center;
+    @apply rounded inline-flex flex-nowrap whitespace-nowrap px-2 py-1 gap-2 outline-none items-center;
 
     svg {
         @apply w-6;
@@ -94,6 +94,12 @@ Fix for Phoenix during development
 */
 iframe[src="/phoenix/live_reload/frame"] {
     display: none;
+}
+
+.contact-form {
+    a {
+        text-decoration: underline;
+    }
 }
 
 @import "_header.scss"
