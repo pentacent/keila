@@ -28,6 +28,7 @@ defmodule KeilaWeb.CampaignStatsLive do
     Phoenix.View.render(KeilaWeb.CampaignView, "stats_live.html", assigns)
   end
 
+  @impl true
   def handle_info(:update, socket) do
     stats = Mailings.get_campaign_stats(socket.assigns.campaign.id)
     if stats.status != :sent, do: schedule_update(socket)
