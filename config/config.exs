@@ -21,7 +21,7 @@ config :keila, KeilaWeb.Endpoint,
 config :keila, :ids,
   separator: "_",
   alphabet: "abcdefghijkmnopqrstuvwxyz23456789ABCDEFGHJKLMNPQRSTUVWXYZ_",
-  salt: "FIXME: Make salt configurable",
+  salt: "bF4QzDjqV",
   min_len: 8
 
 # Staging configuration for hCaptcha
