@@ -1,4 +1,4 @@
-name: build
+name: Build
 
 on:
   pull_request:
@@ -19,7 +19,7 @@ jobs:
           key: ${{ runner.os }}-buildx-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-buildx-
-      - uses: docker/build-push-action@v1
+      - uses: docker/build-push-action@v2
         with:
           context: .
           file: ./ops/Dockerfile
