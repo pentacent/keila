@@ -20,13 +20,15 @@ jobs:
           key: ${{ runner.os }}-buildx-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-buildx-
+      - uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.REGISTRY_PAT }}
       - uses: docker/build-push-action@v2
         with:
           context: .
           file: ./ops/Dockerfile
-          username: ${{ github.actor }}
-          password: ${{ secrets.REGISTRY_PAT }}
-          registry: ghcr.io/pentacent/keila
           tags: |
             latest
             0.1
