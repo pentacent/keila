@@ -1,15 +1,27 @@
 FROM elixir:1.11-alpine as build
 ENV MIX_ENV=prod
-COPY . .
-RUN apk add git npm build-base && \
-    mix local.hex --force && \
+
+RUN apk add git npm build-base
+
+COPY mix.exs mix.lock ./
+COPY config .
+RUN mix local.hex --force && \
     mix local.rebar --force && \
     mix deps.get && \
+    mix deps.compile
+
+COPY assets/package.json assets/package-lock.json ./assets/
+RUN cd assets && \
+    npm ci
+    
+COPY assets ./assets-data
+RUN mv assets-data/* assets/ && \
+    rm -Rf assets-data && \
     cd assets && \
-    npm ci && \
-    npm run deploy && \
-    cd .. && \
-    mix phx.digest && \
+    npm run deploy
+
+COPY . .
+RUN mix phx.digest && \
     mix release
 
 FROM elixir:1.11-alpine
