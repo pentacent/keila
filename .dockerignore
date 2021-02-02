@@ -1,0 +1,4 @@
+_build
+deps
+assets/node_modules
+priv/static
