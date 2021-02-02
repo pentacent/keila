@@ -6,7 +6,7 @@ defmodule Keila.PaginationTest do
 
   @tag :pagination
   test "paginate queries" do
-    insert_n!(:user, 101, fn _n ->
+    insert_n!(:user, 101, fn n ->
       %{email: "#{String.pad_leading(to_string(n), 3, "0")}@example.com"}
     end)
 
