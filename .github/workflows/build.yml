@@ -30,8 +30,8 @@ jobs:
           context: .
           file: ./ops/Dockerfile
           tags: |
-            latest
-            0.1
+            ghcr.io/pentacent/keila:latest
+            ghcr.io/pentacent/keila:0.1
           push: true
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
