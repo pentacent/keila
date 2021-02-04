@@ -57,7 +57,7 @@ defmodule KeilaWeb.AuthController do
     end
   end
 
-  def activation_required(conn, _) do
+  def activate_required(conn, _) do
     conn
     |> put_meta(:title, dgettext("auth", "Activation required"))
     |> render("activate_required.html")
