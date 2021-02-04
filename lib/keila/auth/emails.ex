@@ -13,7 +13,7 @@ defmodule Keila.Auth.Emails do
   @spec build(:activate, %{url: String.t(), user: Keila.Auth.User.t()}) :: term() | no_return()
   def build(:activate, %{user: user, url: url}) do
     new()
-    |> from({"hello@keila.io", "Keila"})
+    |> from({"Keila", "hello@keila.io"})
     |> subject(dgettext("auth", "Please Verify Your Account"))
     |> to(user.email)
     |> text_body(
@@ -37,7 +37,7 @@ defmodule Keila.Auth.Emails do
           term() | no_return()
   def build(:update_email, %{user: user, url: url}) do
     new()
-    |> from({"hello@keila.io", "Keila"})
+    |> from({"Keila", "hello@keila.io"})
     |> subject(dgettext("auth", "Please Verify Your Email"))
     |> to(user.email)
     |> text_body(
@@ -63,7 +63,7 @@ defmodule Keila.Auth.Emails do
     new()
     |> subject(dgettext("auth", "Your Account Reset Link"))
     |> to(user.email)
-    |> from({"hello@keila.io", "Keila"})
+    |> from({"Keila", "hello@keila.io"})
     |> text_body(
       dgettext(
         "auth",
@@ -88,7 +88,7 @@ defmodule Keila.Auth.Emails do
     new()
     |> subject(dgettext("auth", "Your Login Link"))
     |> to(user.email)
-    |> from({"hello@keila.io", "Keila"})
+    |> from({"Keila", "hello@keila.io"})
     |> text_body(
       dgettext(
         "auth",
