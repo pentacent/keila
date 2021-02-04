@@ -44,7 +44,7 @@ if config_env() == :prod do
           password = System.fetch_env!("MAILER_SMTP_PASSWORD")
           port = System.get_env("MAILER_SMTP_PORT") |> maybe_to_int.()
 
-          [relay: host, username: user, password: password]
+          [adapter: Swoosh.Adapters.SMTP, relay: host, username: user, password: password]
           |> put_if_not_empty.(:port, port)
       end
 
