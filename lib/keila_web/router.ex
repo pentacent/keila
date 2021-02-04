@@ -36,7 +36,6 @@ defmodule KeilaWeb.Router do
   scope "/", KeilaWeb do
     pipe_through [:browser, KeilaWeb.AuthSession.RequireAuthPlug]
 
-    get "/", AuthController, :login
     get "/auth/logout", AuthController, :logout
 
     get "/", ProjectController, :index
@@ -66,14 +65,12 @@ defmodule KeilaWeb.Router do
     get "/projects/:project_id/contacts/new", ContactController, :new
     post "/projects/:project_id/contacts/new", ContactController, :post_new
     get "/projects/:project_id/contacts/import", ContactController, :import
-    post "/projects/:project_id/contacts/import", ContactController, :post_import
     get "/projects/:project_id/contacts/:id", ContactController, :edit
     put "/projects/:project_id/contacts/:id", ContactController, :post_edit
     delete "/projects/:project_id/contacts", ContactController, :delete
 
     get "/projects/:project_id/forms", FormController, :index
     get "/projects/:project_id/forms/new", FormController, :new
-    post "/projects/:project_id/forms/new", FormController, :post_new
     get "/projects/:project_id/forms/:id", FormController, :edit
     put "/projects/:project_id/forms/:id", FormController, :post_edit
     delete "/projects/:project_id/forms", FormController, :delete
