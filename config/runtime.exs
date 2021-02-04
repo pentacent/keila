@@ -66,7 +66,7 @@ if config_env() == :prod do
   # hCaptcha
   hcaptcha_site_key = System.get_env("HCAPTCHA_SITE_KEY")
   hcaptcha_secret_key = System.get_env("HCAPTCHA_SECRET_KEY")
-  hcaptcha_url = System.get_env("HCAPTCHA_SECRET_KEY")
+  hcaptcha_url = System.get_env("HCAPTCHA_URL")
 
   if hcaptcha_site_key not in [nil, ""] and hcaptcha_secret_key not in [nil, ""] do
     config =
