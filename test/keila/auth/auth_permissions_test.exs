@@ -1,5 +1,5 @@
 defmodule Keila.AuthTest.Permissions do
-  use Keila.DataCase, async: true
+  use Keila.DataCase, async: false
   alias Keila.Auth
 
   @tag :auth
