@@ -6,7 +6,6 @@ defmodule KeilaWeb.Hcaptcha do
 
   ## Configuration
   By default, the staging environment of hCaptcha is used.
-  # TODO Add info about prod config
   """
 
   use Phoenix.HTML
