@@ -1,5 +1,3 @@
-# TODO: This migration is still WIP
-
 defmodule Keila.Repo.Migrations.ContactsMailings do
   use Ecto.Migration
 
@@ -9,7 +7,6 @@ defmodule Keila.Repo.Migrations.ContactsMailings do
 
       add :first_name, :string
       add :last_name, :string
-      # TODO address
       add :gender, :string
       add :email, :string
       add :verified_at, :utc_datetime
