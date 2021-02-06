@@ -9,6 +9,9 @@
     <title>
       <%= get_meta(@conn, :title, gettext("Open Source Newsletter Tool")) <> " · Keila" %>
     </title>
+    <meta property="og:image" content="<%= Routes.static_url(@conn_or_socket, "/images/og_image.png") %>"/>
+    <meta property="og:description" content="Open Source Newsletters"/>
+    <meta name="twitter:card" content="summary"/>
     <link phx-track-static rel="stylesheet" href="<%= Routes.static_path(@conn_or_socket, "/css/app.css") %>"/>
     <script defer phx-track-static type="text/javascript" src="<%= Routes.static_path(@conn_or_socket, "/js/app.js") %>"></script>
   </head>
