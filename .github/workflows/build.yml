@@ -34,4 +34,4 @@ jobs:
             ghcr.io/pentacent/keila:0.1
           push: true
           cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache
+          cache-to: type=local,mode=max,dest=/tmp/.buildx-cache
