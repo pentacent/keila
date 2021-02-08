@@ -29,7 +29,7 @@ defmodule KeilaWeb.FormController do
       end
     else
       {:error, changeset} =
-        params
+        params["contact"]
         |> Contacts.Contact.changeset_from_form(form)
         |> Ecto.Changeset.add_error(:hcaptcha, dgettext("auth", "Please complete the captcha."))
         |> Ecto.Changeset.apply_action(:insert)
