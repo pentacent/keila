@@ -23,8 +23,7 @@ To run it, follow these steps:
   `git clone https://github.com/pentacent/keila.git`
 * [Install Elixir](https://elixir-lang.org/install.html)
 * Install dependencies with `mix deps.get`
-* Create and migrate your database with `mix ecto.setup`
-* Install Node.js dependencies with `npm install` inside the `assets` directory
+* Install dependencies and set up database with `mix setup`
 * Start Keila server with `mix phx.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
