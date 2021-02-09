@@ -3,11 +3,23 @@ defmodule KeilaWeb.AuthController do
   alias Keila.Auth
 
   def register(conn, _params) do
-    render_register(conn, user_changeset())
+    if Application.get_env(:keila, :registration_disabled, false) do
+      render(conn, "registration_disabled.html")
+    else
+      render_register(conn, user_changeset())
+    end
   end
 
   @spec post_register(Plug.Conn.t(), map) :: Plug.Conn.t()
-  def post_register(conn, %{"user" => params, "h-captcha-response" => captcha}) do
+  def post_register(conn, params) do
+    if Application.get_env(:keila, :registration_disabled, false) do
+      render(conn, "registration_disabled.html")
+    else
+      do_post_register(conn, params)
+    end
+  end
+
+  defp do_post_register(conn, %{"user" => params, "h-captcha-response" => captcha}) do
     if captcha_valid?(captcha) do
       case Auth.create_user(params, &Routes.auth_url(conn, :activate, &1)) do
         {:ok, user} ->
@@ -30,9 +42,10 @@ defmodule KeilaWeb.AuthController do
       conn
       |> render_register(400, changeset)
     end
+
   end
 
-  def post_register(conn, _),
+  defp do_post_register(conn, _),
     do: post_register(conn, %{"user" => %{}, "h-captcha-response" => ""})
 
   defp render_register(conn, status \\ 200, changeset) do

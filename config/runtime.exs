@@ -149,6 +149,10 @@ if config_env() == :prod do
     PORT environment variable unset. Running on port 4000.
     """)
   end
+
+  # Deployment
+  config :keila,
+    disable_login: System.get_env("DISABLE_LOGIN") not in [nil, 0, "", "false", "FALSE"]
 end
 
 if config_env() == :test do
