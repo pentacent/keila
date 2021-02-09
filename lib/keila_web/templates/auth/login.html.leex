@@ -1,7 +1,6 @@
 <main role="main" class="static-container flex-grow bg-gray-800">
     <div class="container mt-8">
         <%= f = form_for(@changeset, Routes.auth_path(@conn, :post_login), class: "rounded shadow p-8 mt-8 max-w-xl mx-auto flex flex-col gap-4 bg-gray-900 text-gray-50") %>
-        <!-- TODO use gettext -->
             <h1 class="text-5xl font-bold">
                 <%= dgettext("auth", "Sign in.") %>
             </h1>

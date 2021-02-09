@@ -18,14 +18,14 @@ config :keila, KeilaWeb.Endpoint,
   pubsub_server: Keila.PubSub,
   live_view: [signing_salt: "kH+cT7XL"]
 
-config :keila, :ids,
+config :keila, Keila.Id,
   separator: "_",
   alphabet: "abcdefghijkmnopqrstuvwxyz23456789ABCDEFGHJKLMNPQRSTUVWXYZ_",
   salt: "bF4QzDjqV",
   min_len: 8
 
 # Staging configuration for hCaptcha
-config :keila, :hcaptcha,
+config :keila, KeilaWeb.Hcaptcha,
   secret_key: "0x0000000000000000000000000000000000000000",
   site_key: "10000000-ffff-ffff-ffff-000000000001",
   url: "https://hcaptcha.com/siteverify"

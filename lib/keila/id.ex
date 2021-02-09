@@ -4,7 +4,7 @@ defmodule Keila.Id do
 
   ## Configuration
   Hashid settings can be configured in Mix config.
-      config :keila, :ids,
+      config :keila, Keila.Id,
         alphabet: "abcdefghijkmnpqrstuvw"
         salt: "foo"
         min_len: 6
@@ -22,7 +22,7 @@ defmodule Keila.Id do
         use Ecto.Type
 
         @get fn key ->
-          config = Application.get_env(:keila, :ids, [])
+          config = Application.get_env(:keila, Keila.Id, [])
           value = unquote(opts) |> Keyword.get(key, Keyword.get(config, key))
           {key, value}
         end

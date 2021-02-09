@@ -73,7 +73,7 @@ if config_env() == :prod do
       [secret_key: hcaptcha_secret_key, site_key: hcaptcha_site_key]
       |> put_if_not_empty.(:url, hcaptcha_url)
 
-    config :keila, :hcaptcha, config
+    config :keila, KeilaWeb.Hcaptcha, config
   else
     Logger.warn("""
     hCaptcha not configured.
@@ -100,7 +100,7 @@ if config_env() == :prod do
     )
 
     hashid_salt = :crypto.hash(:sha384, secret_key_base <> "hashid_salt") |> Base.url_encode64()
-    config(:keila, :ids, salt: hashid_salt)
+    config(:keila, Keila.Id, salt: hashid_salt)
   rescue
     e ->
       exit_from_exception.(e, """

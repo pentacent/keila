@@ -42,6 +42,6 @@ defmodule KeilaWeb.Hcaptcha do
   end
 
   defp config() do
-    Application.get_env(:keila, :hcaptcha)
+    Application.get_env(:keila, KeilaWeb.Hcaptcha)
   end
 end
