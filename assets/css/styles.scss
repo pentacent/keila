@@ -1,7 +1,13 @@
-@import "~@fontsource/inter/latin.css";
+@import "_inter.scss";
 
-body {
-    font-family: Inter, Arial, Helvetica, sans-serif;
+html {
+    font-family: "Inter", sans-serif;
+}
+
+@supports (font-variation-settings: normal) {
+    html {
+        font-family: "Inter var", sans-serif;
+    }
 }
 
 .container {
