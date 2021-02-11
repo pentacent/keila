@@ -81,6 +81,10 @@ select {
     @apply ring-2 ring-red-300;
 }
 
+input[disabled] {
+    @apply bg-gray-300 text-gray-500;
+}
+
 .tabs {
     .tab-label {
         @apply inline-block bg-gray-600 px-2 py-2 rounded-t;

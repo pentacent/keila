@@ -31,8 +31,8 @@
                 <% end %>
                 <!-- TODO Add real menu items -->
                 <div class="hidden sm:block sm:flex-grow"></div>
-                <%= menu_link(@conn, "/404", gettext("Account")) %>
-                <%= menu_link(@conn, Routes.auth_url(@conn, :logout), gettext("Sign out")) %>
+                <%= menu_link(@conn, Routes.account_path(@conn, :edit), gettext("Account")) %>
+                <%= menu_link(@conn, Routes.auth_path(@conn, :logout), gettext("Sign out")) %>
             </nav>
         </div>
     </header>

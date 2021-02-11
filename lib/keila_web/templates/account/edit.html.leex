@@ -1,0 +1,29 @@
+<main role="main" class="static-container flex-grow bg-gray-800">
+    <div class="container mt-8">
+        <%= f = form_for(@changeset, Routes.account_path(@conn, :post_edit), class: "rounded shadow p-8 mt-8 max-w-5xl mx-auto flex flex-col gap-4 bg-gray-900 text-gray-50") %>
+            <h1 class="text-5xl font-bold">
+                <%= gettext("Manage Account") %>
+            </h1>
+            <p class="text-lg text-gray-200">
+                <%= gettext("Register your Keila account now and start your newsletter project within minutes.") %>
+            </p>
+            <div class="flex flex-col">
+                <%= label(f, :email, gettext("Email")) %>
+                <%= with_validation(f, :email) do %>
+                    <%= text_input(f, :email, placeholder: gettext("you@keila.io"), class: "text-black", disabled: true) %>
+                <% end %>
+            </div>
+            <div class="flex flex-col">
+                <%= label(f, :password, gettext("New Password")) %>
+                <%= with_validation(f, :password) do %>
+                    <%= password_input(f, :password, class: "text-black") %>
+                <% end %>
+            </div>
+            <div class="flex justify-end mt-8">
+                <button class="button button--cta button--large">
+                    <%= gettext("Update password") %>
+                </button>
+            </div>
+        </form>
+    </div>
+</main>

@@ -49,6 +49,9 @@ defmodule KeilaWeb.Router do
 
     get "/auth/logout", AuthController, :logout
 
+    get "/account", AccountController, :edit
+    put "/account", AccountController, :post_edit
+
     get "/", ProjectController, :index
     get "/projects/new", ProjectController, :new
     post "/projects/new", ProjectController, :post_new
