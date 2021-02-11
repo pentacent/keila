@@ -137,6 +137,20 @@ defmodule Keila.AuthTest.Registration do
     end
   end
 
+
+  @tag :auth
+  test "Send activation link" do
+    user = insert!(:user, activated_at: nil)
+
+    assert :ok = Auth.send_activation_link(user.id, &"~~key#{&1}~~")
+
+    receive do
+      {:email, email} ->
+        [_, key] = Regex.run(~r{~~key(.+)~~}, email.text_body)
+        assert %Token{} = Auth.find_token(key, "auth.activate")
+    end
+  end
+
   @tag :auth
   test "Send password reset link" do
     user = insert!(:user)

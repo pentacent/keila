@@ -286,8 +286,7 @@ defmodule Keila.Auth do
           {:ok, User.t()} | {:error, Ecto.Changeset.t(User.t())}
   def create_user(params, url_fn \\ &default_url_function/1) do
     with {:ok, user} <- do_create_user(params) do
-      {:ok, token} = create_token(%{scope: "auth.activate", user_id: user.id})
-      Emails.send!(:activate, %{user: user, url: url_fn.(token.key)})
+      send_activation_link(user.id, url_fn)
       {:ok, user}
     else
       {:error, changeset} ->
@@ -434,6 +433,19 @@ defmodule Keila.Auth do
       {0, _} -> nil
       {1, [token]} -> token
     end
+  end
+
+  @doc """
+  Sends an email with the activation link to the given User.
+  """
+  @spec send_activation_link(User.id(), token_url_fn) :: :ok
+  def send_activation_link(id, url_fn \\ &default_url_function/1) do
+    user = Repo.get(User, id)
+    if (user.activated_at == nil) do
+      {:ok, token} = create_token(%{scope: "auth.activate", user_id: user.id})
+      Emails.send!(:activate, %{user: user, url: url_fn.(token.key)})
+    end
+    :ok
   end
 
   @doc """
