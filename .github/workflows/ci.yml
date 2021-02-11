@@ -52,6 +52,8 @@ jobs:
         run: mix test
   build:
     name: Build and push Docker image
+    needs:
+      - test
     runs-on: ubuntu-latest
     environment: build
     steps:
