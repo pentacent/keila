@@ -18,7 +18,7 @@ defmodule Keila.PaginationTest do
     assert "010@example.com" in Enum.map(page.data, & &1.email)
     refute "011@example.com" in Enum.map(page.data, & &1.email)
 
-    assert page = %Pagination{} = Pagination.paginate(User, page_size: 10, page: 1)
+    assert page = %Pagination{} = Pagination.paginate(query, page_size: 10, page: 1)
     assert page.page == 1
     assert "011@example.com" in Enum.map(page.data, & &1.email)
   end
