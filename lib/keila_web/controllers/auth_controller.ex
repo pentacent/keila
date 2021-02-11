@@ -2,6 +2,7 @@ defmodule KeilaWeb.AuthController do
   use KeilaWeb, :controller
   alias Keila.Auth
 
+  @spec register(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def register(conn, _params) do
     if Application.get_env(:keila, :registration_disabled, false) do
       render(conn, "registration_disabled.html")
@@ -55,6 +56,7 @@ defmodule KeilaWeb.AuthController do
     |> render("register.html")
   end
 
+  @spec activate(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def activate(conn, %{"token" => token}) do
     case Auth.activate_user_from_token(token) do
       {:ok, _user} ->
