@@ -3,6 +3,7 @@ defmodule KeilaWeb.AuthControllerDisabledTest do
 
   setup do
     Application.put_env(:keila, :registration_disabled, true)
+
     on_exit(fn ->
       Application.put_env(:keila, :registration_disabled, false)
     end)

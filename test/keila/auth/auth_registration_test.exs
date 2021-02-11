@@ -137,7 +137,6 @@ defmodule Keila.AuthTest.Registration do
     end
   end
 
-
   @tag :auth
   test "Send activation link" do
     user = insert!(:user, activated_at: nil)

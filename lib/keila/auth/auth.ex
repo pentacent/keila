@@ -441,10 +441,12 @@ defmodule Keila.Auth do
   @spec send_activation_link(User.id(), token_url_fn) :: :ok
   def send_activation_link(id, url_fn \\ &default_url_function/1) do
     user = Repo.get(User, id)
-    if (user.activated_at == nil) do
+
+    if user.activated_at == nil do
       {:ok, token} = create_token(%{scope: "auth.activate", user_id: user.id})
       Emails.send!(:activate, %{user: user, url: url_fn.(token.key)})
     end
+
     :ok
   end
 

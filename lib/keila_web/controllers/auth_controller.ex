@@ -42,7 +42,6 @@ defmodule KeilaWeb.AuthController do
       conn
       |> render_register(400, changeset)
     end
-
   end
 
   defp do_post_register(conn, _),
@@ -70,10 +69,23 @@ defmodule KeilaWeb.AuthController do
     end
   end
 
+  @spec activate_required(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def activate_required(conn, _) do
     conn
     |> put_meta(:title, dgettext("auth", "Activation required"))
     |> render("activate_required.html")
+  end
+
+  @spec post_activate_resend(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def post_activate_resend(conn, _) do
+    user = conn.assigns.current_user
+
+    if not is_nil(user) and user.activated_at == nil do
+      Auth.send_activation_link(user.id, &Routes.auth_url(conn, :activate, &1))
+      render(conn, "activate_resend_success.html")
+    else
+      redirect(conn, to: Routes.auth_path(conn, :login))
+    end
   end
 
   @spec reset(Plug.Conn.t(), map) :: Plug.Conn.t()

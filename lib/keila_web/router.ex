@@ -24,12 +24,23 @@ defmodule KeilaWeb.Router do
     post "/auth/login", AuthController, :post_login
     get "/auth/register", AuthController, :register
     post "/auth/register", AuthController, :post_register
-    get "/auth/activate", AuthController, :activate_required
     get "/auth/activate/:token", AuthController, :activate
     get "/auth/reset", AuthController, :reset
     post "/auth/reset", AuthController, :post_reset
     get "/auth/reset/:token", AuthController, :reset_change_password
     post "/auth/reset/:token", AuthController, :post_reset_change_password
+  end
+
+  # Activation Routes
+  pipeline :activation do
+    plug KeilaWeb.AuthSession.RequireAuthPlug, allow_not_activated: true
+  end
+
+  scope "/", KeilaWeb do
+    pipe_through [:browser, :activation]
+
+    get "/auth/activate", AuthController, :activate_required
+    post "/auth/activate", AuthController, :post_activate_resend
   end
 
   # Authenticated Routes without a Project context

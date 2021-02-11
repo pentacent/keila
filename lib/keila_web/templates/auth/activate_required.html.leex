@@ -7,12 +7,13 @@
             <p class="text-lg text-gray-200">
                 <%= dgettext("auth", "You need to verify your email before you can use Keila. Please check your inbox.") %>
             </p>
-            <p class="flex justify-start mt-8">
-                <a class="button button--cta button--large" href="/">
-                    <!-- TODO Allow resending activation link -->
-                    <%= dgettext("auth", "Resend activation link") %>
-                </a>
-            </p>
+            <%= form_for(@conn, Routes.auth_path(@conn, :post_activate_resend), [as: :user], fn _f -> %>
+                <p class="flex justify-start mt-8">
+                    <button class="button button--cta button--large">
+                            <%= dgettext("auth", "Resend activation link") %>
+                    </button>
+                </p>
+            <% end) %>
         </div>
     </div>
 </main>

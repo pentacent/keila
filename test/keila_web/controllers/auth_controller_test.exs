@@ -90,6 +90,24 @@ defmodule KeilaWeb.AuthControllerTest do
     end
   end
 
+  @tag :auth_controller
+  test "activation is required", %{conn: conn} do
+    assert {:ok, _user} = Auth.create_user(@sign_up_params)
+    conn = post(recycle(conn), Routes.auth_path(conn, :login, user: @sign_up_params))
+    conn = get(recycle(conn), "/")
+    assert redirected_to(conn) == Routes.auth_path(conn, :activate_required)
+  end
+
+  @tag :auth_controller
+  test "activation link can be resent", %{conn: conn} do
+    assert {:ok, _user} = Auth.create_user(@sign_up_params)
+    conn = post(conn, Routes.auth_path(conn, :login, user: @sign_up_params))
+    conn = post(recycle(conn), Routes.auth_path(conn, :post_activate_resend), user: %{})
+
+    assert html_response(conn, 200) =~ ~r{Check your inbox!\s*</h1>}
+    assert_email_sent()
+  end
+
   describe "reset password form" do
     @tag :auth_controller
     test "shows form", %{conn: conn} do
