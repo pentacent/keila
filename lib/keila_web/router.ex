@@ -102,6 +102,7 @@ defmodule KeilaWeb.Router do
     get "/forms/:id", FormController, :display
     post "/forms/:id", FormController, :submit
     get "/unsubscribe/:project_id/:contact_id", FormController, :unsubscribe
+    post "/unsubscribe/:project_id/:contact_id", FormController, :unsubscribe
   end
 
   # Other scopes may use custom stacks.

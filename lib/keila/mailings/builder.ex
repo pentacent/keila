@@ -47,6 +47,7 @@ defmodule Keila.Mailings.Builder do
     |> maybe_put_reply_to(campaign)
     |> maybe_put_text_body(campaign, assigns)
     |> maybe_put_html_body(campaign, assigns)
+    |> put_unsubscribe_header(unsubscribe_link)
   end
 
   defp process_assigns(value) when is_number(value) or is_binary(value) or is_nil(value) do
@@ -118,6 +119,12 @@ defmodule Keila.Mailings.Builder do
   defp maybe_put_html_body(email, _campaign, _assigns) do
     # TODO
     email
+  end
+
+  defp put_unsubscribe_header(email, unsubscribe_link) do
+    email
+    |> header("List-Unsubscribe", "<#{unsubscribe_link}>")
+    |> header("List-Unsubscribe-Post", "List-Unsubscribe=One-Click")
   end
 
   defp render_liquid(input, assigns) do
