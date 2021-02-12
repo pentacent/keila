@@ -16,7 +16,7 @@ defmodule Keila.Auth do
 
   2. The User is sent an email notification with the activation link.
      Verify the User with the provided token:
-        {:ok, user} = Auth.activate_user(token)
+        {:ok, user} = Auth.activate_user_from_token(token)
 
   3. The User has now been activated. You can now use other methods
      from this module.
