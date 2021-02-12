@@ -19,16 +19,20 @@ defmodule Keila.Mailings.Sender.Config do
     field :ses_secret, :string
 
     field :sendgrid_api_key, :string
+
+    field :mailgun_api_key, :string
+    field :mailgun_domain, :string
   end
 
   @spec changeset(Ecto.Changeset.data(), map()) :: Ecto.Changeset.t(t())
   def changeset(struct \\ %__MODULE__{}, params) do
     struct
     |> cast(params, [:type])
-    |> validate_inclusion(:type, ["smtp", "ses", "sendgrid"])
+    |> validate_inclusion(:type, ["smtp", "ses", "sendgrid", "mailgun"])
     |> maybe_cast_smtp(params)
     |> maybe_cast_ses(params)
     |> maybe_cast_sendgrid(params)
+    |> maybe_cast_mailgun(params)
   end
 
   defp maybe_cast_smtp(changeset, params) do
@@ -61,6 +65,16 @@ defmodule Keila.Mailings.Sender.Config do
     end
   end
 
+  defp maybe_cast_mailgun(changeset, params) do
+    if Changeset.get_field(changeset, :type) == "mailgun" do
+      changeset
+      |> cast(params, [:mailgun_api_key, :mailgun_domain])
+      |> validate_required([:mailgun_api_key, :mailgun_domain])
+    else
+      changeset
+    end
+  end
+
   @doc """
   Converts the embedded schema to Keyword list for use with Swoosh.
   """
@@ -70,6 +84,7 @@ defmodule Keila.Mailings.Sender.Config do
       "smtp" -> to_smtp_config(struct)
       "ses" -> to_ses_config(struct)
       "sendgrid" -> to_sendgrid_config(struct)
+      "mailgun" -> to_mailgun_config(struct)
       _ -> maybe_to_standard_config(struct)
     end
     |> Enum.filter(fn {_, v} -> not is_nil(v) end)
@@ -100,6 +115,14 @@ defmodule Keila.Mailings.Sender.Config do
     [
       adapter: Swoosh.Adapters.Sendgrid,
       api_key: struct.sendgrid_api_key
+    ]
+  end
+
+  defp to_mailgun_config(struct) do
+    [
+      adapter: Swoosh.Adapters.Mailgun,
+      api_key: struct.mailgun_api_key,
+      domain: struct.mailgun_domain
     ]
   end
 
