@@ -1,0 +1,12 @@
+<div class="flex flex-col">
+    <%= label(@form, :mailgun_domain, "Domain") %>
+    <%= with_validation(@form, :mailgun_domain) do %>
+        <%= text_input(@form, :mailgun_domain, class: "text-black") %>
+    <% end %>
+</div>
+<div class="flex flex-col">
+    <%= label(@form, :mailgun_api_key, "API Key") %>
+    <%= with_validation(@form, :mailgun_api_key) do %>
+        <%= password_input(@form, :mailgun_api_key, class: "text-black") %>
+    <% end %>
+</div>
