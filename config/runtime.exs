@@ -152,7 +152,8 @@ if config_env() == :prod do
 
   # Deployment
   config :keila,
-    registration_disabled: System.get_env("DISABLE_REGISTRATION") not in [nil, 0, "", "false", "FALSE"]
+    registration_disabled:
+      System.get_env("DISABLE_REGISTRATION") not in [nil, 0, "", "false", "FALSE"]
 end
 
 if config_env() == :test do

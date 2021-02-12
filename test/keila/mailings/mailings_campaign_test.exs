@@ -76,7 +76,7 @@ defmodule Keila.MailingsCampaignTest do
     |> Enum.chunk_every(10_000)
     |> Enum.each(fn params -> Repo.insert_all(Contacts.Contact, params) |> elem(1) end)
 
-    sender = insert!(:mailings_sender, config: %Mailings.Sender.Config{})
+    sender = insert!(:mailings_sender, config: %Mailings.Sender.Config{type: "test"})
     campaign = insert!(:mailings_campaign, project_id: project.id, sender_id: sender.id)
     Mailings.deliver_campaign(campaign.id)
 

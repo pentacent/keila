@@ -24,6 +24,14 @@ config :keila, Keila.Id,
   salt: "bF4QzDjqV",
   min_len: 8
 
+config :keila, Keila.Mailings.SenderAdapters,
+  adapters: [
+    Keila.Mailings.SenderAdapters.SMTP,
+    Keila.Mailings.SenderAdapters.Sendgrid,
+    Keila.Mailings.SenderAdapters.SES,
+    Keila.Mailings.SenderAdapters.Mailgun
+  ]
+
 # Staging configuration for hCaptcha
 config :keila, KeilaWeb.Hcaptcha,
   secret_key: "0x0000000000000000000000000000000000000000",

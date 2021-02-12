@@ -30,3 +30,10 @@ config :argon2_elixir, t_cost: 1, m_cost: 8
 
 # Disable Oban Queues
 config :keila, Oban, queues: false, plugins: false
+
+# Only use test and smtp Sender Adapters
+config :keila, Keila.Mailings.SenderAdapters,
+  adapters: [
+    Keila.Mailings.SenderAdapters.SMTP,
+    Keila.TestSenderAdapter
+  ]
