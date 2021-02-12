@@ -45,8 +45,7 @@ defmodule Keila.Mailings.Builder do
     |> put_recipient(contact)
     |> put_sender(campaign)
     |> maybe_put_reply_to(campaign)
-    |> maybe_put_text_body(campaign, assigns)
-    |> maybe_put_html_body(campaign, assigns)
+    |> put_body(campaign, assigns)
     |> put_unsubscribe_header(unsubscribe_link)
   end
 
@@ -104,7 +103,9 @@ defmodule Keila.Mailings.Builder do
     end
   end
 
-  defp maybe_put_text_body(email, campaign, assigns) do
+  defp put_body(email, campaign, assigns)
+
+  defp put_body(email, campaign = %{settings: %{type: :text}}, assigns) do
     case render_liquid(campaign.text_body || "", assigns) do
       {:ok, text_body} ->
         text_body(email, text_body)
@@ -114,11 +115,6 @@ defmodule Keila.Mailings.Builder do
         |> header("X-Keila-Invalid", error)
         |> text_body(error)
     end
-  end
-
-  defp maybe_put_html_body(email, _campaign, _assigns) do
-    # TODO
-    email
   end
 
   defp put_unsubscribe_header(email, unsubscribe_link) do
