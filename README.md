@@ -9,7 +9,7 @@ With Keila you can easily send out newsletter campaigns and create sign-up
 forms.
 
 For smaller newsletters, you can use your own email inbox to send out campaigns.
-For larger newsletter projects, AWS SES, Sendgrid and Mailgun are supported in addition
+For larger newsletter projects, AWS SES, Sendgrid, and Mailgun are supported in addition
 to SMTP.
 
 ![Screenshot of the Keila form editor showing color modification and custom texts](.github/assets/screenshot-form.png)
