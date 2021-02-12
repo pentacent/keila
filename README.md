@@ -29,8 +29,10 @@ To run it, follow these steps:
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 ## The Name
-Keila is the name of the elephant lady in our logo. It’s also the Finnish word
-for the elephant’s tusks.
+Keila is the name of the elephant mascot of this project.
+She’s a wise and diligent elephant lady, able to remember countless email
+addresses and contact names.
+Fun fact: Keila loves going on holiday trips to the lakes Finland.
 
 ## License
 Keila is free software. You can redistribute it and/or modify
