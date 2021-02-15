@@ -88,7 +88,9 @@ defmodule KeilaWeb.FormView do
 
   defp render_fine_print(form) do
     if form.settings.fine_print do
-      content_tag(:div, raw(Keila.HtmlFormat.format_html(form.settings.fine_print, :limited)),
+      content_tag(
+        :div,
+        raw(Keila.Templates.Html.restrict(form.settings.fine_print, :limited)),
         class: "text-xs"
       )
     else
