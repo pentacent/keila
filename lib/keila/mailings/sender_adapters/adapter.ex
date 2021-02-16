@@ -6,7 +6,8 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
 
   `schema_fields/0` defines configuration fields which will dynamically be added to the `Keila.Mailings.Sender.Config` schema.
 
-  `changeset/2` will be used to build a changeset for the configuration fields before storing them in a `Keila.Mailing.Sender.Config` schema.
+  `changeset/2` will be used to build a changeset for the configuration fields
+  before storing them in a `Keila.Mailings.Sender.Config` schema.
 
   `to_swoosh_config/1` allows to retrieve configuration fields from the `Keila.Mailings.Sender.Config` and build a config that will be passed to `Swoosh`.
 
