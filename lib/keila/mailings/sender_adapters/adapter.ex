@@ -62,7 +62,7 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
   @callback name() :: String.t()
 
   @doc """
-  Returns a list of exto schema fields that the adapter requires.
+  Returns a list of Ecto schema fields required by the adapter.
   """
   @callback schema_fields() :: keyword(atom())
 
