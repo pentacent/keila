@@ -69,7 +69,10 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
   @doc """
   Builds a changeset for the sender adapter configuration.
   """
-  @callback changeset(Ecto.Changeset.t(), %{optional(String.t()) => term()} | %{optional(atom()) => term()}) :: Ecto.Changeset.t()
+  @callback changeset(
+              Ecto.Changeset.t(),
+              %{optional(String.t()) => term()} | %{optional(atom()) => term()}
+            ) :: Ecto.Changeset.t()
 
   @doc """
   Builds a swoosh config from the passed sender adapter configuration.
