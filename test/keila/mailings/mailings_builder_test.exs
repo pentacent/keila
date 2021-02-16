@@ -51,9 +51,7 @@ defmodule Keila.Mailings.BuilderTest do
       }
     }
 
-    assert email =
-             %Swoosh.Email{} =
-             Mailings.Builder.build(campaign, contact, %{})
+    assert email = %Swoosh.Email{} = Mailings.Builder.build(campaign, contact, %{})
 
     assert email.text_body == """
            Hello there, #{contact.first_name}!

@@ -28,8 +28,9 @@ defmodule KeilaWeb.CampaignController do
   def post_new(conn, params) do
     project = current_project(conn)
 
-    params = (params["campaign"] || %{})
-    |> put_default_body()
+    params =
+      (params["campaign"] || %{})
+      |> put_default_body()
 
     case Mailings.create_campaign(project.id, params) do
       {:ok, campaign} ->

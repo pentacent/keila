@@ -122,7 +122,9 @@ defmodule Keila.Mailings.Builder do
   @default_styles File.read!("priv/email_templates/default.css") |> Css.parse!()
 
   defp put_body(email, campaign = %{settings: %{type: :markdown}}, assigns) do
-    footer_content = "<a class=\"unsubscribe\" href=\"#{assigns["unsubscribe_link"]}\">Unsubscribe</a>"
+    footer_content =
+      "<a class=\"unsubscribe\" href=\"#{assigns["unsubscribe_link"]}\">Unsubscribe</a>"
+
     with {:ok, text_body} <- render_liquid(campaign.text_body || "", assigns),
          {:ok, main_content, _} <- Earmark.as_html(text_body),
          assigns <- Map.put(assigns, "main_content", main_content),
@@ -165,7 +167,7 @@ defmodule Keila.Mailings.Builder do
       input
       |> Solid.render(assigns)
       |> to_string()
-      |> fn output -> {:ok, output} end.()
+      |> (fn output -> {:ok, output} end).()
     rescue
       _e -> {:error, "Unexpected rendering error"}
     end
