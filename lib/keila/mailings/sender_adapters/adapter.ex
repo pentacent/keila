@@ -4,7 +4,7 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
 
   Sender adapters are used by Keila to support sending campaings through various services.
 
-  `schema_fields/0` define configuration fields which will dynamically be added to the `Keila.Mailing.Sender.Config` schema.
+  `schema_fields/0` defines configuration fields which will dynamically be added to the `Keila.Mailings.Sender.Config` schema.
 
   `changeset/2` will be used to build a changeset for the configuration fields before storing them in a `Keila.Mailing.Sender.Config` schema.
 
