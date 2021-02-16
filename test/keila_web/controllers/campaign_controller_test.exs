@@ -128,7 +128,7 @@ defmodule KeilaWeb.CampaignControllerTest do
       campaign =
         insert!(:mailings_campaign,
           project_id: project.id,
-          sender: build(:mailings_sender, config: %{type: nil})
+          sender: build(:mailings_sender, config: %{type: "test"})
         )
 
       _contacts = insert_n!(:contact, 10, fn _ -> %{project_id: project.id} end)
