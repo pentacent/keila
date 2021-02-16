@@ -9,7 +9,8 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
   `changeset/2` will be used to build a changeset for the configuration fields
   before storing them in a `Keila.Mailings.Sender.Config` schema.
 
-  `to_swoosh_config/1` allows to retrieve configuration fields from the `Keila.Mailings.Sender.Config` and build a config that will be passed to `Swoosh`.
+  `to_swoosh_config/1` retrieves configuration fields from
+   `Keila.Mailings.Sender.Config` and builds the config that is passed to `Swoosh`.
 
   ## Example
       defmodule Sendgrid do
