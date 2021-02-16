@@ -95,7 +95,7 @@ defmodule Keila.Templates.Css.Parser do
     |> tag(:property)
 
   value =
-    ascii_string([?a..?z, ?A..?Z, ?0..?9, ?_, ?-, ?#, ?., ?\s, ?', ?"], min: 1)
+    ascii_string([?a..?z, ?A..?Z, ?0..?9, ?_, ?-, ?#, ?., ?\s, ?', ?", ?%], min: 1)
     |> map({String, :trim_trailing, []})
     |> tag(:value)
 

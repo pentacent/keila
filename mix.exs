@@ -71,7 +71,8 @@ defmodule Keila.MixProject do
       {:httpoison, "~> 1.7"},
       {:nimble_csv, "~> 1.1"},
       {:oban, "~> 2.3"},
-      {:solid, "~> 0.4.0"}
+      {:solid, "~> 0.4.0"},
+      {:earmark, "~> 1.4"}
     ]
   end
 

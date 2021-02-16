@@ -33,6 +33,39 @@ defmodule Keila.Mailings.BuilderTest do
   end
 
   @tag :mailings_builder
+  test "Builds Markdown email" do
+    contact = build(:contact, id: Keila.Contacts.Contact.Id.cast(0) |> elem(1))
+    sender = build(:mailings_sender)
+
+    campaign = %Mailings.Campaign{
+      project_id: Keila.Projects.Project.Id.cast(0) |> elem(1),
+      subject: "My Campaign",
+      sender: sender,
+      text_body: """
+      Hello there, {{ contact.first_name }}!
+
+      This is a message with *Markdown*.
+      """,
+      settings: %Mailings.Campaign.Settings{
+        type: :markdown
+      }
+    }
+
+    assert email =
+             %Swoosh.Email{} =
+             Mailings.Builder.build(campaign, contact, %{})
+
+    assert email.text_body == """
+           Hello there, #{contact.first_name}!
+
+           This is a message with *Markdown*.
+           """
+
+    assert email.html_body =~ ~r{Hello there, #{contact.first_name}!\s*</p>}
+    assert email.html_body =~ ~r{This is a message with <em>Markdown</em>.}
+  end
+
+  @tag :mailings_builder
   test "Adds X-Keila-Invalid header when there is an error" do
     contact = build(:contact, id: Keila.Contacts.Contact.Id.cast(0) |> elem(1))
     sender = build(:mailings_sender)

@@ -1,6 +1,5 @@
 defmodule Keila.TemplatesTest do
   use ExUnit.Case, async: true
-  alias Keila.Templates
   alias Keila.Templates.{Html, Css}
 
   doctest Keila.Templates.Html

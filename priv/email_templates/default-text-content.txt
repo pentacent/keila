@@ -1,0 +1,8 @@
+Hey {{ contact.first_name | default: "there" }}!
+
+You can write your campaign text here. This is a plain-text campaign, so no HTML!
+
+You can use the Liquid templating language (https://shopify.github.io/liquid/) here.
+
+Please make sure to include the following in every campaign:
+{{ unsubscribe_link }}

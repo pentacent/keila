@@ -3,7 +3,7 @@ defmodule Keila.Mailings.Campaign.Settings do
   import Ecto.Changeset
 
   embedded_schema do
-    field(:type, Ecto.Enum, values: [:text])
+    field(:type, Ecto.Enum, values: [:text, :markdown])
   end
 
   def changeset(struct \\ %__MODULE__{}, params) do
