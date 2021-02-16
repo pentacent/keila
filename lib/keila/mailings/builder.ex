@@ -158,7 +158,7 @@ defmodule Keila.Mailings.Builder do
         {:error, error = %Solid.TemplateError{}} -> {:error, error.message}
       end
     rescue
-      _e -> {:error, "Unexpected parsing prror"}
+      _e -> {:error, "Unexpected parsing error"}
     end
   end
 
