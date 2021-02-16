@@ -9,6 +9,7 @@ defmodule KeilaWeb.SenderView do
   def sender_adapter_name("ses"), do: "SES"
   def sender_adapter_name("sendgrid"), do: "Sendgrid"
   def sender_adapter_name("mailgun"), do: "Mailgun"
+
   if Mix.env() == :test do
     def sender_adapter_name("test"), do: "Test"
   end
@@ -28,6 +29,7 @@ defmodule KeilaWeb.SenderView do
   def render_sender_adapter_form(form, "mailgun") do
     render("_mailgun_config.html", form: form)
   end
+
   if Mix.env() == :test do
     def render_sender_adapter_form(_form, "test"), do: nil
   end
