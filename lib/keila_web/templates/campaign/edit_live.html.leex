@@ -57,11 +57,28 @@
             <div class="flex flex-col mt-4">
                 <%= label(f, :text_body, "Content") %>
                 <%= inputs_for(f, :settings, fn fs -> %>
-                    <%= select(fs, :type, %{"Text only" => "text"}) %>
+                    <%= select(fs, :type, [
+                        {gettext("Text only"), "text"},
+                        {gettext("Markdown"), "markdown"}
+                    ]) %>
                 <% end) %>
-                <div class="flex gap-4 mt-4">
+                <div class="flex gap-4 mt-4" x-data="{previewMode: false}">
                     <%= textarea(f, :text_body, rows: 20, class: "bg-gray-800 text-gray-50 border-none appearance-none resize-y flex-grow w-1/2") %>
-                    <div class="flex-grow w-1/2 whitespace-pre-wrap"><%= @preview %></div>
+
+                    <div id="preview-container" class="w-1/2 flex-grow flex flex-col" phx-update="ignore">
+                        <iframe id="html-preview" src="javascript:false" class="bg-gray-100 flex-grow" :class="previewMode ? 'fixed w-full h-full inset-0 pb-10 z-40' : ''"></iframe>
+                        <button class="button mt-2" @click.prevent="previewMode = !previewMode">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                            </svg>
+                            <%= gettext("Preview") %>
+                        </button>
+                        <button x-show="previewMode" @click.prevent="previewMode = !previewMode" class="fixed h-10 bg-green-600 text-white w-full bottom-0 left-0 z-50">
+                            <%= gettext("Close preview") %>
+                        </button>
+                    </div>
+
+                    <div id="html-preview-data" phx-hook="HtmlPreview" class="hidden" data-iframe="html-preview"><%= @preview %></div>
                 </div>
             </div>
 

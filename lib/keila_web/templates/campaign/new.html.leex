@@ -16,7 +16,10 @@
                         <div class="flex flex-col">
                             <%= label(fs, :type, "Campaign type") %>
                             <%= with_validation(fs, :type) do %>
-                                <%= select(fs, :type, %{"Text only" => "text"}) %>
+                                <%= select(fs, :type, [
+                                    {gettext("Markdown"), "markdown"},
+                                    {gettext("Text only"), "text"}
+                                ]) %>
                             <% end %>
                         </div>
                     <% end) %>

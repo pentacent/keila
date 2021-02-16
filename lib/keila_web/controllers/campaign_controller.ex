@@ -6,16 +6,8 @@ defmodule KeilaWeb.CampaignController do
 
   plug :authorize when not (action in [:index, :new, :post_new, :delete])
 
-  @default_text_body """
-  Hey {{ contact.first_name | default: "there" }}!
-
-  You can write your campaign text here. This is a plain-text campaign, so no HTML!
-
-  You can use the Liquid templating language (https://shopify.github.io/liquid/) here.
-
-  Please make sure to include the following in every campaign:
-  {{ unsubscribe_link }}
-  """
+  @default_text_body File.read!("priv/email_templates/default-text-content.txt")
+  @default_markdown_body File.read!("priv/email_templates/default-markdown-content.md")
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, _params) do
@@ -35,7 +27,10 @@ defmodule KeilaWeb.CampaignController do
   @spec post_new(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def post_new(conn, params) do
     project = current_project(conn)
-    params = params["campaign"] |> Map.put("text_body", @default_text_body)
+
+    params =
+      (params["campaign"] || %{})
+      |> put_default_body()
 
     case Mailings.create_campaign(project.id, params) do
       {:ok, campaign} ->
@@ -52,6 +47,14 @@ defmodule KeilaWeb.CampaignController do
     |> put_meta(:title, gettext("New Campaign"))
     |> assign(:changeset, changeset)
     |> render("new.html")
+  end
+
+  defp put_default_body(params) do
+    # TODO Maybe this would be better implemented as a Context module function
+    case get_in(params, ["settings", "type"]) do
+      "markdown" -> Map.put(params, "text_body", @default_markdown_body)
+      _ -> Map.put(params, "text_body", @default_text_body)
+    end
   end
 
   @spec clone(Plug.Conn.t(), map()) :: Plug.Conn.t()

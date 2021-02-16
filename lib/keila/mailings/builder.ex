@@ -7,6 +7,7 @@ defmodule Keila.Mailings.Builder do
   alias Keila.Contacts.Contact
   alias Swoosh.Email
   alias KeilaWeb.Router.Helpers, as: Routes
+  alias Keila.Templates.{Css, Html}
   import Swoosh.Email
 
   @default_contact %Keila.Contacts.Contact{
@@ -117,22 +118,58 @@ defmodule Keila.Mailings.Builder do
     end
   end
 
+  @default_template File.read!("priv/email_templates/default.html.liquid") |> Solid.parse!()
+  @default_styles File.read!("priv/email_templates/default.css") |> Css.parse!()
+
+  defp put_body(email, campaign = %{settings: %{type: :markdown}}, assigns) do
+    footer_content =
+      "<a class=\"unsubscribe\" href=\"#{assigns["unsubscribe_link"]}\">Unsubscribe</a>"
+
+    with {:ok, text_body} <- render_liquid(campaign.text_body || "", assigns),
+         {:ok, main_content, _} <- Earmark.as_html(text_body),
+         assigns <- Map.put(assigns, "main_content", main_content),
+         assigns <- Map.put(assigns, "footer_content", footer_content),
+         {:ok, html_body} <- render_liquid(@default_template, assigns) do
+      html_body =
+        html_body
+        |> Html.parse_document!()
+        |> Html.apply_inline_styles(@default_styles)
+        |> Html.to_document()
+
+      email
+      |> text_body(text_body)
+      |> html_body(html_body)
+    else
+      _other -> email
+    end
+  end
+
   defp put_unsubscribe_header(email, unsubscribe_link) do
     email
     |> header("List-Unsubscribe", "<#{unsubscribe_link}>")
     |> header("List-Unsubscribe-Post", "List-Unsubscribe=One-Click")
   end
 
-  defp render_liquid(input, assigns) do
+  defp render_liquid(input, assigns) when is_binary(input) do
     try do
       with {:ok, template} <- Solid.parse(input) do
-        {:ok, Solid.render(template, assigns) |> to_string()}
+        render_liquid(template, assigns)
       else
-        {:error, error = %Solid.TemplateError{}} ->
-          {:error, error.message}
+        {:error, error = %Solid.TemplateError{}} -> {:error, error.message}
       end
     rescue
-      _e -> {:error, "Unexpected Error"}
+      _e -> {:error, "Unexpected parsing error"}
+    end
+  end
+
+  defp render_liquid(input = %Solid.Template{}, assigns) do
+    try do
+      input
+      |> Solid.render(assigns)
+      |> to_string()
+      |> (fn output -> {:ok, output} end).()
+    rescue
+      _e -> {:error, "Unexpected rendering error"}
     end
   end
 end

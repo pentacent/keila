@@ -68,7 +68,7 @@ defmodule KeilaWeb.CampaignControllerTest do
     end
 
     @tag :campaign_controller
-    test "shows campaign preview", %{conn: conn} do
+    test "generates campaign preview", %{conn: conn} do
       %{conn: conn, project: project} = setup_conn_and_project(conn)
       campaign = insert!(:mailings_campaign, project_id: project.id, text_body: "Hello there!")
       conn = get(conn, Routes.campaign_path(conn, :edit, project.id, campaign.id))
