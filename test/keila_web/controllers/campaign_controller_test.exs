@@ -70,7 +70,10 @@ defmodule KeilaWeb.CampaignControllerTest do
     @tag :campaign_controller
     test "generates campaign preview", %{conn: conn} do
       %{conn: conn, project: project} = setup_conn_and_project(conn)
-      campaign = insert!(:mailings_campaign, project_id: project.id, text_body: "Hello there!")
+
+      campaign =
+        insert!(:mailings_campaign, project_id: project.id, type: :text, text_body: "Hello there!")
+
       conn = get(conn, Routes.campaign_path(conn, :edit, project.id, campaign.id))
       {:ok, lv, html} = live(conn)
 
@@ -89,7 +92,8 @@ defmodule KeilaWeb.CampaignControllerTest do
     @tag :campaign_controller
     test "updates campaign and redirects to index", %{conn: conn} do
       %{conn: conn, project: project} = setup_conn_and_project(conn)
-      campaign = insert!(:mailings_campaign, project_id: project.id)
+      sender = build(:mailings_sender, project_id: project.id)
+      campaign = insert!(:mailings_campaign, project_id: project.id, sender: sender)
 
       params = %{"subject" => "Foo Bar"}
 
@@ -103,7 +107,8 @@ defmodule KeilaWeb.CampaignControllerTest do
     @tag :campaign_controller
     test "delivers campaign and redirects to stats page", %{conn: conn} do
       %{conn: conn, project: project} = setup_conn_and_project(conn)
-      campaign = insert!(:mailings_campaign, project_id: project.id)
+      sender = build(:mailings_sender, project_id: project.id)
+      campaign = insert!(:mailings_campaign, project_id: project.id, sender: sender)
       _contacts = insert_n!(:contact, 10, fn _ -> %{project_id: project.id} end)
 
       params = %{"send" => "true"}

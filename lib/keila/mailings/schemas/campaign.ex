@@ -27,4 +27,14 @@ defmodule Keila.Mailings.Campaign do
     |> cast_embed(:settings)
     |> validate_required([:subject, :sender_id])
   end
+
+  @doc """
+  This changeset can be used when generating a preview and no validation of
+  required fields is desired.
+  """
+  def preview_changeset(struct = %__MODULE__{}, params) do
+    struct
+    |> cast(params, [:subject, :text_body, :html_body, :sender_id])
+    |> cast_embed(:settings)
+  end
 end

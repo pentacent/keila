@@ -68,7 +68,7 @@ defmodule KeilaWeb.CampaignEditLive do
   @impl true
   def handle_event("form_updated", params, socket) do
     changeset =
-      Keila.Mailings.Campaign.update_changeset(socket.assigns.campaign, params["campaign"])
+      Keila.Mailings.Campaign.preview_changeset(socket.assigns.campaign, params["campaign"])
 
     socket =
       socket
