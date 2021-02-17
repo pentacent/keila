@@ -92,3 +92,12 @@ jobs:
           push: true
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,mode=max,dest=/tmp/.buildx-cache
+      - uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.meta.outputs.version }}
+          body_path: __CHANGELOG__.md
+          release_name: Keila v${{ steps.meta.outputs.version }}
+          draft: false
+          prerelease: false
