@@ -58,8 +58,8 @@
                 <%= label(f, :text_body, "Content") %>
                 <%= inputs_for(f, :settings, fn fs -> %>
                     <%= select(fs, :type, [
-                        {gettext("Text only"), "text"},
-                        {gettext("Markdown"), "markdown"}
+                        {gettext("Markdown"), "markdown"},
+                        {gettext("Text only"), "text"}
                     ]) %>
                 <% end) %>
                 <div class="flex gap-4 mt-4" x-data="{previewMode: false}">
@@ -87,10 +87,13 @@
 
     <div class="fixed z-10 inset-0 overflow-y-auto bg-black bg-opacity-90" x-show.transition="showSendDialog" style="display: none">
     <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <%= if @recipient_count > 0 do %>
         <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full p-8" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
             <h2 class="text-3xl">Ready to send your campaign?</h2>
                 <br>
-                <p>Are you ready to send your campaign <em><%= Ecto.Changeset.get_field(@changeset, :subject) %></em> to <%= @recipient_count %> contacts?</p>
+                <p>
+                    <%=raw gettext("Are you ready to send your campaign <em>%{subject}</em> to %{count} contacts?", subject: Ecto.Changeset.get_field(@changeset, :subject), count: @recipient_count) %>
+                </p>
                 <br>
                 <div class="flex justify-end gap-8">
                     <button class="button button--text button--large" @click.prevent="showSendDialog = false">
@@ -104,6 +107,21 @@
                     </button>
                 </div>
         </div>
+        <% else %>
+            <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full p-8" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
+                <h2 class="text-3xl"><%= gettext("No Contacts, No Campaign.")%></h2>
+                <br>
+                <p>
+                    <%= gettext("It looks like you don’t yet have any contacts to receive this campaign.") %>
+                </p>
+                <br>
+                <div class="flex justify-end gap-8">
+                    <button class="button button--cta button--large" @click.prevent="showSendDialog = false">
+                        <%= gettext("Ok") %>
+                    </button>
+                </div>
+            </div>
+        <% end %>
         </div>
     </div>
 

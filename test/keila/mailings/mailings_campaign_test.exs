@@ -64,7 +64,7 @@ defmodule Keila.MailingsCampaignTest do
     assert other_campaign == Mailings.get_campaign(other_campaign.id)
   end
 
-  @tag :mailings_campaignx
+  @tag :mailings_campaign
   test "deliver campaign", %{project: project} do
     n = @delivery_n
 
@@ -78,7 +78,8 @@ defmodule Keila.MailingsCampaignTest do
 
     sender = insert!(:mailings_sender, config: %Mailings.Sender.Config{type: "test"})
     campaign = insert!(:mailings_campaign, project_id: project.id, sender_id: sender.id)
-    Mailings.deliver_campaign(campaign.id)
+
+    assert :ok = Mailings.deliver_campaign(campaign.id)
 
     assert %{success: ^n, failure: 0} = Oban.drain_queue(queue: :mailer)
 
@@ -87,5 +88,14 @@ defmodule Keila.MailingsCampaignTest do
     end
 
     refute_email_sent()
+  end
+
+  @tag :mailings_campaign
+  test "campaign with no recipients is not delivered", %{project: project} do
+    sender = insert!(:mailings_sender, config: %Mailings.Sender.Config{type: "test"})
+    campaign = insert!(:mailings_campaign, project_id: project.id, sender_id: sender.id)
+
+    assert {:error, :no_recipients} = Mailings.deliver_campaign(campaign.id)
+    assert %{sent_at: nil} = Mailings.get_campaign(campaign.id)
   end
 end

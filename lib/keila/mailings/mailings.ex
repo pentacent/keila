@@ -164,7 +164,11 @@ defmodule Keila.Mailings do
 
   @doc """
   Delivers a campaign.
+
+  Returns `:ok`.
+  If there were no recipients, returns `{:error, :no_recipients}`
   """
+  @spec deliver_campaign(Campaign.id()) :: {:error, :no_recipients} | {:error, term()} | :ok
   def deliver_campaign(id) when is_id(id) do
     {:ok, campaign} =
       id
@@ -175,8 +179,8 @@ defmodule Keila.Mailings do
     stream = Keila.Contacts.stream_project_contacts(campaign.project_id, [])
 
     case do_deliver_campaign(stream, campaign) do
-      {:ok, result} ->
-        {:ok, result}
+      {:ok, :ok} ->
+        :ok
 
       {:error, reason} ->
         campaign
@@ -206,8 +210,15 @@ defmodule Keila.Mailings do
         end)
         |> Oban.insert_all()
       end)
-      |> Stream.run()
+      |> run_or_rollback()
     end)
+  end
+
+  defp run_or_rollback(stream) do
+    case Enum.count(stream) do
+      0 -> Repo.rollback(:no_recipients)
+      n -> :ok
+    end
   end
 
   @doc """
