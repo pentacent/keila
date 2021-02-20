@@ -16,9 +16,19 @@ to SMTP.
 
 ## Giving Keila a Try
 
-Keila is still in development but you can already give it a try.
-To run it, follow these steps:
+Keila is ready for you to send newsletters with!
 
+You can easily deploy it using the official Docker image `pentacent/keila`.
+
+Follow the [Installation Docs](https://keila.io/docs/installation)
+for more details.
+
+## Developing Keila
+
+If you want to give Keila a try, here’s how to get it running from this
+repository:
+
+* [Install Elixir](https://elixir-lang.org/install.html)
 * Clone the repository:
   `git clone https://github.com/pentacent/keila.git`
 * [Install Elixir](https://elixir-lang.org/install.html)
