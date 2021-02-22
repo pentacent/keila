@@ -311,6 +311,11 @@ defmodule Keila.Auth do
     end
   end
 
+  @doc """
+  Looks up given `auth.activate` token and activates assocaited user.
+
+  Returns `{:ok, user}` if successful; `:error` otherwise.
+  """
   @spec activate_user_from_token(String.t()) :: {:ok, User.t()} | :error
   def activate_user_from_token(token) do
     case find_and_delete_token(token, "auth.activate") do
@@ -319,6 +324,12 @@ defmodule Keila.Auth do
     end
   end
 
+  @doc """
+  Updates user password from params.
+
+  ## Example
+      update_user_password(user_id, %{"password" => "NewSecurePassword"})
+  """
   @spec update_user_password(User.id(), map()) ::
           {:ok, User.t()} | {:error, Ecto.Changeset.t(User.t())}
   def update_user_password(id, params) do
@@ -327,6 +338,22 @@ defmodule Keila.Auth do
     |> Repo.update()
   end
 
+  @doc """
+  Updates user email from params.
+
+  The user email is not immediately updated. Instead, an `auth.udpate_email`
+  token is generated and sent via email.
+
+  Only once this token is confirmed via `update_user_email_from_token/1` is the
+  new email address persisted.
+
+  Returns `{:ok, user}` if new email is identical to current email;
+  `{:ok, token}` if the token was created and sent out via email;
+  `{:error, changeset}` if the change was invalid.
+
+  ## Example
+      update_user_password(user_id, %{"email" => "new@example.com"})
+  """
   @spec update_user_email(User.id(), %{:email => String.t()}, token_url_fn) ::
           {:ok, Token.t()} | {:ok, User.t()} | {:error, Changeset.t(User.t())}
   def update_user_email(id, params, url_fn \\ &default_url_function/1) do
@@ -350,6 +377,12 @@ defmodule Keila.Auth do
     end
   end
 
+  @doc """
+  Looks up and deletes given `auth.update_email` token and updates associated
+  user email address.
+
+  Returns `{:ok, user}` if successful; `:error` otherwise.
+  """
   @spec update_user_email_from_token(String.t()) ::
           {:ok, User.t()} | {:error, Changeset.t()} | :error
   def update_user_email_from_token(token) do
