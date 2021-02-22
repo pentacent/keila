@@ -28,11 +28,11 @@ for more details.
 If you want to give Keila a try, here’s how to get it running from this
 repository:
 
-* [Install Elixir](https://elixir-lang.org/install.html)
+* [Install Elixir](https://elixir-lang.org/install.html) and make sure you have [PostgreSQL](https://www.postgresql.org/) running on your machine
 * Clone the repository:
   `git clone https://github.com/pentacent/keila.git`
 * Install dependencies with `mix deps.get`
-* Install dependencies and set up database with `mix setup`
+* Install dependencies and set up the database with `mix setup`
 * Start Keila server with `mix phx.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
