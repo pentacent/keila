@@ -6,6 +6,8 @@ defmodule Keila.Application do
   use Application
 
   def start(_type, _args) do
+    maybe_run_migrations()
+
     children = [
       # Start the Ecto repository
       Keila.Repo,
@@ -38,5 +40,11 @@ defmodule Keila.Application do
 
   defp oban_config() do
     Application.get_env(:keila, Oban)
+  end
+
+  defp maybe_run_migrations() do
+    if Application.get_env(:keila, :skip_migrations) do
+      Keila.ReleaseTasks.init()
+    end
   end
 end
