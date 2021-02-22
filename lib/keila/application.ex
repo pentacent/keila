@@ -43,7 +43,7 @@ defmodule Keila.Application do
   end
 
   defp maybe_run_migrations() do
-    if Application.get_env(:keila, :skip_migrations) do
+    unless Application.get_env(:keila, :skip_migrations) do
       Keila.ReleaseTasks.init()
     end
   end
