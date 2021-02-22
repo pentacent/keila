@@ -300,6 +300,24 @@ defmodule Keila.Auth do
     |> Repo.insert()
   end
 
+  @doc """
+  Returns a list of all users, sorted by creation date.
+
+  ## Options
+  - `:paginate` - `true` or Pagination options.
+
+  If `:pagination` is not `true` or a list of options, a list of all results is returned.
+  """
+  @spec list_users() :: [User.t()] | Keila.Pagination.t(User.t())
+  def list_users(opts \\ []) do
+    query = from(u in User, order_by: u.inserted_at)
+
+    case Keyword.get(opts, :paginate) do
+      true -> Keila.Pagination.paginate(query)
+      opts when is_list(opts) -> Keila.Pagination.paginate(query, opts)
+      _ -> Repo.all(query)
+    end
+  end
 
   @doc """
   Deletes a user.
