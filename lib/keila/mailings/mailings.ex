@@ -84,6 +84,17 @@ defmodule Keila.Mailings do
   end
 
   @doc """
+  Returns all Campaigns which should have been delivered by `time` but have not yet been delivered.
+  """
+  @spec get_campaigns_to_be_delivered(DateTime.t()) :: [Campaign.t()]
+  def get_campaigns_to_be_delivered(time) do
+    from(c in Campaign,
+      where: is_nil(c.sent_at) and not is_nil(c.scheduled_for) and c.scheduled_for <= ^time
+    )
+    |> Repo.all()
+  end
+
+  @doc """
   Creates a new Campaign.
   """
   @spec create_campaign(Project.id(), map()) ::
@@ -160,6 +171,17 @@ defmodule Keila.Mailings do
     |> Map.put("settings", settings_params)
     |> Campaign.creation_changeset()
     |> Repo.insert()
+  end
+
+  @doc """
+  Schedules the given campaign to be delivered in the future.
+  """
+  @spec schedule_campaign(Campaign.id(), map()) ::
+          {:ok, Campaign.t()} | {:error, Changeset.t(Campaign.t())}
+  def schedule_campaign(id, params) when is_id(id) do
+    get_campaign(id)
+    |> Campaign.schedule_changeset(params)
+    |> Repo.update()
   end
 
   @doc """

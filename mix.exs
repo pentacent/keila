@@ -70,7 +70,7 @@ defmodule Keila.MixProject do
       {:argon2_elixir, "~> 2.3"},
       {:httpoison, "~> 1.7"},
       {:nimble_csv, "~> 1.1"},
-      {:oban, "~> 2.3"},
+      {:oban, "~> 2.4.3"},
       {:solid, "~> 0.4.0"},
       {:earmark, "~> 1.4"}
     ]

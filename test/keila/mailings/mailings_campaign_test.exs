@@ -1,5 +1,7 @@
 defmodule Keila.MailingsCampaignTest do
   use Keila.DataCase, async: true
+  use Oban.Testing, repo: Keila.Repo
+
   alias Keila.{Projects, Mailings, Contacts}
 
   @delivery_n 50
@@ -113,5 +115,48 @@ defmodule Keila.MailingsCampaignTest do
 
     assert {:error, :already_sent} = Mailings.deliver_campaign(campaign.id)
     assert %{sent_at: ^sent_at} = Mailings.get_campaign(campaign.id)
+  end
+
+  @tag :mailings_campaign
+  test "deliver scheduled campaign", %{project: project} do
+    n = @delivery_n
+
+    now = DateTime.utc_now() |> DateTime.truncate(:second) |> DateTime.to_naive()
+
+    build_n(:contact, n, fn _ -> %{project_id: project.id} end)
+    |> Enum.map(&Map.take(&1, [:name, :project_id, :email, :first_name, :last_name]))
+    |> Enum.map(&Map.merge(&1, %{updated_at: now, inserted_at: now}))
+    |> Enum.chunk_every(10_000)
+    |> Enum.each(fn params -> Repo.insert_all(Contacts.Contact, params) |> elem(1) end)
+
+    sender = insert!(:mailings_sender, config: %Mailings.Sender.Config{type: "test"})
+    campaign = insert!(:mailings_campaign, project_id: project.id, sender_id: sender.id)
+
+    campaign_to_be_delivered_later =
+      insert!(:mailings_campaign, project_id: project.id, sender_id: sender.id)
+
+    assert {:ok, _struct} =
+             Mailings.schedule_campaign(campaign.id, %{"scheduled_for" => DateTime.utc_now()})
+
+    assert {:ok, _struct} =
+             Mailings.schedule_campaign(campaign_to_be_delivered_later.id, %{
+               # deliver in 1 hour
+               "scheduled_for" => DateTime.utc_now() |> DateTime.add(3600, :second)
+             })
+
+    assert :ok = perform_job(Mailings.DeliverScheduledCampaignsWorker, %{})
+    assert %{success: ^n, failure: 0} = Oban.drain_queue(queue: :mailer)
+
+    assert %Mailings.Campaign{sent_at: sent_at} = Mailings.get_campaign(campaign.id)
+    assert sent_at
+
+    assert %Mailings.Campaign{sent_at: nil} =
+             Mailings.get_campaign(campaign_to_be_delivered_later.id)
+
+    for _ <- 1..n do
+      assert_email_sent()
+    end
+
+    refute_email_sent()
   end
 end
