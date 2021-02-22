@@ -31,7 +31,6 @@ repository:
 * [Install Elixir](https://elixir-lang.org/install.html)
 * Clone the repository:
   `git clone https://github.com/pentacent/keila.git`
-* [Install Elixir](https://elixir-lang.org/install.html)
 * Install dependencies with `mix deps.get`
 * Install dependencies and set up database with `mix setup`
 * Start Keila server with `mix phx.server`
