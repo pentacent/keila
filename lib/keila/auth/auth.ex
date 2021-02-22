@@ -300,6 +300,24 @@ defmodule Keila.Auth do
     |> Repo.insert()
   end
 
+
+  @doc """
+  Deletes a user.
+  This does not delete user project data.
+
+  This function is idempotent and always returns `:ok`.
+  """
+  @spec delete_user(User.id()) :: :ok
+  def delete_user(id) do
+    from(u in User, where: u.id == ^id)
+    |> idempotent_delete()
+  end
+
+  @doc """
+  Activates user with given ID.
+
+  Returns `{:ok, user} if successful; `:error` otherwise.
+  """
   @spec activate_user(User.id()) :: {:ok, User.t()} | :error
   def activate_user(id) do
     case Repo.get(User, id) do
