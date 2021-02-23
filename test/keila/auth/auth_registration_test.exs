@@ -33,6 +33,21 @@ defmodule Keila.AuthTest.Registration do
   end
 
   @tag :auth
+  test "Delete user" do
+    user = insert!(:user, %{"email" => "foo@bar.com"})
+    assert :ok = Auth.delete_user(user.id)
+    assert nil == Keila.Repo.get(User, user.id)
+    assert :ok = Auth.delete_user(user.id)
+  end
+
+  @tag :auth
+  test "List users" do
+    user1 = insert!(:user, %{"email" => "foo@bar.com"})
+    assert pagination = %Keila.Pagination{} = Auth.list_users(paginate: true)
+    assert [^user1] = pagination.data
+  end
+
+  @tag :auth
   test "Find user by email" do
     user = insert!(:user)
     assert user == Auth.find_user_by_email(user.email)

@@ -9,8 +9,8 @@
             <a class="button button--text button--large" href="<%= Routes.form_path(@socket, :index, @current_project.id) %>">
                 <%= gettext("Cancel") %>
             </a>
-            <%= delete_form(@socket, @current_project.id, @form.id) %>
-            <%= delete_button(@form.id) %>
+            <%= delete_form_tag(@form, Routes.form_path(@socket, :delete, @current_project.id), as: :form) %>
+            <%= delete_button_tag(@form, [class: "button button--text"], gettext("Delete")) %>
             <button class="button button--cta button--large" action="submit" form="form">
                 <%= gettext("Save") %>
             </button>

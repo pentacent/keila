@@ -145,24 +145,4 @@ defmodule KeilaWeb.FormView do
       gettext("You have been unsubscribed from this list.")
     end
   end
-
-  def delete_form(conn, project_id, id) do
-    route = Routes.form_path(conn, :delete, project_id)
-
-    form_for(:form, route, [id: "delete-form-#{id}", method: "delete"], fn f ->
-      [
-        hidden_input(f, :require_confirmation, value: "true"),
-        hidden_input(f, :id, value: id)
-      ]
-    end)
-  end
-
-  def delete_button(id) do
-    content_tag(
-      :button,
-      gettext("Delete"),
-      class: "button button--text",
-      form: "delete-form-#{id}"
-    )
-  end
 end

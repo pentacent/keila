@@ -71,7 +71,7 @@
                                 <%= Calendar.strftime(contact.inserted_at, "%c") %>
                             </td>
                             <td class="p-2 flex gap-2">
-                                <%= delete_button(contact.id) %>
+                                <%= delete_button_tag(contact, [icon: :trash, class: "button button--text"]) %>
 
                                 <a class="button button--text" href="<%= Routes.contact_path(@conn, :edit, @current_project.id, contact.id) %>">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -88,7 +88,7 @@
             </form>
 
             <%= for contact <- @contacts.data do
-                delete_form(@conn, contact.id)
+                delete_form_tag(contact, Routes.contact_path(@conn, :delete, @current_project.id), as: :contact)
             end %>
 
             <%= if @contacts.page_count > 1 do %>
