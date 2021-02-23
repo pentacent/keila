@@ -96,7 +96,7 @@ defmodule Keila.Factory do
     name |> do_build() |> struct(attributes)
   end
 
-  def build_n(name, n, attribute_fn \\ fn n -> [] end) do
+  def build_n(name, n, attribute_fn \\ fn _n -> [] end) do
     for i <- 1..n do
       build(name, attribute_fn.(i))
     end
@@ -109,7 +109,7 @@ defmodule Keila.Factory do
     name |> build(attributes) |> Repo.insert!()
   end
 
-  def insert_n!(name, n, attribute_fn \\ fn n -> [] end) do
+  def insert_n!(name, n, attribute_fn \\ fn _n -> [] end) do
     for i <- 1..n do
       insert!(name, attribute_fn.(i))
     end
