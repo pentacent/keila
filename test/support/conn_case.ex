@@ -14,8 +14,14 @@ defmodule KeilaWeb.ConnCase do
   by setting `use KeilaWeb.ConnCase, async: true`, although
   this option is not recommended for other databases.
 
-  Provides `with_login/1` function which creates a new activated
-  user and starts a logged in session.
+  Provides the following convenience functions:
+
+  - `with_seed/0`: Seeds database and returns tuple with two users: `{root, regular_user}`
+  - `with_login/2`: Seeds database and returns conn with logged in session.
+    Specifying `root: true` will log in root user instead of regular user.
+    Specifying `user: Keila.User.t()` will log in given user and skip database seeding.
+  - `with_login_and_project/2`: Behaves like `with_login/2` and creates project
+    for logged in user. Returns `{conn, project}` tuple.
   """
 
   use ExUnit.CaseTemplate
@@ -34,19 +40,42 @@ defmodule KeilaWeb.ConnCase do
       # The default endpoint for testing
       @endpoint KeilaWeb.Endpoint
 
-      defp with_login(conn) do
-        params = %{
-          email: "test.user#{:crypto.strong_rand_bytes(12) |> Base.url_encode64()}@example.org",
-          password: "BatteryHorseStaple"
-        }
+      @password "BatteryHorseStaple"
 
-        {:ok, user} = Keila.Auth.create_user(params)
+      defp with_seed() do
+        root_group = insert!(:group, name: "root", parent_id: nil)
+        root_role = Keila.Repo.insert!(%Keila.Auth.Role{name: "root"})
+        root_permission = Keila.Repo.insert!(%Keila.Auth.Permission{name: "administer_keila"})
+
+        Keila.Repo.insert!(%Keila.Auth.RolePermission{
+          role_id: root_role.id,
+          permission_id: root_permission.id
+        })
+
+        root = insert!(:user, password_hash: Argon2.hash_pwd_salt(@password))
+        Keila.Auth.add_user_group_role(root.id, root_group.id, root_role.id)
+        Keila.Auth.activate_user(root.id)
+
+        user = insert!(:user, password_hash: Argon2.hash_pwd_salt(@password))
         Keila.Auth.activate_user(user.id)
+
+        {root, user}
+      end
+
+      defp with_login(conn, opts \\ []) do
+        login_user =
+          cond do
+            not is_nil(Keyword.get(opts, :user)) -> Keyword.get(opts, :user)
+            Keyword.get(opts, :root) == true -> with_seed() |> elem(1)
+            true -> with_seed() |> elem(0)
+          end
 
         conn =
           conn
           |> get(Routes.auth_path(conn, :logout))
-          |> post(Routes.auth_path(conn, :login, user: params))
+          |> post(
+            Routes.auth_path(conn, :login, user: %{email: login_user.email, password: @password})
+          )
 
         path = redirected_to(conn, 302)
 
@@ -55,13 +84,13 @@ defmodule KeilaWeb.ConnCase do
         |> get(path)
       end
 
-      defp setup_project(conn) do
-        _root = insert!(:group)
+      defp with_login_and_project(conn, opts \\ []) do
+        conn = with_login(conn, opts)
 
         {:ok, project} =
           Keila.Projects.create_project(conn.assigns.current_user.id, %{name: "Foo Bar"})
 
-        project
+        {conn, project}
       end
     end
   end

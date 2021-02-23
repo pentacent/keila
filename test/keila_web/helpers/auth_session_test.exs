@@ -9,6 +9,11 @@ defmodule KeilaWeb.AuthSessionTest do
                   signing_salt: "foo-salt"
                 )
 
+  setup do
+    with_seed()
+    :ok
+  end
+
   defp init_session(conn) do
     conn
     |> Map.put(:secret_key_base, :crypto.strong_rand_bytes(64))

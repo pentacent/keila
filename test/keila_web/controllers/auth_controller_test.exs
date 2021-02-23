@@ -6,6 +6,11 @@ defmodule KeilaWeb.AuthControllerTest do
   @sign_up_params %{"email" => "foo@bar.com", "password" => @password}
   @valid_hcaptcha "10000000-aaaa-bbbb-cccc-000000000001"
 
+  setup do
+    with_seed()
+    :ok
+  end
+
   describe "sign up form" do
     @tag :auth_controller
     test "shows form", %{conn: conn} do
@@ -23,7 +28,7 @@ defmodule KeilaWeb.AuthControllerTest do
 
       assert html_response(conn, 200) =~ ~r{Check your inbox!\s*</h1>}
       assert_email_sent()
-      assert %{activated_at: nil} = Repo.one(Auth.User)
+      assert {:ok, %{activated_at: nil}} = Auth.find_user_by_credentials(@sign_up_params)
     end
 
     @tag :auth_controller

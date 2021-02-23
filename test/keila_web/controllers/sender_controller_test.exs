@@ -3,8 +3,7 @@ defmodule KeilaWeb.SenderControllerTest do
 
   @tag :sender_controller
   test "index senders", %{conn: conn} do
-    conn = with_login(conn)
-    project = setup_project(conn)
+    {conn, project} = with_login_and_project(conn)
     senders = insert_n!(:mailings_sender, 2, fn _ -> %{project_id: project.id} end)
 
     conn = get(conn, Routes.sender_path(conn, :index, project.id))
@@ -15,8 +14,7 @@ defmodule KeilaWeb.SenderControllerTest do
 
   @tag :sender_controller
   test "new sender form", %{conn: conn} do
-    conn = with_login(conn)
-    project = setup_project(conn)
+    {conn, project} = with_login_and_project(conn)
     conn = get(conn, Routes.sender_path(conn, :new, project.id))
 
     assert html_response(conn, 200) =~ ~r{New Sender\s*</h1>}
@@ -24,8 +22,7 @@ defmodule KeilaWeb.SenderControllerTest do
 
   @tag :sender_controller
   test "post new sender form", %{conn: conn} do
-    conn = with_login(conn)
-    project = setup_project(conn)
+    {conn, project} = with_login_and_project(conn)
 
     incomplete_params = %{name: "My Sender"}
     conn = post(conn, Routes.sender_path(conn, :post_new, project.id, sender: incomplete_params))
@@ -41,8 +38,7 @@ defmodule KeilaWeb.SenderControllerTest do
 
   @tag :sender_controller
   test "show/edit sender form", %{conn: conn} do
-    conn = with_login(conn)
-    project = setup_project(conn)
+    {conn, project} = with_login_and_project(conn)
     sender = insert!(:mailings_sender, %{project_id: project.id})
 
     conn = get(conn, Routes.sender_path(conn, :edit, project.id, sender.id))
@@ -51,8 +47,7 @@ defmodule KeilaWeb.SenderControllerTest do
 
   @tag :sender_controller
   test "submit edit sender form", %{conn: conn} do
-    conn = with_login(conn)
-    project = setup_project(conn)
+    {conn, project} = with_login_and_project(conn)
     sender = insert!(:mailings_sender, %{project_id: project.id})
 
     params =
@@ -67,8 +62,7 @@ defmodule KeilaWeb.SenderControllerTest do
 
   @tag :sender_controller
   test "show delete sender form", %{conn: conn} do
-    conn = with_login(conn)
-    project = setup_project(conn)
+    {conn, project} = with_login_and_project(conn)
     sender = insert!(:mailings_sender, %{project_id: project.id})
 
     conn = get(conn, Routes.sender_path(conn, :delete, project.id, sender.id))
@@ -77,8 +71,7 @@ defmodule KeilaWeb.SenderControllerTest do
 
   @tag :sender_controller
   test "deleting sender requires confirmation", %{conn: conn} do
-    conn = with_login(conn)
-    project = setup_project(conn)
+    {conn, project} = with_login_and_project(conn)
     sender = insert!(:mailings_sender, %{project_id: project.id})
 
     conn = put(conn, Routes.sender_path(conn, :post_delete, project.id, sender.id), sender: %{})
@@ -96,14 +89,18 @@ defmodule KeilaWeb.SenderControllerTest do
 
   @tag :sender_controller
   test "only authorized users can access sender routes", %{conn: conn} do
-    conn = with_login(conn)
-    project = setup_project(conn)
+    {conn, project} = with_login_and_project(conn)
     sender = insert!(:mailings_sender, %{project_id: project.id})
 
     conn = get(conn, Routes.sender_path(conn, :edit, project.id, sender.id))
     assert html_response(conn, 200) =~ ~r{#{sender.name}\s*</h1>}
 
-    conn = with_login(conn) |> get(Routes.sender_path(conn, :edit, project.id, sender.id))
+    other_user = insert!(:activated_user)
+
+    conn =
+      with_login(conn, user: other_user)
+      |> get(Routes.sender_path(conn, :edit, project.id, sender.id))
+
     assert conn.status == 404
   end
 end

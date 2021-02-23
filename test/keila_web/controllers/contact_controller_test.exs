@@ -3,15 +3,9 @@ defmodule KeilaWeb.ContactControllerTest do
   import Phoenix.LiveViewTest
   @endpoint KeilaWeb.Endpoint
 
-  defp setup_conn_and_project(conn) do
-    conn = with_login(conn)
-    project = setup_project(conn)
-    %{conn: conn, project: project}
-  end
-
   @tag :contact_controller
   test "GET /projects/:p_id/contacts", %{conn: conn} do
-    %{conn: conn, project: project} = setup_conn_and_project(conn)
+    {conn, project} = with_login_and_project(conn)
 
     contacts = insert_n!(:contact, 2, fn _ -> %{project_id: project.id} end)
     conn = get(conn, Routes.contact_path(conn, :index, project.id))
@@ -23,7 +17,7 @@ defmodule KeilaWeb.ContactControllerTest do
 
   @tag :contact_controller
   test "GET /projects/:p_id/contacts empty state", %{conn: conn} do
-    %{conn: conn, project: project} = setup_conn_and_project(conn)
+    {conn, project} = with_login_and_project(conn)
 
     conn = get(conn, Routes.contact_path(conn, :index, project.id))
     assert html_response(conn, 200) =~ ~r{Ready to get started?}
@@ -31,7 +25,7 @@ defmodule KeilaWeb.ContactControllerTest do
 
   @tag :contact_controller
   test "GET /projects/:p_id/contacts/new", %{conn: conn} do
-    %{conn: conn, project: project} = setup_conn_and_project(conn)
+    {conn, project} = with_login_and_project(conn)
 
     conn = get(conn, Routes.contact_path(conn, :new, project.id))
     assert html_response(conn, 200) =~ ~r{New Contact}
@@ -39,7 +33,7 @@ defmodule KeilaWeb.ContactControllerTest do
 
   @tag :contact_controller
   test "POST /projects/:p_id/contacts/new", %{conn: conn} do
-    %{conn: conn, project: project} = setup_conn_and_project(conn)
+    {conn, project} = with_login_and_project(conn)
 
     params = params(:contact)
     conn = post(conn, Routes.contact_path(conn, :new, project.id, contact: params))
@@ -50,7 +44,7 @@ defmodule KeilaWeb.ContactControllerTest do
 
   @tag :contact_controller
   test "GET /projects/:p_id/contacts/:id", %{conn: conn} do
-    %{conn: conn, project: project} = setup_conn_and_project(conn)
+    {conn, project} = with_login_and_project(conn)
     contact = insert!(:contact, project_id: project.id)
     conn = get(conn, Routes.contact_path(conn, :edit, project.id, contact.id))
     assert html_response(conn, 200) =~ ~r{#{contact.email}\s*</h1>}
@@ -58,7 +52,7 @@ defmodule KeilaWeb.ContactControllerTest do
 
   @tag :contact_controller
   test "PUT /projects/:p_id/contacts/:id", %{conn: conn} do
-    %{conn: conn, project: project} = setup_conn_and_project(conn)
+    {conn, project} = with_login_and_project(conn)
     contact = insert!(:contact, project_id: project.id)
 
     conn =
@@ -75,7 +69,7 @@ defmodule KeilaWeb.ContactControllerTest do
 
   @tag :contact_controller
   test "DELETE /projects/:p_id/contacts", %{conn: conn} do
-    %{conn: conn, project: project} = setup_conn_and_project(conn)
+    {conn, project} = with_login_and_project(conn)
     contact = insert!(:contact, project_id: project.id)
 
     conn =
@@ -90,7 +84,7 @@ defmodule KeilaWeb.ContactControllerTest do
 
   @tag :contact_controller
   test "DELETE /projects/:p_id/contacts with confirmation", %{conn: conn} do
-    %{conn: conn, project: project} = setup_conn_and_project(conn)
+    {conn, project} = with_login_and_project(conn)
     contact = insert!(:contact, project_id: project.id)
 
     conn =
@@ -107,7 +101,7 @@ defmodule KeilaWeb.ContactControllerTest do
 
   @tag :contact_controller
   test "LV /projects/:p_id/import", %{conn: conn} do
-    %{conn: conn, project: project} = setup_conn_and_project(conn)
+    {conn, project} = with_login_and_project(conn)
 
     conn = get(conn, Routes.contact_path(conn, :import, project.id))
     assert html_response(conn, 200) =~ ~r{Import Contacts\s*</h1>}
@@ -118,7 +112,7 @@ defmodule KeilaWeb.ContactControllerTest do
 
   @tag :contact_controller
   test "LV /projects/:p_id/import CSV upload", %{conn: conn} do
-    %{conn: conn, project: project} = setup_conn_and_project(conn)
+    {conn, project} = with_login_and_project(conn)
 
     conn = get(conn, Routes.contact_path(conn, :import, project.id))
     {:ok, lv, _html} = live(conn)

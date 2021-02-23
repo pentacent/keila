@@ -4,16 +4,10 @@ defmodule KeilaWeb.CampaignControllerTest do
   alias Keila.Mailings
   @endpoint KeilaWeb.Endpoint
 
-  defp setup_conn_and_project(conn) do
-    conn = with_login(conn)
-    project = setup_project(conn)
-    %{conn: conn, project: project}
-  end
-
   describe "GET /projects/:p_id/campaigns" do
     @tag :campaign_controller
     test "list campaigns", %{conn: conn} do
-      %{conn: conn, project: project} = setup_conn_and_project(conn)
+      {conn, project} = with_login_and_project(conn)
 
       campaigns = insert_n!(:mailings_campaign, 5, fn _ -> %{project_id: project.id} end)
       conn = get(conn, Routes.campaign_path(conn, :index, project.id))
@@ -23,7 +17,7 @@ defmodule KeilaWeb.CampaignControllerTest do
 
     @tag :campaign_controller
     test "show empty state", %{conn: conn} do
-      %{conn: conn, project: project} = setup_conn_and_project(conn)
+      {conn, project} = with_login_and_project(conn)
       conn = get(conn, Routes.campaign_path(conn, :index, project.id))
       assert html_response(conn, 200) =~ "Create your first campaign"
     end
@@ -32,7 +26,7 @@ defmodule KeilaWeb.CampaignControllerTest do
   describe "GET /projects/:p_id/campaigns/new" do
     @tag :campaign_controller
     test "shows creation page with subject form", %{conn: conn} do
-      %{conn: conn, project: project} = setup_conn_and_project(conn)
+      {conn, project} = with_login_and_project(conn)
       conn = get(conn, Routes.campaign_path(conn, :new, project.id))
       assert html_response(conn, 200) =~ ~r{New Campaign\s*</h1>}
     end
@@ -41,7 +35,7 @@ defmodule KeilaWeb.CampaignControllerTest do
   describe "POST /projects/:p_id/campaigns/new" do
     @tag :campaign_controller
     test "creates new campaign and redirects", %{conn: conn} do
-      %{conn: conn, project: project} = setup_conn_and_project(conn)
+      {conn, project} = with_login_and_project(conn)
 
       params = %{"subject" => "My Campaign", "settings" => %{"type" => "text"}}
       conn = post(conn, Routes.campaign_path(conn, :post_new, project.id, campaign: params))
@@ -50,7 +44,7 @@ defmodule KeilaWeb.CampaignControllerTest do
 
     @tag :campaign_controller
     test "validates params", %{conn: conn} do
-      %{conn: conn, project: project} = setup_conn_and_project(conn)
+      {conn, project} = with_login_and_project(conn)
       params = %{"subject" => "", "settings" => %{"type" => "text"}}
       conn = post(conn, Routes.campaign_path(conn, :post_new, project.id, campaign: params))
       assert html_response(conn, 400) =~ ~r{can&#39;t be blank}
@@ -60,7 +54,7 @@ defmodule KeilaWeb.CampaignControllerTest do
   describe "LV /projects/:p_id/campaigns/:id" do
     @tag :campaign_controller
     test "shows edit form", %{conn: conn} do
-      %{conn: conn, project: project} = setup_conn_and_project(conn)
+      {conn, project} = with_login_and_project(conn)
       campaign = insert!(:mailings_campaign, project_id: project.id)
       conn = get(conn, Routes.campaign_path(conn, :edit, project.id, campaign.id))
 
@@ -69,7 +63,7 @@ defmodule KeilaWeb.CampaignControllerTest do
 
     @tag :campaign_controller
     test "generates campaign preview", %{conn: conn} do
-      %{conn: conn, project: project} = setup_conn_and_project(conn)
+      {conn, project} = with_login_and_project(conn)
 
       campaign =
         insert!(:mailings_campaign, project_id: project.id, type: :text, text_body: "Hello there!")
@@ -91,7 +85,7 @@ defmodule KeilaWeb.CampaignControllerTest do
   describe "PUT /projects/:p_id/campaigns/:id" do
     @tag :campaign_controller
     test "updates campaign and redirects to index", %{conn: conn} do
-      %{conn: conn, project: project} = setup_conn_and_project(conn)
+      {conn, project} = with_login_and_project(conn)
       sender = build(:mailings_sender, project_id: project.id)
       campaign = insert!(:mailings_campaign, project_id: project.id, sender: sender)
 
@@ -106,7 +100,7 @@ defmodule KeilaWeb.CampaignControllerTest do
 
     @tag :campaign_controller
     test "delivers campaign and redirects to stats page", %{conn: conn} do
-      %{conn: conn, project: project} = setup_conn_and_project(conn)
+      {conn, project} = with_login_and_project(conn)
       sender = build(:mailings_sender, project_id: project.id)
       campaign = insert!(:mailings_campaign, project_id: project.id, sender: sender)
       _contacts = insert_n!(:contact, 10, fn _ -> %{project_id: project.id} end)
@@ -128,7 +122,7 @@ defmodule KeilaWeb.CampaignControllerTest do
   describe "LV /projects/:p_id/campaigns/:id/stats" do
     @tag :campaign_controller
     test "shows delivery progress and success message", %{conn: conn} do
-      %{conn: conn, project: project} = setup_conn_and_project(conn)
+      {conn, project} = with_login_and_project(conn)
 
       campaign =
         insert!(:mailings_campaign,
@@ -152,7 +146,7 @@ defmodule KeilaWeb.CampaignControllerTest do
   describe "DELETE /projects/" do
     @tag :campaign_controller
     test "deletes campaign", %{conn: conn} do
-      %{conn: conn, project: project} = setup_conn_and_project(conn)
+      {conn, project} = with_login_and_project(conn)
       campaign = insert!(:mailings_campaign, project_id: project.id)
 
       conn =
@@ -167,7 +161,7 @@ defmodule KeilaWeb.CampaignControllerTest do
 
     @tag :campaign_controller
     test "shows confirmation page", %{conn: conn} do
-      %{conn: conn, project: project} = setup_conn_and_project(conn)
+      {conn, project} = with_login_and_project(conn)
       campaign = insert!(:mailings_campaign, project_id: project.id)
 
       conn =
@@ -186,7 +180,7 @@ defmodule KeilaWeb.CampaignControllerTest do
   describe "GET /projects/:p_id/campaigns/:id/clone" do
     @tag :campaign_controller
     test "shows form for cloning", %{conn: conn} do
-      %{conn: conn, project: project} = setup_conn_and_project(conn)
+      {conn, project} = with_login_and_project(conn)
       campaign = insert!(:mailings_campaign, project_id: project.id)
       conn = get(conn, Routes.campaign_path(conn, :clone, project.id, campaign.id))
       assert html_response(conn, 200) =~ ~r{Clone Campaign\s*</h1>}
@@ -196,7 +190,7 @@ defmodule KeilaWeb.CampaignControllerTest do
   describe "POST /projects/:p_id/campaigns/:id/clone" do
     @tag :campaign_controller
     test "clones campaign and redirects to edit page", %{conn: conn} do
-      %{conn: conn, project: project} = setup_conn_and_project(conn)
+      {conn, project} = with_login_and_project(conn)
       campaign = insert!(:mailings_campaign, project_id: project.id)
       params = %{"subject" => "Foo bar"}
 

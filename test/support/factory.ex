@@ -15,6 +15,11 @@ defmodule Keila.Factory do
     }
   end
 
+  defp do_build(:activated_user) do
+    do_build(:user)
+    |> Map.put(:activated_at, DateTime.utc_now() |> DateTime.truncate(:second))
+  end
+
   defp do_build(:group) do
     %Keila.Auth.Group{
       name: "group-#{get_counter_value()}"
