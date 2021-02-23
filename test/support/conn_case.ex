@@ -54,10 +54,10 @@ defmodule KeilaWeb.ConnCase do
 
         root = insert!(:user, password_hash: Argon2.hash_pwd_salt(@password))
         Keila.Auth.add_user_group_role(root.id, root_group.id, root_role.id)
-        Keila.Auth.activate_user(root.id)
+        {:ok, root} = Keila.Auth.activate_user(root.id)
 
         user = insert!(:user, password_hash: Argon2.hash_pwd_salt(@password))
-        Keila.Auth.activate_user(user.id)
+        {:ok, user} = Keila.Auth.activate_user(user.id)
 
         {root, user}
       end
