@@ -98,4 +98,20 @@ defmodule Keila.MailingsCampaignTest do
     assert {:error, :no_recipients} = Mailings.deliver_campaign(campaign.id)
     assert %{sent_at: nil} = Mailings.get_campaign(campaign.id)
   end
+
+  @tag :mailings_campaign
+  test "campaign that has been delivered is not delivered again", %{project: project} do
+    sender = insert!(:mailings_sender, config: %Mailings.Sender.Config{type: "test"})
+    sent_at = DateTime.utc_now() |> DateTime.truncate(:second)
+
+    campaign =
+      insert!(:mailings_campaign,
+        project_id: project.id,
+        sender_id: sender.id,
+        sent_at: sent_at
+      )
+
+    assert {:error, :already_sent} = Mailings.deliver_campaign(campaign.id)
+    assert %{sent_at: ^sent_at} = Mailings.get_campaign(campaign.id)
+  end
 end

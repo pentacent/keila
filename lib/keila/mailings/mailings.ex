@@ -170,54 +170,55 @@ defmodule Keila.Mailings do
   """
   @spec deliver_campaign(Campaign.id()) :: {:error, :no_recipients} | {:error, term()} | :ok
   def deliver_campaign(id) when is_id(id) do
-    {:ok, campaign} =
-      id
-      |> get_campaign()
-      |> change(sent_at: DateTime.truncate(DateTime.utc_now(), :second))
-      |> Repo.update()
+    result =
+      Repo.transaction(fn ->
+        case get_and_lock_campaign(id) do
+          %Campaign{sent_at: nil} = campaign -> do_deliver_campaign(campaign)
+          %Campaign{} -> Repo.rollback(:already_sent)
+        end
+      end)
 
-    stream = Keila.Contacts.stream_project_contacts(campaign.project_id, [])
-
-    case do_deliver_campaign(stream, campaign) do
-      {:ok, :ok} ->
-        :ok
-
-      {:error, reason} ->
-        campaign
-        |> change(sent_at: nil)
-        |> Repo.update()
-
-        {:error, reason}
+    case result do
+      {:ok, :ok} -> :ok
+      {:error, reason} -> {:error, reason}
     end
   end
 
-  defp do_deliver_campaign(contacts_stream, campaign) do
-    Repo.transaction(fn ->
-      contacts_stream
-      |> Enum.map(fn contact ->
-        now = DateTime.utc_now() |> DateTime.truncate(:second) |> DateTime.to_naive()
-        %{contact_id: contact.id, campaign_id: campaign.id, inserted_at: now, updated_at: now}
-      end)
-      |> Stream.chunk_every(1000)
-      |> Stream.map(fn recipients ->
-        {_n, recipients} = Repo.insert_all(Recipient, recipients, returning: [:id])
-        recipients
-      end)
-      |> Stream.map(fn recipients ->
-        recipients
-        |> Enum.map(fn recipient ->
-          Keila.Mailings.Worker.new(%{"recipient_id" => recipient.id})
-        end)
-        |> Oban.insert_all()
-      end)
-      |> run_or_rollback()
+  defp get_and_lock_campaign(id) when is_id(id) do
+    from(c in Campaign, where: c.id == ^id, lock: "FOR NO KEY UPDATE")
+    |> Repo.one()
+  end
+
+  defp do_deliver_campaign(campaign) do
+    {:ok, campaign} =
+      campaign
+      |> change(sent_at: DateTime.truncate(DateTime.utc_now(), :second))
+      |> Repo.update()
+
+    Keila.Contacts.stream_project_contacts(campaign.project_id, [])
+    |> Enum.map(fn contact ->
+      now = DateTime.utc_now() |> DateTime.truncate(:second) |> DateTime.to_naive()
+      %{contact_id: contact.id, campaign_id: campaign.id, inserted_at: now, updated_at: now}
     end)
+    |> Stream.chunk_every(1000)
+    |> Stream.map(fn recipients ->
+      {_n, recipients} = Repo.insert_all(Recipient, recipients, returning: [:id])
+      recipients
+    end)
+    |> Stream.map(fn recipients ->
+      recipients
+      |> Enum.map(fn recipient ->
+        Keila.Mailings.Worker.new(%{"recipient_id" => recipient.id})
+      end)
+      |> Oban.insert_all()
+    end)
+    |> run_or_rollback()
   end
 
   defp run_or_rollback(stream) do
     case Enum.count(stream) do
       0 -> Repo.rollback(:no_recipients)
-      n -> :ok
+      _n -> :ok
     end
   end
 
