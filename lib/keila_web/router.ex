@@ -55,6 +55,9 @@ defmodule KeilaWeb.Router do
     get "/", ProjectController, :index
     get "/projects/new", ProjectController, :new
     post "/projects/new", ProjectController, :post_new
+
+    get "/admin", AdminController, :dashboard
+    delete "/admin/users", AdminController, :delete_users
   end
 
   # Authenticated Routes within a Project context

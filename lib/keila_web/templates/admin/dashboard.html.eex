@@ -1,0 +1,53 @@
+<main role="main" class="static-container flex-grow bg-gray-800 text-gray-50">
+    <div class="bg-gray-900 text-gray-50">
+        <div class="container py-8 sm:py-6 md:py-12 lg:py-16 flex">
+            <div class="flex-grow">
+                <h1 class="text-2xl sm:text-5xl mb-4">
+                    <%= dgettext("admin", "Administer Keila") %>
+                </h1>
+                <p class="mt-4">
+                    <%= dgettext("admin", "Here you can manage other users on your Keila instance.") %>
+                </p>
+            </div>
+        </div>
+    </div>
+    <%= if @users.page_count > 0 do %>
+        <div class="container py-4">
+            <table class="w-full">
+                <tr class="text-left">
+                    <th class="p-2"><%= dgettext("admin", "Email") %></th>
+                    <th class="p-2"><%= dgettext("admin", "Sign-up") %></th>
+                    <th class="p-2"><%= dgettext("admin", "Activation") %></th>
+                    <th class="p-2"></th>
+                </tr>
+                <%= for user <- @users.data do %>
+                    <tr>
+                        <td class="p-2">
+                            <%= user.email %>
+                        </td>
+                        <td class="p-2">
+                            <%= Calendar.strftime(user.inserted_at, "%c") %>
+                        </td>
+                        <td class="p-2 flex gap-2">
+                            <%= if user.activated_at do %>
+                                <%= Calendar.strftime(user.activated_at, "%c") %>
+                            <% end %>
+                        </td>
+                        <td>
+                            <%= if user.id != @current_user.id do %>
+                                <%= delete_form_tag(user, Routes.admin_path(@conn, :delete_users), as: :user) %>
+                                <%= delete_button_tag(user, icon: :trash, class: "button button--text") %>
+                            <% end %>
+                        </td>
+                    </tr>
+                <% end %>
+            </table>
+
+            <%= if @users.page_count > 1 do %>
+                <div class="flex gap-3 justify-center py-8">
+                    <%= pagination_nav(@users, fn n -> Routes.admin_path(@conn, :dashboard, %{"page" => n + 1}) end) %>
+                </div>
+            <% end %>
+        </div>
+    <% end %>
+</main>
