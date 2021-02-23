@@ -118,8 +118,16 @@ defmodule Keila.Factory do
   @doc """
   Builds params for a struct with optional attributes
   """
-  def params(name, attributs \\ []) do
-    build(name, attributs)
+  def params(name, attributes \\ [])
+
+  def params(:user, attributes) do
+    build(:user, attributes)
+    |> maybe_to_map()
+    |> Map.put("password", "BatteryHorseStaple")
+  end
+
+  def params(name, attributes) do
+    build(name, attributes)
     |> maybe_to_map()
   end
 
