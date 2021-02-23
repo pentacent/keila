@@ -57,22 +57,16 @@ defmodule Keila.Contacts.Query do
   end
 
   defp build_and(input) do
-    Enum.reduce(input, nil, fn {k, v}, conditions ->
-      condition = build_condition(k, v)
-
-      if conditions == nil,
-        do: condition,
-        else: dynamic([c], ^condition and ^conditions)
+    Enum.reduce(input, nil, fn
+      {k, v}, nil -> build_condition(k, v)
+      {k, v}, conditions -> dynamic([c], ^build_condition(k, v) and ^conditions)
     end)
   end
 
   defp build_or(input) do
-    Enum.reduce(input, nil, fn input, conditions ->
-      condition = build_and(input)
-
-      if conditions == nil,
-        do: condition,
-        else: dynamic([c], ^condition or ^conditions)
+    Enum.reduce(input, nil, fn
+      input, nil -> build_and(input)
+      input, conditions -> dynamic([c], ^build_and(input) or ^conditions)
     end)
   end
 
