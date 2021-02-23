@@ -24,7 +24,7 @@ defmodule KeilaWeb.DeleteButtonHelpers do
   end
 
   @spec delete_button_tag(struct(), Keyword.t(), term()) :: Phoenix.HTML.safe()
-  def delete_button_tag(struct, opts \\ [], content)
+  def delete_button_tag(struct, opts, content \\ [])
 
   def delete_button_tag(struct, opts, do: content), do: delete_button_tag(struct, opts, content)
 
