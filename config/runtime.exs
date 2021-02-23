@@ -108,6 +108,9 @@ if config_env() == :prod do
 
       This should be a strong secret with a length
       of at least 64 characters.
+
+      One way to create a strong secret is running the following command:
+      head -c 48 /dev/urandom | base64
       """)
   end
 
