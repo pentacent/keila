@@ -10,8 +10,8 @@ defmodule KeilaWeb.AuthSessionTest do
                 )
 
   setup do
-    with_seed()
-    :ok
+    {root, user} = with_seed()
+    %{root: root, user: user}
   end
 
   defp init_session(conn) do
@@ -46,9 +46,7 @@ defmodule KeilaWeb.AuthSessionTest do
     end
 
     @tag :auth_session
-    test "puts @current_user assign", %{conn: conn} do
-      user = insert!(:user)
-
+    test "puts @current_user assign", %{conn: conn, user: user} do
       conn =
         conn
         |> init_session()
@@ -56,6 +54,25 @@ defmodule KeilaWeb.AuthSessionTest do
         |> AuthSession.Plug.call([])
 
       assert conn.assigns.current_user == user
+    end
+
+    @tag :auth_session
+    test "puts @is_admin? assign", %{conn: conn, user: user, root: root} do
+      conn =
+        conn
+        |> init_session()
+        |> AuthSession.start_auth_session(user.id)
+        |> AuthSession.Plug.call([])
+
+      assert conn.assigns.is_admin? == false
+
+      conn =
+        conn
+        |> init_session()
+        |> AuthSession.start_auth_session(root.id)
+        |> AuthSession.Plug.call([])
+
+      assert conn.assigns.is_admin? == true
     end
   end
 
