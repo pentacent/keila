@@ -2,30 +2,6 @@ defmodule KeilaWeb.ContactView do
   use KeilaWeb, :view
   use Phoenix.HTML
 
-  def delete_form(conn, id) do
-    route = Routes.contact_path(conn, :delete, conn.assigns.current_project.id)
-
-    form_for(conn, route, [as: :contact, id: "delete-form-#{id}", method: "delete"], fn f ->
-      [
-        hidden_input(f, :require_confirmation, value: "true"),
-        hidden_input(f, :id, value: id)
-      ]
-    end)
-  end
-
-  def delete_button(id) do
-    content_tag(
-      :button,
-      ~e{
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-            </svg>
-          },
-      class: "button button--text",
-      form: "delete-form-#{id}"
-    )
-  end
-
   @spec pagination_nav(Plug.Conn.t(), Keila.Pagination.t()) :: list()
   def pagination_nav(conn, pagination) do
     page = pagination.page
