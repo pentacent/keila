@@ -1,0 +1,35 @@
+<main role="main" class="static-container flex-grow bg-gray-800 text-gray-50 pb-8">
+    <div class="bg-gray-900 text-gray-50">
+        <div class="container py-8 sm:py-6 md:py-12 lg:py-16 flex">
+            <div class="flex-grow">
+                <h1 class="text-2xl sm:text-5xl md:text-7xl mb-4">
+                    <%= gettext("Delete Users?") %>
+                </h1>
+                <p class="text-lg text-gray-200">
+                    <%= gettext("Do you really want to delete the following users? This will also delete their projects and contacts.") %>
+                </p>
+                <%= form_for(:user, Routes.admin_path(@conn, :delete_users), [method: :delete], fn f -> %>
+                    <ul class="list-disc pl-4 my-4">
+                        <%= for user <- @users do %>
+                            <li>
+                                <%= user.email %>
+                                <%= hidden_input(f, :id, value: user.id, name: "user[id][]") %>
+                            </li>
+                        <% end %>
+                    </ul>
+                    <p class="text-lg text-gray-200 font-bold">
+                        <%= gettext("Deleting a user cannot be undone.") %>
+                    </p>
+                    <div class="flex gap-4 mt-4">
+                        <a class="button button--text button--large" href="<%= Routes.admin_path(@conn, :dashboard) %>">
+                            <%= gettext("Cancel") %>
+                        </a>
+                        <button type="submit" class="button button--warn button--large">
+                            <%= gettext("Delete") %>
+                        </button>
+                    </div>
+                <% end) %>
+            </div>
+        </div>
+    </div>
+</main>

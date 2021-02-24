@@ -93,7 +93,7 @@
 
             <%= if @contacts.page_count > 1 do %>
                 <div class="flex gap-3 justify-center py-8">
-                    <%= pagination_nav(@conn, @contacts) %>
+                    <%= pagination_nav(@contacts, fn n -> Routes.contact_path(@conn, :index, @current_project.id, %{"page" => n + 1}) end) %>
                 </div>
             <% end %>
 

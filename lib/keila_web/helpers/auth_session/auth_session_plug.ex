@@ -10,7 +10,11 @@ defmodule KeilaWeb.AuthSession.Plug do
     with session_token when is_binary(session_token) <- get_session(conn, :token),
          token = %Auth.Token{} <- Auth.find_token(session_token, "web.session"),
          user = %Auth.User{} <- Keila.Repo.get(Auth.User, token.user_id) do
-      assign(conn, :current_user, user)
+      is_admin? = Auth.has_permission?(user.id, Auth.root_group().id, "administer_keila")
+
+      conn
+      |> assign(:current_user, user)
+      |> assign(:is_admin?, is_admin?)
     else
       _ -> assign(conn, :current_user, nil)
     end

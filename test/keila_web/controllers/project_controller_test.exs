@@ -13,8 +13,6 @@ defmodule KeilaWeb.ProjectControllerTest do
 
   @tag :project_controller
   test "project form requires project name", %{conn: conn} do
-    _root = insert!(:group)
-
     conn =
       conn
       |> with_login()
@@ -25,8 +23,6 @@ defmodule KeilaWeb.ProjectControllerTest do
 
   @tag :project_controller
   test "project form creates new project", %{conn: conn} do
-    _root = insert!(:group)
-
     conn =
       conn
       |> with_login()
@@ -45,8 +41,6 @@ defmodule KeilaWeb.ProjectControllerTest do
 
   @tag :project_controller
   test "deleting a project requires confirmation", %{conn: conn} do
-    _root = insert!(:group)
-
     conn = with_login(conn)
 
     {:ok, project} = Keila.Projects.create_project(conn.assigns.current_user.id, params(:project))
@@ -69,8 +63,6 @@ defmodule KeilaWeb.ProjectControllerTest do
 
   @tag :project_controller
   test "only authorized users can access a project", %{conn: conn} do
-    _root = insert!(:group)
-
     conn = with_login(conn)
 
     {:ok, project} = Keila.Projects.create_project(conn.assigns.current_user.id, params(:project))
@@ -78,9 +70,11 @@ defmodule KeilaWeb.ProjectControllerTest do
     conn = get(conn, Routes.project_path(conn, :show, project.id))
     assert html_response(conn, 200) =~ ~r{#{project.name}\s*</h1>}
 
+    other_user = insert!(:activated_user)
+
     conn =
       conn
-      |> with_login()
+      |> with_login(user: other_user)
       |> get(Routes.project_path(conn, :show, project.id))
 
     assert conn.status == 404

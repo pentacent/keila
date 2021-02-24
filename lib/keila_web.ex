@@ -95,6 +95,7 @@ defmodule KeilaWeb do
       import Phoenix.View
 
       import KeilaWeb.ErrorHelpers
+      import KeilaWeb.PaginationHelpers
       import KeilaWeb.DeleteButtonHelpers
       import KeilaWeb.Gettext
       alias KeilaWeb.Router.Helpers, as: Routes

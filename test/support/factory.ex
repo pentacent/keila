@@ -15,6 +15,11 @@ defmodule Keila.Factory do
     }
   end
 
+  defp do_build(:activated_user) do
+    do_build(:user)
+    |> Map.put(:activated_at, DateTime.utc_now() |> DateTime.truncate(:second))
+  end
+
   defp do_build(:group) do
     %Keila.Auth.Group{
       name: "group-#{get_counter_value()}"
@@ -96,7 +101,7 @@ defmodule Keila.Factory do
     name |> do_build() |> struct(attributes)
   end
 
-  def build_n(name, n, attribute_fn \\ fn n -> [] end) do
+  def build_n(name, n, attribute_fn \\ fn _n -> [] end) do
     for i <- 1..n do
       build(name, attribute_fn.(i))
     end
@@ -109,7 +114,7 @@ defmodule Keila.Factory do
     name |> build(attributes) |> Repo.insert!()
   end
 
-  def insert_n!(name, n, attribute_fn \\ fn n -> [] end) do
+  def insert_n!(name, n, attribute_fn \\ fn _n -> [] end) do
     for i <- 1..n do
       insert!(name, attribute_fn.(i))
     end
@@ -118,8 +123,16 @@ defmodule Keila.Factory do
   @doc """
   Builds params for a struct with optional attributes
   """
-  def params(name, attributs \\ []) do
-    build(name, attributs)
+  def params(name, attributes \\ [])
+
+  def params(:user, attributes) do
+    build(:user, attributes)
+    |> maybe_to_map()
+    |> Map.put("password", "BatteryHorseStaple")
+  end
+
+  def params(name, attributes) do
+    build(name, attributes)
     |> maybe_to_map()
   end
 
