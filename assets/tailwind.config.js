@@ -1,5 +1,10 @@
 module.exports = {
-  purge: [],
+  purge: [
+    '../lib/**/*.ex',
+    '../lib/**/*.leex',
+    '../lib/**/*.eex',
+    './js/**/*.js'
+  ],
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {},
@@ -12,7 +17,7 @@ module.exports = {
       ringOffsetWidth: ['responsive', 'focus-within', 'focus', 'hover'],
       ringOpacity: ['responsive', 'focus-within', 'focus', 'hover'],
       ringWidth: ['responsive', 'focus-within', 'focus', 'hover'],
-  
+      
     },
   },
   plugins: [require('@tailwindcss/forms')],
