@@ -18,7 +18,9 @@ if Keila.Repo.all(Auth.Group) == [] do
         email
 
       _empty ->
-        Logger.warn("KEILA_USER not set. Creating root user with email: root@localhost")
+        email = "root@localhost.dev"
+        Logger.warn("KEILA_USER not set. Creating root user with email: root@localhost.dev")
+        email
     end
 
   password =
