@@ -6,6 +6,8 @@
 require Logger
 alias Keila.{Repo, Auth}
 
+@default_email "root@localhost"
+
 if Keila.Repo.all(Auth.Group) == [] do
   group = Keila.Repo.insert!(%Auth.Group{name: "root"})
   role = Keila.Repo.insert!(%Auth.Role{name: "root"})
@@ -18,9 +20,8 @@ if Keila.Repo.all(Auth.Group) == [] do
         email
 
       _empty ->
-        email = "root@localhost.dev"
-        Logger.warn("KEILA_USER not set. Creating root user with email: root@localhost.dev")
-        email
+        Logger.warn("KEILA_USER not set. Creating root user with email: #{@default_email}")
+        @default_email
     end
 
   password =

@@ -14,7 +14,10 @@ defmodule Keila.ReleaseTasks do
   """
   def init() do
     migrate()
-    Ecto.Migrator.with_repo(Keila.Repo, fn _ -> Code.eval_file("priv/repo/seeds.exs") end)
+    Ecto.Migrator.with_repo(Keila.Repo, fn _ ->
+      Code.eval_file("priv/repo/seeds.exs")
+      {:ok, :stop}
+    end)
   end
 
   @doc """
