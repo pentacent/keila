@@ -16,7 +16,7 @@ defmodule Keila.ReleaseTasks do
     migrate()
 
     Ecto.Migrator.with_repo(Keila.Repo, fn _ ->
-      Code.eval_file("priv/repo/seeds.exs")
+      Code.eval_file(Path.join('priv', "repo/seeds.exs"))
       {:ok, :stop}
     end)
   end
