@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 0.2.1
+
+## Fixed
+
+- TailwindCSS styles are now pruned, massively reducing CSS size
+- Default admin user is created correctly when `KEILA_USER` is not specified
+- Fixed crash when starting release
+
 ## Version 0.2.0
 
 Simplified deployments ⚙️
