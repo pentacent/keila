@@ -11,14 +11,12 @@ RUN mix local.hex --force && \
     mix deps.compile
 
 COPY assets/package.json assets/package-lock.json ./assets/
-RUN cd assets && \
-    npm ci
+RUN npm ci --prefix ./assets
     
 COPY assets ./assets-data
 RUN mv assets-data/* assets/ && \
     rm -Rf assets-data && \
-    cd assets && \
-    npm run deploy
+    npm run deploy --prefix ./assets
 
 COPY . .
 RUN mix phx.digest && \
