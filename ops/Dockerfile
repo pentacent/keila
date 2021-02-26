@@ -14,10 +14,7 @@ COPY assets/package.json assets/package-lock.json ./assets/
 RUN npm ci --prefix ./assets
     
 COPY . .
-COPY assets ./assets-data
-RUN mv assets-data/* assets/ && \
-    rm -Rf assets-data && \
-    npm run deploy --prefix ./assets && \
+RUN npm run deploy --prefix ./assets && \
     mix phx.digest && \
     mix release
 
