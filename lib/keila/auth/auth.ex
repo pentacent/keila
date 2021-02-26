@@ -12,7 +12,7 @@ defmodule Keila.Auth do
   1. Create a `User` by specifying an email address and an optional
      password.
      Provide a callback function for  generating the verification link.
-        {:ok, user} = Auth.create_user(%{email: "foo@example.com", password: "BatteryHorseStaple"}, &url_fn/1)
+        {:ok, user} = Auth.create_user(%{email: "foo@example.com", password: "BatteryHorseStaple"}, url_fn: &url_fn/1)
 
   2. The User is sent an email notification with the activation link.
      Verify the User with the provided token:
@@ -277,16 +277,24 @@ defmodule Keila.Auth do
 
   Specify the `url_fn` callback function to generate the verification token URL.
 
+  ## Options
+   - `:skip_activation_email` - Don’t send activation email if set to `true`
+
+
   ## Example
 
   params = %{email: "foo@bar.com"}
   url_fn = MyAppWeb.Router.Helpers.auth_activate_url/1
   """
-  @spec create_user(map(), token_url_fn) ::
+  @spec create_user(map(), Keyword.t()) ::
           {:ok, User.t()} | {:error, Ecto.Changeset.t(User.t())}
-  def create_user(params, url_fn \\ &default_url_function/1) do
+  def create_user(params, opts \\ []) do
     with {:ok, user} <- do_create_user(params) do
-      send_activation_link(user.id, url_fn)
+      unless Keyword.get(opts, :skip_activation_email) do
+        url_fn = Keyword.get(opts, :url_fn, &default_url_function/1)
+        send_activation_link(user.id, url_fn)
+      end
+
       {:ok, user}
     else
       {:error, changeset} ->

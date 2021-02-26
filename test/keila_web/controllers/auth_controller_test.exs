@@ -83,7 +83,7 @@ defmodule KeilaWeb.AuthControllerTest do
 
   @tag :auth_controller
   test "user is activated with activation link", %{conn: conn} do
-    assert {:ok, user} = Auth.create_user(@sign_up_params, &"~~key#{&1}~~")
+    assert {:ok, user} = Auth.create_user(@sign_up_params, url_fn: &"~~key#{&1}~~")
 
     receive do
       {:email, email} ->

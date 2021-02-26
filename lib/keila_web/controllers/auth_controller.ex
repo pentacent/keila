@@ -22,7 +22,7 @@ defmodule KeilaWeb.AuthController do
 
   defp do_post_register(conn, %{"user" => params, "h-captcha-response" => captcha}) do
     if captcha_valid?(captcha) do
-      case Auth.create_user(params, &Routes.auth_url(conn, :activate, &1)) do
+      case Auth.create_user(params, url_fn: &Routes.auth_url(conn, :activate, &1)) do
         {:ok, user} ->
           conn
           |> assign(:user, user)

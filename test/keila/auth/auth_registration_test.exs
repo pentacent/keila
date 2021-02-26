@@ -10,7 +10,7 @@ defmodule Keila.AuthTest.Registration do
     assert {:ok, user = %User{activated_at: nil}} =
              Auth.create_user(
                %{"email" => "foo@bar.com", "password" => @password},
-               &"~~key#{&1}~~"
+               url_fn: &"~~key#{&1}~~"
              )
 
     user_id = user.id
@@ -22,6 +22,18 @@ defmodule Keila.AuthTest.Registration do
         assert {:ok, %User{id: ^user_id, activated_at: %DateTime{}}} =
                  Auth.activate_user_from_token(token)
     end
+  end
+
+  @tag :auth
+  test "Create user and skip activation email" do
+    assert {:ok, %User{activated_at: nil}} =
+             Auth.create_user(
+               %{"email" => "foo@bar.com", "password" => @password},
+               url_fn: &"~~key#{&1}~~",
+               skip_activation_email: true
+             )
+
+    assert_no_email_sent()
   end
 
   @tag :auth

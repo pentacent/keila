@@ -35,7 +35,7 @@ if Keila.Repo.all(Auth.Group) == [] do
         password
     end
 
-  case Keila.Auth.create_user(%{email: email, password: password}) do
+  case Keila.Auth.create_user(%{email: email, password: password}, url_fn: & &1) do
     {:ok, user} ->
       Keila.Auth.activate_user(user.id)
       Keila.Auth.add_user_group_role(user.id, group.id, role.id)
