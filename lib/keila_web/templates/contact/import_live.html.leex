@@ -20,9 +20,7 @@
     <% @import_total == 0 -> %>
         <form id="import-form" phx-submit="import" phx-change="validate" class="flex flex-col items-start gap-4">
             <label class="button <%= if Enum.empty?(@uploads.csv.entries), do: "button--cta button--large" %>">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                </svg>
+                <%= render_icon(:upload) %>
                 <%= gettext("Select a file") %>
                 <%= live_file_input(@uploads.csv, class: "hidden") %>
                 <%= for entry <- @uploads.csv.entries do %>
@@ -33,9 +31,7 @@
 
             <%= if not Enum.empty?(@uploads.csv.entries) do %>
                 <button class="button button--cta button--large" type="submit">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
-                    </svg>
+                    <%= render_icon(:cursor_click) %>
                     <%= gettext("Start Import") %>
                 </button>
             <% end %>
@@ -48,10 +44,7 @@
         </div>
     <% @import_total == @import_progress -> %>
         <h2 class="text-xl flex gap-2">
-            <svg class="h-8 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-            </svg>
-
+            <%= render_icon(:sparkles) %>
             <%= gettext("You have successfully imported %{number} contacts!", number: @import_total) %>
         </h2>
         <a class="button button--text" href="<%= Routes.contact_path(@socket, :index, @current_project.id) %>">

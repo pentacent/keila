@@ -12,15 +12,11 @@
             <%= delete_form_tag(@campaign, Routes.campaign_path(@socket, :delete, @campaign.id), as: :campaign) %>
             <%= delete_button_tag(@campaign, [class: "button button--text button--large"], gettext("Delete")) %>
             <button class="button button--large" action="submit" form="campaign">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
-                </svg>
+                <%= render_icon(:save) %>
                 <%= gettext("Save") %>
             </button>
             <button class="button button--cta button--large" @click.prevent="showSendDialog = true">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                </svg>
+                <%= render_icon(:paper_airplane) %>
                 <%= gettext("Send") %>
             </button>
         </div>
@@ -66,9 +62,7 @@
                     <div id="preview-container" class="w-1/2 flex-grow flex flex-col" phx-update="ignore">
                         <iframe id="html-preview" src="javascript:false" class="bg-gray-100 flex-grow" :class="previewMode ? 'fixed w-full h-full inset-0 pb-10 z-40' : ''"></iframe>
                         <button class="button mt-2" @click.prevent="previewMode = !previewMode">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-                            </svg>
+                            <%= render_icon(:zoom_in) %>
                             <%= gettext("Preview") %>
                         </button>
                         <button x-show="previewMode" @click.prevent="previewMode = !previewMode" class="fixed h-10 bg-green-600 text-white w-full bottom-0 left-0 z-50">
@@ -98,9 +92,7 @@
                         <%= gettext("Cancel") %>
                     </button>
                     <button class="button button--cta button--large" action="submit" form="campaign" name="campaign[send]" value="true">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                        </svg>
+                        <%= render_icon(:paper_airplane) %>
                         <%= gettext("Send") %>
                     </button>
                 </div>
