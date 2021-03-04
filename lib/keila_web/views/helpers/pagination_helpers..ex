@@ -1,5 +1,6 @@
 defmodule KeilaWeb.PaginationHelpers do
   use Phoenix.HTML
+  import KeilaWeb.IconHelper
 
   @doc """
   Renders a pagination navigation element with the given `Keila.Pagination`
@@ -14,7 +15,7 @@ defmodule KeilaWeb.PaginationHelpers do
     page_count = pagination.page_count
 
     [
-      if(page > 0, do: pagination_button(page - 1, route_fn, caret_left()), else: []),
+      if(page > 0, do: pagination_button(page - 1, route_fn, render_icon(:chevron_left)), else: []),
       pagination_button(0, route_fn),
       for(
         n <- -3..3,
@@ -25,7 +26,10 @@ defmodule KeilaWeb.PaginationHelpers do
           )
       ),
       if(page_count > 1, do: pagination_button(page_count - 1, route_fn), else: []),
-      if(page < page_count - 1, do: pagination_button(page + 1, route_fn, caret_right()), else: [])
+      if(page < page_count - 1,
+        do: pagination_button(page + 1, route_fn, render_icon(:chevron_right)),
+        else: []
+      )
     ]
   end
 
@@ -33,16 +37,4 @@ defmodule KeilaWeb.PaginationHelpers do
     route = route_fn.(n)
     content_tag(:a, content || to_string(n + 1), href: route, class: "button")
   end
-
-  defp caret_left, do: ~e{
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-    </svg>
-  }
-
-  defp caret_right, do: ~e{
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-    </svg>
-  }
 end
