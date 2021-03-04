@@ -8,6 +8,7 @@ defmodule Keila.Mailings.Campaign do
     field(:text_body, :string)
     field(:html_body, :string)
     field(:sent_at, :utc_datetime)
+    field(:scheduled_for, :utc_datetime)
     embeds_one(:settings, __MODULE__.Settings)
     belongs_to(:sender, Sender, type: Sender.Id)
     belongs_to(:project, Project, type: Project.Id)
@@ -36,5 +37,11 @@ defmodule Keila.Mailings.Campaign do
     struct
     |> cast(params, [:subject, :text_body, :html_body, :sender_id])
     |> cast_embed(:settings)
+  end
+
+  def schedule_changeset(struct = %__MODULE__{}, params) do
+    struct
+    |> cast(params, [:scheduled_for])
+    |> validate_required([:scheduled_for])
   end
 end

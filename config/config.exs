@@ -48,9 +48,17 @@ config :phoenix, :json_library, Jason
 
 config :keila, Oban,
   queues: [
-    mailer: [limit: 50, poll_interval: :timer.seconds(30)]
+    mailer: 50,
+    periodic: 1
   ],
-  repo: Keila.Repo
+  repo: Keila.Repo,
+  plugins: [
+    Oban.Plugins.Pruner,
+    {Oban.Plugins.Cron,
+     crontab: [
+       {"* * * * *", Keila.Mailings.DeliverScheduledCampaignsWorker}
+     ]}
+  ]
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
