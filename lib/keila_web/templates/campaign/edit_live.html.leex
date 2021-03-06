@@ -9,7 +9,7 @@
             <a class="button button--text button--large" href="<%= Routes.campaign_path(@socket, :index, @current_project.id) %>">
                 <%= gettext("Cancel") %>
             </a>
-            <%= delete_form_tag(@campaign, Routes.campaign_path(@socket, :delete, @campaign.id), as: :campaign) %>
+            <%= delete_form_tag(@campaign, Routes.campaign_path(@socket, :delete, @current_project.id), as: :campaign) %>
             <%= delete_button_tag(@campaign, [class: "button button--text button--large"], gettext("Delete")) %>
             <button class="button button--large" action="submit" form="campaign">
                 <%= render_icon(:save) %>
