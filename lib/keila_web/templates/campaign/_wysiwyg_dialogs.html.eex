@@ -1,0 +1,154 @@
+<div
+    id="wysiwyg-dialogs"
+    phx-update="ignore"
+    x-data="{activeDialog: null, image: {}, link: {}, button: {}}"
+    x-on:x-confirm.stop="activeDialog = null"
+    x-on:x-cancel.stop="activeDialog = null"
+>
+
+    <div
+        x-show.transition="activeDialog"
+        style="display: none"
+        class="fixed z-10 inset-0 overflow-y-auto bg-black bg-opacity-90 flex items-center justify-center"
+    >
+
+        <div
+            class="bg-gray-900 rounded-lg overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+            role="dialog"
+            aria-modal="true"
+        >
+
+            <!-- Link Dialog -->
+            <div
+                data-dialog-for="link"
+                class="p-8"
+                x-show="activeDialog == 'link'"
+                x-on:x-show="activeDialog = 'link'; link = $event.detail; $nextTick(() => $event.target.querySelector('input').focus())"
+                x-on:x-confirm="$dispatch('update-link', link)"
+                x-on:x-cancel="$dispatch('update-link', { cancel: true} )"
+                @keydown.enter.prevent="$dispatch('x-confirm')"
+                @keydown.esc.prevent="$dispatch('x-cancel')"
+                @click.away="$dispatch('x-cancel')"
+            >
+                <h2 class="text-3xl"><%= gettext("Insert Link") %></h2>
+                <br>
+                <div class="grid gap-4">
+                    <div class="flex flex-col">
+                        <label class="font-bold"><%= gettext("Link URL") %></label>
+                        <input x-model="link.href" type="text" class="bg-white hover:bg-green-100 text-black" placeholder="https://keila.io">
+                    </div>
+
+                    <div class="flex flex-col">
+                        <label class="font-bold"><%= gettext("Link Title") %></label>
+                        <input x-model="link.title" type="text" class="bg-white hover:bg-green-100 text-black" placeholder="Open Source Newsletters">
+                    </div>
+                </div>
+                <br>
+                <div class="flex justify-end gap-8">
+                    <button
+                        class="button button--text button--large"
+                        @click.prevent="$dispatch('x-cancel')"
+                    >
+                        <%= gettext("Cancel") %>
+                    </button>
+                    <button
+                        class="button button--cta button--large"
+                        @click.prevent="$dispatch('x-confirm')"
+                    >
+                        <%= gettext("Ok") %>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Image Dialog -->
+            <div
+                data-dialog-for="image"
+                class="p-8"
+                x-show="activeDialog == 'image'"
+                x-on:x-show="activeDialog = 'image'; image = $event.detail; $nextTick(() => $event.target.querySelector('input').focus())"
+                x-on:x-confirm="$dispatch('update-image', image)"
+                x-on:x-cancel="$dispatch('update-image', { cancel: true} )"
+                @keydown.enter.prevent="$dispatch('x-confirm')"
+                @keydown.esc.prevent="$dispatch('x-cancel')"
+                @click.away="$dispatch('x-cancel')"
+            >
+                <h2 class="text-3xl"><%= gettext("Insert Image") %></h2>
+                <br>
+                <div class="grid gap-4">
+                    <div class="flex flex-col">
+                        <label class="font-bold"><%= gettext("Image URL") %></label>
+                        <p class="text-sm italic mb-2">
+                            <%= gettext("For best results, choose an image that is 600px wide.") %>
+                        </p>
+                        <input x-model="image.src" type="text" class="bg-white hover:bg-green-100 text-black">
+                    </div>
+                    <div class="flex flex-col">
+                        <label class="font-bold"><%= gettext("Alt Text") %></label>
+                        <input x-model="image.alt" type="text" class="bg-white hover:bg-green-100 text-black">
+                    </div>
+                    <div class="flex flex-col">
+                        <label class="font-bold"><%= gettext("Title") %></label>
+                        <input x-model="image.title" type="text" class="bg-white hover:bg-green-100 text-black">
+                    </div>
+                </div>
+                <br>
+                <div class="flex justify-end gap-8">
+                    <button
+                        class="button button--text button--large"
+                        @click.prevent="$dispatch('x-cancel')"
+                    >
+                        <%= gettext("Cancel") %>
+                    </button>
+                    <button
+                        class="button button--cta button--large"
+                        @click.prevent="$dispatch('x-confirm')"
+                    >
+                        <%= gettext("Ok") %>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Button Dialog -->
+            <div
+                data-dialog-for="button"
+                class="p-8"
+                x-show="activeDialog == 'button'"
+                x-on:x-show="activeDialog = 'button'; button = $event.detail; $nextTick(() => $event.target.querySelector('input').focus())"
+                x-on:x-confirm="$dispatch('update-button', button)"
+                x-on:x-cancel="$dispatch('update-button', { cancel: true} )"
+                @keydown.enter.prevent="$dispatch('x-confirm')"
+                @keydown.esc.prevent="$dispatch('x-cancel')"
+                @click.away="$dispatch('x-cancel')"
+            >
+                <h2 class="text-3xl"><%= gettext("Insert Button") %></h2>
+                <br>
+                <div class="grid gap-4">
+                    <div class="flex flex-col">
+                        <label class="font-bold"><%= gettext("Button URL") %></label>
+                        <input x-model="button.href" type="text" class="bg-white hover:bg-green-100 text-black">
+                    </div>
+                    <div class="flex flex-col">
+                        <label class="font-bold"><%= gettext("Button Text") %></label>
+                        <input x-model="button.text" type="text" class="bg-white hover:bg-green-100 text-black">
+                    </div>
+                </div>
+                <br>
+                <div class="flex justify-end gap-8">
+                    <button
+                        class="button button--text button--large"
+                        @click.prevent="$dispatch('x-cancel')"
+                    >
+                        <%= gettext("Cancel") %>
+                    </button>
+                    <button
+                        class="button button--cta button--large"
+                        @click.prevent="$dispatch('x-confirm')"
+                    >
+                        <%= gettext("Ok") %>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

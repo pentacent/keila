@@ -1,0 +1,325 @@
+#wysiwyg {
+    .ProseMirror {
+        @apply p-5 bg-white text-black;
+
+        max-width: 600px;
+        margin: 0 auto;
+        outline: none;
+        white-space: pre-wrap;
+
+        /*
+         * Reset editor styles to browser default styles.
+         * See https://www.w3.org/TR/CSS2/sample.html
+        */
+        html,
+        address,
+        blockquote,
+        body,
+        dd,
+        div,
+        dl,
+        dt,
+        fieldset,
+        form,
+        frame,
+        frameset,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        noframes,
+        ol,
+        p,
+        ul,
+        center,
+        dir,
+        hr,
+        menu,
+        pre {
+            display: block;
+            unicode-bidi: embed;
+        }
+        li {
+            display: list-item;
+        }
+        head {
+            display: none;
+        }
+        table {
+            display: table;
+        }
+        tr {
+            display: table-row;
+        }
+        thead {
+            display: table-header-group;
+        }
+        tbody {
+            display: table-row-group;
+        }
+        tfoot {
+            display: table-footer-group;
+        }
+        col {
+            display: table-column;
+        }
+        colgroup {
+            display: table-column-group;
+        }
+        td,
+        th {
+            display: table-cell;
+        }
+        caption {
+            display: table-caption;
+        }
+        th {
+            font-weight: bolder;
+            text-align: center;
+        }
+        caption {
+            text-align: center;
+        }
+        body {
+            margin: 8px;
+        }
+        h1 {
+            font-size: 2em;
+            margin: 0.67em 0;
+        }
+        h2 {
+            font-size: 1.5em;
+            margin: 0.75em 0;
+        }
+        h3 {
+            font-size: 1.17em;
+            margin: 0.83em 0;
+        }
+        h4,
+        p,
+        blockquote,
+        ul,
+        fieldset,
+        form,
+        ol,
+        dl,
+        dir,
+        menu {
+            margin: 1.12em 0;
+        }
+        h5 {
+            font-size: 0.83em;
+            margin: 1.5em 0;
+        }
+        h6 {
+            font-size: 0.75em;
+            margin: 1.67em 0;
+        }
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        b,
+        strong {
+            font-weight: bolder;
+        }
+        blockquote {
+            margin-left: 40px;
+            margin-right: 40px;
+        }
+        i,
+        cite,
+        em,
+        var,
+        address {
+            font-style: italic;
+        }
+        pre,
+        tt,
+        code,
+        kbd,
+        samp {
+            font-family: monospace;
+        }
+        pre {
+            white-space: pre;
+        }
+        button,
+        textarea,
+        input,
+        select {
+            display: inline-block;
+        }
+        big {
+            font-size: 1.17em;
+        }
+        small,
+        sub,
+        sup {
+            font-size: 0.83em;
+        }
+        sub {
+            vertical-align: sub;
+        }
+        sup {
+            vertical-align: super;
+        }
+        table {
+            border-spacing: 2px;
+        }
+        thead,
+        tbody,
+        tfoot {
+            vertical-align: middle;
+        }
+        td,
+        th,
+        tr {
+            vertical-align: inherit;
+        }
+        s,
+        strike,
+        del {
+            text-decoration: line-through;
+        }
+        hr {
+            border: 1px inset;
+        }
+        ol,
+        ul,
+        dir,
+        menu,
+        dd {
+            margin-left: 40px;
+        }
+        ol {
+            list-style-type: decimal;
+        }
+        ol ul,
+        ul ol,
+        ul ul,
+        ol ol {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+        u,
+        ins {
+            text-decoration: underline;
+        }
+        br:before {
+            content: "\A";
+            white-space: pre-line;
+        }
+        center {
+            text-align: center;
+        }
+        :link,
+        :visited {
+            text-decoration: underline;
+        }
+        :focus {
+            outline: thin dotted invert;
+        }
+
+        BDO[DIR="ltr"] {
+            direction: ltr;
+            unicode-bidi: bidi-override;
+        }
+        BDO[DIR="rtl"] {
+            direction: rtl;
+            unicode-bidi: bidi-override;
+        }
+
+        *[DIR="ltr"] {
+            direction: ltr;
+            unicode-bidi: embed;
+        }
+        *[DIR="rtl"] {
+            direction: rtl;
+            unicode-bidi: embed;
+        }
+
+        /*
+         * Apply Cerberus Email styles
+         */
+
+        font-size: 15px;
+        line-height: 20px;
+        color: #555555;
+        div[style*="margin: 16px 0"] {
+            margin: 0 !important;
+        }
+
+        table {
+            border-spacing: 0 !important;
+            border-collapse: collapse !important;
+            table-layout: fixed !important;
+            margin: 0 auto !important;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+
+        /*
+         * Apply default.css styles
+         * TODO: Dynamically apply user styles
+        */
+
+        h1 {
+            margin: 0 0 10px 0;
+            font-family: sans-serif;
+            font-size: 25px;
+            line-height: 30px;
+            color: #333333;
+            font-weight: bold;
+        }
+        h2 {
+            margin: 0 0 10px 0;
+            font-family: sans-serif;
+            font-size: 18px;
+            line-height: 22px;
+            color: #333333;
+            font-weight: bold;
+        }
+
+        ul {
+            padding: 0;
+            margin: 0 0 10px 0;
+            list-style-type: disc;
+        }
+
+        ul > li {
+            margin: 0 0 10px 30px;
+        }
+
+        a {
+            text-decoration: underline;
+            color: #3b82f6;
+        }
+
+        a.unsubscribe {
+            color: #333333;
+        }
+
+        h4 > a {
+            background: #3b82f6;
+            color: white;
+            padding: 10px;
+            display: block;
+            text-decoration: none!important;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        img {
+            width: 100%;
+            max-width: 600px;
+        }
+    }
+}
