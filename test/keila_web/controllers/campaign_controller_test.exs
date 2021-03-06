@@ -66,7 +66,11 @@ defmodule KeilaWeb.CampaignControllerTest do
       {conn, project} = with_login_and_project(conn)
 
       campaign =
-        insert!(:mailings_campaign, project_id: project.id, type: :text, text_body: "Hello there!")
+        insert!(:mailings_campaign,
+          project_id: project.id,
+          text_body: "Hello there!",
+          settings: %{type: :text}
+        )
 
       conn = get(conn, Routes.campaign_path(conn, :edit, project.id, campaign.id))
       {:ok, lv, html} = live(conn)

@@ -110,7 +110,7 @@ defmodule KeilaWeb.CampaignController do
       params = params["campaign"] || %{}
       send? = params["send"] == "true"
 
-      case Mailings.update_campaign(campaign.id, params) do
+      case Mailings.update_campaign(campaign.id, params, send?) do
         {:ok, campaign} ->
           if send? do
             Mailings.deliver_campaign_async(campaign.id)

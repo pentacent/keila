@@ -25,7 +25,12 @@ defmodule Keila.Mailings.Campaign do
     struct
     |> cast(params, [:subject, :text_body, :html_body, :sender_id])
     |> cast_embed(:settings)
-    |> validate_required([:subject, :sender_id])
+    |> validate_required([:subject])
+  end
+
+  def update_and_send_changeset(struct = %__MODULE__{}, params) do
+    update_changeset(struct, params)
+    |> validate_required([:sender_id])
   end
 
   @doc """

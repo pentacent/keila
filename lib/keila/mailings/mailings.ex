@@ -97,13 +97,24 @@ defmodule Keila.Mailings do
   end
 
   @doc """
-  Updates given campaign with `params`
+  Updates given campaign with `params`.
+
+  If `use_send_changeset?` is set to `true`, a different changeset that
+  validates whether campaign is ready to be sent is used.
   """
   @spec update_campaign(Campaign.id(), map()) ::
-          {:ok, Campaign.t()} | {:error, Changeset.t(Campaign.t())}
-  def update_campaign(id, params) when is_id(id) do
+          {:ok, Campaign.t(), boolean()} | {:error, Changeset.t(Campaign.t())}
+  def update_campaign(id, params, use_send_changeset? \\ false)
+
+  def update_campaign(id, params, false) when is_id(id) do
     get_campaign(id)
     |> Campaign.update_changeset(params)
+    |> Repo.update()
+  end
+
+  def update_campaign(id, params, true) when is_id(id) do
+    get_campaign(id)
+    |> Campaign.update_and_send_changeset(params)
     |> Repo.update()
   end
 
