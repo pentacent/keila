@@ -22,7 +22,7 @@ const syncPlugin = new Plugin({
     }
 })
 
-/** Class representing the ProseMirror Markdoen editor used by Keila.
+/** Class representing the ProseMirror Markdown editor used by Keila.
  * 
  * This editor syncs its state on every change to the specified `source` textarea.
  * Syncing can also be triggered manually with the custom `x-sync` event.
