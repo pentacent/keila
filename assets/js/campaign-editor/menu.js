@@ -177,7 +177,6 @@ export function buildDefaultMenu() {
     const buttonToggleWysiwyg = new MenuButton({
         dom: findButton("toggle-wysiwyg"),
         exec(editorView) {
-            console.log(this.dom)
             this.dom.dispatchEvent(new Event("x-sync", { bubbles: true }))
             editorView.destroy()
             document.querySelector('#campaign_settings_enable_wysiwyg').click()

@@ -58,7 +58,7 @@ class MarkdownEditor {
     sync(e) {
         this.source.value = this.content
 
-        if (!e.detail.skipDispatch) {
+        if (!(e.detail && e.detail.skipDispatch)) {
             this.source.dispatchEvent(new Event("change", { bubbles: true }))
         }
     }
