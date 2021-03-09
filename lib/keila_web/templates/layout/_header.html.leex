@@ -3,13 +3,22 @@
         <div id="main-menu" class="container py-3 relative sm:flex sm:flex-row">
             <input id="main-menu-toggle" type="checkbox" aria-hidden="true" class="hidden">
             <div class="absolute inset-y-0 h-14 left-4 flex items-center sm:hidden">
-                <label id="show-main-menu" for="main-menu-toggle" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-expanded="false">
+                <label
+                    id="show-main-menu"
+                    for="main-menu-toggle"
+                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                    aria-expanded="false"
+                >
                     <span class="sr-only"><%= gettext("Open menu") %></span>
-                    <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                    <span class="inline-flex h-6 w-6"><%= render_icon(:menu) %></span>
                 </label>
-                <label id="hide-main-menu" for="main-menu-toggle" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-expanded="false">
+                <label
+                    id="hide-main-menu"
+                    for="main-menu-toggle"
+                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                    aria-expanded="false">
                     <span class="sr-only"><%= gettext("Close menu") %></span>
-                    <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    <span class="inline-flex h-6 w-6"><%= render_icon(:x) %></span>
                 </label>
             </div>
             <div class="flex-shrink-0 flex-grow-0 flex items-center justify-center text-green-500">

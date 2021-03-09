@@ -9,18 +9,14 @@
             <a class="button button--text button--large" href="<%= Routes.campaign_path(@socket, :index, @current_project.id) %>">
                 <%= gettext("Cancel") %>
             </a>
-            <%= delete_form_tag(@campaign, Routes.campaign_path(@socket, :delete, @campaign.id), as: :campaign) %>
+            <%= delete_form_tag(@campaign, Routes.campaign_path(@socket, :delete, @current_project.id), as: :campaign) %>
             <%= delete_button_tag(@campaign, [class: "button button--text button--large"], gettext("Delete")) %>
             <button class="button button--large" action="submit" form="campaign">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
-                </svg>
+                <%= render_icon(:save) %>
                 <%= gettext("Save") %>
             </button>
             <button class="button button--cta button--large" @click.prevent="showSendDialog = true">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                </svg>
+                <%= render_icon(:paper_airplane) %>
                 <%= gettext("Send") %>
             </button>
         </div>
@@ -59,25 +55,51 @@
                         {gettext("Markdown"), "markdown"},
                         {gettext("Text only"), "text"}
                     ]) %>
+                    <%= if Ecto.Changeset.get_field(@changeset, :settings).type == :markdown do %>
+                        <%= checkbox(fs, :enable_wysiwyg, class: "hidden") %>
+                    <% end %>
                 <% end) %>
-                <div class="flex gap-4 mt-4" x-data="{previewMode: false}">
-                    <%= textarea(f, :text_body, rows: 20, class: "bg-gray-800 text-gray-50 border-none appearance-none resize-y flex-grow w-1/2") %>
 
-                    <div id="preview-container" class="w-1/2 flex-grow flex flex-col" phx-update="ignore">
-                        <iframe id="html-preview" src="javascript:false" class="bg-gray-100 flex-grow" :class="previewMode ? 'fixed w-full h-full inset-0 pb-10 z-40' : ''"></iframe>
-                        <button class="button mt-2" @click.prevent="previewMode = !previewMode">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-                            </svg>
-                            <%= gettext("Preview") %>
-                        </button>
-                        <button x-show="previewMode" @click.prevent="previewMode = !previewMode" class="fixed h-10 bg-green-600 text-white w-full bottom-0 left-0 z-50">
-                            <%= gettext("Close preview") %>
-                        </button>
-                    </div>
+                <div x-data="{previewMode: false}">
 
-                    <div id="html-preview-data" phx-hook="HtmlPreview" class="hidden" data-iframe="html-preview"><%= @preview %></div>
+                    <%= if Ecto.Changeset.get_field(@changeset, :settings).type == :markdown && Ecto.Changeset.get_field(@changeset, :settings).enable_wysiwyg do %>
+                        <%= textarea(f, :text_body, class: "hidden") %>
+                        <div id="wysiwyg-container" phx-hook="MarkdownEditor" class="flex-grow bg-white mt-4">
+                            <%= render("_wysiwyg_editor.html") %>
+                        </div>
+                    <% else %>
+                        <div class="relative shadow z-10 flex overflow-x-auto mt-4">
+                            <div class="flex-grow"></div>
+                            <button
+                                title="<%= gettext("Preview") %>"
+                                class="flex w-10 h-10 p-2 items-center justify-center bg-gray-800 hover:bg-gray-600 text-white"
+                                @click.prevent="previewMode = !previewMode"
+                            >
+                                <%= render_icon(:eye) %>
+                            </button>
+                            <%= if Ecto.Changeset.get_field(@changeset, :settings).type == :markdown do %>
+                                <button
+                                    title="<%= gettext("Enable visual editor") %>"
+                                    class="flex w-10 h-10 p-2 items-center justify-center bg-gray-800 hover:bg-gray-600 text-white"
+                                    @click.prevent="document.querySelector('#campaign_settings_enable_wysiwyg').click()"
+                                >
+                                    <%= render_icon(:code) %>
+                                </button>
+                            <% end %>
+                        </div>
+                        <div class="flex gap-4">
+                            <%= textarea(f, :text_body, rows: 20, class: "bg-gray-800 text-gray-50 border-none appearance-none resize-y flex-grow w-1/2") %>
+                            <div id="preview-container" class="w-1/2 flex-grow flex flex-col" phx-update="ignore">
+                                <iframe id="html-preview" src="javascript:false" class="bg-gray-100 flex-grow" :class="previewMode ? 'fixed w-full h-full inset-0 pb-10 z-40' : ''"></iframe>
+                                <button x-show="previewMode" @click.prevent="previewMode = !previewMode" class="fixed h-10 bg-green-600 text-white w-full bottom-0 left-0 z-50">
+                                    <%= gettext("Close preview") %>
+                                </button>
+                            </div>
+                            <div id="html-preview-data" phx-hook="HtmlPreview" class="hidden" data-iframe="html-preview"><%= @preview %></div>
+                        </div>
+                    <% end %>
                 </div>
+
             </div>
 
         <% end) %>
@@ -98,9 +120,7 @@
                         <%= gettext("Cancel") %>
                     </button>
                     <button class="button button--cta button--large" action="submit" form="campaign" name="campaign[send]" value="true">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                        </svg>
+                        <%= render_icon(:paper_airplane) %>
                         <%= gettext("Send") %>
                     </button>
                 </div>
@@ -122,5 +142,6 @@
         <% end %>
         </div>
     </div>
-
 </div>
+
+<%= render("_wysiwyg_dialogs.html") %>

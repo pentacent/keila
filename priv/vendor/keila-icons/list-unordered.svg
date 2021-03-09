@@ -1,0 +1,4 @@
+<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 6h12M8 12h12M8 18h12"/>
+  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.733" d="M4 5.991V6m0 6.057v.01m0 6.056v.01M4 6.857a.867.867 0 110-1.733.867.867 0 010 1.733zm0 6.066a.867.867 0 110-1.733.867.867 0 010 1.733zm0 6.066a.867.867 0 110-1.733.867.867 0 010 1.733z"/>
+</svg>
