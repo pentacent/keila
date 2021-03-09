@@ -130,16 +130,24 @@ defmodule Keila.MailingsCampaignTest do
     |> Enum.each(fn params -> Repo.insert_all(Contacts.Contact, params) |> elem(1) end)
 
     sender = insert!(:mailings_sender, config: %Mailings.Sender.Config{type: "test"})
-    campaign = insert!(:mailings_campaign, project_id: project.id, sender_id: sender.id)
 
-    campaign_to_be_delivered_later =
-      insert!(:mailings_campaign, project_id: project.id, sender_id: sender.id)
+    [campaign_too_late, campaign_in_time, campaign_later] =
+      insert_n!(:mailings_campaign, 3, fn _ -> %{project_id: project.id, sender_id: sender.id} end)
+
+    assert {:error, _changeset} =
+             Mailings.schedule_campaign(campaign_too_late.id, %{
+               # scheduling before configured theshold
+               "scheduled_for" => DateTime.utc_now() |> DateTime.add(-3600, :second)
+             })
 
     assert {:ok, _struct} =
-             Mailings.schedule_campaign(campaign.id, %{"scheduled_for" => DateTime.utc_now()})
+             Mailings.schedule_campaign(campaign_in_time.id, %{
+               # deliver in 5:30 minutes
+               "scheduled_for" => DateTime.utc_now()
+             })
 
     assert {:ok, _struct} =
-             Mailings.schedule_campaign(campaign_to_be_delivered_later.id, %{
+             Mailings.schedule_campaign(campaign_later.id, %{
                # deliver in 1 hour
                "scheduled_for" => DateTime.utc_now() |> DateTime.add(3600, :second)
              })
@@ -147,16 +155,27 @@ defmodule Keila.MailingsCampaignTest do
     assert :ok = perform_job(Mailings.DeliverScheduledCampaignsWorker, %{})
     assert %{success: ^n, failure: 0} = Oban.drain_queue(queue: :mailer)
 
-    assert %Mailings.Campaign{sent_at: sent_at} = Mailings.get_campaign(campaign.id)
+    assert %Mailings.Campaign{sent_at: sent_at} = Mailings.get_campaign(campaign_in_time.id)
     assert sent_at
 
-    assert %Mailings.Campaign{sent_at: nil} =
-             Mailings.get_campaign(campaign_to_be_delivered_later.id)
+    assert %Mailings.Campaign{sent_at: nil} = Mailings.get_campaign(campaign_later.id)
 
     for _ <- 1..n do
       assert_email_sent()
     end
 
     refute_email_sent()
+  end
+
+  @tag :mailings_campaign
+  test "campaigns cannot be rescheduled when too close to delivery threshold", %{project: project} do
+    now = DateTime.utc_now() |> DateTime.truncate(:second)
+    one_hour_ago = now |> DateTime.add(-3600, :second)
+    in_one_hour = now |> DateTime.add(3600, :second)
+
+    campaign = insert!(:mailings_campaign, project_id: project.id, scheduled_for: one_hour_ago)
+
+    assert {:error, _changeset} =
+             Mailings.schedule_campaign(campaign.id, %{"scheduled_for" => in_one_hour})
   end
 end
