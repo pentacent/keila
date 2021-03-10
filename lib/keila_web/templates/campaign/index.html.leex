@@ -38,15 +38,24 @@
                 <p class="text-sm">
                     <%= gettext("Created at: %{date}", date: Calendar.strftime(campaign.inserted_at, "%a, %b %d %Y, %H:%M")) %>
                 </p>
-                <%= if campaign.sent_at do %>
-                    <p class="text-sm">
-                        <%= gettext("Sent at: %{date}", date: Calendar.strftime(campaign.sent_at, "%a, %b %d %Y, %H:%M")) %>
-                    </p>
-                <% else %>
-                    <p class="text-sm">
-                        <br>
-                    </p>
-                <% end %>
+                <p class="text-sm flex items-center gap-2 mt-4">
+                    <%= cond do
+                        campaign.sent_at ->
+                            [
+                                content_tag(:span, render_icon(:paper_airplane), class: "inline-flex h-5 w-5"),
+                                gettext("Sent at: %{date}", date: Calendar.strftime(campaign.sent_at, "%a, %b %d %Y, %H:%M"))
+                            ]
+
+                        campaign.scheduled_for ->
+                            [
+                                content_tag(:span, render_icon(:clock), class: "inline-flex h-5 w-5"),
+                                gettext("Scheduled for: %{date}", date: Calendar.strftime(campaign.scheduled_for, "%a, %b %d %Y, %H:%M"))
+                            ]
+
+                        true ->
+                            gettext("Not yet sent.")
+                    end %>
+                </p>
                 <br>
                 <%= if is_nil(campaign.sent_at) do %>
                     <a href="<%= Routes.campaign_path(@conn, :edit, @current_project.id, campaign.id) %>" class="button">
