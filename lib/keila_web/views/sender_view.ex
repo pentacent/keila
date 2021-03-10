@@ -14,6 +14,10 @@ defmodule KeilaWeb.SenderView do
     def sender_adapter_name("test"), do: "Test"
   end
 
+  if Mix.env() == :dev do
+    def sender_adapter_name("local"), do: "Local"
+  end
+
   def render_sender_adapter_form(form, "smtp") do
     render("_smtp_config.html", form: form)
   end
@@ -32,5 +36,11 @@ defmodule KeilaWeb.SenderView do
 
   if Mix.env() == :test do
     def render_sender_adapter_form(_form, "test"), do: nil
+  end
+
+  if Mix.env() == :dev do
+    def render_sender_adapter_form(form, "local") do
+      render("_local_config.html", form: form)
+    end
   end
 end

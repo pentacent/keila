@@ -32,6 +32,15 @@ config :keila, KeilaWeb.Endpoint,
     ]
   ]
 
+config :keila, Keila.Mailings.SenderAdapters,
+  adapters: [
+    Keila.Mailings.SenderAdapters.SMTP,
+    Keila.Mailings.SenderAdapters.Sendgrid,
+    Keila.Mailings.SenderAdapters.SES,
+    Keila.Mailings.SenderAdapters.Mailgun,
+    Keila.Mailings.SenderAdapters.Local
+  ]
+
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed
