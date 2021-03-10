@@ -98,6 +98,7 @@ defmodule KeilaWeb do
       import KeilaWeb.PaginationHelpers
       import KeilaWeb.DeleteButtonHelpers
       import KeilaWeb.IconHelper
+      import KeilaWeb.DateTimeHelpers
       import KeilaWeb.Gettext
       alias KeilaWeb.Router.Helpers, as: Routes
     end

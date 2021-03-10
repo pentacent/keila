@@ -241,7 +241,7 @@ defmodule Keila.Mailings do
 
     Keila.Contacts.stream_project_contacts(campaign.project_id, [])
     |> Enum.map(fn contact ->
-      now = DateTime.utc_now() |> DateTime.truncate(:second) |> DateTime.to_naive()
+      now = DateTime.utc_now() |> DateTime.truncate(:second)
       %{contact_id: contact.id, campaign_id: campaign.id, inserted_at: now, updated_at: now}
     end)
     |> Stream.chunk_every(1000)
