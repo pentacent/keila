@@ -1,5 +1,20 @@
 # Changelog
 
+## Version 0.3.0
+
+Scheduling campaigns & WYSIWYG editor ⏲️
+
+### Added
+
+- Campaigns can now be scheduled to be sent automatically
+- WYSIWYG editor for Markdown campaigns
+- Local sender for testing in development mode
+
+### Fixed
+
+- Formatted dates in local timezone now used on campaign overview page
+- Removed default email preview text
+
 
 ## Version 0.2.2
 
@@ -7,13 +22,15 @@
 
 - Fixed crash when starting release
 
+
 ## Version 0.2.1
 
-## Fixed
+### Fixed
 
 - TailwindCSS styles are now pruned, massively reducing CSS size
 - Default admin user is created correctly when `KEILA_USER` is not specified
 - Fixed crash when starting release
+
 
 ## Version 0.2.0
 
@@ -28,6 +45,7 @@ Simplified deployments ⚙️
 ### Fixed
 
 - Campaigns can no longer be sent twice
+
 
 ## Version 0.1.0
 
