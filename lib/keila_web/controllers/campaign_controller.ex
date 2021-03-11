@@ -106,34 +106,96 @@ defmodule KeilaWeb.CampaignController do
     project = current_project(conn)
     campaign = conn.assigns.campaign
 
-    if is_nil(campaign.sent_at) do
-      params = params["campaign"] || %{}
-      send? = params["send"] == "true"
+    already_sent? = not is_nil(campaign.sent_at)
 
-      case Mailings.update_campaign(campaign.id, params, send?) do
-        {:ok, campaign} ->
-          if send? do
-            Mailings.deliver_campaign_async(campaign.id)
-            redirect(conn, to: Routes.campaign_path(conn, :stats, project.id, campaign.id))
-          else
-            redirect(conn, to: Routes.campaign_path(conn, :index, project.id))
-          end
+    schedule_params = params["schedule"] || %{}
+    schedule? = schedule_params["schedule"] == "true" || schedule_params["cancel"] == "true"
 
-        {:error, _changeset} ->
-          senders = Mailings.get_project_senders(project.id)
+    send? = params["send"] == "true"
 
-          live_render(conn, KeilaWeb.CampaignEditLive,
-            session: %{
-              "current_project" => project,
-              "campaign" => campaign,
-              "params" => params,
-              "senders" => senders
-            }
-          )
-      end
-    else
-      redirect(conn, to: Routes.campaign_path(conn, :stats, project.id, campaign.id))
+    params = params["campaign"] || %{}
+
+    cond do
+      already_sent? ->
+        redirect(conn, to: Routes.campaign_path(conn, :stats, project.id, campaign.id))
+
+      send? ->
+        update_and_send(conn, params)
+
+      schedule? ->
+        update_and_schedule(conn, params, schedule_params)
+
+      true ->
+        update(conn, params)
     end
+  end
+
+  defp update(conn, params) do
+    project = current_project(conn)
+
+    do_update(conn, params, false, fn _campaign ->
+      redirect(conn, to: Routes.campaign_path(conn, :index, project.id))
+    end)
+  end
+
+  defp update_and_send(conn, params) do
+    project = current_project(conn)
+
+    do_update(conn, params, true, fn campaign ->
+      Mailings.deliver_campaign_async(campaign.id)
+      redirect(conn, to: Routes.campaign_path(conn, :stats, project.id, campaign.id))
+    end)
+  end
+
+  defp update_and_schedule(conn, params, schedule_params) do
+    project = current_project(conn)
+
+    scheduled_for =
+      with "true" <- schedule_params["schedule"],
+           {:ok, date} <- Date.from_iso8601(schedule_params["date"]),
+           {:ok, time} <- Time.from_iso8601(schedule_params["time"] <> ":00"),
+           {:ok, datetime} <- DateTime.new(date, time, schedule_params["timezone"]),
+           {:ok, scheduled_for} <- DateTime.shift_zone(datetime, "Etc/UTC") do
+        scheduled_for
+      else
+        _ -> nil
+      end
+
+    do_update(conn, params, true, fn campaign ->
+      case Mailings.schedule_campaign(campaign.id, %{"scheduled_for" => scheduled_for}) do
+        {:error, changeset} ->
+          render_error(conn, params, changeset)
+
+        {:ok, _campaign} ->
+          redirect(conn, to: Routes.campaign_path(conn, :index, project.id))
+      end
+    end)
+  end
+
+  defp do_update(conn, params, use_send_changeset?, callback) do
+    campaign_id = conn.assigns.campaign.id
+
+    Mailings.update_campaign(campaign_id, params, use_send_changeset?)
+    |> case do
+      {:ok, campaign} -> callback.(campaign)
+      {:error, changeset} -> render_error(conn, params, changeset)
+    end
+  end
+
+  defp render_error(conn, params, changeset) do
+    project = current_project(conn)
+    campaign = conn.assigns.campaign
+    senders = Mailings.get_project_senders(project.id)
+
+    live_render(conn, KeilaWeb.CampaignEditLive,
+      session: %{
+        "current_project" => project,
+        "campaign" => campaign,
+        "params" => params,
+        "senders" => senders,
+        "changeset" => changeset
+      }
+    )
   end
 
   @spec stats(Plug.Conn.t(), map()) :: Plug.Conn.t()

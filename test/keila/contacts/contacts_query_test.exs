@@ -44,28 +44,28 @@ defmodule Keila.ContactsQueryTest do
       insert!(:contact, %{
         email: "a@example.com",
         first_name: "A",
-        inserted_at: ~N[2020-01-01 10:01:00Z]
+        inserted_at: ~U[2020-01-01 10:01:00Z]
       })
 
     c2 =
       insert!(:contact, %{
         email: "b@example.com",
         first_name: "B",
-        inserted_at: ~N[2020-01-01 10:02:00Z]
+        inserted_at: ~U[2020-01-01 10:02:00Z]
       })
 
     c3 =
       insert!(:contact, %{
         email: "c@example.com",
         first_name: "C",
-        inserted_at: ~N[2020-02-01 10:01:00Z]
+        inserted_at: ~U[2020-02-01 10:01:00Z]
       })
 
     c4 =
       insert!(:contact, %{
         email: "d@example.com",
         first_name: "D",
-        inserted_at: ~N[2020-02-01 10:02:00Z]
+        inserted_at: ~U[2020-02-01 10:02:00Z]
       })
 
     [c1, c2, c3, c4]

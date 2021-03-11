@@ -72,7 +72,8 @@ defmodule Keila.MixProject do
       {:nimble_csv, "~> 1.1"},
       {:oban, "~> 2.4.3"},
       {:solid, "~> 0.4.0"},
-      {:earmark, "~> 1.4"}
+      {:earmark, "~> 1.4"},
+      {:tzdata, "~> 1.1"}
     ]
   end
 

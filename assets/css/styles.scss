@@ -24,7 +24,7 @@ html {
 }
 
 .button {
-    @apply rounded inline-flex flex-nowrap whitespace-nowrap px-2 py-1 gap-2 outline-none items-center;
+    @apply rounded inline-flex flex-nowrap whitespace-nowrap px-2 py-1 gap-2 outline-none items-center focus:outline-none;
 
     svg {
         @apply w-6;

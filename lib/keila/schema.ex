@@ -22,6 +22,7 @@ defmodule Keila.Schema do
       import Ecto.Changeset
       use Ecto.Schema
       use Keila.Id, unquote(opts)
+      @timestamps_opts [type: :utc_datetime]
 
       @type t :: %__MODULE__{}
     end

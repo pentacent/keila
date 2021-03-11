@@ -33,6 +33,9 @@ config :argon2_elixir, t_cost: 1, m_cost: 8
 # Disable Oban Queues
 config :keila, Oban, queues: false, plugins: false
 
+# Allow scheduling campaigns at utc_now
+config :keila, Keila.Mailings, min_campaign_schedule_offset: -10
+
 # Only use test and smtp Sender Adapters
 config :keila, Keila.Mailings.SenderAdapters,
   adapters: [

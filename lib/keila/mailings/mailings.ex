@@ -113,8 +113,8 @@ defmodule Keila.Mailings do
   If `use_send_changeset?` is set to `true`, a different changeset that
   validates whether campaign is ready to be sent is used.
   """
-  @spec update_campaign(Campaign.id(), map()) ::
-          {:ok, Campaign.t(), boolean()} | {:error, Changeset.t(Campaign.t())}
+  @spec update_campaign(Campaign.id(), map(), boolean()) ::
+          {:ok, Campaign.t()} | {:error, Changeset.t(Campaign.t())}
   def update_campaign(id, params, use_send_changeset? \\ false)
 
   def update_campaign(id, params, false) when is_id(id) do
@@ -186,6 +186,17 @@ defmodule Keila.Mailings do
 
   @doc """
   Schedules the given campaign to be delivered in the future.
+
+  Campaigns can be re-scheduled or unscheduled (`%{scheduled_for: nil}`).
+
+  `config :keila, Keila.Mailings, :min_campaign_schedule_offset` determines the
+  threshold until when (relative to the current time) a campaign can be
+  scheduled, re-scheduled or unscheduled.
+
+  If `:min_campaign_schedule_offset` is set to 60 seconds, campaigns can only be
+  scheduled for times at least one minute after the current time.
+  Their schedule can  only be modified if there's at least one minute left
+  before the campaign was originally scheduled to be delivered.
   """
   @spec schedule_campaign(Campaign.id(), map()) ::
           {:ok, Campaign.t()} | {:error, Changeset.t(Campaign.t())}
@@ -230,7 +241,7 @@ defmodule Keila.Mailings do
 
     Keila.Contacts.stream_project_contacts(campaign.project_id, [])
     |> Enum.map(fn contact ->
-      now = DateTime.utc_now() |> DateTime.truncate(:second) |> DateTime.to_naive()
+      now = DateTime.utc_now() |> DateTime.truncate(:second)
       %{contact_id: contact.id, campaign_id: campaign.id, inserted_at: now, updated_at: now}
     end)
     |> Stream.chunk_every(1000)

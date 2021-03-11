@@ -1,11 +1,11 @@
-<div class="bg-gray-900 text-gray-50" x-data="{showSendDialog: false}">
-    <div class="container py-4 lg:py-8 flex">
+<div class="bg-gray-900 text-gray-50" x-data="{activeDialog: null}">
+    <div class="container py-4 lg:py-8 flex flex-wrap">
         <div class="flex-grow">
             <h1 class="text-2xl sm:text-5xl mb-4">
                 <%= gettext("Edit Campaign") %>
             </h1>
         </div>
-        <div class="flex justify-end gap-4 mb-2 items-center">
+        <div class="flex-grow flex flex-wrap justify-end gap-4 mb-2 items-center">
             <a class="button button--text button--large" href="<%= Routes.campaign_path(@socket, :index, @current_project.id) %>">
                 <%= gettext("Cancel") %>
             </a>
@@ -15,12 +15,25 @@
                 <%= render_icon(:save) %>
                 <%= gettext("Save") %>
             </button>
-            <button class="button button--cta button--large" @click.prevent="showSendDialog = true">
+            <button class="button button--large <%= if is_nil(get_field(@changeset, :scheduled_for)), do: "button--cta" %>" @click.prevent="$dispatch('x-show', { dialog: 'schedule' })">
+                <%= render_icon(:clock) %>
+                <%= gettext("Schedule") %>
+            </button>
+            <button class="button button--large <%= if is_nil(get_field(@changeset, :scheduled_for)), do: "button--cta" %>" @click.prevent="$dispatch('x-show', { dialog: 'send' })">
                 <%= render_icon(:paper_airplane) %>
                 <%= gettext("Send") %>
             </button>
         </div>
     </div>
+
+    <%= if @error_changeset do %>
+        <div class="container mb-4">
+            <div class="bg-red-500 text-white p-4">
+                <%= with_errors(@error_changeset, :scheduled_for) do [gettext("There was an error scheduling your campaign:")] end %>
+                <%= with_errors(@error_changeset, :sender_id) do [gettext("You must specify a sender before sending/scheduling a campaign:")] end %>
+            </div>
+        </div>
+    <% end %>
 
     <div class="container pb-8">
         <%= form_for(@changeset, Routes.campaign_path(@socket, :post_edit, @current_project.id, @campaign.id), [id: "campaign", class: "flex flex-col gap-4", phx_change: "form_updated"], fn f -> %>
@@ -102,45 +115,9 @@
 
             </div>
 
-        <% end) %>
-    </div>
+            <%= render("_send_dialogs.html", assigns) %>
 
-    <div class="fixed z-10 inset-0 overflow-y-auto bg-black bg-opacity-90" x-show.transition="showSendDialog" style="display: none">
-    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        <%= if @recipient_count > 0 do %>
-        <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full p-8" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
-            <h2 class="text-3xl">Ready to send your campaign?</h2>
-                <br>
-                <p>
-                    <%=raw gettext("Are you ready to send your campaign <em>%{subject}</em> to %{count} contacts?", subject: Ecto.Changeset.get_field(@changeset, :subject), count: @recipient_count) %>
-                </p>
-                <br>
-                <div class="flex justify-end gap-8">
-                    <button class="button button--text button--large" @click.prevent="showSendDialog = false">
-                        <%= gettext("Cancel") %>
-                    </button>
-                    <button class="button button--cta button--large" action="submit" form="campaign" name="campaign[send]" value="true">
-                        <%= render_icon(:paper_airplane) %>
-                        <%= gettext("Send") %>
-                    </button>
-                </div>
-        </div>
-        <% else %>
-            <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full p-8" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
-                <h2 class="text-3xl"><%= gettext("No Contacts, No Campaign.")%></h2>
-                <br>
-                <p>
-                    <%= gettext("It looks like you don’t yet have any contacts to receive this campaign.") %>
-                </p>
-                <br>
-                <div class="flex justify-end gap-8">
-                    <button class="button button--cta button--large" @click.prevent="showSendDialog = false">
-                        <%= gettext("Ok") %>
-                    </button>
-                </div>
-            </div>
-        <% end %>
-        </div>
+        <% end) %>
     </div>
 </div>
 

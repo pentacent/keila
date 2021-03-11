@@ -24,6 +24,10 @@ config :keila, Keila.Id,
   salt: "bF4QzDjqV",
   min_len: 8
 
+config :keila, Keila.Mailings,
+  # Minimum offset in seconds between current time and allowed scheduling time
+  min_campaign_schedule_offset: 300
+
 config :keila, Keila.Mailings.SenderAdapters,
   adapters: [
     Keila.Mailings.SenderAdapters.SMTP,
@@ -59,6 +63,9 @@ config :keila, Oban,
        {"* * * * *", Keila.Mailings.DeliverScheduledCampaignsWorker}
      ]}
   ]
+
+# Use Timezone database
+config :elixir, :time_zone_database, Tzdata.TimeZoneDatabase
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

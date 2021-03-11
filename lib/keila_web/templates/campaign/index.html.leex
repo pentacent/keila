@@ -35,18 +35,32 @@
                 <h2 class="font-light text-2xl flex items-center gap-2 mb-2">
                     <%= campaign.subject %>
                 </h2>
-                <p class="text-sm">
-                    <%= gettext("Created at: %{date}", date: Calendar.strftime(campaign.inserted_at, "%a, %b %d %Y, %H:%M")) %>
+                <p class="text-sm flex items-center gap-2">
+                    <%= cond do
+                        campaign.sent_at ->
+                            [
+                                content_tag(:span, render_icon(:cake), class: "inline-flex h-5 w-5"),
+                                gettext("Sent at:"),
+                                " ",
+                                local_datetime_tag(campaign.sent_at)
+                            ]
+
+                        campaign.scheduled_for ->
+                            [
+                                content_tag(:span, render_icon(:clock), class: "inline-flex h-5 w-5"),
+                                gettext("Scheduled for:"),
+                                " ",
+                                local_datetime_tag(campaign.scheduled_for)
+                            ]
+
+                        true ->
+                            [
+                                gettext("Updated at:"),
+                                " ",
+                                local_datetime_tag(campaign.updated_at)
+                            ]
+                    end %>
                 </p>
-                <%= if campaign.sent_at do %>
-                    <p class="text-sm">
-                        <%= gettext("Sent at: %{date}", date: Calendar.strftime(campaign.sent_at, "%a, %b %d %Y, %H:%M")) %>
-                    </p>
-                <% else %>
-                    <p class="text-sm">
-                        <br>
-                    </p>
-                <% end %>
                 <br>
                 <%= if is_nil(campaign.sent_at) do %>
                     <a href="<%= Routes.campaign_path(@conn, :edit, @current_project.id, campaign.id) %>" class="button">

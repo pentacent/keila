@@ -47,7 +47,7 @@
 
         <% :sent -> %>
             <p class="flex gap-4 items-center">
-                <%= render_icon(:cake) %>
+                <span class="inline-flex h-20 w-20"><%= render_icon(:cake) %></span>
                 <%= gettext("This campaign has been successfully sent out to %{count} recipients.", count: @stats.sent_count) %>
             </p>
         <% end %>

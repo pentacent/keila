@@ -47,6 +47,46 @@ defmodule Keila.Mailings.Campaign do
   def schedule_changeset(struct = %__MODULE__{}, params) do
     struct
     |> cast(params, [:scheduled_for])
-    |> validate_required([:scheduled_for])
+    |> validate_scheduled_for()
+  end
+
+  defp validate_scheduled_for(changeset) do
+    changeset
+    |> maybe_validate_old_scheduled_for()
+    |> validate_change(:scheduled_for, &maybe_validate_new_scheduled_for/2)
+  end
+
+  defp maybe_validate_old_scheduled_for(changeset = %{data: %__MODULE__{scheduled_for: nil}}),
+    do: changeset
+
+  defp maybe_validate_old_scheduled_for(changeset) do
+    scheduled_for = changeset.data.scheduled_for
+    {_offset, threshold} = min_campaign_schedule_offset_and_threshold()
+
+    case DateTime.compare(threshold, scheduled_for) do
+      :gt -> add_error(changeset, :scheduled_for, "is already about to be delivered")
+      _ -> changeset
+    end
+  end
+
+  defp maybe_validate_new_scheduled_for(:scheduled_for, nil), do: []
+
+  defp maybe_validate_new_scheduled_for(:scheduled_for, scheduled_for) do
+    {offset, threshold} = min_campaign_schedule_offset_and_threshold()
+
+    case DateTime.compare(threshold, scheduled_for) do
+      :gt -> [scheduled_for: "must be at least #{offset} seconds in the future"]
+      _ -> []
+    end
+  end
+
+  defp min_campaign_schedule_offset_and_threshold() do
+    offset =
+      Application.get_env(:keila, Keila.Mailings, [])
+      |> Keyword.fetch!(:min_campaign_schedule_offset)
+
+    threshold = DateTime.utc_now() |> DateTime.truncate(:second) |> DateTime.add(offset, :second)
+
+    {offset, threshold}
   end
 end
