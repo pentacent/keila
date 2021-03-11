@@ -24,6 +24,24 @@ defmodule KeilaWeb.ErrorHelpers do
     end
   end
 
+  @doc """
+  Generates a tag only if there is a form/changeset error.
+  """
+  def with_errors(form, field, [{:do, content}]) do
+    case get_errors(form, field) do
+      [] ->
+        []
+
+      errors ->
+        [
+          content,
+          content_tag(:p, class: "form-errors") do
+            errors
+          end
+        ]
+    end
+  end
+
   defp get_errors(form, field) do
     Enum.map(Keyword.get_values(form.errors, field), fn error ->
       content_tag(:span, translate_error(error), class: "invalid-feedback")

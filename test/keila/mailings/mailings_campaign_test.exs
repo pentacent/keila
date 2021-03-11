@@ -70,7 +70,7 @@ defmodule Keila.MailingsCampaignTest do
   test "deliver campaign", %{project: project} do
     n = @delivery_n
 
-    now = DateTime.utc_now() |> DateTime.truncate(:second) |> DateTime.to_naive()
+    now = DateTime.utc_now() |> DateTime.truncate(:second)
 
     build_n(:contact, n, fn _ -> %{project_id: project.id} end)
     |> Enum.map(&Map.take(&1, [:name, :project_id, :email, :first_name, :last_name]))
@@ -121,7 +121,7 @@ defmodule Keila.MailingsCampaignTest do
   test "deliver scheduled campaign", %{project: project} do
     n = @delivery_n
 
-    now = DateTime.utc_now() |> DateTime.truncate(:second) |> DateTime.to_naive()
+    now = DateTime.utc_now() |> DateTime.truncate(:second)
 
     build_n(:contact, n, fn _ -> %{project_id: project.id} end)
     |> Enum.map(&Map.take(&1, [:name, :project_id, :email, :first_name, :last_name]))

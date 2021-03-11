@@ -26,7 +26,7 @@ config :keila, Keila.Id,
 
 config :keila, Keila.Mailings,
   # Minimum offset in seconds between current time and allowed scheduling time
-  campaign_schedule_offset: 300
+  min_campaign_schedule_offset: 300
 
 config :keila, Keila.Mailings.SenderAdapters,
   adapters: [

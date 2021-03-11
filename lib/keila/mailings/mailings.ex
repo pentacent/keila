@@ -189,11 +189,11 @@ defmodule Keila.Mailings do
 
   Campaigns can be re-scheduled or unscheduled (`%{scheduled_for: nil}`).
 
-  `config :keila, Keila.Mailings, :campaign_schedule_offset` determines the
+  `config :keila, Keila.Mailings, :min_campaign_schedule_offset` determines the
   threshold until when (relative to the current time) a campaign can be
   scheduled, re-scheduled or unscheduled.
 
-  If `:campaign_schedule_offset` is set to 60 seconds, campaigns can only be
+  If `:min_campaign_schedule_offset` is set to 60 seconds, campaigns can only be
   scheduled for times at least one minute after the current time.
   Their schedule can  only be modified if there's at least one minute left
   before the campaign was originally scheduled to be delivered.

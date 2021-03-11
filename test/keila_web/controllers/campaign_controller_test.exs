@@ -111,8 +111,7 @@ defmodule KeilaWeb.CampaignControllerTest do
 
       params = %{"send" => "true"}
 
-      conn =
-        put(conn, Routes.campaign_path(conn, :edit, project.id, campaign.id, campaign: params))
+      conn = put(conn, Routes.campaign_path(conn, :edit, project.id, campaign.id, params))
 
       assert redirected_to(conn, 302) ==
                Routes.campaign_path(conn, :stats, project.id, campaign.id)
@@ -121,6 +120,123 @@ defmodule KeilaWeb.CampaignControllerTest do
       # finished
       :timer.sleep(500)
     end
+
+    @tag :campaign_controller
+    test "schedules a campaign and redirects to index", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+      sender = build(:mailings_sender, project_id: project.id)
+      campaign = insert!(:mailings_campaign, project_id: project.id, sender: sender)
+
+      params = %{
+        "schedule" => %{
+          "schedule" => "true",
+          "date" => "9999-12-31",
+          "time" => "12:00",
+          "timezone" => "Etc/UTC"
+        }
+      }
+
+      conn = put(conn, Routes.campaign_path(conn, :edit, project.id, campaign.id), params)
+
+      assert redirected_to(conn, 302) ==
+               Routes.campaign_path(conn, :index, project.id)
+
+      updated_campaign = Mailings.get_campaign(campaign.id)
+      assert updated_campaign.scheduled_for
+    end
+
+    @tag :campaign_controller
+    test "unschedules a campaign and redirects to index", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+      sender = build(:mailings_sender, project_id: project.id)
+      {:ok, scheduled_for, _} = DateTime.from_iso8601("9999-12-31 12:00:00Z")
+
+      campaign =
+        insert!(:mailings_campaign,
+          project_id: project.id,
+          sender: sender,
+          scheduled_for: scheduled_for
+        )
+
+      params = %{"schedule" => %{"cancel" => "true"}}
+
+      conn = put(conn, Routes.campaign_path(conn, :edit, project.id, campaign.id), params)
+
+      assert redirected_to(conn, 302) ==
+               Routes.campaign_path(conn, :index, project.id)
+
+      updated_campaign = Mailings.get_campaign(campaign.id)
+      refute updated_campaign.scheduled_for
+    end
+  end
+
+  @tag :campaign_controller
+  test "displays error with invalid scheduling/sending operations", %{conn: conn} do
+    {conn, project} = with_login_and_project(conn)
+
+    campaign_no_sender = insert!(:mailings_campaign, project_id: project.id)
+
+    # Sending with no sender
+    params = %{"send" => "true"}
+    conn = put(conn, Routes.campaign_path(conn, :edit, project.id, campaign_no_sender.id), params)
+
+    assert html_response(conn, 200) =~
+             "You must specify a sender before sending/scheduling a campaign"
+
+    # Scheduling with no sender
+    params = %{
+      "schedule" => %{
+        "schedule" => "true",
+        "date" => "9999-12-31",
+        "time" => "12:00",
+        "timezone" => "Etc/UTC"
+      }
+    }
+
+    conn = put(conn, Routes.campaign_path(conn, :edit, project.id, campaign_no_sender.id), params)
+
+    assert html_response(conn, 200) =~
+             "You must specify a sender before sending/scheduling a campaign"
+
+    ## Scheduling with a time before the threshold
+    sender = build(:mailings_sender, project_id: project.id)
+    campaign = insert!(:mailings_campaign, project_id: project.id, sender: sender)
+
+    params = %{
+      "schedule" => %{
+        "schedule" => "true",
+        "date" => "1970-01-01",
+        "time" => "12:00",
+        "timezone" => "Etc/UTC"
+      }
+    }
+
+    conn = put(conn, Routes.campaign_path(conn, :edit, project.id, campaign.id), params)
+    assert html_response(conn, 200) =~ "There was an error scheduling your campaign"
+
+    # Scheduling a campaign that's already scheduled for a time before the threshold
+    {:ok, scheduled_for, _} = DateTime.from_iso8601("1970-01-01 12:00:00Z")
+
+    sender = build(:mailings_sender, project_id: project.id)
+
+    scheduled_campaign =
+      insert!(:mailings_campaign,
+        project_id: project.id,
+        sender: sender,
+        scheduled_for: scheduled_for
+      )
+
+    params = %{
+      "schedule" => %{
+        "schedule" => "true",
+        "date" => "9999-12-31",
+        "time" => "12:00",
+        "timezone" => "Etc/UTC"
+      }
+    }
+
+    conn = put(conn, Routes.campaign_path(conn, :edit, project.id, scheduled_campaign.id), params)
+    assert html_response(conn, 200) =~ "There was an error scheduling your campaign"
   end
 
   describe "LV /projects/:p_id/campaigns/:id/stats" do

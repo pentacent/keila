@@ -7,6 +7,7 @@ defmodule KeilaWeb.CampaignEditLive do
     project = session["current_project"]
     senders = session["senders"]
     campaign = session["campaign"]
+    error_changeset = session["changeset"]
 
     changeset =
       case session["params"] do
@@ -31,6 +32,7 @@ defmodule KeilaWeb.CampaignEditLive do
       |> assign(:senders, senders)
       |> assign(:changeset, changeset)
       |> assign(:recipient_count, recipient_count)
+      |> assign(:error_changeset, error_changeset)
       |> put_default_assigns()
 
     {:ok, socket}
