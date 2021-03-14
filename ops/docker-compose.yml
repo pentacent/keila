@@ -1,27 +1,24 @@
 version: "3"
 
 services:
-  app:
-    image: pentacent/keila
+  keila:
+    image: pentacent/keila:latest
     ports:
       - "4000:4000"
-    command:
-      - "start"
     depends_on:
-      - db
+      - postgres
     build:
       context: .
     environment:
       SECRET_KEY_BASE: "${YOUR_SECRET_KEY}"
-      DB_URL: "ecto://postgres:postgres@db/postgres"
+      DB_URL: "postgres://postgres:postgres@postgres/postgres"
       URL_HOST: "${YOUR_URL_HOST}"
       MAILER_SMTP_HOST: "${YOUR_MAILER_SMTP_HOST}"
       MAILER_SMTP_USER: "${YOUR_MAILER_SMTP_USER}"
       MAILER_SMTP_PASSWORD: "${YOUR_MAILER_SMTP_PASSWORD}"
 
-  db:
+  postgres:
     image: postgres:alpine
-    container_name: database
     ports:
       - "5432:5432"
     environment:
