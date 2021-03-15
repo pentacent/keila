@@ -53,14 +53,14 @@ defmodule Keila.Templates.Css do
       "div{border:1px solid} a.class{text-decoration:underline;color:blue}"
   """
   @spec encode(t(), Keyword.t()) :: String.t()
-  def encode(rules, opts \\ []) do
+  def encode(styles, opts \\ []) do
     compact? = Keyword.get(opts, :compact, true)
 
     before_value = if compact?, do: "", else: "\n"
     properties_separator = if compact?, do: "", else: " "
     rule_separator = if compact?, do: " ", else: "\n"
 
-    rules
+    styles
     |> Enum.map(fn {selector, property_values} ->
       property_values =
         property_values
@@ -119,6 +119,21 @@ defmodule Keila.Templates.Css do
       end
     end)
     |> Enum.reverse()
+  end
+
+  @doc """
+  Scopes styles under an additional selector.
+
+  ## Usage
+      iex> styles = [{"div", [{"border", "1px solid"}]}, {"a.class", [{"color", "blue"}]}]
+      iex> Keila.Templates.Css.scope(styles, "#foo")
+      [{"#foo div", [{"border", "1px solid"}]}, {"#foo a.class", [{"color", "blue"}]}]
+  """
+  @spec scope(t(), String.t()) :: t()
+  def scope(styles, scope) do
+    Enum.map(styles, fn {selector, property_list} ->
+      {scope <> " " <> selector, property_list}
+    end)
   end
 end
 
