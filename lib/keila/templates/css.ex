@@ -3,6 +3,12 @@ defmodule Keila.Templates.Css do
   Module for handling CSS styles with simple CSS parser.
 
   The parser is based on the [MDN CSS specifications](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference)
+  """
+
+  @type t :: list({String.t(), list({String.t(), String.t()})})
+
+  @doc """
+  Parses a CSS string.
 
   ## Usage
 
@@ -10,9 +16,6 @@ defmodule Keila.Templates.Css do
       iex> Keila.Templates.Css.parse!(css)
       [{"div", [{"border", "1px solid"}]}, {"a.class", [{"text-decoration", "underline"}, {"color", "blue"}]}]
   """
-
-  @type t :: list({String.t(), list({String.t(), String.t()})})
-
   @spec parse!(String.t()) :: t()
   def parse!(input) do
     {:ok, rules, _, _, _, _} = __MODULE__.Parser.parse(input)
@@ -32,6 +35,88 @@ defmodule Keila.Templates.Css do
           end)
 
         [{selector, property_list} | acc]
+    end)
+    |> Enum.reverse()
+  end
+
+  @doc """
+  Encodes parsed styles as a CSS string.
+
+  ## Options
+  `:compact` - `boolean`, defaults to `true`. Encodes with a reduced amount of
+  whitespace.
+
+  ## Usage
+
+      iex> styles = [{"div", [{"border", "1px solid"}]}, {"a.class", [{"text-decoration", "underline"}, {"color", "blue"}]}]
+      iex> Keila.Templates.Css.encode(styles)
+      "div{border:1px solid} a.class{text-decoration:underline;color:blue}"
+  """
+  @spec encode(t(), Keyword.t()) :: String.t()
+  def encode(rules, opts \\ []) do
+    compact? = Keyword.get(opts, :compact, true)
+
+    before_value = if compact?, do: "", else: "\n"
+    properties_separator = if compact?, do: "", else: " "
+    rule_separator = if compact?, do: " ", else: "\n"
+
+    rules
+    |> Enum.map(fn {selector, property_values} ->
+      property_values =
+        property_values
+        |> Enum.map(fn {property, value} -> "#{property}:#{before_value}#{value}" end)
+        |> Enum.join(";#{properties_separator}")
+
+      "#{selector}{#{property_values}}"
+    end)
+    |> Enum.join(rule_separator)
+  end
+
+  @doc """
+  Merges two parsed stylesheets. Values from the second stylesheet take
+  precedence over the first one.
+
+  ## Usage
+
+    iex> styles1 = Keila.Templates.Css.parse!("div {border: 1px solid} a.class {text-decoration: underline}")
+    iex> styles2 = Keila.Templates.Css.parse!("div {border: none} a.class {color: blue}")
+    iex> Keila.Templates.Css.merge(styles1, styles2)
+    [{"div", [{"border", "none"}]}, {"a.class", [{"text-decoration", "underline"}, {"color", "blue"}]}]
+  """
+  @spec merge(t(), t()) :: t()
+  def merge(styles1, styles2) do
+    (styles1 ++ styles2)
+    |> Enum.reduce([], fn {selector, _}, acc ->
+      if selector in acc do
+        acc
+      else
+        [selector | acc]
+      end
+    end)
+    |> Enum.reverse()
+    |> Enum.reduce([], fn selector, acc ->
+      {_, property_list1} = Enum.find(styles1, &(elem(&1, 0) == selector)) || {"", []}
+      {_, property_list2} = Enum.find(styles2, &(elem(&1, 0) == selector)) || {"", []}
+      property_list = merge_property_lists(property_list1, property_list2)
+
+      [{selector, property_list} | acc]
+    end)
+    |> Enum.reverse()
+  end
+
+  defp merge_property_lists(property_list1, property_list2) do
+    Enum.reduce(property_list1 ++ property_list2, [], fn {property, value}, acc ->
+      index =
+        Enum.find_index(acc, fn
+          {^property, _} -> true
+          _ -> false
+        end)
+
+      if index do
+        List.replace_at(acc, index, {property, value})
+      else
+        [{property, value} | acc]
+      end
     end)
     |> Enum.reverse()
   end
