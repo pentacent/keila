@@ -12,9 +12,9 @@ defmodule Keila.Templates.Css do
 
   ## Usage
 
-      iex> css = "div {border: 1px solid} a.class {text-decoration: underline; color: blue}"
+      iex> css = "div, p {border: 1px solid} a.class {text-decoration: underline; color: blue}"
       iex> Keila.Templates.Css.parse!(css)
-      [{"div", [{"border", "1px solid"}]}, {"a.class", [{"text-decoration", "underline"}, {"color", "blue"}]}]
+      [{"div, p", [{"border", "1px solid"}]}, {"a.class", [{"text-decoration", "underline"}, {"color", "blue"}]}]
   """
   @spec parse!(String.t()) :: t()
   def parse!(input) do
@@ -22,8 +22,12 @@ defmodule Keila.Templates.Css do
 
     rules
     |> Enum.reduce([], fn
-      {:selector, selector}, acc ->
-        selector = to_string(selector)
+      {:selector_list, selectors}, acc ->
+        selector =
+          selectors
+          |> Enum.map(fn {:selector, selector} -> to_string(selector) end)
+          |> Enum.join(", ")
+
         [{selector, []} | acc]
 
       {:property_list, property_list}, [{selector, []} | acc] ->
@@ -190,6 +194,16 @@ defmodule Keila.Templates.Css.Parser do
     )
     |> tag(:selector)
 
+  selector_list =
+    selector
+    |> repeat(
+      insignificant_whitespace
+      |> ignore(ascii_string([?,], 1))
+      |> concat(insignificant_whitespace)
+      |> concat(selector)
+    )
+    |> tag(:selector_list)
+
   property =
     ascii_string([?a..?z, ?A..?Z, ?-], min: 1)
     |> tag(:property)
@@ -221,7 +235,7 @@ defmodule Keila.Templates.Css.Parser do
 
   css =
     times(
-      selector |> concat(property_list) |> concat(insignificant_whitespace),
+      selector_list |> concat(property_list) |> concat(insignificant_whitespace),
       min: 1
     )
 
