@@ -18,7 +18,7 @@ to SMTP.
 
 Keila is ready for you to send newsletters with!
 
-You can easily deploy it using the official Docker image `pentacent/keila`.
+You can easily deploy it using the official Docker image `pentacent/keila` or use the [Docker Compose config](ops/docker-compose.yml) in this repo.
 
 Follow the [Installation Docs](https://keila.io/docs/installation)
 for more details.
@@ -52,3 +52,4 @@ License, or (at your option) any later version.
 For more details, please [read the full license here](LICENSE.md).
 
 Please note that the Keila logo is not subject to the aforementioned license.
+
