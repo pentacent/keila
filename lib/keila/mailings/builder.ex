@@ -7,7 +7,7 @@ defmodule Keila.Mailings.Builder do
   alias Keila.Contacts.Contact
   alias Swoosh.Email
   alias KeilaWeb.Router.Helpers, as: Routes
-  alias Keila.Templates.{Css, Html}
+  alias Keila.Templates.{Template, Css, Html, DefaultTemplate}
   import Swoosh.Email
 
   @default_contact %Keila.Contacts.Contact{
@@ -37,18 +37,24 @@ defmodule Keila.Mailings.Builder do
 
     assigns =
       assigns
+      |> put_template_assigns(campaign.template)
       |> process_assigns()
       |> Map.put_new("contact", process_assigns(contact))
       |> Map.put("unsubscribe_link", unsubscribe_link)
 
     Email.new()
-    |> subject(campaign.subject)
+    |> subject(campaign.template)
     |> put_recipient(contact)
     |> put_sender(campaign)
     |> maybe_put_reply_to(campaign)
     |> put_body(campaign, assigns)
     |> put_unsubscribe_header(unsubscribe_link)
   end
+
+  defp put_template_assigns(assigns, %Template{assigns: template_assigns = %{}}),
+    do: Map.merge(template_assigns, assigns)
+
+  defp put_template_assigns(assigns, _), do: assigns
 
   defp process_assigns(value) when is_number(value) or is_binary(value) or is_nil(value) do
     value
@@ -118,22 +124,25 @@ defmodule Keila.Mailings.Builder do
     end
   end
 
-  @default_template File.read!("priv/email_templates/default.html.liquid") |> Solid.parse!()
-  @default_styles File.read!("priv/email_templates/default.css") |> Css.parse!()
-
   defp put_body(email, campaign = %{settings: %{type: :markdown}}, assigns) do
-    footer_content =
-      "<a class=\"unsubscribe\" href=\"#{assigns["unsubscribe_link"]}\">Unsubscribe</a>"
+    main_content = campaign.text_body || ""
+    signature_content = assigns["signature"] || "[Unsubscribe]({{ unsubscribe_link }})"
 
-    with {:ok, text_body} <- render_liquid(campaign.text_body || "", assigns),
-         {:ok, main_content, _} <- Earmark.as_html(text_body),
-         assigns <- Map.put(assigns, "main_content", main_content),
-         assigns <- Map.put(assigns, "footer_content", footer_content),
-         {:ok, html_body} <- render_liquid(@default_template, assigns) do
+    with {:ok, main_content_text} <- render_liquid(main_content, assigns),
+         {:ok, main_content_html, _} <- Earmark.as_html(main_content_text),
+         {:ok, signature_content_text} <- render_liquid(signature_content, assigns),
+         {:ok, signature_content_html, _} <- Earmark.as_html(signature_content_text),
+         assigns <- Map.put(assigns, "main_content", main_content_html),
+         assigns <- Map.put(assigns, "signature_content", signature_content_html),
+         {:ok, html_body} <- render_liquid(DefaultTemplate.html_template(), assigns) do
+      styles = fetch_styles(campaign)
+
+      text_body = main_content_text <> "\n\n--  \n" <> signature_content_text
+
       html_body =
         html_body
         |> Html.parse_document!()
-        |> Html.apply_inline_styles(@default_styles)
+        |> Html.apply_inline_styles(styles)
         |> Html.to_document()
 
       email
@@ -142,6 +151,24 @@ defmodule Keila.Mailings.Builder do
     else
       _other -> email
     end
+  end
+
+  defp fetch_styles(campaign)
+
+  defp fetch_styles(%Campaign{template: %Template{styles: styles}}) when is_list(styles) do
+    default_styles = DefaultTemplate.styles()
+    template_styles = styles
+    Css.merge(default_styles, template_styles)
+  end
+
+  defp fetch_styles(%Campaign{template: %Template{styles: styles}}) when is_binary(styles) do
+    default_styles = DefaultTemplate.styles()
+    template_styles = Css.parse!(styles)
+    Css.merge(default_styles, template_styles)
+  end
+
+  defp fetch_styles(_) do
+    DefaultTemplate.styles()
   end
 
   defp put_unsubscribe_header(email, unsubscribe_link) do

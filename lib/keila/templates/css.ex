@@ -12,11 +12,15 @@ defmodule Keila.Templates.Css do
 
   ## Usage
 
-      iex> css = "div, p {border: 1px solid} a.class {text-decoration: underline; color: blue}"
+      iex> css = "div, p {border: 1px solid} a.class {font-family: serif, sans-serif; color: blue}"
       iex> Keila.Templates.Css.parse!(css)
-      [{"div, p", [{"border", "1px solid"}]}, {"a.class", [{"text-decoration", "underline"}, {"color", "blue"}]}]
+      [{"div, p", [{"border", "1px solid"}]}, {"a.class", [{"font-family", "serif, sans-serif"}, {"color", "blue"}]}]
   """
   @spec parse!(String.t()) :: t()
+  def parse!(empty) when empty in [nil, ""] do
+    []
+  end
+
   def parse!(input) do
     {:ok, rules, _, _, _, _} = __MODULE__.Parser.parse(input)
 
@@ -60,7 +64,7 @@ defmodule Keila.Templates.Css do
   def encode(styles, opts \\ []) do
     compact? = Keyword.get(opts, :compact, true)
 
-    before_value = if compact?, do: "", else: "\n"
+    before_value = if compact?, do: "", else: " "
     properties_separator = if compact?, do: "", else: " "
     rule_separator = if compact?, do: " ", else: "\n"
 
@@ -209,7 +213,10 @@ defmodule Keila.Templates.Css.Parser do
     |> tag(:property)
 
   value =
-    ascii_string([?a..?z, ?A..?Z, ?0..?9, ?_, ?-, ?#, ?., ?\s, ?', ?", ?%], min: 1)
+    ascii_string(
+      [?a..?z, ?A..?Z, ?0..?9, ?_, ?-, ?#, ?., ?\s, ?', ?", ?%, ?,, ?), ?(, ?:, ?/, ?=, ??, ?&],
+      min: 1
+    )
     |> map({String, :trim_trailing, []})
     |> tag(:value)
 

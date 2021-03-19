@@ -25,7 +25,7 @@ defmodule Keila.Mailings.BuilderTest do
              %Swoosh.Email{} =
              Mailings.Builder.build(campaign, contact, %{existing_assign: "foo"})
 
-    assert email.text_body == """
+    assert email.text_body =~ """
            Hello there, #{contact.first_name}!
            foo
            bar
@@ -53,7 +53,7 @@ defmodule Keila.Mailings.BuilderTest do
 
     assert email = %Swoosh.Email{} = Mailings.Builder.build(campaign, contact, %{})
 
-    assert email.text_body == """
+    assert email.text_body =~ """
            Hello there, #{contact.first_name}!
 
            This is a message with *Markdown*.
