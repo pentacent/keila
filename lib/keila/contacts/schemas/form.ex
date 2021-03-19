@@ -7,6 +7,8 @@ defmodule Keila.Contacts.Form do
 
     embeds_one(:settings, Keila.Contacts.Form.Settings)
     embeds_many(:field_settings, Keila.Contacts.Form.FieldSettings)
+
+    timestamps()
   end
 
   def creation_changeset(struct \\ %__MODULE__{}, params) do

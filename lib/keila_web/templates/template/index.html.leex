@@ -8,7 +8,7 @@
 
                 <%= if Enum.empty?(@templates) do %>
                     <p class="mt-4">
-                        <a href="<%= Routes.template_path(@conn, :new, @current_project.id) %>" class="button button--cta button--large">
+                        <a href="<%= Routes.template_path(@conn, :new, @current_project.id) %>" class="button button--large button--cta">
                             <%= render_icon(:document_add) %>
                             <%= gettext("Create your first template") %>
                         </a>
@@ -21,7 +21,7 @@
             </div>
             <%= if not Enum.empty?(@templates) do %>
                 <p class="mt-4">
-                    <a href="<%= Routes.template_path(@conn, :new, @current_project.id) %>" class="button">
+                    <a href="<%= Routes.template_path(@conn, :new, @current_project.id) %>" class="button button--large">
                         <%= render_icon(:document_add) %>
                         <%= gettext("Create a new template") %>
                     </a>
@@ -35,13 +35,16 @@
                 <h2 class="font-light text-2xl flex items-center gap-2 mb-2">
                     <%= template.name %>
                 </h2>
+                <p class="text-sm flex items-center gap-2">
+                    <%= [gettext("Updated at:"), " ", local_datetime_tag(template.updated_at)] %>
+                </p>
                 <br>
                 <div class="flex flex-row gap-4 justify-end">
-                    <a href="<%= Routes.template_path(@conn, :clone, @current_project.id, template.id) %>" class="button button--large button--text">
+                    <a href="<%= Routes.template_path(@conn, :clone, @current_project.id, template.id) %>" class="button button--text">
                         <%= render_icon(:duplicate) %>
                         <%= gettext("Clone") %>
                     </a>
-                    <a href="<%= Routes.template_path(@conn, :edit, @current_project.id, template.id) %>" class="button button--large ml-2">
+                    <a href="<%= Routes.template_path(@conn, :edit, @current_project.id, template.id) %>" class="button ml-2">
                         <%= render_icon(:pencil_alt) %>
                         <%= gettext("Edit") %>
                     </a>

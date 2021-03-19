@@ -8,7 +8,7 @@
 
                 <%= if Enum.empty?(@campaigns) do %>
                     <p class="mt-4">
-                        <a href="<%= Routes.campaign_path(@conn, :new, @current_project.id) %>" class="button button--cta button--large">
+                        <a href="<%= Routes.campaign_path(@conn, :new, @current_project.id) %>" class="button button--large button--cta">
                             <%= render_icon(:document_add) %>
                             <%= gettext("Create your first campaign") %>
                         </a>
@@ -21,7 +21,7 @@
             </div>
             <%= if not Enum.empty?(@campaigns) do %>
                 <p class="mt-4">
-                    <a href="<%= Routes.campaign_path(@conn, :new, @current_project.id) %>" class="button">
+                    <a href="<%= Routes.campaign_path(@conn, :new, @current_project.id) %>" class="button button--large">
                         <%= render_icon(:document_add) %>
                         <%= gettext("Create a new campaign") %>
                     </a>
@@ -62,17 +62,23 @@
                     end %>
                 </p>
                 <br>
-                <%= if is_nil(campaign.sent_at) do %>
-                    <a href="<%= Routes.campaign_path(@conn, :edit, @current_project.id, campaign.id) %>" class="button">
-                        <%= render_icon(:pencil_alt) %>
-                        <%= gettext("Edit") %>
+                <div class="flex flex-row gap-4 justify-end">
+                    <a href="<%= Routes.campaign_path(@conn, :clone, @current_project.id, campaign.id) %>" class="button button--text">
+                        <%= render_icon(:duplicate) %>
+                        <%= gettext("Clone") %>
                     </a>
-                <% else %>
-                    <a href="<%= Routes.campaign_path(@conn, :stats, @current_project.id, campaign.id) %>" class="button">
-                        <%= render_icon(:chart_bar) %>
-                        <%= gettext("Stats") %>
-                    </a>
-                <% end %>
+                    <%= if is_nil(campaign.sent_at) do %>
+                        <a href="<%= Routes.campaign_path(@conn, :edit, @current_project.id, campaign.id) %>" class="button">
+                            <%= render_icon(:pencil_alt) %>
+                            <%= gettext("Edit") %>
+                        </a>
+                    <% else %>
+                        <a href="<%= Routes.campaign_path(@conn, :stats, @current_project.id, campaign.id) %>" class="button">
+                            <%= render_icon(:chart_bar) %>
+                            <%= gettext("Stats") %>
+                        </a>
+                    <% end %>
+                </div>
             </div>
         <% end %>
     </div>

@@ -8,7 +8,7 @@
 
                 <%= if Enum.empty?(@forms) do %>
                     <p class="mt-4">
-                        <a href="<%= Routes.form_path(@conn, :new, @current_project.id) %>" class="button button--cta button--large">
+                        <a href="<%= Routes.form_path(@conn, :new, @current_project.id) %>" class="button button--large button--cta">
                             <%= render_icon(:document_add) %>
                             <%= gettext("Create your first form") %>
                         </a>
@@ -21,7 +21,7 @@
             </div>
             <%= if not Enum.empty?(@forms) do %>
                 <p class="mt-4">
-                    <a href="<%= Routes.form_path(@conn, :new, @current_project.id) %>" class="button">
+                    <a href="<%= Routes.form_path(@conn, :new, @current_project.id) %>" class="button button--large">
                         <%= render_icon(:document_add) %>
                         <%= gettext("Create a new form") %>
                     </a>
@@ -35,10 +35,17 @@
                 <h2 class="font-light text-2xl flex items-center gap-2 mb-2">
                     <%= form.name %>
                 </h2>
+                <p class="text-sm flex items-center gap-2">
+                    <%= [gettext("Updated at:"), " ", local_datetime_tag(form.updated_at)] %>
+                </p>
                 <br>
-                <a href="<%= Routes.form_path(@conn, :edit, @current_project.id, form.id) %>" class="button button--large">
-                    <%= gettext("Settings") %>
-                </a>
+
+                <div class="flex flex-row gap-4 justify-end">
+                    <a href="<%= Routes.form_path(@conn, :edit, @current_project.id, form.id) %>" class="button">
+                        <%= render_icon(:pencil_alt) %>
+                        <%= gettext("Edit") %>
+                    </a>
+                </div>
             </div>
         <% end %>
     </div>

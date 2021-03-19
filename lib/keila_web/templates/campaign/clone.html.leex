@@ -5,7 +5,7 @@
                 <h1 class="text-2xl sm:text-5xl mb-4">
                     <%= gettext("Clone Campaign") %>
                 </h1>
-                <%= f = form_for(@changeset, Routes.campaign_path(@conn, :post_new, @current_project.id), class: "mt-8 max-w-md flex flex-col gap-4") %>
+                <%= f = form_for(@changeset, Routes.campaign_path(@conn, :clone, @current_project.id, @campaign.id), class: "mt-8 max-w-md flex flex-col gap-4", method: :post) %>
                     <div class="flex flex-col">
                         <%= label(f, :subject, gettext("Subject")) %>
                         <%= with_validation(f, :subject) do %>

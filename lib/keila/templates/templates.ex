@@ -70,7 +70,7 @@ defmodule Keila.Templates do
   """
   @spec get_project_templates(Project.id()) :: [Template.t()]
   def get_project_templates(project_id) when is_id(project_id) do
-    from(t in Template, where: t.project_id == ^project_id)
+    from(t in Template, where: t.project_id == ^project_id, order_by: [desc: t.updated_at])
     |> Repo.all()
   end
 

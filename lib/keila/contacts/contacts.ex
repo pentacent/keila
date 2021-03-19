@@ -196,7 +196,7 @@ defmodule Keila.Contacts do
   """
   @spec get_project_forms(Project.id()) :: [Form.t()]
   def get_project_forms(project_id) do
-    from(f in Form, where: f.project_id == ^project_id)
+    from(f in Form, where: f.project_id == ^project_id, order_by: [desc: f.updated_at])
     |> Repo.all()
   end
 
