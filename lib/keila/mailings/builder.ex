@@ -43,7 +43,7 @@ defmodule Keila.Mailings.Builder do
       |> Map.put("unsubscribe_link", unsubscribe_link)
 
     Email.new()
-    |> subject(campaign.template)
+    |> subject(campaign.subject)
     |> put_recipient(contact)
     |> put_sender(campaign)
     |> maybe_put_reply_to(campaign)

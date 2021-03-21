@@ -1,6 +1,6 @@
 defmodule KeilaWeb.CampaignController do
   use KeilaWeb, :controller
-  alias Keila.Mailings
+  alias Keila.{Mailings, Templates}
   import Ecto.Changeset
   import Phoenix.LiveView.Controller
 
@@ -92,9 +92,15 @@ defmodule KeilaWeb.CampaignController do
 
     if is_nil(campaign.sent_at) do
       senders = Mailings.get_project_senders(project.id)
+      templates = Templates.get_project_templates(project.id)
 
       live_render(conn, KeilaWeb.CampaignEditLive,
-        session: %{"current_project" => project, "campaign" => campaign, "senders" => senders}
+        session: %{
+          "current_project" => project,
+          "campaign" => campaign,
+          "senders" => senders,
+          "templates" => templates
+        }
       )
     else
       redirect(conn, to: Routes.campaign_path(conn, :stats, project.id, campaign.id))

@@ -6,6 +6,7 @@ defmodule KeilaWeb.CampaignEditLive do
   def mount(_params, session, socket) do
     project = session["current_project"]
     senders = session["senders"]
+    templates = session["templates"] || []
     campaign = session["campaign"]
     error_changeset = session["changeset"]
 
@@ -30,6 +31,7 @@ defmodule KeilaWeb.CampaignEditLive do
       |> assign(:current_project, project)
       |> assign(:campaign, campaign)
       |> assign(:senders, senders)
+      |> assign(:templates, templates)
       |> assign(:changeset, changeset)
       |> assign(:recipient_count, recipient_count)
       |> assign(:error_changeset, error_changeset)
@@ -41,12 +43,14 @@ defmodule KeilaWeb.CampaignEditLive do
   defp put_default_assigns(socket) do
     case Ecto.Changeset.apply_action(socket.assigns.changeset, :update) do
       {:ok, campaign} ->
+        template = Enum.find(socket.assigns.templates, &(&1.id == campaign.template_id))
+
         # TODO
         sender =
           Enum.find(socket.assigns.senders, &(&1.id == campaign.sender_id)) ||
             %Mailings.Sender{from_email: "foo@example.com"}
 
-        campaign = %Mailings.Campaign{campaign | sender: sender}
+        campaign = %Mailings.Campaign{campaign | sender: sender, template: template}
         email = Mailings.Builder.build(campaign, %{})
 
         preview =
@@ -55,7 +59,9 @@ defmodule KeilaWeb.CampaignEditLive do
             :text -> KeilaWeb.CampaignView.plain_text_preview(email.text_body)
           end
 
-        assign(socket, :preview, preview)
+        socket
+        |> maybe_put_styles(template)
+        |> assign(:preview, preview)
 
       _ ->
         assign(socket, :preview, "")
@@ -78,5 +84,36 @@ defmodule KeilaWeb.CampaignEditLive do
       |> put_default_assigns()
 
     {:noreply, socket}
+  end
+
+  defp maybe_put_styles(socket, template) do
+    if (is_nil(template) && is_nil(socket.assigns[:styles])) ||
+         (not is_nil(template) && socket.assigns[:current_template_id] != template.id) do
+      template_styles =
+        if template && template.styles do
+          Keila.Templates.Css.parse!(template.styles)
+        else
+          []
+        end
+
+      default_styles = Keila.Templates.DefaultTemplate.styles()
+
+      styles =
+        Keila.Templates.Css.merge(default_styles, template_styles)
+        |> Enum.map(fn {selector, styles} ->
+          if String.starts_with?(selector, "body") do
+            {String.replace(selector, "body", "#wysiwyg .editor"), styles}
+          else
+            {"#wysiwyg .ProseMirror " <> selector, styles}
+          end
+        end)
+        |> Keila.Templates.Css.encode()
+
+      socket
+      |> assign(:current_template_id, if(template, do: template.id))
+      |> assign(:styles, styles)
+    else
+      socket
+    end
   end
 end

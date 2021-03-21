@@ -42,7 +42,7 @@ defmodule Keila.Mailings.Campaign do
   """
   def preview_changeset(struct = %__MODULE__{}, params) do
     struct
-    |> cast(params, [:subject, :text_body, :html_body, :sender_id])
+    |> cast(params, [:subject, :text_body, :html_body, :sender_id, :template_id])
     |> cast_embed(:settings)
   end
 

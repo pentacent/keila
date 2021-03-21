@@ -73,12 +73,29 @@
                     <% end %>
                 <% end) %>
 
+                <%= if Ecto.Changeset.get_field(@changeset, :settings).type == :markdown do %>
+                    <%= label(f, :template_id, "Template", class: "mt-4") %>
+
+                    <%= if not Enum.empty?(@senders) do %>
+                        <%= with_validation(f, :template_id) do %>
+                            <%= select(f, :template_id, [{gettext("Default"), nil} | Enum.map(@templates, &{&1.name, &1.id})], class: "text-black") %>
+                        <% end %>
+                    <% else %>
+                        <p>
+                            <%= gettext("You can customize the design of your campaign with templates.") %><br>
+                            <a href="<%= Routes.template_path(@socket, :new, @current_project.id) %>" class="button button--cta">
+                                <%= gettext("Create your first template") %>
+                            </a>
+                        </p>
+                    <% end %>
+                <% end %>
+
                 <div x-data="{previewMode: false}">
 
                     <%= if Ecto.Changeset.get_field(@changeset, :settings).type == :markdown && Ecto.Changeset.get_field(@changeset, :settings).enable_wysiwyg do %>
                         <%= textarea(f, :text_body, class: "hidden") %>
                         <div id="wysiwyg-container" phx-hook="MarkdownEditor" class="flex-grow bg-white mt-4">
-                            <%= render("_wysiwyg_editor.html") %>
+                            <%= render("_wysiwyg_editor.html", assigns) %>
                         </div>
                     <% else %>
                         <div class="relative shadow z-10 flex overflow-x-auto mt-4">
