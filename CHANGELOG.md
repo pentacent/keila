@@ -1,5 +1,20 @@
 # Changelog
 
+## Version 0.4.0 🎨
+
+Template customization & UI improvements
+
+### Added
+- Template editor for customizing Markdown campaign styles
+
+### Changed
+- Improved index pages for forms, templates, and campaigns
+- Updated dependencies, using upstream of `Swoosh` again
+
+### Fixed
+- Fixed broken template download links in production
+
+
 ## Version 0.3.0
 
 Scheduling campaigns & WYSIWYG editor ⏲️
