@@ -1,18 +1,13 @@
 h1 {
-    margin: 0 0 10px 0;
-    font-family: sans-serif;
-    font-size: 25px;
-    line-height: 30px;
-    color: #333333;
-    font-weight: bold;
+    margin: 0 0 20px 0;
 }
+
 h2 {
-    margin: 0 0 10px 0;
-    font-family: sans-serif;
-    font-size: 18px;
-    line-height: 22px;
-    color: #333333;
-    font-weight: bold;
+    margin: 0 0 20px 0;
+}
+
+h3 {
+    margin: 0 0 20px 0;
 }
 
 ul {
@@ -21,29 +16,22 @@ ul {
     list-style-type: disc;
 }
 
-ul>li {
+ul > li {
     margin: 0 0 10px 30px
 }
 
-a { text-decoration: underline;
-    color: #3b82f6
-}
-
-a.unsubscribe {
-    color: #333333;
+h4 {
+    margin: 20px 0;
 }
 
 h4 > a {
-    background: #3b82f6;
-    color: white;
     padding: 10px;
     display: block;
-    text-decoration: none;
     cursor: pointer;
     text-align: center;
 }
 
-img {
+#content img {
     width: 100%;
     max-width: 600px;
 }

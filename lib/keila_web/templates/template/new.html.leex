@@ -3,18 +3,18 @@
         <div class="container py-8 sm:py-6 md:py-12 lg:py-16 flex">
             <div class="flex-grow">
                 <h1 class="text-2xl sm:text-5xl mb-4">
-                    <%= gettext("Clone Campaign") %>
+                    <%= gettext("New Template") %>
                 </h1>
-                <%= f = form_for(@changeset, Routes.campaign_path(@conn, :clone, @current_project.id, @campaign.id), class: "mt-8 max-w-md flex flex-col gap-4", method: :post) %>
+                <%= f = form_for(@changeset, Routes.template_path(@conn, :post_new, @current_project.id), class: "mt-8 max-w-md flex flex-col gap-4") %>
                     <div class="flex flex-col">
-                        <%= label(f, :subject, gettext("Subject")) %>
-                        <%= with_validation(f, :subject) do %>
-                            <%= text_input(f, :subject, placeholder: gettext("My Campaign Subject"), class: "text-black") %>
+                        <%= label(f, :name, gettext("Name")) %>
+                        <%= with_validation(f, :name) do %>
+                            <%= text_input(f, :name, placeholder: gettext("My Template name"), class: "text-black", autofocus: true) %>
                         <% end %>
                     </div>
                     <div class="flex">
                         <button class="button button--cta button--large">
-                            <%= gettext("Clone campaign") %>
+                            <%= gettext("Create template") %>
                         </button>
                     </div>
                 </form>

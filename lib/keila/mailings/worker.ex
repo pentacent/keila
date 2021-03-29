@@ -8,7 +8,7 @@ defmodule Keila.Mailings.Worker do
     recipient =
       from(r in Recipient,
         where: r.id == ^recipient_id,
-        preload: [contact: [], campaign: :sender]
+        preload: [contact: [], campaign: [:sender, :template]]
       )
       |> Repo.one()
 

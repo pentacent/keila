@@ -61,7 +61,7 @@ defmodule Keila.Mailings do
   """
   @spec get_campaign(Campaign.id()) :: Campaign.t() | nil
   def get_campaign(id) when is_id(id) do
-    Repo.get(Campaign, id)
+    Repo.get(Campaign, id, preload: [:template])
   end
 
   @doc """
@@ -70,7 +70,10 @@ defmodule Keila.Mailings do
   @spec get_project_campaign(Project.id(), Campaign.id()) :: Campaign.t() | nil
   def get_project_campaign(project_id, campaign_id)
       when is_id(project_id) and is_id(campaign_id) do
-    from(c in Campaign, where: c.id == ^campaign_id and c.project_id == ^project_id)
+    from(c in Campaign,
+      where: c.id == ^campaign_id and c.project_id == ^project_id,
+      preload: [:template]
+    )
     |> Repo.one()
   end
 
@@ -274,6 +277,11 @@ defmodule Keila.Mailings do
     Task.Supervisor.start_child(Keila.TaskSupervisor, __MODULE__, :deliver_campaign, [id])
   end
 
+  @spec get_campaign_stats(Campaign.id()) :: %{
+          status: :unsent | :preparing | :sending | :sent,
+          recipients_count: integer(),
+          sent_count: integer()
+        }
   def get_campaign_stats(campaign_id) when is_id(campaign_id) do
     campaign = get_campaign(campaign_id)
 

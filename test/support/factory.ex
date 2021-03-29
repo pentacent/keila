@@ -77,6 +77,12 @@ defmodule Keila.Factory do
     }
   end
 
+  defp do_build(:template) do
+    %Keila.Templates.Template{
+      name: "template-#{get_counter_value()}"
+    }
+  end
+
   defp do_build(:contact) do
     %Keila.Contacts.Contact{
       email: "contact-#{get_counter_value()}@example.org",

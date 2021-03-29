@@ -36,6 +36,7 @@
                     <%= menu_link(@conn, Routes.project_path(@conn, :show, @current_project.id), @current_project.name, exact: true) %>
                     <%= menu_link(@conn, Routes.contact_path(@conn, :index, @current_project.id), gettext("Contacts")) %>
                     <%= menu_link(@conn, Routes.form_path(@conn, :index, @current_project.id), gettext("Forms")) %>
+                    <%= menu_link(@conn, Routes.template_path(@conn, :index, @current_project.id), gettext("Templates")) %>
                     <%= menu_link(@conn, Routes.campaign_path(@conn, :index, @current_project.id), gettext("Campaigns")) %>
                 <% end %>
                 <div class="hidden sm:block sm:flex-grow"></div>

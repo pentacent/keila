@@ -193,10 +193,10 @@
 	2. center tag: for Gmail and Inbox mobile apps and web versions of Gmail, GSuite, Inbox, Yahoo, AOL, Libero, Comcast, freenet, Mail.ru, Orange.fr
 	3. mso conditional: For Windows 10 Mail
 -->
-<body width="100%" style="margin: 0; padding: 0 !important; mso-line-height-rule: exactly; background-color: #f3f4f6;">
-	<center role="article" aria-roledescription="email" lang="en" style="width: 100%; background-color: #f3f4f6;">
+<body width="100%" style="margin: 0; padding: 0 !important; mso-line-height-rule: exactly;">
+	<center id="center-wrapper" role="article" aria-roledescription="email" lang="en" style="width: 100%;">
     <!--[if mso | IE]>
-    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f3f4f6;">
+    <table id="table-wrapper" role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
     <tr>
     <td>
     <![endif]-->
@@ -237,10 +237,10 @@
 
                 <!-- 1 Column Text : BEGIN -->
                 <tr>
-                    <td style="background-color: #ffffff;">
-                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                    <td>
+                        <table id="content" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                             <tr>
-                                <td style="padding: 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;">
+                                <td style="padding: 20px; font-size: 15px; line-height: 20px;">
                                     {{ main_content }}
                                 </td>
                             </tr>
@@ -252,10 +252,10 @@
             <!-- Email Body : END -->
 
             <!-- Email Footer : BEGIN -->
-	        <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: auto;">
+	        <table id="signature" align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: auto;">
                 <tr>
-                    <td style="padding: 20px; font-family: sans-serif; font-size: 12px; line-height: 15px; text-align: center; color: #ffffff;">
-                        {{ footer_content }}
+                    <td style="padding: 20px; font-size: 12px; line-height: 15px; text-align: center;">
+                        {{ signature_content }}
                     </td>
                 </tr>
             </table>

@@ -92,6 +92,15 @@ defmodule KeilaWeb.Router do
     put "/projects/:project_id/forms/:id", FormController, :post_edit
     delete "/projects/:project_id/forms", FormController, :delete
 
+    get "/projects/:project_id/templates", TemplateController, :index
+    get "/projects/:project_id/templates/new", TemplateController, :new
+    post "/projects/:project_id/templates/new", TemplateController, :post_new
+    get "/projects/:project_id/templates/:id", TemplateController, :edit
+    put "/projects/:project_id/templates/:id", TemplateController, :post_edit
+    get "/projects/:project_id/templates/:id/clone", TemplateController, :clone
+    post "/projects/:project_id/templates/:id/clone", TemplateController, :post_clone
+    delete "/projects/:project_id/templates", TemplateController, :delete
+
     get "/projects/:project_id/campaigns", CampaignController, :index
     get "/projects/:project_id/campaigns/new", CampaignController, :new
     post "/projects/:project_id/campaigns/new", CampaignController, :post_new

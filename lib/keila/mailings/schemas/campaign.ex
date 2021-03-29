@@ -2,6 +2,7 @@ defmodule Keila.Mailings.Campaign do
   use Keila.Schema, prefix: "mc"
   alias Keila.Mailings.Sender
   alias Keila.Projects.Project
+  alias Keila.Templates.Template
 
   schema "mailings_campaigns" do
     field(:subject, :string)
@@ -10,6 +11,7 @@ defmodule Keila.Mailings.Campaign do
     field(:sent_at, :utc_datetime)
     field(:scheduled_for, :utc_datetime)
     embeds_one(:settings, __MODULE__.Settings)
+    belongs_to(:template, Template, type: Template.Id)
     belongs_to(:sender, Sender, type: Sender.Id)
     belongs_to(:project, Project, type: Project.Id)
     timestamps()
@@ -17,14 +19,14 @@ defmodule Keila.Mailings.Campaign do
 
   def creation_changeset(struct \\ %__MODULE__{}, params) do
     struct
-    |> cast(params, [:subject, :text_body, :html_body, :sender_id, :project_id])
+    |> cast(params, [:subject, :text_body, :html_body, :sender_id, :project_id, :template_id])
     |> cast_embed(:settings)
     |> validate_required([:subject, :project_id, :settings])
   end
 
   def update_changeset(struct = %__MODULE__{}, params) do
     struct
-    |> cast(params, [:subject, :text_body, :html_body, :sender_id])
+    |> cast(params, [:subject, :text_body, :html_body, :sender_id, :template_id])
     |> cast_embed(:settings)
     |> validate_required([:subject])
   end
@@ -40,7 +42,7 @@ defmodule Keila.Mailings.Campaign do
   """
   def preview_changeset(struct = %__MODULE__{}, params) do
     struct
-    |> cast(params, [:subject, :text_body, :html_body, :sender_id])
+    |> cast(params, [:subject, :text_body, :html_body, :sender_id, :template_id])
     |> cast_embed(:settings)
   end
 
