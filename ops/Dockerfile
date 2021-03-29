@@ -1,7 +1,4 @@
-# FIXME: Loosen Elixir Docker image requirement once 
-# https://github.com/gen-smtp/gen_smtp/issues/250
-# and https://github.com/erlang/otp/issues/4585 have been fixed
-FROM elixir:1.11.2-alpine as build
+FROM elixir:1.11-alpine as build
 ENV MIX_ENV=prod
 
 RUN apk add git npm build-base
