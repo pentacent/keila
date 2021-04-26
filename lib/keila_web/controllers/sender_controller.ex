@@ -66,7 +66,12 @@ defmodule KeilaWeb.SenderController do
 
       _ ->
         conn
-        |> put_flash(:error, gettext("Sender settings were saved but Keila was unable to send a test email with your provided credentials."))
+        |> put_flash(
+          :error,
+          gettext(
+            "Sender settings were saved but Keila was unable to send a test email with your provided credentials."
+          )
+        )
         |> redirect(to: Routes.sender_path(conn, :index, project.id))
     end
   end
