@@ -15,23 +15,6 @@ defmodule KeilaWeb.SenderController do
     |> render("index.html")
   end
 
-  @spec edit(Plug.Conn.t(), map()) :: Plug.Conn.t()
-  def edit(conn, _params) do
-    conn
-    |> put_meta(:title, conn.assigns.sender.name)
-    |> render_edit(Ecto.Changeset.change(conn.assigns.sender))
-  end
-
-  @spec post_edit(Plug.Conn.t(), map()) :: Plug.Conn.t()
-  def post_edit(conn, params = %{"id" => id}) do
-    project = current_project(conn)
-
-    case Mailings.update_sender(id, params["sender"] || %{}) do
-      {:ok, _sender} -> redirect(conn, to: Routes.sender_path(conn, :index, project.id))
-      {:error, changeset} -> render_edit(conn, 400, changeset)
-    end
-  end
-
   @spec new(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def new(conn, _) do
     changeset =
@@ -47,7 +30,22 @@ defmodule KeilaWeb.SenderController do
     project = current_project(conn)
 
     case Mailings.create_sender(project.id, params) do
-      {:ok, _} -> redirect(conn, to: Routes.sender_path(conn, :index, project.id))
+      {:ok, sender} -> try_credentials_and_redirect(conn, sender)
+      {:error, changeset} -> render_edit(conn, 400, changeset)
+    end
+  end
+
+  @spec edit(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def edit(conn, _params) do
+    conn
+    |> put_meta(:title, conn.assigns.sender.name)
+    |> render_edit(Ecto.Changeset.change(conn.assigns.sender))
+  end
+
+  @spec post_edit(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def post_edit(conn, params = %{"id" => id}) do
+    case Mailings.update_sender(id, params["sender"] || %{}) do
+      {:ok, sender} -> try_credentials_and_redirect(conn, sender)
       {:error, changeset} -> render_edit(conn, 400, changeset)
     end
   end
@@ -57,6 +55,20 @@ defmodule KeilaWeb.SenderController do
     |> put_status(status)
     |> assign(:changeset, changeset)
     |> render("edit.html")
+  end
+
+  defp try_credentials_and_redirect(conn, sender) do
+    project = current_project(conn)
+
+    case Mailings.try_credentials(sender.id) do
+      {:ok, _sender} ->
+        redirect(conn, to: Routes.sender_path(conn, :index, project.id))
+
+      _ ->
+        conn
+        |> put_flash(:error, gettext("Sender settings were saved but Keila was unable to send a test email with your provided credentials."))
+        |> redirect(to: Routes.sender_path(conn, :index, project.id))
+    end
   end
 
   @spec delete(Plug.Conn.t(), any) :: Plug.Conn.t()
