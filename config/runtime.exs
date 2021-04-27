@@ -157,6 +157,11 @@ if config_env() == :prod do
   config :keila,
     registration_disabled:
       System.get_env("DISABLE_REGISTRATION") not in [nil, 0, "", "false", "FALSE"]
+
+  # Precedence Bulk Header
+  if System.get_env("DISABLE_PRECEDENCE_HEADER") in [1, "1", "true", "TRUE"] do
+    config(:keila, Keila.Mailings, enable_precedence_header: false)
+  end
 end
 
 if config_env() == :test do
