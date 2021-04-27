@@ -49,6 +49,7 @@ defmodule Keila.Mailings.Builder do
     |> maybe_put_reply_to(campaign)
     |> put_body(campaign, assigns)
     |> put_unsubscribe_header(unsubscribe_link)
+    |> maybe_put_precedence_header()
   end
 
   defp put_template_assigns(assigns, %Template{assigns: template_assigns = %{}}),
@@ -175,6 +176,18 @@ defmodule Keila.Mailings.Builder do
     email
     |> header("List-Unsubscribe", "<#{unsubscribe_link}>")
     |> header("List-Unsubscribe-Post", "List-Unsubscribe=One-Click")
+  end
+
+  defp maybe_put_precedence_header(email) do
+    enable_precedence_header =
+      Application.get_env(:keila, Keila.Mailings)
+      |> Keyword.fetch!(:enable_precedence_header)
+
+    if enable_precedence_header do
+      header(email, "Precedence", "Bulk")
+    else
+      email
+    end
   end
 
   defp render_liquid(input, assigns) when is_binary(input) do
