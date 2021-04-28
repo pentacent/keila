@@ -34,10 +34,10 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
         end
 
         @impl true
-        def to_swoosh_config(struct) do
+        def to_swoosh_config(sender) do
           [
             adapter: Swoosh.Adapters.Sendgrid,
-            api_key: struct.sendgrid_api_key
+            api_key: sender.config.sendgrid_api_key
           ]
         end
       end
@@ -50,6 +50,7 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
     quote do
       @behaviour unquote(__MODULE__)
       import Ecto.Changeset
+      alias Keila.Mailings.Sender
       alias unquote(__MODULE__)
     end
   end
@@ -77,5 +78,5 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
   @doc """
   Builds a swoosh config from the passed sender adapter configuration.
   """
-  @callback to_swoosh_config(struct()) :: keyword()
+  @callback to_swoosh_config(Keila.Mailings.Sender.t()) :: keyword()
 end

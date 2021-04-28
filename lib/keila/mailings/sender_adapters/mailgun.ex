@@ -20,11 +20,11 @@ defmodule Keila.Mailings.SenderAdapters.Mailgun do
   end
 
   @impl true
-  def to_swoosh_config(struct) do
+  def to_swoosh_config(%Sender{config: config}) do
     [
       adapter: Swoosh.Adapters.Mailgun,
-      api_key: struct.mailgun_api_key,
-      domain: struct.mailgun_domain
+      api_key: config.mailgun_api_key,
+      domain: config.mailgun_domain
     ]
   end
 end

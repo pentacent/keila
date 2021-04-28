@@ -1,7 +1,8 @@
 defmodule Keila.Mailings.Worker do
   use Oban.Worker, queue: :mailer
   use Keila.Repo
-  alias Keila.Mailings.{Recipient, Sender}
+  alias Keila.Mailings
+  alias Keila.Mailings.{Recipient, Builder}
 
   @impl true
   def perform(%Oban.Job{args: %{"recipient_id" => recipient_id}}) do
@@ -12,9 +13,8 @@ defmodule Keila.Mailings.Worker do
       )
       |> Repo.one()
 
-    config = Sender.Config.to_swoosh_config(recipient.campaign.sender.config)
-
-    email = Keila.Mailings.Builder.build(recipient.campaign, recipient.contact, %{})
+    config = Mailings.sender_to_swoosh_config(recipient.campaign.sender)
+    email = Builder.build(recipient.campaign, recipient.contact, %{})
 
     if Enum.find(email.headers, fn {name, _} -> name == "X-Keila-Invalid" end) do
       raise "Invalid email"

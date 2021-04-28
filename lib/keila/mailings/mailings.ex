@@ -1,7 +1,7 @@
 defmodule Keila.Mailings do
   use Keila.Repo
   alias Keila.Project
-  alias __MODULE__.{Sender, Campaign, Recipient}
+  alias __MODULE__.{Sender, SenderAdapters, Campaign, Recipient}
 
   @moduledoc """
   Context for all functionalities related to sending email campaigns.
@@ -306,5 +306,18 @@ defmodule Keila.Mailings do
       recipients_count: recipients_count,
       sent_count: sent_count
     }
+  end
+
+
+  @doc """
+  Converts sender struct with the embedded Config schema to Keyword list for use with Swoosh.
+  """
+  @spec sender_to_swoosh_config(Sender.t()) :: Keyword.t()
+  def sender_to_swoosh_config(sender) do
+    config = sender.config
+    adapter = SenderAdapters.get_adapter(config.type)
+
+    adapter.to_swoosh_config(sender)
+    |> Enum.filter(fn {_, v} -> not is_nil(v) end)
   end
 end
