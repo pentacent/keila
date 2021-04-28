@@ -21,12 +21,12 @@ defmodule Keila.Mailings.SenderAdapters.SES do
   end
 
   @impl true
-  def to_swoosh_config(struct) do
+  def to_swoosh_config(%Sender{config: config}) do
     [
       adapter: Swoosh.Adapters.SES,
-      region: struct.ses_region,
-      access_key: struct.ses_access_key,
-      secret: struct.ses_secret
+      region: config.ses_region,
+      access_key: config.ses_access_key,
+      secret: config.ses_secret
     ]
   end
 end

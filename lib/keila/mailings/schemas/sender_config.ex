@@ -31,15 +31,4 @@ defmodule Keila.Mailings.Sender.Config do
       changeset
     end
   end
-
-  @doc """
-  Converts the embedded schema to Keyword list for use with Swoosh.
-  """
-  @spec to_swoosh_config(t()) :: Keyword.t()
-  def to_swoosh_config(struct = %__MODULE__{}) do
-    adapter = SenderAdapters.get_adapter(struct.type)
-
-    adapter.to_swoosh_config(struct)
-    |> Enum.filter(fn {_, v} -> not is_nil(v) end)
-  end
 end

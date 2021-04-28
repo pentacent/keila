@@ -23,15 +23,15 @@ defmodule Keila.Mailings.SenderAdapters.SMTP do
   end
 
   @impl true
-  def to_swoosh_config(struct) do
+  def to_swoosh_config(%Sender{config: config}) do
     [
       adapter: Swoosh.Adapters.SMTP,
-      relay: struct.smtp_relay,
-      username: struct.smtp_username,
-      password: struct.smtp_password,
-      tls: if(struct.smtp_tls, do: :always),
+      relay: config.smtp_relay,
+      username: config.smtp_username,
+      password: config.smtp_password,
+      tls: if(config.smtp_tls, do: :always),
       auth: :always,
-      port: struct.smtp_port
+      port: config.smtp_port
     ]
   end
 end
