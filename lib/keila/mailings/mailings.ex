@@ -7,6 +7,9 @@ defmodule Keila.Mailings do
   Context for all functionalities related to sending email campaigns.
   """
 
+  @doc """
+  Retrieves Sender with given ID.
+  """
   @spec get_sender(Sender.id()) :: Sender.t() | nil
   def get_sender(id) when is_id(id),
     do: Repo.get(Sender, id)
@@ -14,18 +17,27 @@ defmodule Keila.Mailings do
   def get_sender(_),
     do: nil
 
+  @doc """
+  Retrieves Sender with given `sender_id` only if it belongs to the specified Project.
+  """
   @spec get_project_sender(Project.id(), Sender.id()) :: Sender.t() | nil
   def get_project_sender(project_id, sender_id) do
     from(s in Sender, where: s.id == ^sender_id and s.project_id == ^project_id)
     |> Repo.one()
   end
 
+  @doc """
+  Returns all Senders belonging to specified Project.
+  """
   @spec get_project_senders(Project.id()) :: [Project.t()]
   def get_project_senders(project_id) when is_binary(project_id) or is_integer(project_id) do
     from(s in Sender, where: s.project_id == ^project_id)
     |> Repo.all()
   end
 
+  @doc """
+  Creates a new Sender with given params.
+  """
   @spec create_sender(Project.id(), map()) ::
           {:ok, Sender.t()} | {:error, Changeset.t(Sender.t())}
   def create_sender(project_id, params) do
@@ -36,6 +48,9 @@ defmodule Keila.Mailings do
     |> Repo.insert()
   end
 
+  @doc """
+  Updates an existing Sender with given params.
+  """
   @spec update_sender(Sender.id(), map()) :: {:ok, Sender.t()} | {:error, Changeset.t(Sender.t())}
   def update_sender(id, params) when is_id(id) do
     Repo.get(Sender, id)
