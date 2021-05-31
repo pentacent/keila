@@ -311,7 +311,6 @@ defmodule Keila.Mailings do
     }
   end
 
-
   @doc """
   Converts sender struct with the embedded Config schema to Keyword list for use with Swoosh.
   """
