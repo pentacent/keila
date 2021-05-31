@@ -277,6 +277,9 @@ defmodule Keila.Mailings do
     Task.Supervisor.start_child(Keila.TaskSupervisor, __MODULE__, :deliver_campaign, [id])
   end
 
+  @doc """
+  Returns map with stats about a campaign.
+  """
   @spec get_campaign_stats(Campaign.id()) :: %{
           status: :unsent | :preparing | :sending | :sent,
           recipients_count: integer(),
