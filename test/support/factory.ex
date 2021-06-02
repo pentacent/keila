@@ -146,6 +146,7 @@ defmodule Keila.Factory do
     struct
     |> Map.from_struct()
     |> Enum.map(fn {key, value} -> {to_string(key), maybe_to_map(value)} end)
+    |> Enum.filter(fn {key, _} -> not String.starts_with?(key, "__") end)
     |> Enum.into(%{})
   end
 

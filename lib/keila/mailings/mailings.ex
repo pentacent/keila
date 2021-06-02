@@ -45,7 +45,19 @@ defmodule Keila.Mailings do
     |> stringize_params()
     |> Map.put("project_id", project_id)
     |> Sender.creation_changeset()
-    |> Repo.insert()
+    |> create_sender_with_callback()
+  end
+
+  defp create_sender_with_callback(changeset) do
+    Repo.transaction(fn ->
+      sender = Repo.insert!(changeset)
+      adapter = SenderAdapters.get_adapter(sender.config.type)
+
+      case adapter.after_create(sender) do
+        :ok -> sender
+        {:error, term} -> changeset |> add_error(:config, term) |> Repo.rollback()
+      end
+    end)
   end
 
   @doc """
@@ -55,17 +67,43 @@ defmodule Keila.Mailings do
   def update_sender(id, params) when is_id(id) do
     Repo.get(Sender, id)
     |> Sender.update_changeset(params)
-    |> Repo.update()
+    |> update_sender_with_callback()
+  end
+
+  defp update_sender_with_callback(changeset) do
+    Repo.transaction(fn ->
+      sender = Repo.update!(changeset)
+      adapter = SenderAdapters.get_adapter(sender.config.type)
+
+      case adapter.after_update(sender) do
+        :ok -> sender
+        {:error, term} -> changeset |> add_error(:config, term) |> Repo.rollback()
+      end
+    end)
   end
 
   @doc """
   Deletes Sender with given ID. Associated Campaigns are *not* deleted.
 
-  This function is idempotent and always returns `:ok`.
+  This function is idempotent and always returns `:ok` unless there is a
+  callback error.
   """
-  @spec delete_sender(Sender.id()) :: :ok
+  @spec delete_sender(Sender.id()) :: :ok | {:error, term}
   def delete_sender(id) when is_id(id) do
-    from(s in Sender, where: s.id == ^id)
+    case Repo.get(Sender, id) do
+      nil -> :ok
+      sender -> delete_sender_with_callback(sender)
+    end
+  end
+
+  defp delete_sender_with_callback(sender) do
+    adapter = SenderAdapters.get_adapter(sender.config.type)
+
+    case adapter.before_delete(sender) do
+      :ok -> Repo.delete(sender) && :ok
+      {:error, term} -> {:error, term}
+    end
+  end
     |> Repo.delete_all()
 
     :ok

@@ -52,6 +52,15 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
       import Ecto.Changeset
       alias Keila.Mailings.Sender
       alias unquote(__MODULE__)
+
+      def before_delete(_), do: :ok
+      defoverridable before_delete: 1
+
+      def after_create(_), do: :ok
+      defoverridable after_create: 1
+
+      def after_update(_), do: :ok
+      defoverridable after_update: 1
     end
   end
 
@@ -78,5 +87,26 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
   @doc """
   Builds a swoosh config from the passed sender adapter configuration.
   """
-  @callback to_swoosh_config(Keila.Mailings.Sender.t()) :: keyword()
+  @callback to_swoosh_config(Sender.t()) :: keyword()
+
+  @doc """
+  @doc """
+  This callback is invoked in a transaction after Sender creation.
+  It can be used for adapter-specific actions, e.g. calling external APIs.
+  Creation will be rolled back if error tuple is returned and the error is added
+  to the `:config` attribute of the Sender changeset.
+  """
+  @callback after_create(Sender.t()) :: :ok | {:error, term()}
+
+  @doc """
+  Callback after Sender update for adapter-specific actions.
+  Update will be rolled back if error tuple is returned.
+  """
+  @callback after_update(Sender.t()) :: :ok | {:error, term()}
+
+  @doc """
+  Callback after Sender deletion for adapter-specific cleanup.
+  Deletion will not be executed if error tuple is returned.
+  """
+  @callback before_delete(Sender.t()) :: :ok | {:error, term()}
 end
