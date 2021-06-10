@@ -148,7 +148,7 @@ defmodule Keila.Mailings do
 
   @doc """
   Deletes a Shared Sender.
-  
+
   This function is idempotent and always returns `:ok`.
   """
   @spec delete_shared_sender(SharedSender.id()) :: :ok

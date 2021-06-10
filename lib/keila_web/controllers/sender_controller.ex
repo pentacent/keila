@@ -1,9 +1,22 @@
 defmodule KeilaWeb.SenderController do
   use KeilaWeb, :controller
-  alias Keila.{Mailings, Mailings.Sender, Mailings.Sender.Config,  Mailings.SenderAdapters, Auth.Token}
+
+  alias Keila.{
+    Mailings,
+    Mailings.Sender,
+    Mailings.Sender.Config,
+    Mailings.SenderAdapters,
+    Auth.Token
+  }
+
   import Ecto.Changeset
 
-  plug :put_resource when action not in [:index, :new, :create, :verify_from_token, :cancel_verification_from_token]
+  plug :put_resource
+       when action not in [
+              :index,
+              :new,
+              :create
+            ]
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, _params) do
