@@ -23,7 +23,7 @@ defmodule Keila.Mailings.SenderAdapters.SMTP do
   end
 
   @impl true
-  def to_swoosh_config(%Sender{config: config}) do
+  def to_swoosh_config(%{config: config}) do
     [
       adapter: Swoosh.Adapters.SMTP,
       relay: config.smtp_relay,

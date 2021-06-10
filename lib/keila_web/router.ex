@@ -56,8 +56,10 @@ defmodule KeilaWeb.Router do
     get "/projects/new", ProjectController, :new
     post "/projects/new", ProjectController, :post_new
 
-    get "/admin", AdminController, :dashboard
-    delete "/admin/users", AdminController, :delete_users
+    get "/admin/users", UserAdminController, :index
+    delete "/admin/users", UserAdminController, :delete
+
+    resources "/admin/shared-senders", SharedSenderAdminController
   end
 
   # Authenticated Routes within a Project context
@@ -70,13 +72,8 @@ defmodule KeilaWeb.Router do
     get "/projects/:project_id/delete", ProjectController, :delete
     put "/projects/:project_id/delete", ProjectController, :post_delete
 
-    get "/projects/:project_id/senders", SenderController, :index
-    get "/projects/:project_id/senders/new", SenderController, :new
-    post "/projects/:project_id/senders/new", SenderController, :post_new
-    get "/projects/:project_id/senders/:id", SenderController, :edit
-    put "/projects/:project_id/senders/:id", SenderController, :post_edit
+    resources "/projects/:project_id/senders", SenderController
     get "/projects/:project_id/senders/:id/delete", SenderController, :delete
-    put "/projects/:project_id/senders/:id/delete", SenderController, :post_delete
 
     get "/projects/:project_id/contacts", ContactController, :index
     get "/projects/:project_id/contacts/new", ContactController, :new

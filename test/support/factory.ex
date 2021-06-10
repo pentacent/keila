@@ -67,6 +67,18 @@ defmodule Keila.Factory do
     }
   end
 
+  defp do_build(:mailings_shared_sender) do
+    %Keila.Mailings.SharedSender{
+      name: "shared-sender-#{get_counter_value()}",
+      config: %{
+        type: "ses",
+        ses_region: "eu-west-1",
+        ses_access_key: "foo",
+        ses_secret: "bar"
+      }
+    }
+  end
+
   defp do_build(:mailings_campaign) do
     %Keila.Mailings.Campaign{
       subject: "subject-#{get_counter_value()}",

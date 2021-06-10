@@ -19,7 +19,7 @@ defmodule Keila.Mailings.SenderAdapters.Sendgrid do
   end
 
   @impl true
-  def to_swoosh_config(%Sender{config: config}) do
+  def to_swoosh_config(%{config: config}) do
     [
       adapter: Swoosh.Adapters.Sendgrid,
       api_key: config.sendgrid_api_key

@@ -21,9 +21,9 @@ defmodule Keila.Mailings.SenderAdapters.SES do
   end
 
   @impl true
-  def to_swoosh_config(%Sender{config: config}) do
+  def to_swoosh_config(%{config: config}) do
     [
-      adapter: Swoosh.Adapters.SES,
+      adapter: Swoosh.Adapters.AmazonSES,
       region: config.ses_region,
       access_key: config.ses_access_key,
       secret: config.ses_secret

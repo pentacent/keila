@@ -1,0 +1,57 @@
+<%= inputs_for @form, :config, fn fc -> %>
+
+    <% tab =
+        if assigns[:shared_senders] do
+            case input_value(@form, :shared_sender_id) do
+                empty when empty in ["", nil] -> input_value(fc, :type)
+                id -> "shared_sender_#{id}"
+            end
+        else
+            input_value(fc, :type)
+        end
+    %>
+
+    <div x-data="{ tab: '<%= tab %>', senderType: $el.querySelector('#sender_config_type,#shared_sender_config_type').value }" class="tabs">
+
+        <%= hidden_input(fc, :type, x_model: "senderType") %>
+
+        <%= for adapter <- @sender_adapters do %>
+            <button class="tab-label" :class="{ 'active': tab === '<%= adapter %>' }" @click.prevent="senderType = '<%= adapter %>'; tab = '<%= adapter %>'">
+                <%= sender_adapter_name(adapter) %>
+            </button>
+        <% end %>
+        <%= if assigns[:shared_senders] do %>
+            <%= for shared_sender <- @shared_senders do %>
+                <button
+                    class="tab-label"
+                    :class="{ 'active': tab === 'shared_sender_<%= shared_sender.id %>' }"
+                    @click.prevent="tab = 'shared_sender_<%= shared_sender.id %>'; senderType = 'shared_<%= shared_sender.config.type %>'">
+                    <%= shared_sender.name %>
+                </button>
+            <% end %>
+        <% end %>
+
+        <%= for adapter <- @sender_adapters do %>
+            <template x-if="tab === '<%= adapter %>'">
+                <div class="tab-content">
+                    <%= render_sender_adapter_form(fc, adapter) %>
+                </div>
+            </template>
+        <% end %>
+        <%= hidden_input(@form, :shared_sender_id, value: nil) %>
+        <%= if assigns[:shared_senders] do %>
+            <%= for shared_sender <- @shared_senders do %>
+                <template x-if="tab === 'shared_sender_<%= shared_sender.id %>'">
+                    <div class="tab-content">
+                        <%= hidden_input(@form, :shared_sender_id, value: shared_sender.id) %>
+                        <%= with_validation(@form, :config) do %>
+                            <%= render_shared_sender_adapter_form(fc,shared_sender.config.type) %>
+                        <% end %>
+                    </div>
+                </template>
+            <% end %>
+        <% end %>
+
+    </div>
+
+<% end %>

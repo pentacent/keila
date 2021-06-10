@@ -9,7 +9,7 @@ defmodule Keila.Mailings.Worker do
     recipient =
       from(r in Recipient,
         where: r.id == ^recipient_id,
-        preload: [contact: [], campaign: [:sender, :template]]
+        preload: [contact: [], campaign: [[sender: [:shared_sender]], :template]]
       )
       |> Repo.one()
 

@@ -1,5 +1,12 @@
 defmodule KeilaWeb.SenderView do
   use KeilaWeb, :view
+  alias KeilaWeb.Endpoint
+
+  defp form_path(%{id: project_id}, %{data: %{id: nil}}),
+    do: Routes.sender_path(Endpoint, :create, project_id)
+
+  defp form_path(%{id: project_id}, %{data: %{id: id}}),
+    do: Routes.sender_path(Endpoint, :update, project_id, id)
 
   def sender_adapters do
     Keila.Mailings.SenderAdapters.adapter_names()

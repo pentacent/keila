@@ -3,7 +3,7 @@
         <div class="container py-8 sm:py-6 md:py-12 lg:py-16 flex">
             <div class="flex-grow">
                 <h1 class="text-2xl sm:text-5xl mb-4">
-                    <%= dgettext("admin", "Administer Keila") %>
+                    <%= dgettext("admin", "Administer Users") %>
                 </h1>
                 <p class="mt-4">
                     <%= dgettext("admin", "Here you can manage other users on your Keila instance.") %>
@@ -35,7 +35,7 @@
                         </td>
                         <td>
                             <%= if user.id != @current_user.id do %>
-                                <%= delete_form_tag(user, Routes.admin_path(@conn, :delete_users), as: :user) %>
+                                <%= delete_form_tag(user, Routes.user_admin_path(@conn, :delete), as: :user) %>
                                 <%= delete_button_tag(user, icon: :trash, class: "button button--text") %>
                             <% end %>
                         </td>
@@ -45,7 +45,7 @@
 
             <%= if @users.page_count > 1 do %>
                 <div class="flex gap-3 justify-center py-8">
-                    <%= pagination_nav(@users, fn n -> Routes.admin_path(@conn, :dashboard, %{"page" => n + 1}) end) %>
+                    <%= pagination_nav(@users, fn n -> Routes.user_admin_path(@conn, :index, %{"page" => n + 1}) end) %>
                 </div>
             <% end %>
         </div>

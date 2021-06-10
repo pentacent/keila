@@ -36,7 +36,8 @@ config :keila, Keila.Mailings.SenderAdapters,
     Keila.Mailings.SenderAdapters.Sendgrid,
     Keila.Mailings.SenderAdapters.SES,
     Keila.Mailings.SenderAdapters.Mailgun
-  ]
+  ],
+  shared_adapters: []
 
 # Staging configuration for hCaptcha
 config :keila, KeilaWeb.Hcaptcha,

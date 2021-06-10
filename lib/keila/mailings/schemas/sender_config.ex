@@ -5,6 +5,7 @@ defmodule Keila.Mailings.Sender.Config do
   import Ecto.Changeset
 
   @type t :: %__MODULE__{}
+  @adapter_names SenderAdapters.adapter_names() ++ SenderAdapters.shared_adapter_names()
 
   embedded_schema do
     field :type, :string
@@ -16,7 +17,7 @@ defmodule Keila.Mailings.Sender.Config do
   def changeset(struct \\ %__MODULE__{}, params) do
     struct
     |> cast(params, [:type])
-    |> validate_inclusion(:type, SenderAdapters.adapter_names())
+    |> validate_inclusion(:type, @adapter_names)
     |> cast_sender_adapter(params)
   end
 

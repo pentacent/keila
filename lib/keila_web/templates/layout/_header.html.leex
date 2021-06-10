@@ -42,7 +42,8 @@
                 <div class="hidden sm:block sm:flex-grow"></div>
                 <%= menu_link(@conn, Routes.account_path(@conn, :edit), gettext("Account")) %>
                 <%= if assigns[:is_admin?] do %>
-                    <%= menu_link(@conn, Routes.admin_path(@conn, :dashboard), gettext("Admin")) %>
+                    <%= menu_link(@conn, Routes.user_admin_path(@conn, :index), gettext("Users")) %>
+                    <%= menu_link(@conn, Routes.shared_sender_admin_path(@conn, :index), gettext("Senders")) %>
                 <% end %>
                 <%= menu_link(@conn, Routes.auth_path(@conn, :logout), gettext("Sign out")) %>
             </nav>

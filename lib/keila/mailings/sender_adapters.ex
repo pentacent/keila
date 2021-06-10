@@ -13,6 +13,15 @@ defmodule Keila.Mailings.SenderAdapters do
   end
 
   @doc """
+  Returns all configured shared sender adapter modules.
+  """
+  @spec shared_adapters() :: list(Keila.Mailings.SenderAdapters.Adapter.t())
+  def shared_adapters do
+    Application.get_env(:keila, __MODULE__, [])
+    |> Keyword.get(:shared_adapters, [])
+  end
+
+  @doc """
   Returns the names of all configured sender adapters.
   """
   @spec adapter_names() :: list(String.t())
@@ -21,11 +30,19 @@ defmodule Keila.Mailings.SenderAdapters do
   end
 
   @doc """
-  Returns the configured sender adapter with the given `name`
+  Returns the names of all configured shared sender adapters.
+  """
+  @spec shared_adapter_names() :: list(String.t())
+  def shared_adapter_names do
+    Enum.map(shared_adapters(), fn a -> a.name end)
+  end
+
+  @doc """
+  Returns the configured sender adapter or shared sender adapter with the given `name`
   """
   @spec get_adapter(String.t()) :: Keila.Mailings.SenderAdapters.Adapter.t()
   def get_adapter(name) do
-    Enum.find(adapters(), fn a -> a.name == name end)
+    Enum.find(adapters() ++ shared_adapters(), fn a -> a.name == name end)
   end
 
   @doc """
@@ -33,7 +50,7 @@ defmodule Keila.Mailings.SenderAdapters do
   """
   @spec schema_fields() :: keyword(atom())
   def schema_fields do
-    Enum.map(adapters(), fn a -> a.schema_fields() end)
+    Enum.map(adapters() ++ shared_adapters(), fn a -> a.schema_fields() end)
     |> List.flatten()
   end
 end
