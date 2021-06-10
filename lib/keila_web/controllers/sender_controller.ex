@@ -36,12 +36,9 @@ defmodule KeilaWeb.SenderController do
   @spec new(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def new(conn, _) do
     changeset = change(%Sender{}, %{config: change(%Config{}, %{type: "smtp"})})
-    shared_senders = Mailings.get_shared_senders()
 
     conn
-    |> assign(:changeset, changeset)
-    |> assign(:shared_senders, shared_senders)
-    |> render("edit.html")
+    |> render_edit(changeset)
   end
 
   @spec create(Plug.Conn.t(), map()) :: Plug.Conn.t()
@@ -54,10 +51,7 @@ defmodule KeilaWeb.SenderController do
 
   @spec edit(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def edit(conn, _params) do
-    shared_senders = Mailings.get_shared_senders()
-
     conn
-    |> assign(:shared_senders, shared_senders)
     |> put_meta(:title, conn.assigns.sender.name)
     |> render_edit(Ecto.Changeset.change(conn.assigns.sender))
   end
@@ -83,9 +77,12 @@ defmodule KeilaWeb.SenderController do
   end
 
   defp render_edit(conn, status \\ 200, changeset) do
+    shared_senders = Mailings.get_shared_senders()
+
     conn
     |> put_status(status)
     |> assign(:changeset, changeset)
+    |> assign(:shared_senders, shared_senders)
     |> render("edit.html")
   end
 
