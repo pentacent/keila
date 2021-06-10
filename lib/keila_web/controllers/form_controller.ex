@@ -5,7 +5,7 @@ defmodule KeilaWeb.FormController do
   import Phoenix.LiveView.Controller
 
   plug :fetch when action in [:display, :submit]
-  plug :authorize when not (action in [:index, :new, :display, :submit, :unsubscribe, :delete])
+  plug :authorize when action not in [:index, :new, :display, :submit, :unsubscribe, :delete]
 
   @spec display(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def display(conn, _params) do

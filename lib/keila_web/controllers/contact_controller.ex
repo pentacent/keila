@@ -4,7 +4,7 @@ defmodule KeilaWeb.ContactController do
   import Ecto.Changeset
   alias Keila.Contacts
 
-  plug :authorize when not (action in [:index, :new, :post_new, :delete, :import])
+  plug :authorize when action not in [:index, :new, :post_new, :delete, :import]
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, params) do

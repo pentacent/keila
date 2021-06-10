@@ -4,7 +4,7 @@ defmodule KeilaWeb.CampaignController do
   import Ecto.Changeset
   import Phoenix.LiveView.Controller
 
-  plug :authorize when not (action in [:index, :new, :post_new, :delete])
+  plug :authorize when action not in [:index, :new, :post_new, :delete]
 
   @default_text_body File.read!("priv/email_templates/default-text-content.txt")
   @default_markdown_body File.read!("priv/email_templates/default-markdown-content.md")
