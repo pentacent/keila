@@ -41,6 +41,10 @@ defmodule KeilaWeb.SenderView do
     render("_mailgun_config.html", form: form)
   end
 
+  def render_shared_sender_adapter_form(form, _) do
+    raise "not implemented"
+  end
+
   if Mix.env() == :test do
     def render_sender_adapter_form(_form, "test"), do: nil
   end
