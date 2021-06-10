@@ -1,4 +1,4 @@
-FROM elixir:1.11-alpine as build
+FROM elixir:1.12-alpine as build
 ENV MIX_ENV=prod
 
 RUN apk add git npm build-base
@@ -18,7 +18,7 @@ RUN npm run deploy --prefix ./assets && \
     mix phx.digest && \
     mix release
 
-FROM elixir:1.11.2-alpine
+FROM elixir:1.12-alpine
 ENV HOME=/opt/app
 WORKDIR ${HOME}
 COPY --from=build _build/prod/rel/keila ${HOME}
