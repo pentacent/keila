@@ -1,4 +1,4 @@
-defmodule Keila.Repo.Migrations.ContactsMailings do
+defmodule Keila.Repo.Migrations.SharedSenders do
   use Ecto.Migration
 
   def change do
