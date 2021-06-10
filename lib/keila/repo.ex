@@ -24,6 +24,16 @@ defmodule Keila.Repo do
             params
         end
       end
+
+      defp transaction_with_rescue(fun) do
+        Repo.transaction(fn ->
+          try do
+            fun.()
+          rescue
+            e in Ecto.InvalidChangesetError -> Repo.rollback(e.changeset)
+          end
+        end)
+      end
     end
   end
 end

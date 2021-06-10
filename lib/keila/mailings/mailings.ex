@@ -52,13 +52,13 @@ defmodule Keila.Mailings do
   end
 
   defp create_sender_with_callback(changeset) do
-    Repo.transaction(fn ->
-      sender = Repo.insert!(changeset)
+    transaction_with_rescue(fn ->
+      sender = Repo.insert!(changeset) |> Repo.preload(:shared_sender)
       adapter = SenderAdapters.get_adapter(sender.config.type)
 
-      case adapter.after_create(sender) do
+      case adapter.after_update(sender) do
         :ok -> sender
-        {:error, term} -> changeset |> add_error(:config, term) |> Repo.rollback()
+        {:error, message} -> changeset |> add_error(:config, message) |> apply_action!(:insert)
       end
     end)
   end
@@ -74,13 +74,13 @@ defmodule Keila.Mailings do
   end
 
   defp update_sender_with_callback(changeset) do
-    Repo.transaction(fn ->
-      sender = Repo.update!(changeset)
+    transaction_with_rescue(fn ->
+      sender = Repo.update!(changeset) |> Repo.preload(:shared_sender)
       adapter = SenderAdapters.get_adapter(sender.config.type)
 
       case adapter.after_update(sender) do
         :ok -> sender
-        {:error, term} -> changeset |> add_error(:config, term) |> Repo.rollback()
+        {:error, message} -> changeset |> add_error(:config, message) |> apply_action!(:update)
       end
     end)
   end
