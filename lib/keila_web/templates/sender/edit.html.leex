@@ -9,11 +9,7 @@
                         <%= gettext("New Sender") %>
                     <% end %>
                 </h1>
-                <% path = case assigns[:sender] do
-                    nil -> Routes.sender_path(@conn, :post_new, @current_project.id)
-                    sender -> Routes.sender_path(@conn, :post_edit, @current_project.id, sender.id)
-                end %>
-                <%= f = form_for(@changeset, path, class: "mt-8 max-w-md flex flex-col gap-4") %>
+                <%= f = form_for(@changeset, form_path(@current_project, @changeset), class: "mt-8 max-w-md flex flex-col gap-4") %>
                     <div class="flex flex-col">
                         <%= label(f, :name, "Sender name") %>
                         <%= with_validation(f, :name) do %>
@@ -45,27 +41,7 @@
                         <% end %>
                     </div>
 
-
-                    <%= inputs_for f, :config, fn fc -> %>
-                        <div x-data="{ tab: $el.querySelector('#sender_config_type').value }" class="tabs">
-                            <%= select(fc, :type, sender_adapters(), x_model: "tab", x_show: "false") %>
-
-                            <%= for adapter <- sender_adapters() do %>
-                              <a href="#" class="tab-label" :class="{ 'active': tab === '<%= adapter %>' }" @click.prevent="tab = '<%= adapter %>'">
-                                <%= sender_adapter_name(adapter) %>
-                              </a>
-                            <% end %>
-
-                            <%= for adapter <- sender_adapters() do %>
-                              <template x-if="tab === '<%= adapter %>'">
-                                <div class="tab-content">
-                                  <%= render_sender_adapter_form(fc, adapter) %>
-                                </div>
-                              </template>
-                            <% end %>
-                        </div>
-
-                    <% end %>
+                    <%= render("_config.html", form: f, sender_adapters: sender_adapters(), shared_senders: @shared_senders) %>
 
                     <div class="flex gap-4 mt-4">
                         <a href="<%= Routes.sender_path(@conn, :index, @current_project.id) %>" class="button button--large button--text">

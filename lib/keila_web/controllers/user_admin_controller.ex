@@ -1,18 +1,18 @@
-defmodule KeilaWeb.AdminController do
+defmodule KeilaWeb.UserAdminController do
   use KeilaWeb, :controller
   alias Keila.{Auth, Admin}
 
   plug :authorize
 
-  @spec dashboard(Plug.Conn.t(), map()) :: Plug.Conn.t()
-  def dashboard(conn, params) do
+  @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def index(conn, params) do
     page = String.to_integer(Map.get(params, "page", "1")) - 1
     users = Auth.list_users(paginate: [page: page, page_size: 20])
 
     conn
-    |> put_meta(:title, dgettext("admin", "Admin Dashboard"))
+    |> put_meta(:title, dgettext("admin", "Administrate Users"))
     |> assign(:users, users)
-    |> render("dashboard.html")
+    |> render("index.html")
   end
 
   @spec delete_users(Plug.Conn.t(), map()) :: Plug.Conn.t()
@@ -29,7 +29,7 @@ defmodule KeilaWeb.AdminController do
 
       _ ->
         Enum.each(ids, fn id -> :ok = Admin.purge_user(id) end)
-        redirect(conn, to: Routes.admin_path(conn, :dashboard))
+        redirect(conn, to: Routes.user_admin_path(conn, :index))
     end
   end
 
@@ -42,7 +42,7 @@ defmodule KeilaWeb.AdminController do
     conn
     |> put_meta(:title, gettext("Confirm User Deletion"))
     |> assign(:users, users)
-    |> render("delete_users.html")
+    |> render("delete.html")
   end
 
   defp authorize(conn, _) do

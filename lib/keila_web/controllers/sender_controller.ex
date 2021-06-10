@@ -1,9 +1,9 @@
 defmodule KeilaWeb.SenderController do
   use KeilaWeb, :controller
-  alias Keila.Mailings
+  alias Keila.{Mailings, Mailings.Sender, Mailings.Sender.Config,  Mailings.SenderAdapters, Auth.Token}
   import Ecto.Changeset
 
-  plug :authorize when not (action in [:index, :new, :post_new])
+  plug :put_resource when action not in [:index, :new, :create, :verify_from_token, :cancel_verification_from_token]
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, _params) do
@@ -15,40 +15,57 @@ defmodule KeilaWeb.SenderController do
     |> render("index.html")
   end
 
-  @spec edit(Plug.Conn.t(), map()) :: Plug.Conn.t()
-  def edit(conn, _params) do
-    conn
-    |> put_meta(:title, conn.assigns.sender.name)
-    |> render_edit(Ecto.Changeset.change(conn.assigns.sender))
-  end
-
-  @spec post_edit(Plug.Conn.t(), map()) :: Plug.Conn.t()
-  def post_edit(conn, params = %{"id" => id}) do
-    project = current_project(conn)
-
-    case Mailings.update_sender(id, params["sender"] || %{}) do
-      {:ok, _sender} -> redirect(conn, to: Routes.sender_path(conn, :index, project.id))
-      {:error, changeset} -> render_edit(conn, 400, changeset)
-    end
+  @spec show(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def show(conn, %{"id" => id}) do
+    redirect(conn, to: Routes.sender_path(conn, :edit, project_id(conn), id))
   end
 
   @spec new(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def new(conn, _) do
-    changeset =
-      Ecto.Changeset.change(%Mailings.Sender{}, %{
-        config: Ecto.Changeset.change(%Mailings.Sender.Config{}, %{type: "smtp"})
-      })
+    changeset = change(%Sender{}, %{config: change(%Config{}, %{type: "smtp"})})
+    shared_senders = Mailings.get_shared_senders()
 
-    render_edit(conn, changeset)
+    conn
+    |> assign(:changeset, changeset)
+    |> assign(:shared_senders, shared_senders)
+    |> render("edit.html")
   end
 
-  @spec post_new(Plug.Conn.t(), map()) :: Plug.Conn.t()
-  def post_new(conn, %{"sender" => params}) do
+  @spec create(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def create(conn, %{"sender" => params}) do
+    case Mailings.create_sender(project_id(conn), params) do
+      {:ok, _} -> redirect(conn, to: Routes.sender_path(conn, :index, project_id(conn)))
+      {:error, changeset} -> render_edit(conn, 400, changeset)
+    end
+  end
+
+  @spec edit(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def edit(conn, _params) do
+    shared_senders = Mailings.get_shared_senders()
+
+    conn
+    |> assign(:shared_senders, shared_senders)
+    |> put_meta(:title, conn.assigns.sender.name)
+    |> render_edit(Ecto.Changeset.change(conn.assigns.sender))
+  end
+
+  @spec update(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def update(conn, params = %{"id" => id}) do
     project = current_project(conn)
 
-    case Mailings.create_sender(project.id, params) do
-      {:ok, _} -> redirect(conn, to: Routes.sender_path(conn, :index, project.id))
-      {:error, changeset} -> render_edit(conn, 400, changeset)
+    case Mailings.update_sender(id, params["sender"] || %{}) do
+      {:ok, _sender} ->
+        redirect(conn, to: Routes.sender_path(conn, :index, project.id))
+
+      {:error, changeset} ->
+        shared_senders = Mailings.get_shared_senders()
+        IO.inspect(changeset)
+
+        conn
+        |> put_status(400)
+        |> assign(:changeset, changeset)
+        |> assign(:shared_senders, shared_senders)
+        |> render("edit.html")
     end
   end
 
@@ -66,8 +83,8 @@ defmodule KeilaWeb.SenderController do
     render_delete(conn, changeset)
   end
 
-  @spec post_delete(Plug.Conn.t(), map()) :: Plug.Conn.t()
-  def post_delete(conn, params) do
+  @spec delete(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def delete(conn, params) do
     sender = conn.assigns.sender
 
     changeset =
@@ -96,19 +113,14 @@ defmodule KeilaWeb.SenderController do
   end
 
   defp current_project(conn), do: conn.assigns.current_project
+  defp project_id(conn), do: conn.assigns.current_project.id
 
-  defp authorize(conn, _) do
+  defp put_resource(conn = %{path_params: %{"id" => id}}, _) do
     project_id = current_project(conn).id
-    sender_id = conn.path_params["id"]
 
-    case Mailings.get_project_sender(project_id, sender_id) do
-      nil ->
-        conn
-        |> put_status(404)
-        |> halt()
-
-      sender ->
-        assign(conn, :sender, sender)
+    case Mailings.get_project_sender(project_id, id) do
+      nil -> conn |> put_status(404) |> halt()
+      sender -> assign(conn, :sender, sender)
     end
   end
 end

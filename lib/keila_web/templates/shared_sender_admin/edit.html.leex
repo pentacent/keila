@@ -1,0 +1,43 @@
+<main role="main" class="static-container flex-grow bg-gray-800 text-gray-50">
+    <div class="bg-gray-900 text-gray-50">
+        <div class="container py-8 sm:py-6 md:py-12 lg:py-16 flex">
+            <div class="flex-grow">
+                <h1 class="text-2xl sm:text-5xl md:text-7xl mb-4">
+                    <%= if assigns[:shared_sender] do %>
+                        <%= @shared_sender.name %>
+                    <% else %>
+                        <%= dgettext("admin", "New Shared Sender") %>
+                    <% end %>
+                </h1>
+                <%= f = form_for(@changeset, form_path(@changeset), class: "mt-8 max-w-md flex flex-col gap-4") %>
+                    <div class="flex flex-col">
+                        <%= label(f, :name, "Shared Sender name") %>
+                        <%= with_validation(f, :name) do %>
+                            <%= text_input(f, :name, placeholder: dgettext("admin", "My Shared Sender"), class: "text-black") %>
+                        <% end %>
+                    </div>
+
+                    <%= render(KeilaWeb.SenderView, "_config.html", form: f, sender_adapters: ["ses"]) %>
+
+                    <div class="flex gap-4 mt-4">
+                        <a href="<%= Routes.shared_sender_admin_path(@conn, :index) %>" class="button button--large button--text">
+                            <%= gettext("Cancel") %>
+                        </a>
+                        <%= if assigns[:shared_sender] do %>
+                            <a href="<%= Routes.shared_sender_admin_path(@conn, :delete, @shared_sender.id) %>" class="button button--large button--text">
+                                <%= gettext("Delete") %>
+                            </a>
+                            <button class="button button--cta button--large">
+                                <%= gettext("Save") %>
+                            </button>
+                        <% else %>
+                            <button class="button button--cta button--large">
+                                <%= dgettext("admin", "Create Shared Sender") %>
+                            </button>
+                        <% end %>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>

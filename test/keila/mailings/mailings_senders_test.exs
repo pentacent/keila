@@ -65,7 +65,12 @@ defmodule Keila.Mailings.SenderTest do
       project = insert!(:project, group: group)
       sender = insert!(:mailings_sender, project: project)
 
-      config_params = %{"id" => sender.config.id, "type" => "test", "test_string" => "callback-success"}
+      config_params = %{
+        "id" => sender.config.id,
+        "type" => "test",
+        "test_string" => "callback-success"
+      }
+
       params = %{"name" => "Updated name", "config" => config_params}
       assert {:ok, %{name: "Updated name"}} = Mailings.update_sender(sender.id, params)
     end
@@ -76,7 +81,12 @@ defmodule Keila.Mailings.SenderTest do
       project = insert!(:project, group: group)
       sender = insert!(:mailings_sender, project: project)
 
-      config_params = %{"id" => sender.config.id, "type" => "test", "test_string" => "callback-fail"}
+      config_params = %{
+        "id" => sender.config.id,
+        "type" => "test",
+        "test_string" => "callback-fail"
+      }
+
       params = %{"name" => "Updated name", "config" => config_params}
       assert {:error, _changeset} = Mailings.update_sender(sender.id, params)
     end

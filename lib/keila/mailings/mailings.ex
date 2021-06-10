@@ -1,7 +1,7 @@
 defmodule Keila.Mailings do
   use Keila.Repo
   alias Keila.Project
-  alias __MODULE__.{Sender, SenderAdapters, Campaign, Recipient}
+  alias __MODULE__.{Sender, SenderAdapters, SharedSender, Campaign, Recipient}
 
   @moduledoc """
   Context for all functionalities related to sending email campaigns.
@@ -12,7 +12,7 @@ defmodule Keila.Mailings do
   """
   @spec get_sender(Sender.id()) :: Sender.t() | nil
   def get_sender(id) when is_id(id),
-    do: Repo.get(Sender, id)
+    do: Repo.one(from(s in Sender, where: s.id == ^id, preload: :shared_sender))
 
   def get_sender(_),
     do: nil
@@ -22,7 +22,10 @@ defmodule Keila.Mailings do
   """
   @spec get_project_sender(Project.id(), Sender.id()) :: Sender.t() | nil
   def get_project_sender(project_id, sender_id) do
-    from(s in Sender, where: s.id == ^sender_id and s.project_id == ^project_id)
+    from(s in Sender,
+      where: s.id == ^sender_id and s.project_id == ^project_id,
+      preload: :shared_sender
+    )
     |> Repo.one()
   end
 
@@ -31,7 +34,7 @@ defmodule Keila.Mailings do
   """
   @spec get_project_senders(Project.id()) :: [Project.t()]
   def get_project_senders(project_id) when is_binary(project_id) or is_integer(project_id) do
-    from(s in Sender, where: s.project_id == ^project_id)
+    from(s in Sender, where: s.project_id == ^project_id, preload: :shared_sender)
     |> Repo.all()
   end
 
@@ -104,6 +107,53 @@ defmodule Keila.Mailings do
       {:error, term} -> {:error, term}
     end
   end
+
+  @doc """
+  Retrieves Shared Sender with given `id`.
+  """
+  @spec get_shared_sender(SharedSender.id()) :: SharedSender.t() | nil
+  def get_shared_sender(id) do
+    Repo.get(SharedSender, id)
+  end
+
+  @doc """
+  Retrieves list of all Shared Senders.
+  """
+  @spec get_shared_senders() :: [SharedSender.t()]
+  def get_shared_senders() do
+    Repo.all(SharedSender)
+  end
+
+  @doc """
+  Creates a new Shared Sender.
+  """
+  @spec create_shared_sender(map()) ::
+          {:ok, SharedSender.t()} | {:error, Changeset.t(SharedSender.t())}
+  def create_shared_sender(params) do
+    params
+    |> SharedSender.creation_changeset()
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates the existing Shared Sender specified by `id`.
+  """
+  @spec update_shared_sender(SharedSender.id(), map()) ::
+          {:ok, SharedSender.t()} | {:error, Changeset.t(SharedSender.t())}
+  def update_shared_sender(id, params) when is_id(id) do
+    Repo.get(SharedSender, id)
+    |> SharedSender.update_changeset(params)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a Shared Sender.
+  
+  This function is idempotent and always returns `:ok`.
+  """
+  @spec delete_shared_sender(SharedSender.id()) :: :ok
+  def delete_shared_sender(id) when is_id(id) do
+    from(s in SharedSender, where: s.id == ^id)
     |> Repo.delete_all()
 
     :ok
@@ -367,7 +417,7 @@ defmodule Keila.Mailings do
   @doc """
   Converts sender struct with the embedded Config schema to Keyword list for use with Swoosh.
   """
-  @spec sender_to_swoosh_config(Sender.t()) :: Keyword.t()
+  @spec sender_to_swoosh_config(Sender.t() | SharedSender.t()) :: Keyword.t()
   def sender_to_swoosh_config(sender) do
     config = sender.config
     adapter = SenderAdapters.get_adapter(config.type)

@@ -20,7 +20,7 @@ defmodule Keila.Mailings.SenderAdapters.Mailgun do
   end
 
   @impl true
-  def to_swoosh_config(%Sender{config: config}) do
+  def to_swoosh_config(%{config: config}) do
     [
       adapter: Swoosh.Adapters.Mailgun,
       api_key: config.mailgun_api_key,
