@@ -89,8 +89,8 @@ defmodule KeilaWeb.SenderController do
     |> render("edit.html")
   end
 
-  @spec delete(Plug.Conn.t(), any) :: Plug.Conn.t()
-  def delete(conn, _) do
+  @spec delete_confirmation(Plug.Conn.t(), any) :: Plug.Conn.t()
+  def delete_confirmation(conn, _) do
     sender = conn.assigns.sender
     changeset = change({sender, %{delete_confirmation: :string}})
     render_delete(conn, changeset)

@@ -15,8 +15,8 @@ defmodule KeilaWeb.UserAdminController do
     |> render("index.html")
   end
 
-  @spec delete_users(Plug.Conn.t(), map()) :: Plug.Conn.t()
-  def delete_users(conn, params) do
+  @spec delete(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def delete(conn, params) do
     ids =
       case get_in(params, ["user", "id"]) do
         ids when is_list(ids) -> ids
@@ -25,7 +25,7 @@ defmodule KeilaWeb.UserAdminController do
 
     case get_in(params, ["user", "require_confirmation"]) do
       "true" ->
-        render_delete_users_confirmation(conn, ids)
+        render_delete_confirmation(conn, ids)
 
       _ ->
         Enum.each(ids, fn id -> :ok = Admin.purge_user(id) end)
@@ -33,7 +33,7 @@ defmodule KeilaWeb.UserAdminController do
     end
   end
 
-  defp render_delete_users_confirmation(conn, ids) do
+  defp render_delete_confirmation(conn, ids) do
     users =
       ids
       |> Enum.filter(&(&1 != conn.assigns.current_user.id))

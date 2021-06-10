@@ -40,5 +40,6 @@ config :keila, Keila.Mailings, min_campaign_schedule_offset: -10
 config :keila, Keila.Mailings.SenderAdapters,
   adapters: [
     Keila.Mailings.SenderAdapters.SMTP,
+    Keila.Mailings.SenderAdapters.SES,
     Keila.TestSenderAdapter
   ]

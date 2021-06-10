@@ -25,11 +25,11 @@ defmodule KeilaWeb.SenderControllerTest do
     {conn, project} = with_login_and_project(conn)
 
     incomplete_params = %{name: "My Sender"}
-    conn = post(conn, Routes.sender_path(conn, :post_new, project.id, sender: incomplete_params))
+    conn = post(conn, Routes.sender_path(conn, :create, project.id, sender: incomplete_params))
     assert html_response(conn, 400)
 
     params = params(:mailings_sender)
-    conn = post(conn, Routes.sender_path(conn, :post_new, project.id, sender: params))
+    conn = post(conn, Routes.sender_path(conn, :create, project.id, sender: params))
     redirected_path = redirected_to(conn, 302)
     conn = get(conn, redirected_path)
 
@@ -54,7 +54,7 @@ defmodule KeilaWeb.SenderControllerTest do
       params(:mailings_sender, %{project_id: project.id})
       |> put_in(["config", "id"], sender.config.id)
 
-    conn = put(conn, Routes.sender_path(conn, :post_edit, project.id, sender.id, sender: params))
+    conn = put(conn, Routes.sender_path(conn, :update, project.id, sender.id, sender: params))
     assert redirected_to(conn, 302) == Routes.sender_path(conn, :index, project.id)
     updated_sender = Keila.Mailings.get_sender(sender.id)
     assert updated_sender.name == params["name"]
@@ -65,21 +65,21 @@ defmodule KeilaWeb.SenderControllerTest do
     {conn, project} = with_login_and_project(conn)
     sender = insert!(:mailings_sender, %{project_id: project.id})
 
-    conn = get(conn, Routes.sender_path(conn, :delete, project.id, sender.id))
+    conn = get(conn, Routes.sender_path(conn, :delete_confirmation, project.id, sender.id))
     assert html_response(conn, 200) =~ ~r{Delete Sender #{sender.name}\?\s*</h1>}
   end
 
   @tag :sender_controller
   test "deleting sender requires confirmation", %{conn: conn} do
     {conn, project} = with_login_and_project(conn)
-    sender = insert!(:mailings_sender, %{project_id: project.id})
+    sender = insert!(:mailings_sender, %{project_id: project.id, shared_sender: nil})
 
-    conn = put(conn, Routes.sender_path(conn, :post_delete, project.id, sender.id), sender: %{})
+    conn = delete(conn, Routes.sender_path(conn, :delete, project.id, sender.id), sender: %{})
     assert html_response(conn, 400)
     assert sender == Keila.Mailings.get_sender(sender.id)
 
     conn =
-      put(conn, Routes.sender_path(conn, :post_delete, project.id, sender.id),
+      delete(conn, Routes.sender_path(conn, :delete, project.id, sender.id),
         sender: %{delete_confirmation: sender.name}
       )
 

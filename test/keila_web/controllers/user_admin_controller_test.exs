@@ -12,7 +12,7 @@ defmodule KeilaWeb.UserAdminControllerTest do
 
       conn = with_login(conn, user: root)
       conn = get(conn, Routes.user_admin_path(conn, :index))
-      assert html_response(conn, 200) =~ ~r{Administer Keila\s*</h1>}
+      assert html_response(conn, 200) =~ ~r{Administer Users\s*</h1>}
     end
 
     @tag :admin_controller
