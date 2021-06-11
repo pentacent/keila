@@ -48,7 +48,7 @@
                             <%= gettext("Cancel") %>
                         </a>
                         <%= if assigns[:sender] do %>
-                            <a href="<%= Routes.sender_path(@conn, :delete, @current_project.id, @sender.id) %>" class="button button--large button--text">
+                            <a href="<%= Routes.sender_path(@conn, :delete_confirmation, @current_project.id, @sender.id) %>" class="button button--large button--text">
                                 <%= gettext("Delete") %>
                             </a>
                             <button class="button button--cta button--large">

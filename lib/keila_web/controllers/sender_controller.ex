@@ -45,14 +45,13 @@ defmodule KeilaWeb.SenderController do
   def create(conn, %{"sender" => params}) do
     case Mailings.create_sender(project_id(conn), params) do
       {:ok, _} -> redirect(conn, to: Routes.sender_path(conn, :index, project_id(conn)))
-      {:error, changeset} -> render_edit(conn, 400, changeset)
+      {:error, changeset} -> conn |> put_status(400) |> render_edit(changeset)
     end
   end
 
   @spec edit(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def edit(conn, _params) do
     conn
-    |> put_meta(:title, conn.assigns.sender.name)
     |> render_edit(Ecto.Changeset.change(conn.assigns.sender))
   end
 
@@ -61,63 +60,64 @@ defmodule KeilaWeb.SenderController do
     project = current_project(conn)
 
     case Mailings.update_sender(id, params["sender"] || %{}) do
-      {:ok, _sender} ->
-        redirect(conn, to: Routes.sender_path(conn, :index, project.id))
-
-      {:error, changeset} ->
-        shared_senders = Mailings.get_shared_senders()
-        IO.inspect(changeset)
-
-        conn
-        |> put_status(400)
-        |> assign(:changeset, changeset)
-        |> assign(:shared_senders, shared_senders)
-        |> render("edit.html")
+      {:ok, _sender} -> redirect(conn, to: Routes.sender_path(conn, :index, project.id))
+      {:error, changeset} -> conn |> put_status(400) |> render_edit(changeset)
     end
-  end
-
-  defp render_edit(conn, status \\ 200, changeset) do
-    shared_senders = Mailings.get_shared_senders()
-
-    conn
-    |> put_status(status)
-    |> assign(:changeset, changeset)
-    |> assign(:shared_senders, shared_senders)
-    |> render("edit.html")
   end
 
   @spec delete_confirmation(Plug.Conn.t(), any) :: Plug.Conn.t()
   def delete_confirmation(conn, _) do
-    sender = conn.assigns.sender
-    changeset = change({sender, %{delete_confirmation: :string}})
-    render_delete(conn, changeset)
+    conn
+    |> render_delete(change(conn.assigns.sender))
   end
 
   @spec delete(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def delete(conn, params) do
     sender = conn.assigns.sender
-
-    changeset =
-      change({sender, %{delete_confirmation: :string}})
-      |> cast(params["sender"] || %{}, [:delete_confirmation])
-      |> validate_required([:delete_confirmation])
-      |> validate_inclusion(:delete_confirmation, [sender.name])
+    changeset = deletion_changeset(sender, params["sender"] || %{})
 
     if changeset.valid? do
       Mailings.delete_sender(sender.id)
       redirect(conn, to: Routes.sender_path(conn, :index, conn.assigns.current_project.id))
     else
       {:error, changeset} = apply_action(changeset, :update)
-      render_delete(conn, 400, changeset)
+      conn |> put_status(400) |> render_delete(changeset)
     end
   end
 
-  defp render_delete(conn, status \\ 200, changeset) do
-    sender = conn.assigns.sender
+  defp deletion_changeset(sender, params) do
+    change({sender, %{delete_confirmation: :string}})
+    |> cast(params, [:delete_confirmation])
+    |> validate_required([:delete_confirmation])
+    |> validate_inclusion(:delete_confirmation, [sender.name])
+  end
+
+  @spec verify_from_token(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def verify_from_token(conn, %{"token" => token}) do
+    case Mailings.verify_sender_from_token(token) do
+      {:ok, sender} -> conn |> assign(:sender, sender) |> render("verification_success.html")
+      :error -> conn |> put_status(404) |> render("verification_failure.html")
+    end
+  end
+
+  @spec cancel_verification_from_token(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def cancel_verification_from_token(conn, %{"token" => token}) do
+    Keila.Auth.find_and_delete_token("mailings.confirm_sender_email", token)
+
+    render(conn, "verification_failure.html")
+  end
+
+  defp render_edit(conn, changeset) do
+    shared_senders = Mailings.get_shared_senders()
 
     conn
-    |> put_status(status)
-    |> put_meta(:title, gettext("Delete %{sender}", sender: sender.name))
+    |> assign(:changeset, changeset)
+    |> assign(:shared_senders, shared_senders)
+    |> render("edit.html")
+  end
+
+  defp render_delete(conn, changeset) do
+    conn
     |> assign(:changeset, changeset)
     |> render("delete.html")
   end

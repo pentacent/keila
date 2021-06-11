@@ -40,7 +40,7 @@ defmodule KeilaWeb do
       import Phoenix.Controller,
         only: [get_flash: 1, get_flash: 2, view_module: 1, view_template: 1]
 
-      import KeilaWeb.Meta, only: [get_meta: 3]
+      import KeilaWeb.Meta, only: [get_meta: 5]
       import KeilaWeb.Hcaptcha, only: [captcha_tag: 0]
 
       # Include shared imports and aliases for views
