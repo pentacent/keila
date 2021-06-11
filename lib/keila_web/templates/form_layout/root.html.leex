@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <%= csrf_meta_tag() %>
     <title>
-      <%= get_meta(@conn, :title, gettext("Open Source Newsletter Tool")) <> " · Keila" %>
+      <%= get_meta(@conn, view_module(@conn), view_template(@conn), :title, gettext("Open Source Newsletter Tool")) <> " · Keila" %>
     </title>
     <meta property="og:image" content="<%= Routes.static_url(@conn_or_socket, "/images/og_image.png") %>"/>
     <meta property="og:description" content="Open Source Newsletters"/>
