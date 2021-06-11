@@ -2,6 +2,18 @@ defmodule KeilaWeb.SenderView do
   use KeilaWeb, :view
   alias KeilaWeb.Endpoint
 
+  def meta("index.html", :title, _assigns), do: gettext("Senders")
+
+  def meta("edit.html", :title, %{sender: sender}) when not is_nil(sender),
+    do: gettext("Edit Sender %{sender}", sender: sender.name)
+
+  def meta("edit.html", :title, _assigns), do: gettext("New Sender")
+
+  def meta("delete.html", :title, %{sender: sender}) when not is_nil(sender),
+    do: gettext("Delete Sender %{sender}?", sender: sender.name)
+
+  def meta(_template, _key, _assigns), do: nil
+
   defp form_path(%{id: project_id}, %{data: %{id: nil}}),
     do: Routes.sender_path(Endpoint, :create, project_id)
 
