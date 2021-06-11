@@ -15,7 +15,9 @@ defmodule KeilaWeb.SenderController do
        when action not in [
               :index,
               :new,
-              :create
+              :create,
+              :verify_from_token,
+              :cancel_verification_from_token
             ]
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
@@ -24,7 +26,6 @@ defmodule KeilaWeb.SenderController do
 
     conn
     |> assign(:senders, senders)
-    |> put_meta(:title, gettext("Senders"))
     |> render("index.html")
   end
 
@@ -104,7 +105,7 @@ defmodule KeilaWeb.SenderController do
   def cancel_verification_from_token(conn, %{"token" => token}) do
     Keila.Auth.find_and_delete_token("mailings.confirm_sender_email", token)
 
-    render(conn, "verification_failure.html")
+    conn |> put_status(404) |> render("verification_failure.html")
   end
 
   defp render_edit(conn, changeset) do

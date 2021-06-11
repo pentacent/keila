@@ -108,6 +108,20 @@ defmodule Keila.Mailings do
     end
   end
 
+  @spec verify_sender_from_token(String.t()) :: {:ok, Sender.t()} | {:error, term}
+  def verify_sender_from_token(token) do
+    case Keila.Auth.find_and_delete_token(token, "mailings.verify_sender") do
+      %Keila.Auth.Token{data: token_data} ->
+        sender = get_sender(token_data["sender_id"])
+        adapter = SenderAdapters.get_adapter(token_data["type"])
+
+        adapter.verify_from_token(sender, token)
+
+      nil ->
+        :error
+    end
+  end
+
   @doc """
   Retrieves Shared Sender with given `id`.
   """

@@ -16,6 +16,14 @@ defmodule KeilaWeb.Router do
     plug :accepts, ["json"]
   end
 
+  # Non-authenticated Routes
+  scope "/", KeilaWeb do
+    pipe_through :browser
+
+    get "/verify-sender/:token", SenderController, :verify_from_token
+    get "/verify-sender/c/:token", SenderController, :cancel_verification_from_token
+  end
+
   # Unauthenticated Routes
   scope "/", KeilaWeb do
     pipe_through [:browser, KeilaWeb.AuthSession.RequireNoAuthPlug]

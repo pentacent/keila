@@ -1,4 +1,6 @@
 defmodule Keila.Mailings.SenderAdapters.Adapter do
+  alias Keila.Mailings.Sender
+
   @moduledoc """
   Defines a sender adapter.
 
@@ -61,6 +63,12 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
 
       def after_update(_), do: :ok
       defoverridable after_update: 1
+
+      def verify_from_token(_, _), do: raise("Not implemented")
+      defoverridable verify_from_token: 2
+
+      def cancel_verification_from_token(_, _), do: raise("Not implemented")
+      defoverridable cancel_verification_from_token: 2
     end
   end
 
@@ -87,7 +95,7 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
   @doc """
   Builds a swoosh config from the passed sender adapter configuration.
   """
-  @callback to_swoosh_config(Sender.t()) :: keyword()
+  @callback to_swoosh_config(Sender.t() | SharedSender.t()) :: keyword()
 
   @doc """
   @doc """
@@ -109,4 +117,17 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
   Deletion will not be executed if error tuple is returned.
   """
   @callback before_delete(Sender.t()) :: :ok | {:error, term()}
+
+  @doc """
+  Callback for handling a `"mailings.verify_sender"` token.
+  When creating this token in one of the other callbacks,
+  make sure to include the attribute `"sender_id"` and `"type"`
+  for the Sender ID and the Adapter name respectively.
+  """
+  @callback verify_from_token(Sender.t(), Token.t()) :: {:ok, Sender.t()} | {:error, term()}
+
+  @doc """
+  Callback for canceling the verification of a `"mailings.verify_sender"` token.
+  """
+  @callback cancel_verification_from_token(Sender.t(), Token.t()) :: :ok
 end
