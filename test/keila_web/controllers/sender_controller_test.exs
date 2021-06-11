@@ -103,4 +103,34 @@ defmodule KeilaWeb.SenderControllerTest do
 
     assert conn.status == 404
   end
+
+  @tag :sender_controller
+  test "sender verification verifies sender", %{conn: conn} do
+    {conn, project} = with_login_and_project(conn)
+    sender = insert!(:mailings_sender, %{project_id: project.id})
+
+    token = Keila.TestSenderAdapter.get_verification_token(sender)
+    conn = get(conn, Routes.sender_path(conn, :verify_from_token, token))
+    assert html_response(conn, 200) =~ ~r{Sender verified!\s*</h1>}
+
+    verified_sender = Keila.Repo.get(Keila.Mailings.Sender, sender.id)
+    assert not is_nil(verified_sender.config.test_verified_at)
+
+    # Can only be done once with same token
+    conn = get(conn, Routes.sender_path(conn, :verify_from_token, token))
+    assert html_response(conn, 404) =~ ~r{Sender verification not successful.\s*</h1>}
+  end
+
+  @tag :sender_controller
+  test "sender verification can be canceled", %{conn: conn} do
+    {conn, project} = with_login_and_project(conn)
+    sender = insert!(:mailings_sender, %{project_id: project.id})
+
+    token = Keila.TestSenderAdapter.get_verification_token(sender)
+    conn = get(conn, Routes.sender_path(conn, :cancel_verification_from_token, token))
+    assert html_response(conn, 404) =~ ~r{Sender verification not successful.\s*</h1>}
+
+    unverified_sender = Keila.Repo.get(Keila.Mailings.Sender, sender.id)
+    assert is_nil(unverified_sender.config.test_verified_at)
+  end
 end
