@@ -155,8 +155,13 @@ if config_env() == :prod do
 
   # Deployment
   config :keila,
+    # Disable registration of new users via the UI
     registration_disabled:
-      System.get_env("DISABLE_REGISTRATION") not in [nil, 0, "", "false", "FALSE"]
+      System.get_env("DISABLE_REGISTRATION") not in [nil, 0, "", "false", "FALSE"],
+    # Disable creation of Senders not using SharedSenders.
+    sender_creation_disabled:
+      System.get_env("DISABLE_SENDER_CREATION") not in [nil, 0, "", "false", "FALSE"]
+
 
   # Precedence Bulk Header
   if System.get_env("DISABLE_PRECEDENCE_HEADER") in [1, "1", "true", "TRUE"] do

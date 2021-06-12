@@ -11,7 +11,11 @@
         end
     %>
 
-    <div x-data="{ tab: '<%= tab %>', senderType: $el.querySelector('#sender_config_type,#shared_sender_config_type').value }" class="tabs">
+    <div
+        class="tabs"
+        x-data="{ tab: '<%= tab %>', senderType: $el.querySelector('#sender_config_type,#shared_sender_config_type').value }"
+        x-init="$nextTick(() => { if (! $el.querySelector('button.tab-label.active')) {$el.querySelector('button.tab-label').click()} })"
+    >
 
         <%= hidden_input(fc, :type, x_model: "senderType") %>
 

@@ -5,8 +5,7 @@ defmodule KeilaWeb.SenderController do
     Mailings,
     Mailings.Sender,
     Mailings.Sender.Config,
-    Mailings.SenderAdapters,
-    Auth.Token
+    Mailings.SenderAdapters
   }
 
   import Ecto.Changeset
