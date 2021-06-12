@@ -21,7 +21,11 @@ defmodule KeilaWeb.SenderView do
     do: Routes.sender_path(Endpoint, :update, project_id, id)
 
   def sender_adapters do
-    Keila.Mailings.SenderAdapters.adapter_names()
+    if Application.get_env(:keila, :sender_creation_disabled) do
+      []
+    else
+      Keila.Mailings.SenderAdapters.adapter_names()
+    end
   end
 
   def sender_adapter_name("smtp"), do: "SMTP"
