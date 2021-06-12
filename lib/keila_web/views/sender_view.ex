@@ -28,6 +28,7 @@ defmodule KeilaWeb.SenderView do
   def sender_adapter_name("ses"), do: "SES"
   def sender_adapter_name("sendgrid"), do: "Sendgrid"
   def sender_adapter_name("mailgun"), do: "Mailgun"
+  def sender_adapter_name("shared_ses"), do: "Shared SES"
 
   if Mix.env() == :test do
     def sender_adapter_name("test"), do: "Test"
@@ -53,10 +54,6 @@ defmodule KeilaWeb.SenderView do
     render("_mailgun_config.html", form: form)
   end
 
-  def render_shared_sender_adapter_form(form, _) do
-    raise "not implemented"
-  end
-
   if Mix.env() == :test do
     def render_sender_adapter_form(_form, "test"), do: nil
   end
@@ -65,5 +62,9 @@ defmodule KeilaWeb.SenderView do
     def render_sender_adapter_form(form, "local") do
       render("_local_config.html", form: form)
     end
+  end
+
+  def render_shared_sender_adapter_form(form, "ses") do
+    render("_shared_ses_config.html", form: form)
   end
 end
