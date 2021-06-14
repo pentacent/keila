@@ -57,6 +57,25 @@ defmodule Keila.Mailings do
   end
 
   @doc """
+  Tests if emails can be sent from  Sender credentials with given ID.
+  """
+  @spec try_credentials(Sender.id()) :: {:ok, Sender.t()} | {:error, term()}
+  def try_credentials(id) when is_id(id) do
+    sender = get_sender(id)
+
+    email = %Swoosh.Email{
+      to: [{"", "sender-test@keila.io"}],
+      from: {sender.from_name, sender.from_email},
+      text_body: "Testing sender #{sender.id}"
+    }
+
+    case Keila.Mailer.deliver(email, Sender.Config.to_swoosh_config(sender.config)) do
+      {:ok, _} -> {:ok, sender}
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  @doc """
   Retrieves Campaign with given `id`.
   """
   @spec get_campaign(Campaign.id()) :: Campaign.t() | nil
