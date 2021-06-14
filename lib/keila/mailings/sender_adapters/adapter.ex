@@ -98,7 +98,6 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
   @callback to_swoosh_config(Sender.t() | SharedSender.t()) :: keyword()
 
   @doc """
-  @doc """
   This callback is invoked in a transaction after Sender creation.
   It can be used for adapter-specific actions, e.g. calling external APIs.
   Creation will be rolled back if error tuple is returned and the error is added

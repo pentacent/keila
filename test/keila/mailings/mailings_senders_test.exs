@@ -36,6 +36,7 @@ defmodule Keila.Mailings.SenderTest do
       sender = insert!(:mailings_sender, project: project)
 
       assert :ok == Mailings.delete_sender(sender.id)
+      assert nil = Mailings.get_sender(sender.id)
       assert :ok == Mailings.delete_sender(sender.id)
     end
 
