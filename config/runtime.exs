@@ -162,7 +162,6 @@ if config_env() == :prod do
     sender_creation_disabled:
       System.get_env("DISABLE_SENDER_CREATION") not in [nil, 0, "", "false", "FALSE"]
 
-
   # Precedence Bulk Header
   if System.get_env("DISABLE_PRECEDENCE_HEADER") in [1, "1", "true", "TRUE"] do
     config(:keila, Keila.Mailings, enable_precedence_header: false)
