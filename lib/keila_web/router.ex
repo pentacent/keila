@@ -68,6 +68,7 @@ defmodule KeilaWeb.Router do
     delete "/admin/users", UserAdminController, :delete
 
     resources "/admin/shared-senders", SharedSenderAdminController
+    get "/admin/shared-senders/:id/delete", SharedSenderAdminController, :delete_confirmation
   end
 
   # Authenticated Routes within a Project context

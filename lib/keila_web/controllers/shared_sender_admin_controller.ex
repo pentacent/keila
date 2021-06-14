@@ -68,8 +68,8 @@ defmodule KeilaWeb.SharedSenderAdminController do
     end
   end
 
-  @spec confirm_delete(Plug.Conn.t(), any) :: Plug.Conn.t()
-  def confirm_delete(conn, _params) do
+  @spec delete_confirmation(Plug.Conn.t(), any) :: Plug.Conn.t()
+  def delete_confirmation(conn, _params) do
     changeset = deletion_changeset(conn.assigns.shared_sender, %{})
 
     conn

@@ -22,7 +22,7 @@
     <% end %>
 </div>
 <div class="flex flex-col">
-    <%= label(@form, :ses_access_key, "Access Key") %>
+    <%= label(@form, :ses_access_key, gettext("Access Key")) %>
     <%= with_validation(@form, :ses_access_key) do %>
         <%= text_input(@form, :ses_access_key, class: "text-black") %>
     <% end %>
@@ -30,7 +30,7 @@
 
 <%= if is_nil(input_value(@form, :ses_secret)) do %>
     <div class="flex flex-col">
-        <%= label(@form, :ses_secret, "Secret") %>
+        <%= label(@form, :ses_secret, gettext("Secret")) %>
         <%= with_validation(@form, :ses_secret) do %>
             <%= password_input(@form, :ses_secret, class: "text-black") %>
         <% end %>
@@ -38,7 +38,7 @@
 <% else %>
     <div x-data="{ show: false }" x-init="$watch('show', show => { $nextTick(() => { if (show) $refs.password.focus() }) })" class="flex flex-col">
         <div class="flex gap-5">
-            <%= label(@form, :ses_secret, "Secret") %>
+            <%= label(@form, :ses_secret, gettext("Secret")) %>
             <label>
                 <input type="checkbox" x-model="show">
                 <%= gettext("Change") %>

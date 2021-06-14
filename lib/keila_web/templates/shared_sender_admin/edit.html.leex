@@ -24,7 +24,7 @@
                             <%= gettext("Cancel") %>
                         </a>
                         <%= if assigns[:shared_sender] do %>
-                            <a href="<%= Routes.shared_sender_admin_path(@conn, :delete, @shared_sender.id) %>" class="button button--large button--text">
+                            <a href="<%= Routes.shared_sender_admin_path(@conn, :delete_confirmation, @shared_sender.id) %>" class="button button--large button--text">
                                 <%= gettext("Delete") %>
                             </a>
                             <button class="button button--cta button--large">
