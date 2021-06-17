@@ -198,6 +198,20 @@ defmodule Keila.Auth do
   end
 
   @doc """
+  Returns a list of all `User`s who have a direct membership in the `Group`
+  specified by `group_id`.
+  """
+  @spec list_group_users(Group.id()) :: [User.t()]
+  def list_group_users(group_id) do
+    from(g in Group)
+    |> join(:inner, [g], ug in UserGroup, on: ug.group_id == g.id)
+    |> where([g, ug], ug.group_id == ^group_id)
+    |> join(:inner, [g, ug], u in User, on: u.id == ug.user_id)
+    |> select([g, ug, u], u)
+    |> Repo.all()
+  end
+
+  @doc """
   Checks if User specified with `user_id` is a direct member of Group
   specified with `group_id`. Returns `true` or `false` accordingly.
   """
