@@ -138,6 +138,16 @@ defmodule Keila.AuthTest.Permissions do
   end
 
   @tag :auth
+  test "List users in group" do
+    root = insert!(:group)
+    user = insert!(:user)
+    group = insert!(:group, parent_id: root.id)
+    :ok = Auth.add_user_to_group(user.id, group.id)
+
+    assert [user] == Auth.list_group_users(group.id)
+  end
+
+  @tag :auth
   test "Grant user Group Role" do
     user = insert!(:user)
     group = insert!(:group)
