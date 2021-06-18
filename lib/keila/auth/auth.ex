@@ -288,6 +288,7 @@ defmodule Keila.Auth do
 
   @doc """
   Creates a new user and sends an verification email using `Tuser.Mailings`.
+  Also creates a new Account and associates user with it.
 
   Specify the `url_fn` callback function to generate the verification token URL.
 
@@ -303,17 +304,20 @@ defmodule Keila.Auth do
   @spec create_user(map(), Keyword.t()) ::
           {:ok, User.t()} | {:error, Ecto.Changeset.t(User.t())}
   def create_user(params, opts \\ []) do
-    with {:ok, user} <- do_create_user(params) do
-      unless Keyword.get(opts, :skip_activation_email) do
-        url_fn = Keyword.get(opts, :url_fn, &default_url_function/1)
-        send_activation_link(user.id, url_fn)
-      end
+    Repo.transaction(fn ->
+      with {:ok, user} <- do_create_user(params),
+           {:ok, account} <- Keila.Accounts.create_account(),
+           :ok <- Keila.Accounts.set_user_account(user.id, account.id) do
+        unless Keyword.get(opts, :skip_activation_email) do
+          url_fn = Keyword.get(opts, :url_fn, &default_url_function/1)
+          send_activation_link(user.id, url_fn)
+        end
 
-      {:ok, user}
-    else
-      {:error, changeset} ->
-        {:error, changeset}
-    end
+        user
+      else
+        {:error, changeset} -> Repo.rollback(changeset)
+      end
+    end)
   end
 
   defp do_create_user(params) do

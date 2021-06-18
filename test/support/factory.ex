@@ -111,6 +111,12 @@ defmodule Keila.Factory do
     }
   end
 
+  defp do_build(:account) do
+    %Keila.Accounts.Account{
+      group: build(:group)
+    }
+  end
+
   @doc """
   Builds a struct with optional attributes
   """

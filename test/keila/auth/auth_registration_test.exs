@@ -5,6 +5,11 @@ defmodule Keila.AuthTest.Registration do
 
   @password "BatteryHorseStaple"
 
+  setup do
+    insert!(:group, name: "root", parent_id: nil)
+    :ok
+  end
+
   @tag :auth
   test "Create user and send activation email" do
     assert {:ok, user = %User{activated_at: nil}} =

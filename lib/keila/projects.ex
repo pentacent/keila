@@ -6,6 +6,8 @@ defmodule Keila.Projects do
   alias Keila.Projects.Project
   alias Keila.Auth
   alias Keila.Auth.{User, Group}
+  alias Keila.Accounts
+  alias Keila.Accounts.Account
 
   @doc """
   Creates a new Project.
@@ -14,7 +16,15 @@ defmodule Keila.Projects do
           {:ok, Project.t()} | {:error, Ecto.Changeset.t(Project.t())}
   def create_project(user_id, params) do
     Repo.transaction(fn ->
-      with {:ok, group} <- Auth.create_group(%{parent_id: Auth.root_group().id}),
+      account = Accounts.get_user_account(user_id)
+
+      parent_id =
+        case account do
+          nil -> Auth.root_group().id
+          %Account{group_id: group_id} -> group_id
+        end
+
+      with {:ok, group} <- Auth.create_group(%{parent_id: parent_id}),
            :ok <- Auth.add_user_to_group(user_id, group.id) do
         params
         |> stringize_params()
