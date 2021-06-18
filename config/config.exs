@@ -42,7 +42,8 @@ config :keila, Keila.Mailings.SenderAdapters,
   ]
 
 # Disable sending quotas by default
-config :keila, Keila.Accounts, credits_enabled: true
+# Enable sending quotas
+config :keila, Keila.Accounts, credits_enabled: false
 
 # Staging configuration for hCaptcha
 config :keila, KeilaWeb.Hcaptcha,

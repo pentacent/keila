@@ -166,6 +166,10 @@ if config_env() == :prod do
   config :keila, Keila.Accounts,
     credits_enabled: System.get_env("ENABLE_QUOTAS") in [1, "1", "true", "TRUE"]
 
+  # Enable sending quotas
+  config :keila, Keila.Accounts,
+    credits_enabled: System.get_env("ENABLE_QUOTAS") in [1, "1", "true", "TRUE"]
+
   # Precedence Bulk Header
   if System.get_env("DISABLE_PRECEDENCE_HEADER") in [1, "1", "true", "TRUE"] do
     config(:keila, Keila.Mailings, enable_precedence_header: false)
