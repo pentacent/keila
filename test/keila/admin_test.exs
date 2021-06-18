@@ -8,10 +8,12 @@ defmodule Keila.AdminTest do
 
     {:ok, user1} = Auth.create_user(params(:user))
     {:ok, user2} = Auth.create_user(params(:user))
-
     {:ok, project1} = Projects.create_project(user1.id, params(:project))
     {:ok, project2} = Projects.create_project(user1.id, params(:project))
 
+    # Projects can only be shared with Users in the same Account
+    account = Keila.Accounts.get_user_account(user1.id)
+    :ok = Keila.Accounts.set_user_account(user2.id, account.id)
     Auth.add_user_to_group(user2.id, project2.group_id)
 
     assert :ok = Admin.purge_user(user1.id)

@@ -7,6 +7,7 @@ defmodule Keila.Admin do
   """
 
   use Keila.Repo
+  alias Keila.Accounts
   alias Keila.Auth
   alias Keila.Auth.{User, Group, UserGroup}
 
@@ -18,11 +19,15 @@ defmodule Keila.Admin do
   def purge_user(id) do
     user = Repo.get(User, id)
 
+    account = Accounts.get_user_account(id)
+    account_empty? = Accounts.list_account_users(account.id) |> Enum.count() == 1
     user_groups = Auth.list_user_groups(user.id)
     user_group_ids = Enum.map(user_groups, & &1.id)
     root_group = Auth.root_group()
 
     :ok = Auth.delete_user(id)
+
+    if account_empty?, do: Repo.delete(account)
 
     empty_user_groups =
       from(ug in UserGroup,

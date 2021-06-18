@@ -41,6 +41,9 @@ config :keila, Keila.Mailings.SenderAdapters,
     Keila.Mailings.SenderAdapters.Shared.SES
   ]
 
+# Enable sending quotas
+config :keila, Keila.Accounts, credits_enabled: true
+
 # Staging configuration for hCaptcha
 config :keila, KeilaWeb.Hcaptcha,
   secret_key: "0x0000000000000000000000000000000000000000",
