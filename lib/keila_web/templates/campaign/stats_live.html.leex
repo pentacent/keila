@@ -14,8 +14,18 @@
         <% :unsent -> %>
             <p><%= gettext("This campaign has not yet been sent.") %></p>
             <p class="mt-4">
-                <a href="<%= Routes.campaign_path(@socket, :edit, @current_project.id, @campaign.id) %>" class="button button--cta">
+                <a href="<%= Routes.campaign_path(@socket, :edit, @current_project.id, @campaign.id) %>" class="button button--large button--cta">
                     <%= gettext("Edit this campaign") %>
+                </a>
+            </p>
+        <% :insufficient_credits -> %>
+            <p class="flex gap-4 items-center">
+                <span class="inline-flex h-20 w-20"><%= render_icon(:emoji_sad) %></span>
+                <%= gettext("Your email quota is not sufficient for sending this campaign.") %>
+            </p>
+            <p class="mt-4">
+                <a href="<%= Routes.account_path(@socket, :edit) %>" class="button button--large button--cta">
+                    <%= gettext("Check your sending quota") %>
                 </a>
             </p>
         <% :preparing -> %>

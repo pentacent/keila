@@ -66,6 +66,8 @@ defmodule KeilaWeb.Router do
 
     get "/admin/users", UserAdminController, :index
     delete "/admin/users", UserAdminController, :delete
+    get "/admin/users/:id/credits", UserAdminController, :show_credits
+    post "/admin/users/:id/credits", UserAdminController, :create_credits
 
     resources "/admin/shared-senders", SharedSenderAdminController
     get "/admin/shared-senders/:id/delete", SharedSenderAdminController, :delete_confirmation

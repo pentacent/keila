@@ -343,7 +343,7 @@ defmodule Keila.Mailings do
       end)
 
     case result do
-      {:ok, :ok} -> :ok
+      {:ok, _n} -> :ok
       {:error, reason} -> {:error, reason}
     end
   end
@@ -360,31 +360,50 @@ defmodule Keila.Mailings do
       |> Repo.update()
 
     Keila.Contacts.stream_project_contacts(campaign.project_id, [])
-    |> Enum.map(fn contact ->
-      now = DateTime.utc_now() |> DateTime.truncate(:second)
-      %{contact_id: contact.id, campaign_id: campaign.id, inserted_at: now, updated_at: now}
-    end)
     |> Stream.chunk_every(1000)
-    |> Stream.map(fn recipients ->
-      {_n, recipients} = Repo.insert_all(Recipient, recipients, returning: [:id])
-      recipients
-    end)
-    |> Stream.map(fn recipients ->
-      recipients
-      |> Enum.map(fn recipient ->
-        Keila.Mailings.Worker.new(%{"recipient_id" => recipient.id})
-      end)
-      |> Oban.insert_all()
-    end)
-    |> run_or_rollback()
+    |> Stream.map(&insert_recipients(&1, campaign))
+    |> Stream.map(&insert_jobs/1)
+    |> Stream.map(&Enum.count/1)
+    |> Enum.sum()
+    |> tap(&maybe_consume_credits(&1, campaign))
+    |> tap(&ensure_not_empty/1)
   end
 
-  defp run_or_rollback(stream) do
-    case Enum.count(stream) do
-      0 -> Repo.rollback(:no_recipients)
-      _n -> :ok
-    end
+  defp insert_recipients(contacts, campaign) do
+    now = DateTime.utc_now() |> DateTime.truncate(:second)
+
+    contacts
+    |> Enum.map(fn contact ->
+      %{contact_id: contact.id, campaign_id: campaign.id, inserted_at: now, updated_at: now}
+    end)
+    |> then(fn entries ->
+      Repo.insert_all(Recipient, entries, returning: [:id])
+    end)
+    |> elem(1)
   end
+
+  defp insert_jobs(recipients) do
+    recipients
+    |> Enum.map(fn recipient ->
+      Keila.Mailings.Worker.new(%{"recipient_id" => recipient.id})
+    end)
+    |> Oban.insert_all()
+  end
+
+  defp maybe_consume_credits(recipients_count, _campaign = %{project_id: project_id}) do
+    if Keila.Accounts.credits_enabled?() do
+      account = Keila.Accounts.get_project_account(project_id)
+
+      if Keila.Accounts.consume_credits(account.id, recipients_count) == :error do
+        Repo.rollback(:insufficient_credits)
+      end
+    end
+
+    :ok
+  end
+
+  defp ensure_not_empty(0), do: Repo.rollback(:no_recipients)
+  defp ensure_not_empty(_), do: :ok
 
   @doc """
   Starts the delivery of a campaign as a Task supervised by `Keila.TaskSupervisor`.
@@ -398,7 +417,7 @@ defmodule Keila.Mailings do
   Returns map with stats about a campaign.
   """
   @spec get_campaign_stats(Campaign.id()) :: %{
-          status: :unsent | :preparing | :sending | :sent,
+          status: :insufficient_credits | :unsent | :preparing | :sending | :sent,
           recipients_count: integer(),
           sent_count: integer()
         }
@@ -413,8 +432,16 @@ defmodule Keila.Mailings do
 
     sent_count = sent_count || 0
 
+    insufficient_credits? =
+      if Keila.Accounts.credits_enabled?() do
+        account = Keila.Accounts.get_project_account(campaign.project_id)
+        contacts_count = Keila.Contacts.get_project_contacts_count(campaign.project_id)
+        not Keila.Accounts.has_credits?(account.id, contacts_count)
+      end
+
     status =
       cond do
+        is_nil(campaign.sent_at) and insufficient_credits? -> :insufficient_credits
         is_nil(campaign.sent_at) -> :unsent
         not is_nil(campaign.sent_at) and recipients_count == 0 -> :preparing
         recipients_count != sent_count -> :sending

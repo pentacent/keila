@@ -44,7 +44,7 @@
         </div>
     <% @import_total == @import_progress -> %>
         <h2 class="text-xl flex gap-2">
-            <%= render_icon(:sparkles) %>
+            <span class="inline-flex h-20 w-20"><%= render_icon(:sparkles) %></span>
             <%= gettext("You have successfully imported %{number} contacts!", number: @import_total) %>
         </h2>
         <a class="button button--text" href="<%= Routes.contact_path(@socket, :index, @current_project.id) %>">

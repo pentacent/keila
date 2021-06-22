@@ -88,3 +88,6 @@ config :phoenix, :plug_init_mode, :runtime
 
 # Configure Swoosh
 config :keila, Keila.Mailer, adapter: Swoosh.Adapters.Local
+
+# Enable sending quotas in dev
+config :keila, Keila.Accounts, credits_enabled: true

@@ -1,13 +1,7 @@
 defmodule KeilaWeb.SenderController do
   use KeilaWeb, :controller
 
-  alias Keila.{
-    Mailings,
-    Mailings.Sender,
-    Mailings.Sender.Config,
-    Mailings.SenderAdapters
-  }
-
+  alias Keila.{Mailings, Mailings.Sender, Mailings.Sender.Config}
   import Ecto.Changeset
 
   plug :put_resource

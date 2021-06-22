@@ -18,6 +18,9 @@
                     <th class="p-2"><%= dgettext("admin", "Email") %></th>
                     <th class="p-2"><%= dgettext("admin", "Sign-up") %></th>
                     <th class="p-2"><%= dgettext("admin", "Activation") %></th>
+                    <%= if @user_credits do %>
+                        <th class="p-2"><%= dgettext("admin", "Credits") %></th>
+                    <% end %>
                     <th class="p-2"></th>
                 </tr>
                 <%= for user <- @users.data do %>
@@ -33,7 +36,17 @@
                                 <%= Calendar.strftime(user.activated_at, "%c") %>
                             <% end %>
                         </td>
+                        <%= if @user_credits do %>
+                            <td>
+                                <%= @user_credits[user.id] |> elem(1) %>/<%= @user_credits[user.id] |> elem(0) %>
+                            </td>
+                        <% end %>
                         <td>
+                            <%= if @user_credits do %>
+                                <a href="<%= Routes.user_admin_path(@conn, :show_credits, user.id) %>" class="button button--text">
+                                    <%= render_icon(:plus_circle) %>
+                                </a>
+                            <% end %>
                             <%= if user.id != @current_user.id do %>
                                 <%= delete_form_tag(user, Routes.user_admin_path(@conn, :delete), as: :user) %>
                                 <%= delete_button_tag(user, icon: :trash, class: "button button--text") %>
