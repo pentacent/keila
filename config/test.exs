@@ -43,3 +43,6 @@ config :keila, Keila.Mailings.SenderAdapters,
     Keila.Mailings.SenderAdapters.SES,
     Keila.TestSenderAdapter
   ]
+
+# Disable sending quotas by default in testing
+config :keila, Keila.Accounts, credits_enabled: false

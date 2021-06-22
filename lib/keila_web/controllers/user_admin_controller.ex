@@ -1,6 +1,6 @@
 defmodule KeilaWeb.UserAdminController do
   use KeilaWeb, :controller
-  alias Keila.{Auth, Admin}
+  alias Keila.{Auth, Accounts, Admin}
 
   plug :authorize
 
@@ -8,11 +8,25 @@ defmodule KeilaWeb.UserAdminController do
   def index(conn, params) do
     page = String.to_integer(Map.get(params, "page", "1")) - 1
     users = Auth.list_users(paginate: [page: page, page_size: 20])
+    user_credits = maybe_get_user_credits(users.data)
 
     conn
     |> put_meta(:title, dgettext("admin", "Administrate Users"))
     |> assign(:users, users)
+    |> assign(:user_credits, user_credits)
     |> render("index.html")
+  end
+
+  defp maybe_get_user_credits(users) do
+    if Accounts.credits_enabled?() do
+      users
+      |> Enum.map(fn user ->
+        account = Accounts.get_user_account(user.id)
+        credits = Accounts.get_credits(account.id)
+        {user.id, credits}
+      end)
+      |> Enum.into(%{})
+    end
   end
 
   @spec delete(Plug.Conn.t(), map()) :: Plug.Conn.t()
@@ -43,6 +57,39 @@ defmodule KeilaWeb.UserAdminController do
     |> put_meta(:title, gettext("Confirm User Deletion"))
     |> assign(:users, users)
     |> render("delete.html")
+  end
+
+  @spec show_credits(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def show_credits(conn, %{"id" => user_id}) do
+    user = Keila.Auth.get_user(user_id)
+    account = Keila.Accounts.get_user_account(user.id)
+    credits = Keila.Accounts.get_credits(account.id)
+
+    conn
+    |> assign(:user, user)
+    |> assign(:account, account)
+    |> assign(:credits, credits)
+    |> render("show_credits.html")
+  end
+
+  def create_credits(conn, %{"id" => user_id, "credits" => params}) do
+    user = Keila.Auth.get_user(user_id)
+    account = Keila.Accounts.get_user_account(user.id)
+
+    amount = String.to_integer(params["amount"])
+
+    with expires_at_params <- params["expires_at"],
+         {:ok, date} <- Date.from_iso8601(expires_at_params["date"]),
+         {:ok, time} <- Time.from_iso8601(expires_at_params["time"] <> ":00"),
+         {:ok, datetime} <- DateTime.new(date, time, expires_at_params["timezone"]),
+         {:ok, expires_at} <- DateTime.shift_zone(datetime, "Etc/UTC") do
+      Keila.Accounts.add_credits(account.id, amount, expires_at)
+      expires_at
+    else
+      _ -> nil
+    end
+
+    redirect(conn, to: Routes.user_admin_path(conn, :show_credits, user.id))
   end
 
   defp authorize(conn, _) do

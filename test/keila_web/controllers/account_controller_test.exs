@@ -7,7 +7,7 @@ defmodule KeilaWeb.AccountControllerTest do
     test "shows manage account page", %{conn: conn} do
       conn = with_login(conn)
       conn = get(conn, Routes.account_path(conn, :edit))
-      assert html_response(conn, 200) =~ ~r{Manage Account\s*</h1>}
+      assert html_response(conn, 200) =~ ~r{Change Password\s*</h2>}
     end
   end
 

@@ -1,7 +1,7 @@
 defmodule KeilaWeb.AccountController do
   use KeilaWeb, :controller
   import Ecto.Changeset
-  alias Keila.Auth
+  alias Keila.{Auth, Accounts}
 
   @spec edit(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def edit(conn, _) do
@@ -24,9 +24,14 @@ defmodule KeilaWeb.AccountController do
   end
 
   defp render_edit(conn, changeset) do
+    account = Accounts.get_user_account(conn.assigns.current_user.id)
+    credits = if account, do: Accounts.get_credits(account.id)
+
     conn
     |> put_meta(:title, dgettext("auth", "Manage Account"))
     |> assign(:changeset, changeset)
+    |> assign(:account, credits)
+    |> assign(:credits, credits)
     |> render("edit.html")
   end
 end

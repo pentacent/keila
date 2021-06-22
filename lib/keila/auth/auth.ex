@@ -287,6 +287,14 @@ defmodule Keila.Auth do
   end
 
   @doc """
+  Retrieves user with given ID. If no such user exists, returns `nil`
+  """
+  @spec get_user(User.id()) :: User.t() | nil
+  def get_user(id) do
+    Repo.get(User, id)
+  end
+
+  @doc """
   Creates a new user and sends an verification email using `Tuser.Mailings`.
   Also creates a new Account and associates user with it.
 
