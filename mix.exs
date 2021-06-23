@@ -52,7 +52,7 @@ defmodule Keila.MixProject do
       {:ecto_sql, "~> 3.6"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_live_view, "~> 0.15"},
-      {:floki, "~> 0.30.0"},
+      {:floki, "~> 0.31.0"},
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_dashboard, "~> 0.4"},
@@ -69,10 +69,13 @@ defmodule Keila.MixProject do
       {:argon2_elixir, "~> 2.3"},
       {:httpoison, "~> 1.8"},
       {:nimble_csv, "~> 1.1"},
-      {:oban, "~> 2.5.0"},
-      {:solid, "~> 0.7.1"},
+      {:oban, "~> 2.7.2"},
+      {:solid, "~> 0.8.1"},
       {:earmark, "~> 1.4"},
-      {:tzdata, "~> 1.1"}
+      {:tzdata, "~> 1.1"},
+      {:ex_aws, "~> 2.2.3"},
+      {:sweet_xml, "~> 0.6"},
+      {:ex_aws_ses, git: "https://github.com/pentacent/ex_aws_ses"}
     ]
   end
 
