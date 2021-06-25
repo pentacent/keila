@@ -3,11 +3,11 @@ import Config
 # Configure your database
 config :keila, Keila.Repo,
   username: "postgres",
-  password: "postgres-keila-dev-pw",
-  database: "postgres",
+  password: "postgres",
+  database: "keila_dev",
   hostname: "localhost",
-  port: 54323,
-  show_sensitive_data_on_connection_error: true
+  show_sensitive_data_on_connection_error: true,
+  pool_size: 10
 
 config :keila, skip_migrations: true
 
