@@ -3,11 +3,11 @@ import Config
 # Configure your database
 config :keila, Keila.Repo,
   username: "postgres",
-  password: "postgres",
-  database: "keila_dev",
+  password: "postgres-keila-dev-pw",
+  database: "postgres",
   hostname: "localhost",
-  show_sensitive_data_on_connection_error: true,
-  pool_size: 10
+  port: 54323,
+  show_sensitive_data_on_connection_error: true
 
 config :keila, skip_migrations: true
 
@@ -91,5 +91,3 @@ config :keila, Keila.Mailer, adapter: Swoosh.Adapters.Local
 
 # Enable sending quotas in dev
 config :keila, Keila.Accounts, credits_enabled: true
-
-# Disable billing in dev
