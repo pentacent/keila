@@ -47,6 +47,7 @@ defmodule KeilaWeb.AwaitSubscriptionLive do
     if connected?(socket) do
       Process.send_after(self(), :update, 1000)
     end
+
     socket
   end
 end

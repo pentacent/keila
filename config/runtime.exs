@@ -170,6 +170,16 @@ if config_env() == :prod do
   config :keila, Keila.Billing,
     credits_enabled: System.get_env("ENABLE_BILLING") in [1, "1", "true", "TRUE"]
 
+  paddle_vendor = System.get_env("PADDLE_VENDOR")
+
+  if paddle_vendor not in [nil, ""],
+    do: config(:keila, Keila.Billing, paddle_vendor: paddle_vendor)
+
+  paddle_environment = System.get_env("PADDLE_ENVIRONMENT")
+
+  if paddle_environment not in [nil, ""],
+    do: config(:keila, Keila.Billing, paddle_environment: paddle_environment)
+
   # Precedence Bulk Header
   if System.get_env("DISABLE_PRECEDENCE_HEADER") in [1, "1", "true", "TRUE"] do
     config(:keila, Keila.Mailings, enable_precedence_header: false)
