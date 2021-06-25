@@ -47,7 +47,9 @@ config :keila, Keila.Accounts,
 
 config :keila, Keila.Billing,
   # Disable subscriptions by default
-  enabled: false
+  enabled: false,
+  paddle_vendor: "2518",
+  paddle_environment: "sandbox"
 
 # Staging configuration for hCaptcha
 config :keila, KeilaWeb.Hcaptcha,

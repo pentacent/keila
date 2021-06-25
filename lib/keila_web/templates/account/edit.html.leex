@@ -163,6 +163,6 @@
 
 <script src="https://cdn.paddle.com/paddle/paddle.js"></script>
 <script type="text/javascript">
-    Paddle.Environment.set('sandbox');
-    Paddle.Setup({ vendor: 2518 });
+    Paddle.Environment.set('<%= Application.get_env(:keila, Keila.Billing) |> Keyword.fetch!(:paddle_environment) %>')
+    Paddle.Setup({ vendor: <%= Application.get_env(:keila, Keila.Billing) |> Keyword.fetch!(:paddle_vendor) %> })
 </script>
