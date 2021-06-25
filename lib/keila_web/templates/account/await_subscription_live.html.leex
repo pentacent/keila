@@ -1,0 +1,24 @@
+<div class="bg-gray-900 text-gray-50" x-data="{showSendDialog: false}">
+    <div class="container py-4 lg:py-8 flex">
+        <div class="flex-grow">
+            <h1 class="text-2xl sm:text-5xl mb-4">
+                <%= gettext("Thank you for subscribing to Keila!") %>
+            </h1>
+        </div>
+        <div class="flex justify-end gap-4 mb-2 items-center">
+        </div>
+    </div>
+
+    <div class="container pb-8">
+        <div class="flex gap-4 items-center">
+            <svg class="animate-spin h-16 w-16 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" fill="none" stroke="currentColor" stroke-width="10" r="40" stroke-dasharray="164.93361431346415 56.97787143782138">
+                </circle>
+            </svg>
+            <div class="flex-grow">
+                <p><%= gettext("We’re currently processing your subscription. This shouldn’t take longer than a minute …") %></p>
+           </div>
+        </div>
+    </div>
+
+</div>

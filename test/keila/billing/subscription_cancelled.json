@@ -1,0 +1,19 @@
+{
+    "alert_id": "1172587177",
+    "alert_name": "subscription_cancelled",
+    "cancellation_effective_date": "2099-12-31 12:00:00",
+    "checkout_id": "4-7ad8592d3f2311c-6888e798cb",
+    "currency": "EUR",
+    "email": "test@keila.io",
+    "event_time": "2021-06-24 09:19:03",
+    "linked_subscriptions": null,
+    "marketing_consent": null,
+    "passthrough": "{\"account_id\": \"acc_test\"}",
+    "quantity": null,
+    "status": "deleted",
+    "subscription_id": "1",
+    "subscription_plan_id": "13101",
+    "unit_price": null,
+    "user_id": "1",
+    "p_signature": "gCAWV4Ak5pfYls9wWXc9UXyQDK2Z90tDeP/mMxUfxXYmuxmhKl4bDwaBGjmNv7SGDab8kY288+dafyzlxJoudJoz9vuJKDxuMH0YbKjOEddlvS4LdlCq7r7D0mjj+pT4blX0xZfxF8snO3DO79Y8YmhU+blW2+/E5YEoNnmTBBKGhXGWXjn478g8TCQw/kgqg9Ub5zIlbP/O7br/MBivQH27b36YDp4C8pxdl29paWfjX79XSrqI2N57nPKwrsKQXVMONcNyb2TeiTEJFv28s3+nkkbIcDt/iNuMk1sbIvS5ckKeC3/YB+MvpFyGNdQeo6zegJkaATNkcgEV2JW7CsGXtynIiWtQOd5xHbC6Y4hu0Ood9inkdgl9UsfcxjOg2QjbH+MD9tD2c9OeEUyuCU8JooJ12UOz/wPh4eKJB7LFpoxXn+qD50ZRrXxefylRvlE9fByBD4CEDsTVS6HYCadWOkB3ufHDgtCvzh8Hh0NnhBEAXNKvkACiNb8x/YG0cFh+iWC5BUrQI1DN+WpaA9HrSyFfB3oIy0/GXopmZLs91Ls9Vp22y4KpO4PY7bdp/03z3/0mHcQZ66yUDCaz3/1vT0xmwy3EfAVPClAYz7gMhdINE4bXLfXXHiV9K9lqeBFu0vyhZ7h+AeMWmuqWA+/9EEYS10qde08eoaije4s="
+}
