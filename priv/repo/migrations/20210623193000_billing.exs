@@ -17,5 +17,6 @@ defmodule Keila.Repo.Migrations.Billing do
     end
 
     create unique_index("billing_subscriptions", [:account_id])
+    create unique_index("billing_subscriptions", [:paddle_subscription_id])
   end
 end
