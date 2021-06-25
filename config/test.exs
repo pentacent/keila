@@ -46,3 +46,9 @@ config :keila, Keila.Mailings.SenderAdapters,
 
 # Disable sending quotas by default in testing
 config :keila, Keila.Accounts, credits_enabled: false
+
+config :keila, Keila.Billing,
+  # Disable subscriptions
+  enabled: false,
+  # Disable paddle signature verification
+  paddle_signature_verification_enabled: false

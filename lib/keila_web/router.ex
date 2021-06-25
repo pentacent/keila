@@ -59,6 +59,7 @@ defmodule KeilaWeb.Router do
 
     get "/account", AccountController, :edit
     put "/account", AccountController, :post_edit
+    get "/account/await-subscription", AccountController, :await_subscription
 
     get "/", ProjectController, :index
     get "/projects/new", ProjectController, :new
@@ -139,10 +140,11 @@ defmodule KeilaWeb.Router do
     post "/unsubscribe/:project_id/:contact_id", FormController, :unsubscribe
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", KeilaWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", KeilaWeb do
+    pipe_through :api
+
+    post "/webhooks/paddle", PaddleWebhookController, :webhook
+  end
 
   # Enables LiveDashboard only for development
   #

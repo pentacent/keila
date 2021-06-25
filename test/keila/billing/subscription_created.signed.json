@@ -1,0 +1,22 @@
+{
+    "alert_id": "848518740",
+    "alert_name": "subscription_created",
+    "cancel_url": "https://sandbox-checkout.paddle.com/subscription/cancel?user=8&subscription=9&hash=71a509cb46f6e03a9a38d741d623ef7c8e2ee49d",
+    "checkout_id": "3-8fdbc1166524ee5-5c33b31831",
+    "currency": "EUR",
+    "email": "test@keila.io",
+    "event_time": "2021-06-24 09:06:55",
+    "linked_subscriptions": null,
+    "marketing_consent": null,
+    "next_bill_date": "2021-07-01",
+    "passthrough": "{\"account_id\": \"acc_test\"}",
+    "quantity": null,
+    "source": null,
+    "status": "active",
+    "subscription_id": "1",
+    "subscription_plan_id": "13101",
+    "unit_price": null,
+    "update_url": "https://sandbox-checkout.paddle.com/subscription/update?user=2&subscription=4&hash=78fe4e0b65be98d1220f92334740741dc3de9caa",
+    "user_id": "1",
+    "p_signature": "KvbXsrhqh6UXClZnbu6JXJDG5YIvXHTwAg/RPGu+e3AKInEJnBo+wXUo9Uw81qIc5LGXibNpJMCP8im9RmR3jFtwi6LVrnoFQdFf4gA6KhJfOG3rZF+zgcjxgn6TYILW2G273H5/0yk1IRmzcrusOrBK1wEehFROGrOmHYG3hBJ7S4lJ57gwmhUce6UMd927lendN0rfI334t8ewkfpQ/R6/eoktZatnXgva4ZiJvvM+bBjr4uerzQyi571phEbfnD7i7tvwSpoYPa9bb0NSLZwd+kNnJrx3AyaTu/3nu+J0aNmISMN6zhpu7dNyIBeSFnFXDR5GKhdAHbbRLn5JtaCe/VKkGVXwErCpAKRhszMh9ZZgD2zj9Vm8oQ3hUGR1mE4IGHuPJTDsHlsl6zOASI/b3x8pql2vBEdT4HOP3BkrwCRSxLtUvMMtYhaJPB51vvsqpIPI23uUfiXvfawWek691bUPcwEOGLJnkXZI5pMdE+OR7SKqgEqZj/aBLL/cC8FEcYX1yqv3M/vOSPnZX+h4dN4pMTzjnBytTRytElqu/LrVVexCx25hTWTA71urbsP1JlgdCZLHBs+cIQQsj+bGhW69OZ6PaEXr+4ZYvOeGhyQRElFAZRhzFJ7a1/gh0qKyhq9rwCGBmm7ZQvFW/P7pqW01xM6eq18Vcx/Ohj0="
+}

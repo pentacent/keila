@@ -19,15 +19,59 @@
                 </a>
             </p>
         <% :insufficient_credits -> %>
-            <p class="flex gap-4 items-center">
-                <span class="inline-flex h-20 w-20"><%= render_icon(:emoji_sad) %></span>
-                <%= gettext("Your email quota is not sufficient for sending this campaign.") %>
-            </p>
-            <p class="mt-4">
-                <a href="<%= Routes.account_path(@socket, :edit) %>" class="button button--large button--cta">
-                    <%= gettext("Check your sending quota") %>
-                </a>
-            </p>
+            <%= cond do %>
+                <% Keila.Billing.billing_enabled?() && is_nil(@subscription) -> %>
+                    <div class="flex gap-4 items-center">
+                        <span class="inline-flex h-20 w-20"><%= render_icon(:paper_airplane) %></span>
+                        <div>
+                            <p class="text-2xl">
+                                <%= gettext("Thanks for trying out Keila!") %>
+                            </p>
+                            <p>
+                                <%= gettext("Please start a subscription before sending your first campaign.") %>
+                            </p>
+                            <p class="mt-4">
+                                <a href="<%= Routes.account_path(@socket, :edit) %>" class="button button--large button--cta">
+                                    <%= gettext("Start your subscription now") %>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                <% Keila.Billing.billing_enabled?() -> %>
+                    <div class="flex gap-4 items-center">
+                        <span class="inline-flex h-20 w-20"><%= render_icon(:information_circle) %></span>
+                        <div>
+                            <p class="text-2xl">
+                                <%= gettext("Insufficient email quota.") %>
+                            </p>
+                            <p>
+                                <%= gettext("It looks like you’ve already used up the email quota from your subscription.") %>
+                            </p>
+                            <p class="mt-4">
+                                <a href="<%= Routes.account_path(@socket, :edit) %>" class="button button--large button--cta">
+                                    <%= gettext("Check your subscription now") %>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                <% true -> %>
+                    <div class="flex gap-4 items-center">
+                        <span class="inline-flex h-20 w-20"><%= render_icon(:information_circle) %></span>
+                        <div>
+                            <p class="text-2xl">
+                                <%= gettext("Insufficient email quota.") %>
+                            </p>
+                            <p>
+                                <%= gettext("Your email quota is not sufficient for sending this campaign.") %>
+                            </p>
+                            <p class="mt-4">
+                                <a href="<%= Routes.account_path(@socket, :edit) %>" class="button button--large button--cta">
+                                    <%= gettext("Check your sending quota now") %>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+            <% end %>
         <% :preparing -> %>
             <p class="flex gap-4 items-center">
                 <svg class="animate-spin h-16 w-16 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">

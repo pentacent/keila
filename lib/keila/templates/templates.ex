@@ -10,7 +10,7 @@ defmodule Keila.Templates do
   """
 
   use Keila.Repo
-  alias __MODULE__.{Template, Html, Css}
+  alias __MODULE__.{Template}
 
   @doc """
   Creates a new template.
