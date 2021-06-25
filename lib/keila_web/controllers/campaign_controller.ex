@@ -208,9 +208,10 @@ defmodule KeilaWeb.CampaignController do
   def stats(conn, _params) do
     project = current_project(conn)
     campaign = conn.assigns.campaign
+    account = Keila.Accounts.get_user_account(conn.assigns.current_user.id)
 
     live_render(conn, KeilaWeb.CampaignStatsLive,
-      session: %{"current_project" => project, "campaign" => campaign}
+      session: %{"current_project" => project, "campaign" => campaign, "account" => account}
     )
   end
 
