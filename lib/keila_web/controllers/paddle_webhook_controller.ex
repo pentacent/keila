@@ -56,7 +56,7 @@ defmodule KeilaWeb.PaddleWebhookController do
   end
 
   def webhook(conn, _params) do
-    conn |> put_status(404) |> halt()
+    conn |> send_resp(404, "") |> halt()
   end
 
   defp subscription_params(params) do
@@ -96,7 +96,7 @@ defmodule KeilaWeb.PaddleWebhookController do
     if Billing.Paddle.valid_signature?(conn.body_params) do
       conn
     else
-      conn |> put_status(403) |> halt()
+      conn |> send_resp(403, "") |> halt()
     end
   end
 
