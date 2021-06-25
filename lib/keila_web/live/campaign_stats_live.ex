@@ -6,6 +6,8 @@ defmodule KeilaWeb.CampaignStatsLive do
   def mount(_params, session, socket) do
     project = session["current_project"]
     campaign = session["campaign"]
+    account = session["account"]
+    subscription = Keila.Billing.get_account_subscription(account.id)
     stats = Mailings.get_campaign_stats(campaign.id)
 
     socket =
@@ -13,6 +15,8 @@ defmodule KeilaWeb.CampaignStatsLive do
       |> assign(:campaign, campaign)
       |> assign(:current_project, project)
       |> assign(:stats, stats)
+      |> assign(:account, account)
+      |> assign(:subscription, subscription)
       |> put_default_assigns()
       |> schedule_update()
 
