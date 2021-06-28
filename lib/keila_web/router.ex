@@ -121,7 +121,7 @@ defmodule KeilaWeb.Router do
     delete "/projects/:project_id/campaigns", CampaignController, :delete
   end
 
-  # Form Routes
+  # Public Routes
   pipeline :browser_embeddable do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -138,6 +138,9 @@ defmodule KeilaWeb.Router do
     post "/forms/:id", FormController, :submit
     get "/unsubscribe/:project_id/:contact_id", FormController, :unsubscribe
     post "/unsubscribe/:project_id/:contact_id", FormController, :unsubscribe
+
+    get "/r/:encoded_url/:recipient_id/:hmac", TrackingController, :track_open
+    get "/c/:encoded_url/:recipient_id/:link_id/:hmac", TrackingController, :track_click
   end
 
   scope "/api", KeilaWeb do

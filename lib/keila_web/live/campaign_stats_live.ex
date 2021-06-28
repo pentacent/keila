@@ -1,14 +1,15 @@
 defmodule KeilaWeb.CampaignStatsLive do
   use KeilaWeb, :live_view
-  alias Keila.Mailings
+  alias Keila.{Mailings, Tracking}
 
   @impl true
   def mount(_params, session, socket) do
     project = session["current_project"]
     campaign = session["campaign"]
+    stats = Mailings.get_campaign_stats(campaign.id)
+    link_stats = Tracking.get_link_stats(campaign.id)
     account = session["account"]
     subscription = Keila.Billing.get_account_subscription(account.id)
-    stats = Mailings.get_campaign_stats(campaign.id)
 
     socket =
       socket
@@ -17,6 +18,7 @@ defmodule KeilaWeb.CampaignStatsLive do
       |> assign(:stats, stats)
       |> assign(:account, account)
       |> assign(:subscription, subscription)
+      |> assign(:link_stats, link_stats)
       |> put_default_assigns()
       |> schedule_update()
 

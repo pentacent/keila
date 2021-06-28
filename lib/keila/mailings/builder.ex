@@ -3,7 +3,7 @@ defmodule Keila.Mailings.Builder do
   Module for building Swoosh.Email structs from Campaigns and Contacts.
   """
 
-  alias Keila.Mailings.Campaign
+  alias Keila.Mailings.{Campaign, Recipient}
   alias Keila.Contacts.Contact
   alias Swoosh.Email
   alias KeilaWeb.Router.Helpers, as: Routes
@@ -30,8 +30,14 @@ defmodule Keila.Mailings.Builder do
 
   TODO: Right now, only plain-text campaigns are supported.
   """
-  @spec build(Campaign.t(), Contact.t(), map()) :: Swoosh.Email.t()
-  def build(campaign, contact \\ @default_contact, assigns) do
+  @spec build(Campaign.t(), Recipient.t() | Contact.t(), map()) :: Swoosh.Email.t()
+  def build(campaign, recipient_or_contact \\ @default_contact, assigns) do
+    {recipient, contact} =
+      case recipient_or_contact do
+        recipient = %Recipient{} -> {recipient, recipient.contact}
+        contact = %Contact{} -> {nil, contact}
+      end
+
     unsubscribe_link =
       Routes.form_url(KeilaWeb.Endpoint, :unsubscribe, campaign.project_id, contact.id)
 
@@ -50,6 +56,7 @@ defmodule Keila.Mailings.Builder do
     |> put_body(campaign, assigns)
     |> put_unsubscribe_header(unsubscribe_link)
     |> maybe_put_precedence_header()
+    |> maybe_put_tracking(campaign, recipient)
   end
 
   defp put_template_assigns(assigns, %Template{assigns: template_assigns = %{}}),
@@ -211,5 +218,79 @@ defmodule Keila.Mailings.Builder do
     rescue
       _e -> {:error, "Unexpected rendering error"}
     end
+  end
+
+  # TODO add campaign settings for disabling/configuring tracking
+  defp maybe_put_tracking(email, campaign, recipient) do
+    if email.html_body && recipient do
+      put_tracking(email, campaign, recipient)
+    else
+      email
+    end
+  end
+
+  def put_tracking(email, campaign, recipient) do
+    html =
+      email.html_body
+      |> Floki.parse_document!()
+      |> put_click_tracking(campaign, recipient)
+      |> put_open_tracking(campaign, recipient)
+      |> put_tracking_pixel(campaign, recipient)
+      |> Floki.raw_html()
+
+    %{email | html_body: html}
+  end
+
+  @tracking_click_selector "a[href^=\"https://\"], a[href^=\"http://\"]"
+  defp put_click_tracking(html, campaign, recipient) do
+    Floki.find_and_update(html, @tracking_click_selector, fn {tag, attributes} ->
+      href = List.keyfind(attributes, "href", 0) |> elem(1)
+      # if not keila link
+      if String.starts_with?(href, KeilaWeb.Endpoint.url()) do
+        {tag, attributes}
+      else
+        link = Keila.Tracking.get_or_register_link(href, campaign.id)
+
+        params = %{
+          url: href,
+          campaign_id: campaign.id,
+          recipient_id: recipient.id,
+          link_id: link.id
+        }
+
+        url = Keila.Tracking.get_tracking_url(KeilaWeb.Endpoint, :click, params)
+
+        {tag, List.keyreplace(attributes, "href", 0, {"href", url})}
+      end
+    end)
+  end
+
+  @tracking_open_selector "img[src^=\"https://\"], img[src^=\"http://\"]"
+  defp put_open_tracking(html, campaign, recipient) do
+    Floki.find_and_update(html, @tracking_open_selector, fn {tag, attributes} ->
+      src = List.keyfind(attributes, "src", 0) |> elem(1)
+
+      if String.starts_with?(src, KeilaWeb.Endpoint.url()) do
+        {tag, attributes}
+      else
+        params = %{url: src, campaign_id: campaign.id, recipient_id: recipient.id}
+        url = Keila.Tracking.get_tracking_url(KeilaWeb.Endpoint, :open, params)
+
+        {tag, List.keyreplace(attributes, "src", 0, {"src", url})}
+      end
+    end)
+  end
+
+  defp put_tracking_pixel(html, campaign, recipient) do
+    pixel_url = Routes.static_url(KeilaWeb.Endpoint, "/images/pixel.gif")
+    params = %{url: pixel_url, campaign_id: campaign.id, recipient_id: recipient.id}
+    url = Keila.Tracking.get_tracking_url(KeilaWeb.Endpoint, :open, params)
+
+    img = {"img", [{"src", url}], []}
+
+    Floki.traverse_and_update(html, fn
+      {"body", tags, children} -> {"body", tags, children ++ [img]}
+      other -> other
+    end)
   end
 end

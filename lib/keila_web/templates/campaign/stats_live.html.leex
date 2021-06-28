@@ -108,3 +108,44 @@
     </div>
 
 </div>
+
+
+<%= if @stats.sent_count > 0 do %>
+    <div class="container py-4 lg:py-8">
+        <h3 class="font-bold text-2xl mt-8"><%= gettext("Statistics") %></h3>
+        <%= gettext(
+            "Opens: %{opens} (%{percentage}%)",
+            opens: @stats.open_count,
+            percentage: (@stats.open_count / @stats.sent_count * 100) |> Float.round(2)
+        ) %>
+        <br>
+        <%= gettext(
+            "Clicks: %{clicks} (%{percentage}%)",
+            clicks: @stats.click_count,
+            percentage: (@stats.click_count / @stats.sent_count * 100) |> Float.round(2)
+        ) %>
+
+        <h3 class="font-bold text-2xl mt-8"><%= gettext("Links") %></h3>
+
+        <table class="w-full text-left">
+            <tr>
+                <th>
+                    <%= gettext("URL") %>
+                </th>
+                <th>
+                    <%= gettext("Clicks") %>
+                </th>
+                <th>
+                    <%= gettext("Click rate") %>
+                </th>
+            </tr>
+            <%= for {link, clicks} <- @link_stats do %>
+                <tr>
+                    <td><%= link %></td>
+                    <td><%= clicks %></td>
+                    <td><%= (clicks / @stats.sent_count * 100) |> Float.round(2) %>%</td>
+                </tr>
+            <% end %>
+        </table>
+    </div>
+<% end %>

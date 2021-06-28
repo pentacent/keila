@@ -8,6 +8,8 @@ defmodule Keila.Mailings.Recipient do
     belongs_to(:campaign, Campaign, type: Campaign.Id)
 
     field(:sent_at, :utc_datetime)
+    field(:opened_at, :utc_datetime)
+    field(:clicked_at, :utc_datetime)
     timestamps()
   end
 end
