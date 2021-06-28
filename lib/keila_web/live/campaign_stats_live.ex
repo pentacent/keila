@@ -16,9 +16,9 @@ defmodule KeilaWeb.CampaignStatsLive do
       |> assign(:campaign, campaign)
       |> assign(:current_project, project)
       |> assign(:stats, stats)
+      |> assign(:link_stats, link_stats)
       |> assign(:account, account)
       |> assign(:subscription, subscription)
-      |> assign(:link_stats, link_stats)
       |> put_default_assigns()
       |> schedule_update()
 
