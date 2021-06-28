@@ -89,6 +89,10 @@ defmodule Keila.Factory do
     }
   end
 
+  defp do_build(:mailings_recipient) do
+    %Keila.Mailings.Recipient{}
+  end
+
   defp do_build(:template) do
     %Keila.Templates.Template{
       name: "template-#{get_counter_value()}"

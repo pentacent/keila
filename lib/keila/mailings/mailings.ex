@@ -424,10 +424,15 @@ defmodule Keila.Mailings do
   def get_campaign_stats(campaign_id) when is_id(campaign_id) do
     campaign = get_campaign(campaign_id)
 
-    {recipients_count, sent_count} =
+    {recipients_count, sent_count, open_count, click_count} =
       from(r in Recipient, where: r.campaign_id == ^campaign_id)
       |> where([r], r.campaign_id == ^campaign_id)
-      |> select([r], {count(), sum(fragment("CASE WHEN sent_at IS NOT NULL THEN 1 ELSE 0 END"))})
+      |> select(
+        [r],
+        {count(), sum(fragment("CASE WHEN sent_at IS NOT NULL THEN 1 ELSE 0 END")),
+         sum(fragment("CASE WHEN opened_at IS NOT NULL THEN 1 ELSE 0 END")),
+         sum(fragment("CASE WHEN clicked_at IS NOT NULL THEN 1 ELSE 0 END"))}
+      )
       |> Repo.one()
 
     sent_count = sent_count || 0
@@ -451,7 +456,9 @@ defmodule Keila.Mailings do
     %{
       status: status,
       recipients_count: recipients_count,
-      sent_count: sent_count
+      sent_count: sent_count,
+      open_count: open_count,
+      click_count: click_count
     }
   end
 
