@@ -1,5 +1,21 @@
 # Changelog
 
+## Version 0.5.0
+
+## Added
+- Added click/open tracking for campaign emails
+- `Precedence: Bulk` header now included in all campaign emails
+- Implemented per-instance `SharedSenders`
+- Implemented Shared Senders for AWS SES
+- Added account and account credits for organizing users and implementing quotas
+- Added subscription plans for app.keila.io
+
+## Changed
+- Updated to Elixir 1.12
+
+### Fixed
+- Removed email preview text from Cerberus
+
 ## Version 0.4.0 🎨
 
 Template customization & UI improvements
