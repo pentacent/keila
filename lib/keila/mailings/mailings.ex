@@ -108,12 +108,15 @@ defmodule Keila.Mailings do
     end
   end
 
+  @doc """
+  Verifies sender from `mailings.verify_sender` token.
+  """
   @spec verify_sender_from_token(String.t()) :: {:ok, Sender.t()} | {:error, term}
-  def verify_sender_from_token(token) do
-    case Keila.Auth.find_and_delete_token(token, "mailings.verify_sender") do
-      %Keila.Auth.Token{data: token_data} ->
-        sender = get_sender(token_data["sender_id"])
-        adapter = SenderAdapters.get_adapter(token_data["type"])
+  def verify_sender_from_token(raw_token) do
+    case Keila.Auth.find_and_delete_token(raw_token, "mailings.verify_sender") do
+      token = %Keila.Auth.Token{} ->
+        sender = get_sender(token.data["sender_id"])
+        adapter = SenderAdapters.get_adapter(token.data["type"])
 
         adapter.verify_from_token(sender, token)
 
