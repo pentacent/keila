@@ -57,6 +57,25 @@ defmodule Keila.Billing do
     |> Repo.insert()
   end
 
+  @doc """
+  Creates a new `Subscription` or updates an existing one if it the `Account`
+  specified by `account_id` already has one.
+  """
+  @spec create_or_update_subscription(Account.id(), map(), boolean()) ::
+          {:ok, Subscription.t()} | {:error, Changeset.t(Subscription.t())}
+  def create_or_update_subscription(account_id, params, add_credits?) do
+    params
+    |> stringize_params()
+    |> Map.put("account_id", account_id)
+    |> Subscription.insert_changeset()
+    |> Repo.insert(
+      conflict_target: [:account_id],
+      on_conflict:
+        {:replace, [:paddle_plan_id, :update_url, :cancel_url, :next_billed_on, :status]}
+    )
+    |> tap(&maybe_add_credits(&1, add_credits?))
+  end
+
   defp maybe_add_credits({:ok, subscription}, true) do
     plan = get_plan(subscription.paddle_plan_id)
     expires_at = DateTime.new!(subscription.next_billed_on, ~T[23:59:00], "Etc/UTC")

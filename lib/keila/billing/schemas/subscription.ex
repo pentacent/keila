@@ -34,7 +34,7 @@ defmodule Keila.Billing.Subscription do
 
   defp validate(changeset) do
     changeset
-    |> validate_required(@insert_fields ++ @update_fields)
+    |> validate_required(@insert_fields ++ (@update_fields -- [:cancel_url, :update_url]))
     |> unique_constraint(:account_id)
     |> unique_constraint(:paddle_subscription_id)
   end
