@@ -1,10 +1,7 @@
 defmodule Keila.Billing.Paddle do
   @moduledoc false
 
-  @paddle_key Path.join(:code.priv_dir(:keila), "vendor/paddle/public_key.pem")
-              |> File.read!()
-              |> :public_key.pem_decode()
-              |> then(fn [pem_entry] -> :public_key.pem_entry_decode(pem_entry) end)
+  @paddle_key
 
   @doc """
   Validates the signature of an incoming Paddle webhook. Returns `true` if
@@ -20,7 +17,7 @@ defmodule Keila.Billing.Paddle do
       signature = parse_signature(raw_signature)
       serialized_params = serialize_params(raw_params)
 
-      :public_key.verify(serialized_params, :sha, signature, @paddle_key)
+      :public_key.verify(serialized_params, :sha, signature, paddle_key())
     else
       true
     end
@@ -43,5 +40,16 @@ defmodule Keila.Billing.Paddle do
     |> Enum.map(fn {key, value} -> {key, to_string(value)} end)
     |> Enum.sort_by(fn {key, _} -> key end)
     |> PhpSerializer.serialize()
+  end
+
+  defp paddle_key() do
+    paddle_env =
+      Application.get_env(:keila, Keila.Billing)
+      |> Keyword.fetch!(:paddle_environment)
+
+    Path.join(:code.priv_dir(:keila), "vendor/paddle/public_key.#{paddle_env}.pem")
+    |> File.read!()
+    |> :public_key.pem_decode()
+    |> then(fn [pem_entry] -> :public_key.pem_entry_decode(pem_entry) end)
   end
 end
