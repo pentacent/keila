@@ -168,7 +168,7 @@ if config_env() == :prod do
 
   # Enable billing
   config :keila, Keila.Billing,
-    credits_enabled: System.get_env("ENABLE_BILLING") in [1, "1", "true", "TRUE"]
+    enabled: System.get_env("ENABLE_BILLING") in [1, "1", "true", "TRUE"]
 
   paddle_vendor = System.get_env("PADDLE_VENDOR")
 
