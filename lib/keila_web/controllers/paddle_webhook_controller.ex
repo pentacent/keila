@@ -8,16 +8,16 @@ defmodule KeilaWeb.PaddleWebhookController do
 
   @spec webhook(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def webhook(conn, params = %{"alert_name" => "subscription_created"}) do
-    params = subscription_params(params)
+    params = parse_params(params)
 
-    case Billing.create_subscription(account_id(conn), params) do
+    case Billing.create_or_update_subscription(account_id(conn), params, false) do
       {:ok, _} -> conn |> send_resp(200, "") |> halt()
       _other -> conn |> send_resp(400, "") |> halt()
     end
   end
 
   def webhook(conn, params = %{"alert_name" => "subscription_updated"}) do
-    params = subscription_params(params)
+    params = parse_params(params)
     subscription = Billing.get_account_subscription(account_id(conn))
 
     case Billing.update_subscription(subscription.id, params, false) do
@@ -36,17 +36,16 @@ defmodule KeilaWeb.PaddleWebhookController do
   end
 
   def webhook(conn, params = %{"alert_name" => "subscription_payment_succeeded"}) do
-    params = payment_succeeded_params(params)
-    subscription = Billing.get_account_subscription(account_id(conn))
+    params = parse_params(params)
 
-    case Billing.update_subscription(subscription.id, params, true) do
+    case Billing.create_or_update_subscription(account_id(conn), params, true) do
       {:ok, _} -> conn |> send_resp(200, "") |> halt()
       _other -> conn |> send_resp(400, "") |> halt()
     end
   end
 
   def webhook(conn, params = %{"alert_name" => "subscription_payment_failed"}) do
-    params = payment_failed_params(params)
+    params = parse_params(params)
     subscription = Billing.get_account_subscription(account_id(conn))
 
     case Billing.update_subscription(subscription.id, params, false) do
@@ -59,35 +58,25 @@ defmodule KeilaWeb.PaddleWebhookController do
     conn |> send_resp(404, "") |> halt()
   end
 
-  defp subscription_params(params) do
-    %{
-      "cancel_url" => Map.fetch!(params, "cancel_url"),
-      "update_url" => Map.fetch!(params, "update_url"),
-      "paddle_user_id" => Map.fetch!(params, "user_id"),
-      "paddle_subscription_id" => Map.fetch!(params, "subscription_id"),
-      "paddle_plan_id" => Map.fetch!(params, "subscription_plan_id"),
-      "status" => Map.fetch!(params, "status") |> String.to_existing_atom(),
-      "next_billed_on" => Map.fetch!(params, "next_bill_date")
-    }
-  end
+  @param_fields %{
+    "cancel_url" => {:cancel_url, :string},
+    "update_url" => {:update_url, :string},
+    "user_id" => {:paddle_user_id, :string},
+    "subscription_id" => {:paddle_subscription_id, :string},
+    "subscription_plan_id" => {:paddle_plan_id, :string},
+    "status" => {:status, :atom},
+    "next_bill_date" => {:next_billed_on, :string}
+  }
 
-  defp payment_succeeded_params(params) do
-    %{
-      "paddle_user_id" => Map.fetch!(params, "user_id"),
-      "paddle_subscription_id" => Map.fetch!(params, "subscription_id"),
-      "paddle_plan_id" => Map.fetch!(params, "subscription_plan_id"),
-      "status" => Map.fetch!(params, "status") |> String.to_existing_atom(),
-      "next_billed_on" => Map.fetch!(params, "next_bill_date")
-    }
-  end
-
-  defp payment_failed_params(params) do
-    %{
-      "paddle_user_id" => Map.fetch!(params, "user_id"),
-      "paddle_subscription_id" => Map.fetch!(params, "subscription_id"),
-      "paddle_plan_id" => Map.fetch!(params, "subscription_plan_id"),
-      "status" => Map.fetch!(params, "status") |> String.to_existing_atom()
-    }
+  defp parse_params(params) do
+    Enum.reduce(params, [], fn {key, value}, acc ->
+      case Map.get(@param_fields, key) do
+        {field, :string} -> [{field, value} | acc]
+        {field, :atom} -> [{field, String.to_existing_atom(value)} | acc]
+        nil -> acc
+      end
+    end)
+    |> Enum.into(%{})
   end
 
   defp account_id(conn), do: conn.assigns.account_id

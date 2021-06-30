@@ -64,12 +64,16 @@
                                     </li>
                                 </ul>
                                 <div class="flex gap-4">
-                                    <a class="button" target="_blank" href="<%= @subscription.update_url %>">
-                                        <%= gettext("Update payment method") %>
-                                    </a>
-                                    <a class="button" target="_blank" href="<%= @subscription.cancel_url %>">
-                                        <%= gettext("Cancel subscription") %>
-                                    </a>
+                                    <%= if @subscription.update_url do %>
+                                        <a class="button" target="_blank" href="<%= @subscription.update_url %>">
+                                            <%= gettext("Update payment method") %>
+                                        </a>
+                                    <% end %>
+                                    <%= if @subscription.cancel_url do %>
+                                        <a class="button" target="_blank" href="<%= @subscription.cancel_url %>">
+                                            <%= gettext("Cancel subscription") %>
+                                        </a>
+                                    <% end %>
                                 </div>
                             </div>
                         </div>
