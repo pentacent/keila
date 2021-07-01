@@ -143,6 +143,21 @@ defmodule Keila.Templates.Css do
       {scope <> " " <> selector, property_list}
     end)
   end
+
+  @doc """
+  Returns the value of the given `property` for the given `selector`in the
+  provided  `styles`. Returns `nil` if the property could not be cound.
+  """
+  @spec get_value(t(), String.t(), String.t()) :: String.t() | nil
+  def get_value(styles, selector, property) do
+    case Enum.find(styles, &(elem(&1, 0) == selector)) do
+      {_selector, property_list} ->
+        Enum.find_value(property_list, &if(elem(&1, 0) == property, do: elem(&1, 1)))
+
+      nil ->
+        nil
+    end
+  end
 end
 
 defmodule Keila.Templates.Css.Parser do

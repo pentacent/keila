@@ -1,5 +1,10 @@
 h1 {
     margin: 0 0 20px 0;
+    color: #4b5563;
+    font-family: inherit;
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: none;
 }
 
 h2 {
@@ -24,14 +29,45 @@ h4 {
     margin: 20px 0;
 }
 
+a {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
 h4 > a {
+    color: #ffffff;
+    background-color: #1d4ed8;
     padding: 10px;
     display: block;
     cursor: pointer;
     text-align: center;
 }
 
+body, #center-wrapper, #table-wrapper {
+    background-color: #f3f4f6;
+    font-family: Verdana, sans-serif;
+}
+
+#content {
+    font-family: inherit;
+    background-color: #ffffff;
+    color: #1f2937;
+}
+
 #content img {
     width: 100%;
     max-width: 600px;
+}
+
+#signature td {
+    color: #4b5563;
+    font-family: inherit;
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+#signature td a {
+    color: #374151;
+    text-decoration: underline;
 }

@@ -49,6 +49,12 @@ defmodule Keila.TemplatesTest do
   end
 
   @tag :templates
+  test "get CSS values by selector and property" do
+    css = Css.parse!(@input_css)
+    assert "#f0f" == Css.get_value(css, ".foo", "background-color")
+  end
+
+  @tag :templates
   test "create template", %{project: project} do
     params = params(:template)
     assert {:ok, %Template{}} = Templates.create_template(project.id, params)
