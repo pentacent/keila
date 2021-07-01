@@ -1,8 +1,6 @@
 defmodule Keila.Billing.Paddle do
   @moduledoc false
 
-  @paddle_key
-
   @doc """
   Validates the signature of an incoming Paddle webhook. Returns `true` if
   signature is valid, otherwise `false`.
