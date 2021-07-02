@@ -1,35 +1,35 @@
-<main role="main" class="static-container flex-grow bg-gray-800 text-gray-50 pb-8">
-    <div class="bg-gray-900 text-gray-50">
-        <div class="container py-8 sm:py-6 md:py-12 lg:py-16 flex">
-            <div class="flex-grow">
-                <h1 class="text-2xl sm:text-5xl md:text-7xl mb-4">
-                    <%= gettext("Delete Templates?") %>
-                </h1>
-                <p class="text-lg text-gray-200">
-                    <%= gettext("Do you really want to delete the following templates?") %>
+<main role="main" class="static-container flex-grow bg-gray-950 text-gray-200">
+    <div class="container py-8 sm:py-12 flex">
+        <h1 class="text-2xl sm:text-5xl">
+            <%= gettext("Delete Templates?") %>
+        </h1>
+    </div>
+    <div class="bg-gray-700">
+        <div class="container py-8">
+            <p class="text-lg text-gray-200">
+                <%= gettext("Do you really want to delete the following templates?") %>
+            </p>
+            <%= form_for(:template, Routes.template_path(@conn, :delete, @current_project.id), [method: :delete], fn f -> %>
+                <ul class="list-disc pl-4 my-4">
+                    <%= for template <- @templates do %>
+                        <li>
+                            <%= template.name %>
+                            <%= hidden_input(f, :id, value: template.id, name: "template[id][]") %>
+                        </li>
+                    <% end %>
+                </ul>
+                <p class="text-lg text-gray-200 font-bold">
+                    <%= gettext("Deleting a template cannot be undone.") %>
                 </p>
-                <%= form_for(:template, Routes.template_path(@conn, :delete, @current_project.id), [method: :delete], fn f -> %>
-                    <ul class="list-disc pl-4 my-4">
-                        <%= for template <- @templates do %>
-                            <li>
-                                <%= template.name %>
-                                <%= hidden_input(f, :id, value: template.id, name: "template[id][]") %>
-                            </li>
-                        <% end %>
-                    </ul>
-                    <p class="text-lg text-gray-200 font-bold">
-                        <%= gettext("Deleting a template cannot be undone.") %>
-                    </p>
-                    <div class="flex gap-4 mt-4">
-                        <a class="button button--text button--large" href="<%= Routes.template_path(@conn, :index, @current_project.id) %>">
-                            <%= gettext("Cancel") %>
-                        </a>
-                        <button type="submit" class="button button--warn button--large">
-                            <%= gettext("Delete") %>
-                        </button>
-                    </div>
-                <% end) %>
-            </div>
+                <div class="flex gap-4 mt-4">
+                    <a class="button button--text button--large" href="<%= Routes.template_path(@conn, :index, @current_project.id) %>">
+                        <%= gettext("Cancel") %>
+                    </a>
+                    <button type="submit" class="button button--warn button--large">
+                        <%= gettext("Delete") %>
+                    </button>
+                </div>
+            <% end) %>
         </div>
     </div>
 </main>

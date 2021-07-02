@@ -1,38 +1,52 @@
-<main role="main" class="static-container flex-grow bg-gray-800 text-gray-50">
-    <div class="bg-gray-900 text-gray-50">
-        <div class="container py-8 sm:py-6 md:py-12 lg:py-16 flex">
-            <div class="flex-grow">
-                <h1 class="text-2xl sm:text-5xl md:text-7xl mb-4">
-                    <%= @current_project.name %>
-                </h1>
-
-                <% # TODO add CTAS:
-                # if no sender
-                # if no form
-                # if no contacts
-                # create campaign
-                %>
-            </div>
-            <div>
-                <a href="<%= Routes.project_path(@conn, :edit, @current_project.id) %>" class="button">
-                    <%= render_icon(:cog) %>
-                    Settings
-                </a>
-            </div>
+<main role="main" class="static-container flex-grow bg-gray-950 text-gray-200">
+    <div class="container py-8 sm:py-12 flex">
+        <div class="flex-grow">
+            <h1 class="text-2xl sm:text-5xl">
+                <%= @current_project.name %>
+            </h1>
         </div>
-    </div>
-    <div class="container container--no-px md:grid md:grid-cols-2 gap-4 mt-4 md:gap-8 md:mt-8">
-        <div class="card bg-gray-900">
-            <h2 class="font-light text-2xl flex items-center gap-2 mb-2">
-                <span class="inline-flex h-6 w-6"><%= render_icon(:speakerphone) %></span>
-                <%= gettext("Senders") %>
-            </h2>
-            <br>
-            <a href="<%= Routes.sender_path(@conn, :index, @current_project.id)%>" class="button">
-                <%= gettext("Manage Senders") %>
+        <div>
+            <a href="<%= Routes.project_path(@conn, :edit, @current_project.id) %>" class="button">
+                <%= render_icon(:cog) %>
+                Settings
             </a>
         </div>
-        <div class="card bg-gray-900">
+    </div>
+
+    <%= if @senders_count == 0 || @contacts_count == 0 || @campaigns_count == 0 do %>
+        <div class="bg-green-900 py-8 sm:py-12">
+            <div class="container flex gap-8 justify-start">
+                <%= cond do %>
+
+                <% @senders_count == 0 -> %>
+                    <%= render("_empty_state_senders.html", assigns) %>
+
+                <% (@forms_count == 0 && @contacts_count == 0) || @contacts_count == 0 -> %>
+                    <%= render("_empty_state_forms_contacts.html", assigns) %>
+
+                <% @templates_count == 0 && @campaigns_count == 0 -> %>
+                    <%= render("_empty_state_templates_campaigns.html", assigns) %>
+
+                <% @campaigns_count == 0 -> %>
+                    <%= render("_empty_state_campaigns.html", assigns) %>
+
+                <% end %>
+            </div>
+        </div>
+    <% end %>
+
+    <div class="container grid sm:grid-cols-2 gap-4 mt-4 md:gap-8 md:mt-8">
+        <div class="card bg-gray-800">
+            <h2 class="font-light text-2xl flex items-center gap-2">
+                <span class="inline-flex h-6 w-6"><%= render_icon(:at_symbol) %></span>
+                <%= gettext("Campaigns") %>
+            </h2>
+            <br>
+            <a href="<%= Routes.campaign_path(@conn, :index, @current_project.id)%>" class="button">
+                <%= gettext("Manage Campaigns") %>
+            </a>
+        </div>
+        <div class="card bg-gray-800">
             <h2 class="font-light text-2xl flex items-center gap-2">
                 <span class="inline-flex h-6 w-6"><%= render_icon(:user_group) %></span>
                 <%= gettext("Contacts") %>
@@ -42,7 +56,17 @@
                 <%= gettext("Manage Contacts") %>
             </a>
         </div>
-        <div class="card bg-gray-900">
+        <div class="card bg-gray-800">
+            <h2 class="font-light text-2xl flex items-center gap-2 mb-2">
+                <span class="inline-flex h-6 w-6"><%= render_icon(:speakerphone) %></span>
+                <%= gettext("Senders") %>
+            </h2>
+            <br>
+            <a href="<%= Routes.sender_path(@conn, :index, @current_project.id)%>" class="button">
+                <%= gettext("Manage Senders") %>
+            </a>
+        </div>
+        <div class="card bg-gray-800">
             <h2 class="font-light text-2xl flex items-center gap-2">
                 <span class="inline-flex h-6 w-6"><%= render_icon(:template) %></span>
                 <%= gettext("Forms") %>
@@ -52,14 +76,14 @@
                 <%= gettext("Manage Forms") %>
             </a>
         </div>
-        <div class="card bg-gray-900">
+        <div class="card bg-gray-800">
             <h2 class="font-light text-2xl flex items-center gap-2">
-                <span class="inline-flex h-6 w-6"><%= render_icon(:at_symbol) %></span>
-                <%= gettext("Campaigns") %>
+                <span class="inline-flex h-6 w-6"><%= render_icon(:color_swatch) %></span>
+                <%= gettext("Templates") %>
             </h2>
             <br>
-            <a href="<%= Routes.campaign_path(@conn, :index, @current_project.id)%>" class="button">
-                <%= gettext("Manage Campaigns") %>
+            <a href="<%= Routes.template_path(@conn, :index, @current_project.id)%>" class="button">
+                <%= gettext("Manage Templates") %>
             </a>
         </div>
     </div>

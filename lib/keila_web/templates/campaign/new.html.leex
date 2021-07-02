@@ -1,35 +1,36 @@
-<main role="main" class="static-container flex-grow bg-gray-800 text-gray-50">
-    <div class="bg-gray-900 text-gray-50">
-        <div class="container py-8 sm:py-6 md:py-12 lg:py-16 flex">
-            <div class="flex-grow">
-                <h1 class="text-2xl sm:text-5xl mb-4">
-                    <%= gettext("New Campaign") %>
-                </h1>
-                <%= f = form_for(@changeset, Routes.campaign_path(@conn, :post_new, @current_project.id), class: "mt-8 max-w-md flex flex-col gap-4") %>
+<main role="main" class="static-container flex-grow bg-gray-950 text-gray-200">
+    <div class="container py-8 sm:py-12 flex">
+        <h1 class="text-2xl sm:text-5xl">
+            <%= gettext("New Campaign") %>
+        </h1>
+    </div>
+
+    <div class="bg-gray-800 py-8">
+        <div class="container">
+            <%= f = form_for(@changeset, Routes.campaign_path(@conn, :post_new, @current_project.id), class: "max-w-md flex flex-col gap-4") %>
+                <div class="flex flex-col">
+                    <%= label(f, :subject, gettext("Subject")) %>
+                    <%= with_validation(f, :subject) do %>
+                        <%= text_input(f, :subject, placeholder: gettext("My Campaign Subject"), class: "text-black", autofocus: true) %>
+                    <% end %>
+                </div>
+                <%= inputs_for(f, :settings, fn fs -> %>
                     <div class="flex flex-col">
-                        <%= label(f, :subject, gettext("Subject")) %>
-                        <%= with_validation(f, :subject) do %>
-                            <%= text_input(f, :subject, placeholder: gettext("My Campaign Subject"), class: "text-black") %>
+                        <%= label(fs, :type, "Campaign type") %>
+                        <%= with_validation(fs, :type) do %>
+                            <%= select(fs, :type, [
+                                {gettext("Markdown"), "markdown"},
+                                {gettext("Text only"), "text"}
+                            ]) %>
                         <% end %>
                     </div>
-                    <%= inputs_for(f, :settings, fn fs -> %>
-                        <div class="flex flex-col">
-                            <%= label(fs, :type, "Campaign type") %>
-                            <%= with_validation(fs, :type) do %>
-                                <%= select(fs, :type, [
-                                    {gettext("Markdown"), "markdown"},
-                                    {gettext("Text only"), "text"}
-                                ]) %>
-                            <% end %>
-                        </div>
-                    <% end) %>
-                    <div class="flex">
-                        <button class="button button--cta button--large">
-                            <%= gettext("Create campaign") %>
-                        </button>
-                    </div>
-                </form>
-            </div>
+                <% end) %>
+                <div class="flex">
+                    <button class="button button--cta button--large">
+                        <%= gettext("Create campaign") %>
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </main>

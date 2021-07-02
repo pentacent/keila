@@ -20,11 +20,11 @@ html {
 }
 
 .card {
-    @apply max-w-5xl p-4 md:p-8;
+    @apply p-4 sm:max-w-5xl sm:p-8;
 }
 
 .button {
-    @apply rounded inline-flex flex-nowrap whitespace-nowrap px-2 py-1 gap-2 outline-none items-center focus:outline-none;
+    @apply rounded inline-flex flex-nowrap whitespace-nowrap px-2 py-1 gap-2 outline-none items-center focus:outline-none cursor-pointer;
 
     svg {
         @apply w-6;
@@ -97,6 +97,18 @@ input[disabled] {
     .tab-content {
         @apply p-4 ring-1 ring-inset ring-gray-600 flex flex-col gap-4;
 
+    }
+}
+
+.with-ol {
+    ol {
+        @apply list-decimal pl-5;
+    }
+}
+
+.with-ul {
+    ul {
+        @apply list-disc pl-5;
     }
 }
 

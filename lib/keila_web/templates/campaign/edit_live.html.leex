@@ -1,11 +1,9 @@
-<div class="bg-gray-900 text-gray-50" x-data="{activeDialog: null}">
-    <div class="container py-4 lg:py-8 flex flex-wrap">
-        <div class="flex-grow">
-            <h1 class="text-2xl sm:text-5xl mb-4">
-                <%= gettext("Edit Campaign") %>
-            </h1>
-        </div>
-        <div class="flex-grow flex flex-wrap justify-end gap-4 mb-2 items-center">
+<div x-data="{activeDialog: null}">
+   <div class="container py-8 sm:py-12 flex">
+        <h1 class="flex-grow text-2xl sm:text-5xl">
+            <%= gettext("Edit Campaign") %>
+        </h1>
+        <div class="flex flex-wrap justify-end gap-4 items-center">
             <a class="button button--text button--large" href="<%= Routes.campaign_path(@socket, :index, @current_project.id) %>">
                 <%= gettext("Cancel") %>
             </a>
@@ -35,107 +33,88 @@
         </div>
     <% end %>
 
-    <div class="container pb-8">
-        <%= form_for(@changeset, Routes.campaign_path(@socket, :post_edit, @current_project.id, @campaign.id), [id: "campaign", class: "flex flex-col gap-4", phx_change: "form_updated"], fn f -> %>
-            <div class="flex flex-col">
-                <%= label(f, :sender_id, "Sender") %>
+    <div class="bg-gray-800 py-8">
+        <div class="container pb-8">
+            <%= form_for(@changeset, Routes.campaign_path(@socket, :post_edit, @current_project.id, @campaign.id), [id: "campaign", class: "flex flex-col gap-4", phx_change: "form_updated"], fn f -> %>
+                <div class="grid gap-4 sm:grid-cols-2">
 
-                <%= if not Enum.empty?(@senders) do %>
-                    <%= with_validation(f, :sender_id) do %>
-                        <%= select(f, :sender_id, Enum.map(@senders, &{"#{&1.name} (#{&1.from_name} <#{&1.from_email}>)", &1.id}), class: "text-black") %>
-                    <% end %>
-                <% else %>
-                    <p>
-                        <%= gettext("Before you can send your campaign, you need to create a sender.") %><br>
-                        <a href="<%= Routes.sender_path(@socket, :new, @current_project.id) %>" class="button button--cta">
-                            <%= gettext("Create your first sender") %>
-                        </a>
-                    </p>
-                <% end %>
-            </div>
+                    <div class="flex flex-col">
+                        <%= label(f, :sender_id, "Sender") %>
 
-            <div class="flex flex-col">
-                <%= label(f, :subject, "Subject") %>
-                <%= with_validation(f, :subject) do %>
-                    <%= text_input(f, :subject, placeholder: gettext("Your Campaign Subject"), class: "text-black") %>
-                <% end %>
-            </div>
-
-            <div class="flex flex-col mt-4">
-                <%= label(f, :text_body, "Content") %>
-                <%= inputs_for(f, :settings, fn fs -> %>
-                    <%= select(fs, :type, [
-                        {gettext("Markdown"), "markdown"},
-                        {gettext("Text only"), "text"}
-                    ]) %>
-                    <%= if Ecto.Changeset.get_field(@changeset, :settings).type == :markdown do %>
-                        <%= checkbox(fs, :enable_wysiwyg, class: "hidden") %>
-                    <% end %>
-                <% end) %>
-
-                <%= if Ecto.Changeset.get_field(@changeset, :settings).type == :markdown do %>
-                    <%= label(f, :template_id, "Template", class: "mt-4") %>
-
-                    <%= if not Enum.empty?(@senders) do %>
-                        <%= with_validation(f, :template_id) do %>
-                            <%= select(f, :template_id, [{gettext("Default"), nil} | Enum.map(@templates, &{&1.name, &1.id})], class: "text-black") %>
+                        <%= if not Enum.empty?(@senders) do %>
+                            <%= with_validation(f, :sender_id) do %>
+                                <%= select(f, :sender_id, Enum.map(@senders, &{"#{&1.name} (#{&1.from_name} <#{&1.from_email}>)", &1.id}), class: "text-black") %>
+                            <% end %>
+                        <% else %>
+                            <p>
+                                <%= gettext("Before you can send your campaign, you need to create a sender.") %><br>
+                                <a href="<%= Routes.sender_path(@socket, :new, @current_project.id) %>" class="button button--cta">
+                                    <%= gettext("Create your first sender") %>
+                                </a>
+                            </p>
                         <% end %>
-                    <% else %>
-                        <p>
-                            <%= gettext("You can customize the design of your campaign with templates.") %><br>
-                            <a href="<%= Routes.template_path(@socket, :new, @current_project.id) %>" class="button button--cta">
-                                <%= gettext("Create your first template") %>
-                            </a>
-                        </p>
-                    <% end %>
-                <% end %>
+                    </div>
 
-                <div x-data="{previewMode: false}">
+                    <div class="flex flex-col">
+                        <%= label(f, :subject, "Subject") %>
+                        <%= with_validation(f, :subject) do %>
+                            <%= text_input(f, :subject, placeholder: gettext("Your Campaign Subject"), class: "text-black") %>
+                        <% end %>
+                    </div>
 
-                    <%= if Ecto.Changeset.get_field(@changeset, :settings).type == :markdown && Ecto.Changeset.get_field(@changeset, :settings).enable_wysiwyg do %>
-                        <%= textarea(f, :text_body, class: "hidden") %>
-                        <div id="wysiwyg-container" phx-hook="MarkdownEditor" class="flex-grow bg-white mt-4">
-                            <%= render("_wysiwyg_editor.html", assigns) %>
-                        </div>
-                    <% else %>
-                        <div class="relative shadow z-10 flex overflow-x-auto mt-4">
-                            <div class="flex-grow"></div>
-                            <button
-                                title="<%= gettext("Preview") %>"
-                                class="flex w-10 h-10 p-2 items-center justify-center bg-gray-800 hover:bg-gray-600 text-white"
-                                @click.prevent="previewMode = !previewMode"
-                            >
-                                <%= render_icon(:eye) %>
-                            </button>
+                    <div class="flex flex-col">
+                        <%= label(f, :text_body, "Campaign Type") %>
+                        <%= inputs_for(f, :settings, fn fs -> %>
+                            <%= select(fs, :type, [
+                                {gettext("Markdown"), "markdown"},
+                                {gettext("Text only"), "text"}
+                            ]) %>
                             <%= if Ecto.Changeset.get_field(@changeset, :settings).type == :markdown do %>
-                                <button
-                                    title="<%= gettext("Enable visual editor") %>"
-                                    class="flex w-10 h-10 p-2 items-center justify-center bg-gray-800 hover:bg-gray-600 text-white"
-                                    @click.prevent="document.querySelector('#campaign_settings_enable_wysiwyg').click()"
-                                >
-                                    <%= render_icon(:code) %>
-                                </button>
+                                <%= checkbox(fs, :enable_wysiwyg, class: "hidden") %>
+                            <% end %>
+                        <% end) %>
+                    </div>
+
+                    <%= if Ecto.Changeset.get_field(@changeset, :settings).type == :markdown do %>
+                        <div class="flex flex-col">
+                            <%= label(f, :template_id, "Template") %>
+
+                            <%= if not Enum.empty?(@senders) do %>
+                                <%= with_validation(f, :template_id) do %>
+                                    <%= select(f, :template_id, [{gettext("Default"), nil} | Enum.map(@templates, &{&1.name, &1.id})], class: "text-black") %>
+                                <% end %>
+                            <% else %>
+                                <p>
+                                    <%= gettext("You can customize the design of your campaign with templates.") %><br>
+                                    <a href="<%= Routes.template_path(@socket, :new, @current_project.id) %>" class="button button--cta">
+                                        <%= gettext("Create your first template") %>
+                                    </a>
+                                </p>
                             <% end %>
                         </div>
-                        <div class="flex gap-4">
-                            <%= textarea(f, :text_body, rows: 20, class: "bg-gray-800 text-gray-50 border-none appearance-none resize-y flex-grow w-1/2") %>
-                            <div id="preview-container" class="w-1/2 flex-grow flex flex-col" phx-update="ignore">
-                                <iframe id="html-preview" src="javascript:false" class="bg-gray-100 flex-grow" :class="previewMode ? 'fixed w-full h-full inset-0 pb-10 z-40' : ''"></iframe>
-                                <button x-show="previewMode" @click.prevent="previewMode = !previewMode" class="fixed h-10 bg-green-600 text-white w-full bottom-0 left-0 z-50">
-                                    <%= gettext("Close preview") %>
-                                </button>
-                            </div>
-                            <div id="html-preview-data" phx-hook="HtmlPreview" class="hidden" data-iframe="html-preview"><%= @preview %></div>
-                        </div>
                     <% end %>
+
                 </div>
 
-            </div>
+                <div class="flex flex-col">
+                    <div x-data="{previewMode: false}">
+                        <%= if Ecto.Changeset.get_field(@changeset, :settings).type == :markdown && Ecto.Changeset.get_field(@changeset, :settings).enable_wysiwyg do %>
+                            <%= textarea(f, :text_body, class: "hidden") %>
+                            <div id="wysiwyg-container" phx-hook="MarkdownEditor" class="flex-grow bg-white mt-4">
+                                <%= render("_wysiwyg_editor.html", assigns) %>
+                            </div>
+                        <% else %>
+                            <%= render("_markdown_editor.html", assigns |> Map.put(:f, f)) %>
+                        <% end %>
+                    </div>
+                </div>
 
-            <%= render("_send_dialogs.html", assigns) %>
+                <%= render("_send_dialogs.html", assigns) %>
 
-        <% end) %>
+            <% end) %>
+        </div>
     </div>
+
 </div>
 
 <%= render("_wysiwyg_dialogs.html") %>

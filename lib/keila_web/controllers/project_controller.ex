@@ -1,6 +1,6 @@
 defmodule KeilaWeb.ProjectController do
   use KeilaWeb, :controller
-  alias Keila.Projects
+  alias Keila.{Projects, Contacts, Mailings, Templates}
   import Ecto.Changeset
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
@@ -18,7 +18,17 @@ defmodule KeilaWeb.ProjectController do
 
     conn
     |> put_meta(:title, project.name)
+    |> put_project_counts(project)
     |> render("show.html")
+  end
+
+  defp put_project_counts(conn, project) do
+    conn
+    |> assign(:senders_count, Mailings.get_project_senders(project.id) |> Enum.count())
+    |> assign(:contacts_count, Contacts.get_project_contacts_count(project.id))
+    |> assign(:forms_count, Contacts.get_project_forms(project.id) |> Enum.count())
+    |> assign(:templates_count, Templates.get_project_templates(project.id) |> Enum.count())
+    |> assign(:campaigns_count, Mailings.get_project_campaigns(project.id) |> Enum.count())
   end
 
   @spec new(Plug.Conn.t(), map()) :: Plug.Conn.t()

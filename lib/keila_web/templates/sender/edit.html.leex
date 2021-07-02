@@ -1,67 +1,68 @@
-<main role="main" class="static-container flex-grow bg-gray-800 text-gray-50">
-    <div class="bg-gray-900 text-gray-50">
-        <div class="container py-8 sm:py-6 md:py-12 lg:py-16 flex">
-            <div class="flex-grow">
-                <h1 class="text-2xl sm:text-5xl md:text-7xl mb-4">
-                    <%= if assigns[:sender] do %>
-                        <%= @sender.name %>
-                    <% else %>
-                        <%= gettext("New Sender") %>
+<main role="main" class="static-container flex-grow bg-gray-950 text-gray-200">
+    <div class="container py-8 sm:py-12 flex">
+        <h1 class="text-2xl sm:text-5xl">
+            <%= if assigns[:sender] do %>
+                <%= @sender.name %>
+            <% else %>
+                <%= gettext("New Sender") %>
+            <% end %>
+        </h1>
+    </div>
+
+    <div class="bg-gray-800 flex py-8">
+        <div class="container">
+            <%= f = form_for(@changeset, form_path(@current_project, @changeset), class: "max-w-lg flex flex-col gap-4") %>
+                <div class="flex flex-col">
+                    <%= label(f, :name, "Sender name") %>
+                    <%= with_validation(f, :name) do %>
+                        <%= text_input(f, :name, placeholder: gettext("My Sender"), class: "text-black") %>
                     <% end %>
-                </h1>
-                <%= f = form_for(@changeset, form_path(@current_project, @changeset), class: "mt-8 max-w-md flex flex-col gap-4") %>
-                    <div class="flex flex-col">
-                        <%= label(f, :name, "Sender name") %>
-                        <%= with_validation(f, :name) do %>
-                            <%= text_input(f, :name, placeholder: gettext("My Sender"), class: "text-black") %>
-                        <% end %>
-                    </div>
-                    <div class="flex flex-col">
-                        <%= label(f, :from_email, "From address") %>
-                        <%= with_validation(f, :from_email) do %>
-                            <%= text_input(f, :from_email, placeholder: gettext("newsletter@example.org"), class: "text-black") %>
-                        <% end %>
-                    </div>
-                    <div class="flex flex-col">
-                        <%= label(f, :from_name, "From name") %>
-                        <%= with_validation(f, :from_name) do %>
-                            <%= text_input(f, :from_name, placeholder: gettext("You, Inc"), class: "text-black") %>
-                        <% end %>
-                    </div>
-                    <div class="flex flex-col">
-                        <%= label(f, :reply_to_email, "Reply-to address") %>
-                        <%= with_validation(f, :reply_to_email) do %>
-                            <%= text_input(f, :reply_to_email, placeholder: gettext("hello@example.org"), class: "text-black") %>
-                        <% end %>
-                    </div>
-                    <div class="flex flex-col">
-                        <%= label(f, :reply_to_name, "Reply-to name") %>
-                        <%= with_validation(f, :reply_to_name) do %>
-                            <%= text_input(f, :reply_to_name, placeholder: gettext("You, Inc"), class: "text-black") %>
-                        <% end %>
-                    </div>
+                </div>
+                <div class="flex flex-col">
+                    <%= label(f, :from_email, "From address") %>
+                    <%= with_validation(f, :from_email) do %>
+                        <%= text_input(f, :from_email, placeholder: gettext("newsletter@example.org"), class: "text-black") %>
+                    <% end %>
+                </div>
+                <div class="flex flex-col">
+                    <%= label(f, :from_name, "From name") %>
+                    <%= with_validation(f, :from_name) do %>
+                        <%= text_input(f, :from_name, placeholder: gettext("You, Inc"), class: "text-black") %>
+                    <% end %>
+                </div>
+                <div class="flex flex-col">
+                    <%= label(f, :reply_to_email, "Reply-to address") %>
+                    <%= with_validation(f, :reply_to_email) do %>
+                        <%= text_input(f, :reply_to_email, placeholder: gettext("hello@example.org"), class: "text-black") %>
+                    <% end %>
+                </div>
+                <div class="flex flex-col">
+                    <%= label(f, :reply_to_name, "Reply-to name") %>
+                    <%= with_validation(f, :reply_to_name) do %>
+                        <%= text_input(f, :reply_to_name, placeholder: gettext("You, Inc"), class: "text-black") %>
+                    <% end %>
+                </div>
 
-                    <%= render("_config.html", form: f, sender_adapters: sender_adapters(), shared_senders: @shared_senders) %>
+                <%= render("_config.html", form: f, sender_adapters: sender_adapters(), shared_senders: @shared_senders) %>
 
-                    <div class="flex gap-4 mt-4">
-                        <a href="<%= Routes.sender_path(@conn, :index, @current_project.id) %>" class="button button--large button--text">
-                            <%= gettext("Cancel") %>
+                <div class="flex gap-4 mt-4">
+                    <a href="<%= Routes.sender_path(@conn, :index, @current_project.id) %>" class="button button--large button--text">
+                        <%= gettext("Cancel") %>
+                    </a>
+                    <%= if assigns[:sender] do %>
+                        <a href="<%= Routes.sender_path(@conn, :delete_confirmation, @current_project.id, @sender.id) %>" class="button button--large button--text">
+                            <%= gettext("Delete") %>
                         </a>
-                        <%= if assigns[:sender] do %>
-                            <a href="<%= Routes.sender_path(@conn, :delete_confirmation, @current_project.id, @sender.id) %>" class="button button--large button--text">
-                                <%= gettext("Delete") %>
-                            </a>
-                            <button class="button button--cta button--large">
-                                <%= gettext("Save") %>
-                            </button>
-                        <% else %>
-                            <button class="button button--cta button--large">
-                                <%= gettext("Create Sender") %>
-                            </button>
-                        <% end %>
-                    </div>
-                </form>
-            </div>
+                        <button class="button button--cta button--large">
+                            <%= gettext("Save") %>
+                        </button>
+                    <% else %>
+                        <button class="button button--cta button--large">
+                            <%= gettext("Create Sender") %>
+                        </button>
+                    <% end %>
+                </div>
+            </form>
         </div>
     </div>
 </main>
