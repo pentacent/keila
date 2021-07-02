@@ -1,3 +1,8 @@
+a {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
 h1 {
     margin: 0 0 20px 0;
     color: #4b5563;
@@ -9,10 +14,20 @@ h1 {
 
 h2 {
     margin: 0 0 20px 0;
+    color: #4b5563;
+    font-family: inherit;
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: none;
 }
 
 h3 {
     margin: 0 0 20px 0;
+    color: #4b5563;
+    font-family: inherit;
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: none;
 }
 
 ul {
@@ -29,18 +44,27 @@ h4 {
     margin: 20px 0;
 }
 
-a {
-    color: #1d4ed8;
-    text-decoration: underline;
-}
-
-h4 > a {
+h4 > a, div.keila-button {
     color: #ffffff;
     background-color: #1d4ed8;
-    padding: 10px;
     display: block;
     cursor: pointer;
     text-align: center;
+    border-radius: 5px;
+    line-height: 40px;
+}
+
+h4 > a, div.keila-button a {
+    display: block;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 0 10px;
+}
+
+div.keila-button {
+    mso-line-height-rule: exactly;
+    mso-text-raise: 7px;
+    mso-padding-alt: 0 10px;
 }
 
 body, #center-wrapper, #table-wrapper {
@@ -55,6 +79,7 @@ body, #center-wrapper, #table-wrapper {
 }
 
 #content img {
+    display: inline-block;
     width: 100%;
     max-width: 600px;
 }

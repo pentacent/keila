@@ -150,7 +150,8 @@ defmodule Keila.Mailings.Builder do
       html_body =
         html_body
         |> Html.parse_document!()
-        |> Html.apply_inline_styles(styles)
+        |> Html.apply_email_markup()
+        |> Html.apply_inline_styles(styles, ignore_inherit: true)
         |> Html.to_document()
 
       email
