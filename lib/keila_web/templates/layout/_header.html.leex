@@ -51,10 +51,11 @@
     </header>
 <% else %>
     <header class="bg-gray-900">
-        <div class="container text-center my-4 text-green-500">
-            <a href="/">
-            h-10 w-auto -mt-1 -mr-1 inline-block
-                <%= render_icon(:logo) %>
+        <div class="container my-4 text-green-500 flex justify-center">
+            <a href="/" class="inline-flex items-start">
+                <span class="flex h-11 w-11 -mr-1">
+                    <%= render_icon(:logo) %>
+                </span>
                 <span class="text-3xl font-light">Keila</span>
             </a>
         </div>

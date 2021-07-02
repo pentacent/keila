@@ -1,15 +1,21 @@
 # Changelog
 
+## Version 0.5.2
+
+### Fixed
+- Fixed broken styling on non-authenticated routes
+
+
 ## Version 0.5.1
 
-## Added
+### Added
 - Improved onboarding experience with empty states for all views
 
-## Changed
+### Changed
 - Improved dark app design
 - Stricter code-checks in CI
 
-## Fixed
+### Fixed
 - Default template is now displayed correctly in campaign editor
 - Paddle webhooks now have improved idempotency
 
