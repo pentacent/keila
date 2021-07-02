@@ -162,8 +162,8 @@ defmodule Keila.Templates.Html do
     Floki.traverse_and_update(html, &do_apply_email_markup/1)
   end
 
-  defp do_apply_email_markup({"h4", _, [{"a", _, a_children}]}) do
-    {"div", [{"class", "keila-button"}], [{"a", [], a_children}]}
+  defp do_apply_email_markup({"h4", _, [{"a", a_attrs, a_children}]}) do
+    {"div", [{"class", "keila-button"}], [{"a", a_attrs, a_children}]}
   end
 
   defp do_apply_email_markup(other), do: other
