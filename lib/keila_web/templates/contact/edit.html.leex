@@ -1,54 +1,55 @@
-<main role="main" class="static-container flex-grow bg-gray-800 text-gray-50">
-    <div class="bg-gray-900 text-gray-50">
-        <div class="container py-8 sm:py-6 md:py-12 lg:py-16 flex">
-            <div class="flex-grow">
-                <h1 class="text-2xl sm:text-5xl mb-4">
-                    <%= if assigns[:contact] do %>
-                        <%= @contact.email %>
-                    <% else %>
-                        <%= gettext("New Contact") %>
-                    <% end %>
-                </h1>
-                <% path = case assigns[:contact] do
-                    nil -> Routes.contact_path(@conn, :post_new, @current_project.id)
-                    contact -> Routes.contact_path(@conn, :post_edit, @current_project.id, contact.id)
-                end %>
-                <%= f = form_for(@changeset, path, class: "mt-8 max-w-md flex flex-col gap-4") %>
-                    <div class="flex flex-col">
-                        <%= label(f, :email, "Email") %>
-                        <%= with_validation(f, :email) do %>
-                            <%= text_input(f, :email, placeholder: gettext("subscriber@example.com"), class: "text-black") %>
-                        <% end %>
-                    </div>
-                    <div class="flex flex-col">
-                        <%= label(f, :first_name, "Contact name") %>
-                        <%= with_validation(f, :first_name) do %>
-                            <%= text_input(f, :first_name, placeholder: gettext("Jane"), class: "text-black") %>
-                        <% end %>
-                    </div>
-                    <div class="flex flex-col">
-                        <%= label(f, :last_name, "Last name") %>
-                        <%= with_validation(f, :last_name) do %>
-                            <%= text_input(f, :last_name, placeholder: gettext("Doe"), class: "text-black") %>
-                        <% end %>
-                    </div>
+<main role="main" class="static-container flex-grow bg-gray-950 text-gray-200">
+    <div class="container py-8 sm:py-12 flex">
+        <h1 class="text-2xl sm:text-5xl">
+            <%= if assigns[:contact] do %>
+                <%= @contact.email %>
+            <% else %>
+                <%= gettext("New Contact") %>
+            <% end %>
+        </h1>
+    </div>
 
-                    <div class="flex gap-4 mt-4">
-                        <a href="<%= Routes.contact_path(@conn, :index, @current_project.id) %>" class="button button--large button--text">
-                            <%= gettext("Cancel") %>
-                        </a>
-                        <%= if assigns[:contact] do %>
-                            <button class="button button--cta button--large">
-                                <%= gettext("Save") %>
-                            </button>
-                        <% else %>
-                            <button class="button button--cta button--large">
-                                <%= gettext("Create contact") %>
-                            </button>
-                        <% end %>
-                    </div>
-                </form>
-            </div>
+    <div class="bg-gray-800 py-8 flex">
+        <div class="container">
+            <% path = case assigns[:contact] do
+                nil -> Routes.contact_path(@conn, :post_new, @current_project.id)
+                contact -> Routes.contact_path(@conn, :post_edit, @current_project.id, contact.id)
+            end %>
+            <%= f = form_for(@changeset, path, class: "max-w-md flex flex-col gap-4") %>
+                <div class="flex flex-col">
+                    <%= label(f, :email, "Email") %>
+                    <%= with_validation(f, :email) do %>
+                        <%= text_input(f, :email, placeholder: gettext("subscriber@example.com"), class: "text-black", autofocus: true) %>
+                    <% end %>
+                </div>
+                <div class="flex flex-col">
+                    <%= label(f, :first_name, "Contact name") %>
+                    <%= with_validation(f, :first_name) do %>
+                        <%= text_input(f, :first_name, placeholder: gettext("Jane"), class: "text-black") %>
+                    <% end %>
+                </div>
+                <div class="flex flex-col">
+                    <%= label(f, :last_name, "Last name") %>
+                    <%= with_validation(f, :last_name) do %>
+                        <%= text_input(f, :last_name, placeholder: gettext("Doe"), class: "text-black") %>
+                    <% end %>
+                </div>
+
+                <div class="flex gap-4">
+                    <a href="<%= Routes.contact_path(@conn, :index, @current_project.id) %>" class="button button--large button--text">
+                        <%= gettext("Cancel") %>
+                    </a>
+                    <%= if assigns[:contact] do %>
+                        <button class="button button--cta button--large">
+                            <%= gettext("Save") %>
+                        </button>
+                    <% else %>
+                        <button class="button button--cta button--large">
+                            <%= gettext("Create contact") %>
+                        </button>
+                    <% end %>
+                </div>
+            </form>
         </div>
     </div>
 </main>

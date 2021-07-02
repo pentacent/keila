@@ -1,45 +1,31 @@
-<main role="main" class="static-container flex-grow bg-gray-800 text-gray-50">
-    <div class="bg-gray-900 text-gray-50">
-        <div class="container py-8 sm:py-6 md:py-12 lg:py-16 flex">
-            <div class="flex-grow">
-                <h1 class="text-2xl sm:text-5xl mb-4">
-                    <%= gettext("Contacts") %>
-                </h1>
+<main role="main" class="static-container flex-grow bg-gray-950 text-gray-200">
 
-                <%= if @contacts.page_count == 0 do %>
-                    <p class="mt-4">
-                        <%= gettext("Ready to get started? Import your existing contacts now.") %>
-                    </p>
-                    <br>
-                    <p class="flex gap-4">
-                        <a href="<%= Routes.contact_path(@conn, :import, @current_project.id) %>" class="button button--cta button--large">
-                            <%= render_icon(:user_add) %>
-                            <%= gettext("Import contacts") %>
-                        </a>
+    <div class="container py-8 sm:py-12 flex">
+        <div class="flex-grow flex flex-col gap-2">
+            <h1 class="text-2xl sm:text-5xl">
+                <%= gettext("Contacts") %>
+            </h1>
+            <a href="<%= Routes.project_path(@conn, :show, @current_project.id) %>" class="text-xs sm:text-sm hover:underline">
+                <%= gettext("Back to %{project_name}", %{project_name: @current_project.name}) %>
+            </a>
+        </div>
 
-                        <a href="<%= Routes.contact_path(@conn, :new, @current_project.id) %>" class="button button--large">
-                            <%= gettext("Create a contact") %>
-                        </a>
-                    </p>
-                <% else %>
-                    <p class="mt-4">
-                        <%= gettext("Here you can manage your contacts.") %>
-                    </p>
-                <% end %>
-            </div>
-            <%= if @contacts.page_count > 0 do %>
-                <p class="mt-4 flex gap-4 items-center">
-                    <a href="<%= Routes.contact_path(@conn, :import, @current_project.id) %>" class="button">
-                        <%= render_icon(:user_add) %>
-                        <%= gettext("Import contacts") %>
-                    </a>
-                    <a href="<%= Routes.contact_path(@conn, :new , @current_project.id) %>" class="button">
-                        <%= gettext("Create a contact") %>
-                    </a>
-                </p>
-            <% end %>
+        <div class="flex gap-4 items-start">
+            <a href="<%= Routes.contact_path(@conn, :import, @current_project.id) %>" class="button">
+                <%= render_icon(:user_add) %>
+                <%= gettext("Import contacts") %>
+            </a>
+            <a href="<%= Routes.contact_path(@conn, :new , @current_project.id) %>" class="button">
+                <%= render_icon(:document_add) %>
+                <%= gettext("Create a contact") %>
+            </a>
         </div>
     </div>
+
+    <%= if @contacts.page_count == 0 do %>
+        <%= render("_empty_state.html", assigns) %>
+    <% end %>
+
     <%= if @contacts.page_count > 0 do %>
         <div class="container py-4">
             <%= f = form_for(@conn, Routes.contact_path(@conn, :delete, @current_project.id), as: :contact, method: :delete) %>

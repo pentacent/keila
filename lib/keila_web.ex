@@ -52,7 +52,7 @@ defmodule KeilaWeb do
     quote do
       use Phoenix.LiveView,
         layout: {KeilaWeb.LayoutView, "live.html"},
-        container: {:main, class: "live-container flex-grow bg-gray-800 text-gray-50"}
+        container: {:main, class: "live-container flex-grow bg-gray-950 text-gray-200"}
 
       unquote(view_helpers())
     end

@@ -1,54 +1,54 @@
-<main role="main" class="static-container flex-grow bg-gray-800 text-gray-50 pb-8">
-    <div class="bg-gray-900 text-gray-50">
-        <div class="container py-8 sm:py-6 md:py-12 lg:py-16 flex">
-            <div class="flex-grow">
-                <h1 class="text-2xl sm:text-5xl md:text-7xl mb-4">
-                    <%= gettext("Delete Contacts?") %>
-                </h1>
-                <p class="text-lg text-gray-200">
-                    <%= gettext("Do you really want to delete the following contacts?") %>
-                </p>
-            </div>
-        </div>
+<main role="main" class="static-container flex-grow bg-gray-950 text-gray-200">
+    <div class="container py-8 sm:py-12 flex">
+        <h1 class="text-2xl sm:text-5xl">
+            <%= gettext("Delete Contacts?") %>
+        </h1>
     </div>
-    <div class="container">
-        <%= f = form_for(@conn, Routes.contact_path(@conn, :delete, @current_project.id), as: :contacts, method: :delete) %>
-            <table class="my-8 w-full">
-                <tr class="text-left">
-                    <th class="p-2 pl-0">Email</th>
-                    <th class="p-2">First name</th>
-                    <th class="p-2">Last name</th>
-                    <th class="p-2">Added</th>
-                </tr>
-                <%= for contact <- @contacts do %>
-                    <tr>
-                        <td class="p-2 pl-0">
-                            <%= hidden_input(f, :id, value: contact.id, name: "contact[id][]") %>
-                            <%= contact.email %>
-                        </td>
-                        <td class="p-2">
-                            <%= contact.first_name %>
-                        </td>
-                        <td class="p-2">
-                            <%= contact.last_name %>
-                        </td>
-                        <td class="p-2">
-                            <%= Calendar.strftime(contact.inserted_at, "%c") %>
-                        </td>
-                    </tr>
-                <% end %>
-            </table>
-            <p class="text-lg text-gray-200 font-bold">
-                <%= gettext("Deleting a contact cannot be undone.") %>
+
+    <div class="bg-gray-800 flex py-8">
+        <div class="container">
+            <p class="text-lg text-gray-200">
+                <%= gettext("Do you really want to delete the following contacts?") %>
             </p>
-            <div class="flex gap-4 mt-4">
-                <a class="button button--text button--large" href="<%= Routes.contact_path(@conn, :index, @current_project.id) %>">
-                    <%= gettext("Cancel") %>
-                </a>
-                <button type="submit" class="button button--warn button--large">
-                    <%= gettext("Delete") %>
-                </button>
-            </div>
-        </form>
+
+            <%= f = form_for(@conn, Routes.contact_path(@conn, :delete, @current_project.id), as: :contacts, method: :delete) %>
+                <table class="my-8 w-full">
+                    <tr class="text-left">
+                        <th class="p-2 pl-0">Email</th>
+                        <th class="p-2">First name</th>
+                        <th class="p-2">Last name</th>
+                        <th class="p-2">Added</th>
+                    </tr>
+                    <%= for contact <- @contacts do %>
+                        <tr>
+                            <td class="p-2 pl-0">
+                                <%= hidden_input(f, :id, value: contact.id, name: "contact[id][]") %>
+                                <%= contact.email %>
+                            </td>
+                            <td class="p-2">
+                                <%= contact.first_name %>
+                            </td>
+                            <td class="p-2">
+                                <%= contact.last_name %>
+                            </td>
+                            <td class="p-2">
+                                <%= Calendar.strftime(contact.inserted_at, "%c") %>
+                            </td>
+                        </tr>
+                    <% end %>
+                </table>
+                <p class="text-lg text-gray-200 font-bold">
+                    <%= gettext("Deleting a contact cannot be undone.") %>
+                </p>
+                <div class="flex gap-4 mt-4">
+                    <a class="button button--text button--large" href="<%= Routes.contact_path(@conn, :index, @current_project.id) %>">
+                        <%= gettext("Cancel") %>
+                    </a>
+                    <button type="submit" class="button button--warn button--large">
+                        <%= gettext("Delete") %>
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </main>

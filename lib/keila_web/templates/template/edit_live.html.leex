@@ -1,57 +1,54 @@
-<div class="bg-gray-900 text-gray-50">
-    <div class="container py-4 lg:py-8 flex">
-        <div class="flex-grow">
-            <h1 class="text-2xl sm:text-5xl mb-4">
-                <%= gettext("Edit Template") %>
-            </h1>
-        </div>
-        <div class="flex justify-end gap-4 mb-2 items-center">
-            <a class="button button--text button--large" href="<%= Routes.template_path(@socket, :index, @current_project.id) %>">
-                <%= gettext("Cancel") %>
-            </a>
-            <%= delete_form_tag(@template, Routes.template_path(@socket, :delete, @current_project.id), as: :template) %>
-            <%= delete_button_tag(@template, [class: "button button--text"], gettext("Delete")) %>
-            <button class="button button--cta button--large" action="submit" form="template">
-                <%= gettext("Save") %>
-            </button>
-        </div>
+<div class="container py-8 sm:py-12 flex">
+    <h1 class="flex-grow text-2xl sm:text-5xl">
+        <%= gettext("Edit Template") %>
+    </h1>
+    <div class="flex justify-end gap-4 items-center">
+        <a class="button button--text button--large" href="<%= Routes.template_path(@socket, :index, @current_project.id) %>">
+            <%= gettext("Cancel") %>
+        </a>
+        <%= delete_form_tag(@template, Routes.template_path(@socket, :delete, @current_project.id), as: :template) %>
+        <%= delete_button_tag(@template, [class: "button button--text"], gettext("Delete")) %>
+        <button class="button button--cta button--large" action="submit" form="template">
+            <%= gettext("Save") %>
+        </button>
     </div>
-    <div class="container py-2 md:py-4 lg:py-8 flex gap-4 tabs" x-data="{ tab: 'settings' }">
-        <%= form_for(@changeset, Routes.template_path(@socket, :post_edit, @current_project.id, @template.id), [phx_change: "form_updated", phx_debounce: "2000", phx_update: "ignore", class: "bg-gray-900 w-1/3", id: "template"], fn f -> %>
+</div>
 
-            <div class="flex gap-1">
-                <a href="#" class="tab-label" :class="{ 'active': tab === 'settings' }" @click.prevent="tab = 'settings'">
-                    <%= gettext("Settings") %>
-                </a>
-                <a href="#" class="tab-label" :class="{ 'active': tab === 'style' }" @click.prevent="tab = 'style'">
-                    <%= gettext("Style") %>
-                </a>
-            </div>
+<div class="container py-4 sm:py-8 flex gap-4 tabs" x-data="{ tab: 'settings' }">
+    <%= form_for(@changeset, Routes.template_path(@socket, :post_edit, @current_project.id, @template.id), [phx_change: "form_updated", phx_debounce: "2000", phx_update: "ignore", class: "w-1/3", id: "template"], fn f -> %>
 
-            <div class="flex flex-col gap-2 tab-content" x-show="tab === 'settings'">
-                <%= with_validation(f, :name) do %>
-                    <%= label(f, :name, gettext("Name")) %>
-                    <%= text_input(f, :name, class: "text-black") %>
-                <% end %>
-
-                <%= label(f, :assigns, gettext("Signature"), name: "template[assigns][signature]") %>
-                <%= textarea(f, :assigns, value: get_field(@changeset, :assigns)["signature"], name: "template[assigns][signature]", id: "template[assigns][signature]", rows: 10, class: "text-black text-sm") %>
-            </div>
-
-            <div class="flex flex-col gap-2 tab-content" x-show="tab === 'style'">
-                <h2 class="text-xl">
-                    <%= gettext("Style") %>
-                </h2>
-                <%= render_css_form(f, :styles, @style_template) %>
-            </div>
-        <% end)%>
-
-
-        <div class="flex flex-grow bg-white text-black">
-            <%= if assigns[:preview] do %>
-                <iframe id="html-preview" src="javascript:false" class="bg-gray-100 flex-grow" style="height: 75vh"></iframe>
-                <div id="html-preview-data" phx-hook="HtmlPreview" class="hidden" data-iframe="html-preview"><%= @preview %></div>
-            <% end %>
+        <div class="flex gap-1">
+            <a href="#" class="tab-label" :class="{ 'active': tab === 'settings' }" @click.prevent="tab = 'settings'">
+                <%= gettext("Settings") %>
+            </a>
+            <a href="#" class="tab-label" :class="{ 'active': tab === 'style' }" @click.prevent="tab = 'style'">
+                <%= gettext("Style") %>
+            </a>
         </div>
+
+        <div class="flex flex-col gap-2 tab-content bg-gray-800" x-show="tab === 'settings'">
+            <%= with_validation(f, :name) do %>
+                <%= label(f, :name, gettext("Name")) %>
+                <%= text_input(f, :name, class: "text-black") %>
+            <% end %>
+
+            <%= label(f, :assigns, gettext("Signature"), name: "template[assigns][signature]") %>
+            <%= textarea(f, :assigns, value: get_field(@changeset, :assigns)["signature"], name: "template[assigns][signature]", id: "template[assigns][signature]", rows: 10, class: "text-black text-sm") %>
+        </div>
+
+        <div class="flex flex-col gap-2 tab-content bg-gray-800" x-show="tab === 'style'">
+            <h2 class="text-xl">
+                <%= gettext("Style") %>
+            </h2>
+            <%= render_css_form(f, :styles, @style_template) %>
+        </div>
+    <% end)%>
+
+
+    <div class="flex flex-grow bg-white text-black">
+        <%= if assigns[:preview] do %>
+            <iframe id="html-preview" src="javascript:false" class="bg-gray-100 flex-grow" style="height: 75vh"></iframe>
+            <div id="html-preview-data" phx-hook="HtmlPreview" class="hidden" data-iframe="html-preview"><%= @preview %></div>
+        <% end %>
     </div>
 </div>

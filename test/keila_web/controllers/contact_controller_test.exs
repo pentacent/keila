@@ -20,7 +20,7 @@ defmodule KeilaWeb.ContactControllerTest do
     {conn, project} = with_login_and_project(conn)
 
     conn = get(conn, Routes.contact_path(conn, :index, project.id))
-    assert html_response(conn, 200) =~ ~r{Ready to get started?}
+    assert html_response(conn, 200) =~ ~r{Wow, such empty!}
   end
 
   @tag :contact_controller
