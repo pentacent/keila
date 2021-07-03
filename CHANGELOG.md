@@ -1,5 +1,15 @@
 # Changelog
 
+## Version 0.5.3
+
+### Added
+- Template now fully compatible with Outlook and Windows Mail
+
+### Fixed
+- Fixed broken CSV template downloads
+- Improved template display in WYSIWG editor
+
+
 ## Version 0.5.2
 
 ### Fixed
