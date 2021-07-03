@@ -24,6 +24,7 @@ defmodule Keila.TemplatesTest do
   @input_css """
   .foo {
     background-color: #f0f;
+    font-family: inherit;
   }
   div {
     padding: 10px;
@@ -34,7 +35,7 @@ defmodule Keila.TemplatesTest do
   """
 
   @expected_html """
-                 <div style="margin: 10px;background-color:#f0f;padding:10px" class="foo">
+                 <div style="margin: 10px;background-color:#f0f;font-family:inherit;padding:10px" class="foo">
                    <a href="#" style="color:blue">Link</a>
                    <a href="#" style="color:blue">Another Link</a>
                  </div>
@@ -46,6 +47,16 @@ defmodule Keila.TemplatesTest do
     html = Html.parse_fragment!(@input_html)
     css = Css.parse!(@input_css)
     assert @expected_html == Html.apply_inline_styles(html, css) |> Html.to_fragment()
+  end
+
+  @tag :templates
+  test "inline css with opts" do
+    html = Html.parse_fragment!(@input_html)
+    css = Css.parse!(@input_css)
+    expected_html_without_inherit = @expected_html |> String.replace("font-family:inherit;", "")
+
+    assert expected_html_without_inherit ==
+             Html.apply_inline_styles(html, css, ignore_inherit: true) |> Html.to_fragment()
   end
 
   @tag :templates

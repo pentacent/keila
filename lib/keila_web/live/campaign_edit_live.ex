@@ -101,10 +101,15 @@ defmodule KeilaWeb.CampaignEditLive do
       styles =
         Keila.Templates.Css.merge(default_styles, template_styles)
         |> Enum.map(fn {selector, styles} ->
-          if String.starts_with?(selector, "body") do
-            {String.replace(selector, "body", "#wysiwyg .editor"), styles}
-          else
-            {"#wysiwyg .ProseMirror " <> selector, styles}
+          cond do
+            String.starts_with?(selector, "body") ->
+              {String.replace(selector, "body", "#wysiwyg .editor"), styles}
+
+            String.starts_with?(selector, "#content") ->
+              {String.replace(selector, "#content", "#wysiwyg .editor .ProseMirror"), styles}
+
+            true ->
+              {"#wysiwyg .ProseMirror " <> selector, styles}
           end
         end)
         |> Keila.Templates.Css.encode()

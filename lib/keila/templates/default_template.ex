@@ -59,14 +59,16 @@ defmodule Keila.Templates.DefaultTemplate do
        "text-decoration"
      ])},
     {gettext("Button"),
-     get_styles.("h4 > a", [
-       "color",
-       "background-color",
-       "font-family",
-       "font-style",
-       "font-weight",
-       "text-decoration"
-     ])},
+     get_styles.("h4>a, div.keila-button a", [
+       "color"
+     ]) ++
+       get_styles.("h4>a, div.keila-button", [
+         "background-color",
+         "font-family",
+         "font-style",
+         "font-weight",
+         "text-decoration"
+       ])},
     {gettext("Signature"),
      get_styles.("#signature td", [
        "color",

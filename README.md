@@ -37,6 +37,14 @@ repository:
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
+## Translating Keila
+
+Keila uses GNU Gettext for translations. Translation files are found in
+`priv/gettext`. 
+
+## Extract
+mix gettext.extract
+
 ## The Name
 Keila is the name of the elephant mascot of this project.
 She’s a wise and diligent elephant lady, able to remember countless email

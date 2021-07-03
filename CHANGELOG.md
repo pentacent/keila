@@ -1,8 +1,28 @@
 # Changelog
 
+## Version 0.5.2
+
+### Fixed
+- Fixed broken styling on non-authenticated routes
+
+
+## Version 0.5.1
+
+### Added
+- Improved onboarding experience with empty states for all views
+
+### Changed
+- Improved dark app design
+- Stricter code-checks in CI
+
+### Fixed
+- Default template is now displayed correctly in campaign editor
+- Paddle webhooks now have improved idempotency
+
+
 ## Version 0.5.0
 
-## Added
+### Added
 - Added click/open tracking for campaign emails
 - `Precedence: Bulk` header now included in all campaign emails
 - Implemented per-instance `SharedSenders`
@@ -10,7 +30,7 @@
 - Added account and account credits for organizing users and implementing quotas
 - Added subscription plans for app.keila.io
 
-## Changed
+### Changed
 - Updated to Elixir 1.12
 
 ### Fixed

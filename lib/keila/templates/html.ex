@@ -123,19 +123,20 @@ defmodule Keila.Templates.Html do
       ~s{<span style="color:blue">foo</span>}
   """
   @spec apply_inline_styles(t(), Css.t()) :: t()
-  def apply_inline_styles(html, css_list) do
+  def apply_inline_styles(html, css_list, opts \\ []) do
     css_list
     |> Enum.reduce(html, fn {selector, styles}, html ->
       Floki.find_and_update(html, selector, fn {tag, attributes} ->
-        attributes = put_inline_styles(attributes, styles)
+        attributes = put_inline_styles(attributes, styles, opts)
         {tag, attributes}
       end)
     end)
   end
 
-  defp put_inline_styles(attributes, styles) do
+  defp put_inline_styles(attributes, styles, opts) do
     styles =
       styles
+      |> Enum.filter(fn {_key, value} -> value != "inherit" || !opts[:ignore_inherit] end)
       |> Enum.map(fn {key, value} -> "#{key}:#{value}" end)
       |> Enum.join(";")
 
@@ -149,4 +150,21 @@ defmodule Keila.Templates.Html do
       attributes ++ [{"style", styles}]
     end
   end
+
+  @doc """
+  Apply markup transforms for improved email client compatibility.
+
+  ## Transforms:
+  - `h4 a` -> `div.keila-button a`
+  """
+  @spec apply_email_markup(t()) :: t()
+  def apply_email_markup(html) do
+    Floki.traverse_and_update(html, &do_apply_email_markup/1)
+  end
+
+  defp do_apply_email_markup({"h4", _, [{"a", a_attrs, a_children}]}) do
+    {"div", [{"class", "keila-button"}], [{"a", a_attrs, a_children}]}
+  end
+
+  defp do_apply_email_markup(other), do: other
 end
