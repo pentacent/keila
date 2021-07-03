@@ -4,11 +4,10 @@ on:
   push:
     tags:
       - 'v*'
-    branches:
-      - main
 
 jobs:
   test:
+    if: github.event.base_ref == "refs/heads/main"
     name: Test Elixir ${{ matrix.version }}
     runs-on: ubuntu-latest
     container: elixir:${{ matrix.version }}-alpine
@@ -54,6 +53,7 @@ jobs:
       - name: mix test
         run: mix test
   build:
+    if: github.event.base_ref == "refs/heads/main"
     name: Build and Release
     needs:
       - test
