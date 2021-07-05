@@ -16,7 +16,7 @@ to SMTP.
 
 ## Giving Keila a Try
 
-You can give a hosted version of Keila a try at [keila.io/try](https://keila.io/try).
+You can give a hosted version of Keila a try at [keila.io/try](https://www.keila.io/try).
 
 If you want to deploy Keila on your own server, you can use the official Docker
 image `pentacent/keila` or use the [sample Docker Compose config](ops/docker-compose.yml)
