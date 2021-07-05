@@ -12,7 +12,7 @@ For smaller newsletters, you can use your own email inbox to send out campaigns.
 For larger newsletter projects, AWS SES, Sendgrid, and Mailgun are supported in addition
 to SMTP.
 
-![Screenshot of the Keila form editor showing color modification and custom texts](.github/assets/screenshot-form.png)
+![Screenshot of the Keila campaign editor showing the WYSIWYG editor and the default template](.github/assets/keila-20210705.jpg)
 
 ## Giving Keila a Try
 
@@ -36,14 +36,6 @@ repository:
 * Start Keila server with `mix phx.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
-
-## Translating Keila
-
-Keila uses GNU Gettext for translations. Translation files are found in
-`priv/gettext`. 
-
-## Extract
-mix gettext.extract
 
 ## The Name
 Keila is the name of the elephant mascot of this project.
