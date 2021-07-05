@@ -16,9 +16,11 @@ to SMTP.
 
 ## Giving Keila a Try
 
-Keila is ready for you to send newsletters with!
+You can give a hosted version of Keila a try at [keila.io/try](https://keila.io/try).
 
-You can easily deploy it using the official Docker image `pentacent/keila` or use the [Docker Compose config](ops/docker-compose.yml) in this repo.
+If you want to deploy Keila on your own server, you can use the official Docker
+image `pentacent/keila` or use the [sample Docker Compose config](ops/docker-compose.yml)
+in this repo.
 
 Follow the [Installation Docs](https://keila.io/docs/installation)
 for more details.
