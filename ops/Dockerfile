@@ -26,4 +26,4 @@ RUN mkdir -p ${HOME} && \
     adduser -s /bin/sh -u 1001 -G root -h ${HOME} -S -D default && \
     chown -R 1001:0 ${HOME}
 ENTRYPOINT ["/opt/app/bin/keila"]
-CMD "start"
+CMD ["start"]

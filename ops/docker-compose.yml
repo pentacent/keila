@@ -8,7 +8,8 @@ services:
     depends_on:
       - postgres
     build:
-      context: .
+      context: ../
+      dockerfile: ops/Dockerfile
     environment:
       SECRET_KEY_BASE: "${YOUR_SECRET_KEY}"
       DB_URL: "postgres://postgres:postgres@postgres/postgres"
