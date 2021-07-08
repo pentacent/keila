@@ -1,5 +1,14 @@
 # Changelog
 
+## Version 0.5.4
+
+### Changed
+- Removed password placeholder texts
+
+### Fixed
+- Dockerfile and sample docker-compose configuration are now compatible
+
+
 ## Version 0.5.3
 
 ### Added
