@@ -3,6 +3,8 @@ defmodule Keila.Auth.Emails do
   # FIXME Don't depend on Web App here
   import KeilaWeb.Gettext
 
+  sender_mail = System.fetch_env!("MAILER_SMTP_USER")
+
   @spec send!(atom(), map()) :: term() | no_return()
   def send!(email, params) do
     email
@@ -13,7 +15,7 @@ defmodule Keila.Auth.Emails do
   @spec build(:activate, %{url: String.t(), user: Keila.Auth.User.t()}) :: term() | no_return()
   def build(:activate, %{user: user, url: url}) do
     new()
-    |> from({"Keila", "hello@keila.io"})
+    |> from({"Keila", @sender_mail})
     |> subject(dgettext("auth", "Please Verify Your Account"))
     |> to(user.email)
     |> text_body(
@@ -37,7 +39,7 @@ defmodule Keila.Auth.Emails do
           term() | no_return()
   def build(:update_email, %{user: user, url: url}) do
     new()
-    |> from({"Keila", "hello@keila.io"})
+    |> from({"Keila", @sender_mail})
     |> subject(dgettext("auth", "Please Verify Your Email"))
     |> to(user.email)
     |> text_body(
@@ -63,7 +65,7 @@ defmodule Keila.Auth.Emails do
     new()
     |> subject(dgettext("auth", "Your Account Reset Link"))
     |> to(user.email)
-    |> from({"Keila", "hello@keila.io"})
+    |> from({"Keila", @sender_mail})
     |> text_body(
       dgettext(
         "auth",
@@ -88,7 +90,7 @@ defmodule Keila.Auth.Emails do
     new()
     |> subject(dgettext("auth", "Your Login Link"))
     |> to(user.email)
-    |> from({"Keila", "hello@keila.io"})
+    |> from({"Keila", @sender_mail})
     |> text_body(
       dgettext(
         "auth",
