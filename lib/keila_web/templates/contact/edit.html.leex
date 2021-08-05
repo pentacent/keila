@@ -52,4 +52,41 @@
             </form>
         </div>
     </div>
+
+    <%= if assigns[:events] && not Enum.empty?(@events) do %>
+        <div class="bg-gray-900 py-8 flex">
+            <div class="container">
+                <h2 class="text-xl mb-4 font-bold"><%= gettext("Contact Activity") %></h2>
+                <div class="grid grid-cols-1 gap-4">
+                    <%= for event <- @events do %>
+                        <p>
+                            <span class="font-bold">
+                                <%= local_datetime_tag(event.inserted_at) %>
+                            </span>
+                            <br>
+                            <%= case event.type do %>
+                                <% :create -> %>
+                                    <%= gettext("created") %>
+                                <% :import -> %>
+                                    <%= gettext("imported") %>
+                                <% :subscribe -> %>
+                                    <%= gettext("subscribed") %>
+                                    <%= if get_in(event.data, ["captcha"]) do %>
+                                        <%= gettext("with captcha") %>
+                                    <% end %>
+                                <% :open -> %>
+                                    <%= gettext("opened campaign") %>
+                                <% :click -> %>
+                                    <%= gettext("clicked campaign link") %>
+                                <% :unsubscribe -> %>
+                                    <%= gettext("unsubscribed") %>
+                                <% other -> %>
+                                    <%= Atom.to_string(other) %>
+                            <% end %>
+                        </p>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+    <% end %>
 </main>

@@ -49,6 +49,10 @@ defmodule Keila.MixProject do
     [
       {:phoenix, "~> 1.5.6"},
       {:phoenix_ecto, "~> 4.1"},
+      {:ecto,
+       git: "https://github.com/elixir-ecto/ecto.git",
+       ref: "3d2ad6b7401d3e784162d8973159bb109cba3d9e",
+       override: true},
       {:ecto_sql, "~> 3.6"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_live_view, "~> 0.15"},

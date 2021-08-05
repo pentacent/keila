@@ -362,7 +362,9 @@ defmodule Keila.Mailings do
       |> change(sent_at: DateTime.truncate(DateTime.utc_now(), :second))
       |> Repo.update()
 
-    Keila.Contacts.stream_project_contacts(campaign.project_id, [])
+    filter = %{"status" => "active"}
+
+    Keila.Contacts.stream_project_contacts(campaign.project_id, filter: filter)
     |> Stream.chunk_every(1000)
     |> Stream.map(&insert_recipients(&1, campaign))
     |> Stream.map(&insert_jobs/1)
@@ -443,7 +445,12 @@ defmodule Keila.Mailings do
     insufficient_credits? =
       if Keila.Accounts.credits_enabled?() do
         account = Keila.Accounts.get_project_account(campaign.project_id)
-        contacts_count = Keila.Contacts.get_project_contacts_count(campaign.project_id)
+
+        contacts_count =
+          Keila.Contacts.get_project_contacts_count(campaign.project_id,
+            filter: %{"status" => "active"}
+          )
+
         not Keila.Accounts.has_credits?(account.id, contacts_count)
       end
 

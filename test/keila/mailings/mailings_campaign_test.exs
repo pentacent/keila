@@ -73,10 +73,34 @@ defmodule Keila.MailingsCampaignTest do
     now = DateTime.utc_now() |> DateTime.truncate(:second)
 
     build_n(:contact, n, fn _ -> %{project_id: project.id} end)
-    |> Enum.map(&Map.take(&1, [:name, :project_id, :email, :first_name, :last_name]))
+    |> Enum.map(&Map.take(&1, [:name, :project_id, :email, :first_name, :last_name, :status]))
     |> Enum.map(&Map.merge(&1, %{updated_at: now, inserted_at: now}))
     |> Enum.chunk_every(10_000)
     |> Enum.each(fn params -> Repo.insert_all(Contacts.Contact, params) |> elem(1) end)
+
+    sender = insert!(:mailings_sender, config: %Mailings.Sender.Config{type: "test"})
+    campaign = insert!(:mailings_campaign, project_id: project.id, sender_id: sender.id)
+
+    assert :ok = Mailings.deliver_campaign(campaign.id)
+
+    assert %{success: ^n, failure: 0} = Oban.drain_queue(queue: :mailer)
+
+    for _ <- 1..n do
+      assert_email_sent()
+    end
+
+    refute_email_sent()
+  end
+
+  @tag :mailings_campaign
+  test "deliver campaigns only to active contacts", %{project: project} do
+    n = 20
+
+    for _ <- 1..n do
+      insert!(:contact, project_id: project.id)
+      insert!(:contact, project_id: project.id, status: :unsubscribed)
+      insert!(:contact, project_id: project.id, status: :unreachable)
+    end
 
     sender = insert!(:mailings_sender, config: %Mailings.Sender.Config{type: "test"})
     campaign = insert!(:mailings_campaign, project_id: project.id, sender_id: sender.id)
@@ -124,7 +148,7 @@ defmodule Keila.MailingsCampaignTest do
     now = DateTime.utc_now() |> DateTime.truncate(:second)
 
     build_n(:contact, n, fn _ -> %{project_id: project.id} end)
-    |> Enum.map(&Map.take(&1, [:name, :project_id, :email, :first_name, :last_name]))
+    |> Enum.map(&Map.take(&1, [:name, :project_id, :email, :first_name, :last_name, :status]))
     |> Enum.map(&Map.merge(&1, %{updated_at: now, inserted_at: now}))
     |> Enum.chunk_every(10_000)
     |> Enum.each(fn params -> Repo.insert_all(Contacts.Contact, params) |> elem(1) end)

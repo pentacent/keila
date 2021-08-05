@@ -24,7 +24,8 @@ defmodule KeilaWeb.CampaignEditLive do
           end
       end
 
-    recipient_count = Keila.Contacts.get_project_contacts_count(project.id)
+    recipient_count =
+      Keila.Contacts.get_project_contacts_count(project.id, filter: %{"status" => "active"})
 
     socket =
       socket

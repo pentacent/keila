@@ -40,12 +40,12 @@ defmodule KeilaWeb.FormControllerTest do
 
   describe "GET /unsubscribe/:p_id/:c_id" do
     @tag :form_controller
-    test "removes contact", %{conn: conn} do
+    test "unsubscribes contact", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
       contact = insert!(:contact, project_id: project.id)
       conn = get(conn, Routes.form_path(conn, :unsubscribe, project.id, contact.id))
       assert html_response(conn, 200) =~ "You have been unsubscribed"
-      assert nil == Contacts.get_contact(contact.id)
+      assert %{status: :unsubscribed} = Contacts.get_contact(contact.id)
     end
 
     @tag :form_controller

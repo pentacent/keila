@@ -180,16 +180,36 @@ defmodule Keila.Tracking do
 
     set_recipient_opened_at(recipient_id, now)
 
-    from(r in Recipient, where: r.id == ^recipient_id and is_nil(r.clicked_at))
+    from(r in Recipient,
+      where: r.id == ^recipient_id and is_nil(r.clicked_at),
+      select: struct(r, [:contact_id, :campaign_id])
+    )
     |> Repo.update_all(set: [clicked_at: now])
+    |> maybe_log_click_event()
   end
 
   defp set_recipient_opened_at(recipient_id, now \\ nil) do
     now = now || DateTime.utc_now() |> DateTime.truncate(:second)
 
-    from(r in Recipient, where: r.id == ^recipient_id and is_nil(r.opened_at))
+    from(r in Recipient,
+      where: r.id == ^recipient_id and is_nil(r.opened_at),
+      select: struct(r, [:contact_id, :campaign_id])
+    )
     |> Repo.update_all(set: [opened_at: now])
+    |> maybe_log_open_event()
   end
+
+  def maybe_log_click_event({1, [recipient]}) do
+    Keila.Contacts.log_event(recipient.contact_id, :click, %{"campaign" => recipient.campaign_id})
+  end
+
+  def maybe_log_click_event(_), do: :ok
+
+  def maybe_log_open_event({1, [recipient]}) do
+    Keila.Contacts.log_event(recipient.contact_id, :open, %{"campaign" => recipient.campaign_id})
+  end
+
+  def maybe_log_open_event(_), do: :ok
 
   @doc """
   Retrieves statistics about links for a `Campaign` specified by `campaign_id`.

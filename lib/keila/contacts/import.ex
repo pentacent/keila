@@ -64,8 +64,12 @@ defmodule Keila.Contacts.Import do
     |> Stream.with_index()
     |> Stream.map(fn {changeset, n} ->
       case Repo.insert(changeset, returning: false) do
-        {:ok, _} -> n
-        {:error, changeset} -> raise_import_error!(changeset, n + 1)
+        {:ok, %{id: id}} ->
+          Keila.Contacts.log_event(id, :import)
+          n
+
+        {:error, changeset} ->
+          raise_import_error!(changeset, n + 1)
       end
     end)
     |> Stream.chunk_every(100)

@@ -6,7 +6,7 @@ defmodule Keila.Contacts do
   """
   use Keila.Repo
   alias Keila.Projects.Project
-  alias __MODULE__.{Contact, Import, Form}
+  alias __MODULE__.{Contact, Import, Form, Event}
   import KeilaWeb.Gettext
 
   @doc """
@@ -104,6 +104,25 @@ defmodule Keila.Contacts do
     from(c in Contact, where: c.project_id == ^project_id)
     |> Keila.Contacts.Query.apply(Keyword.take(opts, [:filter, :sort]))
     |> Repo.aggregate(:count, :id)
+  end
+
+  @spec get_project_contacts_stats(Project.id(), [Query.opts()]) :: %{
+          active: integer(),
+          unsubscribed: integer(),
+          unreachable: integer()
+        }
+  def get_project_contacts_stats(project_id, opts \\ []) do
+    query_opts = [sort: false] ++ Keyword.take(opts, [:filter])
+
+    from(c in Contact, where: c.project_id == ^project_id)
+    |> Keila.Contacts.Query.apply(query_opts)
+    |> group_by([c], c.status)
+    |> select([c], {c.status, count(c.id)})
+    |> Repo.all()
+    |> Enum.into(%{})
+    |> Map.merge(%{active: 0, unsubscribed: 0, unreachable: 0}, fn _key, value1, value2 ->
+      max(value1, value2)
+    end)
   end
 
   def stream_project_contacts(project_id, opts)
@@ -286,6 +305,57 @@ defmodule Keila.Contacts do
     from(f in Form, where: f.id in ^form_ids and f.project_id == ^project_id)
     |> Repo.delete_all()
 
+    :ok
+  end
+
+  @doc """
+  Logs an Event and updates contact status accordingly.
+  """
+  @spec log_event(Contact.id(), String.t(), map()) ::
+          {:ok, Event.t()} | {:error, Changeset.t(Event.t())}
+  def log_event(contact_id, type, data \\ %{}) do
+    %{contact_id: contact_id, type: type, data: data}
+    |> Event.changeset()
+    |> Repo.insert()
+    |> tap(&maybe_update_contact_status/1)
+  end
+
+  defp maybe_update_contact_status({:ok, event}),
+    do: update_contact_status(event.contact_id, event)
+
+  defp maybe_update_contact_status(_), do: nil
+
+  @doc """
+  Returns list of all Events for given `contact_id`.
+  Events are sorted from latest to oldest.
+  """
+  @spec get_contact_events(Contact.id()) :: [Event.t()]
+  def get_contact_events(contact_id) do
+    from(e in Event, where: e.contact_id == ^contact_id, order_by: [desc: e.inserted_at])
+    |> Repo.all()
+  end
+
+  defp update_contact_status(contact_id, latest_event)
+
+  defp update_contact_status(contact_id, %Event{type: type})
+       when type in [:subscribe, :create, :import] do
+    from(c in Contact, where: c.id == ^contact_id)
+    |> Repo.update_all(set: [status: :active])
+  end
+
+  defp update_contact_status(contact_id, %Event{type: type})
+       when type in [:unsubscribe, :complaint] do
+    from(c in Contact, where: c.id == ^contact_id and c.status in [:active, :unreachable])
+    |> Repo.update_all(set: [status: :unsubscribed])
+  end
+
+  defp update_contact_status(contact_id, %Event{type: :hard_bounce}) do
+    from(c in Contact, where: c.id == ^contact_id and c.status in [:active])
+    |> Repo.update_all(set: [status: :unreachable])
+  end
+
+  defp update_contact_status(_contact_id, _event) do
+    # TODO Implement updating status without in without latest_event and make function public.
     :ok
   end
 end

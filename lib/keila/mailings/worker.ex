@@ -14,18 +14,33 @@ defmodule Keila.Mailings.Worker do
       |> Repo.one()
 
     config = Mailings.sender_to_swoosh_config(recipient.campaign.sender)
-    email = Builder.build(recipient.campaign, recipient, %{})
 
-    if Enum.find(email.headers, fn {name, _} -> name == "X-Keila-Invalid" end) do
-      raise "Invalid email"
+    if recipient.contact.status == :active do
+      email = Builder.build(recipient.campaign, recipient, %{})
+
+      if Enum.find(email.headers, fn {name, _} -> name == "X-Keila-Invalid" end) do
+        raise "Invalid email"
+      end
+
+      email
+      |> Keila.Mailer.deliver(config)
+      |> maybe_update_recipient(recipient)
+    else
+      from(r in Recipient, where: r.id == ^recipient.id) |> Repo.delete_all()
+
+      :ok
     end
-
-    email
-    |> Keila.Mailer.deliver(config)
-    |> maybe_update_recipient(recipient)
   end
 
   defp maybe_update_recipient({:ok, _}, recipient) do
+    update_recipient(recipient)
+  end
+
+  defp maybe_update_recipient(_, _) do
+    :ok
+  end
+
+  defp update_recipient(recipient) do
     from(r in Recipient,
       where: r.id == ^recipient.id,
       update: [set: [sent_at: fragment("NOW()")]]

@@ -27,6 +27,26 @@
     <% end %>
 
     <%= if @contacts.page_count > 0 do %>
+
+        <%= if @contacts_stats do %>
+            <div class="container py-4 grid grid-cols-3">
+                <div>
+                    <p class="text-3xl"><%= @contacts_stats.active %></p>
+                    <p><%= gettext("active subscribers") %></p>
+                </div>
+
+                <div>
+                    <p class="text-3xl"><%= @contacts_stats.unsubscribed %></p>
+                    <p><%= gettext("unsubscribed contacts") %></p>
+                </div>
+
+                <div>
+                    <p class="text-3xl"><%= @contacts_stats.unreachable %></p>
+                    <p><%= gettext("unreachable contacts") %></p>
+                </div>
+            </div>
+        <% end %>
+
         <div class="container py-4">
             <%= f = form_for(@conn, Routes.contact_path(@conn, :delete, @current_project.id), as: :contact, method: :delete) %>
                 <%= hidden_input(f, :require_confirmation, value: "true") %>
@@ -45,7 +65,9 @@
                                 <%= checkbox(f, :id, hidden_input: false, "x_bind:checked": "checked", class: "text-green-500", checked_value: contact.id, name: "contact[id][]") %>
                             </td>
                             <td class="p-2">
-                                <%= contact.email %>
+                                <a class="button button--text" href="<%= Routes.contact_path(@conn, :edit, @current_project.id, contact.id) %>">
+                                    <%= contact.email %>
+                                </a>
                             </td>
                             <td class="p-2">
                                 <%= contact.first_name %>

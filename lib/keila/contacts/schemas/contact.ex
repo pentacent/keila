@@ -2,10 +2,17 @@ defmodule Keila.Contacts.Contact do
   use Keila.Schema, prefix: "c"
   alias Keila.Contacts.Form
 
+  @statuses Enum.with_index([
+              :active,
+              :unsubscribed,
+              :unreachable
+            ])
+
   schema "contacts" do
     field(:email, :string)
     field(:first_name, :string)
     field(:last_name, :string)
+    field(:status, Ecto.Enum, values: @statuses, default: :active)
     belongs_to(:project, Keila.Projects.Project, type: Keila.Projects.Project.Id)
     timestamps()
   end

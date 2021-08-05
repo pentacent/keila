@@ -21,7 +21,8 @@ defmodule KeilaWeb.FormController do
     if !form.settings.captcha_required or
          KeilaWeb.Hcaptcha.captcha_valid?(params["h-captcha-response"]) do
       case Contacts.create_contact(form.project_id, params["contact"] || %{}) do
-        {:ok, _contact} ->
+        {:ok, %{id: id}} ->
+          Keila.Contacts.log_event(id, :subscribe, %{"captcha" => form.settings.captcha_required})
           render(conn, "form_success.html")
 
         {:error, changeset} ->
@@ -53,8 +54,8 @@ defmodule KeilaWeb.FormController do
     form = Contacts.get_project_forms(project_id) |> List.first() || @default_unsubscribe_form
     contact = Contacts.get_project_contact(project_id, contact_id)
 
-    if contact do
-      Contacts.delete_contact(contact.id)
+    if contact && contact.status != :unsubscribed do
+      Contacts.log_event(contact.id, :unsubscribe)
     end
 
     conn

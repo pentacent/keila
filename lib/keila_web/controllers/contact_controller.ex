@@ -8,19 +8,20 @@ defmodule KeilaWeb.ContactController do
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, params) do
-    page = String.to_integer(Map.get(params, "page", "1")) - 1
+    project_id = current_project(conn).id
 
-    contacts =
-      Contacts.get_project_contacts(current_project(conn).id,
-        paginate: [
-          page: page,
-          page_size: 50
-        ]
-      )
+    page = String.to_integer(Map.get(params, "page", "1")) - 1
+    query_opts = [paginate: [page: page, page_size: 50]]
+    contacts = Contacts.get_project_contacts(project_id, query_opts)
+
+    contacts_stats =
+      if page == 0,
+        do: Contacts.get_project_contacts_stats(project_id)
 
     conn
     |> put_meta(:title, gettext("Contacts"))
     |> assign(:contacts, contacts)
+    |> assign(:contacts_stats, contacts_stats)
     |> render("index.html")
   end
 
@@ -71,8 +72,12 @@ defmodule KeilaWeb.ContactController do
     params = params["contact"] || %{}
 
     case Contacts.create_contact(current_project(conn).id, params) do
-      {:ok, _} -> redirect(conn, to: Routes.contact_path(conn, :index, current_project(conn).id))
-      {:error, changeset} -> render_edit(conn, 400, changeset)
+      {:ok, %{id: id}} ->
+        Keila.Contacts.log_event(id, :create)
+        redirect(conn, to: Routes.contact_path(conn, :index, current_project(conn).id))
+
+      {:error, changeset} ->
+        render_edit(conn, 400, changeset)
     end
   end
 
@@ -82,7 +87,11 @@ defmodule KeilaWeb.ContactController do
       conn.assigns.contact
       |> change()
 
-    render_edit(conn, changeset)
+    events = Contacts.get_contact_events(conn.assigns.contact.id)
+
+    conn
+    |> assign(:events, events)
+    |> render_edit(changeset)
   end
 
   @spec post_edit(Plug.Conn.t(), map()) :: Plug.Conn.t()
