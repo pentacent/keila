@@ -134,7 +134,7 @@ defmodule Keila.Mailings.Builder do
 
   defp put_body(email, campaign = %{settings: %{type: :markdown}}, assigns) do
     main_content = campaign.text_body || ""
-    signature_content = assigns["signature"] || "[Unsubscribe]({{ unsubscribe_link }})"
+    signature_content = assigns["signature"] || DefaultTemplate.signature()
 
     with {:ok, main_content_text} <- render_liquid(main_content, assigns),
          {:ok, main_content_html, _} <- Earmark.as_html(main_content_text),

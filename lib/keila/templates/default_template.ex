@@ -84,6 +84,12 @@ defmodule Keila.Templates.DefaultTemplate do
      ])}
   ]
 
+  @signature """
+  [Unsubscribe]({{ unsubscribe_link }})
+
+  Powered by [Keila - OpenSource Newsletters](https://www.keila.io/)
+  """
+
   @spec styles() :: Keila.Templates.Css.t()
   def styles() do
     @styles
@@ -97,5 +103,10 @@ defmodule Keila.Templates.DefaultTemplate do
   @spec style_template() :: Keila.Templates.StyleTemplate.t()
   def style_template() do
     @style_template
+  end
+
+  @spec signature() :: String.t()
+  def signature() do
+    @signature
   end
 end

@@ -2,6 +2,7 @@ defmodule KeilaWeb.TemplateController do
   use KeilaWeb, :controller
   alias Keila.Templates
   alias Keila.Templates.Template
+  alias Keila.Templates.DefaultTemplate
   import Ecto.Changeset
   import Phoenix.LiveView.Controller
 
@@ -28,7 +29,7 @@ defmodule KeilaWeb.TemplateController do
 
     params =
       (params["template"] || %{})
-      |> Map.put("assigns", %{"signature" => "[Unsubscribe]({{ unsubscribe_link }})"})
+      |> Map.put("assigns", %{"signature" => DefaultTemplate.signature()})
 
     case Templates.create_template(project.id, params) do
       {:ok, template} ->
