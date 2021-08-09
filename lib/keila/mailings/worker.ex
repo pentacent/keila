@@ -1,7 +1,6 @@
 defmodule Keila.Mailings.Worker do
   use Oban.Worker, queue: :mailer
   use Keila.Repo
-  alias Keila.Mailings
   alias Keila.Mailings.{Recipient, Builder}
 
   @impl true
