@@ -471,16 +471,4 @@ defmodule Keila.Mailings do
       click_count: click_count
     }
   end
-
-  @doc """
-  Converts sender struct with the embedded Config schema to Keyword list for use with Swoosh.
-  """
-  @spec sender_to_swoosh_config(Sender.t() | SharedSender.t()) :: Keyword.t()
-  def sender_to_swoosh_config(sender) do
-    config = sender.config
-    adapter = SenderAdapters.get_adapter(config.type)
-
-    adapter.to_swoosh_config(sender)
-    |> Enum.filter(fn {_, v} -> not is_nil(v) end)
-  end
 end
