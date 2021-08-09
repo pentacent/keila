@@ -32,19 +32,27 @@ defmodule Keila.Mailings.Worker do
     end
   end
 
+  defp maybe_update_recipient({:ok, receipt}, recipient) do
+    update_recipient(recipient, receipt)
   end
 
   defp maybe_update_recipient(_, _) do
     :ok
   end
 
-  defp update_recipient(recipient) do
+  defp update_recipient(recipient, receipt) do
+    receipt = get_receipt(receipt)
+
     from(r in Recipient,
       where: r.id == ^recipient.id,
-      update: [set: [sent_at: fragment("NOW()")]]
+      update: [set: [sent_at: fragment("NOW()"), receipt: ^receipt]]
     )
     |> Repo.update_all([])
 
     :ok
   end
+
+  defp get_receipt(%{id: receipt}), do: receipt
+  defp get_receipt(receipt) when is_binary(receipt), do: receipt
+  defp get_receipt(_), do: nil
 end
