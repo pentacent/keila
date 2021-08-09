@@ -52,3 +52,10 @@
         </template>
     </div>
 <% end %>
+
+<div class="flex flex-col">
+    <%= label(@form, :ses_configuration_set, gettext("Configuration Set")) %>
+    <%= with_validation(@form, :ses_configuration_set) do %>
+        <%= text_input(@form, :ses_configuration_set, class: "text-black") %>
+    <% end %>
+</div>
