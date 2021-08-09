@@ -1,0 +1,12 @@
+{
+  "Type" : "Notification",
+  "MessageId" : "01d0c77c-57ac-5e5d-8160-9e14982643f7",
+  "TopicArn" : "arn:aws:sns:eu-central-1:573964052742:keila_notifications",
+  "Subject" : "Amazon SES Email Event Notification",
+  "Message" : "{\"eventType\":\"Send\",\"mail\":{\"timestamp\":\"2021-07-14T11:40:58.581Z\",\"source\":\"newsletter-test@keila.io\",\"sourceArn\":\"arn:aws:ses:eu-central-1:573964052742:identity/newsletter-test@keila.io\",\"sendingAccountId\":\"573964052742\",\"messageId\":\"0107017aa4d1eb55-725e52fe-430b-430f-aa08-8cb200f20aac-000000\",\"destination\":[\"bounce@simulator.amazonses.com\"],\"headersTruncated\":false,\"headers\":[{\"name\":\"From\",\"value\":\"newsletter-test@keila.io\"},{\"name\":\"To\",\"value\":\"bounce@simulator.amazonses.com\"},{\"name\":\"Subject\",\"value\":\"Test\"},{\"name\":\"MIME-Version\",\"value\":\"1.0\"},{\"name\":\"Content-Type\",\"value\":\"multipart/alternative;  boundary=\\\"----=_Part_24153_81336886.1626262858584\\\"\"}],\"commonHeaders\":{\"from\":[\"newsletter-test@keila.io\"],\"to\":[\"bounce@simulator.amazonses.com\"],\"messageId\":\"0107017aa4d1eb55-725e52fe-430b-430f-aa08-8cb200f20aac-000000\",\"subject\":\"Test\"},\"tags\":{\"ses:operation\":[\"SendEmail\"],\"ses:configuration-set\":[\"keila\"],\"ses:source-ip\":[\"87.156.243.28\"],\"ses:from-domain\":[\"keila.io\"],\"ses:caller-identity\":[\"root\"]}},\"send\":{}}\n",
+  "Timestamp" : "2021-07-14T11:40:58.843Z",
+  "SignatureVersion" : "1",
+  "Signature" : "eVEewRhQadCGYwhZa5NLrfSfMv/yWexDXQUnrivFR53bWPSuQt6u74sPQ1do1UIIJkp+bxskAn8XVSLQVyaP0+Fz8d8P02MObnDu19dxtmCFXk5mbaL7p/Lnd5DqdVjLl1m6a/bGGx0Z7O8lUSmMbcecPK+1oGZCO0D6XbfrpHhZR2KZ+cOVAwW2JuyikdZDxaH6M9Jn+ui5X3xOg4D6jX57KPO2RR4cXkI3u5N9uWcGhfO6kMDbdglR2nCaPvn4yhx3G2NpjzG93Q6hI10sZEBDB6I8rlxVusiIpZvXfGbFerGS4Pn3zSQXhkfO8CYEt3LbRtW7wzP4XSMFE3yo9A==",
+  "SigningCertURL" : "https://sns.eu-central-1.amazonaws.com/SimpleNotificationService-010a507c1833636cd94bdb98bd93083a.pem",
+  "UnsubscribeURL" : "https://sns.eu-central-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:eu-central-1:573964052742:keila_notifications:7a337edc-435b-4e3e-9e04-8dc91f6247dc"
+}
