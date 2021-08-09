@@ -41,4 +41,75 @@ defmodule Keila.Mailings.SenderAdapters.SES do
         Swoosh.Email.put_provider_option(email, :configuration_set, configuration_set)
     end
   end
+
+  @doc """
+  Validates the signature of a SNS message
+  """
+  @spec valid_signature?(map()) :: boolean()
+  def valid_signature?(notification) do
+    key = fetch_key(notification["SigningCertURL"])
+
+    if key do
+      serialized_notification =
+        notification
+        |> Map.take(~w[Message MessageId Subject Timestamp TopicArn Type])
+        |> Enum.sort_by(fn {key, _value} -> key end)
+        |> Enum.flat_map(fn {key, value} -> [key, value] end)
+        |> Enum.join("\n")
+        |> String.replace_suffix("", "\n")
+
+      signature = notification["Signature"] |> Base.decode64!()
+
+      :public_key.verify(serialized_notification, :sha, signature, key)
+    else
+      false
+    end
+  end
+
+  defp fetch_key(url) do
+    cached_key = fetch_cached_key(url)
+
+    if cached_key do
+      cached_key
+    else
+      uri = URI.parse(url)
+
+      if uri.host =~ ~r{^sns\.[a-z1-9-]+\.amazonaws\.com$} do
+        key =
+          HTTPoison.get!(url)
+          |> then(fn %{body: pem_file} -> extract_key(pem_file) end)
+
+        put_cached_key(url, key)
+
+        key
+      end
+    end
+  end
+
+  defp fetch_cached_key(url) do
+    if Process.whereis(__MODULE__.Cache) do
+      Agent.get(__MODULE__.Cache, &Map.get(&1, url))
+    end
+  end
+
+  defp put_cached_key(url, key) do
+    if Process.whereis(__MODULE__.Cache) do
+      Agent.update(__MODULE__.Cache, &Map.put(&1, url, key))
+    else
+      Agent.start_link(fn -> %{} end, name: __MODULE__.Cache)
+    end
+  end
+
+  defp extract_key(pem_file) do
+    pem_file
+    |> :public_key.pem_decode()
+    |> then(fn [{_, cert, _}] -> :public_key.pkix_decode_cert(cert, :otp) end)
+    |> fetch_record_field(:OTPTBSCertificate)
+    |> fetch_record_field(:OTPSubjectPublicKeyInfo)
+    |> fetch_record_field(:RSAPublicKey)
+  end
+
+  defp fetch_record_field(record, key) do
+    record |> Tuple.to_list() |> Enum.find(fn el -> is_tuple(el) && elem(el, 0) == key end)
+  end
 end
