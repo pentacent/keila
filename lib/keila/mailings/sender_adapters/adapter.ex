@@ -103,7 +103,8 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
   @doc """
   Applies provider options to Swoosh email from the passed sender adapter configuration.
   """
-  @callback put_provider_options(Swoosh.Email.t(), Sender.t() | SharedSender.t()) :: Swoosh.Email.t()
+  @callback put_provider_options(Swoosh.Email.t(), Sender.t() | SharedSender.t()) ::
+              Swoosh.Email.t()
 
   @doc """
   This callback is invoked in a transaction after Sender creation.
