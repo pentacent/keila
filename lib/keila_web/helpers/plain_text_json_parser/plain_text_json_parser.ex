@@ -1,9 +1,9 @@
 defmodule KeilaWeb.PlainTextJSONParser do
   @moduledoc """
-  This Parser plug is used to parse webhooks with content-type `text/plain` as JSON.
+  This Parser plug is used to requests with content-type `text/plain` as JSON.
 
-  It’s necessary to use this plug when webhook sources use `text/plain` instead of
-  `application/json`.
+  It’s necessary to use this plug when external applications (e.g. webhooks)
+  use `text/plain` instead of `application/json`.
   """
 
   @behaviour Plug.Parsers
