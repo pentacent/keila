@@ -1,0 +1,12 @@
+{
+    "Type" : "SubscriptionConfirmation",
+    "MessageId" : "42c2ee99-9aaa-479d-a8a5-acaa5dbe0f2a",
+    "Token" : "2336412f37fb687f5d51e6e2425e90ccf904c7aafc8c2668737833436bd77155830a7034fab6673c93d33f2546cc6887ff29b4580c6e4cd23c8f46b1dd02da3db5ecd4b02a4439c23ec47b8eb09f77df4c17c90b4718a90d7fcc89a08c2d992b182776e7788ed7a9644694203d88814442806a1bd4d20eda1f67a8e9dabb5e19",
+    "TopicArn" : "arn:aws:sns:eu-central-1:573964052742:keila_notifications",
+    "Message" : "You have chosen to subscribe to the topic arn:aws:sns:eu-central-1:573964052742:keila_notifications.\nTo confirm the subscription, visit the SubscribeURL included in this message.",
+    "SubscribeURL" : "https://sns.eu-central-1.amazonaws.com/?Action=ConfirmSubscription&TopicArn=arn:aws:sns:eu-central-1:573964052742:keila_notifications&Token=2336412f37fb687f5d51e6e2425e90ccf904c7aafc8c2668737833436bd77155830a7034fab6673c93d33f2546cc6887ff29b4580c6e4cd23c8f46b1dd02da3db5ecd4b02a4439c23ec47b8eb09f77df4c17c90b4718a90d7fcc89a08c2d992b182776e7788ed7a9644694203d88814442806a1bd4d20eda1f67a8e9dabb5e19",
+    "Timestamp" : "2021-08-12T11:04:52.858Z",
+    "SignatureVersion" : "1",
+    "Signature" : "WXAIhDBHhITYHUvI8+hDcbBayFeZANEyZySWEx9JCcFAADTtu4Mad5caz4PJiEHXm5gJZuDOgDgc+k/RGM2X74/ypPEWpz/7qQTeEZnBkyLkec4A8aUPNimUOel1jbGn2aTR3FbE36ZiLw5JOgWDz1SWYKM8QG9BtazcYQIhBKXP+Oylv2vGyj54mf50NU3r157lcOWz4N1wc3hAXhhi0u9MeDscYEVv+Ait34oiWHPWGv51KJCoyrQIPuSznkE19QGOJc1Fe9CXlhwMa5+gMRhENOFW9R/S15XhEx3TaA25zbULu2I5u4/68xu8rjKWtUh3EgOa8UEgAo+4ZWWRpw==",
+    "SigningCertURL" : "https://sns.eu-central-1.amazonaws.com/SimpleNotificationService-010a507c1833636cd94bdb98bd93083a.pem"
+}

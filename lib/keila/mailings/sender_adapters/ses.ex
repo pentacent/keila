@@ -52,7 +52,7 @@ defmodule Keila.Mailings.SenderAdapters.SES do
     if key do
       serialized_notification =
         notification
-        |> Map.take(~w[Message MessageId Subject Timestamp TopicArn Type])
+        |> Map.take(~w[Message MessageId SubscribeURL Subject Timestamp Token TopicArn Type])
         |> Enum.sort_by(fn {key, _value} -> key end)
         |> Enum.flat_map(fn {key, value} -> [key, value] end)
         |> Enum.join("\n")
