@@ -64,6 +64,9 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
       def after_update(_), do: :ok
       defoverridable after_update: 1
 
+      def put_provider_options(email, _), do: email
+      defoverridable put_provider_options: 2
+
       def verify_from_token(_, _), do: raise("Not implemented")
       defoverridable verify_from_token: 2
 
@@ -96,6 +99,12 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
   Builds a swoosh config from the passed sender adapter configuration.
   """
   @callback to_swoosh_config(Sender.t() | SharedSender.t()) :: keyword()
+
+  @doc """
+  Applies provider options to Swoosh email from the passed sender adapter configuration.
+  """
+  @callback put_provider_options(Swoosh.Email.t(), Sender.t() | SharedSender.t()) ::
+              Swoosh.Email.t()
 
   @doc """
   This callback is invoked in a transaction after Sender creation.

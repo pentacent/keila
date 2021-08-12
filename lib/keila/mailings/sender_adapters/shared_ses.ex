@@ -32,6 +32,15 @@ defmodule Keila.Mailings.SenderAdapters.Shared.SES do
     Keila.Mailings.SenderAdapters.SES.to_swoosh_config(shared_sender)
   end
 
+  @impl true
+  def put_provider_options(email, %{
+        config: %{shared_ses_verified_at: verified_at},
+        shared_sender: shared_sender
+      })
+      when not is_nil(verified_at) do
+    Keila.Mailings.SenderAdapters.SES.put_provider_options(email, shared_sender)
+  end
+
   # TODO This implementation is less than ideal from an architectural point of
   # view.
   # Eventually, it would be better to find a slightly more general API for

@@ -147,6 +147,7 @@ defmodule KeilaWeb.Router do
     pipe_through :api
 
     post "/webhooks/paddle", PaddleWebhookController, :webhook
+    post "/webhooks/senders/ses", SESWebhookController, :webhook
   end
 
   # Enables LiveDashboard only for development

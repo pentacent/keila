@@ -1,7 +1,6 @@
 defmodule Keila.Mailings.Worker do
   use Oban.Worker, queue: :mailer
   use Keila.Repo
-  alias Keila.Mailings
   alias Keila.Mailings.{Recipient, Builder}
 
   @impl true
@@ -13,17 +12,11 @@ defmodule Keila.Mailings.Worker do
       )
       |> Repo.one()
 
-    config = Mailings.sender_to_swoosh_config(recipient.campaign.sender)
-
     if recipient.contact.status == :active do
-      email = Builder.build(recipient.campaign, recipient, %{})
-
-      if Enum.find(email.headers, fn {name, _} -> name == "X-Keila-Invalid" end) do
-        raise "Invalid email"
-      end
-
-      email
-      |> Keila.Mailer.deliver(config)
+      recipient.campaign
+      |> Builder.build(recipient, %{})
+      |> tap(&ensure_valid!/1)
+      |> Keila.Mailer.deliver_with_sender(recipient.campaign.sender)
       |> maybe_update_recipient(recipient)
     else
       from(r in Recipient, where: r.id == ^recipient.id) |> Repo.delete_all()
@@ -32,21 +25,33 @@ defmodule Keila.Mailings.Worker do
     end
   end
 
-  defp maybe_update_recipient({:ok, _}, recipient) do
-    update_recipient(recipient)
+  defp ensure_valid!(email) do
+    if Enum.find(email.headers, fn {name, _} -> name == "X-Keila-Invalid" end) do
+      raise "Invalid email"
+    end
+  end
+
+  defp maybe_update_recipient({:ok, receipt}, recipient) do
+    update_recipient(recipient, receipt)
   end
 
   defp maybe_update_recipient(_, _) do
     :ok
   end
 
-  defp update_recipient(recipient) do
+  defp update_recipient(recipient, receipt) do
+    receipt = get_receipt(receipt)
+
     from(r in Recipient,
       where: r.id == ^recipient.id,
-      update: [set: [sent_at: fragment("NOW()")]]
+      update: [set: [sent_at: fragment("NOW()"), receipt: ^receipt]]
     )
     |> Repo.update_all([])
 
     :ok
   end
+
+  defp get_receipt(%{id: receipt}), do: receipt
+  defp get_receipt(receipt) when is_binary(receipt), do: receipt
+  defp get_receipt(_), do: nil
 end
