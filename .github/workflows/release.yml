@@ -8,7 +8,6 @@ on:
 jobs:
   test:
     name: Test Elixir ${{ matrix.version }}
-    if: github.event.base_ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     container: elixir:${{ matrix.version }}-alpine
     strategy:
@@ -54,7 +53,6 @@ jobs:
         run: mix test
   build:
     name: Build and Release
-    if: github.event.base_ref == 'refs/heads/main'
     needs:
       - test
     runs-on: ubuntu-latest
