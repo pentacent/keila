@@ -1,5 +1,19 @@
 # Changelog
 
+## Version 0.6.0
+
+Contact Activity Log & Bounce Handling 🗒️
+
+### Changed
+- Upon unsubscribing, contacts are no longer deleted from the database
+
+### Added
+- Contact activity log
+- Contact dashboard with subscriber numbers
+- Support for Configuration Sets for AWS SES
+- Automatic handling of bounces and complaints for AWS SES
+
+
 ## Version 0.5.4
 
 ### Changed
