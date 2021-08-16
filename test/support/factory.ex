@@ -103,8 +103,7 @@ defmodule Keila.Factory do
     %Keila.Contacts.Contact{
       email: "contact-#{get_counter_value()}@example.org",
       first_name: "First-#{get_counter_value()}",
-      last_name: "Last-#{get_counter_value()}",
-      status: :active
+      last_name: "Last-#{get_counter_value()}"
     }
   end
 

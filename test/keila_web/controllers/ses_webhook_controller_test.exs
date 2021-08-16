@@ -13,7 +13,7 @@ defmodule KeilaWeb.SESWebhookControllerTest do
 
   @tag :ses_webhook_controller
   test "handle bounces from SES", %{conn: conn, project: project} do
-    contact = insert!(:contact, status: :active, project_id: project.id)
+    contact = insert!(:contact, project_id: project.id)
     campaign = insert!(:mailings_campaign, project_id: project.id)
 
     recipient =
@@ -40,7 +40,7 @@ defmodule KeilaWeb.SESWebhookControllerTest do
   # This test is not suitable for running as part of the test suite but
   # is part of this file to document how the SNS Subscription feature can be
   # tested
-  test "subscription_created webhook", %{conn: conn, project: project} do
+  test "subscription_created webhook", %{conn: conn} do
     data = File.read!("test/keila/mailings/ses/subscription.signed.json")
 
     conn =
