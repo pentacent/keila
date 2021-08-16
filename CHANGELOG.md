@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 0.6.1
+
+### Fixed
+- Default contact status is now *subscribed*
+
+
 ## Version 0.6.0
 
 Contact Activity Log & Bounce Handling 🗒️
