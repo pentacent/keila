@@ -48,6 +48,10 @@
                                 </a>
                             <% end %>
                             <%= if user.id != @current_user.id do %>
+                                <%= content_tag(:a, href: Routes.user_admin_path(@conn, :impersonate, user.id), title: dgettext("admin", "Login as"), class: "button button--text") do
+                                    render_icon(:login)
+                                end
+                                %>
                                 <%= delete_form_tag(user, Routes.user_admin_path(@conn, :delete), as: :user) %>
                                 <%= delete_button_tag(user, icon: :trash, class: "button button--text") %>
                             <% end %>
