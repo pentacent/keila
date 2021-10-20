@@ -120,7 +120,6 @@ if config_env() == :prod do
   url_schema = System.get_env("URL_SCHEMA")
   url_path = System.get_env("URL_PATH")
 
-
   url_schema =
     cond do
       url_schema not in [nil, ""] -> url_schema
