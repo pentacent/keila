@@ -118,10 +118,12 @@ if config_env() == :prod do
   url_host = System.get_env("URL_HOST")
   url_port = System.get_env("URL_PORT") |> maybe_to_int.()
   url_schema = System.get_env("URL_SCHEMA")
+  url_path = System.get_env("URL_PATH")
+
 
   url_schema =
     cond do
-      url_schema not in [nil, "empty"] -> url_schema
+      url_schema not in [nil, ""] -> url_schema
       url_port == 443 -> "https"
       true -> "http"
     end
@@ -130,6 +132,7 @@ if config_env() == :prod do
     config =
       [host: url_host, scheme: url_schema]
       |> put_if_not_empty.(:port, url_port)
+      |> put_if_not_empty.(:path, url_path)
 
     config(:keila, KeilaWeb.Endpoint, url: config)
   else
@@ -139,7 +142,8 @@ if config_env() == :prod do
     Use the following environment variables:
     - URL_HOST
     - URL_PORT (defaults to 80)
-    - URL Schema (defaults to "https" for port 443, otherwise to "http")
+    - URL_SCHEMA (defaults to "https" for port 443, otherwise to "http")
+    - URL_PATH (defaults to "/")
     """)
   end
 
@@ -157,10 +161,10 @@ if config_env() == :prod do
   config :keila,
     # Disable registration of new users via the UI
     registration_disabled:
-      System.get_env("DISABLE_REGISTRATION") not in [nil, 0, "", "false", "FALSE"],
+      System.get_env("DISABLE_REGISTRATION") not in [nil, "", "0", "false", "FALSE"],
     # Disable creation of Senders not using SharedSenders.
     sender_creation_disabled:
-      System.get_env("DISABLE_SENDER_CREATION") not in [nil, 0, "", "false", "FALSE"]
+      System.get_env("DISABLE_SENDER_CREATION") not in [nil, "", "0", "false", "FALSE"]
 
   # Enable sending quotas
   config :keila, Keila.Accounts,
