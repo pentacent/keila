@@ -92,6 +92,13 @@ defmodule KeilaWeb.UserAdminController do
     redirect(conn, to: Routes.user_admin_path(conn, :show_credits, user.id))
   end
 
+  def impersonate(conn, %{"id" => user_id}) do
+    conn
+    |> KeilaWeb.AuthSession.end_auth_session()
+    |> KeilaWeb.AuthSession.start_auth_session(user_id)
+    |> redirect(to: "/")
+  end
+
   defp authorize(conn, _) do
     case conn.assigns.is_admin? do
       true -> conn

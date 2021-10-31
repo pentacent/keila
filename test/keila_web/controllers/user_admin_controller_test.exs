@@ -48,5 +48,17 @@ defmodule KeilaWeb.UserAdminControllerTest do
       assert redirected_to(conn, 302) == Routes.user_admin_path(conn, :index)
       assert nil == Keila.Repo.get(Keila.Auth.User, user.id)
     end
+
+    @tag :admin_controller
+    test "impersonates user", %{conn: conn} do
+      {root, user} = with_seed()
+      conn = with_login(conn, user: root)
+
+      conn = get(conn, Routes.user_admin_path(conn, :impersonate, user.id))
+      assert redirected_to(conn, 302) == "/"
+
+      conn = recycle(conn) |> get("/")
+      assert conn.assigns.current_user.id == user.id
+    end
   end
 end
