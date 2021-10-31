@@ -1,4 +1,7 @@
+/*! Keila | AGPLv3 License | https://www.keila.io */
+
 @import "_inter.scss";
+@import "_header.scss";
 
 html {
     font-family: "Inter", sans-serif;
@@ -124,5 +127,3 @@ iframe[src="/phoenix/live_reload/frame"] {
         text-decoration: underline;
     }
 }
-
-@import "_header.scss"

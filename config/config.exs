@@ -18,6 +18,14 @@ config :keila, KeilaWeb.Endpoint,
   pubsub_server: Keila.PubSub,
   live_view: [signing_salt: "kH+cT7XL"]
 
+config :esbuild,
+  version: "0.12.18",
+  default: [
+    args: ~w(js/app.js --bundle --target=es2016 --outdir=../priv/static/js),
+    cd: Path.expand("../assets", __DIR__),
+    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
+  ]
+
 config :keila, Keila.Id,
   separator: "_",
   alphabet: "abcdefghijkmnopqrstuvwxyz23456789ABCDEFGHJKLMNPQRSTUVWXYZ_",

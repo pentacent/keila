@@ -3,11 +3,11 @@ import Config
 # Configure your database
 config :keila, Keila.Repo,
   username: "postgres",
-  password: "postgres",
-  database: "keila_dev",
+  password: "postgres-keila-dev-pw",
+  database: "postgres",
   hostname: "localhost",
-  show_sensitive_data_on_connection_error: true,
-  pool_size: 10
+  port: 54323,
+  show_sensitive_data_on_connection_error: true
 
 config :keila, skip_migrations: true
 
@@ -23,11 +23,19 @@ config :keila, KeilaWeb.Endpoint,
   code_reloader: true,
   check_origin: false,
   watchers: [
-    node: [
-      "node_modules/webpack/bin/webpack.js",
-      "--mode",
-      "development",
-      "--watch-stdin",
+    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
+    npx: [
+      "tailwindcss",
+      "--input=css/app.scss",
+      "--output=../priv/static/css/app.css",
+      "--postcss",
+      "--watch",
+      cd: Path.expand("../assets", __DIR__)
+    ],
+    npx: [
+      "cpx",
+      "static/**",
+      "../priv/static",
       cd: Path.expand("../assets", __DIR__)
     ]
   ]
@@ -91,3 +99,5 @@ config :keila, Keila.Mailer, adapter: Swoosh.Adapters.Local
 
 # Enable sending quotas in dev
 config :keila, Keila.Accounts, credits_enabled: true
+
+config :keila, Keila.Billing, enabled: true
