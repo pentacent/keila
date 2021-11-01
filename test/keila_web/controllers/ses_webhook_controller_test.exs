@@ -13,7 +13,9 @@ defmodule KeilaWeb.SESWebhookControllerTest do
     # AWS cycles keys
     File.read!(Path.join(:code.priv_dir(:keila), "vendor/aws/#{@aws_key}"))
     |> extract_key()
-    |> then(fn key -> put_cached_key("https://sns.eu-central-1.amazonaws.com/#{@aws_key}", key) end)
+    |> then(fn key ->
+      put_cached_key("https://sns.eu-central-1.amazonaws.com/#{@aws_key}", key)
+    end)
 
     %{project: project}
   end
