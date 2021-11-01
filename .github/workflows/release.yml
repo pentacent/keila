@@ -65,7 +65,7 @@ jobs:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-buildx--no-restore-
+            ${{ runner.os }}-buildx-
       - uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKER_HUB_USER }}

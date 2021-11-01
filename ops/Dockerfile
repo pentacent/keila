@@ -14,8 +14,8 @@ COPY assets/package.json assets/package-lock.json ./assets/
 RUN npm ci --prefix ./assets
     
 COPY . .
-RUN npm run deploy --prefix ./assets && \
-    mix phx.digest && \
+RUN mix deps.clean mime --build && \
+    mix assets.deploy && \
     mix release
 
 FROM elixir:1.12-alpine
