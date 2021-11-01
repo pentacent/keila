@@ -1,5 +1,18 @@
 # Changelog
 
+## Version 0.6.2
+
+### Added
+- Configuration option to run Keila in a subdirectory
+- Login-as feature for admins
+- Gzip compression of assets
+
+### Changed
+- Upgraded to Phoenix 1.6
+- Upgraded various dependencies, including Ecto
+- Replaced Webpack with esbuild
+
+
 ## Version 0.6.1
 
 ### Fixed
