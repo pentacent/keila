@@ -90,6 +90,11 @@ config :keila, Oban,
 # Use Timezone database
 config :elixir, :time_zone_database, Tzdata.TimeZoneDatabase
 
+# Add tsv MIME type
+config :mime, :types, %{
+  "text/tab-separated-values" => ["tsv"]
+}
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
