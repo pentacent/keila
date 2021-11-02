@@ -13,6 +13,7 @@ defmodule Keila.Contacts.Contact do
     field(:first_name, :string)
     field(:last_name, :string)
     field(:status, Ecto.Enum, values: @statuses, default: :active)
+    field(:data, :map)
     belongs_to(:project, Keila.Projects.Project, type: Keila.Projects.Project.Id)
     timestamps()
   end
