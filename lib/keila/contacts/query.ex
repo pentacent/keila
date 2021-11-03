@@ -132,7 +132,6 @@ defmodule Keila.Contacts.Query do
 
     equals_string = dynamic([c], fragment("?#>>?", c.data, ^path) == ^string_value)
     array_contains = dynamic([c], fragment("?#>? @> ?", c.data, ^path, ^value_in_array))
-    array_contains = dynamic([c], fragment("?#>? @> ?", c.data, ^path, ^value_in_array))
     dynamic([c], ^equals_string or ^array_contains)
   end
 
