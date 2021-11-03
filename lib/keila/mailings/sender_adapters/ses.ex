@@ -38,7 +38,7 @@ defmodule Keila.Mailings.SenderAdapters.SES do
         email
 
       configuration_set ->
-        Swoosh.Email.put_provider_option(email, :configuration_set, configuration_set)
+        Swoosh.Email.put_provider_option(email, :configuration_set_name, configuration_set)
     end
   end
 
