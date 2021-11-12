@@ -1,2 +1,3 @@
-Email,First name,Last name
-jane.doe@example.com,Jane,Doe
+Email,First name,Last name,Data
+jane@example.com,Jane,Doe,"{""tags"":[""rocket-scientist""]}"
+john@example.com,John,Smith,"{""tags"":[""book-lover""]}"
