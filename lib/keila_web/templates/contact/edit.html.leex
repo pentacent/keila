@@ -34,6 +34,13 @@
                         <%= text_input(f, :last_name, placeholder: gettext("Doe"), class: "text-black") %>
                     <% end %>
                 </div>
+                <div class="flex flex-col">
+                    <%= label(f, :data, "Data") %>
+                    <span class="block text-sm mb-2"><%= gettext("You can add any JSON object as custom data to your contacts.") %></span>
+                    <%= with_validation(f, :data) do %>
+                        <%= textarea(f, :data, class: "text-black", x_data: "{}", x_init: "$el.value = $el.value && JSON.stringify(JSON.parse($el.value), null, 2)", rows: 5, value: (if (assigns[:contact] && not is_nil(@contact.data)), do: Jason.encode!(@contact.data), else: nil)) %>
+                    <% end %>
+                </div>
 
                 <div class="flex gap-4">
                     <a href="<%= Routes.contact_path(@conn, :index, @current_project.id) %>" class="button button--large button--text">
