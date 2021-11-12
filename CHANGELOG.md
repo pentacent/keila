@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+### Added
+- Support for custom contact data
+
 ## Version 0.6.2
 
 ### Added
