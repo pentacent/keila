@@ -42,25 +42,16 @@ defmodule Keila.Contacts.Import do
   end
 
   defp import_csv!(project_id, filename, notify_pid) do
-    parser = determine_parser(filename)
+    first_line = read_first_line!(filename)
+    parser = determine_parser(first_line)
+    row_function = build_row_function(parser, first_line, project_id)
 
-    lines =
-      File.stream!(filename)
-      |> parser.parse_stream()
-      |> Enum.count()
-
+    lines = read_file_line_count!(filename)
     send(notify_pid, {:contacts_import_progress, 0, lines})
 
     File.stream!(filename)
     |> parser.parse_stream()
-    |> Stream.map(fn [email, first_name, last_name] ->
-      Contact.creation_changeset(%{
-        email: email,
-        first_name: first_name,
-        last_name: last_name,
-        project_id: project_id
-      })
-    end)
+    |> Stream.map(row_function)
     |> Stream.with_index()
     |> Stream.map(fn {changeset, n} ->
       case Repo.insert(changeset, returning: false) do
@@ -78,11 +69,13 @@ defmodule Keila.Contacts.Import do
     end)
   end
 
-  defp determine_parser(filename) do
-    file = File.open!(filename)
-    first_line = IO.read(file, :line)
-    File.close(file)
+  defp read_first_line!(filename) do
+    File.open!(filename, fn file ->
+      IO.read(file, :line)
+    end)
+  end
 
+  defp determine_parser(first_line) do
     cond do
       String.split(first_line, ";") |> Enum.count() == 3 ->
         Keila.Contacts.Import.ExcelCSV
@@ -90,6 +83,51 @@ defmodule Keila.Contacts.Import do
       true ->
         NimbleCSV.RFC4180
     end
+  end
+
+  defp build_row_function(parser, first_line, project_id) do
+    headers =
+      first_line
+      |> parser.parse_string(skip_headers: false)
+      |> hd()
+
+    columns =
+      [
+        email: find_header_column(headers, ~r{email.?(address)?}i),
+        first_name: find_header_column(headers, ~r{first.?name}i),
+        last_name: find_header_column(headers, ~r{last.?name}i),
+        data: find_header_column(headers, ~r{data}i)
+      ]
+      |> Enum.filter(fn {_key, column} -> not is_nil(column) end)
+      |> Enum.sort_by(fn {_key, column} -> column end)
+      |> Enum.map(fn {key, _} -> key end)
+
+    fn row ->
+      Enum.zip(columns, row)
+      |> Keyword.put(:project_id, project_id)
+      |> Enum.into(%{})
+      |> Map.update(:data, nil, &update_data_param/1)
+      |> Contact.creation_changeset()
+    end
+  end
+
+  defp find_header_column(headers, regex) do
+    Enum.find_index(headers, fn column -> column =~ regex end)
+  end
+
+  defp update_data_param(data) when data not in [nil, ""] do
+    case Jason.decode(data) do
+      {:ok, data} when is_map(data) -> data
+      _ -> data
+    end
+  end
+
+  defp update_data_param(_), do: nil
+
+  defp read_file_line_count!(filename) do
+    File.stream!(filename)
+    |> Enum.count()
+    |> then(fn lines -> max(lines - 1, 0) end)
   end
 
   defp raise_import_error!(changeset, line) do

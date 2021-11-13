@@ -94,9 +94,9 @@ defmodule Keila.ContactsTest do
     assert nil == Contacts.get_contact(contact3.id)
   end
 
-  @import_names [
-    {"Joël", "Müller-Schultheiß"},
-    {"Eliška", "Þorláksson"}
+  @imported_contacts [
+    {"Joël", "Müller-Schultheiß", %{"foo" => "bar"}},
+    {"Eliška", "Þorláksson", %{"foo" => [1, 2, 3]}}
   ]
 
   @tag :contacts
@@ -109,9 +109,24 @@ defmodule Keila.ContactsTest do
 
     contacts = Contacts.get_project_contacts(project.id)
 
-    for {first_name, last_name} <- @import_names do
+    for {first_name, last_name, _data} <- @imported_contacts do
       assert Enum.find(contacts, fn
                %{first_name: ^first_name, last_name: ^last_name} -> true
+               _ -> false
+             end)
+    end
+  end
+
+  @tag :contacts
+  test "Import RFC 4180 CSV with data", %{project: project} do
+    assert :ok == Contacts.import_csv(project.id, "test/keila/contacts/import_with_data.csv")
+    assert_received {:contacts_import_progress, 2, 2}
+
+    contacts = Contacts.get_project_contacts(project.id)
+
+    for {first_name, last_name, data} <- @imported_contacts do
+      assert Enum.find(contacts, fn
+               %{first_name: ^first_name, last_name: ^last_name, data: ^data} -> true
                _ -> false
              end)
     end
@@ -122,7 +137,7 @@ defmodule Keila.ContactsTest do
     assert :ok == Contacts.import_csv(project.id, "test/keila/contacts/import_excel.csv")
     contacts = Contacts.get_project_contacts(project.id)
 
-    for {first_name, last_name} <- @import_names do
+    for {first_name, last_name, _data} <- @imported_contacts do
       assert Enum.find(contacts, fn
                %{first_name: ^first_name, last_name: ^last_name} -> true
                _ -> false
@@ -135,7 +150,7 @@ defmodule Keila.ContactsTest do
     assert :ok == Contacts.import_csv(project.id, "test/keila/contacts/import_libreoffice.csv")
     contacts = Contacts.get_project_contacts(project.id)
 
-    for {first_name, last_name} <- @import_names do
+    for {first_name, last_name, _data} <- @imported_contacts do
       assert Enum.find(contacts, fn
                %{first_name: ^first_name, last_name: ^last_name} -> true
                _ -> false

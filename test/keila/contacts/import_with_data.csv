@@ -1,0 +1,3 @@
+Email,First name,Last name,Data
+foo-1@example.com,Joël,Müller-Schultheiß,"{""foo"":""bar""}"
+foo-2@example.com,Eliška,Þorláksson,"{""foo"":[1,2,3]}"

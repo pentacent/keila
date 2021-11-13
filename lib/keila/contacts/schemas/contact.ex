@@ -13,6 +13,7 @@ defmodule Keila.Contacts.Contact do
     field(:first_name, :string)
     field(:last_name, :string)
     field(:status, Ecto.Enum, values: @statuses, default: :active)
+    field(:data, :map)
     belongs_to(:project, Keila.Projects.Project, type: Keila.Projects.Project.Id)
     timestamps()
   end
@@ -20,7 +21,7 @@ defmodule Keila.Contacts.Contact do
   @spec creation_changeset(t(), Ecto.Changeset.data()) :: Ecto.Changeset.t(t())
   def creation_changeset(struct \\ %__MODULE__{}, params) do
     struct
-    |> cast(params, [:email, :first_name, :last_name, :project_id])
+    |> cast(params, [:email, :first_name, :last_name, :project_id, :data])
     |> validate_required([:email, :project_id])
     |> validate_format(:email, ~r/^[^\s]+@[^\s]+$/, message: "must have the @ sign and no spaces")
     |> unique_constraint([:email, :project_id])
@@ -29,7 +30,7 @@ defmodule Keila.Contacts.Contact do
   @spec update_changeset(t(), Ecto.Changeset.data()) :: Ecto.Changeset.t(t())
   def update_changeset(struct \\ %__MODULE__{}, params) do
     struct
-    |> cast(params, [:email, :first_name, :last_name])
+    |> cast(params, [:email, :first_name, :last_name, :data])
     |> validate_required([:email])
     |> validate_format(:email, ~r/^[^\s]+@[^\s]+$/, message: "must have the @ sign and no spaces")
   end

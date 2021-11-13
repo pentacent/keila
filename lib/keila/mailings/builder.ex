@@ -14,7 +14,8 @@ defmodule Keila.Mailings.Builder do
     id: "c_id",
     first_name: "Jane",
     last_name: "Doe",
-    email: "jane.doe@example.com"
+    email: "jane.doe@example.com",
+    data: %{"tags" => ["rocket-scientist"]}
   }
 
   @doc """
@@ -93,7 +94,7 @@ defmodule Keila.Mailings.Builder do
     |> Enum.into(%{})
   end
 
-  defp process_assigns(value) when is_map(value) do
+  defp process_assigns(value) when is_list(value) do
     Enum.map(value, &process_assigns/1)
   end
 

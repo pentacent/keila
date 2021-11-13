@@ -98,11 +98,29 @@ defmodule KeilaWeb.ContactController do
   def post_edit(conn, %{"contact" => params}) do
     contact = conn.assigns.contact
 
-    case Contacts.update_contact(contact.id, params) do
-      {:ok, _} -> redirect(conn, to: Routes.contact_path(conn, :index, current_project(conn).id))
+    with {:ok, params} <- decode_data_param(contact, params),
+         {:ok, _} <- Contacts.update_contact(contact.id, params) do
+      redirect(conn, to: Routes.contact_path(conn, :index, current_project(conn).id))
+    else
       {:error, changeset} -> render_edit(conn, 400, changeset)
     end
   end
+
+  defp decode_data_param(contact, params = %{"data" => data}) when data not in [nil, ""] do
+    case Jason.decode(data) do
+      {:ok, data} when is_map(data) ->
+        {:ok, Map.replace!(params, "data", data)}
+
+      {:ok, _} ->
+        contact |> change() |> add_error(:data, "must be a JSON object") |> apply_action(:update)
+
+      {:error, error = %Jason.DecodeError{}} ->
+        message = Jason.DecodeError.message(error)
+        contact |> change() |> add_error(:data, message) |> apply_action(:update)
+    end
+  end
+
+  defp decode_data_param(_contact, params), do: {:ok, params}
 
   defp render_edit(conn, status \\ 200, changeset) do
     conn

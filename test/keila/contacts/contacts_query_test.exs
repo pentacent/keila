@@ -146,4 +146,56 @@ defmodule Keila.ContactsQueryTest do
              |> Query.apply(filter: %{"first_name" => "null"})
              |> Repo.all()
   end
+
+  @tag :contacts_query
+  test "filter for custom data" do
+    c1 =
+      insert!(:contact, %{
+        data: %{
+          "string" => "foo",
+          "array" => [1, 2, 3],
+          "object" => %{"a" => "b"},
+          "objects" => [%{"b" => "c"}]
+        }
+      })
+
+    c2 =
+      insert!(:contact, %{
+        data: %{
+          "string" => "bar",
+          "array" => [4, 5, 6],
+          "object" => %{"d" => %{"e" => "f"}},
+          "objects" => [%{"e" => "f"}]
+        }
+      })
+
+    # Query strings
+    assert [c1] == filter_contacts(%{"data.string" => "foo"})
+    assert [c2] == filter_contacts(%{"data.string" => "bar"})
+
+    # Query arrays
+    assert [c1] == filter_contacts(%{"data.array" => 1})
+    assert [c1] == filter_contacts(%{"data.array" => 2})
+
+    # Query object matches in arrays
+    assert [c1] == filter_contacts(%{"data.objects" => %{"b" => "c"}})
+    assert [c1] == filter_contacts(%{"data.objects.0.b" => "c"})
+
+    # Query nested objects
+    assert [c2] == filter_contacts(%{"data.object" => %{"d" => %{"e" => "f"}}})
+    assert [c2] == filter_contacts(%{"data.object.d" => %{"e" => "f"}})
+    assert [c2] == filter_contacts(%{"data.object.d.e" => "f"})
+
+    # Query with operators
+    assert [c1] == filter_contacts(%{"data.string" => %{"$in" => ["foobar", "foo"]}})
+    assert [c2] == filter_contacts(%{"data.string" => %{"$in" => ["foobar", "bar"]}})
+    assert [] == filter_contacts(%{"data.array.2" => %{"$lt" => 3}})
+    assert [c1] == filter_contacts(%{"data.array.2" => %{"$lte" => 3}})
+    assert [] == filter_contacts(%{"data.array.0" => %{"$gt" => 4}})
+    assert [c2] == filter_contacts(%{"data.array.0" => %{"$gte" => 4}})
+  end
+
+  defp filter_contacts(filter) do
+    from(Contact) |> Query.apply(filter: filter) |> Repo.all()
+  end
 end
