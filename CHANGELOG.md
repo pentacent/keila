@@ -5,6 +5,11 @@
 ### Added
 - Support for custom contact data
 
+## Changed
+- Improved UI design
+- Moved all templates from leex/eex to heex
+
+
 ## Version 0.6.2
 
 ### Added
