@@ -47,7 +47,12 @@ defmodule KeilaWeb.LayoutView do
     if exact? do
       path == current_path
     else
-      exclude = Keyword.get(ops, :exclude, []) |> Enum.map(fn {controller, action, route_params} -> get_path(conn, controller, action, route_params) end)
+      exclude =
+        Keyword.get(ops, :exclude, [])
+        |> Enum.map(fn {controller, action, route_params} ->
+          get_path(conn, controller, action, route_params)
+        end)
+
       String.starts_with?(current_path, path) && current_path not in exclude
     end
   end
