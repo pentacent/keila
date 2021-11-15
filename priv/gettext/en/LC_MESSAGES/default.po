@@ -1,0 +1,1786 @@
+## "msgid"s in this file come from POT (.pot) files.
+##
+## Do not add, change, or remove "msgid"s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
+##
+## Use "mix gettext.extract --merge" or "mix gettext.merge"
+## to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: en\n"
+"Plural-Forms: nplurals=2\n"
+
+#, elixir-format
+#: lib/keila_web/templates/account/edit.html.heex:58
+#: lib/keila_web/templates/account/edit.html.heex:101
+msgid "%{monthly_emails} emails/month"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/account/edit.html.heex:49
+#: lib/keila_web/templates/account/edit.html.heex:92
+msgid "%{price} / month"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/account/edit.html.heex:136
+msgid "%{remaining} / %{total} emails remaining"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/account/edit.html.heex:52
+#: lib/keila_web/templates/account/edit.html.heex:95
+msgid "(%{price} incl. tax)"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/views/form_view.ex:112
+msgid "(optional)"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/_mailgun_config.html.heex:10
+#: lib/keila_web/templates/sender/_mailgun_config.html.heex:18 lib/keila_web/templates/sender/_sendgrid_config.html.heex:5
+#: lib/keila_web/templates/sender/_sendgrid_config.html.heex:13
+msgid "API Key"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/_ses_config.html.heex:25
+msgid "Access Key"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/layout/_menu.html.heex:63
+msgid "Account"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/form/edit_live.html.heex:78
+msgid "Allow embedding as HTML"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/auth/register.html.heex:36
+#: lib/keila_web/templates/auth/registration_disabled.html.heex:10
+msgid "Already have an account?"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:86
+msgid "Alt Text"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:77
+msgid "Are you ready to schedule sending your campaign <em>%{subject}</em> to %{count} contacts?"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:25
+msgid "Are you ready to send your campaign <em>%{subject}</em> to %{count} contacts?"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/_ses_config.html.heex:9
+msgid "Asia Pacific (Mumbai)"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/_ses_config.html.heex:10
+msgid "Asia Pacific (Seoul)"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/_ses_config.html.heex:11
+msgid "Asia Pacific (Singapore)"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/_ses_config.html.heex:12
+msgid "Asia Pacific (Sydney)"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/_ses_config.html.heex:13
+msgid "Asia Pacific (Tokyo)"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/import_live.html.heex:50
+msgid "Back to Contacts overview"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/verification_success.html.heex:11
+msgid "Back to your project"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/views/template_view.ex:39
+msgid "Background"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/edit_live.html.heex:51
+msgid "Before you can send your campaign, you need to create a sender."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:5
+msgid "Bold"
+msgstr ""
+
+#, elixir-format
+#: lib/keila/templates/default_template.ex:61
+#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:82
+msgid "Button"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:131
+msgid "Button Text"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:127
+msgid "Button URL"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/form/edit_live.html.heex:46
+msgid "Button label"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/controllers/campaign_controller.ex:18
+#: lib/keila_web/templates/campaign/index.html.heex:4 lib/keila_web/templates/layout/_menu.html.heex:57
+#: lib/keila_web/templates/project/show.html.heex:41
+msgid "Campaigns"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/delete.html.heex:10
+msgid "Campaigns associated with this sender will not be deleted."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/_ses_config.html.heex:14
+msgid "Canada (Central)"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:36
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:119 lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:52
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:100 lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:141
+#: lib/keila_web/templates/campaign/delete.html.heex:26 lib/keila_web/templates/campaign/edit_live.html.heex:9
+#: lib/keila_web/templates/contact/delete.html.heex:44 lib/keila_web/templates/contact/edit.html.heex:12
+#: lib/keila_web/templates/form/delete.html.heex:26 lib/keila_web/templates/form/edit_live.html.heex:8
+#: lib/keila_web/templates/project/delete.html.heex:24 lib/keila_web/templates/project/edit.html.heex:8
+#: lib/keila_web/templates/sender/delete.html.heex:25 lib/keila_web/templates/sender/edit.html.heex:12
+#: lib/keila_web/templates/shared_sender_admin/delete.html.heex:24 lib/keila_web/templates/shared_sender_admin/edit.html.heex:12
+#: lib/keila_web/templates/template/delete.html.heex:26 lib/keila_web/templates/template/edit_live.html.heex:8
+#: lib/keila_web/templates/user_admin/delete.html.heex:26
+msgid "Cancel"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/account/edit.html.heex:73
+msgid "Cancel subscription"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/_mailgun_config.html.heex:21
+#: lib/keila_web/templates/sender/_sendgrid_config.html.heex:16 lib/keila_web/templates/sender/_ses_config.html.heex:44
+#: lib/keila_web/templates/sender/_smtp_config.html.heex:27
+msgid "Change"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/account/edit.html.heex:141
+msgid "Change Password"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/stats_live.html.heex:66
+msgid "Check your sending quota now"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/stats_live.html.heex:49
+msgid "Check your subscription now"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/stats_live.html.heex:133
+msgid "Click rate"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/stats_live.html.heex:130
+msgid "Clicks"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/stats_live.html.heex:116
+msgid "Clicks: %{clicks} (%{percentage}%)"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/index.html.heex:55
+#: lib/keila_web/templates/template/index.html.heex:32
+msgid "Clone"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/controllers/campaign_controller.ex:83
+#: lib/keila_web/templates/campaign/clone.html.heex:4
+msgid "Clone Campaign"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/controllers/template_controller.ex:74
+#: lib/keila_web/templates/template/clone.html.heex:4
+msgid "Clone Template"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/layout/_menu.html.heex:20
+msgid "Close menu"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_markdown_editor.html.heex:25
+msgid "Close preview"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/form/edit_live.html.heex:198
+msgid "Code copied to clipboard."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/controllers/contact_controller.ex:53
+msgid "Confirm Contact Deletion"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/controllers/form_controller.ex:126
+msgid "Confirm Form Deletion"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/controllers/template_controller.ex:146
+msgid "Confirm Template Deletion"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/controllers/user_admin_controller.ex:57
+msgid "Confirm User Deletion"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/controllers/campaign_controller.ex:243
+msgid "Confirm campaign Deletion"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/controllers/contact_controller.ex:22
+#: lib/keila_web/templates/contact/index.html.heex:4 lib/keila_web/templates/layout/_menu.html.heex:44
+#: lib/keila_web/templates/project/show.html.heex:51
+msgid "Contacts"
+msgstr ""
+
+#, elixir-format
+#: lib/keila/templates/default_template.ex:26
+msgid "Content"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/form/edit_live.html.heex:185
+#: lib/keila_web/templates/form/edit_live.html.heex:193
+msgid "Copy"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/form/index.html.heex:9
+#: lib/keila_web/templates/project/_empty_state_forms_contacts.html.heex:25
+msgid "Create a new form"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/project/index.html.heex:38
+msgid "Create a new project"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/template/index.html.heex:9
+msgid "Create a new template"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/new.html.heex:35
+#: lib/keila_web/templates/layout/_menu.html.heex:59
+msgid "Create campaign"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/layout/_menu.html.heex:46
+msgid "Create contact"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/layout/_menu.html.heex:55
+msgid "Create template"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_empty_state.html.heex:17
+#: lib/keila_web/templates/project/_empty_state_campaigns.html.heex:14
+msgid "Create your first campaign"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/form/_empty_state.html.heex:20
+#: lib/keila_web/templates/project/_empty_state_forms_contacts.html.heex:23
+msgid "Create your first form"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/project/index.html.heex:22
+msgid "Create your first project"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/edit_live.html.heex:53
+#: lib/keila_web/templates/project/_empty_state_senders.html.heex:17 lib/keila_web/templates/sender/_empty_state.html.heex:19
+msgid "Create your first sender"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/edit_live.html.heex:91
+#: lib/keila_web/templates/template/_empty_state.html.heex:20
+msgid "Create your first template"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:82
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:26
+msgid "Date"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/views/template_view.ex:44
+msgid "Decoration"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/edit_live.html.heex:85
+#: lib/keila_web/views/template_view.ex:65
+msgid "Default"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/delete.html.heex:29
+#: lib/keila_web/templates/campaign/edit_live.html.heex:12 lib/keila_web/templates/contact/delete.html.heex:47
+#: lib/keila_web/templates/contact/edit.html.heex:17 lib/keila_web/templates/form/delete.html.heex:29
+#: lib/keila_web/templates/form/edit_live.html.heex:11 lib/keila_web/templates/project/delete.html.heex:27
+#: lib/keila_web/templates/project/edit.html.heex:11 lib/keila_web/templates/sender/delete.html.heex:28
+#: lib/keila_web/templates/sender/edit.html.heex:16 lib/keila_web/templates/shared_sender_admin/delete.html.heex:27
+#: lib/keila_web/templates/shared_sender_admin/edit.html.heex:16 lib/keila_web/templates/template/delete.html.heex:29
+#: lib/keila_web/templates/template/edit_live.html.heex:11 lib/keila_web/templates/user_admin/delete.html.heex:29
+msgid "Delete"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/controllers/project_controller.ex:112
+msgid "Delete %{project_name}"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/delete.html.heex:3
+msgid "Delete Campaigns?"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/delete.html.heex:3
+msgid "Delete Contacts?"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/form/delete.html.heex:3
+msgid "Delete Forms?"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/project/delete.html.heex:3
+msgid "Delete Project %{project}?"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/delete.html.heex:3
+#: lib/keila_web/views/sender_view.ex:13
+msgid "Delete Sender %{sender}?"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/template/delete.html.heex:3
+msgid "Delete Templates?"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/user_admin/delete.html.heex:3
+msgid "Delete Users?"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/index.html.heex:86
+msgid "Delete all selected contacts"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/delete.html.heex:22
+msgid "Deleting a campaign cannot be undone."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/delete.html.heex:40
+msgid "Deleting a contact cannot be undone."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/form/delete.html.heex:22
+msgid "Deleting a form cannot be undone."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/project/delete.html.heex:13
+msgid "Deleting a project cannot be undone."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/delete.html.heex:13
+msgid "Deleting a sender cannot be undone."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/template/delete.html.heex:22
+msgid "Deleting a template cannot be undone."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/user_admin/delete.html.heex:22
+msgid "Deleting a user cannot be undone."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:19
+msgid "Descrease indent"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/delete.html.heex:10
+msgid "Do you really want to delete the following campaigns?"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/delete.html.heex:10
+msgid "Do you really want to delete the following contacts?"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/form/delete.html.heex:10
+msgid "Do you really want to delete the following forms?"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/template/delete.html.heex:10
+msgid "Do you really want to delete the following templates?"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/user_admin/delete.html.heex:10
+msgid "Do you really want to delete the following users? This will also delete their projects and contacts."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/edit.html.heex:49
+msgid "Doe"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/auth/reset.html.heex:21
+msgid "Don’t have an account?"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/import_live.html.heex:100
+#: lib/keila_web/templates/contact/import_live.html.heex:118 lib/keila_web/templates/contact/import_live.html.heex:134
+msgid "Download template"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/index.html.heex:60
+#: lib/keila_web/templates/form/index.html.heex:33 lib/keila_web/templates/template/index.html.heex:36
+msgid "Edit"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/controllers/project_controller.ex:77
+msgid "Edit %{project_name}"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/edit_live.html.heex:5
+msgid "Edit Campaign"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/controllers/contact_controller.ex:128
+msgid "Edit Contact"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/form/edit_live.html.heex:4
+msgid "Edit Form"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/views/sender_view.ex:8
+msgid "Edit Sender %{sender}"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/template/edit_live.html.heex:4
+msgid "Edit Template"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:90
+msgid "Edit plain Markdown"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/stats_live.html.heex:15
+msgid "Edit this campaign"
+msgstr ""
+
+#, elixir-format
+#: lib/keila/contacts/contacts.ex:249
+#: lib/keila_web/templates/account/edit.html.heex:147 lib/keila_web/templates/auth/register.html.heex:10
+#: lib/keila_web/templates/auth/reset.html.heex:10
+msgid "Email"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_markdown_editor.html.heex:12
+msgid "Enable visual editor"
+msgstr ""
+
+#, elixir-format
+#: lib/keila/contacts/import.ex:145
+msgid "Error importing contact in line %{line}: %{message}"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/_ses_config.html.heex:15
+msgid "Europe (Frankfurt)"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/_ses_config.html.heex:16
+msgid "Europe (Ireland)"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/_ses_config.html.heex:17
+msgid "Europe (London)"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/_ses_config.html.heex:18
+msgid "Europe (Paris)"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/_ses_config.html.heex:19
+msgid "Europe (Stockholm)"
+msgstr ""
+
+#, elixir-format
+#: lib/keila/contacts/import.ex:137
+msgid "Field %{field}: %{message}"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/form/edit_live.html.heex:27
+#: lib/keila_web/templates/form/edit_live.html.heex:86
+msgid "Fields"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/form/edit_live.html.heex:64
+msgid "Fine print"
+msgstr ""
+
+#, elixir-format
+#: lib/keila/contacts/contacts.ex:256
+msgid "First name"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/views/template_view.ex:41
+msgid "Font"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/views/template_view.ex:42
+msgid "Font style"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/views/template_view.ex:43
+msgid "Font weight"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:81
+msgid "For best results, choose an image that is 600px wide."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/controllers/form_controller.ex:74
+#: lib/keila_web/templates/form/index.html.heex:4 lib/keila_web/templates/layout/_menu.html.heex:49
+#: lib/keila_web/templates/project/show.html.heex:71
+msgid "Forms"
+msgstr ""
+
+#, elixir-format
+#: lib/keila/templates/default_template.ex:32
+#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:47
+msgid "Heading 1"
+msgstr ""
+
+#, elixir-format
+#: lib/keila/templates/default_template.ex:40
+#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:54
+msgid "Heading 2"
+msgstr ""
+
+#, elixir-format
+#: lib/keila/templates/default_template.ex:48
+#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:61
+msgid "Heading 3"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/account/edit.html.heex:144
+msgid "Here you can update your Keila password."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/views/form_view.ex:57
+msgid "I am human."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/auth/reset.html.heex:7
+msgid "If you’ve forgotten your password, you can request an email to reset it here."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:75
+#: lib/keila_web/views/template_view.ex:40
+msgid "Image"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:79
+msgid "Image URL"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/import_live.html.heex:4
+msgid "Import Contacts"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/_empty_state.html.heex:20
+#: lib/keila_web/templates/layout/_menu.html.heex:47 lib/keila_web/templates/project/_empty_state_forms_contacts.html.heex:18
+msgid "Import contacts"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/form/edit_live.html.heex:100
+msgid "Include"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:26
+msgid "Increase indent"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:123
+msgid "Insert Button"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:75
+msgid "Insert Image"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:33
+msgid "Insert Link"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/import_live.html.heex:68
+msgid "Instructions"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/stats_live.html.heex:42
+#: lib/keila_web/templates/campaign/stats_live.html.heex:59
+msgid "Insufficient email quota."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/form/edit_live.html.heex:52
+msgid "Intro text"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:49
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:144
+msgid "It looks like you don’t yet have any contacts to receive this campaign."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/stats_live.html.heex:45
+msgid "It looks like you’ve already used up the email quota from your subscription."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:12
+msgid "Italics"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/edit.html.heex:43
+msgid "Jane"
+msgstr ""
+
+#, elixir-format
+#: lib/keila/contacts/contacts.ex:263
+msgid "Last name"
+msgstr ""
+
+#, elixir-format
+#: lib/keila/templates/default_template.ex:21
+msgid "Layout"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:68
+msgid "Link"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:42
+msgid "Link Title"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:37
+msgid "Link URL"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/form/edit_live.html.heex:181
+msgid "Link to this form"
+msgstr ""
+
+#, elixir-format
+#: lib/keila/templates/default_template.ex:56
+#: lib/keila_web/templates/campaign/stats_live.html.heex:122
+msgid "Links"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/project/show.html.heex:45
+msgid "Manage Campaigns"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/project/show.html.heex:55
+msgid "Manage Contacts"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/project/show.html.heex:75
+msgid "Manage Forms"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/project/show.html.heex:65
+msgid "Manage Senders"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/edit_live.html.heex:70
+#: lib/keila_web/templates/campaign/new.html.heex:27
+msgid "Markdown"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/clone.html.heex:19
+#: lib/keila_web/templates/campaign/new.html.heex:19
+msgid "My Campaign Subject"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/project/new.html.heex:19
+msgid "My Keila Project"
+msgstr ""
+
+#, elixir-format
+#: lib/keila/contacts/contacts.ex:241
+msgid "My New Form"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/project/edit.html.heex:25
+msgid "My Newsletter Project"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/edit.html.heex:31
+msgid "My Sender"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/template/new.html.heex:19
+msgid "My Template name"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/template/clone.html.heex:19
+msgid "My template name"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/form/edit_live.html.heex:40
+#: lib/keila_web/templates/template/clone.html.heex:17 lib/keila_web/templates/template/edit_live.html.heex:33
+#: lib/keila_web/templates/template/new.html.heex:17
+msgid "Name"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/controllers/campaign_controller.ex:47
+#: lib/keila_web/templates/campaign/new.html.heex:4
+msgid "New Campaign"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/edit.html.heex:7
+msgid "New Contact"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/account/edit.html.heex:153
+msgid "New Password"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/controllers/project_controller.ex:54
+#: lib/keila_web/templates/project/new.html.heex:4
+msgid "New Project"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/edit.html.heex:7
+#: lib/keila_web/views/sender_view.ex:10
+msgid "New Sender"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/controllers/template_controller.ex:46
+#: lib/keila_web/templates/template/new.html.heex:4
+msgid "New Template"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:46
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:141
+msgid "No Contacts, No Campaign."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:54
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:149 lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:58
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:106 lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:147
+msgid "Ok"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/form_layout/root.html.heex:10
+#: lib/keila_web/templates/layout/root.html.heex:9
+msgid "Open Source Newsletter Tool"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/layout/_menu.html.heex:12
+msgid "Open menu"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/stats_live.html.heex:110
+msgid "Opens: %{opens} (%{percentage}%)"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:40
+msgid "Ordered list"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/auth/register.html.heex:16
+#: lib/keila_web/templates/auth/reset_change_password.html.heex:10 lib/keila_web/templates/sender/_smtp_config.html.heex:16
+#: lib/keila_web/templates/sender/_smtp_config.html.heex:24
+msgid "Password"
+msgstr ""
+
+#, elixir-format
+#: lib/keila/mailings/sender_adapters/shared_ses.ex:76
+msgid "Please click on the following link to verify your email address %{email} for use with Keila."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/auth/registration_disabled.html.heex:7
+msgid "Please contact an administrator."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/stats_live.html.heex:28
+msgid "Please start a subscription before sending your first campaign."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_markdown_editor.html.heex:4
+msgid "Preview"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:71
+msgid "Ready to schedule your campaign?"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/auth/register.html.heex:7
+msgid "Register your Keila account now and start your newsletter project within minutes."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/auth/registration_disabled.html.heex:4
+msgid "Registration disabled."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/auth/reset.html.heex:25
+msgid "Remember your password again?"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/auth/reset.html.heex:17
+msgid "Request password reset"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/form/edit_live.html.heex:108
+msgid "Require"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/form/edit_live.html.heex:72
+msgid "Require captcha"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/auth/reset_change_password.html.heex:21
+msgid "Reset password now"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/auth/reset.html.heex:4
+#: lib/keila_web/templates/auth/reset_change_password.html.heex:4
+msgid "Reset your password."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/clone.html.heex:8
+#: lib/keila_web/templates/campaign/edit_live.html.heex:15 lib/keila_web/templates/campaign/new.html.heex:8
+#: lib/keila_web/templates/contact/edit.html.heex:21 lib/keila_web/templates/form/edit_live.html.heex:13
+#: lib/keila_web/templates/project/edit.html.heex:14 lib/keila_web/templates/project/new.html.heex:8
+#: lib/keila_web/templates/sender/edit.html.heex:20 lib/keila_web/templates/shared_sender_admin/edit.html.heex:20
+#: lib/keila_web/templates/template/clone.html.heex:8 lib/keila_web/templates/template/edit_live.html.heex:13
+#: lib/keila_web/templates/template/new.html.heex:8
+msgid "Save"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:135
+#: lib/keila_web/templates/campaign/edit_live.html.heex:19
+msgid "Schedule"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/index.html.heex:38
+msgid "Scheduled for:"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/_ses_config.html.heex:33
+#: lib/keila_web/templates/sender/_ses_config.html.heex:41
+msgid "Secret"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/import_live.html.heex:21
+msgid "Select a file"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:40
+#: lib/keila_web/templates/campaign/edit_live.html.heex:23
+msgid "Send"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/verification_failure.html.heex:4
+msgid "Sender verification not successful."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/verification_success.html.heex:4
+msgid "Sender verified!"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/layout/_menu.html.heex:42
+#: lib/keila_web/templates/layout/_menu.html.heex:66 lib/keila_web/templates/project/show.html.heex:61
+#: lib/keila_web/templates/sender/index.html.heex:4 lib/keila_web/views/sender_view.ex:5
+msgid "Senders"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/account/edit.html.heex:128
+msgid "Sending Quota"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/index.html.heex:30
+msgid "Sent at:"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/auth/reset_change_password.html.heex:7
+msgid "Set a new secure password to keep using Keila."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/form/edit_live.html.heex:24
+#: lib/keila_web/templates/form/edit_live.html.heex:36 lib/keila_web/templates/project/show.html.heex:9
+#: lib/keila_web/templates/sender/index.html.heex:31 lib/keila_web/templates/shared_sender_admin/index.html.heex:29
+#: lib/keila_web/templates/template/edit_live.html.heex:24
+msgid "Settings"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/auth/register.html.heex:37
+#: lib/keila_web/templates/auth/registration_disabled.html.heex:11
+msgid "Sign in."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/layout/_menu.html.heex:68
+msgid "Sign out"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/auth/register.html.heex:32
+msgid "Sign up now"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/auth/reset.html.heex:22
+msgid "Sign up."
+msgstr ""
+
+#, elixir-format
+#: lib/keila/templates/default_template.ex:72
+#: lib/keila_web/templates/template/edit_live.html.heex:37
+msgid "Signature"
+msgstr ""
+
+#, elixir-format
+#: lib/keila/templates/default_template.ex:80
+msgid "Signature links"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/_ses_config.html.heex:20
+msgid "South America (São Paulo)"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/import_live.html.heex:32
+msgid "Start Import"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/auth/register.html.heex:4
+msgid "Start sending emails with Keila now"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/stats_live.html.heex:32
+msgid "Start your subscription now"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/stats_live.html.heex:109
+msgid "Statistics"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/index.html.heex:65
+msgid "Stats"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/form/edit_live.html.heex:30
+#: lib/keila_web/templates/form/edit_live.html.heex:133 lib/keila_web/templates/template/edit_live.html.heex:27
+#: lib/keila_web/templates/template/edit_live.html.heex:43
+msgid "Style"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/clone.html.heex:17
+#: lib/keila_web/templates/campaign/new.html.heex:17
+msgid "Subject"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/views/form_view.ex:77
+msgid "Submit"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/account/edit.html.heex:82
+msgid "Subscribe now and start sending emails!"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/account/edit.html.heex:6
+msgid "Subscription"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/controllers/template_controller.ex:17
+#: lib/keila_web/templates/layout/_menu.html.heex:53 lib/keila_web/templates/project/show.html.heex:81
+#: lib/keila_web/templates/template/index.html.heex:4
+msgid "Templates"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/views/template_view.ex:38
+msgid "Text color"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/edit_live.html.heex:71
+#: lib/keila_web/templates/campaign/new.html.heex:28
+msgid "Text only"
+msgstr ""
+
+#, elixir-format
+#: lib/keila/contacts/contacts.ex:244
+msgid "Thank you for signing up!"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/account/await_subscription_live.html.heex:10
+msgid "Thank you for subscribing to Keila!"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/verification_success.html.heex:7
+msgid "Thank you for verifying your sender. You can now start sending emails with Keila."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/form/edit_live.html.heex:58
+msgid "Thank you message"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/views/form_view.ex:138
+msgid "Thank you!"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/stats_live.html.heex:25
+msgid "Thanks for trying out Keila!"
+msgstr ""
+
+#, elixir-format
+#: lib/keila/contacts/import.ex:32
+msgid "The file you provided could not be processed."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/_local_config.html.heex:2
+msgid "The local sender adapter is useful for testing during development. Inspect its mailbox at: %{url}"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/import_live.html.heex:56
+msgid "There was an error importing your contacts."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/account/edit.html.heex:30
+msgid "There was an error processing your payment. Please update your payment method to continue using Keila."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/edit_live.html.heex:32
+msgid "There was an error scheduling your campaign:"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/verification_failure.html.heex:7
+msgid "There was an error when trying to verify your sender. Please try again or contact an administrator."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:30
+msgid "This campaign has already been scheduled. You can manually send it up to five minutes before the scheduled sending time."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:75
+msgid "This campaign has already been scheduled. You can reschedule or cancel it up to five minutes before the scheduled sending time."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/stats_live.html.heex:102
+msgid "This campaign has been successfully sent out to %{count} recipients."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/stats_live.html.heex:12
+msgid "This campaign has not yet been sent."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/stats_live.html.heex:78
+msgid "This campaign is currently being prepared for sending."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/stats_live.html.heex:87
+msgid "This campaign is currently being sent out."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/project/delete.html.heex:10
+msgid "This will delete all contacts, campaigns, and forms associated with this project."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:93
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:39
+msgid "Time"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:104
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:51
+msgid "Timezone"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:90
+msgid "Title"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/auth/reset.html.heex:26
+msgid "Try signing in."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/stats_live.html.heex:127
+msgid "URL"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/_ses_config.html.heex:6
+msgid "US East (N. Virginia)"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/_ses_config.html.heex:5
+msgid "US East (Ohio)"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/_ses_config.html.heex:7
+msgid "US West (N. California)"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/_ses_config.html.heex:8
+msgid "US West (Oregon)"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:33
+msgid "Unordered list"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:130
+msgid "Unschedule"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/controllers/form_controller.ex:62
+msgid "Unsubscribe"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/account/edit.html.heex:160
+msgid "Update password"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/account/edit.html.heex:68
+msgid "Update payment method"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/index.html.heex:45
+#: lib/keila_web/templates/form/index.html.heex:26 lib/keila_web/templates/template/index.html.heex:26
+msgid "Updated at:"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/layout/_menu.html.heex:65
+msgid "Users"
+msgstr ""
+
+#, elixir-format
+#: lib/keila/mailings/sender_adapters/shared_ses.ex:73
+msgid "Verify Your Email for Keila"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/project/index.html.heex:10
+msgid "Welcome to Keila!"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/account/await_subscription_live.html.heex:13
+msgid "We’re currently processing your subscription. This shouldn’t take longer than a minute …"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/edit_live.html.heex:89
+msgid "You can customize the design of your campaign with templates."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/account/edit.html.heex:16
+msgid "You currently have an active subscription. Thanks for supporting Keila!"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/views/form_view.ex:145
+msgid "You have been unsubscribed from this list."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/import_live.html.heex:47
+msgid "You have successfully imported %{number} contacts!"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/_shared_ses_config.html.heex:7
+msgid "You have verified your email address and can now send emails with this sender."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/edit_live.html.heex:33
+msgid "You must specify a sender before sending/scheduling a campaign:"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/edit.html.heex:43
+#: lib/keila_web/templates/sender/edit.html.heex:55
+msgid "You, Inc"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/edit_live.html.heex:62
+msgid "Your Campaign Subject"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/project/index.html.heex:33
+msgid "Your Projects"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/stats_live.html.heex:62
+msgid "Your email quota is not sufficient for sending this campaign."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/auth/reset_change_password_success.html.heex:4
+msgid "Your password was changed!"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/account/edit.html.heex:37
+msgid "Your subscription has been cancelled. Please contact us if you want to start a new subscription."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/account/edit.html.heex:23
+msgid "Your subscription is currently suspended. Please update your payment method to continue using Keila."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/views/template_view.ex:88
+msgid "bold"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/edit.html.heex:49
+msgid "hello@example.org"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/views/template_view.ex:104
+msgid "italic"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/views/template_view.ex:89
+msgid "light"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/_smtp_config.html.heex:4
+msgid "mail.example.org"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/edit.html.heex:37
+msgid "newsletter@example.org"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/views/template_view.ex:118
+msgid "none"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/views/template_view.ex:87
+#: lib/keila_web/views/template_view.ex:103
+msgid "normal"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/edit.html.heex:37
+msgid "subscriber@example.com"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/views/template_view.ex:119
+msgid "underlined"
+msgstr ""
+
+#, elixir-format
+#: lib/keila/contacts/import.ex:140
+msgid "unknown data error"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/account/edit.html.heex:62
+#: lib/keila_web/templates/account/edit.html.heex:105
+msgid "unlimited contacts"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/account/edit.html.heex:149
+#: lib/keila_web/templates/auth/login.html.heex:12 lib/keila_web/templates/auth/register.html.heex:12
+#: lib/keila_web/templates/auth/reset.html.heex:12
+msgid "you@keila.io"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/import_live.html.heex:106
+msgid "1. Download the template.\n2. Fill in the template in the same way that the sample data is filled in.\n2. Click on *File*, then *Save as*. Select *Text CSV (.csv)* and save the file.\n    In the following dialogue pick:\n    - **Character set:** *Unicode (UTF-8)*\n    - **Field delimiter:** *, (Comma)*\n    - **String delimiter:** *\" (Double Quote)*\n"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/import_live.html.heex:91
+msgid "1. Download the template.\n2. Fill in the template in the same way that the sample data is filled in.\n3. Click on *File*, then *Save as*.\n    Select _CSV UTF-8 (comma delimited) (*.csv)_ and save the file.\n"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/import_live.html.heex:124
+msgid "1. Download the template.\n2. Fill in the template in the same way that the sample data is filled in.\n3. In order to successfully import contacts, your CSV file needs be RFC 4180 compliant:\n    - Comma-separated\n    - UTF-8 encoding\n"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/user_admin/index.html.heex:3
+msgid "Administer Users"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/_shared_ses_config.html.heex:17
+msgid "After creating this sender, you will receive an email to verify your email address."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/layout/_menu.html.heex:37
+msgid "Back to projects overview"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/project/_empty_state_senders.html.heex:8
+msgid "Before you can get started, you need to create a *sender*.\n\nIn the sender settings, you specify the email address\nand the name from which to send your emails.\n"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/_empty_state.html.heex:10
+msgid "Before you can send any emails, you need to create a *sender*.\n\nIn the sender settings, you specify the email address\nand the name  from which you send your emails.\n"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/layout/_footer.html.heex:23
+msgid "Community"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/_ses_config.html.heex:57
+msgid "Configuration Set"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/edit.html.heex:67
+msgid "Contact Activity"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/index.html.heex:9
+#: lib/keila_web/templates/sender/index.html.heex:9
+msgid "Create"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/project/_empty_state_templates_campaigns.html.heex:20
+msgid "Create a campaign"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/project/_empty_state_templates_campaigns.html.heex:6
+msgid "Create engaging designs and campaigns!"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/layout/_menu.html.heex:51
+msgid "Create form"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/index.html.heex:9
+msgid "Create new campaign"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/project/_empty_state_templates_campaigns.html.heex:16
+msgid "Create your own design"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/layout/_footer.html.heex:16
+msgid "Docs"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/project/_empty_state_forms_contacts.html.heex:6
+msgid "Grow your audience with Keila!"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/project/_empty_state_forms_contacts.html.heex:8
+msgid "If you already have an existing audience for your newsletter,\nyou can use the *Import Contacts* feature or manually create a new contact.\n\nYou can also invite new people to subscribe and create a\nsign-up *form*.\n"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/_empty_state.html.heex:10
+msgid "If you already have an existing audience for your newsletter,\nyou can use the *Import Contacts* feature.\n\nIf you just want to try things out, you can also manually add\nnew contacts.\n"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/import_live.html.heex:12
+#: lib/keila_web/templates/contact/index.html.heex:13
+msgid "Import"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/template/_empty_state.html.heex:10
+msgid "Keila comes with a great default template so you don’t have\nto become a designer before you start sending emails.\n\nBut if you want a more personalized look for your campaigns,\ncreate your own design with the template editor.\n"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/project/index.html.heex:12
+msgid "Keila organizes contacts, forms, and campaigns in *projects*.\n\nYou can create multiple projects, e.g. if you want\nto separate your gardening business newsletter from\nyour chess club member list.\n"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/project/_empty_state_senders.html.heex:6
+msgid "Let’s get started!"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/project/show.html.heex:85
+msgid "Manage Templates"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/_empty_state.html.heex:24
+msgid "Manually create new contact"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/auth/register.html.heex:18
+#: lib/keila_web/templates/auth/reset_change_password.html.heex:12
+msgid "Must have at least 10 characters."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/import_live.html.heex:73
+msgid "Please follow the **exact** instructions on this page.\nIncorrectly formatted files can not be imported.\n"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/layout/_menu.html.heex:41
+#: lib/keila_web/templates/project/edit.html.heex:4
+msgid "Project settings"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/layout/_menu.html.heex:34
+msgid "Projects"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/project/_empty_state_campaigns.html.heex:6
+msgid "Ready, set, send!"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_empty_state.html.heex:10
+msgid "Use the campaign editor to create, schedule, and send campaigns\nto your contacts.\n"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_empty_state.html.heex:8
+#: lib/keila_web/templates/contact/_empty_state.html.heex:8 lib/keila_web/templates/form/_empty_state.html.heex:8
+#: lib/keila_web/templates/sender/_empty_state.html.heex:8 lib/keila_web/templates/template/_empty_state.html.heex:8
+msgid "Wow, such empty!"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/edit.html.heex:54
+msgid "You can add any JSON object as custom data to your contacts."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/form/_empty_state.html.heex:10
+msgid "You can create one or multiple forms to let new contacts sign\nup to your newsletter.\n\nWith the form editor, you can customize the look & feel of the\nforms and decide which input fields to include.\n"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/project/_empty_state_templates_campaigns.html.heex:8
+msgid "You can get started sending campaigns with Keila’s default template now.\n\nTo create your design, you can use the template editor.\n"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/sender/_shared_ses_config.html.heex:15
+msgid "You need to verify your email address before you can send emails with this sender."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/project/_empty_state_campaigns.html.heex:8
+msgid "You’re ready to send your first campaign with Keila.\n"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/index.html.heex:29
+msgid "active subscribers"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/edit.html.heex:88
+msgid "clicked campaign link"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/edit.html.heex:77
+msgid "created"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/edit.html.heex:79
+msgid "imported"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/edit.html.heex:86
+msgid "opened campaign"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/edit.html.heex:81
+msgid "subscribed"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/index.html.heex:39
+msgid "unreachable contacts"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/edit.html.heex:90
+msgid "unsubscribed"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/index.html.heex:34
+msgid "unsubscribed contacts"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/contact/edit.html.heex:83
+msgid "with captcha"
+msgstr ""
