@@ -1,0 +1,24 @@
+<div class="container flex py-8 sm:py-11 sm:mb-4">
+    <div class="flex-grow gap-4 flex flex-col-reverse sm:flex-row sm:items-center max-w-md">
+        <h1 class="text-2xl md:text-3xl text-gray-100">
+            <%= gettext("New Project") %>
+        </h1>
+        <div class="flex-grow flex flex-row justify-end gap-4 sm:flex-row">
+            <button form="form" class="button button--cta button--large">
+                <%= gettext("Save") %>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <.form let={f} for={@changeset} id="form" action={Routes.project_path(@conn, :post_new)} class="max-w-md flex flex-col gap-4">
+        <div class="form-row">
+            <%= label(f, :name, "Project name") %>
+            <%= with_validation(f, :name) do %>
+                <%= text_input(f, :name, placeholder: gettext("My Keila Project"), class: "text-black", autofocus: true) %>
+            <% end %>
+        </div>
+    </.form>
+</div>
+

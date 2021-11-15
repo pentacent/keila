@@ -1,0 +1,34 @@
+<div class="container flex py-8 sm:py-11 mb-4">
+    <h1 class="text-2xl sm:text-3xl">
+        <%= gettext("Delete Users?") %>
+    </h1>
+</div>
+
+<div class="container">
+    <div class="p-4 ring ring-red-900">
+        <p class="text-lg text-gray-200">
+            <%= gettext("Do you really want to delete the following users? This will also delete their projects and contacts.") %>
+        </p>
+        <.form let={f} for={:user} action={Routes.user_admin_path(@conn, :delete)} method="dekete" class="">
+            <ul class="list-disc pl-4 my-4">
+                <%= for user <- @users do %>
+                    <li>
+                        <%= user.email %>
+                        <%= hidden_input(f, :id, value: user.id, name: "user[id][]") %>
+                    </li>
+                <% end %>
+            </ul>
+            <p class="text-lg text-gray-200 font-bold">
+                <%= gettext("Deleting a user cannot be undone.") %>
+            </p>
+            <div class="flex gap-4 mt-4">
+                <a class="button button--text button--large" href={ Routes.user_admin_path(@conn, :index) }>
+                    <%= gettext("Cancel") %>
+                </a>
+                <button type="submit" class="button button--warn button--large">
+                    <%= gettext("Delete") %>
+                </button>
+            </div>
+        </.form>
+    </div>
+</div>

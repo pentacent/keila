@@ -1,0 +1,20 @@
+<span class="hidden sm:flex h-24 w-24 flex-grow-0 flex-shrink-0">
+    <%= render_icon(:speakerphone) %>
+</span>
+<div class="flex flex-col gap-4">
+    <h2 class="text-xl sm:text-2xl">
+        <%= gettext("Let’s get started!") %>
+    </h2>
+    <%= gettext_md("""
+        Before you can get started, you need to create a *sender*.
+
+        In the sender settings, you specify the email address
+        and the name from which to send your emails.
+        """) %>
+    <p>
+        <a class="button button--cta button--large" href={ Routes.sender_path(@conn, :new, @current_project.id) }>
+            <%= render_icon(:document_add) %>
+            <%= gettext("Create your first sender") %>
+        </a>
+    </p>
+</div>

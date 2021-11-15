@@ -1,7 +1,0 @@
-<%= if @mode == :preview do %>
-    <div class="form-main p-4 md:p-8" style="<%= build_styles(%{"background-color" => @form.settings.body_bg_color}) %>">
-<% end %><%=
-    render_form(@form, @changeset, @mode)
-%> <%= if @mode == :preview do %>
-    </div>
-<% end %>

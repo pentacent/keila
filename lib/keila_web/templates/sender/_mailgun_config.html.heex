@@ -1,0 +1,31 @@
+<div class="form-row">
+    <%= label(@form, :mailgun_domain, "Domain") %>
+    <%= with_validation(@form, :mailgun_domain) do %>
+        <%= text_input(@form, :mailgun_domain, class: "text-black") %>
+    <% end %>
+</div>
+
+<%= if is_nil(input_value(@form, :mailgun_api_key)) do %>
+    <div class="form-row">
+        <%= label(@form, :mailgun_api_key, gettext("API Key")) %>
+        <%= with_validation(@form, :mailgun_api_key) do %>
+            <%= password_input(@form, :mailgun_api_key, class: "text-black") %>
+        <% end %>
+    </div>
+<% else %>
+    <div x-data="{ show: false }" x-init="$watch('show', show => { $nextTick(() => { if (show) $refs.password.focus() }) })" class="form-row">
+        <div class="flex gap-5">
+            <%= label(@form, :mailgun_api_key, gettext("API Key")) %>
+            <label>
+                <input type="checkbox" x-model="show">
+                <%= gettext("Change") %>
+            </label>
+        </div>
+
+        <template x-if="show">
+            <%= with_validation(@form, :mailgun_api_key) do %>
+                <%= password_input(@form, :mailgun_api_key, class: "text-black", x_ref: "password") %>
+            <% end %>
+        </template>
+    </div>
+<% end %>

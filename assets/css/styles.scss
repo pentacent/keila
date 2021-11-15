@@ -6,6 +6,7 @@
 html {
     font-family: "Inter", sans-serif;
     overflow-y: scroll;
+    @apply bg-gray-950;
 }
 
 @supports (font-variation-settings: normal) {
@@ -15,7 +16,7 @@ html {
 }
 
 .container {
-    @apply mx-auto max-w-5xl px-4 md:px-8;
+    @apply mx-auto max-w-7xl px-4 md:px-8;
 
     &.container--no-px {
         @apply px-0;
@@ -33,7 +34,7 @@ html {
         @apply w-6;
     }
 
-    &:not(.button--cta):not(&.button--warn):not(&.button--text) {
+    &:not(.button--cta):not(&.button--warn):not(&.button--text):not(&.button--muted) {
         @apply
             ring-2 ring-green-500
             hover:ring-green-700;
@@ -45,6 +46,12 @@ html {
             hover:ring-2 hover:ring-green-400
             focus:ring-2 hover:ring-green-400
             active:bg-green-800;
+    }
+
+    &.button--muted {
+        @apply
+        ring-2 ring-gray-500
+        hover:ring-gray-700;
     }
     
     &.button--warn {
@@ -113,6 +120,18 @@ input[disabled] {
     ul {
         @apply list-disc pl-5;
     }
+}
+
+.form-row {
+    @apply flex flex-col gap-1;
+
+    &+ .form-row {
+        @apply mt-2;
+    }
+}
+
+.bg-onboarding {
+    @apply bg-gradient-to-r from-red-900 via-indigo-900 to-green-900;
 }
 
 /*

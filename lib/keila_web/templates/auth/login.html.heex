@@ -1,0 +1,36 @@
+<div class="container mt-8">
+    <.form let={f} for={@changeset} action={Routes.auth_path(@conn, :post_login)} method="post" class="rounded shadow p-8 mt-8 max-w-xl mx-auto flex flex-col gap-4 bg-gray-900 text-gray-50">
+        <h1 class="text-5xl font-bold">
+            <%= dgettext("auth", "Sign in.") %>
+        </h1>
+        <p class="text-lg text-gray-200">
+            <%= dgettext("auth", "Sign in with your email address and password here.") %>
+        </p>
+        <div class="flex flex-col">
+            <%= label(f, :email, "Email") %>
+            <%= with_validation(f, :email) do %>
+                <%= text_input(f, :email, placeholder: gettext("you@keila.io"), class: "text-black") %>
+            <% end %>
+        </div>
+        <div class="flex flex-col">
+            <%= label(f, :password, "Password") %>
+            <%= with_validation(f, :password) do %>
+                <%= password_input(f, :password, class: "text-black") %>
+            <% end %>
+        </div>
+        <div class="flex justify-end mt-8">
+            <button class="button button--cta button--large">
+                <%= render_icon(:key) %>
+                <%= dgettext("auth", "Sign in") %>
+            </button>
+        </div>
+        <p>
+            <%= dgettext("auth", "Don’t have an account?") %>
+            <a href={ Routes.auth_path(@conn, :register) } class="underline"><%= dgettext("auth", "Sign up.") %></a>
+        </p>
+        <p>
+            <%= dgettext("auth", "Forgot your password?") %>
+            <a href={ Routes.auth_path(@conn, :reset) } class="underline"><%= dgettext("auth", "Reset your password.") %></a>
+        </p>
+    </.form>
+</div>

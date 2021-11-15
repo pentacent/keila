@@ -1,0 +1,52 @@
+<div class="container flex py-8 sm:py-11 mb-4">
+    <h1 class="text-2xl sm:text-3xl">
+        <%= gettext("Delete Contacts?") %>
+    </h1>
+</div>
+
+<div class="container">
+    <div class="p-4 ring ring-red-900">
+        <p class="text-lg text-gray-200">
+            <%= gettext("Do you really want to delete the following contacts?") %>
+        </p>
+
+        <.form let={f} for={@conn} as="contacts" action={Routes.contact_path(@conn, :delete, @current_project.id)} method="delete" class="flex flex-col gap-4">
+            <table class="my-8 w-full">
+                <tr class="text-left">
+                    <th class="p-2 pl-0">Email</th>
+                    <th class="p-2">First name</th>
+                    <th class="p-2">Last name</th>
+                    <th class="p-2">Added</th>
+                </tr>
+                <%= for contact <- @contacts do %>
+                    <tr>
+                        <td class="p-2 pl-0">
+                            <%= hidden_input(f, :id, value: contact.id, name: "contact[id][]") %>
+                            <%= contact.email %>
+                        </td>
+                        <td class="p-2">
+                            <%= contact.first_name %>
+                        </td>
+                        <td class="p-2">
+                            <%= contact.last_name %>
+                        </td>
+                        <td class="p-2">
+                            <%= Calendar.strftime(contact.inserted_at, "%c") %>
+                        </td>
+                    </tr>
+                <% end %>
+            </table>
+            <p class="text-lg text-gray-200 font-bold">
+                <%= gettext("Deleting a contact cannot be undone.") %>
+            </p>
+            <div class="flex gap-4 mt-4">
+                <a class="button button--text button--large" href={ Routes.contact_path(@conn, :index, @current_project.id) }>
+                    <%= gettext("Cancel") %>
+                </a>
+                <button type="submit" class="button button--warn button--large">
+                    <%= gettext("Delete") %>
+                </button>
+            </div>
+        </.form>
+    </div>
+</div>
