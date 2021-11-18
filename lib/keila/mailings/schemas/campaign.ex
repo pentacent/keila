@@ -1,5 +1,6 @@
 defmodule Keila.Mailings.Campaign do
   use Keila.Schema, prefix: "mc"
+  alias Keila.Contacts.Segment
   alias Keila.Mailings.Sender
   alias Keila.Projects.Project
   alias Keila.Templates.Template
@@ -14,6 +15,7 @@ defmodule Keila.Mailings.Campaign do
     belongs_to(:template, Template, type: Template.Id)
     belongs_to(:sender, Sender, type: Sender.Id)
     belongs_to(:project, Project, type: Project.Id)
+    belongs_to(:segment, Segment, type: Segment.Id)
     timestamps()
   end
 

@@ -115,6 +115,13 @@ defmodule Keila.Factory do
     }
   end
 
+  defp do_build(:contacts_segment) do
+    %Keila.Contacts.Segment{
+      name: "segment-#{get_counter_value()}@example.org",
+      filter: %{}
+    }
+  end
+
   defp do_build(:account) do
     %Keila.Accounts.Account{
       group: build(:group)
