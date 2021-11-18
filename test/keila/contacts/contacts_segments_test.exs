@@ -40,7 +40,9 @@ defmodule Keila.ContactsSegmentsTest do
     segment2 = insert!(:contacts_segment, %{project_id: project.id})
     segment3 = insert!(:contacts_segment)
 
-    assert :ok = Contacts.delete_project_segments(project.id, [segment1.id, segment2.id, segment3.id])
+    assert :ok =
+             Contacts.delete_project_segments(project.id, [segment1.id, segment2.id, segment3.id])
+
     assert Contacts.get_project_segments(project.id) == []
     assert segment3 == Contacts.get_segment(segment3.id)
 
