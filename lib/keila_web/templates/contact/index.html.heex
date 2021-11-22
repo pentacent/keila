@@ -1,0 +1,101 @@
+<div class="container flex py-8 sm:py-11 mb-4">
+    <div class="flex-grow gap-4 flex flex-col sm:flex-row sm:items-center">
+        <h1 class="text-2xl sm:text-3xl text-gray-100">
+            <%= gettext("Contacts") %>
+        </h1>
+        <div class="flex-grow flex flex-row-reverse justify-end gap-4 sm:flex-row">
+            <a href={ Routes.contact_path(@conn, :new, @current_project.id) } class="button">
+                <%= render_icon(:document_add) %>
+                <%= gettext("Create") %>
+            </a>
+            <a href={ Routes.contact_path(@conn, :import, @current_project.id) } class="button">
+                <%= render_icon(:user_add) %>
+                <%= gettext("Import") %>
+            </a>
+        </div>
+    </div>
+</div>
+
+<%= if @contacts.page_count == 0 do %>
+
+    <%= render("_empty_state.html", assigns) %>
+
+<% else %>
+
+    <%= if @contacts_stats do %>
+        <div class="container grid gap-4 sm:grid-cols-3">
+            <div class="bg-green-700 p-4">
+                <p class="text-3xl"><%= @contacts_stats.active %></p>
+                <p><%= gettext("active subscribers") %></p>
+            </div>
+
+            <div class="bg-green-700 p-4">
+                <p class="text-3xl"><%= @contacts_stats.unsubscribed %></p>
+                <p><%= gettext("unsubscribed contacts") %></p>
+            </div>
+
+            <div class="bg-green-700 p-4">
+                <p class="text-3xl"><%= @contacts_stats.unreachable %></p>
+                <p><%= gettext("unreachable contacts") %></p>
+            </div>
+        </div>
+    <% end %>
+
+    <div class="container py-4">
+        <.form let={f} for={@conn} as="contact" action={Routes.contact_path(@conn, :delete, @current_project.id)} method="delete">
+            <%= hidden_input(f, :require_confirmation, value: "true") %>
+            <table x-data="{checked: false}" class="w-full">
+                <tr class="text-left">
+                    <th><input type="checkbox" x-model="checked" class="text-green-500"></th>
+                    <th class="p-2">Email</th>
+                    <th class="p-2 hidden lg:table-cell">First name</th>
+                    <th class="p-2 hidden lg:table-cell">Last name</th>
+                    <th class="p-2 hidden lg:table-cell">Added</th>
+                    <th class="p-2"></th>
+                </tr>
+                <%= for contact <- @contacts.data do %>
+                    <tr>
+                        <td>
+                            <%= checkbox(f, :id, hidden_input: false, "x_bind:checked": "checked", class: "text-green-500", checked_value: contact.id, name: "contact[id][]") %>
+                        </td>
+                        <td class="p-2">
+                            <a class="button button--text overflow-x-hidden" href={ Routes.contact_path(@conn, :edit, @current_project.id, contact.id) }>
+                                <%= contact.email %>
+                            </a>
+                        </td>
+                        <td class="p-2 hidden lg:table-cell">
+                            <%= contact.first_name %>
+                        </td>
+                        <td class="p-2 hidden lg:table-cell">
+                            <%= contact.last_name %>
+                        </td>
+                        <td class="p-2 hidden lg:table-cell">
+                            <%= Calendar.strftime(contact.inserted_at, "%c") %>
+                        </td>
+                        <td class="p-2 flex gap-2">
+                            <%= delete_button_tag(contact, [icon: :trash, class: "button button--text"]) %>
+
+                            <a class="button button--text" href={ Routes.contact_path(@conn, :edit, @current_project.id, contact.id) }>
+                                <%= render_icon(:pencil_alt) %>
+                            </a>
+                        </td>
+                    </tr>
+                <% end %>
+            </table>
+            <button class="button mt-4">
+                <%= gettext("Delete all selected contacts") %>
+            </button>
+        </.form>
+
+        <%= for contact <- @contacts.data do
+            delete_form_tag(contact, Routes.contact_path(@conn, :delete, @current_project.id), as: :contact)
+        end %>
+
+        <%= if @contacts.page_count > 1 do %>
+            <div class="flex gap-3 justify-center py-8">
+                <%= pagination_nav(@contacts, fn n -> Routes.contact_path(@conn, :index, @current_project.id, %{"page" => n + 1}) end) %>
+            </div>
+        <% end %>
+
+    </div>
+<% end %>

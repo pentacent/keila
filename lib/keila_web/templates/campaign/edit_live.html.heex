@@ -1,0 +1,120 @@
+<div x-data="{activeDialog: null}">
+    <div class="container flex py-8 sm:py-11 sm:mb-4">
+        <div class="flex-grow gap-4 flex flex-col-reverse sm:flex-row sm:items-center">
+            <h1 class="text-2xl md:text-3xl text-gray-100">
+                <%= gettext("Edit Campaign") %>
+            </h1>
+            <div class="flex-grow flex flex-row justify-end gap-4 sm:flex-row">
+                <a class="button button--text button--large" href={ Routes.campaign_path(@socket, :index, @current_project.id) }>
+                    <%= gettext("Cancel") %>
+                </a>
+                <%= delete_form_tag(@campaign, Routes.campaign_path(@socket, :delete, @current_project.id), as: :campaign) %>
+                <%= delete_button_tag(@campaign, [class: "button button--text button--large"], gettext("Delete")) %>
+                <button class="button button--large" action="submit" form="campaign">
+                    <%= render_icon(:save) %>
+                    <%= gettext("Save") %>
+                </button>
+                <button class={ "button button--large #{ if is_nil(get_field(@changeset, :scheduled_for)), do: "button--cta" }" } @click.prevent="$dispatch('x-show', { dialog: 'schedule' })">
+                    <%= render_icon(:clock) %>
+                    <%= gettext("Schedule") %>
+                </button>
+                <button class={ "button button--large #{ if is_nil(get_field(@changeset, :scheduled_for)), do: "button--cta" }" } @click.prevent="$dispatch('x-show', { dialog: 'send' })">
+                    <%= render_icon(:paper_airplane) %>
+                    <%= gettext("Send") %>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <%= if @error_changeset do %>
+        <div class="container mb-4">
+            <div class="bg-red-500 text-white p-4">
+                <%= with_errors(@error_changeset, :scheduled_for) do [gettext("There was an error scheduling your campaign:")] end %>
+                <%= with_errors(@error_changeset, :sender_id) do [gettext("You must specify a sender before sending/scheduling a campaign:")] end %>
+            </div>
+        </div>
+    <% end %>
+
+    <div class="container pb-8">
+        <.form let={f} for={@changeset} id="campaign" action={Routes.campaign_path(@socket, :post_edit, @current_project.id, @campaign.id)} class="flex flex-col gap-4" phx-change="form_updated">
+            <div class="grid gap-4 sm:grid-cols-2">
+
+                <div class="flex flex-col">
+                    <%= label(f, :sender_id, "Sender") %>
+
+                    <%= if not Enum.empty?(@senders) do %>
+                        <%= with_validation(f, :sender_id) do %>
+                            <%= select(f, :sender_id, Enum.map(@senders, &{"#{&1.name} (#{&1.from_name} <#{&1.from_email}>)", &1.id}), class: "text-black") %>
+                        <% end %>
+                    <% else %>
+                        <p>
+                            <%= gettext("Before you can send your campaign, you need to create a sender.") %><br>
+                            <a href={ Routes.sender_path(@socket, :new, @current_project.id) } class="button button--cta">
+                                <%= gettext("Create your first sender") %>
+                            </a>
+                        </p>
+                    <% end %>
+                </div>
+
+                <div class="flex flex-col">
+                    <%= label(f, :subject, "Subject") %>
+                    <%= with_validation(f, :subject) do %>
+                        <%= text_input(f, :subject, placeholder: gettext("Your Campaign Subject"), class: "text-black") %>
+                    <% end %>
+                </div>
+
+                <div class="flex flex-col">
+                    <%= label(f, :text_body, "Campaign Type") %>
+                    <%= inputs_for(f, :settings, fn fs -> %>
+                        <%= select(fs, :type, [
+                            {gettext("Markdown"), "markdown"},
+                            {gettext("Text only"), "text"}
+                        ]) %>
+                        <%= if Ecto.Changeset.get_field(@changeset, :settings).type == :markdown do %>
+                            <%= checkbox(fs, :enable_wysiwyg, class: "hidden") %>
+                        <% end %>
+                    <% end) %>
+                </div>
+
+                <%= if Ecto.Changeset.get_field(@changeset, :settings).type == :markdown do %>
+                    <div class="flex flex-col">
+                        <%= label(f, :template_id, "Template") %>
+
+                        <%= if not Enum.empty?(@senders) do %>
+                            <%= with_validation(f, :template_id) do %>
+                                <%= select(f, :template_id, [{gettext("Default"), nil} | Enum.map(@templates, &{&1.name, &1.id})], class: "text-black") %>
+                            <% end %>
+                        <% else %>
+                            <p>
+                                <%= gettext("You can customize the design of your campaign with templates.") %><br>
+                                <a href={ Routes.template_path(@socket, :new, @current_project.id) } class="button button--cta">
+                                    <%= gettext("Create your first template") %>
+                                </a>
+                            </p>
+                        <% end %>
+                    </div>
+                <% end %>
+
+            </div>
+
+            <div class="flex flex-col">
+                <div x-data="{previewMode: false}">
+                    <%= if Ecto.Changeset.get_field(@changeset, :settings).type == :markdown && Ecto.Changeset.get_field(@changeset, :settings).enable_wysiwyg do %>
+                        <%= textarea(f, :text_body, class: "hidden") %>
+                        <div id="wysiwyg-container" phx-hook="MarkdownEditor" class="flex-grow bg-white mt-4">
+                            <%= render("_wysiwyg_editor.html", assigns) %>
+                        </div>
+                    <% else %>
+                        <%= render("_markdown_editor.html", assigns |> Map.put(:f, f)) %>
+                    <% end %>
+                </div>
+            </div>
+
+            <%= render("_send_dialogs.html", assigns) %>
+
+        </.form>
+    </div>
+
+</div>
+
+<%= render("_wysiwyg_dialogs.html") %>

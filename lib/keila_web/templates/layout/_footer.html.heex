@@ -1,0 +1,32 @@
+<footer class="col-span-full bg-gray-950 mt-4 py-8 text-sm text-gray-100 border-t-2 border-gray-800">
+    <div class="max-w-7xl mx-auto px-2 py-4 sm:px-6 lg:px-8">
+        <div class="container grid sm:grid-cols-3">
+            <div>
+                <h3 class="flex gap-2 mb-4">
+                    <span class="flex h-12 w-12 text-green-600">
+                        <%= render_icon(:logo) %>
+                    </span>
+                    <p>
+                        <span class="font-bold">Keila</span><br>
+                        Open Source Newsletters
+                    </p>
+                </h3>
+            </div>
+            <div>
+                <h3 class="font-bold mb-4"><%= gettext("Docs") %></h3>
+                <ul>
+                    <li><a class="block hover:underline" href="https://www.keila.io/docs/senders">Usage</a></li>
+                    <li><a class="block hover:underline" href="https://www.keila.io/docs/installation">Self-hosting</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="font-bold mb-4"><%= gettext("Community") %></h3>
+                <ul>
+                    <li><a class="block hover:underline" href="https://www.github.com/pentacent/keila">GitHub</a></li>
+                    <li><a class="block hover:underline" href="https://www.twitter.com/keila_io">Twitter</a></li>
+                    <li><a class="block hover:underline" href="https://app.keila.io/forms/frm_GX8qGEZd">Newsletter</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>

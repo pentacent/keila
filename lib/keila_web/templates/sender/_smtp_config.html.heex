@@ -1,0 +1,52 @@
+<div class="form-row">
+    <%= label(@form, :smtp_relay, "Server") %>
+    <%= with_validation(@form, :smtp_relay) do %>
+        <%= text_input(@form, :smtp_relay, placeholder: gettext("mail.example.org"), class: "text-black") %>
+    <% end %>
+</div>
+<div class="form-row">
+    <%= label(@form, :smtp_relay, "Username") %>
+    <%= with_validation(@form, :smtp_username) do %>
+        <%= text_input(@form, :smtp_username, class: "text-black") %>
+    <% end %>
+</div>
+
+<%= if is_nil(input_value(@form, :smtp_password)) do %>
+    <div class="form-row">
+        <%= label(@form, :smtp_password, gettext("Password")) %>
+        <%= with_validation(@form, :smtp_password) do %>
+            <%= password_input(@form, :smtp_password, class: "text-black") %>
+        <% end %>
+    </div>
+<% else %>
+    <div x-data="{ show: false }" x-init="$watch('show', show => { $nextTick(() => { if (show) $refs.password.focus() }) })" class="form-row">
+        <div class="flex gap-5">
+            <%= label(@form, :smtp_password, gettext("Password")) %>
+            <label>
+                <input type="checkbox" x-model="show">
+                <%= gettext("Change") %>
+            </label>
+        </div>
+
+        <template x-if="show">
+            <%= with_validation(@form, :smtp_password) do %>
+                <%= password_input(@form, :smtp_password, class: "text-black", x_ref: "password") %>
+            <% end %>
+        </template>
+    </div>
+<% end %>
+
+<div class="form-row">
+    <%= label(@form, :smtp_password, "Port") %>
+    <%= with_validation(@form, :smtp_port) do %>
+        <%= number_input(@form, :smtp_port, class: "text-black") %>
+    <% end %>
+</div>
+<div class="form-row">
+    <%= with_validation(@form, :smtp_tls) do %>
+        <%= label(@form, :smtp_tls) do %>
+            <%= checkbox(@form, :smtp_tls) %>
+            Require TLS
+        <% end %>
+    <% end %>
+</div>

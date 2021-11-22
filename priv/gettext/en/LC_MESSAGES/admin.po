@@ -1,0 +1,123 @@
+## "msgid"s in this file come from POT (.pot) files.
+##
+## Do not add, change, or remove "msgid"s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
+##
+## Use "mix gettext.extract --merge" or "mix gettext.merge"
+## to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: en\n"
+"Plural-Forms: nplurals=2\n"
+
+#, elixir-format
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:13
+msgid "%{remaining} / %{total} credits"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/user_admin/index.html.heex:19
+msgid "Activation"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:65
+msgid "Add Credits"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/user_admin/index.html.heex:45
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:18
+msgid "Add credits"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:3
+msgid "Administer Credits for %{email}"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/controllers/user_admin_controller.ex:14
+msgid "Administrate Users"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:21
+msgid "Amount"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/shared_sender_admin/delete.html.heex:10
+msgid "Campaigns associated with this sender will not be deleted."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/shared_sender_admin/index.html.heex:9
+msgid "Create a new Shared Sender"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/user_admin/index.html.heex:21
+msgid "Credits"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:10
+msgid "Credits for account %{account}"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/shared_sender_admin/delete.html.heex:3
+msgid "Delete Shared Sender %{sender}?"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/shared_sender_admin/delete.html.heex:13
+msgid "Deleting a shared sender cannot be undone."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/user_admin/index.html.heex:17
+msgid "Email"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/user_admin/index.html.heex:9
+msgid "Here you can manage other users on your Keila instance."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/shared_sender_admin/edit.html.heex:31
+msgid "My Shared Sender"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/shared_sender_admin/edit.html.heex:7
+msgid "New Shared Sender"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/shared_sender_admin/index.html.heex:4
+msgid "Shared Senders"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/shared_sender_admin/index.html.heex:17
+msgid "Shared Senders are available to all users on this instance of Keila."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/user_admin/index.html.heex:18
+msgid "Sign-up"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/shared_sender_admin/delete.html.heex:17
+msgid "Type in the shared sender name to confirm its deletion:"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/user_admin/index.html.heex:50
+msgid "Login as"
+msgstr ""
