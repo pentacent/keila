@@ -1,6 +1,5 @@
 defmodule KeilaWeb.SegmentControllerTest do
   use KeilaWeb.ConnCase
-  import Phoenix.LiveViewTest
   alias Keila.Contacts
   @endpoint KeilaWeb.Endpoint
 

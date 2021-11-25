@@ -181,7 +181,7 @@ defmodule Keila.Mailings do
   """
   @spec get_campaign(Campaign.id()) :: Campaign.t() | nil
   def get_campaign(id) when is_id(id) do
-    Repo.get(Campaign, id, preload: [:template])
+    Repo.get(Campaign, id, preload: [:template, :segment])
   end
 
   @doc """
@@ -192,7 +192,7 @@ defmodule Keila.Mailings do
       when is_id(project_id) and is_id(campaign_id) do
     from(c in Campaign,
       where: c.id == ^campaign_id and c.project_id == ^project_id,
-      preload: [:template]
+      preload: [:template, :segment]
     )
     |> Repo.one()
   end
@@ -352,7 +352,7 @@ defmodule Keila.Mailings do
   end
 
   defp get_and_lock_campaign(id) when is_id(id) do
-    from(c in Campaign, where: c.id == ^id, lock: "FOR NO KEY UPDATE")
+    from(c in Campaign, where: c.id == ^id, lock: "FOR NO KEY UPDATE", preload: :segment)
     |> Repo.one()
   end
 
@@ -362,7 +362,8 @@ defmodule Keila.Mailings do
       |> change(sent_at: DateTime.truncate(DateTime.utc_now(), :second))
       |> Repo.update()
 
-    filter = %{"status" => "active"}
+    segment_filter = if campaign.segment, do: campaign.segment.filter, else: %{}
+    filter = %{"$and" => [segment_filter, %{"status" => "active"}]}
 
     Keila.Contacts.stream_project_contacts(campaign.project_id, filter: filter)
     |> Stream.chunk_every(1000)
