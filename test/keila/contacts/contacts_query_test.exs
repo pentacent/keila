@@ -195,6 +195,12 @@ defmodule Keila.ContactsQueryTest do
     assert [c2] == filter_contacts(%{"data.array.0" => %{"$gte" => 4}})
   end
 
+  @tag :contacts_query
+  test "safely validate query opts" do
+    assert true == Query.valid_opts?(filter: %{"email" => "foo@example.com"})
+    assert false == Query.valid_opts?(filter: %{"invalid_field" => "foo@example.com"})
+  end
+
   defp filter_contacts(filter) do
     from(Contact) |> Query.apply(filter: filter) |> Repo.all()
   end

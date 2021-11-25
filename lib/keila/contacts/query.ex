@@ -47,6 +47,22 @@ defmodule Keila.Contacts.Query do
     |> maybe_sort(opts)
   end
 
+  @doc """
+  Safely validates if the given query opts are valid.
+  """
+  @spec valid_opts?([opts]) :: boolean()
+  def valid_opts?(opts) do
+    try do
+      from(c in Keila.Contacts.Contact)
+      |> maybe_filter(opts)
+      |> maybe_sort(opts)
+
+      true
+    rescue
+      _ -> false
+    end
+  end
+
   defp maybe_filter(query, opts) do
     case Keyword.get(opts, :filter) do
       input when is_map(input) -> filter(query, input)
