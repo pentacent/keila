@@ -20,5 +20,6 @@ defmodule Keila.Contacts.Segment do
   def update_changeset(struct, params) do
     struct
     |> cast(params, [:name, :filter])
+    |> validate_required(:name)
   end
 end

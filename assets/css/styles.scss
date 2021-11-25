@@ -66,6 +66,14 @@ html {
         @apply px-4 py-2;
     }
 
+    &.button--small {
+        @apply py-1 px-1 text-sm;
+
+        svg {
+            @apply w-4;
+        }
+    }
+
     &.button--text {
         @apply
             px-0
@@ -78,7 +86,7 @@ html {
     @apply italic;
 }
 
-select {
+select, input[type="date"] {
     color: black!important;
 }
 

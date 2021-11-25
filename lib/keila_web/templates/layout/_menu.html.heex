@@ -46,6 +46,7 @@
                         <%= menu_link(@conn, :contact, :new, [@current_project.id], gettext("Create contact"), exact: true, icon: :document_add, indent: 1) %>
                         <%= menu_link(@conn, :contact, :import, [@current_project.id], gettext("Import contacts"), exact: true, icon: :user_add, indent: 1) %>
                     <% end %>
+                    <%= menu_link(@conn, :segment, :index, [@current_project.id], gettext("Segments"), icon: :filter, exclude: [{:form, :new, [@current_project.id]}]) %>
                     <%= menu_link(@conn, :form, :index, [@current_project.id], gettext("Forms"), icon: :template, exclude: [{:form, :new, [@current_project.id]}]) %>
                     <%= if String.starts_with?(@conn.request_path, Routes.form_path(@conn, :index, @current_project.id)) do %>
                         <%= menu_link(@conn, :form, :new, [@current_project.id], gettext("Create form"), exact: true, icon: :document_add, indent: 1) %>
