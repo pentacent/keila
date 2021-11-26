@@ -5,6 +5,7 @@
 ### Added
 - Contact segmentation
 - Support for custom contact data
+- Allow deletion of sent campaigns
 
 ## Changed
 - Improved UI design
