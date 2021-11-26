@@ -1,0 +1,34 @@
+<div class="container flex py-8 sm:py-11 mb-4">
+    <h1 class="text-2xl sm:text-3xl">
+        <%= gettext("Delete Segments?") %>
+    </h1>
+</div>
+
+<div class="container">
+    <div class="p-4 ring ring-red-900">
+        <p class="text-lg text-gray-200">
+            <%= gettext("Do you really want to delete the following segments?") %>
+        </p>
+        <.form let={f} for={:segment} action={Routes.segment_path(@conn, :delete, @current_project.id)} method="delete">
+            <ul class="list-disc pl-4 my-4">
+                <%= for segment <- @segments do %>
+                    <li>
+                        <%= segment.name %>
+                        <%= hidden_input(f, :id, value: segment.id, name: "segment[id][]") %>
+                    </li>
+                <% end %>
+            </ul>
+            <p class="text-lg text-gray-200 font-bold">
+                <%= gettext("Deleting a segment cannot be undone.") %>
+            </p>
+            <div class="flex gap-4 mt-4">
+                <a class="button button--text button--large" href={ Routes.segment_path(@conn, :index, @current_project.id) }>
+                    <%= gettext("Cancel") %>
+                </a>
+                <button type="submit" class="button button--warn button--large">
+                    <%= gettext("Delete") %>
+                </button>
+            </div>
+        </.form>
+    </div>
+</div>

@@ -111,6 +111,12 @@ defmodule KeilaWeb.Router do
     post "/projects/:project_id/templates/:id/clone", TemplateController, :post_clone
     delete "/projects/:project_id/templates", TemplateController, :delete
 
+    get "/projects/:project_id/segments", SegmentController, :index
+    get "/projects/:project_id/segments/new", SegmentController, :new
+    post "/projects/:project_id/segments", SegmentController, :create
+    get "/projects/:project_id/segments/:id", SegmentController, :edit
+    delete "/projects/:project_id/segments", SegmentController, :delete
+
     get "/projects/:project_id/campaigns", CampaignController, :index
     get "/projects/:project_id/campaigns/new", CampaignController, :new
     post "/projects/:project_id/campaigns/new", CampaignController, :post_new
@@ -128,6 +134,7 @@ defmodule KeilaWeb.Router do
     plug :fetch_session
     plug :fetch_live_flash
     plug :put_root_layout, {KeilaWeb.FormLayoutView, :root}
+    plug :put_layout, false
     plug :put_secure_browser_headers
     plug KeilaWeb.Meta.Plug
   end

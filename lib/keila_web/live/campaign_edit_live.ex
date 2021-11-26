@@ -6,6 +6,7 @@ defmodule KeilaWeb.CampaignEditLive do
   def mount(_params, session, socket) do
     project = session["current_project"]
     senders = session["senders"]
+    segments = session["segments"]
     templates = session["templates"] || []
     campaign = session["campaign"]
     error_changeset = session["changeset"]
@@ -24,18 +25,16 @@ defmodule KeilaWeb.CampaignEditLive do
           end
       end
 
-    recipient_count =
-      Keila.Contacts.get_project_contacts_count(project.id, filter: %{"status" => "active"})
-
     socket =
       socket
       |> assign(:current_project, project)
       |> assign(:campaign, campaign)
       |> assign(:senders, senders)
+      |> assign(:segments, segments)
       |> assign(:templates, templates)
       |> assign(:changeset, changeset)
-      |> assign(:recipient_count, recipient_count)
       |> assign(:error_changeset, error_changeset)
+      |> put_recipient_count()
       |> put_default_assigns()
 
     {:ok, socket}
@@ -82,6 +81,7 @@ defmodule KeilaWeb.CampaignEditLive do
     socket =
       socket
       |> assign(:changeset, changeset)
+      |> put_recipient_count()
       |> put_default_assigns()
 
     {:noreply, socket}
@@ -118,6 +118,39 @@ defmodule KeilaWeb.CampaignEditLive do
       socket
       |> assign(:current_template_id, if(template, do: template.id))
       |> assign(:styles, styles)
+    else
+      socket
+    end
+  end
+
+  defp put_recipient_count(socket) do
+    segment_id = Ecto.Changeset.get_field(socket.assigns.changeset, :segment_id)
+
+    if !Map.has_key?(socket.assigns, :segment_id) ||
+         Map.get(socket.assigns, :segment_id) != segment_id do
+      segment_filter =
+        case segment_id do
+          nil ->
+            %{}
+
+          segment_id ->
+            segments = socket.assigns.segments
+
+            Enum.find_value(segments, fn segment ->
+              if segment.id == segment_id, do: segment.filter
+            end)
+        end
+
+      filter = %{"$and" => [segment_filter, %{"status" => "active"}]}
+
+      recipient_count =
+        Keila.Contacts.get_project_contacts_count(socket.assigns.current_project.id,
+          filter: filter
+        )
+
+      socket
+      |> assign(:segment_id, segment_id)
+      |> assign(:recipient_count, recipient_count)
     else
       socket
     end

@@ -1,6 +1,6 @@
 defmodule KeilaWeb.CampaignController do
   use KeilaWeb, :controller
-  alias Keila.{Mailings, Templates}
+  alias Keila.{Contacts, Mailings, Templates}
   import Ecto.Changeset
   import Phoenix.LiveView.Controller
 
@@ -93,13 +93,15 @@ defmodule KeilaWeb.CampaignController do
     if is_nil(campaign.sent_at) do
       senders = Mailings.get_project_senders(project.id)
       templates = Templates.get_project_templates(project.id)
+      segments = Contacts.get_project_segments(project.id)
 
       live_render(conn, KeilaWeb.CampaignEditLive,
         session: %{
           "current_project" => project,
           "campaign" => campaign,
           "senders" => senders,
-          "templates" => templates
+          "templates" => templates,
+          "segments" => segments
         }
       )
     else
@@ -192,6 +194,7 @@ defmodule KeilaWeb.CampaignController do
     project = current_project(conn)
     campaign = conn.assigns.campaign
     senders = Mailings.get_project_senders(project.id)
+    segments = Contacts.get_project_segments(project.id)
 
     live_render(conn, KeilaWeb.CampaignEditLive,
       session: %{
@@ -199,7 +202,8 @@ defmodule KeilaWeb.CampaignController do
         "campaign" => campaign,
         "params" => params,
         "senders" => senders,
-        "changeset" => changeset
+        "changeset" => changeset,
+        "segments" => segments
       }
     )
   end

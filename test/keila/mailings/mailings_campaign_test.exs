@@ -202,4 +202,35 @@ defmodule Keila.MailingsCampaignTest do
     assert {:error, _changeset} =
              Mailings.schedule_campaign(campaign.id, %{"scheduled_for" => in_one_hour})
   end
+
+  @tag :mailings_campaign
+  test "campaigns are sent to contact segments", %{project: project} do
+    contact1 = insert!(:contact, project_id: project.id, email: "foo-segment@example.com")
+    _contact2 = insert!(:contact, project_id: project.id, email: "bar-segment@example.com")
+
+    segment =
+      insert!(:contacts_segment,
+        project_id: project.id,
+        filter: %{"email" => %{"$like" => "%foo%"}}
+      )
+
+    sender = insert!(:mailings_sender, config: %Mailings.Sender.Config{type: "test"})
+
+    campaign =
+      insert!(:mailings_campaign,
+        project_id: project.id,
+        segment_id: segment.id,
+        sender_id: sender.id
+      )
+
+    assert :ok = Mailings.deliver_campaign(campaign.id)
+    assert %{success: 1, failure: 0} = Oban.drain_queue(queue: :mailer)
+
+    receive do
+      {:email, %{to: [{_, email}]}} ->
+        assert email == contact1.email
+    end
+
+    refute_email_sent()
+  end
 end

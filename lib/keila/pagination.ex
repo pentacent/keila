@@ -3,7 +3,7 @@ defmodule Keila.Pagination do
   Module for paginating Ecto Queries.
   """
 
-  defstruct [:page, :data, :page_count]
+  defstruct [:page, :data, :count, :page_count]
   @type t :: %__MODULE__{}
   @type t(type) :: %__MODULE__{data: type}
 
@@ -21,7 +21,8 @@ defmodule Keila.Pagination do
   def paginate(query, opts \\ []) do
     page = Keyword.get(opts, :page, 0)
     page_size = Keyword.get(opts, :page_size, 10)
-    page_count = ceil(Keila.Repo.aggregate(query, :count, :id) / page_size)
+    count = Keila.Repo.aggregate(query, :count, :id)
+    page_count = ceil(count / page_size)
 
     data =
       query
@@ -32,6 +33,7 @@ defmodule Keila.Pagination do
     %__MODULE__{
       page: page,
       data: data,
+      count: count,
       page_count: page_count
     }
   end

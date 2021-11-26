@@ -21,6 +21,8 @@ defmodule Keila.Contacts.Query do
   - `"$lte"` - lesser-than-or-equal operator.
   - `"$in"` - queries if field value is part of a set.
      `%{"email" => %{"$in" => ["foo@example.com", "bar@example.com"]}}`
+  - `"$like"` - queries if the field matches using the SQL `LIKE` statement.
+     `%{"email" => %{"$like" => "%keila.io"}}`
 
   ## Sorting
   Using the `:sort` option, you can supply MongoDB-style sorting options:
@@ -45,6 +47,22 @@ defmodule Keila.Contacts.Query do
     |> maybe_sort(opts)
   end
 
+  @doc """
+  Safely validates if the given query opts are valid.
+  """
+  @spec valid_opts?([opts]) :: boolean()
+  def valid_opts?(opts) do
+    try do
+      from(c in Keila.Contacts.Contact)
+      |> maybe_filter(opts)
+      |> maybe_sort(opts)
+
+      true
+    rescue
+      _ -> false
+    end
+  end
+
   defp maybe_filter(query, opts) do
     case Keyword.get(opts, :filter) do
       input when is_map(input) -> filter(query, input)
@@ -56,19 +74,33 @@ defmodule Keila.Contacts.Query do
     from(q in query, where: ^build_and(input))
   end
 
+  defp build_and([]), do: true
+
   defp build_and(input) do
-    Enum.reduce(input, nil, fn
-      {k, v}, nil -> build_condition(k, v)
-      {k, v}, conditions -> dynamic([c], ^build_condition(k, v) and ^conditions)
+    Enum.reduce(input, [], fn
+      {k, v}, [] ->
+        build_condition(k, v)
+
+      {k, v}, conditions ->
+        dynamic([c], ^build_condition(k, v) and ^conditions)
+
+      input, [] when is_map(input) or is_list(input) ->
+        build_and(input)
+
+      input, conditions when is_map(input) or is_list(input) ->
+        dynamic([c], ^build_and(input) and ^conditions)
     end)
   end
 
   defp build_or(input) do
-    Enum.reduce(input, nil, fn
-      input, nil -> build_and(input)
+    Enum.reduce(input, [], fn
+      input, [] -> build_and(input)
       input, conditions -> dynamic([c], ^build_and(input) or ^conditions)
     end)
   end
+
+  defp build_condition("$and", input),
+    do: build_and(input)
 
   defp build_condition("$or", input),
     do: build_or(input)
@@ -93,6 +125,9 @@ defmodule Keila.Contacts.Query do
 
   defp build_condition(field, %{"$in" => value}) when is_atom(field) and is_list(value),
     do: dynamic([c], field(c, ^field) in ^value)
+
+  defp build_condition(field, %{"$like" => value}) when is_atom(field),
+    do: dynamic([c], like(field(c, ^field), ^value))
 
   defp build_condition(field, value) when is_atom(field) and value in [nil],
     do: dynamic([c], is_nil(field(c, ^field)))
@@ -125,6 +160,9 @@ defmodule Keila.Contacts.Query do
 
   defp build_data_condition(path, %{"$in" => value}) when is_list(value),
     do: dynamic([c], fragment("?#>?", c.data, ^path) in ^value)
+
+  defp build_data_condition(path, %{"$like" => value}),
+    do: dynamic([c], like(fragment("?#>?", c.data, ^path), ^value))
 
   defp build_data_condition(path, value) when is_binary(value) or is_number(value) do
     value_in_array = [value]

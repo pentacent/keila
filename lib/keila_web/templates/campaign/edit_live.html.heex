@@ -39,7 +39,7 @@
         <.form let={f} for={@changeset} id="campaign" action={Routes.campaign_path(@socket, :post_edit, @current_project.id, @campaign.id)} class="flex flex-col gap-4" phx-change="form_updated">
             <div class="grid gap-4 sm:grid-cols-2">
 
-                <div class="flex flex-col">
+                <div class="form-row">
                     <%= label(f, :sender_id, "Sender") %>
 
                     <%= if not Enum.empty?(@senders) do %>
@@ -48,22 +48,22 @@
                         <% end %>
                     <% else %>
                         <p>
-                            <%= gettext("Before you can send your campaign, you need to create a sender.") %><br>
-                            <a href={ Routes.sender_path(@socket, :new, @current_project.id) } class="button button--cta">
+                            <a href={ Routes.sender_path(@socket, :new, @current_project.id) } class="button button--muted">
                                 <%= gettext("Create your first sender") %>
                             </a>
                         </p>
                     <% end %>
                 </div>
+                
+                <div class="form-row">
+                    <%= label(f, :segment_id, "Segment") %>
 
-                <div class="flex flex-col">
-                    <%= label(f, :subject, "Subject") %>
-                    <%= with_validation(f, :subject) do %>
-                        <%= text_input(f, :subject, placeholder: gettext("Your Campaign Subject"), class: "text-black") %>
+                    <%= with_validation(f, :segment_id) do %>
+                        <%= select(f, :segment_id, [{gettext("All Contacts"), nil}] ++ Enum.map(@segments, &{&1.name, &1.id}), class: "text-black") %>
                     <% end %>
                 </div>
 
-                <div class="flex flex-col">
+                <div class="form-row">
                     <%= label(f, :text_body, "Campaign Type") %>
                     <%= inputs_for(f, :settings, fn fs -> %>
                         <%= select(fs, :type, [
@@ -77,23 +77,22 @@
                 </div>
 
                 <%= if Ecto.Changeset.get_field(@changeset, :settings).type == :markdown do %>
-                    <div class="flex flex-col">
+                    <div class="form-row">
                         <%= label(f, :template_id, "Template") %>
 
-                        <%= if not Enum.empty?(@senders) do %>
-                            <%= with_validation(f, :template_id) do %>
-                                <%= select(f, :template_id, [{gettext("Default"), nil} | Enum.map(@templates, &{&1.name, &1.id})], class: "text-black") %>
-                            <% end %>
-                        <% else %>
-                            <p>
-                                <%= gettext("You can customize the design of your campaign with templates.") %><br>
-                                <a href={ Routes.template_path(@socket, :new, @current_project.id) } class="button button--cta">
-                                    <%= gettext("Create your first template") %>
-                                </a>
-                            </p>
+                        <%= with_validation(f, :template_id) do %>
+                            <%= select(f, :template_id, [{gettext("Default"), nil} | Enum.map(@templates, &{&1.name, &1.id})], class: "text-black") %>
                         <% end %>
                     </div>
                 <% end %>
+
+
+                <div class="form-row md:col-span-full">
+                    <%= label(f, :subject, "Subject") %>
+                    <%= with_validation(f, :subject) do %>
+                        <%= text_input(f, :subject, placeholder: gettext("Your Campaign Subject"), class: "text-black") %>
+                    <% end %>
+                </div>
 
             </div>
 

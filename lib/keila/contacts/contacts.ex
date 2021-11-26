@@ -6,7 +6,7 @@ defmodule Keila.Contacts do
   """
   use Keila.Repo
   alias Keila.Projects.Project
-  alias __MODULE__.{Contact, Import, Form, Event}
+  alias __MODULE__.{Contact, Import, Form, Event, Segment}
   import KeilaWeb.Gettext
 
   @doc """
@@ -157,7 +157,7 @@ defmodule Keila.Contacts do
 
   This function is idempotent and always returns `:ok`.
   """
-  @spec delete_project_contacts(any, filter: map(), sort: map()) :: :ok
+  @spec delete_project_contacts(Project.id(), filter: map(), sort: map()) :: :ok
   def delete_project_contacts(project_id, opts \\ []) do
     from(c in Contact, where: c.project_id == ^project_id)
     |> Keila.Contacts.Query.apply(opts |> Keyword.put(:sort, false))
@@ -357,5 +357,81 @@ defmodule Keila.Contacts do
   defp update_contact_status(_contact_id, _event) do
     # TODO Implement updating status without in without latest_event and make function public.
     :ok
+  end
+
+  @doc """
+  Creates a new Segment within the given Project.
+  """
+  @spec create_segment(Project.id(), map()) ::
+          {:ok, Segment.t()} | {:error, Changeset.t(Segment.t())}
+  def create_segment(project_id, params) when is_id(project_id) do
+    params
+    |> stringize_params()
+    |> Map.put("project_id", project_id)
+    |> Segment.creation_changeset()
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates an existing Segment.
+  """
+  @spec update_segment(Segment.id(), map()) ::
+          {:ok, Segment.t()} | {:error, Changeset.t(Segment.t())}
+  def update_segment(id, params) when is_id(id) do
+    get_segment(id)
+    |> Segment.update_changeset(params)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes the specified Segment.
+
+  This function is idempotent and always returns **:ok**
+  """
+  @spec delete_segment(Segment.id()) :: :ok
+  def delete_segment(id) when is_id(id) do
+    from(s in Segment, where: s.id == ^id) |> Repo.delete_all()
+
+    :ok
+  end
+
+  @doc """
+  Deletes the specified Segments within the context of the given Project.
+
+  This function is idempotent and always returns **:ok**
+  """
+  @spec delete_project_segments(Project.id(), [Segment.id()]) :: :ok
+  def delete_project_segments(project_id, ids) when is_id(project_id) do
+    from(s in Segment, where: s.id in ^ids and s.project_id == ^project_id) |> Repo.delete_all()
+
+    :ok
+  end
+
+  @doc """
+  Retrieves the specified Segment. Returns `nil` if no Segment could be found.
+  """
+  @spec get_segment(Segment.id()) :: nil | Segment.t()
+  def get_segment(id) when is_id(id) do
+    Repo.get(Segment, id)
+  end
+
+  @doc """
+  Retrieves the specified Segment if it belongs to the given Project.
+  Returns `nil` if no Segment could be found or it doesn’t belong to the given
+  Project.
+  """
+  @spec get_project_segment(Project.id(), Segment.id()) :: nil | Segment.t()
+  def get_project_segment(project_id, id) when is_id(project_id) and is_id(id) do
+    from(s in Segment, where: s.id == ^id and s.project_id == ^project_id)
+    |> Repo.one()
+  end
+
+  @doc """
+  Retrieves all Segments for the given Project.
+  """
+  @spec get_project_segments(Project.id()) :: [Segment.t()] | []
+  def get_project_segments(project_id) when is_id(project_id) do
+    from(s in Segment, where: s.project_id == ^project_id)
+    |> Repo.all()
   end
 end
