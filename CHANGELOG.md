@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## Version 0.7.1
+### Fixed
+- Fixed error when creating new segments
+
 
 ## Version 0.7.0
 
@@ -15,6 +19,8 @@
 - Moved all templates from leex/eex to heex
 - Improved Core querying API
 
+### Fixed
+- Fixed exception when processing unhandled SES webhooks
 
 ## Version 0.6.2
 
@@ -27,9 +33,6 @@
 - Upgraded to Phoenix 1.6
 - Upgraded various dependencies, including Ecto
 - Replaced Webpack with esbuild
-
-### Fixed
-- Fixed exception when processing unhandled SES webhooks
 
 
 ## Version 0.6.1

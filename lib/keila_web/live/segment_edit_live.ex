@@ -44,7 +44,7 @@ defmodule KeilaWeb.SegmentEditLive do
       |> assign(:fields, @fields)
       |> assign(:widgets, @widgets)
       |> assign(:page, 0)
-      |> put_filter(session["segment"].filter || %{"%or" => %{}})
+      |> put_filter(session["segment"].filter || %{})
       |> update_assigns()
 
     {:ok, socket}
