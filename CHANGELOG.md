@@ -3,11 +3,13 @@
 ## Unreleased
 
 ### Added
+- Contact segmentation
 - Support for custom contact data
 
 ## Changed
 - Improved UI design
 - Moved all templates from leex/eex to heex
+- Improved Core querying API
 
 
 ## Version 0.6.2
