@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+
+## Version 0.7.0
+
 ### Added
 - Contact segmentation
 - Support for custom contact data
