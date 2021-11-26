@@ -204,7 +204,7 @@ defmodule Keila.MailingsCampaignTest do
   end
 
   @tag :mailings_campaign
-  test "campaigns be sent to contact segments", %{project: project} do
+  test "campaigns are sent to contact segments", %{project: project} do
     contact1 = insert!(:contact, project_id: project.id, email: "foo-segment@example.com")
     _contact2 = insert!(:contact, project_id: project.id, email: "bar-segment@example.com")
 

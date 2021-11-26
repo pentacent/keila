@@ -26,7 +26,7 @@ defmodule KeilaWeb.SegmentControllerTest do
 
   describe "POST /segments" do
     @tag :segment_controller
-    test "creates new form and redirects to edit page", %{conn: conn} do
+    test "creates new segment and redirects to edit page", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
 
       conn =
