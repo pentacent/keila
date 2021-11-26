@@ -17,6 +17,9 @@
 - Upgraded various dependencies, including Ecto
 - Replaced Webpack with esbuild
 
+### Fixed
+- Fixed exception when processing unhandled SES webhooks
+
 
 ## Version 0.6.1
 

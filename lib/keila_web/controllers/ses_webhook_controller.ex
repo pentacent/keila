@@ -49,6 +49,8 @@ defmodule KeilaWeb.SESWebhookController do
 
   def webhook(conn, _) do
     Logger.info("Unhandled SES Webhook: #{inspect(conn.body_params)}")
+
+    conn |> send_resp(204, "")
   end
 
   defp authorize(conn, _opts) do
