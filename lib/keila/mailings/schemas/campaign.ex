@@ -21,14 +21,22 @@ defmodule Keila.Mailings.Campaign do
 
   def creation_changeset(struct \\ %__MODULE__{}, params) do
     struct
-    |> cast(params, [:subject, :text_body, :html_body, :sender_id, :project_id, :template_id])
+    |> cast(params, [
+      :subject,
+      :text_body,
+      :html_body,
+      :sender_id,
+      :project_id,
+      :template_id,
+      :segment_id
+    ])
     |> cast_embed(:settings)
     |> validate_required([:subject, :project_id, :settings])
   end
 
   def update_changeset(struct = %__MODULE__{}, params) do
     struct
-    |> cast(params, [:subject, :text_body, :html_body, :sender_id, :template_id])
+    |> cast(params, [:subject, :text_body, :html_body, :sender_id, :template_id, :segment_id])
     |> cast_embed(:settings)
     |> validate_required([:subject])
   end
@@ -44,7 +52,7 @@ defmodule Keila.Mailings.Campaign do
   """
   def preview_changeset(struct = %__MODULE__{}, params) do
     struct
-    |> cast(params, [:subject, :text_body, :html_body, :sender_id, :template_id])
+    |> cast(params, [:subject, :text_body, :html_body, :sender_id, :template_id, :segment_id])
     |> cast_embed(:settings)
   end
 
