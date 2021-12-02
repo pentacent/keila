@@ -118,6 +118,48 @@ defmodule Keila.ContactsTest do
   end
 
   @tag :contacts
+  test "Import RFC 4180 CSV with on_conflict: replace (upsert)", %{project: project} do
+    assert :ok == Contacts.import_csv(project.id, "test/keila/contacts/import_rfc_4180_upsert.csv", on_conflict: :replace)
+    contacts = Contacts.get_project_contacts(project.id)
+
+    expected = [%{first_name: "João", last_name: "Nilton"}, %{first_name: "Elisa", last_name: "Paula"},
+                %{first_name: "Foo", last_name: "Bar"}]
+
+    for %{first_name: e_fn, last_name: e_ln} <- expected do
+      assert Enum.find(contacts, fn
+        %{first_name: ^e_fn, last_name: ^e_ln} -> true
+        _ -> false
+      end)
+    end
+
+    refute Enum.find(contacts, fn
+      %{first_name: "João", last_name: "Milton"} -> true
+      _ -> false
+    end)
+  end
+
+  @tag :contacts
+  test "Import RFC 4180 CSV with on_conflict: ignore", %{project: project} do
+    assert :ok == Contacts.import_csv(project.id, "test/keila/contacts/import_rfc_4180_upsert.csv", on_conflict: :ignore)
+    contacts = Contacts.get_project_contacts(project.id)
+
+    expected = [%{first_name: "João", last_name: "Milton"}, %{first_name: "Elisa", last_name: "Paula"},
+                %{first_name: "Foo", last_name: "Bar"}]
+
+    for %{first_name: e_fn, last_name: e_ln} <- expected do
+      assert Enum.find(contacts, fn
+        %{first_name: ^e_fn, last_name: ^e_ln} -> true
+        _ -> false
+      end)
+    end
+
+    refute Enum.find(contacts, fn
+      %{first_name: "João", last_name: "Nilton"} -> true
+      _ -> false
+    end)
+  end
+
+  @tag :contacts
   test "Import RFC 4180 CSV with data", %{project: project} do
     assert :ok == Contacts.import_csv(project.id, "test/keila/contacts/import_with_data.csv")
     assert_received {:contacts_import_progress, 2, 2}

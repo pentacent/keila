@@ -16,11 +16,12 @@ defmodule Keila.Contacts.Import do
           :ok | {:error, String.t()}
   def import_csv(project_id, filename, opts) do
     notify_pid = Keyword.get(opts, :notify, self())
+    on_conflicts = Keyword.get(opts, :on_conflict, :replace)
 
     Repo.transaction(
       fn ->
         try do
-          import_csv!(project_id, filename, notify_pid)
+          import_csv!(project_id, filename, notify_pid, on_conflicts)
         rescue
           e in NimbleCSV.ParseError ->
             Repo.rollback(e.message)
@@ -41,7 +42,7 @@ defmodule Keila.Contacts.Import do
     end
   end
 
-  defp import_csv!(project_id, filename, notify_pid) do
+  defp import_csv!(project_id, filename, notify_pid, on_conflicts) do
     first_line = read_first_line!(filename)
     parser = determine_parser(first_line)
     row_function = build_row_function(parser, first_line, project_id)
@@ -49,12 +50,18 @@ defmodule Keila.Contacts.Import do
     lines = read_file_line_count!(filename)
     send(notify_pid, {:contacts_import_progress, 0, lines})
 
+    insert_ops = [returning: false, conflict_target: [:email, :project_id]] ++
+      case on_conflicts do
+        :replace -> [on_conflict: {:replace_all_except, [:id, :email, :project_id]}]
+        :ignore -> [on_conflict: :nothing]
+      end
+
     File.stream!(filename)
     |> parser.parse_stream()
     |> Stream.map(row_function)
     |> Stream.with_index()
     |> Stream.map(fn {changeset, n} ->
-      case Repo.insert(changeset, returning: false) do
+      case Repo.insert(changeset, insert_ops) do
         {:ok, %{id: id}} ->
           Keila.Contacts.log_event(id, :import)
           n
