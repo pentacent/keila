@@ -12,10 +12,6 @@ defmodule KeilaWeb.Router do
     plug KeilaWeb.AuthSession.Plug
   end
 
-  pipeline :api do
-    plug :accepts, ["json"]
-  end
-
   # Non-authenticated Routes
   scope "/", KeilaWeb do
     pipe_through :browser
@@ -151,11 +147,37 @@ defmodule KeilaWeb.Router do
     get "/c/:encoded_url/:recipient_id/:link_id/:hmac", TrackingController, :track_click
   end
 
-  scope "/api", KeilaWeb do
+  pipeline :api do
+    plug :accepts, ["json"]
+  end
+
+  scope "/api/v1", KeilaWeb do
     pipe_through :api
 
-    post "/webhooks/paddle", PaddleWebhookController, :webhook
-    post "/webhooks/senders/ses", SESWebhookController, :webhook
+    get "/campaigns", ApiController, :index_campaigns
+    post "/campaigns", ApiController, :create_campaign
+    patch "/campaigns/:id", ApiController, :update_campaign
+    post "/campaigns/:id/send", ApiController, :send_campaign
+    post "/campaigns/:id/schedule", ApiController, :schedule_campaign
+    delete "/campaigns/:id", ApiController, :delete_campaign
+
+    get "/contacts", ApiController, :index_contacts
+    post "/contacts", ApiController, :create_contact
+    patch "/contacts/:id", ApiController, :update_contact
+    delete "/contacts/:id", ApiController, :delete_contact
+
+    get "/segments", ApiController, :index_segment
+    post "/segments", ApiController, :create_segment
+    patch "/segments/:id", ApiController, :update_segment
+    delete "/segments/:id", ApiController, :delete_segment
+  end
+
+  # Webhooks
+  scope "/api/webhooks", KeilaWeb do
+    pipe_through :api
+
+    post "/paddle", PaddleWebhookController, :webhook
+    post "/senders/ses", SESWebhookController, :webhook
   end
 
   # Enables LiveDashboard only for development
