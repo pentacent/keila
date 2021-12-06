@@ -1,6 +1,7 @@
 defmodule KeilaWeb.ApiNormalizer do
   import Plug.Conn
   import Phoenix.Controller, only: [render: 2]
+  import KeilaWeb.ApiNormalizer.SchemaMapper
 
   def init(opts) do
     opts
@@ -73,5 +74,20 @@ defmodule KeilaWeb.ApiNormalizer do
 
   def normalize(:contacts_filter, _) do
     {:ok, :filter, %{}}
+  end
+
+  def normalize(:contact_data, %{"data" => data}) do
+    data =
+      data
+      |> Enum.map(fn {key, value} ->
+        {to_snake_case(:contact, key), value}
+      end)
+      |> Enum.into(%{})
+
+    {:ok, :data, data}
+  end
+
+  def normalize(:contact_data, _) do
+    {:error, status: 400, title: "Missing `data` Member"}
   end
 end

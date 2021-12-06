@@ -156,6 +156,7 @@ defmodule KeilaWeb.Router do
 
     get "/campaigns", ApiController, :index_campaigns
     post "/campaigns", ApiController, :create_campaign
+    get "/campaigns/:id", ApiController, :show_campaign
     patch "/campaigns/:id", ApiController, :update_campaign
     post "/campaigns/:id/send", ApiController, :send_campaign
     post "/campaigns/:id/schedule", ApiController, :schedule_campaign
@@ -163,11 +164,13 @@ defmodule KeilaWeb.Router do
 
     get "/contacts", ApiController, :index_contacts
     post "/contacts", ApiController, :create_contact
+    get "/contacts/:id", ApiController, :show_contact
     patch "/contacts/:id", ApiController, :update_contact
     delete "/contacts/:id", ApiController, :delete_contact
 
     get "/segments", ApiController, :index_segment
     post "/segments", ApiController, :create_segment
+    get "/segments/:id", ApiController, :show_segment
     patch "/segments/:id", ApiController, :update_segment
     delete "/segments/:id", ApiController, :delete_segment
   end
