@@ -50,11 +50,12 @@ defmodule Keila.Contacts.Import do
     lines = read_file_line_count!(filename)
     send(notify_pid, {:contacts_import_progress, 0, lines})
 
-    insert_ops = [returning: false, conflict_target: [:email, :project_id]] ++
-      case on_conflicts do
-        :replace -> [on_conflict: {:replace_all_except, [:id, :email, :project_id]}]
-        :ignore -> [on_conflict: :nothing]
-      end
+    insert_ops =
+      [returning: false, conflict_target: [:email, :project_id]] ++
+        case on_conflicts do
+          :replace -> [on_conflict: {:replace_all_except, [:id, :email, :project_id]}]
+          :ignore -> [on_conflict: :nothing]
+        end
 
     File.stream!(filename)
     |> parser.parse_stream()
