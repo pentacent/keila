@@ -101,10 +101,8 @@ defmodule KeilaWeb.ApiControllerTest do
       conn = get(conn, Routes.api_path(conn, :index_contacts, query))
 
       assert %{
-               "errors" => _
+               "errors" => [%{"title" => "Invalid JSON"}]
              } = json_response(conn, 400)
-
-      # TODO check for specific error
     end
   end
 

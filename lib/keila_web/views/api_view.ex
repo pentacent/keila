@@ -27,12 +27,10 @@ defmodule KeilaWeb.ApiView do
     }
   end
 
-  def render("errors.json", errors) do
+  def render("errors.json", %{errors: errors}) do
     %{
-      "errors" => Enum.map(errors, &inspect/1)
+      "errors" => Enum.map(errors, &error_object/1)
     }
-
-    # TODO properly transform errors
   end
 
   defp contact_data(contact) do
@@ -45,5 +43,18 @@ defmodule KeilaWeb.ApiView do
       "updatedAt" => contact.updated_at,
       "data" => contact.data
     }
+  end
+
+  defp error_object(error) do
+    status = error |> Keyword.fetch!(:status) |> to_string()
+    {title, detail} = error_object(error[:title], error[:detail])
+
+    %{"status" => status, "title" => title, "detail" => detail}
+  end
+
+  defp error_object(title, detail = %Jason.DecodeError{}) do
+    title = title || "Invalid JSON"
+    detail = Jason.DecodeError.message(detail)
+    {title, detail}
   end
 end
