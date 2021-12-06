@@ -24,7 +24,6 @@ defmodule KeilaWeb.ContactImportLive do
   end
 
   def handle_event("import", %{"import" => import_options}, socket) do
-    # IO.inspect(params)
     [{csv_filename, import_task}] =
       consume_uploaded_entries(socket, :csv, fn %{path: upload_path}, _entry ->
         pid = self()

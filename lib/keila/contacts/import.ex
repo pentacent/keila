@@ -12,6 +12,15 @@ defmodule Keila.Contacts.Import do
   import KeilaWeb.Gettext
   alias Keila.Contacts.{Contact, ImportError}
 
+  @doc """
+  Imports csv file and create new `Contacts` on database.
+
+  ## Options
+    - `:notify` - pid used to send messages about upload progress
+    - `:on_conflict`:
+      - `:replace`: replace contacts that have the same email address to the latest information on the CSV (or already on database)
+      - `:ignore`: ignore contacts that already exists on database and will do nothing
+  """
   @spec import_csv(Keila.Projects.Project.id(), String.t(), Keyword.t()) ::
           :ok | {:error, String.t()}
   def import_csv(project_id, filename, opts) do
