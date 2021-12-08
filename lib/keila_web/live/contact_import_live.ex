@@ -19,11 +19,11 @@ defmodule KeilaWeb.ContactImportLive do
   end
 
   @impl true
-  def handle_event("validate", _params, socket) do
-    {:noreply, socket}
+  def handle_event("validate", %{"import" => import_options}, socket) do
+    {:noreply, assign(socket, :import_replace, import_options["replace"] == "true")}
   end
 
-  def handle_event("import", _params, socket) do
+  def handle_event("import", %{"import" => import_options}, socket) do
     [{csv_filename, import_task}] =
       consume_uploaded_entries(socket, :csv, fn %{path: upload_path}, _entry ->
         pid = self()
@@ -35,9 +35,14 @@ defmodule KeilaWeb.ContactImportLive do
         csv_filename = Path.join(System.tmp_dir!(), csv_basename)
         File.cp!(upload_path, csv_filename)
 
+        on_conflict = if import_options["replace"] == "true", do: :replace, else: :ignore
+
         task =
           Task.async(fn ->
-            Keila.Contacts.import_csv(socket.assigns.current_project.id, csv_filename, notify: pid)
+            Keila.Contacts.import_csv(socket.assigns.current_project.id, csv_filename,
+              notify: pid,
+              on_conflict: on_conflict
+            )
           end)
 
         {csv_filename, task}
@@ -64,7 +69,6 @@ defmodule KeilaWeb.ContactImportLive do
 
   def handle_info({reference, {:error, reason}}, socket) when is_reference(reference) do
     File.rm(socket.assigns.csv_filename)
-
     {:noreply, assign(socket, :import_error, reason)}
   end
 
@@ -93,5 +97,6 @@ defmodule KeilaWeb.ContactImportLive do
     |> assign(:import_progress, 0)
     |> assign(:import_total, 0)
     |> assign(:import_error, nil)
+    |> assign(:import_replace, true)
   end
 end

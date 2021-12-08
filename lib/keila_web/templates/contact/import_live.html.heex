@@ -14,7 +14,7 @@
 
     <%= cond do %>
     <% @import_total == 0 -> %>
-        <form id="import-form" phx-submit="import" phx-change="validate" class="flex flex-col items-start gap-4">
+        <.form let={f} for={:import} id="import-form" phx-submit="import" phx-change="validate" class="flex flex-col items-start gap-4">
             <% class = "button #{ if Enum.empty?(@uploads.csv.entries), do: "button--cta button--large" }" %>
             <label class={class}>
                 <%= render_icon(:upload) %>
@@ -25,14 +25,18 @@
                 <% end %>
             </label>
 
-
             <%= if not Enum.empty?(@uploads.csv.entries) do %>
                 <button class="button button--cta button--large" type="submit">
                     <%= render_icon(:cursor_click) %>
                     <%= gettext("Start Import") %>
                 </button>
             <% end %>
-        </form>
+
+            <div class="form-row">
+                <%= label(f, :replace, "Replace duplicates?") %>
+                <%= checkbox(f, :replace, checked: @import_replace) %>
+            </div>
+        </.form>
 
     <% @import_total > @import_progress -> %>
         <h2 class="text-xl sm:text-3xl">Importing Contacts (<%= @import_progress %> / <%= @import_total %>) …</h2>
