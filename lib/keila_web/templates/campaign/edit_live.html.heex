@@ -39,7 +39,7 @@
         <.form let={f} for={@changeset} id="campaign" action={Routes.campaign_path(@socket, :post_edit, @current_project.id, @campaign.id)} class="flex flex-col gap-4" phx-change="form_updated">
             <div class="grid gap-4 sm:grid-cols-2">
 
-                <div class="form-row">
+                <div class="inline-form-row">
                     <%= label(f, :sender_id, "Sender") %>
 
                     <%= if not Enum.empty?(@senders) do %>
@@ -55,7 +55,7 @@
                     <% end %>
                 </div>
                 
-                <div class="form-row">
+                <div class="inline-form-row">
                     <%= label(f, :segment_id, "Segment") %>
 
                     <%= with_validation(f, :segment_id) do %>
@@ -63,7 +63,7 @@
                     <% end %>
                 </div>
 
-                <div class="form-row">
+                <div class="inline-form-row">
                     <%= label(f, :text_body, "Campaign Type") %>
                     <%= inputs_for(f, :settings, fn fs -> %>
                         <%= select(fs, :type, [
@@ -77,7 +77,7 @@
                 </div>
 
                 <%= if Ecto.Changeset.get_field(@changeset, :settings).type == :markdown do %>
-                    <div class="form-row">
+                    <div class="inline-form-row">
                         <%= label(f, :template_id, "Template") %>
 
                         <%= with_validation(f, :template_id) do %>
@@ -87,7 +87,7 @@
                 <% end %>
 
 
-                <div class="form-row md:col-span-full">
+                <div class="inline-form-row md:col-span-full">
                     <%= label(f, :subject, "Subject") %>
                     <%= with_validation(f, :subject) do %>
                         <%= text_input(f, :subject, placeholder: gettext("Your Campaign Subject"), class: "text-black") %>

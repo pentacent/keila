@@ -136,7 +136,7 @@
             <%= gettext("%{remaining} / %{total} emails remaining", total: elem(@credits, 0), remaining: elem(@credits, 1)) %>
         </div>
     <% end %>
-    <.form let={f} for={@changeset} action={ Routes.account_path(@conn, :post_edit)}class="rounded shadow p-8 mt-8 max-w-5xl mx-auto flex flex-col gap-4 bg-gray-900 text-gray-50">
+    <.form let={f} for={@changeset} action={ Routes.account_path(@conn, :post_edit)} class="rounded shadow p-8 mt-8 max-w-5xl mx-auto flex flex-col gap-4 bg-gray-900 text-gray-50">
         <h2 class="text-3xl font-bold">
             <%= gettext("Change Password") %>
         </h2>

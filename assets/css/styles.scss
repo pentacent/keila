@@ -138,6 +138,10 @@ input[disabled] {
     }
 }
 
+.inline-form-row {
+    @apply flex flex-col gap-1;
+}
+
 .bg-onboarding {
     @apply bg-gradient-to-r from-red-900 via-indigo-900 to-green-900;
 }
