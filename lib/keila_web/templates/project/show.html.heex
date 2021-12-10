@@ -56,13 +56,13 @@
         </a>
     </div>
     <div class="card bg-gray-800">
-        <h2 class="font-light text-2xl flex items-center gap-2 mb-2">
-            <span class="inline-flex h-6 w-6"><%= render_icon(:speakerphone) %></span>
-            <%= gettext("Senders") %>
+        <h2 class="font-light text-2xl flex items-center gap-2">
+            <span class="inline-flex h-6 w-6"><%= render_icon(:filter) %></span>
+            <%= gettext("Segments") %>
         </h2>
         <br>
-        <a href={ Routes.sender_path(@conn, :index, @current_project.id)} class="button button--muted">
-            <%= gettext("Manage Senders") %>
+        <a href={ Routes.segment_path(@conn, :index, @current_project.id)} class="button button--muted">
+            <%= gettext("Manage Segments") %>
         </a>
     </div>
     <div class="card bg-gray-800">
@@ -83,6 +83,16 @@
         <br>
         <a href={ Routes.template_path(@conn, :index, @current_project.id)} class="button button--muted">
             <%= gettext("Manage Templates") %>
+        </a>
+    </div>
+    <div class="card bg-gray-800">
+        <h2 class="font-light text-2xl flex items-center gap-2 mb-2">
+            <span class="inline-flex h-6 w-6"><%= render_icon(:speakerphone) %></span>
+            <%= gettext("Senders") %>
+        </h2>
+        <br>
+        <a href={ Routes.sender_path(@conn, :index, @current_project.id)} class="button button--muted">
+            <%= gettext("Manage Senders") %>
         </a>
     </div>
 </div>
