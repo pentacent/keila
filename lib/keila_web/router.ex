@@ -158,8 +158,8 @@ defmodule KeilaWeb.Router do
     post "/campaigns", ApiController, :create_campaign
     get "/campaigns/:id", ApiController, :show_campaign
     patch "/campaigns/:id", ApiController, :update_campaign
-    post "/campaigns/:id/send", ApiController, :send_campaign
-    post "/campaigns/:id/schedule", ApiController, :schedule_campaign
+    post "/campaigns/:id/actions/send", ApiController, :deliver_campaign
+    post "/campaigns/:id/actions/schedule", ApiController, :schedule_campaign
     delete "/campaigns/:id", ApiController, :delete_campaign
 
     get "/contacts", ApiController, :index_contacts
