@@ -72,12 +72,11 @@ defmodule KeilaWeb.SegmentView do
     value = condition["value"] || %{}
     key = value["key"]
     match = value["match"]
-
     assigns = %{}
 
     ~H"""
     <label for={ "#{index}[value][key]" } class="self-center text-right"><%= gettext("Field:") %></label>
-    <input id={ "#{index}[value][key]" } name={ "#{index}[value][key]" } type="text" value={ key } class="text-black" />
+    <input id={ "#{index}[value][key]" } name={ "#{index}[value][key]" } type="text" value={ key } class="text-black w-28" />
     <label for={ "#{index}[value][match]" } class="self-center text-right"><%= gettext("Match:") %></label>
     <input id={ "#{index}[value][match]" } name={ "#{index}[value][match]" } type="text" value={ match } class="text-black" />
     """
