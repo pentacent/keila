@@ -267,7 +267,12 @@ defmodule KeilaWeb.SegmentEditLive do
     |> Enum.with_index()
     |> Enum.map(fn {condition, condition_index} ->
       {field, condition} = Enum.at(condition, 0)
-      type = @fields[field].type
+
+      type =
+        case field do
+          "data." <> _ -> "custom"
+          field -> @fields[field].type
+        end
 
       form_data =
         filter_condition_to_form_data(type, field, condition)
@@ -314,6 +319,11 @@ defmodule KeilaWeb.SegmentEditLive do
     }
 
     %{"value" => value, "widget" => widget}
+  end
+
+  defp filter_condition_to_form_data("custom", "data." <> field, condition)
+       when is_binary(condition) do
+    %{"value" => %{"key" => field, "match" => condition}}
   end
 
   # Transforms form_data to filter
