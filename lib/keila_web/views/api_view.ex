@@ -20,6 +20,21 @@ defmodule KeilaWeb.ApiView do
     }
   end
 
+  def render("campaigns.json", %{campaigns: campaigns = %Pagination{}}) do
+    %{
+      "meta" => %{
+        "page" => campaigns.page,
+        "pageCount" => campaigns.page_count,
+        "count" => campaigns.count
+      },
+      "data" => Enum.map(campaigns.data, &campaign_data/1)
+    }
+  end
+
+  def render("campaign.json", %{campaign: campaign}) do
+    %{"data" => campaign_data(campaign)}
+  end
+
   def render("errors.json", %{errors: errors}) do
     %{
       "errors" => Enum.map(errors, &error_object/1)
@@ -35,6 +50,23 @@ defmodule KeilaWeb.ApiView do
       "insertedAt" => contact.inserted_at,
       "updatedAt" => contact.updated_at,
       "data" => contact.data
+    }
+  end
+
+  defp campaign_data(campaign) do
+    %{
+      "id" => campaign.id,
+      "senderId" => campaign.sender_id,
+      "segmentId" => campaign.segment_id,
+      "subject" => campaign.subject,
+      "textBody" => campaign.text_body,
+      "insertedAt" => campaign.inserted_at,
+      "updatedAt" => campaign.updated_at,
+      "sentAt" => campaign.sent_at,
+      "scheduledFor" => campaign.scheduled_for,
+      "settings" => %{
+        "type" => campaign.settings.type
+      }
     }
   end
 

@@ -209,6 +209,141 @@ defmodule KeilaWeb.ApiControllerTest do
     end
   end
 
+  describe "GET /api/v1/campaigns" do
+    @tag :api_controller
+    test "lists campaigns", %{authorized_conn: conn, project: project} do
+      n = 10
+      insert_n!(:mailings_campaign, n, fn _n -> %{project_id: project.id} end)
+
+      conn = get(conn, Routes.api_path(conn, :index_campaigns))
+
+      assert %{"data" => campaigns} = json_response(conn, 200)
+      assert Enum.count(campaigns) == n
+    end
+  end
+
+  describe "POST /api/v1/campaigns" do
+    @tag :api_controller
+    test "creates new campaign", %{authorized_conn: conn, project: project} do
+      %{id: sender_id} = insert!(:mailings_sender, project_id: project.id)
+      %{id: segment_id} = insert!(:contacts_segment, project_id: project.id)
+
+      params = %{
+        "subject" => "Test Subject",
+        "textBody" => "Lorem Ipsum",
+        "senderId" => sender_id,
+        "segmentId" => segment_id,
+        "settings" => %{
+          "type" => "markdown"
+        }
+      }
+
+      conn = post(conn, Routes.api_path(conn, :create_campaign, data: params))
+
+      assert %{
+               "data" => %{
+                 "subject" => "Test Subject",
+                 "textBody" => "Lorem Ipsum",
+                 "senderId" => ^sender_id,
+                 "segmentId" => ^segment_id,
+                 "settings" => %{"type" => "markdown"}
+               }
+             } = json_response(conn, 200)
+    end
+  end
+
+  describe "GET /api/v1/campaigns/:id" do
+    @tag :api_controller
+    test "retrieves existing campaign", %{authorized_conn: conn, project: project} do
+      %{id: id, subject: subject, text_body: text_body} =
+        insert!(:mailings_campaign, project_id: project.id)
+
+      conn = get(conn, Routes.api_path(conn, :show_campaign, id))
+
+      assert %{
+               "data" => %{
+                 "id" => ^id,
+                 "subject" => ^subject,
+                 "textBody" => ^text_body
+               }
+             } = json_response(conn, 200)
+    end
+  end
+
+  describe "PATCH /api/v1/campaigns/:id" do
+    @tag :api_controller
+    test "updates existing campaign", %{authorized_conn: conn, project: project} do
+      %{id: id} = insert!(:mailings_campaign, project_id: project.id)
+
+      data = %{"subject" => "Updated Subject", "settings" => %{"type" => "markdown"}}
+      conn = patch(conn, Routes.api_path(conn, :update_campaign, id, data: data))
+
+      assert %{
+               "data" => %{
+                 "id" => ^id,
+                 "subject" => "Updated Subject",
+                 "settings" => %{
+                   "type" => "markdown"
+                 }
+               }
+             } = json_response(conn, 200)
+
+      assert %{subject: "Updated Subject"} = Keila.Mailings.get_campaign(id)
+    end
+  end
+
+  describe "DELETE /api/v1/campaigns/:id" do
+    @tag :api_controller
+    test "always returns 204", %{authorized_conn: conn, project: project} do
+      %{id: id} = insert!(:mailings_campaign, project_id: project.id)
+
+      conn = delete(conn, Routes.api_path(conn, :delete_campaign, id))
+
+      assert nil == Keila.Mailings.get_campaign(id)
+
+      conn = delete(conn, Routes.api_path(conn, :delete_campaign, id))
+      assert conn.status == 204
+    end
+  end
+
+  describe "POST /api/v1/campaigns/:id/actions/send" do
+    @tag :api_controller
+    test "returns 204", %{authorized_conn: conn, project: project} do
+      sender = insert!(:mailings_sender, project_id: project.id)
+      %{id: id} = insert!(:mailings_campaign, project_id: project.id, sender_id: sender.id)
+      insert_n!(:contact, 50, fn _n -> %{project_id: project.id} end)
+
+      conn = post(conn, Routes.api_path(conn, :deliver_campaign, id))
+      assert conn.status == 204
+
+      :timer.sleep(500)
+      campaign = Keila.Mailings.get_campaign(id)
+      assert not is_nil(campaign.sent_at)
+    end
+  end
+
+  describe "POST /api/v1/campaigns/:id/actions/schedule" do
+    @tag :api_controller
+    test "returns updated campagin", %{authorized_conn: conn, project: project} do
+      sender = insert!(:mailings_sender, project_id: project.id)
+      %{id: id} = insert!(:mailings_campaign, project_id: project.id, sender_id: sender.id)
+      insert_n!(:contact, 50, fn _n -> %{project_id: project.id} end)
+
+      scheduled_for =
+        DateTime.utc_now() |> DateTime.truncate(:second) |> DateTime.add(60 * 60, :second)
+
+      data = %{
+        "scheduledFor" => scheduled_for |> DateTime.to_iso8601()
+      }
+
+      conn = post(conn, Routes.api_path(conn, :schedule_campaign, id, data: data))
+
+      assert json_response(conn, 200)
+
+      assert %{scheduled_for: ^scheduled_for} = Keila.Mailings.get_campaign(id)
+    end
+  end
+
   defp put_token_header(conn, token) do
     conn |> put_req_header("authorization", "Bearer: #{token}")
   end

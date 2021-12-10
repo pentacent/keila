@@ -6,13 +6,14 @@ defmodule KeilaWeb.ApiController do
   alias Keila.Projects
   alias KeilaWeb.ApiNormalizer
   alias Keila.Contacts
+  alias Keila.Mailings
 
   plug :authorize
 
   plug ApiNormalizer, [normalize: [:pagination, :contacts_filter]] when action == :index_contacts
 
   plug ApiNormalizer,
-       [normalize: [:contact_data]] when action in [:create_contact, :update_contact]
+       [normalize: [{:data, :contact}]] when action in [:create_contact, :update_contact]
 
   @spec index_contacts(Plug.Conn.t(), Map.t()) :: Plug.Conn.t()
   def index_contacts(conn, _params) do
@@ -57,25 +58,84 @@ defmodule KeilaWeb.ApiController do
     |> put_status(204)
   end
 
-  def index_campaigns(_conn, _params) do
+  plug ApiNormalizer,
+       [normalize: [{:data, :campaign}]]
+       when action in [:create_campaign, :update_campaign, :schedule_campaign]
+
+  @spec index_contacts(Plug.Conn.t(), Map.t()) :: Plug.Conn.t()
+  def index_campaigns(conn, _params) do
+    campaigns =
+      Mailings.get_project_campaigns(project_id(conn))
+      |> then(fn campaigns ->
+        count = Enum.count(campaigns)
+        %Keila.Pagination{data: campaigns, page: 0, page_count: 1, count: count}
+      end)
+
+    render(conn, "campaigns.json", %{campaigns: campaigns})
   end
 
-  def create_campaign(_conn, _params) do
+  def create_campaign(conn, _params) do
+    case Mailings.create_campaign(project_id(conn), conn.assigns.data) do
+      {:ok, campaign} -> render(conn, "campaign.json", %{campaign: campaign})
+      {:error, changeset} -> send_changeset_error(conn, changeset)
+    end
   end
 
-  def show_campaign(_conn, _params) do
+  def show_campaign(conn, %{"id" => id}) do
+    case Mailings.get_project_campaign(project_id(conn), id) do
+      campaign = %Mailings.Campaign{} -> render(conn, "campaign.json", %{campaign: campaign})
+      nil -> send_404(conn)
+    end
   end
 
-  def update_campaign(_conn, _params) do
+  def update_campaign(conn, %{"id" => id}) do
+    project_id = project_id(conn)
+
+    with campaign = %Mailings.Campaign{} <- Mailings.get_project_campaign(project_id, id) do
+      settings_id = campaign.settings.id
+      params = put_in(conn.assigns.data, ["settings", "id"], settings_id)
+
+      case Mailings.update_campaign(id, params) do
+        {:ok, campaign} -> render(conn, "campaign.json", %{campaign: campaign})
+        {:error, changeset} -> send_changeset_error(conn, changeset)
+      end
+    else
+      _ -> send_404(conn)
+    end
   end
 
-  def delete_campaign(_conn, _params) do
+  def delete_campaign(conn, %{"id" => id}) do
+    Mailings.delete_project_campaigns(project_id(conn), [id])
+
+    conn
+    |> put_status(204)
   end
 
-  def send_campaign(_conn, _params) do
+  def deliver_campaign(conn, %{"id" => id}) do
+    # TODO immediate feedback on missing sender or insufficient credits
+    campaign = Mailings.get_project_campaign(project_id(conn), id)
+
+    if campaign do
+      Mailings.deliver_campaign_async(campaign.id)
+      put_status(conn, 204)
+    else
+      send_404(conn)
+    end
   end
 
-  def schedule_campaign(_conn, _params) do
+  def schedule_campaign(conn, params = %{"id" => id}) do
+    campaign = Mailings.get_project_campaign(project_id(conn), id)
+
+    if campaign do
+      scheduled_for = get_in(params, ["data", "scheduledFor"])
+
+      case Mailings.schedule_campaign(campaign.id, %{scheduled_for: scheduled_for}) do
+        {:ok, campaign} -> render(conn, "campaign.json", campaign: campaign)
+        {:error, changeset} -> send_changeset_error(conn, changeset)
+      end
+    else
+      send_404(conn)
+    end
   end
 
   def index_segment(_conn, _params) do

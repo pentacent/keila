@@ -3,21 +3,33 @@ defmodule KeilaWeb.ApiNormalizer.SchemaMapper do
     contact: %{
       "first_name" => "firstName",
       "last_name" => "lastName"
+    },
+    campaign: %{
+      "text_body" => "textBody",
+      "html_body" => "htmlBody",
+      "sender_id" => "senderId",
+      "template_id" => "templateId",
+      "segment_id" => "segmentId"
     }
   }
 
-  def to_camel_case(:contact, field) do
-    case Map.get(@mappings.contact, to_string(field)) do
+  @struct_mappings %{
+    Keila.Contacts.Contact => :contact,
+    Keila.Mailings.Campaign => :campaign
+  }
+
+  def to_camel_case(type, field) when type in [:contact, :campaign] do
+    case Map.get(@mappings[type], to_string(field)) do
       nil -> to_string(field)
       field -> field
     end
   end
 
-  def to_camel_case(%Keila.Contacts.Contact{}, field),
-    do: to_camel_case(:contact, field)
+  def to_camel_case(%{__struct__: mod}, field),
+    do: to_camel_case(@struct_mappings[mod], field)
 
-  def to_snake_case(:contact, field) do
-    @mappings.contact
+  def to_snake_case(type, field) when type in [:contact, :campaign] do
+    @mappings[type]
     |> Enum.find_value(fn {key, value} -> if field == value, do: key end)
     |> case do
       nil -> field
@@ -25,5 +37,6 @@ defmodule KeilaWeb.ApiNormalizer.SchemaMapper do
     end
   end
 
-  def to_snake_case(%Keila.Contacts.Contact{}, field), do: to_snake_case(:contact, field)
+  def to_snake_case(%{__struct__: mod}, field),
+    do: to_snake_case(@struct_mappings[mod], field)
 end

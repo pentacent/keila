@@ -76,18 +76,18 @@ defmodule KeilaWeb.ApiNormalizer do
     {:ok, :filter, %{}}
   end
 
-  def normalize(:contact_data, %{"data" => data}) do
+  def normalize({:data, name}, %{"data" => data}) do
     data =
       data
       |> Enum.map(fn {key, value} ->
-        {to_snake_case(:contact, key), value}
+        {to_snake_case(name, key), value}
       end)
       |> Enum.into(%{})
 
     {:ok, :data, data}
   end
 
-  def normalize(:contact_data, _) do
+  def normalize({:data, _}, _) do
     {:error, status: 400, title: "Missing `data` Member"}
   end
 end
