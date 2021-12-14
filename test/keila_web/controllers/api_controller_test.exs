@@ -344,6 +344,95 @@ defmodule KeilaWeb.ApiControllerTest do
     end
   end
 
+  describe "GET /api/v1/segments" do
+    @tag :api_controllerx
+    test "lists segments", %{authorized_conn: conn, project: project} do
+      n = 10
+      insert_n!(:contacts_segment, n, fn _n -> %{project_id: project.id} end)
+
+      conn = get(conn, Routes.api_path(conn, :index_segments))
+
+      assert %{"data" => segments} = json_response(conn, 200)
+      assert Enum.count(segments) == n
+    end
+  end
+
+  describe "POST /api/v1/segments" do
+    @tag :api_controllerx
+    test "creates new segments", %{authorized_conn: conn} do
+      filter = %{
+        "$or" => [%{"email" => %{"like" => "%.com"}}, %{"email" => %{"like" => "%.org"}}]
+      }
+
+      params = %{
+        "name" => "Test Segment",
+        "filter" => filter
+      }
+
+      conn = post(conn, Routes.api_path(conn, :create_segment, data: params))
+
+      assert %{
+               "data" => %{
+                 "name" => "Test Segment",
+                 "filter" => ^filter
+               }
+             } = json_response(conn, 200)
+    end
+  end
+
+  describe "GET /api/v1/segments/:id" do
+    @tag :api_controllerx
+    test "retrieves existing segment", %{authorized_conn: conn, project: project} do
+      %{id: id, name: name, filter: filter} = insert!(:contacts_segment, project_id: project.id)
+
+      conn = get(conn, Routes.api_path(conn, :show_segment, id))
+
+      assert %{
+               "data" => %{
+                 "id" => ^id,
+                 "name" => ^name,
+                 "filter" => ^filter
+               }
+             } = json_response(conn, 200)
+    end
+  end
+
+  describe "PATCH /api/v1/segments/:id" do
+    @tag :api_controllerx
+    test "updates existing segment", %{authorized_conn: conn, project: project} do
+      %{id: id} = insert!(:contacts_segment, project_id: project.id)
+
+      data = %{"name" => "Updated Name", "filter" => %{"email" => "new@example.com"}}
+      conn = patch(conn, Routes.api_path(conn, :update_segment, id, data: data))
+
+      assert %{
+               "data" => %{
+                 "id" => ^id,
+                 "name" => "Updated Name",
+                 "filter" => %{
+                   "email" => "new@example.com"
+                 }
+               }
+             } = json_response(conn, 200)
+
+      assert %{name: "Updated Name"} = Keila.Contacts.get_segment(id)
+    end
+  end
+
+  describe "DELETE /api/v1/segments/:id" do
+    @tag :api_controllerx
+    test "always returns 204", %{authorized_conn: conn, project: project} do
+      %{id: id} = insert!(:contacts_segment, project_id: project.id)
+
+      conn = delete(conn, Routes.api_path(conn, :delete_segment, id))
+
+      assert nil == Keila.Contacts.get_segment(id)
+
+      conn = delete(conn, Routes.api_path(conn, :delete_segment, id))
+      assert conn.status == 204
+    end
+  end
+
   defp put_token_header(conn, token) do
     conn |> put_req_header("authorization", "Bearer: #{token}")
   end

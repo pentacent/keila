@@ -35,6 +35,21 @@ defmodule KeilaWeb.ApiView do
     %{"data" => campaign_data(campaign)}
   end
 
+  def render("segments.json", %{segments: segments = %Pagination{}}) do
+    %{
+      "meta" => %{
+        "page" => segments.page,
+        "pageCount" => segments.page_count,
+        "count" => segments.count
+      },
+      "data" => Enum.map(segments.data, &segment_data/1)
+    }
+  end
+
+  def render("segment.json", %{segment: segment}) do
+    %{"data" => segment_data(segment)}
+  end
+
   def render("errors.json", %{errors: errors}) do
     %{
       "errors" => Enum.map(errors, &error_object/1)
@@ -67,6 +82,16 @@ defmodule KeilaWeb.ApiView do
       "settings" => %{
         "type" => campaign.settings.type
       }
+    }
+  end
+
+  defp segment_data(segment) do
+    %{
+      "id" => segment.id,
+      "name" => segment.name,
+      "insertedAt" => segment.inserted_at,
+      "updatedAt" => segment.updated_at,
+      "filter" => segment.filter
     }
   end
 

@@ -59,6 +59,7 @@ defmodule Keila.Mailings.Campaign do
   def schedule_changeset(struct = %__MODULE__{}, params) do
     struct
     |> cast(params, [:scheduled_for])
+    |> validate_required(:scheduled_for)
     |> validate_scheduled_for()
   end
 

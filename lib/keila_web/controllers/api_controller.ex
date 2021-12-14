@@ -10,6 +10,10 @@ defmodule KeilaWeb.ApiController do
 
   plug :authorize
 
+  #
+  # Contact functions
+  #
+
   plug ApiNormalizer, [normalize: [:pagination, :contacts_filter]] when action == :index_contacts
 
   plug ApiNormalizer,
@@ -58,11 +62,15 @@ defmodule KeilaWeb.ApiController do
     |> put_status(204)
   end
 
+  #
+  # Campaign functions
+  #
+
   plug ApiNormalizer,
        [normalize: [{:data, :campaign}]]
        when action in [:create_campaign, :update_campaign, :schedule_campaign]
 
-  @spec index_contacts(Plug.Conn.t(), Map.t()) :: Plug.Conn.t()
+  @spec index_campaigns(Plug.Conn.t(), Map.t()) :: Plug.Conn.t()
   def index_campaigns(conn, _params) do
     campaigns =
       Mailings.get_project_campaigns(project_id(conn))
@@ -138,19 +146,55 @@ defmodule KeilaWeb.ApiController do
     end
   end
 
-  def index_segment(_conn, _params) do
+  #
+  # Segment functions
+  #
+
+  plug ApiNormalizer,
+       [normalize: [{:data, :segment}]]
+       when action in [:create_segment, :update_segment]
+
+  def index_segments(conn, _params) do
+    segments =
+      Contacts.get_project_segments(project_id(conn))
+      |> then(fn segments ->
+        count = Enum.count(segments)
+        %Keila.Pagination{data: segments, page: 0, page_count: 1, count: count}
+      end)
+
+    render(conn, "segments.json", %{segments: segments})
   end
 
-  def create_segment(_conn, _params) do
+  def create_segment(conn, _params) do
+    case Contacts.create_segment(project_id(conn), conn.assigns.data) do
+      {:ok, segment} -> render(conn, "segment.json", %{segment: segment})
+      {:error, changeset} -> send_changeset_error(conn, changeset)
+    end
   end
 
-  def show_segment(_conn, _params) do
+  def show_segment(conn, %{"id" => id}) do
+    case Contacts.get_project_segment(project_id(conn), id) do
+      segment = %Contacts.Segment{} -> render(conn, "segment.json", %{segment: segment})
+      nil -> send_404(conn)
+    end
   end
 
-  def update_segment(_conn, _params) do
+  def update_segment(conn, %{"id" => id}) do
+    if Contacts.get_project_segment(project_id(conn), id) do
+      case Contacts.update_segment(id, conn.assigns.data) do
+        {:ok, segment} -> render(conn, "segment.json", %{segment: segment})
+        {:error, changeset} -> send_changeset_error(conn, changeset)
+      end
+    else
+      send_404(conn)
+    end
   end
 
-  def delete_segment(_conn, _params) do
+  def delete_segment(conn, %{"id" => id}) do
+    Contacts.delete_project_segments(project_id(conn), [id])
+
+    conn
+    |> put_status(204)
   end
 
   defp send_403(conn) do

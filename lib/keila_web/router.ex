@@ -168,7 +168,7 @@ defmodule KeilaWeb.Router do
     patch "/contacts/:id", ApiController, :update_contact
     delete "/contacts/:id", ApiController, :delete_contact
 
-    get "/segments", ApiController, :index_segment
+    get "/segments", ApiController, :index_segments
     post "/segments", ApiController, :create_segment
     get "/segments/:id", ApiController, :show_segment
     patch "/segments/:id", ApiController, :update_segment
