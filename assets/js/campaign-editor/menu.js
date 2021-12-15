@@ -96,7 +96,7 @@ export function buildDefaultMenu() {
             document.querySelector("[data-dialog-for=image]").dispatchEvent(new CustomEvent("x-show", { detail: {} }))
             window.addEventListener("update-image", e => {
                 const image = e.detail
-                if (!image.cancel && image.href) {
+                if (!image.cancel && image.src) {
                     editorView.dispatch(editorView.state.tr.replaceSelectionWith(schema.nodes.image.createAndFill(image)))
                 }
                 editorView.focus()
