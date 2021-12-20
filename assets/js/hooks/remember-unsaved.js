@@ -1,16 +1,19 @@
-const RememberUnsaved = {
-  mounted() {
-    this.beforeUnload = (e) => {
-      if (this.data.changed) {
-        e.preventDefault();
-        e.returnValue = "Unsaved changes will be lost. Are you sure?";
-      }
+export function RememberUnsaved() {
+  return {
+    changed: false,
+    init() {
+      window.addEventListener("beforeunload", (e) => {
+        if (this.changed) {
+          e.preventDefault();
+          e.returnValue = "Unsaved changes will be lost. Are you sure?";
+        }
+      })
+    },
+    trigger() {
+      this.changed = true;
+    },
+    reset() {
+      this.changed = false;
     }
-    window.addEventListener("beforeunload", this.beforeUnload);
-  },
-  destroyed() {
-    window.removeEventListener("beforeunload", this.beforeUnload);
   }
-};
-
-export { RememberUnsaved }
+}

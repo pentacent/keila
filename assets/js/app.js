@@ -16,9 +16,9 @@ import { LiveSocket } from "phoenix_live_view"
 
 import * as CampaignEditLiveHooks from "./hooks/campaign-edit-live"
 import * as DateTimeHooks from "./hooks/date-time"
-import * as RememberUnsavedHooks from './hooks/remember-unsaved'
+import { RememberUnsaved } from "./hooks/remember-unsaved"
 
-const Hooks = { ...DateTimeHooks, ...CampaignEditLiveHooks, ...RememberUnsavedHooks }
+const Hooks = { ...DateTimeHooks, ...CampaignEditLiveHooks, RememberUnsaved }
 
 // Make hooks available globally
 window.Hooks = Hooks
