@@ -1944,4 +1944,7 @@ msgstr ""
 #, elixir-format
 #: lib/keila_web/templates/contact/import_live.html.heex:37
 msgid "Replace duplicates"
+
+#: lib/keila_web/templates/contact/edit.html.heex:3
+msgid "Unsaved changes will be lost. Are you sure?"
 msgstr ""

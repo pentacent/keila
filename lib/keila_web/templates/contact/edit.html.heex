@@ -1,6 +1,6 @@
 <div
     x-data="Hooks.RememberUnsaved()"
-    x-init="init()"
+    x-init={ "init('" <> gettext("Unsaved changes will be lost. Are you sure?") <> "')" }
 >
     <div class="container flex py-8 sm:py-11 sm:mb-4">
         <div class="flex-grow gap-4 flex flex-col-reverse sm:flex-row sm:items-center max-w-md">
