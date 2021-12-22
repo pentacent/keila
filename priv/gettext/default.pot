@@ -170,7 +170,7 @@ msgstr ""
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:100 lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:141
 #: lib/keila_web/templates/campaign/delete.html.heex:26 lib/keila_web/templates/campaign/edit_live.html.heex:9
 #: lib/keila_web/templates/campaign/stats_live.html.heex:8 lib/keila_web/templates/contact/delete.html.heex:44
-#: lib/keila_web/templates/contact/edit.html.heex:12 lib/keila_web/templates/form/delete.html.heex:26
+#: lib/keila_web/templates/contact/edit.html.heex:16 lib/keila_web/templates/form/delete.html.heex:26
 #: lib/keila_web/templates/form/edit_live.html.heex:8 lib/keila_web/templates/project/delete.html.heex:24
 #: lib/keila_web/templates/project/edit.html.heex:8 lib/keila_web/templates/segment/delete.html.heex:26
 #: lib/keila_web/templates/segment/edit_live.html.heex:8 lib/keila_web/templates/sender/delete.html.heex:25
@@ -378,7 +378,7 @@ msgstr ""
 #, elixir-format
 #: lib/keila_web/templates/campaign/delete.html.heex:29
 #: lib/keila_web/templates/campaign/edit_live.html.heex:12 lib/keila_web/templates/campaign/stats_live.html.heex:12
-#: lib/keila_web/templates/contact/delete.html.heex:47 lib/keila_web/templates/contact/edit.html.heex:17
+#: lib/keila_web/templates/contact/delete.html.heex:47 lib/keila_web/templates/contact/edit.html.heex:21
 #: lib/keila_web/templates/form/delete.html.heex:29 lib/keila_web/templates/form/edit_live.html.heex:11
 #: lib/keila_web/templates/project/delete.html.heex:27 lib/keila_web/templates/project/edit.html.heex:11
 #: lib/keila_web/templates/segment/delete.html.heex:29 lib/keila_web/templates/segment/edit_live.html.heex:11
@@ -501,7 +501,7 @@ msgid "Do you really want to delete the following users? This will also delete t
 msgstr ""
 
 #, elixir-format
-#: lib/keila_web/templates/contact/edit.html.heex:49
+#: lib/keila_web/templates/contact/edit.html.heex:53
 msgid "Doe"
 msgstr ""
 
@@ -573,6 +573,11 @@ msgstr ""
 #, elixir-format
 #: lib/keila_web/templates/campaign/_markdown_editor.html.heex:12
 msgid "Enable visual editor"
+msgstr ""
+
+#, elixir-format
+#: lib/keila/contacts/import.ex:162
+msgid "Error importing contact in line %{line}: %{message}"
 msgstr ""
 
 #, elixir-format
@@ -761,7 +766,7 @@ msgid "Italics"
 msgstr ""
 
 #, elixir-format
-#: lib/keila_web/templates/contact/edit.html.heex:43
+#: lib/keila_web/templates/contact/edit.html.heex:47
 msgid "Jane"
 msgstr ""
 
@@ -877,7 +882,7 @@ msgid "New Campaign"
 msgstr ""
 
 #, elixir-format
-#: lib/keila_web/templates/contact/edit.html.heex:7
+#: lib/keila_web/templates/contact/edit.html.heex:11
 msgid "New Contact"
 msgstr ""
 
@@ -1014,7 +1019,7 @@ msgstr ""
 #, elixir-format
 #: lib/keila_web/templates/campaign/clone.html.heex:8
 #: lib/keila_web/templates/campaign/edit_live.html.heex:15 lib/keila_web/templates/campaign/new.html.heex:8
-#: lib/keila_web/templates/contact/edit.html.heex:21 lib/keila_web/templates/form/edit_live.html.heex:13
+#: lib/keila_web/templates/contact/edit.html.heex:25 lib/keila_web/templates/form/edit_live.html.heex:13
 #: lib/keila_web/templates/project/edit.html.heex:14 lib/keila_web/templates/project/new.html.heex:8
 #: lib/keila_web/templates/segment/edit_live.html.heex:13 lib/keila_web/templates/segment/new.html.heex:8
 #: lib/keila_web/templates/sender/edit.html.heex:20 lib/keila_web/templates/shared_sender_admin/edit.html.heex:20
@@ -1496,7 +1501,7 @@ msgid "normal"
 msgstr ""
 
 #, elixir-format
-#: lib/keila_web/templates/contact/edit.html.heex:37
+#: lib/keila_web/templates/contact/edit.html.heex:41
 msgid "subscriber@example.com"
 msgstr ""
 
@@ -1574,7 +1579,7 @@ msgid "Configuration Set"
 msgstr ""
 
 #, elixir-format
-#: lib/keila_web/templates/contact/edit.html.heex:71
+#: lib/keila_web/templates/contact/edit.html.heex:75
 msgid "Contact Activity"
 msgstr ""
 
@@ -1701,7 +1706,7 @@ msgid "Wow, such empty!"
 msgstr ""
 
 #, elixir-format
-#: lib/keila_web/templates/contact/edit.html.heex:54
+#: lib/keila_web/templates/contact/edit.html.heex:58
 msgid "You can add any JSON object as custom data to your contacts."
 msgstr ""
 
@@ -1731,27 +1736,27 @@ msgid "active subscribers"
 msgstr ""
 
 #, elixir-format
-#: lib/keila_web/templates/contact/edit.html.heex:92
+#: lib/keila_web/templates/contact/edit.html.heex:96
 msgid "clicked campaign link"
 msgstr ""
 
 #, elixir-format
-#: lib/keila_web/templates/contact/edit.html.heex:81
+#: lib/keila_web/templates/contact/edit.html.heex:85
 msgid "created"
 msgstr ""
 
 #, elixir-format
-#: lib/keila_web/templates/contact/edit.html.heex:83
+#: lib/keila_web/templates/contact/edit.html.heex:87
 msgid "imported"
 msgstr ""
 
 #, elixir-format
-#: lib/keila_web/templates/contact/edit.html.heex:90
+#: lib/keila_web/templates/contact/edit.html.heex:94
 msgid "opened campaign"
 msgstr ""
 
 #, elixir-format
-#: lib/keila_web/templates/contact/edit.html.heex:85
+#: lib/keila_web/templates/contact/edit.html.heex:89
 msgid "subscribed"
 msgstr ""
 
@@ -1761,7 +1766,7 @@ msgid "unreachable contacts"
 msgstr ""
 
 #, elixir-format
-#: lib/keila_web/templates/contact/edit.html.heex:94
+#: lib/keila_web/templates/contact/edit.html.heex:98
 msgid "unsubscribed"
 msgstr ""
 
@@ -1771,7 +1776,7 @@ msgid "unsubscribed contacts"
 msgstr ""
 
 #, elixir-format
-#: lib/keila_web/templates/contact/edit.html.heex:87
+#: lib/keila_web/templates/contact/edit.html.heex:91
 msgid "with captcha"
 msgstr ""
 
