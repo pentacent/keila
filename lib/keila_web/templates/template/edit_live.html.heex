@@ -1,55 +1,58 @@
-<div class="container flex py-8 sm:py-11 sm:mb-4">
-    <div class="flex-grow gap-4 flex flex-col-reverse sm:flex-row sm:items-center">
-        <h1 class="text-2xl md:text-3xl text-gray-100">
-            <%= gettext("Edit Template") %>
-        </h1>
-        <div class="flex-grow flex flex-row justify-end gap-4 sm:flex-row">
-            <a class="button button--text button--large" href={ Routes.template_path(@socket, :index, @current_project.id) }>
-                <%= gettext("Cancel") %>
-            </a>
-            <%= delete_form_tag(@template, Routes.template_path(@socket, :delete, @current_project.id), as: :template) %>
-            <%= delete_button_tag(@template, [class: "button button--text"], gettext("Delete")) %> 
-            <button class="button button--cta button--large" action="submit" form="template">
-                <%= gettext("Save") %>
-            </button>
+<div x-data="{ tab: 'settings', ...Hooks.RememberUnsaved() }"
+     x-init={ "init('" <> gettext("Unsaved changes will be lost. Are you sure?") <> "')" }>
+    <div class="container flex py-8 sm:py-11 sm:mb-4">
+        <div class="flex-grow gap-4 flex flex-col-reverse sm:flex-row sm:items-center">
+            <h1 class="text-2xl md:text-3xl text-gray-100">
+                <%= gettext("Edit Template") %>
+            </h1>
+            <div class="flex-grow flex flex-row justify-end gap-4 sm:flex-row">
+                <a class="button button--text button--large" href={ Routes.template_path(@socket, :index, @current_project.id) }>
+                    <%= gettext("Cancel") %>
+                </a>
+                <%= delete_form_tag(@template, Routes.template_path(@socket, :delete, @current_project.id), as: :template) %>
+                <%= delete_button_tag(@template, [class: "button button--text"], gettext("Delete")) %> 
+                <button class="button button--cta button--large" action="submit" form="template" @click="reset()">
+                    <%= gettext("Save") %>
+                </button>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="container flex gap-4 tabs" x-data="{ tab: 'settings' }">
-    <.form let={f} for={@changeset} id="template" action={Routes.template_path(@socket, :post_edit, @current_project.id, @template.id)} phx-change="form_updated" phx-debounce="2000" phx-update="ignore" class="w-1/3">
+    <div class="container flex gap-4 tabs" @change="trigger()">
+        <.form let={f} for={@changeset} id="template" action={Routes.template_path(@socket, :post_edit, @current_project.id, @template.id)} phx-change="form_updated" phx-debounce="2000" phx-update="ignore" class="w-1/3">
 
-        <div class="flex gap-1">
-            <a href="#" class="tab-label" :class="{ 'active': tab === 'settings' }" @click.prevent="tab = 'settings'">
-                <%= gettext("Settings") %>
-            </a>
-            <a href="#" class="tab-label" :class="{ 'active': tab === 'style' }" @click.prevent="tab = 'style'">
-                <%= gettext("Style") %>
-            </a>
-        </div>
+            <div class="flex gap-1">
+                <a href="#" class="tab-label" :class="{ 'active': tab === 'settings' }" @click.prevent="tab = 'settings'">
+                    <%= gettext("Settings") %>
+                </a>
+                <a href="#" class="tab-label" :class="{ 'active': tab === 'style' }" @click.prevent="tab = 'style'">
+                    <%= gettext("Style") %>
+                </a>
+            </div>
 
-        <div class="flex flex-col gap-2 tab-content bg-gray-800" x-show="tab === 'settings'">
-            <%= with_validation(f, :name) do %>
-                <%= label(f, :name, gettext("Name")) %>
-                <%= text_input(f, :name, class: "text-black") %>
+            <div class="flex flex-col gap-2 tab-content bg-gray-800" x-show="tab === 'settings'">
+                <%= with_validation(f, :name) do %>
+                    <%= label(f, :name, gettext("Name")) %>
+                    <%= text_input(f, :name, class: "text-black") %>
+                <% end %>
+
+                <%= label(f, :assigns, gettext("Signature"), name: "template[assigns][signature]") %>
+                <%= textarea(f, :assigns, value: get_field(@changeset, :assigns)["signature"], name: "template[assigns][signature]", id: "template[assigns][signature]", rows: 10, class: "text-black text-sm") %>
+            </div>
+
+            <div class="flex flex-col gap-2 tab-content bg-gray-800" x-show="tab === 'style'">
+                <h2 class="text-xl">
+                    <%= gettext("Style") %>
+                </h2>
+                <%= render_css_form(f, :styles, @style_template) %>
+            </div>
+        </.form>
+
+        <div class="flex flex-grow bg-white text-black">
+            <%= if assigns[:preview] do %>
+                <iframe id="html-preview" src="javascript:false" class="bg-gray-100 flex-grow" style="height: 75vh"></iframe>
+                <div id="html-preview-data" phx-hook="HtmlPreview" class="hidden" data-iframe="html-preview"><%= @preview %></div>
             <% end %>
-
-            <%= label(f, :assigns, gettext("Signature"), name: "template[assigns][signature]") %>
-            <%= textarea(f, :assigns, value: get_field(@changeset, :assigns)["signature"], name: "template[assigns][signature]", id: "template[assigns][signature]", rows: 10, class: "text-black text-sm") %>
         </div>
-
-        <div class="flex flex-col gap-2 tab-content bg-gray-800" x-show="tab === 'style'">
-            <h2 class="text-xl">
-                <%= gettext("Style") %>
-            </h2>
-            <%= render_css_form(f, :styles, @style_template) %>
-        </div>
-    </.form>
-
-    <div class="flex flex-grow bg-white text-black">
-        <%= if assigns[:preview] do %>
-            <iframe id="html-preview" src="javascript:false" class="bg-gray-100 flex-grow" style="height: 75vh"></iframe>
-            <div id="html-preview-data" phx-hook="HtmlPreview" class="hidden" data-iframe="html-preview"><%= @preview %></div>
-        <% end %>
     </div>
 </div>
