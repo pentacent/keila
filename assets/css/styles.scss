@@ -138,6 +138,10 @@ input[disabled] {
     }
 }
 
+.form-row-checkbox {
+    @apply flex-row items-center gap-2;
+}
+
 .inline-form-row {
     @apply flex flex-col gap-1;
 }

@@ -159,9 +159,10 @@ defmodule Keila.Contacts.Import do
 
     raise ImportError,
       message:
-        gettext("Error importing contact in line %{line}: %{message}",
+        gettext("Error importing contact in line %{line} (email: %{email}): %{message}",
           line: line,
-          message: message
+          message: message,
+          email: get_field(changeset, :email)
         ),
       line: line
   end

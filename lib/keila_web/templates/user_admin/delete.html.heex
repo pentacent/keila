@@ -9,7 +9,7 @@
         <p class="text-lg text-gray-200">
             <%= gettext("Do you really want to delete the following users? This will also delete their projects and contacts.") %>
         </p>
-        <.form let={f} for={:user} action={Routes.user_admin_path(@conn, :delete)} method="dekete" class="">
+        <.form let={f} for={:user} action={Routes.user_admin_path(@conn, :delete)} method="delete" class="">
             <ul class="list-disc pl-4 my-4">
                 <%= for user <- @users do %>
                     <li>
