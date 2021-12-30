@@ -151,28 +151,27 @@ defmodule KeilaWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :open_api do
+    plug OpenApiSpex.Plug.PutApiSpec, module: KeilaWeb.ApiSpec
+  end
+
+  scope "/api/v1" do
+    pipe_through [:api, :open_api]
+    get "/openapi", OpenApiSpex.Plug.RenderSpec, []
+  end
+
   scope "/api/v1", KeilaWeb do
-    pipe_through :api
+    pipe_through [:api, :open_api]
 
-    get "/campaigns", ApiController, :index_campaigns
-    post "/campaigns", ApiController, :create_campaign
-    get "/campaigns/:id", ApiController, :show_campaign
-    patch "/campaigns/:id", ApiController, :update_campaign
-    post "/campaigns/:id/actions/send", ApiController, :deliver_campaign
-    post "/campaigns/:id/actions/schedule", ApiController, :schedule_campaign
-    delete "/campaigns/:id", ApiController, :delete_campaign
+    resources "/contacts", ApiContactController, only: [:index, :show, :create, :update, :delete]
 
-    get "/contacts", ApiController, :index_contacts
-    post "/contacts", ApiController, :create_contact
-    get "/contacts/:id", ApiController, :show_contact
-    patch "/contacts/:id", ApiController, :update_contact
-    delete "/contacts/:id", ApiController, :delete_contact
+    resources "/campaigns", ApiCampaignController,
+      only: [:index, :show, :create, :update, :delete]
 
-    get "/segments", ApiController, :index_segments
-    post "/segments", ApiController, :create_segment
-    get "/segments/:id", ApiController, :show_segment
-    patch "/segments/:id", ApiController, :update_segment
-    delete "/segments/:id", ApiController, :delete_segment
+    post "/campaigns/:id/actions/send", ApiCampaignController, :deliver
+    post "/campaigns/:id/actions/schedule", ApiCampaignController, :schedule
+
+    resources "/segments", ApiSegmentController, only: [:index, :show, :create, :update, :delete]
   end
 
   # Webhooks
@@ -197,6 +196,7 @@ defmodule KeilaWeb.Router do
       pipe_through :browser
       live_dashboard "/dashboard", metrics: KeilaWeb.Telemetry
       forward "/mailbox", Plug.Swoosh.MailboxPreview, base_path: "/dev/mailbox"
+      get "/swagger", OpenApiSpex.Plug.SwaggerUI, path: "/api/v1/openapi"
     end
   end
 end
