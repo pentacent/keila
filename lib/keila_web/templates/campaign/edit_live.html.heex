@@ -11,15 +11,15 @@
                 </a>
                 <%= delete_form_tag(@campaign, Routes.campaign_path(@socket, :delete, @current_project.id), as: :campaign) %>
                 <%= delete_button_tag(@campaign, [class: "button button--text button--large"], gettext("Delete")) %>
-                <button class="button button--large" action="submit" form="campaign" @click="reset()">
+                <button class="button button--large" action="submit" form="campaign" @click="setUnsavedReminder(false)">
                     <%= render_icon(:save) %>
                     <%= gettext("Save") %>
                 </button>
-                <button class={ "button button--large #{ if is_nil(get_field(@changeset, :scheduled_for)), do: "button--cta" }" } @click.prevent="reset(); $dispatch('x-show', { dialog: 'schedule' })">
+                <button class={ "button button--large #{ if is_nil(get_field(@changeset, :scheduled_for)), do: "button--cta" }" } @click.prevent="setUnsavedReminder(false); $dispatch('x-show', { dialog: 'schedule' })">
                     <%= render_icon(:clock) %>
                     <%= gettext("Schedule") %>
                 </button>
-                <button class={ "button button--large #{ if is_nil(get_field(@changeset, :scheduled_for)), do: "button--cta" }" } @click.prevent="reset(); $dispatch('x-show', { dialog: 'send' })">
+                <button class={ "button button--large #{ if is_nil(get_field(@changeset, :scheduled_for)), do: "button--cta" }" } @click.prevent="setUnsavedReminder(false); $dispatch('x-show', { dialog: 'send' })">
                     <%= render_icon(:paper_airplane) %>
                     <%= gettext("Send") %>
                 </button>
@@ -37,7 +37,7 @@
     <% end %>
 
     <div class="container pb-8">
-        <.form let={f} for={@changeset} id="campaign" action={Routes.campaign_path(@socket, :post_edit, @current_project.id, @campaign.id)} class="flex flex-col gap-4" phx-change="form_updated" @change="trigger()">
+        <.form let={f} for={@changeset} id="campaign" action={Routes.campaign_path(@socket, :post_edit, @current_project.id, @campaign.id)} class="flex flex-col gap-4" phx-change="form_updated" @change="setUnsavedReminder(true)">
             <div class="grid gap-4 sm:grid-cols-2">
 
                 <div class="inline-form-row">

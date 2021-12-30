@@ -9,10 +9,10 @@
                 <a href={ Routes.project_path(@conn, :show, @current_project.id) } class="button button--large button--text">
                     <%= gettext("Cancel") %>
                 </a>
-                <a href={ Routes.project_path(@conn, :delete, @current_project.id) } class="button button--large button--text" @click="reset()">
+                <a href={ Routes.project_path(@conn, :delete, @current_project.id) } class="button button--large button--text" @click="setUnsavedReminder(false)">
                     <%= gettext("Delete") %>
                 </a>
-                <button class="button button--cta button--large" form="form" @click="reset()">
+                <button class="button button--cta button--large" form="form" @click="setUnsavedReminder(false)">
                     <%= gettext("Save") %>
                 </button>
             </div>
@@ -20,7 +20,7 @@
     </div>
 
     <div class="container">
-        <.form let={f} for={@changeset} id="form" action={Routes.project_path(@conn, :post_edit, @current_project.id)} class="max-w-md flex flex-col gap-4" @change="trigger()">
+        <.form let={f} for={@changeset} id="form" action={Routes.project_path(@conn, :post_edit, @current_project.id)} class="max-w-md flex flex-col gap-4" @change="setUnsavedReminder(true)">
             <div class="form-row">
                 <%= label(f, :name, "Project name") %>
                 <%= with_validation(f, :name) do %>

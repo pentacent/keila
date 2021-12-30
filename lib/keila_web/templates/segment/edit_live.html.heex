@@ -11,7 +11,7 @@
                 </a>
                 <%= delete_form_tag(@segment, Routes.segment_path(KeilaWeb.Endpoint, :delete, @current_project.id), as: :segment) %>
                 <%= delete_button_tag(@segment, [class: "button button--text"], gettext("Delete")) %>
-                <button class="button button--cta button--large" form="form" value="save" @click="reset()">
+                <button class="button button--cta button--large" form="form" value="save" @click="setUnsavedReminder(false)">
                     <%= gettext("Save") %>
                 </button>
             </div>
@@ -19,7 +19,7 @@
     </div>
 
     <div class="container flex gap-4 tabs">
-        <.form let={f} for={@changeset} id="form" phx-change="change" phx-submit="save" class="w-full flex flex-col gap-4" @change="trigger()">
+        <.form let={f} for={@changeset} id="form" phx-change="change" phx-submit="save" class="w-full flex flex-col gap-4" @change="setUnsavedReminder(true)">
             <div class="form-row max-w-xl">
                 <%= label(f, :name, gettext("Name")) %>
                 <%= with_validation(f, :name) do %>

@@ -14,49 +14,49 @@
                     <%= gettext("Cancel") %>
                 </a>
                 <%= if assigns[:sender] do %>
-                    <a href={ Routes.sender_path(@conn, :delete_confirmation, @current_project.id, @sender.id) } class="button button--large button--text" @click="reset()">
+                    <a href={ Routes.sender_path(@conn, :delete_confirmation, @current_project.id, @sender.id) } class="button button--large button--text" @click="setUnsavedReminder(false)">
                         <%= gettext("Delete") %>
                     </a>
                 <% end %>
-                <button form="form" class="button button--cta button--large" @click="reset()">
+                <button form="form" class="button button--cta button--large" @click="setUnsavedReminder(false)">
                     <%= gettext("Save") %>
                 </button>
             </div>
         </div>
     </div>
 
-<div class="container">
-    <.form let={f} for={@changeset} id="form" action={form_path(@current_project, @changeset)} class="max-w-md flex flex-col gap-4" @change="trigger()">
-        <div class="form-row">
-            <%= label(f, :name, "Sender name") %>
-            <%= with_validation(f, :name) do %>
-                <%= text_input(f, :name, placeholder: gettext("My Sender"), class: "text-black", autofocus: true) %>
-            <% end %>
-        </div>
-        <div class="form-row">
-            <%= label(f, :from_email, "From address") %>
-            <%= with_validation(f, :from_email) do %>
-                <%= text_input(f, :from_email, placeholder: gettext("newsletter@example.org"), class: "text-black") %>
-            <% end %>
-        </div>
-        <div class="form-row">
-            <%= label(f, :from_name, "From name") %>
-            <%= with_validation(f, :from_name) do %>
-                <%= text_input(f, :from_name, placeholder: gettext("You, Inc"), class: "text-black") %>
-            <% end %>
-        </div>
-        <div class="form-row">
-            <%= label(f, :reply_to_email, "Reply-to address") %>
-            <%= with_validation(f, :reply_to_email) do %>
-                <%= text_input(f, :reply_to_email, placeholder: gettext("hello@example.org"), class: "text-black") %>
-            <% end %>
-        </div>
-        <div class="form-row">
-            <%= label(f, :reply_to_name, "Reply-to name") %>
-            <%= with_validation(f, :reply_to_name) do %>
-                <%= text_input(f, :reply_to_name, placeholder: gettext("You, Inc"), class: "text-black") %>
-            <% end %>
-        </div>
+    <div class="container">
+        <.form let={f} for={@changeset} id="form" action={form_path(@current_project, @changeset)} class="max-w-md flex flex-col gap-4" @change="setUnsavedReminder(true)">
+            <div class="form-row">
+                <%= label(f, :name, "Sender name") %>
+                <%= with_validation(f, :name) do %>
+                    <%= text_input(f, :name, placeholder: gettext("My Sender"), class: "text-black") %>
+                <% end %>
+            </div>
+            <div class="form-row">
+                <%= label(f, :from_email, "From address") %>
+                <%= with_validation(f, :from_email) do %>
+                    <%= text_input(f, :from_email, placeholder: gettext("newsletter@example.org"), class: "text-black") %>
+                <% end %>
+            </div>
+            <div class="form-row">
+                <%= label(f, :from_name, "From name") %>
+                <%= with_validation(f, :from_name) do %>
+                    <%= text_input(f, :from_name, placeholder: gettext("You, Inc"), class: "text-black") %>
+                <% end %>
+            </div>
+            <div class="form-row">
+                <%= label(f, :reply_to_email, "Reply-to address") %>
+                <%= with_validation(f, :reply_to_email) do %>
+                    <%= text_input(f, :reply_to_email, placeholder: gettext("hello@example.org"), class: "text-black") %>
+                <% end %>
+            </div>
+            <div class="form-row">
+                <%= label(f, :reply_to_name, "Reply-to name") %>
+                <%= with_validation(f, :reply_to_name) do %>
+                    <%= text_input(f, :reply_to_name, placeholder: gettext("You, Inc"), class: "text-black") %>
+                <% end %>
+            </div>
             <div class="form-row">
                 <%= render("_config.html", form: f, sender_adapters: sender_adapters(), shared_senders: @shared_senders) %>
             </div>

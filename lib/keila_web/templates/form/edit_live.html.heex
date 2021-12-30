@@ -13,14 +13,14 @@
                 </a>
                 <%= delete_form_tag(@form, Routes.form_path(@socket, :delete, @current_project.id), as: :form) %>
                 <%= delete_button_tag(@form, [class: "button button--text"], gettext("Delete")) %>
-                <button class="button button--cta button--large" action="submit" form="form" @click="reset()">
+                <button class="button button--cta button--large" action="submit" form="form" @click="setUnsavedReminder(false)">
                     <%= gettext("Save") %>
                 </button>
             </div>
         </div>
     </div>
 
-    <div class="container flex gap-4 tabs" @change="trigger()">
+    <div class="container flex gap-4 tabs" @change="setUnsavedReminder(true)">
         <.form let={f} for={@changeset} id="form" action={Routes.form_path(@socket, :post_edit, @current_project.id, @form.id)} phx-change="form_updated" phx-update="ignore" class="w-1/3">
 
             <div class="flex gap-1">

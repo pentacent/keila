@@ -21,7 +21,7 @@
                         <%= gettext("Delete") %>
                     <% end %>
                 <% end %>
-                <button form="form" class="button button--cta button--large" @click="reset()">
+                <button form="form" class="button button--cta button--large" @click="setUnsavedReminder(false)">
                     <%= gettext("Save") %>
                 </button>
             </div>
@@ -34,7 +34,7 @@
                 nil -> Routes.contact_path(@conn, :post_new, @current_project.id)
                 contact -> Routes.contact_path(@conn, :post_edit, @current_project.id, contact.id)
             end %>
-            <.form let={f} for={@changeset} id="form" action={path} class="max-w-md flex flex-col gap-4" @change="trigger()" >
+            <.form let={f} for={@changeset} id="form" action={path} class="max-w-md flex flex-col gap-4" @change="setUnsavedReminder(true)" >
                 <div class="form-row">
                     <%= label(f, :email, "Email") %>
                     <%= with_validation(f, :email) do %>

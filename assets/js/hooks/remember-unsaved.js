@@ -1,19 +1,16 @@
 export function RememberUnsaved() {
   return {
-    changed: false,
+    unsaved: false,
     init(msg) {
       window.addEventListener("beforeunload", (e) => {
-        if (this.changed) {
+        if (this.unsaved) {
           e.preventDefault();
           e.returnValue = msg;
         }
       })
     },
-    trigger() {
-      this.changed = true;
+    setUnsavedReminder(val) {
+      this.unsaved = val;
     },
-    reset() {
-      this.changed = false;
-    }
   }
 }
