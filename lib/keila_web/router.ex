@@ -122,6 +122,9 @@ defmodule KeilaWeb.Router do
     get "/projects/:project_id/campaigns/:id/clone", CampaignController, :clone
     post "/projects/:project_id/campaigns/:id/clone", CampaignController, :post_clone
     delete "/projects/:project_id/campaigns", CampaignController, :delete
+
+    resources "/projects/:project_id/api_keys", ApiKeyController,
+      only: [:index, :create, :new, :delete]
   end
 
   # Public Routes
