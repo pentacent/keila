@@ -307,7 +307,7 @@ defmodule Keila.Auth do
   ## Example
 
   params = %{email: "foo@bar.com"}
-  url_fn = MyAppWeb.Router.Helpers.auth_activate_url/1
+  url_fn = KeilaWeb.Router.Helpers.auth_activate_url/1
   """
   @spec create_user(map(), Keyword.t()) ::
           {:ok, User.t()} | {:error, Ecto.Changeset.t(User.t())}
@@ -536,6 +536,61 @@ defmodule Keila.Auth do
       {0, _} -> nil
       {1, [token]} -> token
     end
+  end
+
+  # TODO: The API Key functions should probably be extracted to a different module
+  #       because they make assumptions about other domains and don't fit well
+  #        within the Auth module
+  @doc """
+  Creates new API key for given User and Project.
+
+  API Keys are Auth Tokens with the scope `"api"`.
+  """
+  @spec create_api_key(Keila.Auth.User.id(), Keila.Projects.Project.id(), Strimg.t()) ::
+          {:ok, Token.t()}
+  def create_api_key(user_id, project_id, name \\ nil) do
+    create_token(%{
+      scope: "api",
+      user_id: user_id,
+      data: %{"project_id" => project_id, "name" => name}
+    })
+  end
+
+  @doc """
+  Lists all API keys for given User and Project.
+  """
+  @spec get_user_project_api_keys(Keila.Auth.User.id(), Keila.Projects.Project.id()) :: [
+          Token.t()
+        ]
+  def get_user_project_api_keys(user_id, project_id) do
+    from(t in Token,
+      where: t.user_id == ^user_id and fragment("?->>?", t.data, "project_id") == ^project_id,
+      order_by: [desc: t.inserted_at]
+    )
+    |> Keila.Repo.all()
+  end
+
+  @doc """
+  Finds and returns Token for given API key. Returns `nil` if Token doesn’t exist.
+  """
+  @spec find_api_key(String.t()) :: Token.t() | nil
+  def find_api_key(key) do
+    find_token(key, "api")
+  end
+
+  @doc """
+  Deletes given API key.
+
+  This function is idempotent and always returns `:ok`.
+  """
+  @spec delete_project_api_key(Keila.Projects.Project.id(), Token.id()) :: :ok
+  def delete_project_api_key(project_id, token_id) do
+    from(t in Token,
+      where: t.id == ^token_id and fragment("?->>?", t.data, "project_id") == ^project_id
+    )
+    |> Keila.Repo.delete_all()
+
+    :ok
   end
 
   @doc """
