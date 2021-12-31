@@ -19,7 +19,8 @@ defmodule KeilaWeb.ApiSpec do
       paths: Paths.from_router(Router),
       components: %Components{
         securitySchemes: %{"authorization" => %SecurityScheme{type: "http", scheme: "bearer"}}
-      }
+      },
+      security: [%{"authorization" => []}]
     }
     # Discover request/response schemas from path specs
     |> OpenApiSpex.resolve_schema_modules()

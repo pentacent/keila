@@ -7,7 +7,7 @@ defmodule KeilaWeb.Api.Plugs.Authorization do
   def init(_), do: nil
 
   def call(conn, _) do
-    with ["Bearer: " <> token] <- get_req_header(conn, "authorization"),
+    with ["Bearer " <> token] <- get_req_header(conn, "authorization"),
          %Auth.Token{data: %{"project_id" => project_id}, user_id: user_id} <-
            Auth.find_token(token, "api"),
          project = %Projects.Project{} <-

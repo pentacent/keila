@@ -11,7 +11,7 @@ defmodule KeilaWeb.ApiContactControllerTest do
 
       conn =
         recycle(conn)
-        |> put_req_header("authorization", "Bearer: #{token}")
+        |> put_req_header("authorization", "Bearer #{token}")
         |> get(Routes.api_contact_path(conn, :index))
 
       assert %{"data" => _} = json_response(conn, 200)

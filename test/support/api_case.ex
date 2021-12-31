@@ -37,7 +37,7 @@ defmodule KeilaWeb.ApiCase do
       end
 
       def put_token_header(conn, token) do
-        conn |> put_req_header("authorization", "Bearer: #{token}")
+        conn |> put_req_header("authorization", "Bearer #{token}")
       end
     end
   end
