@@ -12,7 +12,7 @@ defmodule Keila.Mailings.Worker do
       )
       |> Repo.one()
 
-    if recipient.contact.status == :active do
+    if recipient.contact.status == :active && recipient.campaign.sender do
       recipient.campaign
       |> Builder.build(recipient, %{})
       |> tap(&ensure_valid!/1)
