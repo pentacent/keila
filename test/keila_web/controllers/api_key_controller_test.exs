@@ -1,4 +1,4 @@
-defmodule KeilaWeb.SegmentControllerTest do
+defmodule KeilaWeb.ApiKeyControllerTest do
   use KeilaWeb.ConnCase
   alias Keila.Auth
   @endpoint KeilaWeb.Endpoint

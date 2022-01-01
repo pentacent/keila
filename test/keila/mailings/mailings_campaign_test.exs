@@ -16,8 +16,8 @@ defmodule Keila.MailingsCampaignTest do
 
   @tag :mailings_campaign
   test "create campaign", %{project: project} do
-    sender = insert!(:mailings_sender)
-    params = params(:mailings_campaign, sender_id: sender.id)
+    sender = insert!(:mailings_sender, project_id: project.id)
+    params = params(:mailings_campaign, sender_id: sender.id, project_id: project.id)
     assert {:ok, %Mailings.Campaign{}} = Mailings.create_campaign(project.id, params)
   end
 

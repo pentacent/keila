@@ -11,7 +11,8 @@ config :keila, Keila.Repo,
     "ecto://postgres:postgres@localhost:5432/keila_test#{System.get_env("MIX_TEST_PARTITION")}",
   pool: Ecto.Adapters.SQL.Sandbox,
   ownership_timeout: 60_000,
-  timeout: 60_000
+  timeout: 60_000,
+  pool_size: 16
 
 config :keila, skip_migrations: true
 
