@@ -4,6 +4,10 @@
             <%= gettext("API Keys") %>
         </h1>
         <div class="flex-grow flex flex-row-reverse justify-end gap-4 sm:flex-row">
+            <a href="/api" class="button button--text" target="_blank">
+                <%= render_icon(:external_link) %>
+                <%= gettext("API Docs") %>
+            </a>
             <a href={ Routes.api_key_path(@conn, :new, @current_project.id) } class="button">
                 <%= render_icon(:document_add) %>
                 <%= gettext("Create a new API Key") %>
