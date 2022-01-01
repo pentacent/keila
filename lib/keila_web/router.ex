@@ -20,6 +20,12 @@ defmodule KeilaWeb.Router do
     get "/verify-sender/c/:token", SenderController, :cancel_verification_from_token
   end
 
+  scope "/" do
+    pipe_through :browser
+
+    get "/api", OpenApiSpex.Plug.SwaggerUI, path: "/api/v1/openapi"
+  end
+
   # Unauthenticated Routes
   scope "/", KeilaWeb do
     pipe_through [:browser, KeilaWeb.AuthSession.RequireNoAuthPlug]
@@ -199,7 +205,6 @@ defmodule KeilaWeb.Router do
       pipe_through :browser
       live_dashboard "/dashboard", metrics: KeilaWeb.Telemetry
       forward "/mailbox", Plug.Swoosh.MailboxPreview, base_path: "/dev/mailbox"
-      get "/swagger", OpenApiSpex.Plug.SwaggerUI, path: "/api/v1/openapi"
     end
   end
 end
