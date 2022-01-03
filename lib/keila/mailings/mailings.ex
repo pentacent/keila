@@ -241,14 +241,12 @@ defmodule Keila.Mailings do
   def update_campaign(id, params, use_send_changeset? \\ false)
 
   def update_campaign(id, params, false) when is_id(id) do
-    # TODO ensure sender and segment same project
     get_campaign(id)
     |> Campaign.update_changeset(params)
     |> Repo.update()
   end
 
   def update_campaign(id, params, true) when is_id(id) do
-    # TODO ensure sender and segment same project
     get_campaign(id)
     |> Campaign.update_and_send_changeset(params)
     |> Repo.update()
