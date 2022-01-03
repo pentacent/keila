@@ -1,16 +1,14 @@
-export function RememberUnsaved() {
-  return {
-    unsaved: false,
-    init(msg) {
+let unsaved = false
+export const RememberUnsaved = {
+    mounted() {
+      window.setUnsavedReminder = (enable) => {
+        unsaved = enable
+      }
       window.addEventListener("beforeunload", (e) => {
-        if (this.unsaved) {
+        if (unsaved) {
           e.preventDefault();
-          e.returnValue = msg;
+          e.returnValue = '';
         }
       })
     },
-    setUnsavedReminder(val) {
-      this.unsaved = val;
-    },
-  }
 }

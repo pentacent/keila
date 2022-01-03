@@ -35,7 +35,7 @@
                     <button class="button button--text button--large" @click.prevent="$dispatch('x-cancel')">
                         <%= gettext("Cancel") %>
                     </button>
-                    <button class="button button--cta button--large" action="submit" form="campaign" name="send" value="true">
+                    <button class="button button--cta button--large" action="submit" form="campaign" name="send" value="true" @click="setUnsavedReminder(false)">
                         <%= render_icon(:paper_airplane) %>
                         <%= gettext("Send") %>
                     </button>
@@ -125,12 +125,13 @@
                             form="campaign"
                             name="schedule[cancel]"
                             value="true"
+                            @click="setUnsavedReminder(false)"
                         >
                             <%= render_icon(:x) %>
                             <%= gettext("Unschedule") %>
                         </button>
                     <% end %>
-                    <button class="button button--cta button--large" action="submit" form="campaign" name="schedule[schedule]" value="true">
+                    <button class="button button--cta button--large" action="submit" form="campaign" name="schedule[schedule]" value="true"  @click="setUnsavedReminder(false)">
                         <%= render_icon(:clock) %>
                         <%= gettext("Schedule") %>
                     </button>
