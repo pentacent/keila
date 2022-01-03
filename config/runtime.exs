@@ -30,7 +30,7 @@ if config_env() == :prod do
       if cacerts do
         [
           verify: :verify_peer,
-          cacerts: cacerts,
+          cacerts: [cacerts],
           verify_fun: &:ssl_verify_hostname.verify_fun/3
         ]
       else
