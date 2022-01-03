@@ -202,7 +202,7 @@ defmodule KeilaWeb.CampaignController do
         "campaign" => campaign,
         "params" => params,
         "senders" => senders,
-        "changeset" => changeset,
+        "changeset" => Map.take(changeset, [:errors]),
         "segments" => segments
       }
     )
