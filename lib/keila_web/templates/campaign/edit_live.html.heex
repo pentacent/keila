@@ -1,16 +1,17 @@
-<div x-data="{activeDialog: null}">
+<div x-data="{activeDialog: null}" x-init="Hooks.RememberUnsaved.mounted.call({el: $el})">
+
     <div class="container flex py-8 sm:py-11 sm:mb-4">
         <div class="flex-grow gap-4 flex flex-col-reverse sm:flex-row sm:items-center">
             <h1 class="text-2xl md:text-3xl text-gray-100">
                 <%= gettext("Edit Campaign") %>
             </h1>
             <div class="flex-grow flex flex-row justify-end gap-4 sm:flex-row">
-                <a class="button button--text button--large" href={ Routes.campaign_path(@socket, :index, @current_project.id) }>
+                <a class="button button--text button--large" href={ Routes.campaign_path(@socket, :index, @current_project.id) } @click="setUnsavedReminder(false)">
                     <%= gettext("Cancel") %>
                 </a>
                 <%= delete_form_tag(@campaign, Routes.campaign_path(@socket, :delete, @current_project.id), as: :campaign) %>
-                <%= delete_button_tag(@campaign, [class: "button button--text button--large"], gettext("Delete")) %>
-                <button class="button button--large" action="submit" form="campaign">
+                <%= delete_button_tag(@campaign, [class: "button button--text button--large", "@click": "setUnsavedReminder(false)"], gettext("Delete")) %>
+                <button class="button button--large" action="submit" form="campaign" @click="setUnsavedReminder(false)">
                     <%= render_icon(:save) %>
                     <%= gettext("Save") %>
                 </button>
@@ -36,7 +37,15 @@
     <% end %>
 
     <div class="container pb-8">
-        <.form let={f} for={@changeset} id="campaign" action={Routes.campaign_path(@socket, :post_edit, @current_project.id, @campaign.id)} class="flex flex-col gap-4" phx-change="form_updated">
+        <.form
+            let={f}
+            for={@changeset}
+            id="campaign"
+            action={Routes.campaign_path(@socket, :post_edit, @current_project.id, @campaign.id)}
+            class="flex flex-col gap-4"
+            phx-change="form_updated"
+            x-on:change="setUnsavedReminder(true)"
+        >
             <div class="grid gap-4 sm:grid-cols-2">
 
                 <div class="inline-form-row">
@@ -113,7 +122,6 @@
 
         </.form>
     </div>
-
 </div>
 
 <%= render("_wysiwyg_dialogs.html") %>

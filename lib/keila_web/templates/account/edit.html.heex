@@ -1,4 +1,4 @@
-<div class="container mt-8">
+<div class="container mt-8" x-data x-init="Hooks.RememberUnsaved.mounted.call({el: $el})">
 
     <%= if Keila.Billing.billing_enabled?() do %>
         <div class="rounded shadow p-8 mt-8 max-w-5xl mx-auto flex flex-col gap-4 bg-gray-900 text-gray-50">
@@ -136,7 +136,13 @@
             <%= gettext("%{remaining} / %{total} emails remaining", total: elem(@credits, 0), remaining: elem(@credits, 1)) %>
         </div>
     <% end %>
-    <.form let={f} for={@changeset} action={ Routes.account_path(@conn, :post_edit)} class="rounded shadow p-8 mt-8 max-w-5xl mx-auto flex flex-col gap-4 bg-gray-900 text-gray-50">
+    <.form
+        let={f}
+        for={@changeset}
+        action={ Routes.account_path(@conn, :post_edit)}
+        class="rounded shadow p-8 mt-8 max-w-5xl mx-auto flex flex-col gap-4 bg-gray-900 text-gray-50"
+        @change="setUnsavedReminder(true)"
+    >
         <h2 class="text-3xl font-bold">
             <%= gettext("Change Password") %>
         </h2>
@@ -156,7 +162,7 @@
             <% end %>
         </div>
         <div class="flex justify-end mt-8">
-            <button class="button button--cta button--large">
+            <button class="button button--cta button--large" @click="setUnsavedReminder(false)">
                 <%= gettext("Update password") %>
             </button>
         </div>
