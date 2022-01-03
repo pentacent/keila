@@ -35,10 +35,10 @@ if config_env() == :prod do
       end
 
     ssl_opts =
-      if ca_cert_pem do
+      if ca_cert_der do
         [
           verify: :verify_peer,
-          cacerts: [ca_cert_pem],
+          cacerts: [ca_cert_der],
           verify_fun: &:ssl_verify_hostname.verify_fun/3
         ]
       else
