@@ -23,7 +23,24 @@ if config_env() == :prod do
   # Database
   try do
     db_url = System.fetch_env!("DB_URL")
-    config(:keila, Keila.Repo, url: db_url)
+    ssl = System.get_env("DB_ENABLE_SSL") in [1, "1", "true", "TRUE"]
+    cacerts = System.get_env("DB_CA_CERT")
+
+    ssl_opts =
+      if cacerts do
+        [
+          verify: :verify_peer,
+          cacerts: cacerts,
+          verify_fun: &:ssl_verify_hostname.verify_fun/3
+        ]
+      else
+        []
+      end
+
+    config :keila, Keila.Repo,
+      url: db_url,
+      ssl: ssl,
+      ssl_opts: ssl_opts
   rescue
     e ->
       exit_from_exception.(e, """
