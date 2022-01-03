@@ -24,13 +24,21 @@ if config_env() == :prod do
   try do
     db_url = System.fetch_env!("DB_URL")
     ssl = System.get_env("DB_ENABLE_SSL") in [1, "1", "true", "TRUE"]
-    cacerts = System.get_env("DB_CA_CERT")
+    ca_cert_pem = System.get_env("DB_CA_CERT")
+
+    ca_cert_der =
+      if ca_cert_pem not in [nil, ""] do
+        ca_cert_pem
+        |> :public_key.pem_decode()
+        |> then(fn [pem_entry] -> :public_key.pem_entry_decode(pem_entry) end)
+        |> then(fn x -> :public_key.der_encode(:Certificate, x) end)
+      end
 
     ssl_opts =
-      if cacerts do
+      if ca_cert_pem do
         [
           verify: :verify_peer,
-          cacerts: [cacerts],
+          cacerts: [ca_cert_pem],
           verify_fun: &:ssl_verify_hostname.verify_fun/3
         ]
       else
