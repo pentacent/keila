@@ -334,14 +334,16 @@ defmodule Keila.Mailings do
 
   Returns `:ok`.
   If there were no recipients, returns `{:error, :no_recipients}`
+  If no sender is set, returns `{:error, :no_sender}`
   """
   @spec deliver_campaign(Campaign.id()) :: {:error, :no_recipients} | {:error, term()} | :ok
   def deliver_campaign(id) when is_id(id) do
     result =
       Repo.transaction(fn ->
         case get_and_lock_campaign(id) do
-          %Campaign{sent_at: nil} = campaign -> do_deliver_campaign(campaign)
-          %Campaign{} -> Repo.rollback(:already_sent)
+          %Campaign{sent_at: sent_at} when not is_nil(sent_at) -> Repo.rollback(:already_sent)
+          %Campaign{sender_id: nil} -> Repo.rollback(:no_sender)
+          campaign = %Campaign{} -> do_deliver_campaign(campaign)
         end
       end)
 
@@ -416,6 +418,7 @@ defmodule Keila.Mailings do
   """
   @spec deliver_campaign_async(Campaign.id()) :: DynamicSupervisor.on_start_child()
   def deliver_campaign_async(id) when is_id(id) do
+    # TODO: Check if campaign has sender and is valid
     Task.Supervisor.start_child(Keila.TaskSupervisor, __MODULE__, :deliver_campaign, [id])
   end
 

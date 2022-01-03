@@ -1,6 +1,9 @@
-![The Keila logo is a stylized elephant](.github/assets/logo.svg)
-
-# Keila - An Open Source Newsletter Tool
+[![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/pentacent/keila/CI/main?style=flat-square)](https://github.com/pentacent/keila/actions/workflows/ci.yml)
+[![Docker Image Version (latest semver)](https://img.shields.io/docker/v/pentacent/keila?color=blue&label=docker%20image&style=flat-square)](https://hub.docker.com/r/pentacent/keila/tags)
+[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/pentacent/keila?label=latest%20version&style=flat-square)](https://github.com/pentacent/keila/releases)
+[![GitHub Sponsors](https://img.shields.io/github/sponsors/pentacent?color=ff69b4)](https://github.com/sponsors/pentacent)
+  
+# ![The Keila logo is a stylized elephant](.github/assets/logo.svg) Keila - An Open Source Newsletter Tool
 
 Keila is an Open Source alternative to newsletter tools like Mailchimp or
 Sendinblue.

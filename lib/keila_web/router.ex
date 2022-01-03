@@ -12,16 +12,18 @@ defmodule KeilaWeb.Router do
     plug KeilaWeb.AuthSession.Plug
   end
 
-  pipeline :api do
-    plug :accepts, ["json"]
-  end
-
   # Non-authenticated Routes
   scope "/", KeilaWeb do
     pipe_through :browser
 
     get "/verify-sender/:token", SenderController, :verify_from_token
     get "/verify-sender/c/:token", SenderController, :cancel_verification_from_token
+  end
+
+  scope "/" do
+    pipe_through :browser
+
+    get "/api", OpenApiSpex.Plug.SwaggerUI, path: "/api/v1/openapi"
   end
 
   # Unauthenticated Routes
@@ -126,6 +128,9 @@ defmodule KeilaWeb.Router do
     get "/projects/:project_id/campaigns/:id/clone", CampaignController, :clone
     post "/projects/:project_id/campaigns/:id/clone", CampaignController, :post_clone
     delete "/projects/:project_id/campaigns", CampaignController, :delete
+
+    resources "/projects/:project_id/api_keys", ApiKeyController,
+      only: [:index, :create, :new, :delete]
   end
 
   # Public Routes
@@ -151,11 +156,39 @@ defmodule KeilaWeb.Router do
     get "/c/:encoded_url/:recipient_id/:link_id/:hmac", TrackingController, :track_click
   end
 
-  scope "/api", KeilaWeb do
+  pipeline :api do
+    plug :accepts, ["json"]
+  end
+
+  pipeline :open_api do
+    plug OpenApiSpex.Plug.PutApiSpec, module: KeilaWeb.ApiSpec
+  end
+
+  scope "/api/v1" do
+    pipe_through [:api, :open_api]
+    get "/openapi", OpenApiSpex.Plug.RenderSpec, []
+  end
+
+  scope "/api/v1", KeilaWeb do
+    pipe_through [:api, :open_api]
+
+    resources "/contacts", ApiContactController, only: [:index, :show, :create, :update, :delete]
+
+    resources "/campaigns", ApiCampaignController,
+      only: [:index, :show, :create, :update, :delete]
+
+    post "/campaigns/:id/actions/send", ApiCampaignController, :deliver
+    post "/campaigns/:id/actions/schedule", ApiCampaignController, :schedule
+
+    resources "/segments", ApiSegmentController, only: [:index, :show, :create, :update, :delete]
+  end
+
+  # Webhooks
+  scope "/api/webhooks", KeilaWeb do
     pipe_through :api
 
-    post "/webhooks/paddle", PaddleWebhookController, :webhook
-    post "/webhooks/senders/ses", SESWebhookController, :webhook
+    post "/paddle", PaddleWebhookController, :webhook
+    post "/senders/ses", SESWebhookController, :webhook
   end
 
   # Enables LiveDashboard only for development

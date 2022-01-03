@@ -59,6 +59,7 @@
                     <%= if String.starts_with?(@conn.request_path, Routes.campaign_path(@conn, :index, @current_project.id)) do %>
                         <%= menu_link(@conn, :campaign, :new, [@current_project.id], gettext("Create campaign"), exact: true, icon: :document_add, indent: 1) %>
                     <% end %>
+                    <%= menu_link(@conn, :api_key, :index, [@current_project.id], gettext("API Keys"), exact: true, icon: :code) %>
                 <% end %>
                 <div class="hidden sm:block sm:flex-grow"></div>
                 <%= menu_link(@conn, Routes.account_path(@conn, :edit), gettext("Account"), icon: :user) %>

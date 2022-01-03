@@ -32,6 +32,7 @@ defmodule Keila.Mailings.Campaign do
     ])
     |> cast_embed(:settings)
     |> validate_required([:subject, :project_id, :settings])
+    |> validate_assocs_project()
   end
 
   def update_changeset(struct = %__MODULE__{}, params) do
@@ -39,6 +40,7 @@ defmodule Keila.Mailings.Campaign do
     |> cast(params, [:subject, :text_body, :html_body, :sender_id, :template_id, :segment_id])
     |> cast_embed(:settings)
     |> validate_required([:subject])
+    |> validate_assocs_project()
   end
 
   def update_and_send_changeset(struct = %__MODULE__{}, params) do
@@ -100,5 +102,12 @@ defmodule Keila.Mailings.Campaign do
     threshold = DateTime.utc_now() |> DateTime.truncate(:second) |> DateTime.add(offset, :second)
 
     {offset, threshold}
+  end
+
+  defp validate_assocs_project(changeset) do
+    changeset
+    |> validate_assoc_project(:template, Template)
+    |> validate_assoc_project(:sender, Sender)
+    |> validate_assoc_project(:segment, Segment)
   end
 end
