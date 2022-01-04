@@ -80,7 +80,7 @@ config :keila, Oban,
   ],
   repo: Keila.Repo,
   plugins: [
-    Oban.Plugins.Pruner,
+    {Oban.Plugins.Pruner, max_age: 1800},
     {Oban.Plugins.Cron,
      crontab: [
        {"* * * * *", Keila.Mailings.DeliverScheduledCampaignsWorker}
