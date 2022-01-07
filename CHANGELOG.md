@@ -2,6 +2,25 @@
 
 ## Unreleased
 
+## Version 0.8.0
+
+API for Contacts & Campaigns, Better Imports, UX Improvements 🧑‍💻
+
+### Added
+- API for managing Contacts, Campaigns, Segments
+- Swagger UI for API at `/api`
+- Improved contact import with support for custom data and upserts
+- Notifications when leaving pages with unsaved data
+- Added `DB_ENABLE_SSL` configuration option
+
+### Changed
+- Updated Oban and Jason dependencies
+
+### Fixed
+- Segments with custom data fields can now be edited after saving
+- Error display in campaigns without sender no longer keeps reloading page
+
+
 ## Version 0.7.1
 ### Fixed
 - Fixed error when creating new segments
@@ -14,7 +33,7 @@
 - Support for custom contact data
 - Allow deletion of sent campaigns
 
-## Changed
+### Changed
 - Improved UI design
 - Moved all templates from leex/eex to heex
 - Improved Core querying API
