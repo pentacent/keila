@@ -19,6 +19,8 @@ defmodule Keila.Repo.JsonField do
 
   def cast(map) when is_map(map), do: {:ok, map}
 
+  def cast(_other), do: :error
+
   def dump(map) when is_map(map), do: {:ok, map}
 
   def dump(_), do: :error
