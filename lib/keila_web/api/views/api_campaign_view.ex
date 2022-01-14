@@ -23,6 +23,7 @@ defmodule KeilaWeb.ApiCampaignView do
     :id,
     :subject,
     :text_body,
+    :data,
     :settings,
     :template_id,
     :sender_id,

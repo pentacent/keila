@@ -5,10 +5,14 @@ defmodule Keila.Mailings.Campaign do
   alias Keila.Projects.Project
   alias Keila.Templates.Template
 
+  @update_fields [:subject, :text_body, :html_body, :sender_id, :template_id, :segment_id, :data]
+  @creation_fields [:project_id | @update_fields]
+
   schema "mailings_campaigns" do
     field(:subject, :string)
     field(:text_body, :string)
     field(:html_body, :string)
+    field(:data, Keila.Repo.JsonField)
     field(:sent_at, :utc_datetime)
     field(:scheduled_for, :utc_datetime)
     embeds_one(:settings, __MODULE__.Settings)
@@ -21,15 +25,7 @@ defmodule Keila.Mailings.Campaign do
 
   def creation_changeset(struct \\ %__MODULE__{}, params) do
     struct
-    |> cast(params, [
-      :subject,
-      :text_body,
-      :html_body,
-      :sender_id,
-      :project_id,
-      :template_id,
-      :segment_id
-    ])
+    |> cast(params, @creation_fields)
     |> cast_embed(:settings)
     |> validate_required([:subject, :project_id, :settings])
     |> validate_assocs_project()
@@ -37,7 +33,7 @@ defmodule Keila.Mailings.Campaign do
 
   def update_changeset(struct = %__MODULE__{}, params) do
     struct
-    |> cast(params, [:subject, :text_body, :html_body, :sender_id, :template_id, :segment_id])
+    |> cast(params, @update_fields)
     |> cast_embed(:settings)
     |> validate_required([:subject])
     |> validate_assocs_project()
@@ -54,7 +50,7 @@ defmodule Keila.Mailings.Campaign do
   """
   def preview_changeset(struct = %__MODULE__{}, params) do
     struct
-    |> cast(params, [:subject, :text_body, :html_body, :sender_id, :template_id, :segment_id])
+    |> cast(params, @update_fields)
     |> cast_embed(:settings)
   end
 

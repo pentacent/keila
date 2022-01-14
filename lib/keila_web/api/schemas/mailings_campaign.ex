@@ -12,7 +12,20 @@ defmodule KeilaWeb.Api.Schemas.MailingsCampaign do
     },
     text_body: %{
       type: :string,
-      example: "Hey {{ contact.first_name }}, are you excited for our Space Book? […]"
+      example: """
+      Hey {{ contact.first_name }}, are you excited for our Space Book?
+
+      […]
+
+      ## All Books by Acme Space Corp:
+      {% for book in campaign.data.books %}
+        - {{ book.title }}: [More info]({{ book.url }})
+      {% endfor %}
+      """
+    },
+    data: %{
+      type: :map,
+      example: %{"books" => [%{"title" => "Space Book", "url" => "books.books/spacebook"}, %{"title" => "Earth Book", "url" => "books.books/earthbook"}]}
     },
     settings: %{
       type: :map,
@@ -80,7 +93,7 @@ defmodule KeilaWeb.Api.Schemas.MailingsCampaign.Params do
   use KeilaWeb.Api.Schema
 
   @properties KeilaWeb.Api.Schemas.MailingsCampaign.properties()
-  @allowed_properties [:subject, :text_body, :settings, :template_id, :sender_id, :segment_id]
+  @allowed_properties [:subject, :text_body, :settings, :template_id, :sender_id, :segment_id, :data]
   build_open_api_schema(@properties, only: @allowed_properties)
 end
 
