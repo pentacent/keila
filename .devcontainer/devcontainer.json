@@ -32,7 +32,7 @@
 	"forwardPorts": [4000, 4001, 5432],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "mix deps.get"
+	"postCreateCommand": "mix deps.get && cd assets && npm install",
 
 	// Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
 	"remoteUser": "vscode"
