@@ -90,8 +90,8 @@ select, input[type="date"] {
     color: black!important;
 }
 
-.form-error-indicator + input {
-    @apply bg-red-300;
+.form-error-indicator + input, .form-error-indicator + textarea {
+    @apply bg-red-300 text-gray-900;
 }
 
 .form-error-indicator + div.h-captcha iframe {

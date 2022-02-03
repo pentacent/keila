@@ -12,24 +12,87 @@
 </div>
 
 <div class="container">
-    <.form let={f} for={@changeset} id="form" action={Routes.campaign_path(@conn, :post_new, @current_project.id)} class="max-w-md flex flex-col gap-4">
+    <.form
+        let={f}
+        for={@changeset}
+        id="form"
+        action={Routes.campaign_path(@conn, :post_new, @current_project.id)}
+        class="max-w-md flex flex-col gap-4"
+        x-data="{type: null}"
+        x-init="type = $el.querySelector('[name=\'campaign[settings][type]\']').value"
+    >
+
+        <div class="inline-form-row">
+                <%= label(f, :sender_id, "Sender") %>
+
+                <%= if not Enum.empty?(@senders) do %>
+                    <%= with_validation(f, :sender_id) do %>
+                        <%= select(f, :sender_id, Enum.map(@senders, &{"#{&1.name} (#{&1.from_name} <#{&1.from_email}>)", &1.id}), class: "text-black") %>
+                    <% end %>
+                <% else %>
+                    <p>
+                        <a href={ Routes.sender_path(@conn, :new, @current_project.id) } class="button button--muted">
+                            <%= gettext("Create your first sender") %>
+                        </a>
+                    </p>
+                <% end %>
+            </div>
+
         <div class="flex flex-col">
             <%= label(f, :subject, gettext("Subject")) %>
             <%= with_validation(f, :subject) do %>
                 <%= text_input(f, :subject, placeholder: gettext("My Campaign Subject"), class: "text-black", autofocus: true) %>
             <% end %>
         </div>
-        <%= inputs_for(f, :settings, fn fs -> %>
-            <div class="flex flex-col">
-                <%= label(fs, :type, "Campaign type") %>
-                <%= with_validation(fs, :type) do %>
+
+        <div class="inline-form-row">
+            <%= label(f, :segment_id, "Segment") %>
+
+            <%= with_validation(f, :segment_id) do %>
+                <%= select(f, :segment_id, [{gettext("All Contacts"), nil}] ++ Enum.map(@segments, &{&1.name, &1.id}), class: "text-black") %>
+            <% end %>
+        </div>
+
+            <div class="form-row">
+                <%= inputs_for(f, :settings, fn fs -> %>
+                    <%= label(fs, :type, "Campaign Type") %>
                     <%= select(fs, :type, [
                         {gettext("Markdown"), "markdown"},
                         {gettext("Text only"), "text"}
-                    ]) %>
+                    ], [x_model: "type"]) %>
+                <% end) %>
+            </div>
+
+            <template x-if="type === 'markdown'">
+                <%= inputs_for(f, :settings, fn fs -> %>
+                    <div class="form-row-checkbox">
+                        <%= checkbox(fs, :enable_wysiwyg) %>
+                        <%= label(fs, :enable_wysiwyg, "Enable rich text editor") %>
+                    </div>
+                <% end) %>
+
+                <div class="form-row">
+                    <%= label(f, :template_id, "Template") %>
+
+                    <%= with_validation(f, :template_id) do %>
+                        <%= select(f, :template_id, [{gettext("Default"), nil} | Enum.map(@templates, &{&1.name, &1.id})], class: "text-black") %>
+                    <% end %>
+                </div>
+            </template>
+
+            <div class="form-row md:col-span-full">
+                <%= label(f, :segment_id, "Campaign data") %>
+                <span class="block text-sm mb-2"><%= gettext("You can add any JSON object as custom data to your campaign.") %></span>
+                <%= with_validation(f, :data) do %>
+                    <%= case input_value(f, :data) do %>
+                    <% data when is_map(data) -> %>
+                        <%= textarea(f, :data, value: Jason.encode!(data), class: "text-white bg-gray-900", rows: 5) %>
+                    <% _other ->  %>
+                        <%= textarea(f, :data, class: "text-white bg-gray-900", rows: 5) %>
+                    <% end %>
                 <% end %>
             </div>
-        <% end) %>
+
         <div class="flex">
             <button class="button button--cta button--large">
                 <%= gettext("Create campaign") %>

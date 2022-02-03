@@ -7,20 +7,11 @@
     >
         <%= render_icon(:eye) %>
     </button>
-    <%= if Ecto.Changeset.get_field(@changeset, :settings).type == :markdown do %>
-        <button
-            title={ gettext("Enable visual editor") }
-            class="flex w-10 h-10 p-2 items-center justify-center bg-gray-800 hover:bg-gray-600 text-white"
-            @click.prevent="document.querySelector('#campaign_settings_enable_wysiwyg').click()"
-        >
-            <%= render_icon(:code) %>
-        </button>
-    <% end %>
 </div>
 <div class="flex gap-4">
     <%= textarea(@f, :text_body, rows: 20, class: "bg-gray-900 border-none appearance-none resize-y flex-grow w-1/2") %>
     <div id="preview-container" class="w-1/2 flex-grow flex flex-col" phx-update="ignore">
-        <iframe id="html-preview" src="javascript:false" class="bg-gray-100 flex-grow" :class="previewMode ? 'fixed w-full h-full inset-0 pb-10 z-40' : ''"></iframe>
+        <iframe id="html-preview" src="about:blank" data-source="html-preview-data" class="bg-gray-100 flex-grow" :class="previewMode ? 'fixed w-full h-full inset-0 pb-10 z-40' : ''"></iframe>
         <button x-show="previewMode" @click.prevent="previewMode = !previewMode" class="fixed h-10 bg-green-600 text-white w-full bottom-0 left-0 z-50">
             <%= gettext("Close preview") %>
         </button>

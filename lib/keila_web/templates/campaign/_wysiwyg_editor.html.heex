@@ -1,4 +1,4 @@
-<div id="wysiwyg" phx-update="ignore">
+<div id="wysiwyg" phx-update="ignore" x-on:x-toggle-preview="previewMode = !previewMode">
 
     <div class="wysiwyg--menu bg-white relative shadow z-10 flex overflow-x-auto">
         <button
@@ -89,9 +89,9 @@
         <button
             title={ gettext("Edit plain Markdown") }
             class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-green-100 text-black"
-            data-action="toggle-wysiwyg"
+            data-action="toggle-preview"
         >
-            <%= render_icon(:code) %>
+            <%= render_icon(:eye) %>
         </button>
     </div>
 
@@ -99,3 +99,11 @@
 
 </div>
 <style><%= raw @styles %></style>
+
+<div id="preview-container" x-show="previewMode">
+    <iframe id="wysiwyg-html-preview" src="about:blank" data-source="html-preview-data" class="bg-gray-100 fixed w-full h-full inset-0 pb-10 z-40"></iframe>
+    <button @click.prevent="previewMode = !previewMode" class="fixed h-10 bg-green-600 text-white w-full bottom-0 left-0 z-50">
+        <%= gettext("Close preview") %>
+    </button>
+</div>
+<div id="wysiwyg-html-preview-data" phx-hook="HtmlPreview" class="hidden" data-iframe="wysiwyg-html-preview"><%= @preview %></div>

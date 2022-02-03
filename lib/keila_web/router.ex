@@ -123,7 +123,6 @@ defmodule KeilaWeb.Router do
     get "/projects/:project_id/campaigns/new", CampaignController, :new
     post "/projects/:project_id/campaigns/new", CampaignController, :post_new
     get "/projects/:project_id/campaigns/:id", CampaignController, :edit
-    put "/projects/:project_id/campaigns/:id", CampaignController, :post_edit
     get "/projects/:project_id/campaigns/:id/stats", CampaignController, :stats
     get "/projects/:project_id/campaigns/:id/clone", CampaignController, :clone
     post "/projects/:project_id/campaigns/:id/clone", CampaignController, :post_clone

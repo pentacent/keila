@@ -174,12 +174,10 @@ export function buildDefaultMenu() {
         }
     })
 
-    const buttonToggleWysiwyg = new MenuButton({
-        dom: findButton("toggle-wysiwyg"),
-        exec(editorView) {
-            this.dom.dispatchEvent(new Event("x-sync", { bubbles: true }))
-            editorView.destroy()
-            document.querySelector('#campaign_settings_enable_wysiwyg').click()
+    const buttonTogglePreview = new MenuButton({
+        dom: findButton("toggle-preview"),
+        exec(_editorView) {
+            this.dom.dispatchEvent(new Event("x-toggle-preview", { bubbles: true }))
         }
     })
 
@@ -196,6 +194,6 @@ export function buildDefaultMenu() {
         buttonOl,
         buttonIndentIncrease,
         buttonIndentDecrease,
-        buttonToggleWysiwyg
+        buttonTogglePreview
     ])
 }

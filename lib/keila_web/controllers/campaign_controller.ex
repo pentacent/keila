@@ -21,7 +21,8 @@ defmodule KeilaWeb.CampaignController do
 
   @spec new(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def new(conn, _params) do
-    render_new(conn, change(%Mailings.Campaign{}))
+    conn
+    |> render_new(change(%Mailings.Campaign{}))
   end
 
   @spec post_new(Plug.Conn.t(), map()) :: Plug.Conn.t()
@@ -42,10 +43,19 @@ defmodule KeilaWeb.CampaignController do
   end
 
   defp render_new(conn, status \\ 200, changeset) do
+    project = current_project(conn)
+
+    senders = Mailings.get_project_senders(project.id)
+    templates = Templates.get_project_templates(project.id)
+    segments = Contacts.get_project_segments(project.id)
+
     conn
     |> put_status(status)
     |> put_meta(:title, gettext("New Campaign"))
     |> assign(:changeset, changeset)
+    |> assign(:senders, senders)
+    |> assign(:templates, templates)
+    |> assign(:segments, segments)
     |> render("new.html")
   end
 
@@ -107,105 +117,6 @@ defmodule KeilaWeb.CampaignController do
     else
       redirect(conn, to: Routes.campaign_path(conn, :stats, project.id, campaign.id))
     end
-  end
-
-  @spec post_edit(Plug.Conn.t(), map()) :: Plug.Conn.t()
-  def post_edit(conn, params) do
-    project = current_project(conn)
-    campaign = conn.assigns.campaign
-
-    already_sent? = not is_nil(campaign.sent_at)
-
-    schedule_params = params["schedule"] || %{}
-    schedule? = schedule_params["schedule"] == "true" || schedule_params["cancel"] == "true"
-
-    send? = params["send"] == "true"
-
-    params = params["campaign"] || %{}
-
-    cond do
-      already_sent? ->
-        redirect(conn, to: Routes.campaign_path(conn, :stats, project.id, campaign.id))
-
-      send? ->
-        update_and_send(conn, params)
-
-      schedule? ->
-        update_and_schedule(conn, params, schedule_params)
-
-      true ->
-        update(conn, params)
-    end
-  end
-
-  defp update(conn, params) do
-    project = current_project(conn)
-
-    do_update(conn, params, false, fn _campaign ->
-      redirect(conn, to: Routes.campaign_path(conn, :index, project.id))
-    end)
-  end
-
-  defp update_and_send(conn, params) do
-    project = current_project(conn)
-
-    do_update(conn, params, true, fn campaign ->
-      Mailings.deliver_campaign_async(campaign.id)
-      redirect(conn, to: Routes.campaign_path(conn, :stats, project.id, campaign.id))
-    end)
-  end
-
-  defp update_and_schedule(conn, params, schedule_params) do
-    project = current_project(conn)
-
-    scheduled_for =
-      with "true" <- schedule_params["schedule"],
-           {:ok, date} <- Date.from_iso8601(schedule_params["date"]),
-           {:ok, time} <- Time.from_iso8601(schedule_params["time"] <> ":00"),
-           {:ok, datetime} <- DateTime.new(date, time, schedule_params["timezone"]),
-           {:ok, scheduled_for} <- DateTime.shift_zone(datetime, "Etc/UTC") do
-        scheduled_for
-      else
-        _ -> nil
-      end
-
-    do_update(conn, params, true, fn campaign ->
-      case Mailings.schedule_campaign(campaign.id, %{"scheduled_for" => scheduled_for}) do
-        {:error, changeset} ->
-          render_error(conn, params, changeset)
-
-        {:ok, _campaign} ->
-          redirect(conn, to: Routes.campaign_path(conn, :index, project.id))
-      end
-    end)
-  end
-
-  defp do_update(conn, params, use_send_changeset?, callback) do
-    campaign_id = conn.assigns.campaign.id
-
-    Mailings.update_campaign(campaign_id, params, use_send_changeset?)
-    |> case do
-      {:ok, campaign} -> callback.(campaign)
-      {:error, changeset} -> render_error(conn, params, changeset)
-    end
-  end
-
-  defp render_error(conn, params, changeset) do
-    project = current_project(conn)
-    campaign = conn.assigns.campaign
-    senders = Mailings.get_project_senders(project.id)
-    segments = Contacts.get_project_segments(project.id)
-
-    live_render(conn, KeilaWeb.CampaignEditLive,
-      session: %{
-        "current_project" => project,
-        "campaign" => campaign,
-        "params" => params,
-        "senders" => senders,
-        "changeset" => Map.take(changeset, [:errors]),
-        "segments" => segments
-      }
-    )
   end
 
   @spec stats(Plug.Conn.t(), map()) :: Plug.Conn.t()

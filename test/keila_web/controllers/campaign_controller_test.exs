@@ -84,21 +84,21 @@ defmodule KeilaWeb.CampaignControllerTest do
              }) =~
                "Foo Bar"
     end
-  end
 
-  describe "PUT /projects/:p_id/campaigns/:id" do
     @tag :campaign_controller
     test "updates campaign and redirects to index", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
       sender = build(:mailings_sender, project_id: project.id)
       campaign = insert!(:mailings_campaign, project_id: project.id, sender: sender)
 
-      params = %{"subject" => "Foo Bar"}
+      conn = get(conn, Routes.campaign_path(conn, :edit, project.id, campaign.id))
+      {:ok, lv, _html} = live(conn)
 
-      conn =
-        put(conn, Routes.campaign_path(conn, :edit, project.id, campaign.id, campaign: params))
+      lv
+      |> element("#campaign")
+      |> render_submit(%{campaign: %{subject: "Foo Bar"}})
 
-      assert redirected_to(conn, 302) == Routes.campaign_path(conn, :index, project.id)
+      assert_redirect(lv, Routes.campaign_path(conn, :index, project.id), 5)
       assert %{subject: "Foo Bar"} = Mailings.get_campaign(campaign.id)
     end
 
@@ -109,16 +109,19 @@ defmodule KeilaWeb.CampaignControllerTest do
       campaign = insert!(:mailings_campaign, project_id: project.id, sender: sender)
       _contacts = insert_n!(:contact, 10, fn _ -> %{project_id: project.id} end)
 
-      params = %{"send" => "true"}
+      conn = get(conn, Routes.campaign_path(conn, :edit, project.id, campaign.id))
+      {:ok, lv, _html} = live(conn)
 
-      conn = put(conn, Routes.campaign_path(conn, :edit, project.id, campaign.id, params))
+      lv
+      |> element("[data-dialog-for=\"send\"] .button--cta")
+      |> render_click()
 
-      assert redirected_to(conn, 302) ==
-               Routes.campaign_path(conn, :stats, project.id, campaign.id)
+      assert_redirect(lv, Routes.campaign_path(conn, :stats, project.id, campaign.id), 5)
 
       # Avoid database pool error when exiting test before transaction has
       # finished
       :timer.sleep(500)
+      assert %{sent_at: %DateTime{}} = Mailings.get_campaign(campaign.id)
     end
 
     @tag :campaign_controller
@@ -126,6 +129,10 @@ defmodule KeilaWeb.CampaignControllerTest do
       {conn, project} = with_login_and_project(conn)
       sender = build(:mailings_sender, project_id: project.id)
       campaign = insert!(:mailings_campaign, project_id: project.id, sender: sender)
+      _contacts = insert_n!(:contact, 10, fn _ -> %{project_id: project.id} end)
+
+      conn = get(conn, Routes.campaign_path(conn, :edit, project.id, campaign.id))
+      {:ok, lv, _html} = live(conn)
 
       params = %{
         "schedule" => %{
@@ -136,10 +143,11 @@ defmodule KeilaWeb.CampaignControllerTest do
         }
       }
 
-      conn = put(conn, Routes.campaign_path(conn, :edit, project.id, campaign.id), params)
+      lv
+      |> element("[data-dialog-for=\"schedule\"] form")
+      |> render_submit(params)
 
-      assert redirected_to(conn, 302) ==
-               Routes.campaign_path(conn, :index, project.id)
+      assert_redirect(lv, Routes.campaign_path(conn, :index, project.id), 5)
 
       updated_campaign = Mailings.get_campaign(campaign.id)
       assert updated_campaign.scheduled_for
@@ -149,6 +157,8 @@ defmodule KeilaWeb.CampaignControllerTest do
     test "unschedules a campaign and redirects to index", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
       sender = build(:mailings_sender, project_id: project.id)
+      _contacts = insert_n!(:contact, 10, fn _ -> %{project_id: project.id} end)
+
       {:ok, scheduled_for, _} = DateTime.from_iso8601("9999-12-31 12:00:00Z")
 
       campaign =
@@ -158,85 +168,117 @@ defmodule KeilaWeb.CampaignControllerTest do
           scheduled_for: scheduled_for
         )
 
-      params = %{"schedule" => %{"cancel" => "true"}}
+      conn = get(conn, Routes.campaign_path(conn, :edit, project.id, campaign.id))
+      {:ok, lv, _html} = live(conn)
 
-      conn = put(conn, Routes.campaign_path(conn, :edit, project.id, campaign.id), params)
+      lv
+      |> element("#unschedule-button")
+      |> render_click()
 
-      assert redirected_to(conn, 302) ==
-               Routes.campaign_path(conn, :index, project.id)
+      assert_redirect(lv, Routes.campaign_path(conn, :index, project.id), 5)
 
       updated_campaign = Mailings.get_campaign(campaign.id)
       refute updated_campaign.scheduled_for
     end
-  end
 
-  @tag :campaign_controller
-  test "displays error with invalid scheduling/sending operations", %{conn: conn} do
-    {conn, project} = with_login_and_project(conn)
+    @tag :campaign_controller
+    test "displays error when trying to send without sender", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
 
-    campaign_no_sender = insert!(:mailings_campaign, project_id: project.id)
+      campaign_no_sender = insert!(:mailings_campaign, project_id: project.id)
+      _contacts = insert_n!(:contact, 10, fn _ -> %{project_id: project.id} end)
 
-    # Sending with no sender
-    params = %{"send" => "true"}
-    conn = put(conn, Routes.campaign_path(conn, :edit, project.id, campaign_no_sender.id), params)
+      # Sending with no sender
+      conn = get(conn, Routes.campaign_path(conn, :edit, project.id, campaign_no_sender.id))
+      {:ok, lv, _html} = live(conn)
 
-    assert html_response(conn, 200) =~
-             "You must specify a sender before sending/scheduling a campaign"
+      assert lv
+             |> element("[data-dialog-for=\"send\"] .button--cta")
+             |> render_click() =~ "You must specify a sender before sending/scheduling a campaign"
+    end
 
-    # Scheduling with no sender
-    params = %{
-      "schedule" => %{
-        "schedule" => "true",
-        "date" => "9999-12-31",
-        "time" => "12:00",
-        "timezone" => "Etc/UTC"
+    @tag :campaign_controller
+    test "displays error when trying to schedule without sender", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+
+      campaign_no_sender = insert!(:mailings_campaign, project_id: project.id)
+      _contacts = insert_n!(:contact, 10, fn _ -> %{project_id: project.id} end)
+
+      conn = get(conn, Routes.campaign_path(conn, :edit, project.id, campaign_no_sender.id))
+      {:ok, lv, _html} = live(conn)
+
+      params = %{
+        "schedule" => %{
+          "schedule" => "true",
+          "date" => "9999-12-31",
+          "time" => "12:00",
+          "timezone" => "Etc/UTC"
+        }
       }
-    }
 
-    conn = put(conn, Routes.campaign_path(conn, :edit, project.id, campaign_no_sender.id), params)
+      lv
+      |> element("[data-dialog-for=\"schedule\"] form")
+      |> render_submit(params) =~ "You must specify a sender before sending/scheduling a campaign"
+    end
 
-    assert html_response(conn, 200) =~
-             "You must specify a sender before sending/scheduling a campaign"
+    @tag :campaign_controller
+    test "displays error when trying to schedule with a time before the threshold", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
 
-    ## Scheduling with a time before the threshold
-    sender = build(:mailings_sender, project_id: project.id)
-    campaign = insert!(:mailings_campaign, project_id: project.id, sender: sender)
+      sender = build(:mailings_sender, project_id: project.id)
+      campaign = insert!(:mailings_campaign, project_id: project.id, sender: sender)
+      _contacts = insert_n!(:contact, 10, fn _ -> %{project_id: project.id} end)
 
-    params = %{
-      "schedule" => %{
-        "schedule" => "true",
-        "date" => "1970-01-01",
-        "time" => "12:00",
-        "timezone" => "Etc/UTC"
+      conn = get(conn, Routes.campaign_path(conn, :edit, project.id, campaign.id))
+      {:ok, lv, _html} = live(conn)
+
+      params = %{
+        "schedule" => %{
+          "schedule" => "true",
+          "date" => "1970-01-01",
+          "time" => "12:00",
+          "timezone" => "Etc/UTC"
+        }
       }
-    }
 
-    conn = put(conn, Routes.campaign_path(conn, :edit, project.id, campaign.id), params)
-    assert html_response(conn, 200) =~ "There was an error scheduling your campaign"
+      lv
+      |> element("[data-dialog-for=\"schedule\"] form")
+      |> render_submit(params) =~ "There was an error scheduling your campaign"
+    end
 
-    # Scheduling a campaign that's already scheduled for a time before the threshold
-    {:ok, scheduled_for, _} = DateTime.from_iso8601("1970-01-01 12:00:00Z")
+    @tag :campaign_controller
+    test "displays error when trying to schedule a campaign that's already scheduled for a time before the threshold",
+         %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
 
-    sender = build(:mailings_sender, project_id: project.id)
+      sender = build(:mailings_sender, project_id: project.id)
+      _contacts = insert_n!(:contact, 10, fn _ -> %{project_id: project.id} end)
 
-    scheduled_campaign =
-      insert!(:mailings_campaign,
-        project_id: project.id,
-        sender: sender,
-        scheduled_for: scheduled_for
-      )
+      {:ok, scheduled_for, _} = DateTime.from_iso8601("1970-01-01 12:00:00Z")
 
-    params = %{
-      "schedule" => %{
-        "schedule" => "true",
-        "date" => "9999-12-31",
-        "time" => "12:00",
-        "timezone" => "Etc/UTC"
+      scheduled_campaign =
+        insert!(:mailings_campaign,
+          project_id: project.id,
+          sender: sender,
+          scheduled_for: scheduled_for
+        )
+
+      conn = get(conn, Routes.campaign_path(conn, :edit, project.id, scheduled_campaign.id))
+      {:ok, lv, _html} = live(conn)
+
+      params = %{
+        "schedule" => %{
+          "schedule" => "true",
+          "date" => "9999-12-31",
+          "time" => "12:00",
+          "timezone" => "Etc/UTC"
+        }
       }
-    }
 
-    conn = put(conn, Routes.campaign_path(conn, :edit, project.id, scheduled_campaign.id), params)
-    assert html_response(conn, 200) =~ "There was an error scheduling your campaign"
+      lv
+      |> element("[data-dialog-for=\"schedule\"] form")
+      |> render_submit(params) =~ "There was an error scheduling your campaign"
+    end
   end
 
   describe "LV /projects/:p_id/campaigns/:id/stats" do

@@ -48,8 +48,8 @@ defmodule Keila.Mailings.Campaign do
   This changeset can be used when generating a preview and no validation of
   required fields is desired.
   """
-  def preview_changeset(struct = %__MODULE__{}, params) do
-    struct
+  def preview_changeset(struct_or_changeset, params) do
+    struct_or_changeset
     |> cast(params, @update_fields)
     |> cast_embed(:settings)
   end
