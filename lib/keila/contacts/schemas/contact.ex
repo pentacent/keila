@@ -25,6 +25,7 @@ defmodule Keila.Contacts.Contact do
     |> validate_required([:email, :project_id])
     |> validate_format(:email, ~r/^[^\s]+@[^\s]+$/, message: "must have the @ sign and no spaces")
     |> unique_constraint([:email, :project_id])
+    |> check_data_size_constraint()
   end
 
   @spec update_changeset(t(), Ecto.Changeset.data()) :: Ecto.Changeset.t(t())
@@ -33,6 +34,7 @@ defmodule Keila.Contacts.Contact do
     |> cast(params, [:email, :first_name, :last_name, :data])
     |> validate_required([:email])
     |> validate_format(:email, ~r/^[^\s]+@[^\s]+$/, message: "must have the @ sign and no spaces")
+    |> check_data_size_constraint()
   end
 
   @spec changeset_from_form(t(), Ecto.Changeset.data(), Form.t()) :: Ecto.Changeset.t(t())
@@ -58,4 +60,9 @@ defmodule Keila.Contacts.Contact do
   defp validate_dynamic_required(changeset, required_fields)
   defp validate_dynamic_required(changeset, []), do: changeset
   defp validate_dynamic_required(changeset, fields), do: validate_required(changeset, fields)
+
+  defp check_data_size_constraint(changeset) do
+    changeset
+    |> check_constraint(:data, name: :max_data_size, message: "max 8 KB data allowed")
+  end
 end

@@ -29,6 +29,7 @@ defmodule Keila.Mailings.Campaign do
     |> cast_embed(:settings)
     |> validate_required([:subject, :project_id, :settings])
     |> validate_assocs_project()
+    |> check_data_size_constraint()
   end
 
   def update_changeset(struct = %__MODULE__{}, params) do
@@ -37,6 +38,7 @@ defmodule Keila.Mailings.Campaign do
     |> cast_embed(:settings)
     |> validate_required([:subject])
     |> validate_assocs_project()
+    |> check_data_size_constraint()
   end
 
   def update_and_send_changeset(struct = %__MODULE__{}, params) do
@@ -105,5 +107,10 @@ defmodule Keila.Mailings.Campaign do
     |> validate_assoc_project(:template, Template)
     |> validate_assoc_project(:sender, Sender)
     |> validate_assoc_project(:segment, Segment)
+  end
+
+  defp check_data_size_constraint(changeset) do
+    changeset
+    |> check_constraint(:data, name: :max_data_size, message: "max 32 KB data allowed")
   end
 end

@@ -226,4 +226,18 @@ defmodule Keila.ContactsTest do
 
     assert message =~ "Field email: can't be blank"
   end
+
+  @tag :contacts
+  test "custom data is limited to 8 KB", %{project: project} do
+    params = params(:contact)
+    data = %{"foo" => String.pad_trailing("", 7_000, "bar")}
+    valid_params = Map.put(params, "data", data)
+    assert {:ok, _} = Contacts.create_contact(project.id, valid_params)
+
+    params = params(:contact)
+    data = %{"foo" => String.pad_trailing("", 9_000, "bar")}
+    invalid_params = Map.put(params, "data", data)
+    assert {:error, changeset} = Contacts.create_contact(project.id, invalid_params)
+    assert %{errors: [data: {"max 8 KB data allowed", _}]} = changeset
+  end
 end
