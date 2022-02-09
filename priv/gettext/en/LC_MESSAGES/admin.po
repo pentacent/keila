@@ -88,12 +88,12 @@ msgid "Here you can manage other users on your Keila instance."
 msgstr ""
 
 #, elixir-format
-#: lib/keila_web/templates/shared_sender_admin/edit.html.heex:31
+#: lib/keila_web/templates/shared_sender_admin/edit.html.heex:33
 msgid "My Shared Sender"
 msgstr ""
 
 #, elixir-format
-#: lib/keila_web/templates/shared_sender_admin/edit.html.heex:7
+#: lib/keila_web/templates/shared_sender_admin/edit.html.heex:9
 msgid "New Shared Sender"
 msgstr ""
 
