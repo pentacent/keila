@@ -7,6 +7,12 @@ const md = markdownit("commonmark", { html: false }).use(markdownItLiquid)
 
 // Markdown parser based on Prosemirror’s defaultMarkdownParser
 // Extended with Liquid tag
+function listIsTight(tokens, i) {
+  while (++i < tokens.length)
+    if (tokens[i].type != "list_item_open") return tokens[i].hidden
+  return false
+}
+
 export const markdownParser = new MarkdownParser(schema, md, {
   blockquote: { block: "blockquote" },
   paragraph: { block: "paragraph" },
