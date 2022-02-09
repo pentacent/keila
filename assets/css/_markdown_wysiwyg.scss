@@ -309,4 +309,8 @@
             max-width: 600px;
         }
     }
+
+    liquid {
+        @apply bg-indigo-100 text-black font-mono ring-2 ring-indigo-100;
+    }
 }

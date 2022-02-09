@@ -85,6 +85,13 @@
         >
             <%= render_icon(:button_alt) %>
         </button>
+        <button
+            title={ gettext("Liquid") }
+            class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-green-100 text-black"
+            data-action="liquid"
+        >
+            <%= render_icon(:code) %>
+        </button>
         <div class="flex-grow"></div>
         <button
             title={ gettext("Edit plain Markdown") }
@@ -95,7 +102,7 @@
         </button>
     </div>
 
-    <div class="editor overflow-y-scroll" style="max-height: 75vh"></div>
+    <div class="editor overflow-y-scroll" style="max-height: 75vh; min-height: 25   vh"></div>
 
 </div>
 <style><%= raw @styles %></style>

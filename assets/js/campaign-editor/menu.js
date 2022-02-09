@@ -3,7 +3,7 @@ import { MenuButton } from "./menu-button"
 import { toggleBlockType, hasActiveMark, hasActiveNodeType, canInsert } from "./helpers"
 import { toggleMark } from "prosemirror-commands"
 import { wrapInList, liftListItem, sinkListItem } from "prosemirror-schema-list"
-import { schema } from "prosemirror-markdown"
+import { schema } from "./markdown-schema"
 
 /** Class for handling editor menus. */
 class MenuView {
@@ -174,9 +174,17 @@ export function buildDefaultMenu() {
         }
     })
 
+    const buttonLiquid = new MenuButton({
+        command: toggleMark(schema.marks.liquid),
+        dom: findButton("liquid"),
+        isActive: state => hasActiveMark(state, schema.marks.liquid),
+        isEnabled: state => !state.selection.empty
+    })
+
     const buttonTogglePreview = new MenuButton({
         dom: findButton("toggle-preview"),
         exec(_editorView) {
+            this.dom.dispatchEvent(new Event("x-sync", { bubbles: true }))
             this.dom.dispatchEvent(new Event("x-toggle-preview", { bubbles: true }))
         }
     })
@@ -194,6 +202,7 @@ export function buildDefaultMenu() {
         buttonOl,
         buttonIndentIncrease,
         buttonIndentDecrease,
+        buttonLiquid,
         buttonTogglePreview
     ])
 }
