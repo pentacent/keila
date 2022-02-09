@@ -37,9 +37,16 @@ defmodule KeilaWeb.CampaignStatsLive do
   @impl true
   def handle_info(:update, socket) do
     stats = Mailings.get_campaign_stats(socket.assigns.campaign.id)
+    link_stats = Tracking.get_link_stats(socket.assigns.campaign.id)
+
     if stats.status != :sent, do: schedule_update(socket)
 
-    {:noreply, assign(socket, :stats, stats)}
+    socket =
+      socket
+      |> assign(:stats, stats)
+      |> assign(:link_stats, link_stats)
+
+    {:noreply, socket}
   end
 
   defp schedule_update(socket) do
