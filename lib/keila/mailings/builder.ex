@@ -160,7 +160,10 @@ defmodule Keila.Mailings.Builder do
       |> text_body(text_body)
       |> html_body(html_body)
     else
-      _other -> email
+      {:error, error} ->
+        email
+        |> header("X-Keila-Invalid", error)
+        |> text_body(error)
     end
   end
 

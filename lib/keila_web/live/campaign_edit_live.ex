@@ -37,12 +37,7 @@ defmodule KeilaWeb.CampaignEditLive do
 
     campaign = %Mailings.Campaign{campaign | sender: sender, template: template}
     email = Mailings.Builder.build(campaign, %{})
-
-    preview =
-      case campaign.settings.type do
-        :markdown -> email.html_body
-        :text -> KeilaWeb.CampaignView.plain_text_preview(email.text_body)
-      end
+    preview = email.html_body || KeilaWeb.CampaignView.plain_text_preview(email.text_body)
 
     socket
     |> maybe_put_styles(template)
