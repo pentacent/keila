@@ -189,8 +189,11 @@ defmodule KeilaWeb.CampaignEditLive do
       |> assign(:current_template_id, if(template, do: template.id))
       |> assign(:styles, styles)
     else
-      socket
-      |> assign(:styles, "")
+      if is_nil(socket.assigns[:styles]) do
+        assign(socket, :styles, "")
+      else
+        socket
+      end
     end
   end
 
