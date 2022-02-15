@@ -67,7 +67,7 @@ msgid "Already have an account?"
 msgstr ""
 
 #, elixir-format
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:86
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:85
 msgid "Alt Text"
 msgstr ""
 
@@ -133,12 +133,12 @@ msgid "Button"
 msgstr ""
 
 #, elixir-format
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:131
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:130
 msgid "Button Text"
 msgstr ""
 
 #, elixir-format
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:127
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:126
 msgid "Button URL"
 msgstr ""
 
@@ -167,17 +167,17 @@ msgstr ""
 #, elixir-format
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:41
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:130 lib/keila_web/templates/campaign/_settings_dialog.html.heex:107
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:52 lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:100
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:141 lib/keila_web/templates/campaign/delete.html.heex:26
-#: lib/keila_web/templates/campaign/edit_live.html.heex:10 lib/keila_web/templates/campaign/stats_live.html.heex:8
-#: lib/keila_web/templates/contact/delete.html.heex:44 lib/keila_web/templates/contact/edit.html.heex:14
-#: lib/keila_web/templates/form/delete.html.heex:26 lib/keila_web/templates/form/edit_live.html.heex:10
-#: lib/keila_web/templates/project/delete.html.heex:24 lib/keila_web/templates/project/edit.html.heex:10
-#: lib/keila_web/templates/segment/delete.html.heex:26 lib/keila_web/templates/segment/edit_live.html.heex:10
-#: lib/keila_web/templates/sender/delete.html.heex:25 lib/keila_web/templates/sender/edit.html.heex:14
-#: lib/keila_web/templates/shared_sender_admin/delete.html.heex:24 lib/keila_web/templates/shared_sender_admin/edit.html.heex:14
-#: lib/keila_web/templates/template/delete.html.heex:26 lib/keila_web/templates/template/edit_live.html.heex:10
-#: lib/keila_web/templates/user_admin/delete.html.heex:26
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:51 lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:99
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:140 lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:177
+#: lib/keila_web/templates/campaign/delete.html.heex:26 lib/keila_web/templates/campaign/edit_live.html.heex:10
+#: lib/keila_web/templates/campaign/stats_live.html.heex:8 lib/keila_web/templates/contact/delete.html.heex:44
+#: lib/keila_web/templates/contact/edit.html.heex:14 lib/keila_web/templates/form/delete.html.heex:26
+#: lib/keila_web/templates/form/edit_live.html.heex:10 lib/keila_web/templates/project/delete.html.heex:24
+#: lib/keila_web/templates/project/edit.html.heex:10 lib/keila_web/templates/segment/delete.html.heex:26
+#: lib/keila_web/templates/segment/edit_live.html.heex:10 lib/keila_web/templates/sender/delete.html.heex:25
+#: lib/keila_web/templates/sender/edit.html.heex:14 lib/keila_web/templates/shared_sender_admin/delete.html.heex:24
+#: lib/keila_web/templates/shared_sender_admin/edit.html.heex:14 lib/keila_web/templates/template/delete.html.heex:26
+#: lib/keila_web/templates/template/edit_live.html.heex:10 lib/keila_web/templates/user_admin/delete.html.heex:26
 msgid "Cancel"
 msgstr ""
 
@@ -635,7 +635,7 @@ msgid "Font weight"
 msgstr ""
 
 #, elixir-format
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:81
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:80
 msgid "For best results, choose an image that is 600px wide."
 msgstr ""
 
@@ -686,7 +686,7 @@ msgid "Image"
 msgstr ""
 
 #, elixir-format
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:79
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:78
 msgid "Image URL"
 msgstr ""
 
@@ -712,17 +712,17 @@ msgid "Increase indent"
 msgstr ""
 
 #, elixir-format
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:123
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:122
 msgid "Insert Button"
 msgstr ""
 
 #, elixir-format
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:75
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:74
 msgid "Insert Image"
 msgstr ""
 
 #, elixir-format
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:33
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:32
 msgid "Insert Link"
 msgstr ""
 
@@ -779,12 +779,12 @@ msgid "Link"
 msgstr ""
 
 #, elixir-format
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:42
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:41
 msgid "Link Title"
 msgstr ""
 
 #, elixir-format
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:37
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:36
 msgid "Link URL"
 msgstr ""
 
@@ -911,8 +911,8 @@ msgstr ""
 #, elixir-format
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:59
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:160 lib/keila_web/templates/campaign/_settings_dialog.html.heex:110
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:58 lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:106
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:147
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:57 lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:105
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:146 lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:183
 msgid "Ok"
 msgstr ""
 
@@ -1307,7 +1307,7 @@ msgid "Timezone"
 msgstr ""
 
 #, elixir-format
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:90
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:89
 msgid "Title"
 msgstr ""
 
@@ -1959,11 +1959,6 @@ msgid "Important: The private API Key is displayed only once and cannot be recov
 msgstr ""
 
 #, elixir-format
-#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:89
-msgid "Liquid"
-msgstr ""
-
-#, elixir-format
 #: lib/keila_web/templates/api_key/new.html.heex:19
 msgid "My API Key"
 msgstr ""
@@ -2012,4 +2007,29 @@ msgstr ""
 #, elixir-format
 #: lib/keila_web/templates/campaign/edit_live.html.heex:37
 msgid "You must specify a sender before sending/scheduling a campaign."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:167
+msgid "Code"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:163
+msgid "Insert Code"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:89
+msgid "Insert code"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:233
+msgid "Read more about [how to use Liquid in Keila](https://www.keila.io/docs/campaigns#liquid-templating)\nor about [custom contact data](https://www.keila.io/docs/contacts#contact-data).\n"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:193
+msgid "You can insert data from your contacts or your campaign\nusing the [Liquid template language](https://shopify.github.io/liquid/basics/introduction/).\n"
 msgstr ""

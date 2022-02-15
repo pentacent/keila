@@ -1,9 +1,10 @@
-import { Plugin } from "prosemirror-state"
+import { Plugin, TextSelection, Selection, NodeSelection } from "prosemirror-state"
 import { MenuButton } from "./menu-button"
 import { toggleBlockType, hasActiveMark, hasActiveNodeType, canInsert } from "./helpers"
 import { toggleMark } from "prosemirror-commands"
 import { wrapInList, liftListItem, sinkListItem } from "prosemirror-schema-list"
 import { schema } from "./markdown-schema"
+import { markdownParser } from "./markdown-parser"
 
 /** Class for handling editor menus. */
 class MenuView {
@@ -175,10 +176,43 @@ export function buildDefaultMenu() {
     })
 
     const buttonLiquid = new MenuButton({
-        command: toggleMark(schema.marks.liquid),
+        exec: editorView => {
+            let liquid
+            if (hasActiveMark(editorView.state, schema.marks.liquid)) {
+                const state = editorView.state
+                const { doc, selection } = state
+                doc.nodesBetween(selection.from, selection.to, (node, pos, parentNode, childIndex) => {
+                    if (node.marks && schema.marks.liquid.isInSet(node.marks)) {
+                      liquid = { text: node.textContent }
+
+                      const tr = state.tr
+                      tr.setSelection(TextSelection.create(tr.doc, pos, pos + node.nodeSize))
+                      editorView.dispatch(tr)
+                    }
+                  })
+            }
+
+            document.querySelector("[data-dialog-for=liquid]").dispatchEvent(new CustomEvent("x-show", { detail: {} }))
+
+            window.addEventListener("update-liquid", e => {
+                const liquid = e.detail
+                if (!liquid.cancel && liquid.text) {
+                    const content = markdownParser
+                        .parse(liquid.text)
+                        .content.content[0].content.content
+
+                    const transaction = editorView.state.tr
+                    content.forEach(content => {
+                        transaction.replaceSelectionWith(content, false)
+                    })
+                    editorView.dispatch(transaction)
+                }
+                editorView.focus()
+            }, { once: true })
+        },
         dom: findButton("liquid"),
         isActive: state => hasActiveMark(state, schema.marks.liquid),
-        isEnabled: state => !state.selection.empty
+        isEnabled: state => canInsert(state, schema.nodes.text)
     })
 
     const buttonTogglePreview = new MenuButton({

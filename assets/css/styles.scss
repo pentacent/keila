@@ -162,3 +162,15 @@ iframe[src="/phoenix/live_reload/frame"] {
         text-decoration: underline;
     }
 }
+
+.markdown {
+    a {
+        @apply underline;
+    }
+    strong {
+        @apply font-bold;
+    }
+    em {
+        @apply italic;
+    }
+}
