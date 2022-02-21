@@ -17,14 +17,20 @@ import { LiveSocket } from "phoenix_live_view"
 import * as CampaignEditLiveHooks from "./hooks/campaign-edit-live"
 import * as DateTimeHooks from "./hooks/date-time"
 import { RememberUnsaved } from "./hooks/remember-unsaved"
+import { CampaignSettingsDialogHook } from "./hooks/campaign-settings-dialog"
 
-const Hooks = { ...DateTimeHooks, ...CampaignEditLiveHooks, RememberUnsaved }
+const Hooks = { ...DateTimeHooks, ...CampaignEditLiveHooks, RememberUnsaved, CampaignSettingsDialogHook }
 
 // Make hooks available globally
 window.Hooks = Hooks
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
-let liveSocket = new LiveSocket("/live", Socket, { params: { _csrf_token: csrfToken }, hooks: Hooks })
+let liveSocket = new LiveSocket("/live", Socket, { params: { _csrf_token: csrfToken }, hooks: Hooks, dom: {
+    onBeforeElUpdated(from, to){
+      if (from.__x) window.Alpine.clone(from.__x, to)
+    }
+  },
+ })
 
 // Show progress bar on live navigation and form submits
 window.addEventListener("phx:page-loading-start", info => NProgress.start())

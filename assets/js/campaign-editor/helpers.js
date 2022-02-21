@@ -1,5 +1,5 @@
 import { setBlockType } from "prosemirror-commands"
-import { schema } from "prosemirror-markdown"
+import { schema } from "./markdown-schema"
 
 /** Toggles a DOM class. This function operates on plain DOM, not ProseMirror. */
 export function toggleClass(dom, className, enabled) {

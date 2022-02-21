@@ -1,9 +1,10 @@
-import { Plugin } from "prosemirror-state"
+import { Plugin, TextSelection, Selection, NodeSelection } from "prosemirror-state"
 import { MenuButton } from "./menu-button"
 import { toggleBlockType, hasActiveMark, hasActiveNodeType, canInsert } from "./helpers"
 import { toggleMark } from "prosemirror-commands"
 import { wrapInList, liftListItem, sinkListItem } from "prosemirror-schema-list"
-import { schema } from "prosemirror-markdown"
+import { schema } from "./markdown-schema"
+import { markdownParser } from "./markdown-parser"
 
 /** Class for handling editor menus. */
 class MenuView {
@@ -174,12 +175,51 @@ export function buildDefaultMenu() {
         }
     })
 
-    const buttonToggleWysiwyg = new MenuButton({
-        dom: findButton("toggle-wysiwyg"),
-        exec(editorView) {
+    const buttonLiquid = new MenuButton({
+        exec: editorView => {
+            let liquid
+            if (hasActiveMark(editorView.state, schema.marks.liquid)) {
+                const state = editorView.state
+                const { doc, selection } = state
+                doc.nodesBetween(selection.from, selection.to, (node, pos, parentNode, childIndex) => {
+                    if (node.marks && schema.marks.liquid.isInSet(node.marks)) {
+                      liquid = { text: node.textContent }
+
+                      const tr = state.tr
+                      tr.setSelection(TextSelection.create(tr.doc, pos, pos + node.nodeSize))
+                      editorView.dispatch(tr)
+                    }
+                  })
+            }
+
+            document.querySelector("[data-dialog-for=liquid]").dispatchEvent(new CustomEvent("x-show", { detail: {} }))
+
+            window.addEventListener("update-liquid", e => {
+                const liquid = e.detail
+                if (!liquid.cancel && liquid.text) {
+                    const content = markdownParser
+                        .parse(liquid.text)
+                        .content.content[0].content.content
+
+                    const transaction = editorView.state.tr
+                    content.forEach(content => {
+                        transaction.replaceSelectionWith(content, false)
+                    })
+                    editorView.dispatch(transaction)
+                }
+                editorView.focus()
+            }, { once: true })
+        },
+        dom: findButton("liquid"),
+        isActive: state => hasActiveMark(state, schema.marks.liquid),
+        isEnabled: state => canInsert(state, schema.nodes.text)
+    })
+
+    const buttonTogglePreview = new MenuButton({
+        dom: findButton("toggle-preview"),
+        exec(_editorView) {
             this.dom.dispatchEvent(new Event("x-sync", { bubbles: true }))
-            editorView.destroy()
-            document.querySelector('#campaign_settings_enable_wysiwyg').click()
+            this.dom.dispatchEvent(new Event("x-toggle-preview", { bubbles: true }))
         }
     })
 
@@ -196,6 +236,7 @@ export function buildDefaultMenu() {
         buttonOl,
         buttonIndentIncrease,
         buttonIndentDecrease,
-        buttonToggleWysiwyg
+        buttonLiquid,
+        buttonTogglePreview
     ])
 }

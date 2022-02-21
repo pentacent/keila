@@ -47,6 +47,7 @@ defmodule Keila.Mailings.Builder do
       |> put_template_assigns(campaign.template)
       |> process_assigns()
       |> Map.put_new("contact", process_assigns(contact))
+      |> Map.put_new("campaign", process_assigns(Map.take(campaign, [:data, :subject])))
       |> Map.put("unsubscribe_link", unsubscribe_link)
 
     Email.new()
@@ -159,7 +160,10 @@ defmodule Keila.Mailings.Builder do
       |> text_body(text_body)
       |> html_body(html_body)
     else
-      _other -> email
+      {:error, error} ->
+        email
+        |> header("X-Keila-Invalid", error)
+        |> text_body(error)
     end
   end
 

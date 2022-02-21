@@ -233,4 +233,18 @@ defmodule Keila.MailingsCampaignTest do
 
     refute_email_sent()
   end
+
+  @tag :mailings_campaign
+  test "custom data is limited to 32 KB", %{project: project} do
+    params = params(:mailings_campaign)
+
+    data = %{"foo" => String.pad_trailing("", 31_000, "bar")}
+    valid_params = Map.put(params, "data", data)
+    assert {:ok, _} = Mailings.create_campaign(project.id, valid_params)
+
+    data = %{"foo" => String.pad_trailing("", 33_000, "bar")}
+    invalid_params = Map.put(params, "data", data)
+    assert {:error, changeset} = Mailings.create_campaign(project.id, invalid_params)
+    assert %{errors: [data: {"max 32 KB data allowed", _}]} = changeset
+  end
 end

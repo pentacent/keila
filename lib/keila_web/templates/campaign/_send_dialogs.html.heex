@@ -3,7 +3,7 @@
     style="display: none"
     class="fixed z-10 inset-0 overflow-y-auto bg-black bg-opacity-90 flex items-center justify-center"
     x-on:x-confirm.stop="activeDialog = null"
-    x-show.transition="activeDialog"
+    x-show.transition="['send', 'schedule'].includes(activeDialog)"
     x-on:x-cancel.stop="activeDialog = null"
     x-on:x-show.window="activeDialog = ($event.detail && $event.detail.dialog); if (activeDialog) { $nextTick(() => {const el = $el.querySelector(`[data-dialog-for=${activeDialog}] input, [data-dialog-for=${activeDialog}] button`); el.focus()}) }"
     @change.stop="false"
@@ -18,7 +18,12 @@
         data-dialog-for="send"
     >
         <%= if @recipient_count > 0 do %>
-            <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full p-8" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
+            <div
+                class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full p-8"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="modal-headline"
+            >
                 <h2 class="text-3xl">Ready to send your campaign?</h2>
                 <br>
                 <p>
@@ -35,7 +40,7 @@
                     <button class="button button--text button--large" @click.prevent="$dispatch('x-cancel')">
                         <%= gettext("Cancel") %>
                     </button>
-                    <button class="button button--cta button--large" action="submit" form="campaign" name="send" value="true" @click="setUnsavedReminder(false)">
+                    <button class="button button--cta button--large" type="button" @click="setUnsavedReminder(false); $dispatch('x-confirm')" phx-click="send">
                         <%= render_icon(:paper_airplane) %>
                         <%= gettext("Send") %>
                     </button>
@@ -67,7 +72,13 @@
         data-dialog-for="schedule"
     >
         <%= if @recipient_count > 0 do %>
-            <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full p-8" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
+            <form
+                class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full p-8"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="modal-headline"
+                phx-submit="schedule"
+            >
                 <h2 class="text-3xl"><%= gettext("Ready to schedule your campaign?") %></h2>
                 <br>
                 <p>
@@ -120,23 +131,22 @@
                     </button>
                     <%= if get_field(@changeset, :scheduled_for) do %>
                         <button
+                            id="unschedule-button"
                             class="button button--large"
-                            action="submit"
-                            form="campaign"
-                            name="schedule[cancel]"
-                            value="true"
-                            @click="setUnsavedReminder(false)"
+                            type="button"
+                            @click="setUnsavedReminder(false); $dispatch('x-confirm')"
+                            phx-click="unschedule"
                         >
                             <%= render_icon(:x) %>
                             <%= gettext("Unschedule") %>
                         </button>
                     <% end %>
-                    <button class="button button--cta button--large" action="submit" form="campaign" name="schedule[schedule]" value="true"  @click="setUnsavedReminder(false)">
+                    <button class="button button--cta button--large" type="submit" name="schedule[schedule]" value="true" @click="setUnsavedReminder(false); $dispatch('x-confirm')">
                         <%= render_icon(:clock) %>
                         <%= gettext("Schedule") %>
                     </button>
                 </div>
-            </div>
+            </form>
         <% else %>
             <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full p-8" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
                 <h2 class="text-3xl"><%= gettext("No Contacts, No Campaign.")%></h2>

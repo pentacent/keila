@@ -9,21 +9,7 @@ defmodule KeilaWeb.CampaignEditLive do
     segments = session["segments"]
     templates = session["templates"] || []
     campaign = session["campaign"]
-    error_changeset = session["changeset"]
-
-    changeset =
-      case session["params"] do
-        nil ->
-          Ecto.Changeset.change(campaign)
-
-        params ->
-          changeset = Mailings.Campaign.update_changeset(campaign, params)
-
-          case Ecto.Changeset.apply_action(changeset, :update) do
-            {:error, changeset} -> changeset
-            _ -> changeset
-          end
-      end
+    changeset = Ecto.Changeset.change(campaign, %{})
 
     socket =
       socket
@@ -33,39 +19,29 @@ defmodule KeilaWeb.CampaignEditLive do
       |> assign(:segments, segments)
       |> assign(:templates, templates)
       |> assign(:changeset, changeset)
-      |> assign(:error_changeset, error_changeset)
+      |> assign(:settings_changeset, changeset)
       |> put_recipient_count()
-      |> put_default_assigns()
+      |> put_campaign_preview()
 
     {:ok, socket}
   end
 
-  defp put_default_assigns(socket) do
-    case Ecto.Changeset.apply_action(socket.assigns.changeset, :update) do
-      {:ok, campaign} ->
-        template = Enum.find(socket.assigns.templates, &(&1.id == campaign.template_id))
+  defp put_campaign_preview(socket) do
+    campaign = Ecto.Changeset.apply_changes(socket.assigns.changeset)
+    template = Enum.find(socket.assigns.templates, &(&1.id == campaign.template_id))
 
-        # TODO
-        sender =
-          Enum.find(socket.assigns.senders, &(&1.id == campaign.sender_id)) ||
-            %Mailings.Sender{from_email: "foo@example.com"}
+    # TODO
+    sender =
+      Enum.find(socket.assigns.senders, &(&1.id == campaign.sender_id)) ||
+        %Mailings.Sender{from_email: "foo@example.com"}
 
-        campaign = %Mailings.Campaign{campaign | sender: sender, template: template}
-        email = Mailings.Builder.build(campaign, %{})
+    campaign = %Mailings.Campaign{campaign | sender: sender, template: template}
+    email = Mailings.Builder.build(campaign, %{})
+    preview = email.html_body || KeilaWeb.CampaignView.plain_text_preview(email.text_body)
 
-        preview =
-          case campaign.settings.type do
-            :markdown -> email.html_body
-            :text -> KeilaWeb.CampaignView.plain_text_preview(email.text_body)
-          end
-
-        socket
-        |> maybe_put_styles(template)
-        |> assign(:preview, preview)
-
-      _ ->
-        assign(socket, :preview, "")
-    end
+    socket
+    |> maybe_put_styles(template)
+    |> assign(:preview, preview)
   end
 
   @impl true
@@ -74,17 +50,111 @@ defmodule KeilaWeb.CampaignEditLive do
   end
 
   @impl true
-  def handle_event("form_updated", params, socket) do
-    changeset =
-      Keila.Mailings.Campaign.preview_changeset(socket.assigns.campaign, params["campaign"])
+  def handle_event("update", params, socket) do
+    changeset = merged_changeset(socket, params["campaign"])
 
     socket =
       socket
       |> assign(:changeset, changeset)
+      |> assign(:settings_changeset, changeset)
       |> put_recipient_count()
-      |> put_default_assigns()
+      |> put_campaign_preview()
 
     {:noreply, socket}
+  end
+
+  def handle_event("update-settings", params, socket) do
+    changeset = merged_changeset(socket, params["campaign"])
+
+    if changeset.valid? do
+      socket =
+        socket
+        |> assign(:settings_changeset, changeset)
+        |> assign(:changeset, changeset)
+        |> put_recipient_count()
+        |> put_campaign_preview()
+        |> push_event("settings_validated", %{valid: true})
+
+      {:noreply, socket}
+    else
+      socket =
+        socket
+        |> assign(:settings_changeset, %{changeset | action: :update})
+        |> push_event("settings_validated", %{valid: false})
+
+      {:noreply, socket}
+    end
+  end
+
+  def handle_event("save", params, socket) do
+    changeset = merged_changeset(socket, params["campaign"])
+    merged_params = changeset.params || %{}
+
+    Mailings.update_campaign(socket.assigns.campaign.id, merged_params, false)
+    |> case do
+      {:ok, campaign} ->
+        {:noreply,
+         redirect(socket, to: Routes.campaign_path(socket, :index, campaign.project_id))}
+
+      {:error, changeset} ->
+        {:noreply, put_changesets(socket, changeset)}
+    end
+  end
+
+  def handle_event("send", _, socket) do
+    params = socket.assigns.changeset.params || %{}
+
+    Mailings.update_campaign(socket.assigns.campaign.id, params, true)
+    |> case do
+      {:ok, campaign} ->
+        Mailings.deliver_campaign_async(campaign.id)
+
+        {:noreply,
+         redirect(socket,
+           to: Routes.campaign_path(socket, :stats, campaign.project_id, campaign.id)
+         )}
+
+      {:error, changeset} ->
+        {:noreply, put_changesets(socket, changeset)}
+    end
+  end
+
+  def handle_event("schedule", params, socket) do
+    scheduled_for =
+      with schedule_params when is_map(schedule_params) <- params["schedule"],
+           {:ok, date} <- Date.from_iso8601(schedule_params["date"]),
+           {:ok, time} <- Time.from_iso8601(schedule_params["time"] <> ":00"),
+           {:ok, datetime} <- DateTime.new(date, time, schedule_params["timezone"]),
+           {:ok, scheduled_for} <- DateTime.shift_zone(datetime, "Etc/UTC") do
+        scheduled_for
+      else
+        _ -> nil
+      end
+
+    params = socket.assigns.changeset.params || %{}
+
+    with {:ok, campaign} <-
+           Mailings.update_campaign(socket.assigns.campaign.id, params, true),
+         {:ok, campaign} <-
+           Mailings.schedule_campaign(campaign.id, %{scheduled_for: scheduled_for}) do
+      {:noreply, redirect(socket, to: Routes.campaign_path(socket, :index, campaign.project_id))}
+    else
+      {:error, changeset} ->
+        {:noreply, put_changesets(socket, changeset) |> put_campaign_preview()}
+    end
+  end
+
+  def handle_event("unschedule", _params, socket) do
+    handle_event("schedule", %{}, socket)
+  end
+
+  defp merged_changeset(socket, params) do
+    merged_params =
+      Mailings.Campaign.preview_changeset(socket.assigns.changeset, params)
+      |> Map.fetch!(:params)
+      |> then(fn params -> params || %{} end)
+
+    Mailings.Campaign.preview_changeset(socket.assigns.campaign, merged_params)
   end
 
   defp maybe_put_styles(socket, template) do
@@ -119,7 +189,11 @@ defmodule KeilaWeb.CampaignEditLive do
       |> assign(:current_template_id, if(template, do: template.id))
       |> assign(:styles, styles)
     else
-      socket
+      if is_nil(socket.assigns[:styles]) do
+        assign(socket, :styles, "")
+      else
+        socket
+      end
     end
   end
 
@@ -154,5 +228,11 @@ defmodule KeilaWeb.CampaignEditLive do
     else
       socket
     end
+  end
+
+  def put_changesets(socket, changeset) do
+    socket
+    |> assign(:changeset, changeset)
+    |> assign(:settings_changeset, changeset)
   end
 end

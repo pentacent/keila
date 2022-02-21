@@ -5,10 +5,14 @@ defmodule Keila.Mailings.Campaign do
   alias Keila.Projects.Project
   alias Keila.Templates.Template
 
+  @update_fields [:subject, :text_body, :html_body, :sender_id, :template_id, :segment_id, :data]
+  @creation_fields [:project_id | @update_fields]
+
   schema "mailings_campaigns" do
     field(:subject, :string)
     field(:text_body, :string)
     field(:html_body, :string)
+    field(:data, Keila.Repo.JsonField)
     field(:sent_at, :utc_datetime)
     field(:scheduled_for, :utc_datetime)
     embeds_one(:settings, __MODULE__.Settings)
@@ -21,26 +25,20 @@ defmodule Keila.Mailings.Campaign do
 
   def creation_changeset(struct \\ %__MODULE__{}, params) do
     struct
-    |> cast(params, [
-      :subject,
-      :text_body,
-      :html_body,
-      :sender_id,
-      :project_id,
-      :template_id,
-      :segment_id
-    ])
+    |> cast(params, @creation_fields)
     |> cast_embed(:settings)
     |> validate_required([:subject, :project_id, :settings])
     |> validate_assocs_project()
+    |> check_data_size_constraint()
   end
 
   def update_changeset(struct = %__MODULE__{}, params) do
     struct
-    |> cast(params, [:subject, :text_body, :html_body, :sender_id, :template_id, :segment_id])
+    |> cast(params, @update_fields)
     |> cast_embed(:settings)
     |> validate_required([:subject])
     |> validate_assocs_project()
+    |> check_data_size_constraint()
   end
 
   def update_and_send_changeset(struct = %__MODULE__{}, params) do
@@ -52,9 +50,9 @@ defmodule Keila.Mailings.Campaign do
   This changeset can be used when generating a preview and no validation of
   required fields is desired.
   """
-  def preview_changeset(struct = %__MODULE__{}, params) do
-    struct
-    |> cast(params, [:subject, :text_body, :html_body, :sender_id, :template_id, :segment_id])
+  def preview_changeset(struct_or_changeset, params) do
+    struct_or_changeset
+    |> cast(params, @update_fields)
     |> cast_embed(:settings)
   end
 
@@ -109,5 +107,10 @@ defmodule Keila.Mailings.Campaign do
     |> validate_assoc_project(:template, Template)
     |> validate_assoc_project(:sender, Sender)
     |> validate_assoc_project(:segment, Segment)
+  end
+
+  defp check_data_size_constraint(changeset) do
+    changeset
+    |> check_constraint(:data, name: :max_data_size, message: "max 32 KB data allowed")
   end
 end

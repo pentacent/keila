@@ -1,21 +1,22 @@
 import { EditorView } from "prosemirror-view"
 import { EditorState, Plugin } from "prosemirror-state"
-import { schema, defaultMarkdownParser, defaultMarkdownSerializer } from "prosemirror-markdown"
+import { schema } from "./markdown-schema"
+import { markdownParser } from "./markdown-parser"
+import { markdownSerializer } from "./markdown-serializer"
 import { history } from "prosemirror-history"
 
 import { keymap } from "prosemirror-keymap"
 import { baseKeymap } from "prosemirror-commands"
 import { buildKeymap } from "./keymap"
 import { buildDefaultMenu } from "./menu"
-
+import { inputRules } from "./input-rules"
 
 const syncPlugin = new Plugin({
-    view(editorView) {
-        return {
-            update() {
-                editorView.dom.dispatchEvent(new CustomEvent("x-sync", {
-                    bubbles: true,
-                    detail: { skipDispatch: true }
+    props: {
+        handleDOMEvents: {
+            blur(view, _event) {
+                view.dom.dispatchEvent(new CustomEvent("x-sync", {
+                    bubbles: true
                 }))
             }
         }
@@ -39,12 +40,13 @@ class MarkdownEditor {
         this.place.parentNode.addEventListener("x-sync", e => this.sync(e))
         this.view = new EditorView(place, {
             state: EditorState.create({
-                doc: defaultMarkdownParser.parse(source.value),
+                doc: markdownParser.parse(source.value),
                 plugins: [
                     buildDefaultMenu(),
                     keymap(buildKeymap(schema)),
                     keymap(baseKeymap),
                     history(),
+                    inputRules,
                     syncPlugin
                 ]
             })
@@ -52,7 +54,7 @@ class MarkdownEditor {
     }
 
     get content() {
-        return defaultMarkdownSerializer.serialize(this.view.state.doc)
+        return markdownSerializer.serialize(this.view.state.doc)
     }
 
     sync(e) {
