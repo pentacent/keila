@@ -198,7 +198,7 @@
         <%= if @form_preview.settings.csrf_disabled do %>
             <h2 class="mt-4">Form HTML</h2>
             <div class="flex items-start gap-4">
-                <textarea class="w-full bg-gray-800" rows="2" x-ref="form-html"><%= @embed %></textarea>
+                <textarea class="w-full bg-gray-800 text-sm" rows="5" x-ref="form-html"><%= @embed %></textarea>
                 <button class="button" @click.prevent="$refs['form-html'].select(); document.execCommand('copy'); showClipboardMessage = true; setTimeout(() => showClipboardMessage = false, 1000)">
                     <%= gettext("Copy") %>
                 </button>

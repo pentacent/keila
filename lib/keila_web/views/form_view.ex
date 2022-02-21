@@ -12,7 +12,7 @@ defmodule KeilaWeb.FormView do
 
     form_for(
       changeset,
-      Routes.form_path(KeilaWeb.Endpoint, :submit, form.id),
+      Routes.form_url(KeilaWeb.Endpoint, :submit, form.id),
       [class: @form_classes, style: form_styles, csrf_token: csrf_enabled?],
       fn f ->
         [

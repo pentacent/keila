@@ -43,6 +43,9 @@ defmodule KeilaWeb.FormEditLive do
         mode: :embed,
         changeset: Ecto.Changeset.change(%Keila.Contacts.Contact{})
       })
+      |> Phoenix.HTML.Safe.to_iodata()
+      |> Floki.parse_fragment!()
+      |> Floki.raw_html(pretty: true)
 
     socket
     |> assign(:form_preview, form_preview)
