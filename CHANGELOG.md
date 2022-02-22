@@ -2,6 +2,28 @@
 
 ## Unreleased
 
+## Version 0.9.0
+
+Campaign Data, Improved WYSIWYG editor 💽
+
+### Added
+- Campaign data feature
+- Automatic recognition of Markdown in WYSIWYG editor
+- New *Code* button in WYSIWYG editor with Liquid template examples
+- Highlighting of Liquid tags in WYSIWYG editor
+- Pretty-printing of embedded form HTML
+- Support for Dev Containers
+
+### Changed
+- Updated JS dependencies
+- Added size constraint to contact data field (8 KB per contact)
+- Simplified UI for campaign editor with settings moved to modal
+- Link click statistics are now displayed live while campaign is sending
+
+### Fixed
+- Use full URL for embedded form action attribute
+
+
 ## Version 0.8.0
 
 API for Contacts & Campaigns, Better Imports, UX Improvements 🧑‍💻
