@@ -1,5 +1,6 @@
 defmodule Keila.Mailings.Sender do
   use Keila.Schema, prefix: "ms"
+  require ExRated
 
   schema "mailings_senders" do
     field :name, :string
@@ -7,6 +8,7 @@ defmodule Keila.Mailings.Sender do
     field :from_name, :string
     field :reply_to_email, :string
     field :reply_to_name, :string
+    field :rate_limit_minutes, :integer
     embeds_one(:config, Keila.Mailings.Sender.Config)
     belongs_to(:project, Keila.Projects.Project, type: Keila.Projects.Project.Id)
     belongs_to(:shared_sender, Keila.Mailings.SharedSender, type: Keila.Mailings.SharedSender.Id)
@@ -24,7 +26,8 @@ defmodule Keila.Mailings.Sender do
       :from_name,
       :reply_to_email,
       :reply_to_name,
-      :shared_sender_id
+      :rate_limit_minutes,
+      :shared_sender_id,
     ])
     |> validate_required([:project_id, :name, :from_email])
     |> cast_embed(:config)
@@ -41,12 +44,18 @@ defmodule Keila.Mailings.Sender do
       :from_name,
       :reply_to_email,
       :reply_to_name,
+      :rate_limit_minutes,
       :shared_sender_id
     ])
     |> validate_required([:name, :from_email])
     |> cast_embed(:config)
     |> lowercase_emails()
     |> apply_constraints()
+  end
+
+  @spec check_rate(%__MODULE__{}) :: {:error, integer} | {:ok, integer}
+  def check_rate(struct) do
+    ExRated.check_rate("sender-bucket-per-minute-#{struct.id}", 60_000, struct.rate_limit_minutes)
   end
 
   defp lowercase_emails(changeset) do

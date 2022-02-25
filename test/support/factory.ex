@@ -8,6 +8,8 @@ defmodule Keila.Factory do
   """
   alias Keila.Repo
 
+  @default_sender_rate_limit 100
+
   defp do_build(:user) do
     %Keila.Auth.User{
       email: "foo-#{get_counter_value()}@bar.com",
@@ -58,6 +60,7 @@ defmodule Keila.Factory do
     %Keila.Mailings.Sender{
       name: "sender-#{get_counter_value()}",
       from_email: "sender-#{get_counter_value()}@example.com",
+      rate_limit_minutes: @default_sender_rate_limit,
       config: %{
         type: "smtp",
         smtp_relay: "mail.example.com",

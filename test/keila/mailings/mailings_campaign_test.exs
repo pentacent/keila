@@ -93,6 +93,37 @@ defmodule Keila.MailingsCampaignTest do
   end
 
   @tag :mailings_campaign
+  @tag :wip
+  test "deliver campaign will snooze senders after the limit", %{project: project} do
+    rate_limit = 30
+    n = 100
+    n_expected_sent = rate_limit
+    n_expected_snoozed = n - rate_limit
+
+    now = DateTime.utc_now() |> DateTime.truncate(:second)
+
+    build_n(:contact, n, fn _ -> %{project_id: project.id} end)
+    |> Enum.map(&Map.take(&1, [:name, :project_id, :email, :first_name, :last_name, :status]))
+    |> Enum.map(&Map.merge(&1, %{updated_at: now, inserted_at: now}))
+    |> Enum.chunk_every(10_000)
+    |> Enum.each(fn params -> Repo.insert_all(Contacts.Contact, params) |> elem(1) end)
+
+    sender = insert!(:mailings_sender, config: %Mailings.Sender.Config{type: "test"}, rate_limit_minutes: rate_limit)
+    assert rate_limit == sender.rate_limit_minutes
+    campaign = insert!(:mailings_campaign, project_id: project.id, sender_id: sender.id)
+
+    assert :ok = Mailings.deliver_campaign(campaign.id)
+
+    assert %{success: n_expected_sent, failure: 0, snoozed: n_expected_snoozed} = Oban.drain_queue(queue: :mailer)
+
+    for _ <- 1..n_expected_sent do
+      assert_email_sent()
+    end
+
+    refute_email_sent()
+  end
+
+  @tag :mailings_campaign
   test "deliver campaigns only to active contacts", %{project: project} do
     n = 20
 

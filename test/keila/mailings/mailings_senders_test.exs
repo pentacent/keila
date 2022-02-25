@@ -119,4 +119,20 @@ defmodule Keila.Mailings.SenderTest do
       assert {:error, _term} = Mailings.verify_sender_from_token(token)
     end
   end
+
+  @tag :wip
+  describe "ex_rated tests" do
+    test "basic check_rate" do
+      require ExRated
+      assert {:ok, 1} = ExRated.check_rate("sender1", 10_000, 2)
+      assert {:ok, 2} = ExRated.check_rate("sender1", 10_000, 2)
+      assert {:error, 2} = ExRated.check_rate("sender1", 10_000, 2)
+
+      assert {:ok, 1} = ExRated.check_rate("sender2", 10_000, 5)
+      assert :ok = ExRated.delete_bucket("sender1")
+      assert {:ok, 1} = ExRated.check_rate("sender1", 10_000, 5)
+    end
+
+
+  end
 end

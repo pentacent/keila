@@ -1,10 +1,11 @@
 defmodule Keila.Mailings.Worker do
   use Oban.Worker, queue: :mailer
   use Keila.Repo
-  alias Keila.Mailings.{Recipient, Builder}
+  alias Keila.Mailings.{Recipient, Builder, Sender}
+  require ExRated
 
   @impl true
-  def perform(%Oban.Job{args: %{"recipient_id" => recipient_id}}) do
+  def perform(%Oban.Job{args: %{"recipient_id" => recipient_id, "n_recipients" => n_recipients}}) do
     recipient =
       from(r in Recipient,
         where: r.id == ^recipient_id,
@@ -12,16 +13,23 @@ defmodule Keila.Mailings.Worker do
       )
       |> Repo.one()
 
-    if recipient.contact.status == :active && recipient.campaign.sender do
-      recipient.campaign
-      |> Builder.build(recipient, %{})
-      |> tap(&ensure_valid!/1)
-      |> Keila.Mailer.deliver_with_sender(recipient.campaign.sender)
-      |> maybe_update_recipient(recipient)
-    else
-      from(r in Recipient, where: r.id == ^recipient.id) |> Repo.delete_all()
+    sender = recipient.campaign.sender
+    case Sender.check_rate(sender) do
+      {:error, _} ->
+        # wait is proportional to the number of workers
+        {:snooze, 1 * n_recipients}
+      {:ok, _} ->
+        if recipient.contact.status == :active && recipient.campaign.sender do
+          recipient.campaign
+          |> Builder.build(recipient, %{})
+          |> tap(&ensure_valid!/1)
+          |> Keila.Mailer.deliver_with_sender(sender)
+          |> maybe_update_recipient(recipient)
+        else
+          from(r in Recipient, where: r.id == ^recipient.id) |> Repo.delete_all()
 
-      :ok
+          :ok
+        end
     end
   end
 
