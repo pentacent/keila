@@ -41,7 +41,7 @@
                         <%= with_validation(f, :sender_id) do %>
                             <%= select(f, :sender_id,
                                 (if input_value(f, :sender_id) == nil, do: [{gettext("Please select a sender"), nil}], else: []) ++ Enum.map(@senders, &{"#{&1.name} (#{&1.from_name} <#{&1.from_email}>)", &1.id}),
-                                class: "text-black sm:w-full")
+                                class: "text-black w-full")
                             %>
                         <% end %>
                     <% else %>
