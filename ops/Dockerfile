@@ -22,7 +22,7 @@ FROM elixir:1.12-alpine
 ARG PORT=4000
 ENV HOME=/opt/app
 ENV PORT ${PORT}
-EXPOSE ${PORT}
+EXPOSE ${PORT}/tcp
 
 WORKDIR ${HOME}
 COPY --from=build _build/prod/rel/keila ${HOME}
