@@ -19,10 +19,7 @@ RUN mix deps.clean mime --build && \
     mix release
 
 FROM elixir:1.12-alpine
-ARG PORT=4000
 ENV HOME=/opt/app
-ENV PORT ${PORT}
-EXPOSE ${PORT}/tcp
 
 WORKDIR ${HOME}
 COPY --from=build _build/prod/rel/keila ${HOME}
@@ -31,3 +28,7 @@ RUN mkdir -p ${HOME} && \
     chown -R 1001:0 ${HOME}
 ENTRYPOINT ["/opt/app/bin/keila"]
 CMD ["start"]
+
+ARG PORT=4000
+ENV PORT ${PORT} URL_PORT ${PORT}
+EXPOSE ${PORT}/tcp
