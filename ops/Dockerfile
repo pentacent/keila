@@ -30,5 +30,5 @@ ENTRYPOINT ["/opt/app/bin/keila"]
 CMD ["start"]
 
 ARG PORT=4000
-ENV PORT ${PORT} URL_PORT ${PORT}
+ENV PORT=${PORT} URL_PORT=${PORT}
 EXPOSE ${PORT}/tcp
