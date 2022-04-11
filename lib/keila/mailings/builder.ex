@@ -8,7 +8,7 @@ defmodule Keila.Mailings.Builder do
   alias Swoosh.Email
   alias KeilaWeb.Router.Helpers, as: Routes
   alias Keila.Templates.{Template, Css, Html, DefaultTemplate}
-  import Swoosh.Email
+  import Swoosh.Email, only: [header: 3, html_body: 2, subject: 2, text_body: 2]
 
   @default_contact %Keila.Contacts.Contact{
     id: "c_id",
@@ -51,14 +51,48 @@ defmodule Keila.Mailings.Builder do
       |> Map.put("unsubscribe_link", unsubscribe_link)
 
     Email.new()
+    |> from(campaign)
+    |> to(contact)
+    |> reply_to(campaign)
     |> subject(campaign.subject)
-    |> put_recipient(contact)
-    |> put_sender(campaign)
-    |> maybe_put_reply_to(campaign)
-    |> put_body(campaign, assigns)
+    |> render_liquid(:subject, assigns)
+    |> put_template(campaign)
+    |> fill_template(campaign, assigns)
     |> put_unsubscribe_header(unsubscribe_link)
     |> maybe_put_precedence_header()
     |> maybe_put_tracking(campaign, recipient)
+  end
+
+  defp append(email, :error, error), do: append(email, :text, error)
+
+  defp append(email, :html, html) do
+    html_body(email, email.html_body || "" <> html)
+  end
+
+  defp append(email, :text, text) do
+    text_body(email, email.text_body || "" <> text)
+  end
+
+  defp append(email, :markdown, markdown, options \\ %Earmark.Options{}) do
+    html = case Earmark.as_html(markdown, options) do
+      {:ok, html, _messages} -> html
+      {:error, html, messages} ->
+        IO.puts([html, messages])
+        {html, messages}
+      end
+    email
+    |> append(:html, html)
+    |> append(:text, markdown)
+  end
+
+  defp apply_styles(email, campaign) do
+    styles = fetch_styles(campaign)
+    styled_body = email.html_body
+    |> Html.parse_document!()
+    |> Html.apply_email_markup()
+    |> Html.apply_inline_styles(styles, ignore_inherit: true)
+    |> Html.to_document()
+    %{email | html_body: styled_body}
   end
 
   defp put_template_assigns(assigns, %Template{assigns: template_assigns = %{}}),
@@ -99,75 +133,54 @@ defmodule Keila.Mailings.Builder do
     Enum.map(value, &process_assigns/1)
   end
 
-  defp put_recipient(email, contact) do
+  @spec to(Email.t, Recipient.t) :: Email.t
+  defp to(email, recipient = %Recipient{}), do: to(email, recipient.contact)
+
+  @spec to(Email.t, Contact.t) :: Email.t
+  defp to(email, contact = %Contact{}) do
     name =
       [contact.first_name, contact.last_name]
       |> Enum.join(" ")
       |> String.trim()
 
-    to(email, [{name, contact.email}])
+    Email.to(email, [{name, contact.email}])
   end
 
-  defp put_sender(email, campaign) do
-    from(email, {campaign.sender.from_name, campaign.sender.from_email})
+  @spec from(Email.t, Campaign.t) :: Email.t
+  defp from(email, campaign = %Campaign{}) do
+    Email.from(email, {campaign.sender.from_name, campaign.sender.from_email})
   end
 
-  defp maybe_put_reply_to(email, campaign) do
+  @spec reply_to(Email.t, Campaign.t) :: Email.t
+  defp reply_to(email, campaign = %Campaign{}) do
     if campaign.sender.reply_to_email do
-      reply_to(email, {campaign.sender.reply_to_name, campaign.sender.reply_to_email})
+      Email.reply_to(email, {campaign.sender.reply_to_name, campaign.sender.reply_to_email})
     else
       email
     end
   end
 
-  defp put_body(email, campaign, assigns)
-
-  defp put_body(email, campaign = %{settings: %{type: :text}}, assigns) do
-    case render_liquid(campaign.text_body || "", assigns) do
-      {:ok, text_body} ->
-        text_body(email, text_body)
-
-      {:error, error} ->
-        email
-        |> header("X-Keila-Invalid", error)
-        |> text_body(error)
+  @spec fill_template(Email.t, Campaign.t, map()) :: Email.t
+  defp fill_template(email, campaign, assigns) do
+    content_type = campaign.settings.type
+    preferred_content = case content_type do
+      :markdown -> campaign.html_body || campaign.text_body
+      :text -> campaign.text_body || campaign.html_body
     end
-  end
-
-  defp put_body(email, campaign = %{settings: %{type: :markdown}}, assigns) do
-    main_content = campaign.text_body || ""
-    signature_content = assigns["signature"] || DefaultTemplate.signature()
-
-    with {:ok, main_content_text} <- render_liquid(main_content, assigns),
-         {:ok, main_content_html, _} <- Earmark.as_html(main_content_text),
-         {:ok, signature_content_text} <- render_liquid(signature_content, assigns),
-         {:ok, signature_content_html, _} <- Earmark.as_html(signature_content_text),
-         assigns <- Map.put(assigns, "main_content", main_content_html),
-         assigns <- Map.put(assigns, "signature_content", signature_content_html),
-         {:ok, html_body} <- render_liquid(DefaultTemplate.html_template(), assigns) do
-      styles = fetch_styles(campaign)
-
-      text_body = main_content_text <> "\n\n--  \n" <> signature_content_text
-
-      html_body =
-        html_body
-        |> Html.parse_document!()
-        |> Html.apply_email_markup()
-        |> Html.apply_inline_styles(styles, ignore_inherit: true)
-        |> Html.to_document()
-
+    case render_liquid(preferred_content, assigns) do
+      {:ok, rendered_content} ->
       email
-      |> text_body(text_body)
-      |> html_body(html_body)
-    else
+        |> append(content_type, rendered_content)
+        |> apply_styles(campaign)
       {:error, error} ->
         email
-        |> header("X-Keila-Invalid", error)
-        |> text_body(error)
+        |> Email.header("X-Keila-Invalid", error)
+        |> append(:error, error)
     end
   end
-
-  defp fetch_styles(campaign)
+  # assigns <- Map.put(assigns, "main_content", main_content_html),
+  # assigns <- Map.put(assigns, "signature_content", signature_content_html),
+  #{:ok, html_body} <- render_liquid(DefaultTemplate.html_template(), assigns)
 
   defp fetch_styles(%Campaign{template: %Template{styles: styles}}) when is_list(styles) do
     default_styles = DefaultTemplate.styles()
@@ -200,6 +213,13 @@ defmodule Keila.Mailings.Builder do
       header(email, "Precedence", "Bulk")
     else
       email
+    end
+  end
+
+  defp render_liquid(email, key, assigns) when is_atom(key) do
+    unredered_content = Map.fetch!(email, key)
+    case render_liquid(unredered_content, assigns) do
+      {:ok, rendered_content} -> %{email | key => rendered_content}
     end
   end
 
