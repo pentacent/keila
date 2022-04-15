@@ -19,3 +19,15 @@ defimpl Recipient, for: Sender do
     {name, address}
   end
 end
+
+alias Keila.Mailings.Campaign
+
+defimpl Recipient, for: Campaign do
+
+  @doc """
+  You can reply to campaigns. Format _reply to_-fields from campaigns.
+  """
+  def format(%Campaign{sender: %Sender{reply_to_name: name, reply_to_email: address}}) do
+    {name, address}
+  end
+end
