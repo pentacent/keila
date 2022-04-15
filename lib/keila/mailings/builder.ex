@@ -52,14 +52,17 @@ defmodule Keila.Mailings.Builder do
       |> maybe_put_tracking(campaign, recipient)
     catch
       {email, error} ->
-      header(email, "X-Keila-Invalid", error)
+        header(email, "X-Keila-Invalid", error)
     end
   end
 
-  defp process_assigns(value) when is_number(value) or is_binary(value) or is_nil(value), do: value
+  defp process_assigns(value) when is_number(value) or is_binary(value) or is_nil(value),
+    do: value
+
   defp process_assigns(value) when is_atom(value), do: Atom.to_string(value)
   defp process_assigns(value) when is_tuple(value), do: Tuple.to_list(value)
   defp process_assigns(value) when is_struct(value), do: process_assigns(Map.from_struct(value))
+
   defp process_assigns(value) when is_map(value) do
     Enum.map(value, fn {key, value} ->
       key = to_string(key)
@@ -72,6 +75,7 @@ defmodule Keila.Mailings.Builder do
     end)
     |> Enum.into(%{})
   end
+
   defp process_assigns(value) when is_list(value) do
     Enum.map(value, &process_assigns/1)
   end
@@ -104,10 +108,12 @@ defmodule Keila.Mailings.Builder do
   end
 
   defp put_tracking(email, campaign, recipient) do
-    modified_ast = get_ast(email)
-    |> put_click_tracking(campaign, recipient)
-    |> put_open_tracking(campaign, recipient)
-    |> put_tracking_pixel(campaign, recipient)
+    modified_ast =
+      get_ast(email)
+      |> put_click_tracking(campaign, recipient)
+      |> put_open_tracking(campaign, recipient)
+      |> put_tracking_pixel(campaign, recipient)
+
     put_ast(email, modified_ast)
   end
 

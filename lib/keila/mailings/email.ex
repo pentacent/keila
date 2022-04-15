@@ -37,10 +37,12 @@ defmodule Keila.Mailings.Email do
   """
   @spec apply_ast(email(), fun(), keyword(boolean())) :: email()
   def apply_ast(email, converter \\ &raw_html/2, options \\ []) do
-    content = converter.(
-      get_ast(email),
-      options
-    )
+    content =
+      converter.(
+        get_ast(email),
+        options
+      )
+
     text_body(email, content)
   end
 
@@ -59,10 +61,12 @@ defmodule Keila.Mailings.Email do
   def put_ast(email, tree) when is_list(tree), do: put_private(email, @ast_key, tree)
 
   def put_ast(email, text, parser \\ &parse_document!/2, options \\ []) when is_binary(text) do
-    tree = parser.(
-      text,
-      options
-    )
+    tree =
+      parser.(
+        text,
+        options
+      )
+
     put_private(email, @ast_key, tree)
   end
 
@@ -76,7 +80,9 @@ defmodule Keila.Mailings.Email do
   @spec put_exception(email(), any(), atom()) :: email()
   def put_exception(email, error, type \\ :error) do
     case type do
-      :error -> throw({email, error})
+      :error ->
+        throw({email, error})
+
       :warning ->
         list = get_private(email, @exception_list)
         put_private(email, @exception_list, [error | list])
