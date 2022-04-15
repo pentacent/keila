@@ -11,7 +11,7 @@ defmodule Keila.Mailings.Email do
   @exception_list :keila_exception_list
 
   alias Swoosh.Email
-  import Floki
+  import Floki, only: [parse_document!: 2, raw_html: 2]
   import Swoosh.Email
 
   @type email :: Email.t()
@@ -20,10 +20,11 @@ defmodule Keila.Mailings.Email do
   """
   @type ast_tree :: Floki.html_tree() | any()
 
-  def __using__(_) do
+  defmacro __using__(_) do
     quote do
       alias Keila.Mailings.Email
-      import Email
+      import Keila.Mailings.Email
+      import Swoosh.Email
     end
   end
 
@@ -44,10 +45,10 @@ defmodule Keila.Mailings.Email do
   end
 
   @spec get_ast(email()) :: ast_tree()
-  defp get_ast(email), do: get_private(email, @ast_key)
+  def get_ast(email), do: get_private(email, @ast_key)
 
   @spec get_private(email(), key()) :: any()
-  defp get_private(%Email{private: attributes}, key), do: Map.get(attributes, key)
+  def get_private(%Email{private: attributes}, key), do: Map.get(attributes, key)
 
   @doc """
   Define the basis of an AST.
@@ -65,3 +66,20 @@ defmodule Keila.Mailings.Email do
     put_private(email, @ast_key, tree)
   end
 
+  @doc """
+  Puts an exception to a private exception list or throws.
+
+  The `type` parameter can be:
+  - _:error_ An unrecoverable error occured. The
+  - _:warning_ There was a problem which was fixed or ignored.
+  """
+  @spec put_exception(email(), any(), atom()) :: email()
+  def put_exception(email, error, type \\ :error) do
+    case type do
+      :error -> throw({email, error})
+      :warning ->
+        list = get_private(email, @exception_list)
+        put_private(email, @exception_list, [error | list])
+    end
+  end
+end
