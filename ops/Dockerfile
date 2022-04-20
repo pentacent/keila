@@ -20,6 +20,7 @@ RUN mix deps.clean mime --build && \
 
 FROM elixir:1.12-alpine
 ENV HOME=/opt/app
+
 WORKDIR ${HOME}
 COPY --from=build _build/prod/rel/keila ${HOME}
 RUN mkdir -p ${HOME} && \
@@ -27,3 +28,7 @@ RUN mkdir -p ${HOME} && \
     chown -R 1001:0 ${HOME}
 ENTRYPOINT ["/opt/app/bin/keila"]
 CMD ["start"]
+
+ARG PORT=4000
+ENV PORT=${PORT}
+EXPOSE ${PORT}/tcp
