@@ -57,6 +57,7 @@ defmodule Keila.Auth.User do
     |> validate_length(:email, max: 255)
     |> unique_constraint(:email)
   end
+
   defp validate_password(changeset) do
     changeset
     |> validate_required([:password])
