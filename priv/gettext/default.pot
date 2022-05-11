@@ -474,11 +474,6 @@ msgid "Deleting a user cannot be undone."
 msgstr ""
 
 #, elixir-format
-#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:19
-msgid "Descrease indent"
-msgstr ""
-
-#, elixir-format
 #: lib/keila_web/templates/campaign/delete.html.heex:10
 msgid "Do you really want to delete the following campaigns?"
 msgstr ""
@@ -852,13 +847,9 @@ msgid "My Sender"
 msgstr ""
 
 #, elixir-format
+#: lib/keila_web/templates/template/clone.html.heex:19
 #: lib/keila_web/templates/template/new.html.heex:19
 msgid "My Template name"
-msgstr ""
-
-#, elixir-format
-#: lib/keila_web/templates/template/clone.html.heex:19
-msgid "My template name"
 msgstr ""
 
 #, elixir-format
@@ -2032,4 +2023,63 @@ msgstr ""
 #, elixir-format
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:193
 msgid "You can insert data from your contacts or your campaign\nusing the [Liquid template language](https://shopify.github.io/liquid/basics/introduction/).\n"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:19
+msgid "Decrease indent"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/new.html.heex:58
+msgid "Campaign Type"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_settings_dialog.html.heex:92
+#: lib/keila_web/templates/campaign/new.html.heex:84
+msgid "Campaign data"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_settings_dialog.html.heex:70
+#: lib/keila_web/templates/campaign/new.html.heex:70
+msgid "Enable rich text editor"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_settings_dialog.html.heex:84
+#: lib/keila_web/templates/campaign/new.html.heex:49
+msgid "Segment"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/new.html.heex:26
+msgid "Sender"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/campaign/_settings_dialog.html.heex:75
+#: lib/keila_web/templates/campaign/new.html.heex:75
+msgid "Template"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/account/edit.html.heex:178
+msgid "Change Language"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/account/edit.html.heex:181
+msgid "Here you change the language you want to use Keila in."
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/account/edit.html.heex:184
+msgid "Language"
+msgstr ""
+
+#, elixir-format
+#: lib/keila_web/templates/account/edit.html.heex:191
+msgid "Update language settings"
 msgstr ""

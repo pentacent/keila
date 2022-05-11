@@ -34,4 +34,11 @@ defmodule KeilaWeb.Gettext do
       |> then(fn html -> {:safe, html} end)
     end
   end
+
+  def available_locales() do
+    [
+      {"English", "en"},
+      {"Deutsch", "de"}
+    ]
+  end
 end

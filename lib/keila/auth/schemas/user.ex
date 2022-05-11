@@ -6,6 +6,8 @@ defmodule Keila.Auth.User do
     field(:password, :string, virtual: true)
     field(:password_hash, :string)
 
+    field(:locale, :string)
+
     field(:activated_at, :utc_datetime)
 
     has_many(:user_groups, Keila.Auth.UserGroup)
@@ -19,7 +21,7 @@ defmodule Keila.Auth.User do
   @spec creation_changeset(t() | Ecto.Changeset.data()) :: Ecto.Changeset.t(t)
   def creation_changeset(struct \\ %__MODULE__{}, params) do
     struct
-    |> cast(params, [:email, :password])
+    |> cast(params, [:email, :password, :locale])
     |> validate_email()
     |> validate_password()
   end
@@ -27,19 +29,17 @@ defmodule Keila.Auth.User do
   @doc """
   Changeset for User updates
   """
-  @spec update_changeset(t() | Ecto.Changeset.data()) :: Ecto.Changeset.t(t)
-  def update_changeset(struct \\ %__MODULE__{}, params) do
-    struct
-    |> cast(params, [:email, :password])
-    |> validate_email()
-    |> maybe_validate_password()
-  end
-
   @spec update_email_changeset(t() | Ecto.Changeset.data()) :: Ecto.Changeset.t(t)
   def update_email_changeset(struct \\ %__MODULE__{}, params) do
     struct
     |> cast(params, [:email])
     |> validate_email()
+  end
+
+  @spec update_locale_changeset(t() | Ecto.Changeset.data()) :: Ecto.Changeset.t(t)
+  def update_locale_changeset(struct \\ %__MODULE__{}, params) do
+    struct
+    |> cast(params, [:locale])
   end
 
   @spec update_password_changeset(t() | Ecto.Changeset.data()) :: Ecto.Changeset.t(t)
@@ -57,14 +57,6 @@ defmodule Keila.Auth.User do
     |> validate_length(:email, max: 255)
     |> unique_constraint(:email)
   end
-
-  defp maybe_validate_password(changeset) do
-    case get_change(changeset, :password) do
-      nil -> changeset
-      _pw -> validate_password(changeset)
-    end
-  end
-
   defp validate_password(changeset) do
     changeset
     |> validate_required([:password])

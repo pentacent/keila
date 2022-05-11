@@ -428,7 +428,7 @@ defmodule Keila.Auth do
           {:ok, Token.t()} | {:ok, User.t()} | {:error, Changeset.t(User.t())}
   def update_user_email(id, params, url_fn \\ &default_url_function/1) do
     user = Repo.get(User, id)
-    changeset = User.update_changeset(user, params)
+    changeset = User.update_email_changeset(user, params)
 
     if changeset.valid? do
       email = Changeset.get_change(changeset, :email)
@@ -460,7 +460,7 @@ defmodule Keila.Auth do
       token = %Token{} ->
         user = Repo.get(User, token.user_id)
         params = %{email: token.data["email"]}
-        Repo.update(User.update_changeset(user, params))
+        Repo.update(User.update_email_changeset(user, params))
 
       _ ->
         :error
@@ -494,6 +494,15 @@ defmodule Keila.Auth do
       %{valid?: true} -> {:ok, user}
       changeset -> Changeset.apply_action(changeset, :update)
     end
+  end
+
+  @spec set_user_locale(User.id(), String.t()) ::
+          {:ok, User.t()} | {:error, Changeset.t(User.t())}
+  def set_user_locale(id, locale) do
+    id
+    |> get_user()
+    |> User.update_locale_changeset(%{locale: locale})
+    |> Repo.update()
   end
 
   @doc """

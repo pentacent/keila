@@ -10,6 +10,7 @@ defmodule KeilaWeb.Router do
     plug :put_secure_browser_headers
     plug KeilaWeb.Meta.Plug
     plug KeilaWeb.AuthSession.Plug
+    plug KeilaWeb.PutLocalePlug
   end
 
   # Non-authenticated Routes

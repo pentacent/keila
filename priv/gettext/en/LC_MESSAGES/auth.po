@@ -68,12 +68,12 @@ msgid "It seems like your link has expired or is invalid."
 msgstr ""
 
 #, elixir-format
-#: lib/keila_web/controllers/account_controller.ex:35
+#: lib/keila_web/controllers/account_controller.ex:45
 msgid "Manage Account"
 msgstr ""
 
 #, elixir-format
-#: lib/keila_web/controllers/account_controller.ex:19
+#: lib/keila_web/controllers/account_controller.ex:18
 msgid "New password saved."
 msgstr ""
 

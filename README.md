@@ -17,7 +17,7 @@ to SMTP.
 
 ![Screenshot of the Keila campaign editor showing the WYSIWYG editor and the default template](.github/assets/keila-20211203.jpg)
 
-## Giving Keila a Try
+## Give Keila a Try!
 
 You can give a hosted version of Keila a try at [keila.io/try](https://www.keila.io/try).
 
@@ -28,31 +28,11 @@ in this repo.
 Follow the [Installation Docs](https://keila.io/docs/installation)
 for more details.
 
-## Developing Keila
+## Contributing
 
-If you want to give Keila a try, here’s how to get it running from this
-repository:
+You can contribute to the Keila project with translations or code! Learn more
+about how to contribute code or translations to Keila here: [CONTRIBUTING.md](CONTRIBUTING.md)
 
-* [Install Elixir](https://elixir-lang.org/install.html) and make sure you have [PostgreSQL](https://www.postgresql.org/) running on your machine
-* Clone the repository:
-  `git clone https://github.com/pentacent/keila.git`
-* Install dependencies with `mix deps.get`
-* Install dependencies and set up the database with `mix setup`
-* Start Keila server with `mix phx.server`
-
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
-
-## (Optional) Developing Keila inside a [DevContainer](https://code.visualstudio.com/docs/remote/containers)
-
-Here’s how to get it running using DevContainer from Visual Code:
-
-* Install [Remote Container](https://github.com/microsoft/vscode-dev-containers) extension in Visual Code
-* Click on the bottom left corner with the icon below and choose `Reopen in Container`
-
-![Screenshot of DevContainer icon](.github/assets/devcontainer-button.png)
-
-* Wait for the containers to build and install all the dependencies needed to run Keila, including [PostgreSQL](https://www.postgresql.org/) and [Elixir](https://elixir-lang.org/install.html)
-* Open a terminal inside the container and proceed to run the commands from [Developing Keila](#developing-keila) section
 
 ## The Name
 Keila is the name of the elephant mascot of this project.
