@@ -55,7 +55,7 @@ defmodule KeilaWeb.AccountController do
 
   def await_subscription(conn, _) do
     live_render(conn, KeilaWeb.AwaitSubscriptionLive,
-      session: %{"current_user" => conn.assigns.current_user}
+      session: %{"current_user" => conn.assigns.current_user, "locale" => Gettext.get_locale()}
     )
   end
 end

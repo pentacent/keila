@@ -111,7 +111,8 @@ defmodule KeilaWeb.CampaignController do
           "campaign" => campaign,
           "senders" => senders,
           "templates" => templates,
-          "segments" => segments
+          "segments" => segments,
+          "locale" => Gettext.get_locale()
         }
       )
     else
@@ -126,7 +127,12 @@ defmodule KeilaWeb.CampaignController do
     account = Keila.Accounts.get_user_account(conn.assigns.current_user.id)
 
     live_render(conn, KeilaWeb.CampaignStatsLive,
-      session: %{"current_project" => project, "campaign" => campaign, "account" => account}
+      session: %{
+        "current_project" => project,
+        "campaign" => campaign,
+        "account" => account,
+        "locale" => Gettext.get_locale()
+      }
     )
   end
 

@@ -34,7 +34,11 @@ defmodule KeilaWeb.SegmentController do
   @spec edit(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def edit(conn, _params) do
     live_render(conn, KeilaWeb.SegmentEditLive,
-      session: %{"current_project" => current_project(conn), "segment" => conn.assigns.segment}
+      session: %{
+        "current_project" => current_project(conn),
+        "segment" => conn.assigns.segment,
+        "locale" => Gettext.get_locale()
+      }
     )
   end
 

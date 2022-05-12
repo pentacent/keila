@@ -6,6 +6,8 @@ defmodule KeilaWeb.TemplateEditLive do
 
   @impl true
   def mount(_params, session, socket) do
+    Gettext.put_locale(session["locale"])
+
     styles = Keila.Templates.Css.parse!(session["template"].styles || "")
 
     style_template =

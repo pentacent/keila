@@ -3,6 +3,8 @@ defmodule KeilaWeb.ContactImportLive do
 
   @impl true
   def mount(_params, session, socket) do
+    Gettext.put_locale(session["locale"])
+
     socket =
       socket
       |> allow_upload(:csv, accept: [".csv", ".txt", ".tsv"], max_entries: 1)

@@ -4,6 +4,8 @@ defmodule KeilaWeb.AwaitSubscriptionLive do
 
   @impl true
   def mount(_params, session, socket) do
+    Gettext.put_locale(session["locale"])
+
     current_user = session["current_user"]
     account = Accounts.get_user_account(current_user.id)
     credits = Accounts.get_credits(account.id)
