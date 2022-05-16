@@ -10,14 +10,25 @@ defmodule KeilaWeb.AccountController do
   end
 
   @spec post_edit(Plug.Conn.t(), map()) :: Plug.Conn.t()
-  def post_edit(conn, params) do
-    params = Map.get(params, "user", %{})
+  def post_edit(conn, %{"user" => %{"password" => password}}) do
+    params = %{password: password}
 
     case Auth.update_user_password(conn.assigns.current_user.id, params) do
       {:ok, user} ->
         conn
         |> put_flash(:info, dgettext("auth", "New password saved."))
         |> render_edit(change(user))
+
+      {:error, changeset} ->
+        render_edit(conn, changeset)
+    end
+  end
+
+  def post_edit(conn, %{"user" => %{"locale" => locale}}) do
+    case Auth.set_user_locale(conn.assigns.current_user.id, locale) do
+      {:ok, _user} ->
+        conn
+        |> redirect(to: Routes.account_path(conn, :edit))
 
       {:error, changeset} ->
         render_edit(conn, changeset)
@@ -44,7 +55,7 @@ defmodule KeilaWeb.AccountController do
 
   def await_subscription(conn, _) do
     live_render(conn, KeilaWeb.AwaitSubscriptionLive,
-      session: %{"current_user" => conn.assigns.current_user}
+      session: %{"current_user" => conn.assigns.current_user, "locale" => Gettext.get_locale()}
     )
   end
 end

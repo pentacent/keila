@@ -167,6 +167,31 @@
             </button>
         </div>
     </.form>
+    <.form
+        let={f}
+        for={@changeset}
+        action={ Routes.account_path(@conn, :post_edit)}
+        class="rounded shadow p-8 mt-8 max-w-5xl mx-auto flex flex-col gap-4 bg-gray-900 text-gray-50"
+        @change="setUnsavedReminder(true)"
+    >
+        <h2 class="text-3xl font-bold">
+            <%= gettext("Change Language") %>
+        </h2>
+        <p class="text-lg text-gray-200">
+            <%= gettext("Here you can change the language for the Keila interface.") %>
+        </p>
+        <div class="flex flex-col">
+            <%= label(f, :locale, gettext("Language")) %>
+            <%= with_validation(f, :locale) do %>
+                <%= select(f, :locale, KeilaWeb.Gettext.available_locales(), [class: "text-black"]) %>
+            <% end %>
+        </div>
+        <div class="flex justify-end mt-8">
+            <button class="button button--cta button--large" @click="setUnsavedReminder(false)">
+                <%= gettext("Update language settings") %>
+            </button>
+        </div>
+    </.form>
 </div>
 
 <script src="https://cdn.paddle.com/paddle/paddle.js"></script>

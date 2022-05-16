@@ -82,7 +82,11 @@ defmodule KeilaWeb.TemplateController do
     template = conn.assigns.template
 
     live_render(conn, KeilaWeb.TemplateEditLive,
-      session: %{"current_project" => project, "template" => template}
+      session: %{
+        "current_project" => project,
+        "template" => template,
+        "locale" => Gettext.get_locale()
+      }
     )
   end
 
@@ -101,7 +105,8 @@ defmodule KeilaWeb.TemplateController do
           session: %{
             "current_project" => project,
             "template" => template,
-            "changeset" => changeset
+            "changeset" => changeset,
+            "locale" => Gettext.get_locale()
           }
         )
     end

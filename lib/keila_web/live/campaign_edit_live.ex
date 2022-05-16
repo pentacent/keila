@@ -4,6 +4,8 @@ defmodule KeilaWeb.CampaignEditLive do
 
   @impl true
   def mount(_params, session, socket) do
+    Gettext.put_locale(session["locale"])
+
     project = session["current_project"]
     senders = session["senders"]
     segments = session["segments"]

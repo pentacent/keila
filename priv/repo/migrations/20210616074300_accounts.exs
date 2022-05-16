@@ -21,10 +21,11 @@ defmodule Keila.Repo.Migrations.AccountsCredits do
   end
 
   defp execute_up() do
-    Keila.Auth.list_users()
-    |> Enum.map(fn user ->
+    repo().query!("SELECT id FROM users")
+    |> Map.fetch!(:rows)
+    |> Enum.map(fn [user_id] ->
       {:ok, account} = Keila.Accounts.create_account()
-      Keila.Accounts.set_user_account(user.id, account.id)
+      Keila.Accounts.set_user_account(user_id, account.id)
     end)
   end
 

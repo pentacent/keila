@@ -73,7 +73,7 @@
                 </template>
                 <template x-if="type === 'markdown'">
                     <div class="form-row">
-                        <%= label(f, :template_id, "Template") %>
+                        <%= label(f, :template_id, gettext("Template")) %>
 
                         <%= with_validation(f, :template_id) do %>
                             <%= select(f, :template_id, [{gettext("Default"), nil} | Enum.map(@templates, &{&1.name, &1.id})], class: "text-black") %>
@@ -82,7 +82,7 @@
                 </template>
 
                 <div class="form-row">
-                    <%= label(f, :segment_id, "Segment") %>
+                    <%= label(f, :segment_id, gettext("Segment")) %>
 
                     <%= with_validation(f, :segment_id) do %>
                         <%= select(f, :segment_id, [{gettext("All Contacts"), nil}] ++ Enum.map(@segments, &{&1.name, &1.id}), class: "text-black") %>
@@ -90,7 +90,7 @@
                 </div>
 
                 <div class="form-row md:col-span-full">
-                    <%= label(f, :segment_id, "Campaign data") %>
+                    <%= label(f, :segment_id, gettext("Campaign data")) %>
                     <span class="block text-sm mb-2"><%= gettext("You can add any JSON object as custom data to your campaign.") %></span>
                     <%= with_validation(f, :data) do %>
                         <%= case input_value(f, :data) do %>

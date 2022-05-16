@@ -85,7 +85,11 @@ defmodule KeilaWeb.FormController do
   @spec edit(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def edit(conn, _params) do
     live_render(conn, KeilaWeb.FormEditLive,
-      session: %{"current_project" => current_project(conn), "form" => conn.assigns.form}
+      session: %{
+        "current_project" => current_project(conn),
+        "form" => conn.assigns.form,
+        "locale" => Gettext.get_locale()
+      }
     )
   end
 

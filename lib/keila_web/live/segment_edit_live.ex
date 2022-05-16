@@ -36,6 +36,8 @@ defmodule KeilaWeb.SegmentEditLive do
 
   @impl true
   def mount(_params, session, socket) do
+    Gettext.put_locale(session["locale"])
+
     socket =
       socket
       |> assign(:current_project, session["current_project"])

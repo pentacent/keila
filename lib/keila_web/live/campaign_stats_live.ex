@@ -4,6 +4,8 @@ defmodule KeilaWeb.CampaignStatsLive do
 
   @impl true
   def mount(_params, session, socket) do
+    Gettext.put_locale(session["locale"])
+
     project = session["current_project"]
     campaign = session["campaign"]
     stats = Mailings.get_campaign_stats(campaign.id)

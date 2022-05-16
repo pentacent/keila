@@ -58,7 +58,10 @@ defmodule KeilaWeb.ContactController do
   @spec import(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def import(conn, _params) do
     live_render(conn, KeilaWeb.ContactImportLive,
-      session: %{"current_project" => conn.assigns.current_project}
+      session: %{
+        "current_project" => conn.assigns.current_project,
+        "locale" => Gettext.get_locale()
+      }
     )
   end
 

@@ -3,6 +3,8 @@ defmodule KeilaWeb.FormEditLive do
 
   @impl true
   def mount(_params, session, socket) do
+    Gettext.put_locale(session["locale"])
+
     socket =
       socket
       |> assign(:form, session["form"])
