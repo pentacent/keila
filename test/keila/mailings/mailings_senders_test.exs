@@ -120,19 +120,21 @@ defmodule Keila.Mailings.SenderTest do
     end
   end
 
-  @tag :wip
-  describe "ex_rated tests" do
-    test "basic check_rate" do
-      require ExRated
-      assert {:ok, 1} = ExRated.check_rate("sender1", 10_000, 2)
-      assert {:ok, 2} = ExRated.check_rate("sender1", 10_000, 2)
-      assert {:error, 2} = ExRated.check_rate("sender1", 10_000, 2)
+  describe "Testing senders with Rate Limiting" do
+    test "using check rate limit of new sender" do
+      rate_limit = 50
+      group = insert!(:group)
+      project = insert!(:project, group: group)
 
-      assert {:ok, 1} = ExRated.check_rate("sender2", 10_000, 5)
-      assert :ok = ExRated.delete_bucket("sender1")
-      assert {:ok, 1} = ExRated.check_rate("sender1", 10_000, 5)
+      {:ok, sender} = Mailings.create_sender(project.id, params(:mailings_sender, %{rate_limit_minutes: rate_limit}))
+
+      assert rate_limit = sender.rate_limit_minutes
+
+      for _ <- 1..rate_limit do
+        assert {:ok, _} = Sender.check_rate(sender)
+      end
+
+      assert {:error, rate_limit} = Sender.check_rate(sender)
     end
-
-
   end
 end
