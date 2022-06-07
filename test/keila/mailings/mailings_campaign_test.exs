@@ -4,8 +4,7 @@ defmodule Keila.MailingsCampaignTest do
 
   alias Keila.{Projects, Mailings, Contacts}
 
-  @delivery_n 50
-  @rate_limit 30
+  @emails_to_deliver 50
 
   setup do
     _root = insert!(:group)
@@ -69,7 +68,7 @@ defmodule Keila.MailingsCampaignTest do
 
   @tag :mailings_campaign
   test "deliver campaign", %{project: project} do
-    n = @delivery_n
+    n = @emails_to_deliver
 
     now = DateTime.utc_now() |> DateTime.truncate(:second)
 
@@ -95,10 +94,10 @@ defmodule Keila.MailingsCampaignTest do
 
   @tag :mailings_campaign
   test "deliver campaign will snooze senders after the limit", %{project: project} do
-    rate_limit = @rate_limit
-    n = @delivery_n
-    n_expected_sent = rate_limit
-    n_expected_snoozed = n - rate_limit
+    rate_limit_per_minute = 30
+    n = @emails_to_deliver
+    n_expected_sent = rate_limit_per_minute
+    n_expected_snoozed = n - rate_limit_per_minute
 
     now = DateTime.utc_now() |> DateTime.truncate(:second)
 
@@ -108,10 +107,10 @@ defmodule Keila.MailingsCampaignTest do
     |> Enum.chunk_every(10_000)
     |> Enum.each(fn params -> Repo.insert_all(Contacts.Contact, params) |> elem(1) end)
 
-    sender = insert!(:mailings_sender, config: %Mailings.Sender.Config{type: "test"}, rate_limit_minutes: rate_limit)
+    sender = insert!(:mailings_sender, config: %Mailings.Sender.Config{type: "test"}, rate_limit_per_minute: rate_limit_per_minute)
     campaign = insert!(:mailings_campaign, project_id: project.id, sender_id: sender.id)
 
-    assert rate_limit == sender.rate_limit_minutes
+    assert rate_limit_per_minute == sender.rate_limit_per_minute
 
     assert :ok = Mailings.deliver_campaign(campaign.id)
 
@@ -126,8 +125,8 @@ defmodule Keila.MailingsCampaignTest do
 
   @tag :mailings_campaign
   test "deliver campaign will not snooze senders if don't needed", %{project: project} do
-    rate_limit = @delivery_n
-    n = @delivery_n
+    rate_limit_per_minute = @emails_to_deliver
+    n = @emails_to_deliver
 
     now = DateTime.utc_now() |> DateTime.truncate(:second)
 
@@ -137,10 +136,10 @@ defmodule Keila.MailingsCampaignTest do
     |> Enum.chunk_every(10_000)
     |> Enum.each(fn params -> Repo.insert_all(Contacts.Contact, params) |> elem(1) end)
 
-    sender = insert!(:mailings_sender, config: %Mailings.Sender.Config{type: "test"}, rate_limit_minutes: rate_limit)
+    sender = insert!(:mailings_sender, config: %Mailings.Sender.Config{type: "test"}, rate_limit_per_minute: rate_limit_per_minute)
     campaign = insert!(:mailings_campaign, project_id: project.id, sender_id: sender.id)
 
-    assert rate_limit == sender.rate_limit_minutes
+    assert rate_limit_per_minute == sender.rate_limit_per_minute
 
     assert :ok = Mailings.deliver_campaign(campaign.id)
 
@@ -204,7 +203,7 @@ defmodule Keila.MailingsCampaignTest do
 
   @tag :mailings_campaign
   test "deliver scheduled campaign", %{project: project} do
-    n = @delivery_n
+    n = @emails_to_deliver
 
     now = DateTime.utc_now() |> DateTime.truncate(:second)
 

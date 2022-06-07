@@ -122,19 +122,19 @@ defmodule Keila.Mailings.SenderTest do
 
   describe "Testing senders with Rate Limiting" do
     test "using check rate limit of new sender" do
-      rate_limit = 50
+      rate_limit_per_minute = 50
       group = insert!(:group)
       project = insert!(:project, group: group)
 
-      {:ok, sender} = Mailings.create_sender(project.id, params(:mailings_sender, %{rate_limit_minutes: rate_limit}))
+      {:ok, sender} = Mailings.create_sender(project.id, params(:mailings_sender, %{rate_limit_per_minute: rate_limit_per_minute}))
 
-      assert rate_limit = sender.rate_limit_minutes
+      assert rate_limit_per_minute = sender.rate_limit_per_minute
 
-      for _ <- 1..rate_limit do
+      for _ <- 1..rate_limit_per_minute do
         assert {:ok, _} = Sender.check_rate(sender)
       end
 
-      assert {:error, rate_limit} = Sender.check_rate(sender)
+      assert {:error, rate_limit_per_minute} = Sender.check_rate(sender)
     end
   end
 end
