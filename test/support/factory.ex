@@ -58,9 +58,6 @@ defmodule Keila.Factory do
     %Keila.Mailings.Sender{
       name: "sender-#{get_counter_value()}",
       from_email: "sender-#{get_counter_value()}@example.com",
-      rate_limit_per_hour: 1,
-      rate_limit_per_minute: 60,
-      rate_limit_per_second: 3600,
       config: %{
         type: "smtp",
         smtp_relay: "mail.example.com",
