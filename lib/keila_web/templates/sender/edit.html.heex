@@ -58,6 +58,24 @@
             <% end %>
         </div>
         <div class="form-row">
+            <%= label(f, :rate_limit_per_hour, "Rate limit per hour") %>
+            <%= with_validation(f, :rate_limit_per_hour) do %>
+                <%= number_input(f, :rate_limit_per_hour, placeholder: gettext("10,000"), class: "text-black") %>
+            <% end %>
+        </div>
+        <div class="form-row">
+            <%= label(f, :rate_limit_per_minute, "Rate limit per minute") %>
+            <%= with_validation(f, :rate_limit_per_minute) do %>
+                <%= number_input(f, :rate_limit_per_minute, placeholder: gettext("1,000"), class: "text-black") %>
+            <% end %>
+        </div>
+        <div class="form-row">
+            <%= label(f, :rate_limit_per_second, "Rate limit per second") %>
+            <%= with_validation(f, :rate_limit_per_second) do %>
+                <%= number_input(f, :rate_limit_per_second, placeholder: gettext("100"), class: "text-black") %>
+            <% end %>
+        </div>
+        <div class="form-row">
             <%= render("_config.html", form: f, sender_adapters: sender_adapters(), shared_senders: @shared_senders) %>
         </div>
     </.form>
