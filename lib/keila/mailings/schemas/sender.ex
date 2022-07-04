@@ -8,9 +8,9 @@ defmodule Keila.Mailings.Sender do
     field :from_name, :string
     field :reply_to_email, :string
     field :reply_to_name, :string
-    field :rate_limit_per_hour, :integer, default: 10_000
-    field :rate_limit_per_minute, :integer, default: 1_000
-    field :rate_limit_per_second, :integer, default: 500
+    field :rate_limit_per_hour, :integer
+    field :rate_limit_per_minute, :integer
+    field :rate_limit_per_second, :integer
     embeds_one(:config, Keila.Mailings.Sender.Config)
     belongs_to(:project, Keila.Projects.Project, type: Keila.Projects.Project.Id)
     belongs_to(:shared_sender, Keila.Mailings.SharedSender, type: Keila.Mailings.SharedSender.Id)
