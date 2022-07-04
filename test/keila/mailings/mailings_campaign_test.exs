@@ -93,11 +93,11 @@ defmodule Keila.MailingsCampaignTest do
   end
 
   @tag :mailings_campaign
-  test "deliver campaign will snooze senders after the limit", %{project: project} do
-    rate_limit_per_minute = 30
+  test "deliver campaign will snooze senders after the limit in seconds", %{project: project} do
+    rate_limit_per_second = 10
     n = @emails_to_deliver
-    n_expected_sent = rate_limit_per_minute
-    n_expected_snoozed = n - rate_limit_per_minute
+    n_expected_sent = rate_limit_per_second
+    n_expected_snoozed = abs(n - rate_limit_per_second)
 
     now = DateTime.utc_now() |> DateTime.truncate(:second)
 
@@ -107,14 +107,14 @@ defmodule Keila.MailingsCampaignTest do
     |> Enum.chunk_every(10_000)
     |> Enum.each(fn params -> Repo.insert_all(Contacts.Contact, params) |> elem(1) end)
 
-    sender = insert!(:mailings_sender, config: %Mailings.Sender.Config{type: "test"}, rate_limit_per_minute: rate_limit_per_minute)
+    sender = insert!(:mailings_sender, config: %Mailings.Sender.Config{type: "test"}, rate_limit_per_second: rate_limit_per_second)
     campaign = insert!(:mailings_campaign, project_id: project.id, sender_id: sender.id)
 
-    assert rate_limit_per_minute == sender.rate_limit_per_minute
+    assert rate_limit_per_second == sender.rate_limit_per_second
 
     assert :ok = Mailings.deliver_campaign(campaign.id)
 
-    assert %{success: n_expected_sent, failure: 0, snoozed: n_expected_snoozed} = Oban.drain_queue(queue: :mailer)
+    assert %{success: ^n_expected_sent, failure: 0, snoozed: ^n_expected_snoozed} = Oban.drain_queue(queue: :mailer)
 
     for _ <- 1..n_expected_sent do
       assert_email_sent()
@@ -143,7 +143,7 @@ defmodule Keila.MailingsCampaignTest do
 
     assert :ok = Mailings.deliver_campaign(campaign.id)
 
-    assert %{success: n, failure: 0, snoozed: 0} = Oban.drain_queue(queue: :mailer)
+    assert %{success: ^n, failure: 0, snoozed: 0} = Oban.drain_queue(queue: :mailer)
 
     for _ <- 1..n do
       assert_email_sent()
