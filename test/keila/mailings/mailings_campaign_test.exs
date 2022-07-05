@@ -94,10 +94,10 @@ defmodule Keila.MailingsCampaignTest do
 
   @tag :mailings_campaign
   test "deliver campaign will snooze senders after the limit in seconds", %{project: project} do
-    rate_limit_per_second = 10
+    rate_limit_per_minute = 10
     n = @emails_to_deliver
-    n_expected_sent = rate_limit_per_second
-    n_expected_snoozed = abs(n - rate_limit_per_second)
+    n_expected_sent = rate_limit_per_minute
+    n_expected_snoozed = abs(n - rate_limit_per_minute)
 
     now = DateTime.utc_now() |> DateTime.truncate(:second)
 
@@ -110,12 +110,12 @@ defmodule Keila.MailingsCampaignTest do
     sender =
       insert!(:mailings_sender,
         config: %Mailings.Sender.Config{type: "test"},
-        rate_limit_per_second: rate_limit_per_second
+        rate_limit_per_minute: rate_limit_per_minute
       )
 
     campaign = insert!(:mailings_campaign, project_id: project.id, sender_id: sender.id)
 
-    assert rate_limit_per_second == sender.rate_limit_per_second
+    assert rate_limit_per_minute == sender.rate_limit_per_minute
 
     assert :ok = Mailings.deliver_campaign(campaign.id)
 
