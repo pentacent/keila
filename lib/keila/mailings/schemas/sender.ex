@@ -31,7 +31,7 @@ defmodule Keila.Mailings.Sender do
       :rate_limit_per_hour,
       :rate_limit_per_minute,
       :rate_limit_per_second,
-      :shared_sender_id,
+      :shared_sender_id
     ])
     |> validate_required([:project_id, :name, :from_email])
     |> cast_embed(:config)
@@ -61,10 +61,24 @@ defmodule Keila.Mailings.Sender do
 
   @spec check_rate(%__MODULE__{}) :: {:error, integer} | {:ok, integer}
   def check_rate(struct) do
-    with {:ok, hour_calls} <- ExRated.check_rate("sender-bucket-per-hour-#{struct.id}", 3_600_000, struct.rate_limit_per_hour),
-      {:ok, minute_calls} <- ExRated.check_rate("sender-bucket-per-minute-#{struct.id}", 60_000, struct.rate_limit_per_minute),
-      {:ok, second_calls} <- ExRated.check_rate("sender-bucket-per-second-#{struct.id}", 1_000, struct.rate_limit_per_second)
-    do
+    with {:ok, hour_calls} <-
+           ExRated.check_rate(
+             "sender-bucket-per-hour-#{struct.id}",
+             3_600_000,
+             struct.rate_limit_per_hour
+           ),
+         {:ok, minute_calls} <-
+           ExRated.check_rate(
+             "sender-bucket-per-minute-#{struct.id}",
+             60_000,
+             struct.rate_limit_per_minute
+           ),
+         {:ok, second_calls} <-
+           ExRated.check_rate(
+             "sender-bucket-per-second-#{struct.id}",
+             1_000,
+             struct.rate_limit_per_second
+           ) do
       {:ok, hour_calls + minute_calls + second_calls}
     else
       {:error, calls} -> {:error, calls}

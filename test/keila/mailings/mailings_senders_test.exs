@@ -126,7 +126,11 @@ defmodule Keila.Mailings.SenderTest do
       group = insert!(:group)
       project = insert!(:project, group: group)
 
-      {:ok, sender} = Mailings.create_sender(project.id, params(:mailings_sender, %{rate_limit_per_second: rate_limit_per_second}))
+      {:ok, sender} =
+        Mailings.create_sender(
+          project.id,
+          params(:mailings_sender, %{rate_limit_per_second: rate_limit_per_second})
+        )
 
       assert rate_limit_per_second = sender.rate_limit_per_second
 
@@ -142,7 +146,11 @@ defmodule Keila.Mailings.SenderTest do
       group = insert!(:group)
       project = insert!(:project, group: group)
 
-      {:ok, sender} = Mailings.create_sender(project.id, params(:mailings_sender, %{rate_limit_per_minute: rate_limit_per_minute}))
+      {:ok, sender} =
+        Mailings.create_sender(
+          project.id,
+          params(:mailings_sender, %{rate_limit_per_minute: rate_limit_per_minute})
+        )
 
       assert rate_limit_per_minute = sender.rate_limit_per_minute
 
@@ -158,7 +166,11 @@ defmodule Keila.Mailings.SenderTest do
       group = insert!(:group)
       project = insert!(:project, group: group)
 
-      {:ok, sender} = Mailings.create_sender(project.id, params(:mailings_sender, %{rate_limit_per_hour: rate_limit_per_hour}))
+      {:ok, sender} =
+        Mailings.create_sender(
+          project.id,
+          params(:mailings_sender, %{rate_limit_per_hour: rate_limit_per_hour})
+        )
 
       assert rate_limit_per_hour = sender.rate_limit_per_hour
 

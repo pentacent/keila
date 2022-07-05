@@ -14,10 +14,12 @@ defmodule Keila.Mailings.Worker do
       |> Repo.one()
 
     sender = recipient.campaign.sender
+
     case Sender.check_rate(sender) do
       {:error, _} ->
         # wait is proportional to the number of workers
         {:snooze, 1 * n_recipients}
+
       {:ok, _} ->
         if recipient.contact.status == :active && recipient.campaign.sender do
           recipient.campaign
