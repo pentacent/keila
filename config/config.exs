@@ -18,6 +18,11 @@ config :keila, KeilaWeb.Endpoint,
   pubsub_server: Keila.PubSub,
   live_view: [signing_salt: "kH+cT7XL"]
 
+# Configure file uploads and serving of files
+config :keila, Keila.Files, adapter: Keila.Files.StorageAdapters.Local
+
+config :keila, Keila.Files.StorageAdapters.Local, serve: true
+
 config :esbuild,
   version: "0.12.18",
   default: [

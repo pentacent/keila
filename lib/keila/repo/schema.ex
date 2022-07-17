@@ -26,7 +26,14 @@ defmodule Keila.Schema do
       import Ecto.Query
       import Ecto.Changeset
       use Ecto.Schema
-      use Keila.Id, unquote(opts)
+
+      if Keyword.get(unquote(opts), :uuid) == true do
+        @primary_key {:uuid, :binary_id, autogenerate: false}
+        @type id :: Ecto.UUID.t()
+      else
+        use Keila.Id, unquote(opts)
+      end
+
       @timestamps_opts [type: :utc_datetime]
 
       @type t :: %__MODULE__{}
