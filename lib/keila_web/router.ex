@@ -156,6 +156,12 @@ defmodule KeilaWeb.Router do
     get "/c/:encoded_url/:recipient_id/:link_id/:hmac", TrackingController, :track_click
   end
 
+  scope "/uploads", KeilaWeb do
+    pipe_through :browser
+
+    get "/:filename", LocalFileController, :serve
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end

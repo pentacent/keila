@@ -139,7 +139,7 @@ if config_env() == :prod do
       """)
   end
 
-  # Endpoint
+  # Main Endpoint
   url_host = System.get_env("URL_HOST")
   url_port = System.get_env("URL_PORT") |> maybe_to_int.()
   url_schema = System.get_env("URL_SCHEMA")
@@ -171,6 +171,25 @@ if config_env() == :prod do
     """)
   end
 
+  # User content endpoint
+  user_content_base_url = System.get_env("USER_CONTENT_BASE_URL")
+
+  if user_content_base_url not in [nil, ""] do
+    config(:keila, Keila.Files.StorageAdapters.Local, serve: false)
+    config(:keila, Keila.Files.StorageAdapters.Local, base_url: user_content_base_url)
+  else
+    config(:keila, Keila.Files.StorageAdapters.Local, serve: true)
+
+    Logger.warn("""
+    You have not configured a separate URL for untrusted content uploaded by
+    users.
+
+    If you serve user uploads on a different domain, you can set
+    USER_CONTENT_BASE_URL
+    """)
+  end
+
+  # Application Port
   port = System.get_env("PORT") |> maybe_to_int.()
 
   if not is_nil(port) do
