@@ -16,9 +16,9 @@ defmodule Keila.Files do
 
     with {:ok, size} <- get_and_validate_size(source_path),
          {:ok, type} <- get_and_validate_type(source_path, filename, raw_type) do
-          uuid = Ecto.UUID.generate()
-          sha256 = Keila.Hasher.hash_file(source_path, :sha256)
-          adapter = get_default_adapter()
+      uuid = Ecto.UUID.generate()
+      sha256 = Keila.Hasher.hash_file(source_path, :sha256)
+      adapter = get_default_adapter()
 
       metadata =
         metadata
@@ -59,7 +59,6 @@ defmodule Keila.Files do
       {:error, :too_large}
     end
   end
-
 
   defp get_and_validate_type(path, filename, raw_type) do
     with {:ok, filename_type} <- MediaType.type_from_filename(filename || path),
