@@ -65,7 +65,7 @@
 
                 <template x-if="type === 'markdown'">
                     <div class="form-row-checkbox">
-                        <%= inputs_for(f, :settings, fn fs -> %>
+                        <%= inputs_for(f, :settings, [skip_hidden: true], fn fs -> %>
                             <%= checkbox(fs, :enable_wysiwyg) %>
                             <%= label(fs, :enable_wysiwyg, gettext("Enable rich text editor")) %>
                         <% end) %>
