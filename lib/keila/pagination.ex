@@ -21,7 +21,8 @@ defmodule Keila.Pagination do
   def paginate(query, opts \\ []) do
     page = Keyword.get(opts, :page, 0)
     page_size = Keyword.get(opts, :page_size, 10)
-    count = Keila.Repo.aggregate(query, :count, :id)
+    id_field = get_id_field(query)
+    count = Keila.Repo.aggregate(query, :count, id_field)
     page_count = ceil(count / page_size)
 
     data =
@@ -37,4 +38,11 @@ defmodule Keila.Pagination do
       page_count: page_count
     }
   end
+
+  defp get_id_field(%{from: %Ecto.Query.FromExpr{source: {_, module}}}) do
+    module.__schema__(:primary_key)
+    |> List.first()
+  end
+
+  defp get_id_field(_query), do: :id
 end
