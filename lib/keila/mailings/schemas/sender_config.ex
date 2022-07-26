@@ -9,6 +9,9 @@ defmodule Keila.Mailings.Sender.Config do
 
   embedded_schema do
     field :type, :string
+    field :rate_limit_per_hour, :integer
+    field :rate_limit_per_minute, :integer
+    field :rate_limit_per_second, :integer
 
     SenderAdapters.schema_fields() |> Enum.each(fn {name, type} -> field(name, type) end)
   end
@@ -16,7 +19,12 @@ defmodule Keila.Mailings.Sender.Config do
   @spec changeset(Ecto.Changeset.data(), map()) :: Ecto.Changeset.t(t())
   def changeset(struct \\ %__MODULE__{}, params) do
     struct
-    |> cast(params, [:type])
+    |> cast(params, [
+      :type,
+      :rate_limit_per_hour,
+      :rate_limit_per_minute,
+      :rate_limit_per_second
+    ])
     |> validate_inclusion(:type, @adapter_names)
     |> cast_sender_adapter(params)
   end

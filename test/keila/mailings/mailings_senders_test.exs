@@ -126,13 +126,19 @@ defmodule Keila.Mailings.SenderTest do
       group = insert!(:group)
       project = insert!(:project, group: group)
 
+      params =
+        params(:mailings_sender)
+        |> Map.update!("config", fn config ->
+          Map.put(config, :rate_limit_per_second, rate_limit_per_second)
+        end)
+
       {:ok, sender} =
         Mailings.create_sender(
           project.id,
-          params(:mailings_sender, %{rate_limit_per_second: rate_limit_per_second})
+          params
         )
 
-      assert rate_limit_per_second = sender.rate_limit_per_second
+      assert rate_limit_per_second == sender.config.rate_limit_per_second
 
       for _ <- 1..rate_limit_per_second do
         assert {:ok, _} = Sender.check_rate(sender)
@@ -146,13 +152,19 @@ defmodule Keila.Mailings.SenderTest do
       group = insert!(:group)
       project = insert!(:project, group: group)
 
+      params =
+        params(:mailings_sender)
+        |> Map.update!("config", fn config ->
+          Map.put(config, :rate_limit_per_minute, rate_limit_per_minute)
+        end)
+
       {:ok, sender} =
         Mailings.create_sender(
           project.id,
-          params(:mailings_sender, %{rate_limit_per_minute: rate_limit_per_minute})
+          params
         )
 
-      assert rate_limit_per_minute = sender.rate_limit_per_minute
+      assert rate_limit_per_minute == sender.config.rate_limit_per_minute
 
       for _ <- 1..rate_limit_per_minute do
         assert {:ok, _} = Sender.check_rate(sender)
@@ -166,13 +178,19 @@ defmodule Keila.Mailings.SenderTest do
       group = insert!(:group)
       project = insert!(:project, group: group)
 
+      params =
+        params(:mailings_sender)
+        |> Map.update!("config", fn config ->
+          Map.put(config, :rate_limit_per_hour, rate_limit_per_hour)
+        end)
+
       {:ok, sender} =
         Mailings.create_sender(
           project.id,
-          params(:mailings_sender, %{rate_limit_per_hour: rate_limit_per_hour})
+          params
         )
 
-      assert rate_limit_per_hour = sender.rate_limit_per_hour
+      assert rate_limit_per_hour == sender.config.rate_limit_per_hour
 
       for _ <- 1..rate_limit_per_hour do
         assert {:ok, _} = Sender.check_rate(sender)
@@ -187,9 +205,9 @@ defmodule Keila.Mailings.SenderTest do
 
       {:ok, sender} = Mailings.create_sender(project.id, params(:mailings_sender))
 
-      assert sender.rate_limit_per_second == nil
-      assert sender.rate_limit_per_minute == nil
-      assert sender.rate_limit_per_hour == nil
+      assert sender.config.rate_limit_per_second == nil
+      assert sender.config.rate_limit_per_minute == nil
+      assert sender.config.rate_limit_per_hour == nil
 
       for _ <- 1..50 do
         assert {:ok, _} = Sender.check_rate(sender)

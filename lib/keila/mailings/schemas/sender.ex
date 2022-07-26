@@ -8,9 +8,6 @@ defmodule Keila.Mailings.Sender do
     field :from_name, :string
     field :reply_to_email, :string
     field :reply_to_name, :string
-    field :rate_limit_per_hour, :integer
-    field :rate_limit_per_minute, :integer
-    field :rate_limit_per_second, :integer
     embeds_one(:config, Keila.Mailings.Sender.Config)
     belongs_to(:project, Keila.Projects.Project, type: Keila.Projects.Project.Id)
     belongs_to(:shared_sender, Keila.Mailings.SharedSender, type: Keila.Mailings.SharedSender.Id)
@@ -28,9 +25,6 @@ defmodule Keila.Mailings.Sender do
       :from_name,
       :reply_to_email,
       :reply_to_name,
-      :rate_limit_per_hour,
-      :rate_limit_per_minute,
-      :rate_limit_per_second,
       :shared_sender_id
     ])
     |> validate_required([:project_id, :name, :from_email])
@@ -48,9 +42,6 @@ defmodule Keila.Mailings.Sender do
       :from_name,
       :reply_to_email,
       :reply_to_name,
-      :rate_limit_per_hour,
-      :rate_limit_per_minute,
-      :rate_limit_per_second,
       :shared_sender_id
     ])
     |> validate_required([:name, :from_email])
@@ -65,19 +56,19 @@ defmodule Keila.Mailings.Sender do
            ExRated.check_rate(
              "sender-bucket-per-hour-#{struct.id}",
              3_600_000,
-             struct.rate_limit_per_hour
+             struct.config.rate_limit_per_hour
            ),
          {:ok, minute_calls} <-
            ExRated.check_rate(
              "sender-bucket-per-minute-#{struct.id}",
              60_000,
-             struct.rate_limit_per_minute
+             struct.config.rate_limit_per_minute
            ),
          {:ok, second_calls} <-
            ExRated.check_rate(
              "sender-bucket-per-second-#{struct.id}",
              1_000,
-             struct.rate_limit_per_second
+             struct.config.rate_limit_per_second
            ) do
       {:ok, hour_calls + minute_calls + second_calls}
     else
