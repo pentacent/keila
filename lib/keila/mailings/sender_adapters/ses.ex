@@ -87,17 +87,17 @@ defmodule Keila.Mailings.SenderAdapters.SES do
   end
 
   defp fetch_cached_key(url) do
-    if Process.whereis(__MODULE__.Cache) do
+    if not is_nil(Process.whereis(__MODULE__.Cache)) do
       Agent.get(__MODULE__.Cache, &Map.get(&1, url))
     end
   end
 
   defp put_cached_key(url, key) do
-    if Process.whereis(__MODULE__.Cache) do
-      Agent.update(__MODULE__.Cache, &Map.put(&1, url, key))
-    else
+    if is_nil(Process.whereis(__MODULE__.Cache)) do
       Agent.start_link(fn -> %{} end, name: __MODULE__.Cache)
     end
+
+    Agent.update(__MODULE__.Cache, &Map.put(&1, url, key))
   end
 
   defp extract_key(pem_file) do

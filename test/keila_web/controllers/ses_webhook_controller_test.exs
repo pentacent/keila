@@ -62,11 +62,11 @@ defmodule KeilaWeb.SESWebhookControllerTest do
 
   # Functions taken from Keila.Mailings.SenderAdapters.SES
   defp put_cached_key(url, key) do
-    if Process.whereis(Keila.Mailings.SenderAdapters.SES.Cache) do
-      Agent.update(Keila.Mailings.SenderAdapters.SES.Cache, &Map.put(&1, url, key))
-    else
+    if is_nil(Process.whereis(Keila.Mailings.SenderAdapters.SES.Cache)) do
       Agent.start_link(fn -> %{} end, name: Keila.Mailings.SenderAdapters.SES.Cache)
     end
+
+    Agent.update(Keila.Mailings.SenderAdapters.SES.Cache, &Map.put(&1, url, key))
   end
 
   defp extract_key(pem_file) do
