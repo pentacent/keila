@@ -5,7 +5,9 @@ defmodule Keila.Mailings.Worker do
   require ExRated
 
   @impl true
-  def perform(%Oban.Job{args: %{"recipient_id" => recipient_id, "n_recipients" => n_recipients}}) do
+  def perform(%Oban.Job{args: args}) do
+    %{"recipient_id" => recipient_id, "recipient_count" => recipient_count} = args
+
     recipient =
       from(r in Recipient,
         where: r.id == ^recipient_id,
@@ -18,7 +20,7 @@ defmodule Keila.Mailings.Worker do
     case Sender.check_rate(sender) do
       {:error, _} ->
         # wait is proportional to the number of workers
-        {:snooze, 1 * n_recipients}
+        {:snooze, 1 * recipient_count}
 
       {:ok, _} ->
         if recipient.contact.status == :active && recipient.campaign.sender do

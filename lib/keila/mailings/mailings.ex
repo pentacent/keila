@@ -391,11 +391,13 @@ defmodule Keila.Mailings do
   end
 
   defp insert_jobs(recipients) do
+    recipient_count = length(recipients)
+
     recipients
     |> Enum.map(fn recipient ->
       Keila.Mailings.Worker.new(%{
         "recipient_id" => recipient.id,
-        "n_recipients" => length(recipients)
+        "recipient_count" => recipient_count
       })
     end)
     |> Oban.insert_all()
