@@ -92,7 +92,13 @@ defmodule Keila.Mailings.SenderAdapters.SES do
     end
   end
 
-  defp put_cached_key(url, key) do
+  @doc """
+  Put the key from the given URL in an in-memory cache.
+
+  This function is public to allow testing this module.
+  """
+  @spec put_cached_key(String.t(), :public_key.public_key()) :: :ok
+  def put_cached_key(url, key) do
     if is_nil(Process.whereis(__MODULE__.Cache)) do
       Agent.start_link(fn -> %{} end, name: __MODULE__.Cache)
     end
@@ -100,7 +106,13 @@ defmodule Keila.Mailings.SenderAdapters.SES do
     Agent.update(__MODULE__.Cache, &Map.put(&1, url, key))
   end
 
-  defp extract_key(pem_file) do
+  @doc """
+  Extract the public key from a PEM file.
+
+  This function is public to allow testing this module.
+  """
+  @spec extract_key(Path.t()) :: :public_key.public_key()
+  def extract_key(pem_file) do
     pem_file
     |> :public_key.pem_decode()
     |> then(fn [{_, cert, _}] -> :public_key.pkix_decode_cert(cert, :otp) end)
