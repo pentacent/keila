@@ -40,6 +40,7 @@ defmodule KeilaWeb.SenderView do
 
   if Mix.env() == :dev do
     def sender_adapter_name("local"), do: "Local"
+    def sender_adapter_name("shared_local"), do: "Shared Local"
   end
 
   def render_sender_adapter_form(form, "smtp") do
@@ -70,5 +71,11 @@ defmodule KeilaWeb.SenderView do
 
   def render_shared_sender_adapter_form(form, "ses") do
     render("_shared_ses_config.html", form: form)
+  end
+
+  if Mix.env() == :dev do
+    def render_shared_sender_adapter_form(form, "local") do
+      render("_shared_local_config.html", form: form)
+    end
   end
 end
