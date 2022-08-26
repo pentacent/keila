@@ -31,8 +31,8 @@ config :keila, Keila.Mailer, adapter: Swoosh.Adapters.Test
 # Configure Argon2 for performance (not security)
 config :argon2_elixir, t_cost: 1, m_cost: 8
 
-# Disable Oban Queues
-config :keila, Oban, queues: false, plugins: false
+# Configure Oban for testing
+config :keila, Oban, testing: :manual
 
 # Allow scheduling campaigns at utc_now
 config :keila, Keila.Mailings, min_campaign_schedule_offset: -10
