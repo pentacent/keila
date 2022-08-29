@@ -1,5 +1,6 @@
 defmodule Keila.Mailings.Sender do
   use Keila.Schema, prefix: "ms"
+  require ExRated
 
   schema "mailings_senders" do
     field :name, :string

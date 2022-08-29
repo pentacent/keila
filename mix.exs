@@ -65,13 +65,13 @@ defmodule Keila.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:ex_doc, "~> 0.23", only: :dev, runtime: false},
       {:swoosh, "~> 1.3"},
-      {:gen_smtp, "~> 1.1"},
+      {:gen_smtp, "~> 1.2"},
       {:hackney, "~> 1.9"},
       {:hashids, "~> 2.0"},
       {:argon2_elixir, "~> 2.3"},
       {:httpoison, "~> 1.8"},
       {:nimble_csv, "~> 1.1"},
-      {:oban, "~> 2.10"},
+      {:oban, "~> 2.12"},
       {:solid, "~> 0.10.0"},
       {:earmark, "~> 1.4"},
       {:tzdata, "~> 1.1"},
@@ -79,7 +79,8 @@ defmodule Keila.MixProject do
       {:sweet_xml, "~> 0.6"},
       {:ex_aws_ses, git: "https://github.com/pentacent/ex_aws_ses"},
       {:php_serializer, "~> 2.0"},
-      {:open_api_spex, "~> 3.11"}
+      {:open_api_spex, "~> 3.11"},
+      {:ex_rated, "~> 2.1"}
     ]
   end
 

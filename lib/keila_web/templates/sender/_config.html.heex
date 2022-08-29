@@ -50,6 +50,25 @@
             <template x-if={x_if}>
                 <div class="tab-content">
                     <%= render_sender_adapter_form(fc, adapter) %>
+
+                    <div class="form-row">
+                        <%= label(fc, :rate_limit_per_second, "Rate limit per second") %>
+                        <%= with_validation(fc, :rate_limit_per_second) do %>
+                            <%= number_input(fc, :rate_limit_per_second, class: "text-black", min: 0) %>
+                        <% end %>
+                    </div>
+                    <div class="form-row">
+                        <%= label(fc, :rate_limit_per_minute, "Rate limit per minute") %>
+                        <%= with_validation(fc, :rate_limit_per_minute) do %>
+                            <%= number_input(fc, :rate_limit_per_minute, class: "text-black", min: 0) %>
+                        <% end %>
+                    </div>
+                    <div class="form-row">
+                        <%= label(fc, :rate_limit_per_hour, "Rate limit per hour") %>
+                        <%= with_validation(fc, :rate_limit_per_hour) do %>
+                            <%= number_input(fc, :rate_limit_per_hour, class: "text-black", min: 0) %>
+                        <% end %>
+                    </div>
                 </div>
             </template>
         <% end %>
