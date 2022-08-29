@@ -17,7 +17,9 @@ defmodule Keila.Files.StorageAdapters.Local do
       end
 
     filename = uuid <> extension
-    destination = Path.join(get_dir(), filename)
+    dir = get_dir()
+    File.mkdir_p!(dir)
+    destination = Path.join(dir, filename)
     File.cp!(source, destination)
 
     %{"local_filename" => filename}

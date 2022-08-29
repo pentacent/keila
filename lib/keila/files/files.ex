@@ -110,6 +110,26 @@ defmodule Keila.Files do
   end
 
   @doc """
+  Returns all Files belonging to specified Project.
+
+  This function accepts options for the`Keila.Contacts.Pagination` module:
+  - `:paginate` - `true` or Pagination options.
+
+  If `:pagination` is not `true` or a list of options, a list of all results is returned.
+  """
+  @spec get_project_files(Project.id(), [{:paginate, boolean() | Keyword.t()}]) :: [Project.t()]
+  def get_project_files(project_id, opts \\ [])
+      when is_binary(project_id) or is_integer(project_id) do
+    query = from(f in File, where: f.project_id == ^project_id)
+
+    case Keyword.get(opts, :paginate) do
+      true -> Keila.Pagination.paginate(query)
+      opts when is_list(opts) -> Keila.Pagination.paginate(query, opts)
+      _ -> Repo.all(query)
+    end
+  end
+
+  @doc """
   Deletes the file specified by its UUID.
 
   This function is idempotent and always returns `:ok`.

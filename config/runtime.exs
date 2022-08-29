@@ -171,7 +171,24 @@ if config_env() == :prod do
     """)
   end
 
-  # User content endpoint
+  # File Storage
+  user_content_dir = System.get_env("USER_CONTENT_DIR")
+
+  default_user_content_dir =
+    Application.get_env(:keila, Keila.Files.StorageAdapters.Local, []) |> Keyword.get(:dir)
+
+  if user_content_dir not in [nil, ""] do
+    config(:keila, Keila.Files.StorageAdapters.Local, dir: user_content_dir)
+  else
+    Logger.warn("""
+    You have not configured a directory for user uploads.
+    Default directory "#{default_user_content_dir}" will be used.
+
+    If want to store uploads in a different directory you can set
+    USER_CONTENT_DIR
+    """)
+  end
+
   user_content_base_url = System.get_env("USER_CONTENT_BASE_URL")
 
   if user_content_base_url not in [nil, ""] do
