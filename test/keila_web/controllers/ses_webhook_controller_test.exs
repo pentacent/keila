@@ -24,8 +24,7 @@ defmodule KeilaWeb.SESWebhookControllerTest do
     %{project: project}
   end
 
-  :ses_webhook_controller
-
+  @tag :ses_webhook_controller
   test "handle bounces from SES", %{conn: conn, project: project} do
     contact = insert!(:contact, project_id: project.id)
     campaign = insert!(:mailings_campaign, project_id: project.id)
