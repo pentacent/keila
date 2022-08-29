@@ -3,7 +3,7 @@ defmodule Keila.Pagination do
   Module for paginating Ecto Queries.
   """
 
-  defstruct [:page, :data, :count, :page_count]
+  defstruct page: 0, data: [], count: 0, page_count: 0
   @type t :: %__MODULE__{}
   @type t(type) :: %__MODULE__{data: type}
 

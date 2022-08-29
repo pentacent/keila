@@ -10,8 +10,8 @@ defmodule Keila.FilesTest do
     assert {:ok, "image/png"} = Files.MediaType.type_from_filename(@test_file)
     assert {:ok, "image/png"} = Files.MediaType.type_from_magic_number(@test_file)
 
-    assert {:ok, "image/jpg"} = Files.MediaType.type_from_filename(@test_file_jpg)
-    assert {:ok, "image/jpg"} = Files.MediaType.type_from_magic_number(@test_file_jpg)
+    assert {:ok, "image/jpeg"} = Files.MediaType.type_from_filename(@test_file_jpg)
+    assert {:ok, "image/jpeg"} = Files.MediaType.type_from_magic_number(@test_file_jpg)
   end
 
   @tag :files
@@ -31,13 +31,29 @@ defmodule Keila.FilesTest do
   end
 
   @tag :files
+  test "Get project files" do
+    project = insert!(:project)
+    project2 = insert!(:project)
+
+    for _n <- 1..10 do
+      {:ok, file} =
+        Files.store_file(project.id, @test_file, filename: "keila.png", type: "image/png")
+
+      file
+    end
+
+    assert %{count: 10} = Files.get_project_files(project.id, paginate: true)
+    assert [] == Files.get_project_files(project2.id, paginate: false)
+  end
+
+  @tag :files
   test "Media type and extension match check" do
     project = insert!(:project)
 
     assert {:error, :type_mismatch} =
              Files.store_file(project.id, @test_file,
                filename: "keila.png",
-               type: "image/jpg"
+               type: "image/jpeg"
              )
   end
 
@@ -45,7 +61,7 @@ defmodule Keila.FilesTest do
   test "Verify media type" do
     project = insert!(:project)
 
-    assert {:error, :type_mismatch} = Files.store_file(project.id, @test_file, type: "image/jpg")
+    assert {:error, :type_mismatch} = Files.store_file(project.id, @test_file, type: "image/jpeg")
   end
 
   @tag :files
