@@ -120,7 +120,7 @@ defmodule Keila.Files do
   @spec get_project_files(Project.id(), [{:paginate, boolean() | Keyword.t()}]) :: [Project.t()]
   def get_project_files(project_id, opts \\ [])
       when is_binary(project_id) or is_integer(project_id) do
-    query = from(f in File, where: f.project_id == ^project_id)
+    query = from(f in File, where: f.project_id == ^project_id, order_by: [desc: f.inserted_at])
 
     case Keyword.get(opts, :paginate) do
       true -> Keila.Pagination.paginate(query)
