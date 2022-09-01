@@ -19,7 +19,16 @@ defmodule Keila.Files.File do
   @spec creation_changeset(t(), Ecto.Changeset.data()) :: Ecto.Changeset.t(t())
   def creation_changeset(struct \\ %__MODULE__{}, params) do
     struct
-    |> cast(params, [:uuid, :filename, :type, :size, :sha256, :adapter, :adapter_data, :project_id])
+    |> cast(params, [
+      :uuid,
+      :filename,
+      :type,
+      :size,
+      :sha256,
+      :adapter,
+      :adapter_data,
+      :project_id
+    ])
     |> validate_required([:uuid, :project_id, :size, :adapter, :adapter_data])
   end
 end
