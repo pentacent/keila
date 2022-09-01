@@ -50,7 +50,7 @@ defmodule Keila.Files.StorageAdapters.Local do
   end
 
   defp get_dir() do
-    Application.get_env(:keila, __MODULE__) |> Keyword.fetch!(:dir)
+    Application.get_env(:keila, __MODULE__) |> Keyword.fetch!(:dir) |> Path.expand()
   end
 
   @doc """
