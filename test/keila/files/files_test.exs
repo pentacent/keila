@@ -28,6 +28,7 @@ defmodule Keila.FilesTest do
     assert not is_nil(url) and String.starts_with?(url, "http")
 
     assert :ok == Files.delete_file(file.uuid)
+    assert nil == Files.get_file(file.uuid)
   end
 
   @tag :files
