@@ -134,15 +134,32 @@ defmodule Keila.Files do
 
   This function is idempotent and always returns `:ok`.
   """
-  @spec delete_file(File.id()) :: :ok
+  @spec delete_file(File.id()) :: :ok | {:error, term()}
   def delete_file(uuid) do
-    case get_file(uuid) do
-      nil ->
-        :ok
+    with file = %File{} <- get_file(uuid),
+         adapter <- get_adapter(file.adapter),
+         :ok <- adapter.delete(file) do
+      Repo.delete_all(from(f in File, where: f.uuid == ^uuid))
+      :ok
+    else
+      _ -> :ok
+    end
+  end
 
-      file ->
-        adapter = get_adapter(file.adapter)
-        adapter.delete(file)
+  @doc """
+  Deletes the file specified by its UUID from a given project.
+
+  This function is idempotent and always returns `:ok`.
+  """
+  @spec delete_project_file(Project.id(), File.id()) :: :ok | {:error, term()}
+  def delete_project_file(project_id, uuid) do
+    with file = %File{} <- get_project_files(project_id, uuid),
+         adapter <- get_adapter(file.adapter),
+         :ok <- adapter.delete(file) do
+      Repo.delete_all(from(f in File, where: f.uuid == ^uuid))
+      :ok
+    else
+      _ -> :ok
     end
   end
 
