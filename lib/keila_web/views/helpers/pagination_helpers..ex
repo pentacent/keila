@@ -44,12 +44,14 @@ defmodule KeilaWeb.PaginationHelpers do
     """
   end
 
-  defp pagination_button(current_page, page, [phx_click: event_name], content) do
+  defp pagination_button(current_page, page, opts, content) do
+    event_name = Keyword.fetch!(opts, :phx_click)
+    event_target = Keyword.get(opts, :phx_target)
     class = if page == current_page, do: "button bg-green-600 text-white", else: "button"
     assigns = %{content: content || to_string(page + 1)}
 
     ~H"""
-    <a phx-click={ event_name } phx-value-page={ page } class={ class }><%= @content %></a>
+    <a phx-click={ event_name } phx-target={ event_target } phx-value-page={ page } class={ class }><%= @content %></a>
     """
   end
 end
