@@ -1,6 +1,6 @@
 <div
     id="wysiwyg-dialogs"
-    x-data="{activeDialog: null, image: {}, link: {}, button: {}, liquid: {}}"
+    x-data="{activeDialog: null, image: {}, imageTab: 'uploads', link: {}, button: {}, liquid: {}}"
     x-on:x-confirm.stop="activeDialog = null"
     x-on:x-cancel.stop="activeDialog = null"
 >
@@ -67,29 +67,41 @@
                 x-on:x-show="activeDialog = 'image'; image = $event.detail; $nextTick(() => $event.target.querySelector('input').focus())"
                 x-on:x-confirm="$dispatch('update-image', image)"
                 x-on:x-cancel="$dispatch('update-image', { cancel: true} )"
+                x-on:x-file-selected.stop="image.src = $event.detail.url; imageTab = 'url'"
                 @keydown.enter.prevent="$dispatch('x-confirm')"
                 @keydown.esc.prevent="$dispatch('x-cancel')"
                 @click.away="$dispatch('x-cancel')"
             >
                 <h2 class="text-3xl"><%= gettext("Insert Image") %></h2>
                 <br>
-                <div class="grid gap-4">
-                    <div class="flex flex-col">
-                        <label class="font-bold"><%= gettext("Image URL") %></label>
-                        <p class="text-sm italic mb-2">
-                            <%= gettext("For best results, choose an image that is 600px wide.") %>
-                        </p>
-                        <input x-model="image.src" type="text" class="bg-white hover:bg-green-100 text-black">
+                    <div class="tabs" id="tabs">
+                        <a href="#" class="tab-label" :class="{ 'active': imageTab === 'uploads' }" @click.prevent="imageTab = 'uploads'">
+                            <%= gettext("Uploads") %>
+                        </a>
+                        <a href="#" class="tab-label" :class="{ 'active': imageTab === 'url' }" @click.prevent="imageTab = 'url'">
+                            <%= gettext("URL") %>
+                        </a>
+                        <div class="tab-content" x-show="imageTab === 'uploads'">
+                            <.live_component module={KeilaWeb.FileManagerLiveComponent} id="foo" current_project_id={@current_project.id} />
+                        </div>
+                        <div class="tab-content" x-show="imageTab === 'url'">
+                            <div class="flex flex-col">
+                                <label class="font-bold"><%= gettext("Image URL") %></label>
+                                <p class="text-sm italic mb-2">
+                                    <%= gettext("For best results, choose an image that is 600px wide.") %>
+                                </p>
+                                <input x-model="image.src" type="text" class="bg-white hover:bg-green-100 text-black">
+                            </div>
+                            <div class="flex flex-col">
+                                <label class="font-bold"><%= gettext("Alt Text") %></label>
+                                <input x-model="image.alt" type="text" class="bg-white hover:bg-green-100 text-black">
+                            </div>
+                            <div class="flex flex-col">
+                                <label class="font-bold"><%= gettext("Title") %></label>
+                                <input x-model="image.title" type="text" class="bg-white hover:bg-green-100 text-black">
+                            </div>
+                        </div>
                     </div>
-                    <div class="flex flex-col">
-                        <label class="font-bold"><%= gettext("Alt Text") %></label>
-                        <input x-model="image.alt" type="text" class="bg-white hover:bg-green-100 text-black">
-                    </div>
-                    <div class="flex flex-col">
-                        <label class="font-bold"><%= gettext("Title") %></label>
-                        <input x-model="image.title" type="text" class="bg-white hover:bg-green-100 text-black">
-                    </div>
-                </div>
                 <br>
                 <div class="flex justify-end gap-8">
                     <button
