@@ -5,8 +5,11 @@ defmodule KeilaWeb.LocalFileController do
   def serve(conn, %{"filename" => filename}) do
     if serve?() do
       with {:ok, path} <- Keila.Files.StorageAdapters.Local.get_path(filename),
-           true <- File.exists?(path) do
-        send_file(conn, 200, path)
+           true <- File.exists?(path),
+           {:ok, content_type} <- Keila.Files.MediaType.type_from_filename(filename) do
+        conn
+        |> put_resp_content_type(content_type)
+        |> send_file(200, path)
       else
         _ -> resp(conn, 404, "File not found")
       end
