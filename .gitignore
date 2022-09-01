@@ -35,3 +35,11 @@ npm-debug.log
 
 # macOS files
 .DS_Store
+
+# Default upload directory
+/uploads/
+
+# Local development environment
+ops/k8s
+*.env
+.tool-versions
