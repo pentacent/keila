@@ -26,7 +26,7 @@ defmodule KeilaWeb.FileManagerLiveComponent do
   end
 
   @impl true
-  def handle_event("validate-upload", x, socket) do
+  def handle_event("validate-upload", _, socket) do
     {:noreply, socket}
   end
 
