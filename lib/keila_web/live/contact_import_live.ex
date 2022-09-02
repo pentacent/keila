@@ -47,7 +47,7 @@ defmodule KeilaWeb.ContactImportLive do
             )
           end)
 
-        {csv_filename, task}
+        {:ok, {csv_filename, task}}
       end)
 
     socket =
