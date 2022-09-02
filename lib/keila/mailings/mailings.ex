@@ -32,7 +32,7 @@ defmodule Keila.Mailings do
   @doc """
   Returns all Senders belonging to specified Project.
   """
-  @spec get_project_senders(Project.id()) :: [Project.t()]
+  @spec get_project_senders(Project.id()) :: [Sender.t()]
   def get_project_senders(project_id) when is_binary(project_id) or is_integer(project_id) do
     from(s in Sender, where: s.project_id == ^project_id, preload: :shared_sender)
     |> Repo.all()
