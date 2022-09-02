@@ -94,7 +94,17 @@ export function buildDefaultMenu() {
 
     const buttonImage = new MenuButton({
         exec: editorView => {
-            document.querySelector("[data-dialog-for=image]").dispatchEvent(new CustomEvent("x-show", { detail: {} }))
+            let detail = {}
+
+            const { _$from, _to, node } = editorView.state.selection
+            if (node && node.type === schema.nodes.image) {
+                detail.src = node.attrs.src
+                detail.alt = node.attrs.alt
+                detail.title = node.attrs.title
+                detail.tab = 'url'
+            }
+
+            document.querySelector("[data-dialog-for=image]").dispatchEvent(new CustomEvent("x-show", { detail }))
             window.addEventListener("update-image", e => {
                 const image = e.detail
                 if (!image.cancel && image.src) {

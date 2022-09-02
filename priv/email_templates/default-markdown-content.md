@@ -8,7 +8,7 @@ This is a Markdown campaign, so your recipients will get this message as text an
 
 #### [Awesome Button](https://keila.io)
 
-![Image title](https://source.unsplash.com/ijnw4eIUras/600x200)
+![Alt text](https://source.unsplash.com/ijnw4eIUras/600x200 "Image Title")
 
 *Images should be 600px wide.*
 
