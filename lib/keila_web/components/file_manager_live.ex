@@ -11,9 +11,8 @@ defmodule KeilaWeb.FileManagerLiveComponent do
   end
 
   @impl true
+  @spec update(any, any) :: none
   def update(assigns, socket) do
-    IO.inspect(assigns)
-
     {:ok,
      socket
      |> assign(assigns)
@@ -32,7 +31,6 @@ defmodule KeilaWeb.FileManagerLiveComponent do
 
   def handle_event("upload", _, socket) do
     consume_uploaded_entries(socket, :files, fn %{path: path}, entry ->
-      IO.inspect(entry)
       meta = [filename: entry.client_name, type: entry.client_type]
 
       Keila.Files.store_file(socket.assigns.current_project_id, path, meta)

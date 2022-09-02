@@ -1,5 +1,5 @@
 defmodule Keila.MailingsCampaignTest do
-  use Keila.DataCase, async: false
+  use Keila.DataCase, async: true
   use Oban.Testing, repo: Keila.Repo
 
   alias Keila.{Projects, Mailings, Contacts}
