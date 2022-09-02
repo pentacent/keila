@@ -64,7 +64,7 @@
                 data-dialog-for="image"
                 class="p-8"
                 x-show="activeDialog == 'image'"
-                x-on:x-show="activeDialog = 'image'; image = $event.detail; $nextTick(() => $event.target.querySelector('input').focus())"
+                x-on:x-show="activeDialog = 'image'; image = $event.detail; imageTab = ($event.detail.tab || 'uploads'); $nextTick(() => $event.target.querySelector(`[data-tab=${imageTab}] input:not(.hidden), [data-tab=${imageTab}] button:not(.hidden)`).focus())"
                 x-on:x-confirm="$dispatch('update-image', image)"
                 x-on:x-cancel="$dispatch('update-image', { cancel: true} )"
                 x-on:x-file-selected.stop="image.src = $event.detail.url; imageTab = 'url'"
@@ -81,10 +81,10 @@
                         <a href="#" class="tab-label" :class="{ 'active': imageTab === 'url' }" @click.prevent="imageTab = 'url'">
                             <%= gettext("URL") %>
                         </a>
-                        <div class="tab-content" x-show="imageTab === 'uploads'">
+                        <div class="tab-content" data-tab="uploads" x-show="imageTab === 'uploads'">
                             <.live_component module={KeilaWeb.FileManagerLiveComponent} id="foo" current_project_id={@current_project.id} />
                         </div>
-                        <div class="tab-content" x-show="imageTab === 'url'">
+                        <div class="tab-content" data-tab="url" x-show="imageTab === 'url'">
                             <div class="flex flex-col">
                                 <label class="font-bold"><%= gettext("Image URL") %></label>
                                 <p class="text-sm italic mb-2">

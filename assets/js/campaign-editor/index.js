@@ -49,7 +49,12 @@ class MarkdownEditor {
                     inputRules,
                     syncPlugin
                 ]
-            })
+            }),
+            handleDoubleClickOn(view, _pos, node) {
+                if (node.type === schema.nodes.image) {
+                    view.dom.parentNode.parentNode.querySelector(`.wysiwyg--menu [data-action=img]`).dispatchEvent(new Event("mousedown"))
+                }
+            },
         })
     }
 

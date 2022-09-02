@@ -6,7 +6,7 @@
     <form phx-submit="upload" phx-change="validate-upload" phx-target={@myself}>
 
         <% class = "button flex gap-2 #{ if Enum.empty?(@uploads.files.entries), do: "button--cta button--large" }" %>
-        <label class={class}>
+        <label><button class={class}>
             <%= render_icon(:upload) %>
             <%= if Enum.empty?(@uploads.files.entries) do %>
                 <%= gettext("Select a file") %>
@@ -19,7 +19,7 @@
                     </p>
                 <% end %>
             </div>
-        </label>
+        </button></label>
         <%= if not Enum.empty?(@uploads.files.entries) do %>
             <br>
             <button class="button button--cta button--large mt-4" type="submit">
