@@ -216,7 +216,6 @@ defmodule Keila.MailingsCampaignTest do
     assert %{sent_at: ^sent_at} = Mailings.get_campaign(campaign.id)
   end
 
-
   @tag :mailings_campaign
   @tag :skip
   # This test sometimes crashes the test suite due some conflict between the
