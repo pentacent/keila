@@ -81,4 +81,24 @@ defmodule Keila.Mailings.BuilderTest do
     email = Mailings.Builder.build(campaign, contact, %{})
     assert Enum.find(email.headers, fn {name, _} -> name == "X-Keila-Invalid" end)
   end
+
+  @tag :mailings_builder
+  test "Liquid in subject line is parsed" do
+    contact = build(:contact, id: Keila.Contacts.Contact.Id.cast(0) |> elem(1))
+    sender = build(:mailings_sender)
+
+    campaign = %Mailings.Campaign{
+      project_id: Keila.Projects.Project.Id.cast(0) |> elem(1),
+      subject: "Hey {{ contact.first_name}}, are you ready for {{ campaign.data.foo }}?",
+      sender: sender,
+      text_body: "",
+      settings: %Mailings.Campaign.Settings{
+        type: :markdown
+      },
+      data: %{"foo" => "bar"}
+    }
+
+    assert email = %Swoosh.Email{} = Mailings.Builder.build(campaign, contact, %{})
+    assert email.subject == "Hey #{contact.first_name}, are you ready for bar?"
+  end
 end
