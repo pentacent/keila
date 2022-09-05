@@ -43,10 +43,18 @@ defmodule Keila.AuthTest.Registration do
 
   @tag :auth
   test "Emails have to be unique" do
-    user = insert!(:user, %{"email" => "foo@bar.com"})
+    user = insert!(:user)
 
     assert {:error, %Ecto.Changeset{}} =
              Auth.create_user(%{"email" => user.email, "password" => @password})
+  end
+
+  @tag :auth
+  test "Emails are case-insensitive" do
+    user = insert!(:user)
+
+    assert {:error, %Ecto.Changeset{}} =
+             Auth.create_user(%{"email" => String.upcase(user.email), "password" => @password})
   end
 
   @tag :auth

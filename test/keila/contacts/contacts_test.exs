@@ -16,6 +16,23 @@ defmodule Keila.ContactsTest do
   end
 
   @tag :contacts
+  test "Contact emails are case-insensitive", %{project: project} do
+    assert {:ok, contact1} = Contacts.create_contact(project.id, params(:contact))
+
+    assert {:error, _} =
+             Contacts.create_contact(
+               project.id,
+               params(:contact, email: String.upcase(contact1.email))
+             )
+
+    assert {:error, _} =
+             Contacts.create_contact(
+               project.id,
+               params(:contact, email: String.downcase(contact1.email))
+             )
+  end
+
+  @tag :contacts
   test "Create contact with dynamic cast/validation options from form", %{project: project} do
     params = %{email: email, first_name: first_name} = build(:contact) |> Map.from_struct()
 
