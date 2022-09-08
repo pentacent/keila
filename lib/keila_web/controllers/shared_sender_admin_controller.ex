@@ -1,6 +1,6 @@
 defmodule KeilaWeb.SharedSenderAdminController do
   use KeilaWeb, :controller
-  alias Keila.{Mailings, Mailings.SharedSender, Mailings.Sender.Config}
+  alias Keila.{Mailings, Mailings.SharedSender, Mailings.Sender.Config, Mailings.SenderAdapters}
   import Ecto.Changeset
 
   plug :authorize
@@ -28,6 +28,7 @@ defmodule KeilaWeb.SharedSenderAdminController do
 
     conn
     |> assign(:changeset, changeset)
+    |> put_sender_adapters()
     |> render("edit.html")
   end
 
@@ -42,6 +43,7 @@ defmodule KeilaWeb.SharedSenderAdminController do
         conn
         |> put_status(400)
         |> assign(:changeset, changeset)
+        |> put_sender_adapters()
         |> render("edit.html")
     end
   end
@@ -52,6 +54,7 @@ defmodule KeilaWeb.SharedSenderAdminController do
 
     conn
     |> assign(:changeset, changeset)
+    |> put_sender_adapters()
     |> render("edit.html")
   end
 
@@ -64,6 +67,7 @@ defmodule KeilaWeb.SharedSenderAdminController do
       {:error, changeset} ->
         conn
         |> assign(:changeset, changeset)
+        |> put_sender_adapters()
         |> render("edit.html")
     end
   end
@@ -99,6 +103,24 @@ defmodule KeilaWeb.SharedSenderAdminController do
     |> cast(params, [:delete_confirmation])
     |> validate_required([:delete_confirmation])
     |> validate_inclusion(:delete_confirmation, [shared_sender.name])
+  end
+
+  defp put_sender_adapters(conn) do
+    sender_adapters =
+      [
+        if(shared_adapter_enabled?(SenderAdapters.Shared.SES), do: SenderAdapters.SES.name()),
+        if(shared_adapter_enabled?(SenderAdapters.Shared.Local), do: SenderAdapters.Local.name())
+      ]
+      |> Enum.filter(& &1)
+
+    assign(conn, :sender_adapters, sender_adapters)
+  end
+
+  defp shared_adapter_enabled?(adapter) do
+    shared_adapters =
+      Application.fetch_env!(:keila, SenderAdapters) |> Keyword.fetch!(:shared_adapters)
+
+    adapter in shared_adapters
   end
 
   defp authorize(conn = %{assigns: %{is_admin?: true}}, _),
