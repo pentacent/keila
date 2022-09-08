@@ -561,7 +561,8 @@ defmodule Keila.Auth do
     create_token(%{
       scope: "api",
       user_id: user_id,
-      data: %{"project_id" => project_id, "name" => name}
+      data: %{"project_id" => project_id, "name" => name},
+      expires_at: ~U[9999-12-31 23:59:00Z]
     })
   end
 
