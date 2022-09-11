@@ -34,7 +34,7 @@
             <% end %>
         </div>
 
-        <%= render(KeilaWeb.SenderView, "_config.html", form: f, sender_adapters: ["ses", "local"]) %>
+        <%= render(KeilaWeb.SenderView, "_config.html", form: f, sender_adapters: @sender_adapters) %>
 
         <div class="flex gap-4 mt-4">
             
