@@ -113,7 +113,7 @@
     <% end %>
 </div>
 
-<%= if @stats.sent_count > 0 do %>
+<%= if @stats.sent_count > 0 && !@campaign.settings.do_not_track do %>
     <div class="container mt-8">
         <h3 class="font-light text-2xl"><%= gettext("Statistics") %></h3>
         <%= gettext(
@@ -150,5 +150,17 @@
                 </tr>
             <% end %>
         </table>
+    </div>
+<% end %>
+
+<%= if @stats.sent_count > 0 && @campaign.settings.do_not_track do %>
+    <div class="container mt-8">
+        <div class="flex gap-4 items-center py-4 sm:py-8">
+            <span class="inline-flex h-12 w-12"><%= render_icon(:eye_off) %></span>
+            <div class="max-w-xl">
+                <h3 class="font-light text-2xl"><%= gettext("Do-not-track Campaign") %></h3>
+                <%= gettext("You have chosen not to track clicks and opens for this campaign. Thanks for respecting the privacy of your recipients!", count: @stats.sent_count) %>
+            </div>
+        </div>
     </div>
 <% end %>

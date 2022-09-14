@@ -53,46 +53,53 @@
             <% end %>
         </div>
 
-            <div class="form-row">
+        <div class="form-row-checkbox">
+            <%= inputs_for(f, :settings, fn fs -> %>
+                <%= checkbox(fs, :do_not_track, checked_value: "false", unchecked_value: "true") %>
+                <%= label(fs, :do_not_track, gettext("Enable click/open tracking")) %>
+            <% end) %>
+        </div>
+
+        <div class="form-row">
+            <%= inputs_for(f, :settings, fn fs -> %>
+                <%= label(fs, :type, gettext("Campaign Type")) %>
+                <%= select(fs, :type, [
+                    {gettext("Markdown"), "markdown"},
+                    {gettext("Text only"), "text"}
+                ], [x_model: "type"]) %>
+            <% end) %>
+        </div>
+
+        <template x-if="type === 'markdown'">
+            <div class="form-row-checkbox">
                 <%= inputs_for(f, :settings, fn fs -> %>
-                    <%= label(fs, :type, gettext("Campaign Type")) %>
-                    <%= select(fs, :type, [
-                        {gettext("Markdown"), "markdown"},
-                        {gettext("Text only"), "text"}
-                    ], [x_model: "type"]) %>
+                    <%= checkbox(fs, :enable_wysiwyg) %>
+                    <%= label(fs, :enable_wysiwyg, gettext("Enable rich text editor")) %>
                 <% end) %>
             </div>
+        </template>
+        <template x-if="type === 'markdown'">
+            <div class="form-row">
+                <%= label(f, :template_id, gettext("Template")) %>
 
-            <template x-if="type === 'markdown'">
-                <div class="form-row-checkbox">
-                    <%= inputs_for(f, :settings, fn fs -> %>
-                        <%= checkbox(fs, :enable_wysiwyg) %>
-                        <%= label(fs, :enable_wysiwyg, gettext("Enable rich text editor")) %>
-                    <% end) %>
-                </div>
-            </template>
-            <template x-if="type === 'markdown'">
-                <div class="form-row">
-                    <%= label(f, :template_id, gettext("Template")) %>
-
-                    <%= with_validation(f, :template_id) do %>
-                        <%= select(f, :template_id, [{gettext("Default"), nil} | Enum.map(@templates, &{&1.name, &1.id})], class: "text-black") %>
-                    <% end %>
-                </div>
-            </template>
-
-            <div class="form-row md:col-span-full">
-                <%= label(f, :segment_id, gettext("Campaign data")) %>
-                <span class="block text-sm mb-2"><%= gettext("You can add any JSON object as custom data to your campaign.") %></span>
-                <%= with_validation(f, :data) do %>
-                    <%= case input_value(f, :data) do %>
-                    <% data when is_map(data) -> %>
-                        <%= textarea(f, :data, value: Jason.encode!(data), class: "text-white bg-gray-900", rows: 5) %>
-                    <% _other ->  %>
-                        <%= textarea(f, :data, class: "text-white bg-gray-900", rows: 5) %>
-                    <% end %>
+                <%= with_validation(f, :template_id) do %>
+                    <%= select(f, :template_id, [{gettext("Default"), nil} | Enum.map(@templates, &{&1.name, &1.id})], class: "text-black") %>
                 <% end %>
             </div>
+        </template>
+
+        <div class="form-row md:col-span-full">
+            <%= label(f, :segment_id, gettext("Campaign data")) %>
+            <span class="block text-sm mb-2"><%= gettext("You can add any JSON object as custom data to your campaign.") %></span>
+            <%= with_validation(f, :data) do %>
+                <%= case input_value(f, :data) do %>
+                <% data when is_map(data) -> %>
+                    <%= textarea(f, :data, value: Jason.encode!(data), class: "text-white bg-gray-900", rows: 5) %>
+                <% _other ->  %>
+                    <%= textarea(f, :data, class: "text-white bg-gray-900", rows: 5) %>
+                <% end %>
+            <% end %>
+        </div>
 
         <div class="flex">
             <button class="button button--cta button--large">
