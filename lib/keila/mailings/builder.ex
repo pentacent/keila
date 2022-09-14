@@ -228,7 +228,7 @@ defmodule Keila.Mailings.Builder do
 
   # TODO add campaign settings for disabling/configuring tracking
   defp maybe_put_tracking(email, campaign, recipient) do
-    if email.html_body && recipient do
+    if email.html_body && recipient && !campaign.settings.do_not_track do
       put_tracking(email, campaign, recipient)
     else
       email

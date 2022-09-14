@@ -5,10 +5,11 @@ defmodule Keila.Mailings.Campaign.Settings do
   embedded_schema do
     field(:type, Ecto.Enum, values: [:text, :markdown])
     field(:enable_wysiwyg, :boolean, default: true)
+    field(:do_not_track, :boolean, default: false)
   end
 
   def changeset(struct \\ %__MODULE__{}, params) do
     struct
-    |> cast(params, [:type, :enable_wysiwyg])
+    |> cast(params, [:type, :enable_wysiwyg, :do_not_track])
   end
 end

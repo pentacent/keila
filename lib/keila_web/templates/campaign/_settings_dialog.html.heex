@@ -89,6 +89,13 @@
                     <% end %>
                 </div>
 
+                <div class="form-row-checkbox">
+                    <%= inputs_for(f, :settings, fn fs -> %>
+                        <%= checkbox(fs, :do_not_track, checked_value: "false", unchecked_value: "true") %>
+                        <%= label(fs, :do_not_track, gettext("Enable click/open tracking")) %>
+                    <% end) %>
+                </div>
+
                 <div class="form-row md:col-span-full">
                     <%= label(f, :segment_id, gettext("Campaign data")) %>
                     <span class="block text-sm mb-2"><%= gettext("You can add any JSON object as custom data to your campaign.") %></span>
