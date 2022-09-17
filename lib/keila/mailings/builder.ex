@@ -107,7 +107,7 @@ defmodule Keila.Mailings.Builder do
       {:error, error} ->
         email
         |> header("X-Keila-Invalid", error)
-        |> subject(email)
+        |> subject(subject)
     end
   end
 
