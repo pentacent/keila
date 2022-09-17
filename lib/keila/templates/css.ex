@@ -146,7 +146,7 @@ defmodule Keila.Templates.Css do
 
   @doc """
   Returns the value of the given `property` for the given `selector`in the
-  provided  `styles`. Returns `nil` if the property could not be cound.
+  provided  `styles`. Returns `nil` if the property could not be count.
   """
   @spec get_value(t(), String.t(), String.t()) :: String.t() | nil
   def get_value(styles, selector, property) do

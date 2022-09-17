@@ -382,7 +382,7 @@ defmodule Keila.Auth do
   end
 
   @doc """
-  Looks up given `auth.activate` token and activates assocaited user.
+  Looks up given `auth.activate` token and activates associated user.
 
   Returns `{:ok, user}` if successful; `:error` otherwise.
   """
