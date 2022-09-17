@@ -24,7 +24,7 @@ defmodule Keila.Mailings.Builder do
   `contact` is automatically merged into assigns. If no contact is provided
   (e.g. when building a preview), a default contact is injected.
 
-  The Liquid tempplating language can be used within email bodies.
+  The Liquid tempplating language can be used within email bodies and subjects.
 
   Adds `X-Keila-Invalid` header if there was an error creating the email.
   Such emails should not be delivered.
@@ -51,7 +51,7 @@ defmodule Keila.Mailings.Builder do
       |> Map.put("unsubscribe_link", unsubscribe_link)
 
     Email.new()
-    |> subject(campaign.subject)
+    |> put_subject(campaign.subject, assigns)
     |> put_recipient(contact)
     |> put_sender(campaign)
     |> maybe_put_reply_to(campaign)
@@ -97,6 +97,18 @@ defmodule Keila.Mailings.Builder do
 
   defp process_assigns(value) when is_list(value) do
     Enum.map(value, &process_assigns/1)
+  end
+
+  defp put_subject(email, subject, assigns) do
+    case render_liquid(subject || "", assigns) do
+      {:ok, subject} ->
+        subject(email, subject)
+
+      {:error, error} ->
+        email
+        |> header("X-Keila-Invalid", error)
+        |> subject(subject)
+    end
   end
 
   defp put_recipient(email, contact) do
