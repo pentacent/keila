@@ -235,7 +235,7 @@ defmodule Keila.MailingsCampaignTest do
 
     assert {:error, _changeset} =
              Mailings.schedule_campaign(campaign_too_late.id, %{
-               # scheduling before configured theshold
+               # scheduling before configured threshold
                "scheduled_for" => DateTime.utc_now() |> DateTime.add(-3600, :second)
              })
 

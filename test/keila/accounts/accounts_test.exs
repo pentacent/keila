@@ -38,7 +38,7 @@ defmodule Keila.AccountsTest do
   end
 
   @tag :accounts
-  test "get acount from project", %{account_group: group} do
+  test "get account from project", %{account_group: group} do
     user = insert!(:user)
     %{id: account_id} = insert!(:account, group: group)
 

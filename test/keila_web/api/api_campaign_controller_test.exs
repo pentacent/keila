@@ -118,7 +118,7 @@ defmodule KeilaWeb.ApiCampaignControllerTest do
 
   describe "POST /api/v1/campaigns/:id/actions/schedule" do
     @tag :api_campaign_controller
-    test "returns updated campagin", %{authorized_conn: conn, project: project} do
+    test "returns updated campaign", %{authorized_conn: conn, project: project} do
       sender = insert!(:mailings_sender, project_id: project.id)
       %{id: id} = insert!(:mailings_campaign, project_id: project.id, sender_id: sender.id)
       insert_n!(:contact, 50, fn _n -> %{project_id: project.id} end)
