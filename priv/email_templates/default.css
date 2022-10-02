@@ -4,21 +4,25 @@ a {
 }
 
 h1 {
-    margin: 0 0 20px 0;
+    margin: 0 0 10px 0;
     color: #4b5563;
     font-family: inherit;
     font-style: normal;
     font-weight: bold;
     text-decoration: none;
+    font-size: 30px;
+    line-height: 36px
 }
 
 h2 {
-    margin: 0 0 20px 0;
+    margin: 0 0 15px 0;
     color: #4b5563;
     font-family: inherit;
     font-style: normal;
     font-weight: bold;
     text-decoration: none;
+    font-size: 25px;
+    line-height: 30px
 }
 
 h3 {
@@ -28,6 +32,8 @@ h3 {
     font-style: normal;
     font-weight: bold;
     text-decoration: none;
+    font-size: 18px;
+    line-height: 22px
 }
 
 ul {
