@@ -33,7 +33,7 @@ defmodule Keila.Files.StorageAdapters.Local do
 
   @impl true
   def get_url(file) do
-    serve? = Application.get_env(:keila, __MODULE__) |> Keyword.fetch!(:dir)
+    serve? = Application.get_env(:keila, __MODULE__) |> Keyword.fetch!(:serve)
 
     if serve? do
       KeilaWeb.Router.Helpers.local_file_url(
