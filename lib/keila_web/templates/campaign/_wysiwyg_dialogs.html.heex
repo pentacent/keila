@@ -64,7 +64,7 @@
                 data-dialog-for="image"
                 class="p-8"
                 x-show="activeDialog == 'image'"
-                x-on:x-show="activeDialog = 'image'; image = $event.detail; imageTab = ($event.detail.tab || 'uploads'); $nextTick(() => $event.target.querySelector(`[data-tab=${imageTab}] input:not(.hidden), [data-tab=${imageTab}] button:not(.hidden)`).focus())"
+                x-on:x-show="activeDialog = 'image'; image = $event.detail; imageTab = ($event.detail.tab || 'uploads'); $nextTick(() => {const focusEl = $event.target.querySelector(`[data-tab=${imageTab}] input:not(.hidden), [data-tab=${imageTab}] button:not(.hidden)`); if (focusEl) {focusEl.focus()}})"
                 x-on:x-confirm="$dispatch('update-image', image)"
                 x-on:x-cancel="$dispatch('update-image', { cancel: true} )"
                 x-on:x-file-selected.stop="image.src = $event.detail.url; imageTab = 'url'"
