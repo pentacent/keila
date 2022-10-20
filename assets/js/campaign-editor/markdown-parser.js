@@ -2,8 +2,12 @@ import { MarkdownParser } from "prosemirror-markdown"
 import { schema } from "./markdown-schema"
 import markdownit from "markdown-it"
 import { markdownItLiquid } from "./markdown-it-liquid"
+import { markdownItLinkWithLiquid } from "./markdown-it/link-with-liquid"
 
-const md = markdownit("commonmark", { html: false }).use(markdownItLiquid)
+const md =
+  markdownit("commonmark", { html: false })
+  .use(markdownItLiquid)
+  .use(markdownItLinkWithLiquid)
 
 // Markdown parser based on Prosemirror’s defaultMarkdownParser
 // Extended with Liquid tag
