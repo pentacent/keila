@@ -145,6 +145,13 @@ if config_env() == :prod do
   url_schema = System.get_env("URL_SCHEMA")
   url_path = System.get_env("URL_PATH")
 
+  url_port =
+    cond do
+      url_port not in [nil, ""] -> url_port
+      url_schema == "https" -> 443
+      true -> System.get_env("PORT") |> maybe_to_int.() || 4000
+    end
+
   url_schema =
     cond do
       url_schema not in [nil, ""] -> url_schema
@@ -165,7 +172,7 @@ if config_env() == :prod do
 
     Use the following environment variables:
     - URL_HOST
-    - URL_PORT (defaults to 80)
+    - URL_PORT (defaults to PORT, or to 443 if URL_SCHEMA=https)
     - URL_SCHEMA (defaults to "https" for port 443, otherwise to "http")
     - URL_PATH (defaults to "/")
     """)
