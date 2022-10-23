@@ -2,6 +2,32 @@
 
 ## Unreleased
 
+## Version 0.10.0
+
+Image Uploads, Rate Limits, Do-not-track Campaigns 🖼️
+
+### Added
+- Image Uploads
+- Do-not-track option for campaigns
+- Liquid templating support in campaign subjects
+- First interface translation added: German
+- Rate limits for Senders and Shared Senders (thanks @gbottari & @panoramix360!)
+- Allow configuring `FROM` email address for system emails
+- Shared local sender for testing/development
+- Improved styling: New spacer block and additional styling for signatures
+- Configurable FROM email address for system emails
+
+### Changed
+- Updated LiveView to 0.17
+- Images in the WYSIWYG editor can now be modified on double-click
+- Easier configuration of public-facing Keila URLs
+
+### Fixed
+- API keys don’t expire anymore
+- Fixed some typos (thanks @kianmeng!)
+- Liquid tags can be used as link targets now
+
+
 ## Version 0.9.0
 
 Campaign Data, Improved WYSIWYG editor 💽
