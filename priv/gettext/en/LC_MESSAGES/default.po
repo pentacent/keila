@@ -2100,7 +2100,7 @@ msgstr ""
 msgid "Enable click/open tracking"
 msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 #: lib/keila_web/templates/account/edit.html.heex:181
 msgid "Here you can change the language for the Keila interface."
 msgstr ""
@@ -2110,7 +2110,7 @@ msgstr ""
 msgid "Margin"
 msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 #: lib/keila_web/templates/template/clone.html.heex:19
 msgid "My template name"
 msgstr ""
@@ -2130,7 +2130,7 @@ msgstr ""
 msgid "Opacity"
 msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 #: lib/keila_web/templates/error/404.html.heex:14
 msgid "Sign in"
 msgstr ""
@@ -2176,7 +2176,7 @@ msgstr ""
 msgid "Visit the docs"
 msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 #: lib/keila_web/templates/api_key/_empty_state.html.heex:10
 msgid "With API keys, you can use the Keila API to manage campaigns\nand contacts programmatically.\n"
 msgstr ""

@@ -12,14 +12,14 @@ msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
+"Last-Translator: \n"
 "Language-Team: \n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0\n"
-"Last-Translator: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language: de\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #, elixir-format
 #: lib/keila_web/templates/account/edit.html.heex:58
@@ -2138,192 +2138,195 @@ msgstr "Template"
 #, elixir-format
 #: lib/keila_web/templates/account/edit.html.heex:178
 msgid "Change Language"
-msgstr ""
+msgstr "Sprache ändern"
 
 #, elixir-format
 #: lib/keila_web/templates/account/edit.html.heex:184
 msgid "Language"
-msgstr ""
+msgstr "Sprache"
 
 #, elixir-format
 #: lib/keila_web/templates/account/edit.html.heex:191
 msgid "Update language settings"
-msgstr ""
+msgstr "Spracheinstellungen ändern"
 
 #, elixir-format
 #: lib/keila_web/views/template_view.ex:46
 msgid "Border color"
-msgstr ""
+msgstr "Linienfarbe"
 
 #, elixir-format
 #: lib/keila_web/views/template_view.ex:45
 msgid "Border style"
-msgstr ""
+msgstr "Linienstil"
 
 #, elixir-format
 #: lib/keila_web/templates/campaign/stats_live.html.heex:161
 msgid "Do-not-track Campaign"
-msgstr ""
+msgstr "Kampagne ohne Tracking"
 
 #, elixir-format
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:95
 #: lib/keila_web/templates/campaign/new.html.heex:59
 msgid "Enable click/open tracking"
-msgstr ""
+msgstr "Klick-Tracking aktivieren"
 
-#, elixir-format, fuzzy
+#, elixir-format
 #: lib/keila_web/templates/account/edit.html.heex:181
 msgid "Here you can change the language for the Keila interface."
-msgstr ""
+msgstr "Hier kannst du die Sprache für die Keila-Oberfläche ändern."
 
 #, elixir-format
 #: lib/keila_web/views/template_view.ex:48
 msgid "Margin"
-msgstr ""
+msgstr "Abstand"
 
-#, elixir-format, fuzzy
+#, elixir-format
 #: lib/keila_web/templates/template/clone.html.heex:19
 msgid "My template name"
-msgstr "Mein neues Template"
+msgstr "Mein Template-Name"
 
 #, elixir-format
 #: lib/keila_web/templates/sender/_shared_local_config.html.heex:6
 msgid "No configuration is required for this sender."
-msgstr ""
+msgstr "Dieser Sender benötigt keine weitere Konfiguration."
 
 #, elixir-format
 #: lib/keila_web/templates/error/404.html.heex:3
 msgid "Not found."
-msgstr ""
+msgstr "Nicht gefunden."
 
 #, elixir-format
 #: lib/keila_web/views/template_view.ex:47
 msgid "Opacity"
-msgstr ""
+msgstr "Transparenz"
 
-#, elixir-format, fuzzy
+#, elixir-format
 #: lib/keila_web/templates/error/404.html.heex:14
 msgid "Sign in"
-msgstr "Anmelden."
+msgstr "Anmelden"
 
 #, elixir-format
 #: lib/keila/templates/default_template.ex:72
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:89
 msgid "Spacer"
-msgstr ""
+msgstr "Abstandshalter"
 
 #, elixir-format
 #: lib/keila_web/templates/component/file_manager_live.html.heex:27
 msgid "Start Upload"
-msgstr ""
+msgstr "Upload starten"
 
 #, elixir-format
 #: lib/keila_web/views/template_view.ex:49
 msgid "Text alignment"
-msgstr ""
+msgstr "Satz"
 
 #, elixir-format
 #: lib/keila_web/templates/error/404.html.heex:5
 msgid "The page you’re looking for doesn’t exist or has been removed."
-msgstr ""
+msgstr "Diese Seite existiert nicht mehr oder wurde entfernt."
 
 #, elixir-format
 #: lib/keila_web/templates/component/file_manager_live.html.heex:3
 msgid "Upload a new file"
-msgstr ""
+msgstr "Neue Datei hochladen"
 
 #, elixir-format
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:79
 msgid "Uploads"
-msgstr ""
+msgstr "Uploads"
 
 #, elixir-format
 #: lib/keila_web/templates/component/file_manager_live.html.heex:45
 msgid "Use the upload form to upload your first image.\n"
-msgstr ""
+msgstr "Lade jetzt deine erste Datei hoch.\n"
 
 #, elixir-format
 #: lib/keila_web/templates/error/404.html.heex:18
 msgid "Visit the docs"
-msgstr ""
+msgstr "Zur Dokumentation"
 
-#, elixir-format, fuzzy
+#, elixir-format
 #: lib/keila_web/templates/api_key/_empty_state.html.heex:10
 msgid "With API keys, you can use the Keila API to manage campaigns\nand contacts programmatically.\n"
-msgstr "Mit API-Schlüsseln kannst du die API von Keila nutzen, um Kampagnen und Kontakte automatisiert zu verwalten.\n"
+msgstr ""
+"Mit API-Schlüsseln kannst du die API von Keila nutzen,\n"
+"um Kampagnen und Kontakte automatisiert zu verwalten.\n"
 
 #, elixir-format
 #: lib/keila_web/templates/campaign/stats_live.html.heex:162
 msgid "You have chosen not to track clicks and opens for this campaign. Thanks for respecting the privacy of your recipients!"
 msgstr ""
+"Du hast das Tracking von Klicks für diese Kampagne deaktiviert. Danke dass du die Privatsphäre deiner Empfänger:innen respektierst!"
 
 #, elixir-format
 #: lib/keila_web/views/template_view.ex:142
 msgid "almost opaque"
-msgstr ""
+msgstr "leicht durchsichtig"
 
 #, elixir-format
 #: lib/keila_web/views/template_view.ex:191
 msgid "centered"
-msgstr ""
+msgstr "zentriert"
 
 #, elixir-format
 #: lib/keila_web/views/template_view.ex:159
 msgid "dashed"
-msgstr ""
+msgstr "gestrichelt"
 
 #, elixir-format
 #: lib/keila_web/views/template_view.ex:158
 msgid "dotted"
-msgstr ""
+msgstr "gepunktet"
 
 #, elixir-format
 #: lib/keila_web/views/template_view.ex:189
 msgid "flush left"
-msgstr ""
+msgstr "linksbündig"
 
 #, elixir-format
 #: lib/keila_web/views/template_view.ex:190
 msgid "flush right"
-msgstr ""
+msgstr "rechtsbündig"
 
 #, elixir-format
 #: lib/keila_web/views/template_view.ex:138
 msgid "invisible"
-msgstr ""
+msgstr "unsichtbar"
 
 #, elixir-format
 #: lib/keila_web/views/template_view.ex:192
 msgid "justified"
-msgstr ""
+msgstr "Blocksatz"
 
 #, elixir-format
 #: lib/keila_web/views/template_view.ex:175
 msgid "large"
-msgstr ""
+msgstr "groß"
 
 #, elixir-format
 #: lib/keila_web/views/template_view.ex:141
 #: lib/keila_web/views/template_view.ex:174
 msgid "medium"
-msgstr ""
+msgstr "mittel"
 
 #, elixir-format
 #: lib/keila_web/views/template_view.ex:143
 msgid "opaque"
-msgstr ""
+msgstr "undurchsichtig"
 
 #, elixir-format
 #: lib/keila_web/views/template_view.ex:173
 msgid "small"
-msgstr ""
+msgstr "klein"
 
 #, elixir-format
 #: lib/keila_web/views/template_view.ex:157
 msgid "solid"
-msgstr ""
+msgstr "durchgezogen"
 
 #, elixir-format
 #: lib/keila_web/views/template_view.ex:139
 msgid "very light"
-msgstr ""
+msgstr "stark durchsichtig"
