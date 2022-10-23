@@ -102,3 +102,11 @@ body, #center-wrapper, #table-wrapper {
     color: #374151;
     text-decoration: underline;
 }
+
+hr {
+    border-width: 1px;
+    border-style: solid;
+    border-color: inherit;
+    opacity: 0.1;
+    margin: 30px 0;
+}

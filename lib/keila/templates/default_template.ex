@@ -69,6 +69,13 @@ defmodule Keila.Templates.DefaultTemplate do
          "font-weight",
          "text-decoration"
        ])},
+    {gettext("Spacer"),
+     get_styles.("hr", [
+       "border-color",
+       "opacity",
+       "border-style",
+       "margin"
+     ])},
     {gettext("Signature"),
      get_styles.("#signature td", [
        "color",

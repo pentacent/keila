@@ -225,6 +225,16 @@ export function buildDefaultMenu() {
         isEnabled: state => canInsert(state, schema.nodes.text)
     })
 
+    const buttonHr = new MenuButton({
+        exec: editorView => {
+            editorView.dispatch(editorView.state.tr.replaceSelectionWith(schema.nodes.horizontal_rule.create()))
+            editorView.focus()
+        },
+        dom: findButton("hr"),
+        isActive: _state => false,
+        isEnabled: state => canInsert(state, schema.nodes.horizontal_rule)
+    })
+
     const buttonTogglePreview = new MenuButton({
         dom: findButton("toggle-preview"),
         exec(_editorView) {
@@ -238,6 +248,7 @@ export function buildDefaultMenu() {
         buttonItalic,
         buttonLink,
         buttonButton,
+        buttonHr,
         buttonImage,
         buttonH1,
         buttonH2,

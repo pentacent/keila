@@ -42,13 +42,17 @@ defmodule KeilaWeb.TemplateView do
         "font-style" -> gettext("Font style")
         "font-weight" -> gettext("Font weight")
         "text-decoration" -> gettext("Decoration")
+        "border-style" -> gettext("Border style")
+        "border-color" -> gettext("Border color")
+        "opacity" -> gettext("Opacity")
+        "margin" -> gettext("Margin")
       end
 
     content_tag(:label, label, for: input_name(form, field, group_label, row))
   end
 
   defp render_input(form, field, group_label, row = %{property: property})
-       when property in ["color", "background-color"] do
+       when property in ["color", "background-color", "border-color"] do
     color_input(form, field,
       value: value_or_default(row),
       name: input_name(form, field, group_label, row),
@@ -117,6 +121,57 @@ defmodule KeilaWeb.TemplateView do
       [
         {gettext("none"), "none"},
         {gettext("underlined"), "underline"}
+      ],
+      name: input_name(form, field, group_label, row),
+      phx_debounce: 250,
+      id: input_name(form, field, group_label, row),
+      value: value_or_default(row)
+    )
+  end
+
+  defp render_input(form, field, group_label, row = %{property: "opacity"}) do
+    select(
+      form,
+      field,
+      [
+        {gettext("invisible"), "0"},
+        {gettext("very light"), "0.1"},
+        {gettext("light"), "0.25"},
+        {gettext("medium"), "0.50"},
+        {gettext("almost opaque"), "0.75"},
+        {gettext("opaque"), "1.0"}
+      ],
+      name: input_name(form, field, group_label, row),
+      phx_debounce: 250,
+      id: input_name(form, field, group_label, row),
+      value: value_or_default(row) |> IO.inspect()
+    )
+  end
+
+  defp render_input(form, field, group_label, row = %{property: "border-style"}) do
+    select(
+      form,
+      field,
+      [
+        {gettext("solid"), "solid"},
+        {gettext("dotted"), "dotted"},
+        {gettext("dashed"), "dashed"}
+      ],
+      name: input_name(form, field, group_label, row),
+      phx_debounce: 250,
+      id: input_name(form, field, group_label, row),
+      value: value_or_default(row)
+    )
+  end
+
+  defp render_input(form, field, group_label, row = %{property: "margin"}) do
+    select(
+      form,
+      field,
+      [
+        {gettext("small"), "15px 0"},
+        {gettext("medium"), "30px 0"},
+        {gettext("large"), "45px 0"}
       ],
       name: input_name(form, field, group_label, row),
       phx_debounce: 250,

@@ -12,7 +12,10 @@ This is a Markdown campaign, so your recipients will get this message as text an
 
 *Images should be 600px wide.*
 
+---
+
 You can also:
+- Add spacers for additional structure
 - Make lists
 - Make text *italic* or **bold**
 - [Include links](https://keila.io)
