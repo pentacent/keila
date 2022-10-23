@@ -46,6 +46,7 @@ defmodule KeilaWeb.TemplateView do
         "border-color" -> gettext("Border color")
         "opacity" -> gettext("Opacity")
         "margin" -> gettext("Margin")
+        "text-align" -> gettext("Text alignment")
       end
 
     content_tag(:label, label, for: input_name(form, field, group_label, row))
@@ -172,6 +173,23 @@ defmodule KeilaWeb.TemplateView do
         {gettext("small"), "15px 0"},
         {gettext("medium"), "30px 0"},
         {gettext("large"), "45px 0"}
+      ],
+      name: input_name(form, field, group_label, row),
+      phx_debounce: 250,
+      id: input_name(form, field, group_label, row),
+      value: value_or_default(row)
+    )
+  end
+
+  defp render_input(form, field, group_label, row = %{property: "text-align"}) do
+    select(
+      form,
+      field,
+      [
+        {gettext("flush left"), "left"},
+        {gettext("flush right"), "right"},
+        {gettext("centered"), "center"},
+        {gettext("justified"), "justfy"}
       ],
       name: input_name(form, field, group_label, row),
       phx_debounce: 250,

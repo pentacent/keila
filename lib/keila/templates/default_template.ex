@@ -79,6 +79,7 @@ defmodule Keila.Templates.DefaultTemplate do
     {gettext("Signature"),
      get_styles.("#signature td", [
        "color",
+       "text-align",
        "font-family",
        "font-style",
        "font-weight",

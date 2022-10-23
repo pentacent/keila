@@ -96,6 +96,7 @@ body, #center-wrapper, #table-wrapper {
     font-style: normal;
     font-weight: bold;
     text-decoration: none;
+    text-align: left;
 }
 
 #signature td a {
