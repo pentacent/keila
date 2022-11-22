@@ -2,6 +2,10 @@
 [![Docker Image Version (latest semver)](https://img.shields.io/docker/v/pentacent/keila?color=blue&label=docker%20image&style=flat-square)](https://hub.docker.com/r/pentacent/keila/tags)
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/pentacent/keila?label=latest%20version&style=flat-square)](https://github.com/pentacent/keila/releases)
 [![GitHub Sponsors](https://img.shields.io/github/sponsors/pentacent?color=ff69b4)](https://github.com/sponsors/pentacent)
+
+<a href="https://fosstodon.org/@keila" title="Folow Keila on Mastodon" rel="me"><img src="https://img.shields.io/mastodon/follow/109370923780670804?domain=https%3A%2F%2Ffosstodon.org&label=Follow&style=flat-square&logo=mastodon&color=blue&logoColor=white"></a>
+<a href="https://www.twitter.com/keila_io" title="Folow Keila on Twitter"><img src="https://img.shields.io/twitter/follow/keila_io?label=Follow&style=flat-square&logo=twitter&color=blue&logoColor=white"></a>
+
   
 # ![The Keila logo is a stylized elephant](.github/assets/logo.svg) Keila - An Open Source Newsletter Tool
 
