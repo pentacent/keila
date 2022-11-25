@@ -10,7 +10,8 @@ defmodule KeilaWeb.TrackingController do
     case Keila.Tracking.track(:open, %{
            encoded_url: encoded_url,
            recipient_id: recipient_id,
-           hmac: hmac
+           hmac: hmac,
+           user_agent: get_req_header(conn, "user-agent")
          }) do
       {:ok, url} -> redirect(conn, external: url)
       :error -> put_status(conn, 404) |> halt()

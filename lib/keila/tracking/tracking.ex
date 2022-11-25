@@ -156,10 +156,17 @@ defmodule Keila.Tracking do
     end
   end
 
-  def track(:open, %{encoded_url: encoded_url, recipient_id: recipient_id, hmac: hmac}) do
+  def track(:open, %{
+        encoded_url: encoded_url,
+        recipient_id: recipient_id,
+        hmac: hmac,
+        user_agent: user_agent
+      }) do
     case verify_hmac(hmac, encoded_url, recipient_id) do
       :ok ->
-        set_recipient_opened_at(recipient_id)
+        unless is_user_agent_bot(user_agent) do
+          set_recipient_opened_at(recipient_id)
+        end
 
         {:ok, URI.decode_www_form(encoded_url)}
 
@@ -242,4 +249,9 @@ defmodule Keila.Tracking do
 
   defp hmac_key,
     do: Application.get_env(:keila, KeilaWeb.Endpoint) |> Keyword.get(:secret_key_base)
+
+  @bot_user_agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246 Mozilla/5.0"
+  defp is_user_agent_bot(user_agent) do
+    user_agent == @bot_user_agent
+  end
 end
