@@ -11,7 +11,7 @@ defmodule KeilaWeb.TrackingController do
            encoded_url: encoded_url,
            recipient_id: recipient_id,
            hmac: hmac,
-           user_agent: get_req_header(conn, "user-agent")
+           user_agent: get_req_header(conn, "user-agent") |> List.first()
          }) do
       {:ok, url} -> redirect(conn, external: url)
       :error -> put_status(conn, 404) |> halt()

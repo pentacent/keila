@@ -126,13 +126,12 @@ defmodule Keila.Tracking do
   Tracks an event.
 
   ## `:open` event
-  - Required params: `:encoded_url`, `:recipient_id`, `hmac`
-  - Optional params: `link_id`
+  - Required params: `:encoded_url`, `:recipient_id`, `:hmac`, `:user_agent`
 
   Returns: `{:ok, url}` if  hmac verification was successful, otherwise `:error`.
 
   ## `:click` event
-  - Required params: `:encoded_url`, `:recipient_id`, `hmac`
+  - Required params: `:encoded_url`, `:recipient_id`, `:hmac`
   - Optional params: `link_id`
 
   Returns: `{:ok, url}` if  hmac verification was successful, otherwise `:error`.
