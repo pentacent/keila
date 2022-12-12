@@ -29,9 +29,17 @@ defmodule Keila.Mailings.SenderAdapters.SMTP do
       relay: config.smtp_relay,
       username: config.smtp_username,
       password: config.smtp_password,
-      tls: if(config.smtp_tls, do: :always),
       auth: :always,
       port: config.smtp_port
     ]
+    |> maybe_put_ssl_opt(config)
+  end
+
+  defp maybe_put_ssl_opt(opts, config) do
+    if config.smtp_tls do
+      Keyword.put(opts, :ssl, true)
+    else
+      opts
+    end
   end
 end
