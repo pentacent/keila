@@ -21,7 +21,9 @@ config :keila, KeilaWeb.Endpoint,
 # Configure file uploads and serving of files
 config :keila, Keila.Files, adapter: Keila.Files.StorageAdapters.Local
 
-config :keila, Keila.Files.StorageAdapters.Local, serve: true
+config :keila, Keila.Files.StorageAdapters.Local,
+  serve: true,
+  dir: "./uploads"
 
 config :esbuild,
   version: "0.12.18",
