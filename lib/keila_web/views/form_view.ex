@@ -7,13 +7,15 @@ defmodule KeilaWeb.FormView do
   @form_classes "contact-form container bg-white rounded py-4 md:py-8 flex flex-col gap-4"
 
   def render_form(form, changeset \\ Ecto.Changeset.change(%Contact{}), mode) do
-    csrf_enabled? = mode != :embed and not form.settings.csrf_disabled
-    form_styles = build_form_styles(form)
+    form_opts =
+      []
+      |> put_style_opts(form)
+      |> maybe_put_csrf_opt(form, mode)
 
     form_for(
       changeset,
       Routes.form_url(KeilaWeb.Endpoint, :submit, form.id),
-      [class: @form_classes, style: form_styles, csrf_token: csrf_enabled?],
+      form_opts,
       fn f ->
         [
           render_h1(form),
@@ -25,6 +27,22 @@ defmodule KeilaWeb.FormView do
         ]
       end
     )
+  end
+
+  defp put_style_opts(opts, form) do
+    opts
+    |> Keyword.put(:class, @form_classes)
+    |> Keyword.put(:style, build_form_styles(form))
+  end
+
+  defp maybe_put_csrf_opt(opts, form, mode) do
+    csrf_disabled? = mode == :embed or form.settings.csrf_disabled
+
+    if csrf_disabled? do
+      Keyword.put(opts, :csrf_token, false)
+    else
+      opts
+    end
   end
 
   defp build_form_styles(form) do

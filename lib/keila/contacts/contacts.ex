@@ -311,7 +311,7 @@ defmodule Keila.Contacts do
   @doc """
   Logs an Event and updates contact status accordingly.
   """
-  @spec log_event(Contact.id(), String.t(), map()) ::
+  @spec log_event(Contact.id(), String.t() | atom(), map()) ::
           {:ok, Event.t()} | {:error, Changeset.t(Event.t())}
   def log_event(contact_id, type, data \\ %{}) do
     %{contact_id: contact_id, type: type, data: data}

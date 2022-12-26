@@ -4,8 +4,9 @@ defmodule KeilaWeb.FormController do
   import Ecto.Changeset
   import Phoenix.LiveView.Controller
 
+  plug :authorize when action not in [:index, :new, :delete, :display, :submit, :unsubscribe]
   plug :fetch when action in [:display, :submit]
-  plug :authorize when action not in [:index, :new, :display, :submit, :unsubscribe, :delete]
+  plug :maybe_put_protect_from_forgery when action in [:display, :submit]
 
   @spec display(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def display(conn, _params) do
@@ -17,25 +18,28 @@ defmodule KeilaWeb.FormController do
   @spec submit(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def submit(conn, params) do
     form = conn.assigns.form
+    contact_params = params["contact"] || %{}
 
-    if !form.settings.captcha_required or
-         KeilaWeb.Hcaptcha.captcha_valid?(params["h-captcha-response"]) do
-      case Contacts.create_contact(form.project_id, params["contact"] || %{}) do
-        {:ok, %{id: id}} ->
-          Keila.Contacts.log_event(id, :subscribe, %{"captcha" => form.settings.captcha_required})
-          render(conn, "form_success.html")
+    with :ok <- maybe_check_captcha(form, params),
+         {:ok, %{id: id}} <- Contacts.create_contact(form.project_id, contact_params) do
+      Keila.Contacts.log_event(id, :subscribe, %{"captcha" => form.settings.captcha_required})
 
-        {:error, changeset} ->
-          render_display(conn, 400, changeset, form)
-      end
+      render(conn, "form_success.html")
     else
-      {:error, changeset} =
-        params["contact"]
-        |> Contacts.Contact.changeset_from_form(form)
-        |> Ecto.Changeset.add_error(:hcaptcha, dgettext("auth", "Please complete the captcha."))
-        |> Ecto.Changeset.apply_action(:insert)
+      {:error, changeset} -> render_display(conn, 400, changeset, form)
+    end
+  end
 
-      render_display(conn, 400, changeset, form)
+  defp maybe_check_captcha(%{settings: %{captcha_required: false}}, _), do: :ok
+
+  defp maybe_check_captcha(form, params) do
+    if KeilaWeb.Hcaptcha.captcha_valid?(params["h-captcha-response"]) do
+      :ok
+    else
+      params["contact"]
+      |> Contacts.Contact.changeset_from_form(form)
+      |> Ecto.Changeset.add_error(:hcaptcha, dgettext("auth", "Please complete the captcha."))
+      |> Ecto.Changeset.apply_action(:insert)
     end
   end
 
@@ -160,6 +164,16 @@ defmodule KeilaWeb.FormController do
 
       form ->
         assign(conn, :form, form)
+    end
+  end
+
+  defp maybe_put_protect_from_forgery(conn, _) do
+    form = conn.assigns.form
+
+    if form.settings.csrf_disabled do
+      conn
+    else
+      protect_from_forgery(conn)
     end
   end
 end
