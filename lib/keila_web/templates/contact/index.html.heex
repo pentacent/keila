@@ -24,17 +24,17 @@
 
     <%= if @contacts_stats do %>
         <div class="container grid gap-4 sm:grid-cols-3">
-            <div class="bg-green-700 p-4">
+            <div class="bg-emerald-700 p-4">
                 <p class="text-3xl"><%= @contacts_stats.active %></p>
                 <p><%= gettext("active subscribers") %></p>
             </div>
 
-            <div class="bg-green-700 p-4">
+            <div class="bg-emerald-700 p-4">
                 <p class="text-3xl"><%= @contacts_stats.unsubscribed %></p>
                 <p><%= gettext("unsubscribed contacts") %></p>
             </div>
 
-            <div class="bg-green-700 p-4">
+            <div class="bg-emerald-700 p-4">
                 <p class="text-3xl"><%= @contacts_stats.unreachable %></p>
                 <p><%= gettext("unreachable contacts") %></p>
             </div>
@@ -46,7 +46,7 @@
             <%= hidden_input(f, :require_confirmation, value: "true") %>
             <table x-data="{checked: false}" class="w-full">
                 <tr class="text-left">
-                    <th><input type="checkbox" x-model="checked" class="text-green-500"></th>
+                    <th><input type="checkbox" x-model="checked" class="text-emerald-500"></th>
                     <th class="p-2">Email</th>
                     <th class="p-2 hidden lg:table-cell">First name</th>
                     <th class="p-2 hidden lg:table-cell">Last name</th>
@@ -56,7 +56,7 @@
                 <%= for contact <- @contacts.data do %>
                     <tr>
                         <td>
-                            <%= checkbox(f, :id, hidden_input: false, "x_bind:checked": "checked", class: "text-green-500", checked_value: contact.id, name: "contact[id][]") %>
+                            <%= checkbox(f, :id, hidden_input: false, "x_bind:checked": "checked", class: "text-emerald-500", checked_value: contact.id, name: "contact[id][]") %>
                         </td>
                         <td class="p-2">
                             <a class="button button--text overflow-x-hidden" href={ Routes.contact_path(@conn, :edit, @current_project.id, contact.id) }>

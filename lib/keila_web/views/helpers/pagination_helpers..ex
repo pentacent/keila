@@ -35,7 +35,7 @@ defmodule KeilaWeb.PaginationHelpers do
 
   defp pagination_button(current_page, page, [href: route_fn], content) do
     route = route_fn.(page)
-    class = if page == current_page, do: "button bg-green-500 text-black", else: "button"
+    class = if page == current_page, do: "button bg-emerald-500 text-black", else: "button"
 
     assigns = %{content: content || to_string(page + 1)}
 
@@ -47,7 +47,7 @@ defmodule KeilaWeb.PaginationHelpers do
   defp pagination_button(current_page, page, opts, content) do
     event_name = Keyword.fetch!(opts, :phx_click)
     event_target = Keyword.get(opts, :phx_target)
-    class = if page == current_page, do: "button bg-green-600 text-white", else: "button"
+    class = if page == current_page, do: "button bg-emerald-600 text-white", else: "button"
     assigns = %{content: content || to_string(page + 1)}
 
     ~H"""

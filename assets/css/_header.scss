@@ -15,13 +15,13 @@
 }
 
 .menu-link {
-    @apply flex gap-2 items-center text-white hover:bg-green-800 hover:text-white px-3 py-2 rounded-md text-sm font-medium;
+    @apply flex gap-2 items-center text-white hover:bg-emerald-800 hover:text-white px-3 py-2 rounded-md text-sm font-medium;
 
     &.menu-link--active {
-        @apply bg-green-800 text-white;
+        @apply bg-emerald-800 text-white;
     }
 
     &.sml-4.menu-link--active {
-        @apply bg-green-900 text-white;
+        @apply bg-emerald-900 text-white;
     }
 }

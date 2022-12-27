@@ -19,7 +19,7 @@
         </h2>
         <div class="flex flex-col">
             <label class="font-bold"><%= dgettext("admin", "Amount") %></label>
-            <input name="credits[amount]" class="bg-white hover:bg-green-100 text-black" type="number" step="1" min="1" />
+            <input name="credits[amount]" class="bg-white hover:bg-emerald-100 text-black" type="number" step="1" min="1" />
         </div>
         <div class="grid gap-4 mt-4">
             <div class="flex flex-col">
@@ -32,7 +32,7 @@
                     data-value={raw DateTime.utc_now() |> DateTime.add(30 * 24 * 60 * 60, :second) |> maybe_print_datetime() }
                     x-data="{}"
                     x-init="Hooks.SetLocalDateValue.mounted.call({el: $el})"
-                    class="bg-white hover:bg-green-100 text-black"
+                    class="bg-white hover:bg-emerald-100 text-black"
                 >
             </div>
             <div class="flex flex-col">
@@ -41,7 +41,7 @@
                     type="time"
                     id="credits[expires_at][time]"
                     name="credits[expires_at][time]"
-                    class="bg-white hover:bg-green-100 text-black"
+                    class="bg-white hover:bg-emerald-100 text-black"
                     x-data="{}"
                     x-init="Hooks.SetLocalTimeValue.mounted.call({el: $el})"
                     data-value={raw DateTime.utc_now() |> maybe_print_datetime() }

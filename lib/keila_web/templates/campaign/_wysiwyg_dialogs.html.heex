@@ -8,11 +8,11 @@
     <div
         x-show.transition="activeDialog"
         style="display: none"
-        class="fixed z-10 inset-0 overflow-y-auto bg-black bg-opacity-90 flex items-center justify-center"
+        class="fixed z-10 inset-0 overflow-y-auto bg-black/90 flex items-center justify-center"
     >
 
         <div
-            class="bg-gray-900 rounded-lg overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+            class="bg-gray-900 rounded-lg overflow-hidden shadow-xl transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
             role="dialog"
             aria-modal="true"
         >
@@ -34,12 +34,12 @@
                 <div class="grid gap-4">
                     <div class="flex flex-col">
                         <label class="font-bold"><%= gettext("Link URL") %></label>
-                        <input x-model="link.href" type="text" class="bg-white hover:bg-green-100 text-black" placeholder="https://keila.io">
+                        <input x-model="link.href" type="text" class="bg-white hover:bg-emerald-100 text-black" placeholder="https://keila.io">
                     </div>
 
                     <div class="flex flex-col">
                         <label class="font-bold"><%= gettext("Link Title") %></label>
-                        <input x-model="link.title" type="text" class="bg-white hover:bg-green-100 text-black" placeholder="Open Source Newsletters">
+                        <input x-model="link.title" type="text" class="bg-white hover:bg-emerald-100 text-black" placeholder="Open Source Newsletters">
                     </div>
                 </div>
                 <br>
@@ -90,15 +90,15 @@
                                 <p class="text-sm italic mb-2">
                                     <%= gettext("For best results, choose an image that is 600px wide.") %>
                                 </p>
-                                <input x-model="image.src" type="text" class="bg-white hover:bg-green-100 text-black">
+                                <input x-model="image.src" type="text" class="bg-white hover:bg-emerald-100 text-black">
                             </div>
                             <div class="flex flex-col">
                                 <label class="font-bold"><%= gettext("Alt Text") %></label>
-                                <input x-model="image.alt" type="text" class="bg-white hover:bg-green-100 text-black">
+                                <input x-model="image.alt" type="text" class="bg-white hover:bg-emerald-100 text-black">
                             </div>
                             <div class="flex flex-col">
                                 <label class="font-bold"><%= gettext("Title") %></label>
-                                <input x-model="image.title" type="text" class="bg-white hover:bg-green-100 text-black">
+                                <input x-model="image.title" type="text" class="bg-white hover:bg-emerald-100 text-black">
                             </div>
                         </div>
                     </div>
@@ -136,11 +136,11 @@
                 <div class="grid gap-4">
                     <div class="flex flex-col">
                         <label class="font-bold"><%= gettext("Button URL") %></label>
-                        <input x-model="button.href" type="text" class="bg-white hover:bg-green-100 text-black">
+                        <input x-model="button.href" type="text" class="bg-white hover:bg-emerald-100 text-black">
                     </div>
                     <div class="flex flex-col">
                         <label class="font-bold"><%= gettext("Button Text") %></label>
-                        <input x-model="button.text" type="text" class="bg-white hover:bg-green-100 text-black">
+                        <input x-model="button.text" type="text" class="bg-white hover:bg-emerald-100 text-black">
                     </div>
                 </div>
                 <br>
@@ -177,7 +177,7 @@
                 <div class="grid gap-4">
                     <div class="flex flex-col">
                         <label class="font-bold"><%= gettext("Code") %></label>
-                        <input x-model="liquid.text" type="text" class="bg-white hover:bg-green-100 text-black" placeholder="{{ contact.first_name }}">
+                        <input x-model="liquid.text" type="text" class="bg-white hover:bg-emerald-100 text-black" placeholder="{{ contact.first_name }}">
                     </div>
                 </div>
                 <br>

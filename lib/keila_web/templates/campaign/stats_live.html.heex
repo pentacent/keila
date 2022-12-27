@@ -80,7 +80,7 @@
         <% end %>
     <% :preparing -> %>
         <p class="flex gap-4 items-center">
-            <svg class="animate-spin h-16 w-16 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+            <svg class="animate-spin h-16 w-16 text-emerald-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                 <circle cx="50" cy="50" fill="none" stroke="currentColor" stroke-width="10" r="40" stroke-dasharray="164.93361431346415 56.97787143782138">
                 </circle>
             </svg>
@@ -88,7 +88,7 @@
         </p>
     <% :sending -> %>
         <div class="flex gap-4 items-center">
-            <svg class="animate-spin h-16 w-16 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+            <svg class="animate-spin h-16 w-16 text-emerald-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                 <circle cx="50" cy="50" fill="none" stroke="currentColor" stroke-width="10" r="40" stroke-dasharray="164.93361431346415 56.97787143782138">
                 </circle>
             </svg>
@@ -98,7 +98,7 @@
                     <span><%= "#{@stats.sent_count}/#{@stats.recipients_count}" %></span>
                     <div class="h-3 relative flex-grow rounded-full overflow-hidden">
                         <div class="w-full h-full bg-gray-200 absolute"></div>
-                        <div class="h-full bg-green-500 absolute" style={ "transition: all 750ms; width: #{ @stats.sent_count / ( case @stats.recipients_count do 0 -> 1; other -> other; end) * 100 }%" }></div>
+                        <div class="h-full bg-emerald-500 absolute" style={ "transition: all 750ms; width: #{ @stats.sent_count / ( case @stats.recipients_count do 0 -> 1; other -> other; end) * 100 }%" }></div>
                     </div>
                 </div>
             </div>
@@ -106,7 +106,7 @@
 
 
     <% :sent -> %>
-        <p class="flex gap-4 items-center bg-green-900 p-4 sm:p-8">
+        <p class="flex gap-4 items-center bg-emerald-900 p-4 sm:p-8">
             <span class="inline-flex h-20 w-20"><%= render_icon(:cake) %></span>
             <%= gettext("This campaign has been successfully sent out to %{count} recipients.", count: @stats.sent_count) %>
         </p>

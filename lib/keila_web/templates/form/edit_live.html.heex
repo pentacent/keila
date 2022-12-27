@@ -78,13 +78,13 @@
                 </div>
                 <%= with_validation(fs, :captcha_required) do %>
                     <%= label(fs, :captcha_required) do %>
-                        <%= checkbox(fs, :captcha_required, class: "text-green-500") %>
+                        <%= checkbox(fs, :captcha_required, class: "text-emerald-500") %>
                         <%= gettext("Require captcha") %>
                     <% end %>
                 <% end %>
                 <%= with_validation(fs, :csrf_disabled) do %>
                     <%= label(fs, :csrf_disabled) do %>
-                        <%= checkbox(fs, :csrf_disabled, class: "text-green-500") %>
+                        <%= checkbox(fs, :csrf_disabled, class: "text-emerald-500") %>
                         <%= gettext("Allow embedding as HTML") %>
                     <% end %>
                 <% end %>

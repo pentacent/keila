@@ -27,7 +27,7 @@ export class MenuButton {
 
     update(editorState) {
         const isActive = this.isActive(editorState)
-        toggleClass(this.dom, "bg-green-300", isActive)
+        toggleClass(this.dom, "bg-emerald-300", isActive)
 
         const isEnabled = this.isEnabled(editorState)
         toggleClass(this.dom, "bg-gray-100", !isEnabled)

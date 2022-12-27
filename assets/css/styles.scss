@@ -36,16 +36,16 @@ html {
 
     &:not(.button--cta):not(&.button--warn):not(&.button--text):not(&.button--muted) {
         @apply
-            ring-2 ring-green-500
-            hover:ring-green-700;
+            ring-2 ring-emerald-500
+            hover:ring-emerald-700;
     }
     
     &.button--cta {
         @apply
-            bg-green-700 text-white outline-none
-            hover:ring-2 hover:ring-green-400
-            focus:ring-2 hover:ring-green-400
-            active:bg-green-800;
+            bg-emerald-700 text-white outline-none
+            hover:ring-2 hover:ring-emerald-400
+            focus:ring-2 hover:ring-emerald-400
+            active:bg-emerald-800;
     }
 
     &.button--muted {
@@ -147,7 +147,7 @@ input[disabled] {
 }
 
 .bg-onboarding {
-    @apply bg-gradient-to-r from-red-900 via-indigo-900 to-green-900;
+    @apply bg-gradient-to-r from-red-900 via-indigo-900 to-emerald-900;
 }
 
 /*

@@ -22,7 +22,7 @@
 
 <%= if assigns[:token] do %>
   <div class="container mb-8">
-    <div class="bg-gradient-to-r from-gray-900 to-green-900 p-8">
+    <div class="bg-gradient-to-r from-gray-900 to-emerald-900 p-8">
         <h2 class="font-light text-2xl mb-2">
             <%= gettext("New API key created:") %>
              <%= if @token.data["name"] && String.length(@token.data["name"]) > 0 do %>
@@ -36,7 +36,7 @@
         <p>
             <%= gettext("The following is your private API Key. Use it to authorize API calls.") %>
         </p>
-        <p class="font-bold text-green-500">
+        <p class="font-bold text-emerald-500">
             <%= gettext("Important: The private API Key is displayed only once and cannot be recovered.") %>
         </p>
         <div class="flex flex-row mt-2">

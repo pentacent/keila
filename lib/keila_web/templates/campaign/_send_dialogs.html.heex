@@ -1,7 +1,7 @@
 <div
     id="send-dialogs"
     style="display: none"
-    class="fixed z-10 inset-0 overflow-y-auto bg-black bg-opacity-90 flex items-center justify-center"
+    class="fixed z-10 inset-0 overflow-y-auto bg-black/90 flex items-center justify-center"
     x-on:x-confirm.stop="activeDialog = null"
     x-show.transition="['send', 'schedule'].includes(activeDialog)"
     x-on:x-cancel.stop="activeDialog = null"
@@ -19,7 +19,7 @@
     >
         <%= if @recipient_count > 0 do %>
             <div
-                class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full p-8"
+                class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full p-8"
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="modal-headline"
@@ -47,7 +47,7 @@
                 </div>
             </div>
         <% else %>
-            <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full p-8" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
+            <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full p-8" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
                 <h2 class="text-3xl"><%= gettext("No Contacts, No Campaign.")%></h2>
                 <br>
                 <p>
@@ -73,7 +73,7 @@
     >
         <%= if @recipient_count > 0 do %>
             <form
-                class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full p-8"
+                class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full p-8"
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="modal-headline"
@@ -97,7 +97,7 @@
                             id="schedule[date]"
                             phx-hook="SetLocalDateValue"
                             data-value={raw get_field(@changeset, :scheduled_for) |> maybe_print_datetime() }
-                            class="bg-white hover:bg-green-100 text-black"
+                            class="bg-white hover:bg-emerald-100 text-black"
                         >
                     </div>
                     <div class="flex flex-col">
@@ -106,7 +106,7 @@
                             type="time"
                             id="schedule[time]"
                             name="schedule[time]"
-                            class="bg-white hover:bg-green-100 text-black"
+                            class="bg-white hover:bg-emerald-100 text-black"
                             phx-hook="SetLocalTimeValue"
                             data-value={raw get_field(@changeset, :scheduled_for) |> maybe_print_datetime() }
                         >
@@ -148,7 +148,7 @@
                 </div>
             </form>
         <% else %>
-            <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full p-8" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
+            <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full p-8" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
                 <h2 class="text-3xl"><%= gettext("No Contacts, No Campaign.")%></h2>
                 <br>
                 <p>

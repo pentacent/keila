@@ -145,7 +145,7 @@ defmodule KeilaWeb.TemplateView do
       name: input_name(form, field, group_label, row),
       phx_debounce: 250,
       id: input_name(form, field, group_label, row),
-      value: value_or_default(row) |> IO.inspect()
+      value: value_or_default(row)
     )
   end
 

@@ -30,7 +30,7 @@
         <%= if @use_editor do %>
             <div class="form-row">
                 <%= label(f, :filter, gettext("Filter")) %>
-                <div class="flex flex-col gap-4 bg-gradient-to-r from-gray-900 to-green-900 p-4">
+                <div class="flex flex-col gap-4 bg-gradient-to-r from-gray-900 to-emerald-900 p-4">
                     <%= for {group_index, fields} <- @form_data do %>
                         <div class="and-group rounded ring-1 ring-gray-600 p-4 flex flex-col gap-4">
                             <%= for {field_index, selected_field} <- fields do %>
@@ -39,13 +39,13 @@
                                 <div class="flex flex-row gap-4">
                                     <select name={ "#{index}[field]" }>
                                         <%= for {field, %{label: label}} <- @fields do %>
-                                            <option value={field} selected={ field == selected_field["field"] }><%= label %></option>    
+                                            <option value={field} selected={ field == selected_field["field"] }><%= label %></option>
                                         <% end %>
                                     </select>
 
                                     <select name={ "#{index}[widget]" }>
                                         <%= for %{name: widget, label: label} <- @widgets[selected_field["type"]] do %>
-                                            <option value={widget} selected={ widget == selected_field["widget"] }><%= label %></option>    
+                                            <option value={widget} selected={ widget == selected_field["widget"] }><%= label %></option>
                                         <% end %>
                                     </select>
 

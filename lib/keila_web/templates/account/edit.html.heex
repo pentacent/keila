@@ -10,7 +10,7 @@
                 <%= case @subscription.status do %>
                     <% :active -> %>
                         <p class="flex gap-4 items-center">
-                            <span class="flex h-2 w-8 items-center text-green-500">
+                            <span class="flex h-2 w-8 items-center text-emerald-500">
                                 <%= render_icon(:check) %>
                             </span>
                             <%= gettext("You currently have an active subscription. Thanks for supporting Keila!") %>
@@ -40,25 +40,25 @@
 
                 <%= if @subscription.status != :deleted do %>
                     <div class="flex flex-row">
-                        <div class="text-center flex flex-col gap-4 items-center flex-grow-0">
+                        <div class="text-center flex flex-col gap-4 items-center grow-0">
                             <h3 class="font-bold">
                                 <span class="text-2xl">
                                     <%= @plan.name %>
                                 </span>
-                                <span class="block -mt-1 text-sm text-green-100">
+                                <span class="block -mt-1 text-sm text-emerald-100">
                                     <%=raw gettext("%{price} / month", price: ~s{<span class="paddle-net" data-product="#{@plan.paddle_id}"></span>}) %>
                                 </span>
-                                <span class="block text-xs text-green-300">
+                                <span class="block text-xs text-emerald-300">
                                     <%=raw gettext("(%{price} incl. tax)", price: ~s{<span class="paddle-gross" data-product="#{@plan.paddle_id}"></span>}) %>
                                 </span>
                             </h3>
                             <ul>
                                 <li class="flex">
-                                    <check-complete class="mr-2 flex-shrink-0" />
+                                    <check-complete class="mr-2 shrink-0" />
                                     <%= gettext("%{monthly_emails} emails/month", monthly_emails: @plan.monthly_credits) %>
                                 </li>
                                 <li class="flex">
-                                    <check-complete class="mr-2 flex-shrink-0" />
+                                    <check-complete class="mr-2 shrink-0" />
                                     <%= gettext("unlimited contacts") %>
                                 </li>
                             </ul>
@@ -88,20 +88,20 @@
                                 <span class="text-2xl">
                                     <%= plan.name %>
                                 </span>
-                                <span class="block -mt-1 text-sm text-green-100">
+                                <span class="block -mt-1 text-sm text-emerald-100">
                                     <%=raw gettext("%{price} / month", price: ~s{<span class="paddle-net" data-product="#{plan.paddle_id}"></span>}) %>
                                 </span>
-                                <span class="block text-xs text-green-300">
+                                <span class="block text-xs text-emerald-300">
                                     <%=raw gettext("(%{price} incl. tax)", price: ~s{<span class="paddle-gross" data-product="#{plan.paddle_id}"></span>}) %>
                                 </span>
                             </h3>
                             <ul>
                                 <li class="flex">
-                                    <check-complete class="mr-2 flex-shrink-0" />
+                                    <check-complete class="mr-2 shrink-0" />
                                     <%= gettext("%{monthly_emails} emails/month", monthly_emails: plan.monthly_credits) %>
                                 </li>
                                 <li class="flex">
-                                    <check-complete class="mr-2 flex-shrink-0" />
+                                    <check-complete class="mr-2 shrink-0" />
                                     <%= gettext("unlimited contacts") %>
                                 </li>
                             </ul>
@@ -130,7 +130,7 @@
 
             <div class="h-3 relative w-full rounded-full overflow-hidden mt-4">
                 <div class="w-full h-full bg-gray-200 absolute"></div>
-                <div class="h-full bg-green-500 absolute" style={"width:#{ elem(@credits, 1) / ( case elem(@credits, 0) do 0 -> 1; other -> other; end) * 100 }"}></div>
+                <div class="h-full bg-emerald-500 absolute" style={"width:#{ elem(@credits, 1) / ( case elem(@credits, 0) do 0 -> 1; other -> other; end) * 100 }"}></div>
             </div>
 
             <%= gettext("%{remaining} / %{total} emails remaining", total: elem(@credits, 0), remaining: elem(@credits, 1)) %>
