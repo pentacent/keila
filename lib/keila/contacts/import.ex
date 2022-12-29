@@ -73,7 +73,7 @@ defmodule Keila.Contacts.Import do
     |> Stream.map(fn {changeset, n} ->
       case Repo.insert(changeset, insert_ops) do
         {:ok, %{id: id}} ->
-          Keila.Contacts.log_event(id, :import)
+          Keila.Tracking.log_event("import", id, %{})
           n
 
         {:error, changeset} ->
@@ -121,10 +121,9 @@ defmodule Keila.Contacts.Import do
 
     fn row ->
       Enum.zip(columns, row)
-      |> Keyword.put(:project_id, project_id)
       |> Enum.into(%{})
       |> Map.update(:data, nil, &update_data_param/1)
-      |> Contact.creation_changeset()
+      |> Contact.creation_changeset(project_id)
     end
   end
 

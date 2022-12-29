@@ -36,11 +36,10 @@ defmodule Keila.Mailings.Builder do
     {recipient, contact} =
       case recipient_or_contact do
         recipient = %Recipient{} -> {recipient, recipient.contact}
-        contact = %Contact{} -> {nil, contact}
+        contact = %Contact{} -> {%Recipient{id: "00000000-0000-4000-0000-000000000000"}, contact}
       end
 
-    unsubscribe_link =
-      Routes.form_url(KeilaWeb.Endpoint, :unsubscribe, campaign.project_id, contact.id)
+    unsubscribe_link = Keila.Mailings.get_unsubscribe_link(campaign.project_id, recipient.id)
 
     assigns =
       assigns
@@ -238,9 +237,9 @@ defmodule Keila.Mailings.Builder do
     end
   end
 
-  # TODO add campaign settings for disabling/configuring tracking
+  # TODO add contact settings for disabling/configuring tracking
   defp maybe_put_tracking(email, campaign, recipient) do
-    if email.html_body && recipient && !campaign.settings.do_not_track do
+    if email.html_body && recipient && !campaign.settings.do_not_track && not is_nil(campaign.id) do
       put_tracking(email, campaign, recipient)
     else
       email

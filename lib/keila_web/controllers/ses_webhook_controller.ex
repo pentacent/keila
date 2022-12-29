@@ -2,7 +2,7 @@ defmodule KeilaWeb.SESWebhookController do
   use KeilaWeb, :controller
   use Keila.Repo
   require Logger
-
+  alias Keila.Mailings
   alias Keila.Mailings.Recipient
 
   plug Plug.Parsers,
@@ -14,28 +14,22 @@ defmodule KeilaWeb.SESWebhookController do
   @spec webhook(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def webhook(conn = %{assigns: %{message: %{"bounce" => %{"bounceType" => "Permanent"}}}}, _) do
     bounce_subtype = get_in(conn.assigns.message, ["bounce", "bounceSubType"])
-
-    Keila.Contacts.log_event(conn.assigns.recipient.contact_id, "hard_bounce", %{
-      "type" => "ses",
-      "ses_bounce_subtype" => bounce_subtype
-    })
+    data = %{"type" => "ses", "ses_bounce_subtype" => bounce_subtype}
+    Mailings.handle_recipient_hard_bounce(conn.assigns.recipient.id, data)
 
     conn |> send_resp(200, "")
   end
 
   def webhook(conn = %{assigns: %{message: %{"bounce" => %{"bounceType" => "Transient"}}}}, _) do
     bounce_subtype = get_in(conn.assigns.message, ["bounce", "bounceSubType"])
-
-    Keila.Contacts.log_event(conn.assigns.recipient.contact_id, "soft_bounce", %{
-      "type" => "ses",
-      "ses_bounce_subtype" => bounce_subtype
-    })
+    data = %{"type" => "ses", "ses_bounce_subtype" => bounce_subtype}
+    Mailings.handle_recipient_soft_bounce(conn.assigns.recipient.id, data)
 
     conn |> send_resp(200, "")
   end
 
   def webhook(conn = %{assigns: %{message: %{"complaint" => %{}}}}, _) do
-    Keila.Contacts.log_event(conn.assigns.recipient.contact_id, "complaint")
+    Mailings.handle_recipient_complaint(conn.assigns.recipient.id, %{})
 
     conn |> send_resp(200, "")
   end

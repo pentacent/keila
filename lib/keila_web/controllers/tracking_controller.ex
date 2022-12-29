@@ -1,5 +1,6 @@
 defmodule KeilaWeb.TrackingController do
   use KeilaWeb, :controller
+  alias Keila.Tracking
 
   @spec track_open(Conn.t(), map()) :: Conn.t()
   def track_open(conn, %{
@@ -7,12 +8,9 @@ defmodule KeilaWeb.TrackingController do
         "recipient_id" => recipient_id,
         "hmac" => hmac
       }) do
-    case Keila.Tracking.track(:open, %{
-           encoded_url: encoded_url,
-           recipient_id: recipient_id,
-           hmac: hmac,
-           user_agent: get_req_header(conn, "user-agent") |> List.first()
-         }) do
+    opts = [user_agent: conn |> get_req_header("user-agent") |> List.first()]
+
+    case Tracking.track_open_and_get_link(encoded_url, recipient_id, hmac, opts) do
       {:ok, url} -> redirect(conn, external: url)
       :error -> put_status(conn, 404) |> halt()
     end
@@ -21,16 +19,16 @@ defmodule KeilaWeb.TrackingController do
   @spec track_click(Conn.t(), map()) :: Conn.t()
   def track_click(
         conn,
-        params = %{"encoded_url" => encoded_url, "recipient_id" => recipient_id, "hmac" => hmac}
+        %{
+          "encoded_url" => encoded_url,
+          "recipient_id" => recipient_id,
+          "hmac" => hmac,
+          "link_id" => link_id
+        }
       ) do
-    link_id = Map.get(params, "link_id")
+    opts = [user_agent: conn |> get_req_header("user-agent") |> List.first()]
 
-    case Keila.Tracking.track(:click, %{
-           encoded_url: encoded_url,
-           recipient_id: recipient_id,
-           link_id: link_id,
-           hmac: hmac
-         }) do
+    case Tracking.track_click_and_get_link(encoded_url, recipient_id, link_id, hmac, opts) do
       {:ok, url} -> redirect(conn, external: url)
       :error -> put_status(conn, 404) |> halt()
     end

@@ -6,7 +6,7 @@ defmodule Keila.Contacts do
   """
   use Keila.Repo
   alias Keila.Projects.Project
-  alias __MODULE__.{Contact, Import, Form, Event, Segment}
+  alias __MODULE__.{Contact, Import, Form, Segment}
   import KeilaWeb.Gettext
 
   @doc """
@@ -16,9 +16,7 @@ defmodule Keila.Contacts do
           {:ok, Contact.t()} | {:error, Changeset.t(Contact.t())}
   def create_contact(project_id, params) when is_binary(project_id) or is_integer(project_id) do
     params
-    |> stringize_params()
-    |> Map.put("project_id", project_id)
-    |> Contact.creation_changeset()
+    |> Contact.creation_changeset(project_id)
     |> Repo.insert()
   end
 
@@ -26,12 +24,10 @@ defmodule Keila.Contacts do
   Creates a new Contact within the given Project with dynamic casts and
   validations based on the given form.
   """
-  @spec create_contact_from_form(Project.id(), Form.t(), map()) ::
+  @spec create_contact_from_form(Form.t(), map()) ::
           {:ok, Contact.t()} | {:error, Changeset.t(Contact.t())}
-  def create_contact_from_form(project_id, form, params) do
+  def create_contact_from_form(form, params) do
     params
-    |> stringize_params()
-    |> Map.put("project_id", project_id)
     |> Contact.changeset_from_form(form)
     |> Repo.insert()
   end
@@ -225,9 +221,8 @@ defmodule Keila.Contacts do
   @spec create_form(Project.id(), map()) :: {:ok, Form.t()} | {:error, Changeset.t(Form.t())}
   def create_form(project_id, params) do
     params
-    |> stringize_params()
-    |> Map.put("project_id", project_id)
     |> Form.creation_changeset()
+    |> put_change(:project_id, project_id)
     |> Repo.insert()
   end
 
@@ -309,54 +304,38 @@ defmodule Keila.Contacts do
   end
 
   @doc """
-  Logs an Event and updates contact status accordingly.
+  Updates the status of a Contact.
   """
-  @spec log_event(Contact.id(), String.t() | atom(), map()) ::
-          {:ok, Event.t()} | {:error, Changeset.t(Event.t())}
-  def log_event(contact_id, type, data \\ %{}) do
-    %{contact_id: contact_id, type: type, data: data}
-    |> Event.changeset()
-    |> Repo.insert()
-    |> tap(&maybe_update_contact_status/1)
+  @spec update_contact_status(Contact.id(), atom()) :: Contact.t()
+  def update_contact_status(contact_id, status) do
+    with %Contact{} = contact <- get_contact(contact_id) do
+      contact |> change(%{status: status}) |> Repo.update!()
+    end
   end
-
-  defp maybe_update_contact_status({:ok, event}),
-    do: update_contact_status(event.contact_id, event)
-
-  defp maybe_update_contact_status(_), do: nil
 
   @doc """
-  Returns list of all Events for given `contact_id`.
-  Events are sorted from latest to oldest.
+  Downgrades the status of a contact to the given status if that status is
+  lower than the previously stored value.
   """
-  @spec get_contact_events(Contact.id()) :: [Event.t()]
-  def get_contact_events(contact_id) do
-    from(e in Event, where: e.contact_id == ^contact_id, order_by: [desc: e.inserted_at])
-    |> Repo.all()
+  @spec downgrade_contact_status(Contact.id(), :unsubscribed | :unreachable) :: Contact.t()
+  def downgrade_contact_status(contact_id, :unsubscribed) do
+    with %Contact{} = contact <- get_contact(contact_id) do
+      if contact.status != :unsubscribed do
+        contact |> change(%{status: :unreachable}) |> Repo.update!()
+      else
+        contact
+      end
+    end
   end
 
-  defp update_contact_status(contact_id, latest_event)
-
-  defp update_contact_status(contact_id, %Event{type: type})
-       when type in [:subscribe, :create, :import] do
-    from(c in Contact, where: c.id == ^contact_id)
-    |> Repo.update_all(set: [status: :active])
-  end
-
-  defp update_contact_status(contact_id, %Event{type: type})
-       when type in [:unsubscribe, :complaint] do
-    from(c in Contact, where: c.id == ^contact_id and c.status in [:active, :unreachable])
-    |> Repo.update_all(set: [status: :unsubscribed])
-  end
-
-  defp update_contact_status(contact_id, %Event{type: :hard_bounce}) do
-    from(c in Contact, where: c.id == ^contact_id and c.status in [:active])
-    |> Repo.update_all(set: [status: :unreachable])
-  end
-
-  defp update_contact_status(_contact_id, _event) do
-    # TODO Implement updating status without in without latest_event and make function public.
-    :ok
+  def downgrade_contact_status(contact_id, :unreachable) do
+    with %Contact{} = contact <- get_contact(contact_id) do
+      if contact.status not in [:unsubscribed, :unreachable] do
+        contact |> change(%{status: :unreachable}) |> Repo.update!()
+      else
+        contact
+      end
+    end
   end
 
   @doc """
@@ -366,9 +345,8 @@ defmodule Keila.Contacts do
           {:ok, Segment.t()} | {:error, Changeset.t(Segment.t())}
   def create_segment(project_id, params) when is_id(project_id) do
     params
-    |> stringize_params()
-    |> Map.put("project_id", project_id)
     |> Segment.creation_changeset()
+    |> put_change(:project_id, project_id)
     |> Repo.insert()
   end
 

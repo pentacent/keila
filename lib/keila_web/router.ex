@@ -149,11 +149,14 @@ defmodule KeilaWeb.Router do
 
     get "/forms/:id", FormController, :display
     post "/forms/:id", FormController, :submit
-    get "/unsubscribe/:project_id/:contact_id", FormController, :unsubscribe
-    post "/unsubscribe/:project_id/:contact_id", FormController, :unsubscribe
-
+    get "/unsubscribe/:project_id/:recipient_id/:hmac", FormController, :unsubscribe
+    post "/unsubscribe/:project_id/:recipient_id/:hmac", FormController, :unsubscribe
     get "/r/:encoded_url/:recipient_id/:hmac", TrackingController, :track_open
     get "/c/:encoded_url/:recipient_id/:link_id/:hmac", TrackingController, :track_click
+
+    # DEPRECATED: These routes will be removed in a future Keila release
+    get "/unsubscribe/:project_id/:contact_id", FormController, :unsubscribe
+    post "/unsubscribe/:project_id/:contact_id", FormController, :unsubscribe
   end
 
   scope "/uploads", KeilaWeb do

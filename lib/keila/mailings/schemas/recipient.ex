@@ -11,6 +11,10 @@ defmodule Keila.Mailings.Recipient do
     field(:sent_at, :utc_datetime)
     field(:opened_at, :utc_datetime)
     field(:clicked_at, :utc_datetime)
+    field(:soft_bounce_received_at, :utc_datetime)
+    field(:hard_bounce_received_at, :utc_datetime)
+    field(:complaint_received_at, :utc_datetime)
+    field(:unsubscribed_at, :utc_datetime)
     timestamps()
   end
 end
