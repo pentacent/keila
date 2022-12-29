@@ -1,7 +1,8 @@
 defmodule Keila.Mailings do
   use Keila.Repo
   alias Keila.Project
-  alias __MODULE__.{Sender, SenderAdapters, SharedSender, Campaign, Recipient}
+  alias __MODULE__.{Sender, SenderAdapters, SharedSender, Campaign, Recipient, RecipientActions}
+  alias KeilaWeb.Router.Helpers, as: Routes
 
   @moduledoc """
   Context for all functionalities related to sending email campaigns.
@@ -433,19 +434,29 @@ defmodule Keila.Mailings do
   @spec get_campaign_stats(Campaign.id()) :: %{
           status: :insufficient_credits | :unsent | :preparing | :sending | :sent,
           recipients_count: integer(),
+          unsubscribe_count: integer(),
+          bounce_count: integer(),
+          complaint_count: integer(),
           sent_count: integer()
         }
   def get_campaign_stats(campaign_id) when is_id(campaign_id) do
     campaign = get_campaign(campaign_id)
 
-    {recipients_count, sent_count, open_count, click_count} =
+    {recipients_count, sent_count, open_count, click_count, unsubscribe_count, bounce_count,
+     complaint_count} =
       from(r in Recipient, where: r.campaign_id == ^campaign_id)
       |> where([r], r.campaign_id == ^campaign_id)
       |> select(
         [r],
         {count(), sum(fragment("CASE WHEN sent_at IS NOT NULL THEN 1 ELSE 0 END")),
          sum(fragment("CASE WHEN opened_at IS NOT NULL THEN 1 ELSE 0 END")),
-         sum(fragment("CASE WHEN clicked_at IS NOT NULL THEN 1 ELSE 0 END"))}
+         sum(fragment("CASE WHEN clicked_at IS NOT NULL THEN 1 ELSE 0 END")),
+         sum(fragment("CASE WHEN unsubscribed_at IS NOT NULL THEN 1 ELSE 0 END")),
+         sum(
+           fragment(
+             "CASE WHEN soft_bounce_received_at IS NOT NULL OR hard_bounce_received_at IS NOT NULL THEN 1 ELSE 0 END"
+           )
+         ), sum(fragment("CASE WHEN complaint_received_at IS NOT NULL THEN 1 ELSE 0 END"))}
       )
       |> Repo.one()
 
@@ -477,7 +488,107 @@ defmodule Keila.Mailings do
       recipients_count: recipients_count,
       sent_count: sent_count,
       open_count: open_count,
-      click_count: click_count
+      click_count: click_count,
+      unsubscribe_count: unsubscribe_count,
+      bounce_count: bounce_count,
+      complaint_count: complaint_count
     }
+  end
+
+  @doc """
+  Retrieves a Recipient with Contact preloaded.
+  """
+  @spec get_recipient(Recipient.id()) :: Recipient.t() | nil
+  def get_recipient(recipient_id) do
+    from(r in Recipient,
+      where: r.id == ^recipient_id,
+      preload: [:contact]
+    )
+    |> Repo.one()
+  end
+
+  @doc """
+  Returns a signed unsubscribe link for the given project id and recipient.
+  """
+  @spec get_unsubscribe_link(Project.id(), Recipient.id()) :: String.t()
+  def get_unsubscribe_link(project_id, recipient_id) do
+    hmac = unsubscribe_hmac(project_id, recipient_id)
+
+    Routes.form_url(KeilaWeb.Endpoint, :unsubscribe, project_id, recipient_id, hmac)
+  end
+
+  @doc """
+  Returns `true` if project id and recipient id evaluate to the given HMAC.
+  Else returns `false`
+  """
+  @spec valid_unsubscribe_hmac?(Project.id(), Recipient.id(), String.t()) :: boolean()
+  def valid_unsubscribe_hmac?(project_id, recipient_id, hmac) do
+    case unsubscribe_hmac(project_id, recipient_id) do
+      ^hmac -> true
+      _other -> false
+    end
+  end
+
+  defp unsubscribe_hmac(project_id, recipient_id) do
+    key = Application.get_env(:keila, KeilaWeb.Endpoint) |> Keyword.fetch!(:secret_key_base)
+    message = "unsubscribe:" <> project_id <> ":" <> recipient_id
+
+    :crypto.mac(:hmac, :sha256, key, message)
+    |> Base.url_encode64(padding: false)
+  end
+
+  @doc """
+  Unsubscribes the contact associated with a recipient from a project and logs
+  the event.
+  """
+  @spec unsubscribe_recipient(Recipient.id()) :: :ok
+  def unsubscribe_recipient(recipient_id) do
+    RecipientActions.Unsubscription.handle(recipient_id)
+  end
+
+  @doc """
+  Updates a recipient after they opened an email in a campaign for the first
+  time and logs the event.
+  """
+  @spec handle_recipient_open(Recipient.id()) :: :ok
+  def handle_recipient_open(recipient_id) do
+    RecipientActions.Open.handle(recipient_id)
+  end
+
+  @doc """
+  Updates a recipient after they clicked a link in a campaign for the first time
+  and logs the event.
+  """
+  @spec handle_recipient_click(Recipient.id()) :: :ok
+  def handle_recipient_click(recipient_id) do
+    RecipientActions.Click.handle(recipient_id)
+  end
+
+  @doc """
+  Unsubscribes a recipient after a complaint was received and logs the event.
+  The `data` parameter is passed to the logging system.
+  """
+  @spec handle_recipient_complaint(Recipient.id(), map()) :: :ok
+  def handle_recipient_complaint(recipient_id, data) do
+    RecipientActions.Complaint.handle(recipient_id, data)
+  end
+
+  @doc """
+  Handles a soft bounce for a recipient and logs the event.
+  The `data` parameter is passed to the logging system.
+  """
+  @spec handle_recipient_soft_bounce(Recipient.id(), map()) :: :ok
+  def handle_recipient_soft_bounce(recipient_id, data) do
+    RecipientActions.SoftBounce.handle(recipient_id, data)
+  end
+
+  @doc """
+  Marks the contact associated with a recipient as unreachable after receiving
+  hard bounce and logs the event.
+  The `data` parameter is passed to the logging system.
+  """
+  @spec handle_recipient_hard_bounce(Recipient.id(), map()) :: :ok
+  def handle_recipient_hard_bounce(recipient_id, data) do
+    RecipientActions.HardBounce.handle(recipient_id, data)
   end
 end

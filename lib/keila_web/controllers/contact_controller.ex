@@ -76,7 +76,7 @@ defmodule KeilaWeb.ContactController do
 
     case Contacts.create_contact(current_project(conn).id, params) do
       {:ok, %{id: id}} ->
-        Keila.Contacts.log_event(id, :create)
+        Keila.Tracking.log_event("create", id, %{})
         redirect(conn, to: Routes.contact_path(conn, :index, current_project(conn).id))
 
       {:error, changeset} ->
@@ -90,7 +90,7 @@ defmodule KeilaWeb.ContactController do
       conn.assigns.contact
       |> change()
 
-    events = Contacts.get_contact_events(conn.assigns.contact.id)
+    events = Keila.Tracking.get_contact_events(conn.assigns.contact.id)
 
     data =
       case get_field(changeset, :data) do

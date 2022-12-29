@@ -36,4 +36,20 @@ defmodule Keila.Repo do
       end
     end
   end
+
+  @doc """
+  Updates a single queryable and returns it.
+
+  Returns `nil` if no update was   performed and raises
+  `Ecto.MultipleResultsError`.if more than one row was updated.
+  """
+  @spec update_one(Ecto.Queryable.t(), updates :: Keyword.t(), opts :: Keyword.t()) ::
+          term() | nil
+  def update_one(queryable, updates, opts \\ []) do
+    case __MODULE__.update_all(queryable, updates, opts) do
+      {1, [one]} -> one
+      {0, _} -> nil
+      {n, _} -> raise Ecto.MultipleResultsError, queryable: queryable, count: n
+    end
+  end
 end

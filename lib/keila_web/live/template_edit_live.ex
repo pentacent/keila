@@ -63,7 +63,7 @@ defmodule KeilaWeb.TemplateEditLive do
     template = %{template | styles: css_preview}
 
     campaign = %Keila.Mailings.Campaign{
-      id: 0,
+      id: nil,
       subject: "",
       project_id: socket.assigns.current_project.id,
       text_body: @default_text_body,

@@ -1,5 +1,6 @@
 defmodule KeilaWeb.FormController do
   use KeilaWeb, :controller
+  alias Keila.Mailings
   alias Keila.{Contacts, Contacts.Contact}
   import Ecto.Changeset
   import Phoenix.LiveView.Controller
@@ -22,7 +23,8 @@ defmodule KeilaWeb.FormController do
 
     with :ok <- maybe_check_captcha(form, params),
          {:ok, %{id: id}} <- Contacts.create_contact(form.project_id, contact_params) do
-      Keila.Contacts.log_event(id, :subscribe, %{"captcha" => form.settings.captcha_required})
+      data = %{"captcha" => form.settings.captcha_required}
+      Keila.Tracking.log_event("subscribe", id, data)
 
       render(conn, "form_success.html")
     else
@@ -54,12 +56,35 @@ defmodule KeilaWeb.FormController do
 
   @default_unsubscribe_form %Contacts.Form{settings: %Contacts.Form.Settings{}}
   @spec unsubscribe(Plug.Conn.t(), map()) :: Plug.Conn.t()
+
+  def unsubscribe(conn, %{
+        "project_id" => project_id,
+        "recipient_id" => recipient_id,
+        "hmac" => hmac
+      }) do
+    if Mailings.valid_unsubscribe_hmac?(project_id, recipient_id, hmac) do
+      Keila.Mailings.unsubscribe_recipient(recipient_id)
+
+      form = Contacts.get_project_forms(project_id) |> List.first() || @default_unsubscribe_form
+
+      conn
+      |> put_meta(:title, gettext("Unsubscribe"))
+      |> assign(:form, form)
+      |> assign(:mode, :full)
+      |> render("unsubscribe.html")
+    else
+      conn |> put_status(404) |> halt()
+    end
+  end
+
+  # DEPRECATED: This implementation is deprecated and will be removed in a future version
   def unsubscribe(conn, %{"project_id" => project_id, "contact_id" => contact_id}) do
     form = Contacts.get_project_forms(project_id) |> List.first() || @default_unsubscribe_form
     contact = Contacts.get_project_contact(project_id, contact_id)
 
     if contact && contact.status != :unsubscribed do
-      Contacts.log_event(contact.id, :unsubscribe)
+      Keila.Contacts.update_contact_status(contact_id, :unsubscribed)
+      Keila.Tracking.log_event("unsubscribe", contact_id, %{})
     end
 
     conn

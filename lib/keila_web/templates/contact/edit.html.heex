@@ -1,8 +1,8 @@
 <div x-data x-init="Hooks.RememberUnsaved.mounted.call({el: $el})"></div>
 
 <div class="container flex py-8 sm:py-11 sm:mb-4">
-    <div class="flex-grow gap-4 flex flex-col-reverse sm:flex-row sm:items-center max-w-md">
-        <h1 class="text-2xl md:text-3xl text-gray-100">
+    <div class="flex-grow gap-4 flex flex-col-reverse sm:flex-row sm:items-center">
+        <h1 class="text-2xl flex-grow md:text-3xl text-gray-100">
             <%= if assigns[:contact] do %>
                 <%= @contact.email %>
             <% else %>
@@ -26,8 +26,8 @@
     </div>
 </div>
 
-<div class="flex">
-    <div class="container">
+<div class="container flex flex-col gap-12 lg:flex-row">
+    <div class="flex">
         <% path = case assigns[:contact] do
             nil -> Routes.contact_path(@conn, :post_new, @current_project.id)
             contact -> Routes.contact_path(@conn, :post_edit, @current_project.id, contact.id)
@@ -65,41 +65,80 @@
 
         </.form>
     </div>
-</div>
 
-<%= if assigns[:events] && not Enum.empty?(@events) do %>
-    <div class="flex mt-8">
-        <div class="container">
-            <h2 class="text-2xl mb-4 font-light"><%= gettext("Contact Activity") %></h2>
+    <%= if assigns[:events] && not Enum.empty?(@events) do %>
+        <div class="flex flex-col">
+            <h2 class="text-xl font-bold mb-4">Contact Activities</h2>
             <div class="grid grid-cols-1 gap-4">
                 <%= for event <- @events do %>
-                    <p class="bg-gray-700 p-4">
-                        <span class="font-bold">
-                            <%= local_datetime_tag(event.inserted_at) %>
-                        </span>
-                        <br>
-                        <%= case event.type do %>
-                            <% :create -> %>
-                                <%= gettext("created") %>
-                            <% :import -> %>
-                                <%= gettext("imported") %>
-                            <% :subscribe -> %>
-                                <%= gettext("subscribed") %>
-                                <%= if get_in(event.data, ["captcha"]) do %>
-                                    <%= gettext("with captcha") %>
+                    <div class="flex gap-4">
+                        <div class="inline-flex h-8 w-8">
+                            <%= case event.type do %>
+                                <% :create -> %>
+                                    <%= render_icon(:sparkles) %>
+                                <% :import -> %>
+                                    <%= render_icon(:sparkles) %>
+                                <% :subscribe -> %>
+                                    <%= render_icon(:sparkles) %>
+                                <% :open -> %>
+                                    <%= render_icon(:mail_open) %>
+                                <% :click -> %>
+                                    <%= render_icon(:cursor_click) %>
+                                <% :unsubscribe -> %>
+                                    <%= render_icon(:hand) %>
+                                <% :soft_bounce -> %>
+                                    <%= render_icon(:question_mark_circle) %>
+                                <% :hard_bounce -> %>
+                                    <%= render_icon(:exclamation_circle) %>
+                                <% :complaint -> %>
+                                    <%= render_icon(:exclamation_circle) %>
+                                <% _other -> %>
+                                    <%= render_icon(:plus) %>
+                            <% end %>
+                        </div>
+                        <div>
+                            <span class="text-sm">
+                                <%= local_datetime_tag(event.inserted_at) %>
+                            </span>
+                            <br>
+                            <span class="font-bold">
+                                <%= case event.type do %>
+                                    <% :create -> %>
+                                        <%= gettext("created") %>
+                                    <% :import -> %>
+                                        <%= gettext("imported") %>
+                                    <% :subscribe -> %>
+                                        <%= gettext("subscribed") %>
+                                        <%= if get_in(event.data, ["captcha"]) do %>
+                                            <%= gettext("with captcha") %>
+                                        <% end %>
+                                    <% :open -> %>
+                                        <%= gettext("opened campaign") %>
+                                    <% :click -> %>
+                                        <%= gettext("clicked campaign link") %>
+                                    <% :unsubscribe -> %>
+                                        <%= gettext("unsubscribed") %>
+                                    <% :soft_bounce -> %>
+                                        <%= gettext("email bounced") %>
+                                    <% :hard_bounce -> %>
+                                        <%= gettext("permanently unreachable") %>
+                                    <% :complaint -> %>
+                                        <%= gettext("filed a complaint") %>
+                                    <% other -> %>
+                                        <%= Atom.to_string(other) %>
                                 <% end %>
-                            <% :open -> %>
-                                <%= gettext("opened campaign") %>
-                            <% :click -> %>
-                                <%= gettext("clicked campaign link") %>
-                            <% :unsubscribe -> %>
-                                <%= gettext("unsubscribed") %>
-                            <% other -> %>
-                                <%= Atom.to_string(other) %>
-                        <% end %>
-                    </p>
+                            </span>
+                            <%= if event.recipient && event.recipient.campaign do %>
+                                <br>
+                                <%= gettext("from campaign") %>
+                                <a class="underline" href={ Routes.campaign_path(@conn, :stats, @current_project.id, event.recipient.campaign.id) }>
+                                    <%= event.recipient.campaign.subject %>
+                                </a>
+                            <% end %>
+                        </div>
+                    </div>
                 <% end %>
             </div>
         </div>
-    </div>
-<% end %>
+    <% end %>
+</div>
