@@ -8,11 +8,33 @@ defmodule KeilaWeb.ContactControllerTest do
     {conn, project} = with_login_and_project(conn)
 
     contacts = insert_n!(:contact, 2, fn _ -> %{project_id: project.id} end)
-    conn = get(conn, Routes.contact_path(conn, :index, project.id))
 
+    unsubscribed =
+      insert_n!(:contact, 2, fn _ -> %{project_id: project.id, status: :unsubscribed} end)
+
+    unreachable =
+      insert_n!(:contact, 2, fn _ -> %{project_id: project.id, status: :unreachable} end)
+
+    conn = get(conn, Routes.contact_path(conn, :index, project.id))
     html_response = html_response(conn, 200)
     assert html_response =~ ~r{Contacts\s*</h1>}
     for contact <- contacts, do: assert(html_response =~ contact.email)
+    for contact <- unsubscribed, do: refute(html_response =~ contact.email)
+    for contact <- unreachable, do: refute(html_response =~ contact.email)
+
+    conn = get(conn, Routes.contact_path(conn, :index_unsubscribed, project.id))
+    html_response = html_response(conn, 200)
+    assert html_response =~ ~r{Contacts\s*</h1>}
+    for contact <- contacts, do: refute(html_response =~ contact.email)
+    for contact <- unsubscribed, do: assert(html_response =~ contact.email)
+    for contact <- unreachable, do: refute(html_response =~ contact.email)
+
+    conn = get(conn, Routes.contact_path(conn, :index_unreachable, project.id))
+    html_response = html_response(conn, 200)
+    assert html_response =~ ~r{Contacts\s*</h1>}
+    for contact <- contacts, do: refute(html_response =~ contact.email)
+    for contact <- unsubscribed, do: refute(html_response =~ contact.email)
+    for contact <- unreachable, do: assert(html_response =~ contact.email)
   end
 
   @tag :contact_controller

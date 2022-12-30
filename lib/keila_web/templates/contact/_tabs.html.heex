@@ -1,0 +1,25 @@
+<div class="container grid gap-4 sm:grid-cols-3">
+    <a
+        href={Routes.contact_path(@conn, :index, @current_project.id)}
+        class={ "rounded-t p-4 text-center flex flex-col #{if @contacts_status == :active, do: "bg-emerald-700 hover:bg-emerald-600", else: "bg-gray-700 hover:bg-gray-600"}" }
+    >
+        <span class="text-3xl"><%= @contacts_stats.active %></span>
+        <span><%= gettext("active subscribers") %></span>
+    </a>
+
+    <a
+        href={Routes.contact_path(@conn, :index_unsubscribed, @current_project.id)}
+        class={ "rounded-t p-4 text-center flex flex-col #{if @contacts_status == :unsubscribed, do: "bg-emerald-700 hover:bg-emerald-600", else: "bg-gray-700 hover:bg-gray-600"}" }
+    >
+        <span class="text-3xl"><%= @contacts_stats.unsubscribed %></span>
+        <span><%= gettext("unsubscribed contacts") %></span>
+    </a>
+
+    <a
+        href={Routes.contact_path(@conn, :index_unreachable, @current_project.id)}
+        class={ "rounded-t p-4 text-center flex flex-col #{if @contacts_status == :unreachable, do: "bg-emerald-700 hover:bg-emerald-600", else: "bg-gray-700 hover:bg-gray-600"}" }
+    >
+        <span class="text-3xl"><%= @contacts_stats.unreachable %></span>
+        <span><%= gettext("unreachable contacts") %></span>
+    </a>
+</div>

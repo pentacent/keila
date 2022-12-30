@@ -4,22 +4,51 @@ defmodule KeilaWeb.ContactController do
   import Ecto.Changeset
   alias Keila.Contacts
 
-  plug :authorize when action not in [:index, :new, :post_new, :delete, :import]
+  plug :authorize
+       when action not in [
+              :index,
+              :index_unsubscribed,
+              :index_unreachable,
+              :new,
+              :post_new,
+              :delete,
+              :import
+            ]
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, params) do
+    conn
+    |> put_meta(:title, gettext("Contacts"))
+    |> assign(:contacts_status, :active)
+    |> do_index(params)
+  end
+
+  @spec index_unsubscribed(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def index_unsubscribed(conn, params) do
+    conn
+    |> put_meta(:title, gettext("Unsubscribed Contacts"))
+    |> assign(:contacts_status, :unsubscribed)
+    |> do_index(params)
+  end
+
+  @spec index_unreachable(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def index_unreachable(conn, params) do
+    conn
+    |> put_meta(:title, gettext("Unsubscribed Contacts"))
+    |> assign(:contacts_status, :unreachable)
+    |> do_index(params)
+  end
+
+  defp do_index(conn, params) do
     project_id = current_project(conn).id
 
     page = String.to_integer(Map.get(params, "page", "1")) - 1
-    query_opts = [paginate: [page: page, page_size: 50]]
+    filter = %{"status" => conn.assigns.contacts_status |> to_string()}
+    query_opts = [filter: filter, paginate: [page: page, page_size: 50]]
     contacts = Contacts.get_project_contacts(project_id, query_opts)
-
-    contacts_stats =
-      if page == 0,
-        do: Contacts.get_project_contacts_stats(project_id)
+    contacts_stats = Contacts.get_project_contacts_stats(project_id)
 
     conn
-    |> put_meta(:title, gettext("Contacts"))
     |> assign(:contacts, contacts)
     |> assign(:contacts_stats, contacts_stats)
     |> render("index.html")

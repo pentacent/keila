@@ -92,6 +92,8 @@ defmodule KeilaWeb.Router do
     get "/projects/:project_id/senders/:id/delete", SenderController, :delete_confirmation
 
     get "/projects/:project_id/contacts", ContactController, :index
+    get "/projects/:project_id/contacts/unsubscribed", ContactController, :index_unsubscribed
+    get "/projects/:project_id/contacts/unreachable", ContactController, :index_unreachable
     get "/projects/:project_id/contacts/new", ContactController, :new
     post "/projects/:project_id/contacts/new", ContactController, :post_new
     get "/projects/:project_id/contacts/import", ContactController, :import
