@@ -301,7 +301,9 @@ defmodule KeilaWeb.CampaignControllerTest do
 
       Oban.drain_queue(queue: :mailer, with_safety: false)
       :timer.sleep(1_500)
-      assert render(lv) =~ "This campaign has been successfully sent out to 10 recipients."
+
+      assert render(lv) =~
+               "<div class=\"text-sm\">emails sent</div><div class=\"text-3xl\">10</div>"
     end
   end
 
