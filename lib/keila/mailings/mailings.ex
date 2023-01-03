@@ -437,30 +437,20 @@ defmodule Keila.Mailings do
           unsubscribe_count: integer(),
           bounce_count: integer(),
           complaint_count: integer(),
-          sent_count: integer()
+          sent_count: integer(),
+          chart: map()
         }
   def get_campaign_stats(campaign_id) when is_id(campaign_id) do
     campaign = get_campaign(campaign_id)
+    recipient_stats = recipient_stats(campaign.id)
 
-    {recipients_count, sent_count, open_count, click_count, unsubscribe_count, bounce_count,
-     complaint_count} =
-      from(r in Recipient, where: r.campaign_id == ^campaign_id)
-      |> where([r], r.campaign_id == ^campaign_id)
-      |> select(
-        [r],
-        {count(), sum(fragment("CASE WHEN sent_at IS NOT NULL THEN 1 ELSE 0 END")),
-         sum(fragment("CASE WHEN opened_at IS NOT NULL THEN 1 ELSE 0 END")),
-         sum(fragment("CASE WHEN clicked_at IS NOT NULL THEN 1 ELSE 0 END")),
-         sum(fragment("CASE WHEN unsubscribed_at IS NOT NULL THEN 1 ELSE 0 END")),
-         sum(
-           fragment(
-             "CASE WHEN soft_bounce_received_at IS NOT NULL OR hard_bounce_received_at IS NOT NULL THEN 1 ELSE 0 END"
-           )
-         ), sum(fragment("CASE WHEN complaint_received_at IS NOT NULL THEN 1 ELSE 0 END"))}
-      )
-      |> Repo.one()
+    time_series_end = if campaign.sent_at, do: campaign.sent_at |> DateTime.add(24, :hour)
 
-    sent_count = sent_count || 0
+    opened_at_series =
+      recipient_time_series(campaign.id, :opened_at, campaign.sent_at, time_series_end)
+
+    clicked_at_series =
+      recipient_time_series(campaign.id, :clicked_at, campaign.sent_at, time_series_end)
 
     insufficient_credits? =
       if Keila.Accounts.credits_enabled?() do
@@ -478,21 +468,61 @@ defmodule Keila.Mailings do
       cond do
         is_nil(campaign.sent_at) and insufficient_credits? -> :insufficient_credits
         is_nil(campaign.sent_at) -> :unsent
-        not is_nil(campaign.sent_at) and recipients_count == 0 -> :preparing
-        recipients_count != sent_count -> :sending
-        recipients_count == sent_count -> :sent
+        not is_nil(campaign.sent_at) and recipient_stats[:recipients_count] == 0 -> :preparing
+        recipient_stats[:recipients_count] != recipient_stats[:sent_count] -> :sending
+        recipient_stats[:recipients_count] == recipient_stats[:sent_count] -> :sent
       end
 
-    %{
-      status: status,
-      recipients_count: recipients_count,
-      sent_count: sent_count,
-      open_count: open_count,
-      click_count: click_count,
-      unsubscribe_count: unsubscribe_count,
-      bounce_count: bounce_count,
-      complaint_count: complaint_count
-    }
+    recipient_stats
+    |> Map.put(:status, status)
+    |> Map.put(:opened_at_series, opened_at_series)
+    |> Map.put(:clicked_at_series, clicked_at_series)
+  end
+
+  defp recipient_stats(campaign_id) do
+    from(r in Recipient, where: r.campaign_id == ^campaign_id)
+    |> where([r], r.campaign_id == ^campaign_id)
+    |> select(
+      [r],
+      %{
+        recipients_count: count(),
+        sent_count: sum(fragment("CASE WHEN sent_at IS NOT NULL THEN 1 ELSE 0 END")),
+        open_count: sum(fragment("CASE WHEN opened_at IS NOT NULL THEN 1 ELSE 0 END")),
+        click_count: sum(fragment("CASE WHEN clicked_at IS NOT NULL THEN 1 ELSE 0 END")),
+        unsubscribe_count:
+          sum(fragment("CASE WHEN unsubscribed_at IS NOT NULL THEN 1 ELSE 0 END")),
+        bounce_count:
+          sum(
+            fragment(
+              "CASE WHEN soft_bounce_received_at IS NOT NULL OR hard_bounce_received_at IS NOT NULL THEN 1 ELSE 0 END"
+            )
+          ),
+        complaint_count:
+          sum(fragment("CASE WHEN complaint_received_at IS NOT NULL THEN 1 ELSE 0 END"))
+      }
+    )
+    |> Repo.one()
+  end
+
+  defp recipient_time_series(_campaign_id, _field, nil = _start_time, _end_time), do: []
+
+  defp recipient_time_series(campaign_id, field, start_time, end_time) do
+    from(
+      r in Recipient,
+      right_join:
+        series in fragment(
+          "select generate_series(date_trunc('hour', ?::timestamp), date_trunc('hour', ?::timestamp), '1h') as h",
+          ^start_time,
+          ^end_time
+        ),
+      on:
+        series.h == fragment("date_trunc('hour', ?)", field(r, ^field)) and
+          r.campaign_id == ^campaign_id and not is_nil(field(r, ^field)),
+      group_by: series.h,
+      order_by: series.h,
+      select: {series.h, count(r.id)}
+    )
+    |> Repo.all()
   end
 
   @doc """

@@ -18,6 +18,8 @@ defmodule KeilaWeb.CampaignStatsLive do
       |> assign(:campaign, campaign)
       |> assign(:current_project, project)
       |> assign(:stats, stats)
+      |> assign(:chart_datasets, chart_datasets(stats))
+      |> assign(:chart_labels, chart_labels(stats))
       |> assign(:link_stats, link_stats)
       |> assign(:account, account)
       |> assign(:subscription, subscription)
@@ -47,6 +49,8 @@ defmodule KeilaWeb.CampaignStatsLive do
       socket
       |> assign(:stats, stats)
       |> assign(:link_stats, link_stats)
+      |> assign(:chart_datasets, chart_datasets(stats))
+      |> assign(:chart_labels, chart_labels(stats))
 
     {:noreply, socket}
   end
@@ -54,5 +58,25 @@ defmodule KeilaWeb.CampaignStatsLive do
   defp schedule_update(socket) do
     Process.send_after(self(), :update, 1000)
     socket
+  end
+
+  defp chart_datasets(stats) do
+    [
+      %{
+        id: "opens",
+        label: gettext("Opens"),
+        data: stats[:opened_at_series] |> Enum.map(&elem(&1, 1))
+      },
+      %{
+        id: "clicks",
+        label: gettext("Clicks"),
+        data: stats[:clicked_at_series] |> Enum.map(&elem(&1, 1))
+      }
+    ]
+    |> Jason.encode!()
+  end
+
+  defp chart_labels(stats) do
+    stats[:opened_at_series] |> Enum.map(&elem(&1, 0)) |> Jason.encode!()
   end
 end

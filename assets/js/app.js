@@ -18,8 +18,9 @@ import * as CampaignEditLiveHooks from "./hooks/campaign-edit-live"
 import * as DateTimeHooks from "./hooks/date-time"
 import { RememberUnsaved } from "./hooks/remember-unsaved"
 import { CampaignSettingsDialogHook } from "./hooks/campaign-settings-dialog"
+import CampaignStatsChartHook from "./hooks/campaign-stats-chart"
 
-const Hooks = { ...DateTimeHooks, ...CampaignEditLiveHooks, RememberUnsaved, CampaignSettingsDialogHook }
+const Hooks = { ...DateTimeHooks, ...CampaignEditLiveHooks, RememberUnsaved, CampaignSettingsDialogHook, CampaignStatsChartHook }
 
 // Make hooks available globally
 window.Hooks = Hooks
