@@ -60,7 +60,7 @@ defmodule Keila.MixProject do
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 0.5"},
       {:esbuild, "~> 0.2", runtime: Mix.env() == :dev},
-      {:gettext, "~> 0.11"},
+      {:gettext, "~> 0.20"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:ex_doc, "~> 0.23", only: :dev, runtime: false},
