@@ -40,7 +40,7 @@ defmodule KeilaWeb.LayoutView do
     apply(Routes, :"#{controller}_path", params)
   end
 
-  @spec active_path?(String.t(), String.t(), Keyword.path()) :: boolean()
+  @spec active_path?(Plug.Conn.t(), String.t(), Keyword.path()) :: boolean()
   def active_path?(conn = %{request_path: current_path}, path, ops) do
     exact? = Keyword.get(ops, :exact, false)
 
