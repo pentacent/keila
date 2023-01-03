@@ -1,11 +1,11 @@
-<div class="container flex py-8 sm:py-11 sm:mb-4">
+<div class="container flex py-8 sm:py-11 sm:mb-2">
     <div class="flex-grow gap-4 flex flex-col-reverse sm:flex-row sm:items-center">
         <h1 class="text-2xl md:text-3xl text-gray-100">
             <%= @campaign.subject %>
         </h1>
         <div class="flex-grow flex flex-row justify-end gap-4 sm:flex-row">
             <a class="button button--text button--large" href={ Routes.campaign_path(@socket, :index, @current_project.id) }>
-                <%= gettext("Cancel") %>
+                <%= gettext("Back") %>
             </a>
             <%= if @stats.status in [:insufficient_credits, :sent] do %>
                 <%= delete_form_tag(@campaign, Routes.campaign_path(@socket, :delete, @current_project.id), as: :campaign) %>
@@ -15,7 +15,8 @@
     </div>
 </div>
 
-<div class="container">
+<%= if @stats.status != :sent do %>
+<div class="container mb-12">
     <%= case @stats.status do %>
     <% :unsent -> %>
         <p><%= gettext("This campaign has not yet been sent.") %></p>
@@ -103,64 +104,127 @@
                 </div>
             </div>
         </div>
-
-
-    <% :sent -> %>
-        <p class="flex gap-4 items-center bg-emerald-900 p-4 sm:p-8">
-            <span class="inline-flex h-20 w-20"><%= render_icon(:cake) %></span>
-            <%= gettext("This campaign has been successfully sent out to %{count} recipients.", count: @stats.sent_count) %>
-        </p>
     <% end %>
 </div>
-
-<%= if @stats.sent_count > 0 && !@campaign.settings.do_not_track do %>
-    <div class="container mt-8">
-        <h3 class="font-light text-2xl"><%= gettext("Statistics") %></h3>
-        <%= gettext(
-            "Opens: %{opens} (%{percentage}%)",
-            opens: @stats.open_count,
-            percentage: (@stats.open_count / @stats.sent_count * 100) |> Float.round(2)
-        ) %>
-        <br>
-        <%= gettext(
-            "Clicks: %{clicks} (%{percentage}%)",
-            clicks: @stats.click_count,
-            percentage: (@stats.click_count / @stats.sent_count * 100) |> Float.round(2)
-        ) %>
-
-        <h3 class="font-light text-2xl mt-8"><%= gettext("Links") %></h3>
-
-        <table class="w-full text-left">
-            <tr>
-                <th>
-                    <%= gettext("URL") %>
-                </th>
-                <th>
-                    <%= gettext("Clicks") %>
-                </th>
-                <th>
-                    <%= gettext("Click rate") %>
-                </th>
-            </tr>
-            <%= for {link, clicks} <- @link_stats do %>
-                <tr>
-                    <td><%= link %></td>
-                    <td><%= clicks %></td>
-                    <td><%= (clicks / @stats.sent_count * 100) |> Float.round(2) %>%</td>
-                </tr>
-            <% end %>
-        </table>
-    </div>
 <% end %>
 
-<%= if @stats.sent_count > 0 && @campaign.settings.do_not_track do %>
-    <div class="container mt-8">
-        <div class="flex gap-4 items-center py-4 sm:py-8">
-            <span class="inline-flex h-12 w-12"><%= render_icon(:eye_off) %></span>
-            <div class="max-w-xl">
-                <h3 class="font-light text-2xl"><%= gettext("Do-not-track Campaign") %></h3>
-                <%= gettext("You have chosen not to track clicks and opens for this campaign. Thanks for respecting the privacy of your recipients!", count: @stats.sent_count) %>
+<%= if @stats.sent_count > 0 do %>
+    <div class="container">
+        <div class="bg-gray-800 p-4 grid lg:grid-cols-2 gap-8 items-center xl:p-4 xl:grid-cols-3 xl:gap-4 whitespace-nowrap">
+            <div class="flex flex-row gap-4 xl:p-4">
+                <div class="flex h-14 w-14 p-4 bg-emerald-800 rounded-full text-white">
+                    <%= render_icon(:mail) %>
+                </div>
+                <div class="flex flex-col">
+                    <div class="text-sm"><%= gettext("emails sent") %></div>
+                    <div class="text-3xl"><%= @stats.sent_count %></div>
+                </div>
+            </div>
+            <%= if !@campaign.settings.do_not_track do %>
+                <div class="flex flex-row gap-4 xl:p-4">
+                    <div class="flex h-14 w-14 p-4 bg-cyan-800 rounded-full text-white">
+                        <%= render_icon(:mail_open) %>
+                    </div>
+                    <div>
+                        <div class="text-sm"><%= gettext("emails opened") %></div>
+                        <div class="flex flex-row gap-2 items-end">
+                            <span class="text-3xl"><%= @stats.open_count %></span>
+                            <span class="text-xl opacity-75">
+                                <%= (@stats.open_count / @stats.sent_count * 100) |> Float.round(1) %>&thinsp;%
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-row gap-4 xl:p-4">
+                    <div class="flex h-14 w-14 p-4 bg-purple-800 rounded-full text-white">
+                        <%= render_icon(:cursor_click) %>
+                    </div>
+                    <div>
+                        <div class="text-sm"><%= gettext("emails clicked") %></div>
+                        <div class="flex flex-row gap-2 items-end">
+                            <span class="text-3xl"><%= @stats.click_count %></span>
+                            <span class="text-xl opacity-75">
+                                <%= (@stats.click_count / @stats.sent_count * 100) |> Float.round(1) %>&thinsp;%
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            <% else %>
+                <div class="flex gap-4 bg-gradient-to-r from-purple-900 to-purple-800 p-4 md:col-span-2 md:col-start-1 md:row-start-1 xl:col-start-2">
+                    <div class="flex flex-shrink-0 h-14 w-14 p-4 bg-purple-800 rounded-full text-white">
+                        <%= render_icon(:eye_off) %>
+                    </div>
+                    <div>
+                        <div class="text-xl"><%= gettext("Untracked Campaign") %></div>
+                        <div class="text-sm whitespace-normal"><%= gettext("You have disabled tracking for this campaign. Thanks for respecting the privacy of your recipients!", count: @stats.sent_count) %></div>
+                    </div>
+                </div>
+            <% end %>
+            <div class="flex flex-row gap-4 xl:p-4">
+                <div class="flex h-14 w-14 p-4 bg-gray-400 text-gray-900 rounded-full">
+                    <%= render_icon(:thumb_down) %>
+                </div>
+                <div>
+                    <div class="text-sm"><%= gettext("unsubscribes") %></div>
+                    <div class="flex flex-row gap-2 items-end">
+                        <span class="text-3xl"><%= @stats.unsubscribe_count %></span>
+                        <span class="text-xl opacity-75"><%= (@stats.unsubscribe_count / @stats.sent_count * 100) |> Float.round(1) %>&thinsp;%</span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-row gap-4 xl:p-4">
+                <div class="flex h-14 w-14 p-4 bg-gray-400 text-gray-900 rounded-full">
+                    <%= render_icon(:arrow_uturn_left) %>
+                </div>
+                <div>
+                    <div class="text-sm"><%= gettext("bounces") %></div>
+                    <div class="flex flex-row gap-2 items-end">
+                        <span class="text-3xl"><%= @stats.bounce_count %></span>
+                        <span class="text-xl opacity-75"><%= (@stats.bounce_count / @stats.sent_count * 100) |> Float.round(1) %>&thinsp;%</span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-row gap-4 xl:p-4">
+                <div class="flex h-14 w-14 p-4 bg-gray-400 text-gray-900 rounded-full">
+                    <%= render_icon(:exclamation_triangle) %>
+                </div>
+                <div>
+                    <div class="text-sm"><%= gettext("complaints") %></div>
+                    <div class="flex flex-row gap-2 items-end">
+                        <span class="text-3xl"><%= @stats.complaint_count %></span>
+                        <span class="text-xl opacity-75"><%= (@stats.complaint_count / @stats.sent_count * 100) |> Float.round(1) %>&thinsp;%</span>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <%= if !@campaign.settings.do_not_track do %>
+            <h3 class="font-light text-2xl mt-8 mb-4"><%= gettext("24-Hour Performance") %></h3>
+            <div class="h-64 w-full mt-8 overflow-hidden">
+                <canvas id="chart" phx-update="ignore" phx-hook="CampaignStatsChartHook" x-data="{}" x-init="Hooks.CampaignStatsChartHook.mounted.call({el: $el})" data-datasets={@chart_datasets} data-labels={@chart_labels}  />
+            </div>
+
+            <h3 class="font-light text-2xl mt-8 mb-4"><%= gettext("Links") %></h3>
+            <table class="w-full text-left">
+                <tr>
+                    <th>
+                        <%= gettext("URL") %>
+                    </th>
+                    <th>
+                        <%= gettext("Clicks") %>
+                    </th>
+                    <th>
+                        <%= gettext("Click rate") %>
+                    </th>
+                </tr>
+                <%= for {link, clicks} <- @link_stats do %>
+                    <tr>
+                        <td><%= link %></td>
+                        <td><%= clicks %></td>
+                        <td><%= (clicks / @stats.sent_count * 100) |> Float.round(2) %>%</td>
+                    </tr>
+                <% end %>
+            </table>
+        <% end %>
     </div>
 <% end %>
