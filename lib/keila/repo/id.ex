@@ -22,7 +22,7 @@ defmodule Keila.Id do
         use Ecto.Type
 
         @get fn key ->
-          config = Application.get_env(:keila, Keila.Id, [])
+          config = Application.compile_env!(:keila, Keila.Id)
           value = unquote(opts) |> Keyword.get(key, Keyword.get(config, key))
           {key, value}
         end
