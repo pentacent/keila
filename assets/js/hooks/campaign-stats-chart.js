@@ -91,7 +91,6 @@ const insertOrUpdateGraph = (el) => {
     const max = Math.ceil(maxValue*1.1/10)*10
 
     const chart = Chart.getChart(el)
-    console.log(chart, datasets)
     if (chart) {
         chart.data.datasets.forEach(chartDataset => {
             updatedDataset = datasets.find(({id}) => id == chartDataset.id)
@@ -101,7 +100,6 @@ const insertOrUpdateGraph = (el) => {
         })
 
         chart.data.datasets = datasets
-        console.log(max)
         chart.options.scales.y.max = max
         chart.update()
     }
