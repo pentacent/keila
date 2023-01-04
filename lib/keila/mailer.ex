@@ -16,9 +16,13 @@ defmodule Keila.Mailer do
       |> adapter.to_swoosh_config()
       |> Enum.filter(fn {_, v} -> not is_nil(v) end)
 
-    email
-    |> adapter.put_provider_options(sender)
-    |> deliver(config)
+    try do
+      email
+      |> adapter.put_provider_options(sender)
+      |> deliver(config)
+    rescue
+      e -> {:error, e}
+    end
   end
 
   @doc """

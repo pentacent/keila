@@ -13,16 +13,39 @@ defmodule Keila.Mailings.Worker do
     # active rate limits (bucket sizes and scales).
     %{"recipient_id" => recipient_id, "recipient_count" => _recipient_count} = args
 
-    recipient =
-      from(r in Recipient,
-        where: r.id == ^recipient_id,
-        preload: [contact: [], campaign: [[sender: [:shared_sender]], :template]]
-      )
-      |> Repo.one()
+    recipient = load_recipient(recipient_id)
 
-    sender = recipient.campaign.sender
+    with :ok <- check_sender_rate_limit(recipient),
+         :ok <- ensure_valid_recipient(recipient),
+         email <- Builder.build(recipient.campaign, recipient, %{}),
+         :ok <- ensure_valid_email(email) do
+      Keila.Mailer.deliver_with_sender(email, recipient.campaign.sender)
+    end
+    |> handle_result(recipient)
+  end
 
-    case Keila.Mailer.check_sender_rate_limit(sender) do
+  defp load_recipient(recipient_id) do
+    from(r in Recipient,
+      where: r.id == ^recipient_id,
+      preload: [contact: [], campaign: [[sender: [:shared_sender]], :template]]
+    )
+    |> Repo.one()
+  end
+
+  defp ensure_valid_recipient(%{contact: %{status: :active, email: email}, sent_at: nil})
+       when not is_nil(email),
+       do: :ok
+
+  defp ensure_valid_recipient(%{sent_at: sent_at}) when not is_nil(sent_at),
+    do: {:error, :already_sent}
+
+  defp ensure_valid_recipient(_recipient), do: {:error, :invalid_contact}
+
+  defp check_sender_rate_limit(recipient) do
+    case Keila.Mailer.check_sender_rate_limit(recipient.campaign.sender) do
+      :ok ->
+        :ok
+
       {:error, min_delay} ->
         # wait until the minimum delay + add randomness to even out load
         random_delay = :rand.uniform(60)
@@ -33,46 +56,20 @@ defmodule Keila.Mailings.Worker do
         )
 
         {:snooze, delay}
-
-      :ok ->
-        if recipient.contact.status == :active && recipient.campaign.sender do
-          Logger.debug(
-            "Sending email to #{recipient.contact.email} for campaign #{recipient.campaign.id}"
-          )
-
-          recipient.campaign
-          |> Builder.build(recipient, %{})
-          |> tap(&ensure_valid!/1)
-          |> Keila.Mailer.deliver_with_sender(sender)
-          |> maybe_update_recipient(recipient)
-        else
-          Logger.debug(
-            "Skipping sending email to #{recipient.contact.email} for campaign #{recipient.campaign.id}"
-          )
-
-          from(r in Recipient, where: r.id == ^recipient.id) |> Repo.delete_all()
-
-          :ok
-        end
     end
   end
 
-  defp ensure_valid!(email) do
+  defp ensure_valid_email(email) do
     if Enum.find(email.headers, fn {name, _} -> name == "X-Keila-Invalid" end) do
-      raise "Invalid email"
+      {:error, :invalid_email}
+    else
+      :ok
     end
   end
 
-  defp maybe_update_recipient({:ok, receipt}, recipient) do
-    update_recipient(recipient, receipt)
-  end
-
-  defp maybe_update_recipient(_, _) do
-    :ok
-  end
-
-  defp update_recipient(recipient, receipt) do
-    receipt = get_receipt(receipt)
+  # Email was sent successfully
+  defp handle_result({:ok, raw_receipt}, recipient) do
+    receipt = get_receipt(raw_receipt)
 
     from(r in Recipient,
       where: r.id == ^recipient.id,
@@ -81,6 +78,27 @@ defmodule Keila.Mailings.Worker do
     |> Repo.update_all([])
 
     :ok
+  end
+
+  # Sending needs to be retried later
+  defp handle_result({:snooze, delay}, _), do: {:snooze, delay}
+
+  # Email was already sent
+  defp handle_result({:error, :already_sent}, _), do: {:cancel, :already_sent}
+
+  # Another error occurred. Sending is not retried.
+  defp handle_result({:error, reason}, recipient) do
+    Logger.debug(
+      "Failed sending email to #{recipient.contact.email} for campaign #{recipient.campaign.id}: #{inspect(reason)}"
+    )
+
+    from(r in Recipient,
+      where: r.id == ^recipient.id,
+      update: [set: [failed_at: fragment("NOW()")]]
+    )
+    |> Repo.update_all([])
+
+    {:cancel, reason}
   end
 
   defp get_receipt(%{id: receipt}), do: receipt
