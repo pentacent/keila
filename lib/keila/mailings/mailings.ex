@@ -464,13 +464,15 @@ defmodule Keila.Mailings do
         not Keila.Accounts.has_credits?(account.id, contacts_count)
       end
 
+    recipients_count = recipient_stats[:recipients_count] - recipient_stats[:failed_count]
+
     status =
       cond do
         is_nil(campaign.sent_at) and insufficient_credits? -> :insufficient_credits
         is_nil(campaign.sent_at) -> :unsent
         not is_nil(campaign.sent_at) and recipient_stats[:recipients_count] == 0 -> :preparing
-        recipient_stats[:recipients_count] != recipient_stats[:sent_count] -> :sending
-        recipient_stats[:recipients_count] == recipient_stats[:sent_count] -> :sent
+        recipient_stats[:sent_count] != recipients_count -> :sending
+        recipient_stats[:sent_count] == recipients_count -> :sent
       end
 
     recipient_stats
@@ -489,6 +491,7 @@ defmodule Keila.Mailings do
         sent_count: sum(fragment("CASE WHEN sent_at IS NOT NULL THEN 1 ELSE 0 END")),
         open_count: sum(fragment("CASE WHEN opened_at IS NOT NULL THEN 1 ELSE 0 END")),
         click_count: sum(fragment("CASE WHEN clicked_at IS NOT NULL THEN 1 ELSE 0 END")),
+        failed_count: sum(fragment("CASE WHEN failed_at IS NOT NULL THEN 1 ELSE 0 END")),
         unsubscribe_count:
           sum(fragment("CASE WHEN unsubscribed_at IS NOT NULL THEN 1 ELSE 0 END")),
         bounce_count:

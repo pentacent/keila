@@ -326,4 +326,18 @@ defmodule Keila.MailingsCampaignTest do
     assert {:error, changeset} = Mailings.create_campaign(project.id, invalid_params)
     assert %{errors: [data: {"max 32 KB data allowed", _}]} = changeset
   end
+
+  @tag :mailings_campaign
+  test "failing to send to a recipient doesn't affect delivery of campaign", %{project: project} do
+    insert!(:contact, project_id: project.id)
+    insert!(:contact, project_id: project.id, email: nil)
+
+    sender = insert!(:mailings_sender, config: %Mailings.Sender.Config{type: "test"})
+    campaign = insert!(:mailings_campaign, project_id: project.id, sender_id: sender.id)
+
+    assert :ok = Mailings.deliver_campaign(campaign.id)
+
+    assert %{success: 1, cancelled: 1} = Oban.drain_queue(queue: :mailer)
+    assert %{status: :sent} = Mailings.get_campaign_stats(campaign.id)
+  end
 end
