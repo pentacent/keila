@@ -24,9 +24,7 @@ defmodule Keila.Contacts.Contact do
     struct
     |> cast(params, [:email, :first_name, :last_name, :project_id, :data])
     |> put_change(:project_id, project_id)
-    |> validate_required([:email, :project_id])
-    |> validate_format(:email, ~r/^[^\s]+@[^\s]+$/, message: "must have the @ sign and no spaces")
-    |> unique_constraint([:email, :project_id])
+    |> validate_email()
     |> check_data_size_constraint()
   end
 
@@ -34,9 +32,7 @@ defmodule Keila.Contacts.Contact do
   def update_changeset(struct \\ %__MODULE__{}, params) do
     struct
     |> cast(params, [:email, :first_name, :last_name, :data])
-    |> validate_required([:email])
-    |> validate_format(:email, ~r/^[^\s]+@[^\s]+$/, message: "must have the @ sign and no spaces")
-    |> unique_constraint([:email, :project_id])
+    |> validate_email()
     |> check_data_size_constraint()
   end
 
@@ -55,10 +51,8 @@ defmodule Keila.Contacts.Contact do
     struct
     |> cast(params, cast_fields)
     |> validate_dynamic_required(required_fields)
-    |> validate_required([:email])
-    |> validate_format(:email, ~r/^[^\s]+@[^\s]+$/, message: "must have the @ sign and no spaces")
+    |> validate_email()
     |> put_change(:project_id, form.project_id)
-    |> unique_constraint([:email, :project_id])
   end
 
   defp validate_dynamic_required(changeset, required_fields)
@@ -68,5 +62,17 @@ defmodule Keila.Contacts.Contact do
   defp check_data_size_constraint(changeset) do
     changeset
     |> check_constraint(:data, name: :max_data_size, message: "max 8 KB data allowed")
+  end
+
+  @email_regex ~r/^[^\s@]+@[^\s@]+$/
+  defp validate_email(changeset) do
+    changeset
+    |> validate_required([:email])
+    |> update_change(:email, fn email ->
+      if is_binary(email), do: String.trim(email)
+    end)
+    |> validate_format(:email, @email_regex, message: "must have the @ sign and no spaces")
+    |> validate_length(:email, max: 255)
+    |> unique_constraint([:email, :project_id])
   end
 end
