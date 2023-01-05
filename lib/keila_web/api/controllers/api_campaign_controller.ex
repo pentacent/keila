@@ -108,10 +108,10 @@ defmodule KeilaWeb.ApiCampaignController do
   end
 
   operation(:deliver,
-    summary: "Delete Campaign",
+    summary: "Deliver Campaign",
     parameters: [id: [in: :path, type: :string, description: "Campaign ID"]],
     responses: %{
-      204 => "Campaign was deleted successfully or didn’t exist."
+      ok: {"Campaign response", "application/json", Schemas.MailingsCampaign.Response}
     }
   )
 
@@ -129,12 +129,12 @@ defmodule KeilaWeb.ApiCampaignController do
   end
 
   operation(:schedule,
-    summary: "Delete Campaign",
+    summary: "Schedule Campaign",
     parameters: [id: [in: :path, type: :string, description: "Campaign ID"]],
     request_body:
       {"Campaign params", "application/json", Schemas.MailingsCampaign.ScheduleParams},
     responses: %{
-      204 => "Campaign was deleted successfully or didn’t exist."
+      ok: {"Campaign response", "application/json", Schemas.MailingsCampaign.Response}
     }
   )
 

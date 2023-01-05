@@ -187,6 +187,8 @@ defmodule KeilaWeb.Router do
     post "/campaigns/:id/actions/schedule", ApiCampaignController, :schedule
 
     resources "/segments", ApiSegmentController, only: [:index, :show, :create, :update, :delete]
+
+    resources "/senders", ApiSenderController, only: [:index]
   end
 
   # Webhooks
