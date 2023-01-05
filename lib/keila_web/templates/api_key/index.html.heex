@@ -39,16 +39,28 @@
         <p class="font-bold text-emerald-500">
             <%= gettext("Important: The private API Key is displayed only once and cannot be recovered.") %>
         </p>
-        <div class="flex flex-row mt-2">
-            <input type="text" class="text-white bg-gray-900" readonly value={ @token.key } />
+        <div class="flex flex-row mt-2 relative" x-data="{showFeedback: false}">
+            <input
+                type="text"
+                class="text-white bg-gray-900"
+                readonly value={ @token.key }
+                x-ref="input"
+                @click="$refs.input.focus(); $refs.input.select()"
+            />
             <button
                 class="button"
-                x-data="{}"
-                @click="navigator.clipboard.writeText($el.previousElementSibling.value)"
+                @click="navigator.clipboard.writeText($refs.input.value); showFeedback = true; setTimeout(() => {showFeedback = false}, 2000)"
             >
                 <%= render_icon(:clipboard) %>
-                <%= gettext("Copy") %>
+                <%= gettext("Copy to clipboard") %>
             </button>
+            <div
+                style="display: none"
+                class="absolute left-0 top-12 bg-green-700 p-2 font-sm rounded text-white"
+                x-show.transition="showFeedback"
+            >
+                <%= gettext("API key copied to clipboard") %>
+            </div>
         </div>
     </div>
   </div>
