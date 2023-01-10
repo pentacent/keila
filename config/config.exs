@@ -50,7 +50,8 @@ config :keila, Keila.Mailings.SenderAdapters,
     Keila.Mailings.SenderAdapters.SMTP,
     Keila.Mailings.SenderAdapters.Sendgrid,
     Keila.Mailings.SenderAdapters.SES,
-    Keila.Mailings.SenderAdapters.Mailgun
+    Keila.Mailings.SenderAdapters.Mailgun,
+    Keila.Mailings.SenderAdapters.Postmark
   ],
   shared_adapters: [
     Keila.Mailings.SenderAdapters.Shared.SES

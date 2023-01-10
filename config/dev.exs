@@ -46,6 +46,7 @@ config :keila, Keila.Mailings.SenderAdapters,
     Keila.Mailings.SenderAdapters.Sendgrid,
     Keila.Mailings.SenderAdapters.SES,
     Keila.Mailings.SenderAdapters.Mailgun,
+    Keila.Mailings.SenderAdapters.Postmark,
     Keila.Mailings.SenderAdapters.Local
   ],
   shared_adapters: [
