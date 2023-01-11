@@ -30,7 +30,7 @@ jobs:
       DB_URL: postgres://postgres:postgres@postgres/keila
     steps:
       - name: install system packages
-        run: apk add build-base git tar
+        run: apk add build-base git tar curl
       - uses: actions/checkout@v3
       - uses: actions/cache@v3
         with:
@@ -46,7 +46,15 @@ jobs:
           mix deps.get
       - name: mix format --check-formatted
         run: mix format --check-formatted
-      - uses: dprint/check@v2.1
+      - name: dprint check
+        run: |
+          export DPRINT_INSTALL="$HOME/.dprint"
+          mkdir -p "$DPRINT_INSTALL/bin"
+          curl -fsSL https://github.com/dprint/dprint/releases/download/0.34.1/dprint-x86_64-unknown-linux-musl.zip -o "$DPRINT_INSTALL/bin/dprint.zip"
+          unzip "$DPRINT_INSTALL/bin/dprint.zip" -d "$DPRINT_INSTALL/bin/"
+          chmod +x "$DPRINT_INSTALL/bin/dprint"
+          export PATH="$PATH:$DPRINT_INSTALL/bin"
+          dprint check
       - name: mix compile --warnings-as-errors
         run: mix compile --warnings-as-errors
       - name: mix ecto.create && ecto.migrate

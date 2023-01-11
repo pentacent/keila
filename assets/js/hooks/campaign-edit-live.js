@@ -29,4 +29,4 @@ const HtmlPreviewHook = {
   }
 }
 
-export { MarkdownEditorHook as MarkdownEditor, HtmlPreviewHook as HtmlPreview }
+export { HtmlPreviewHook as HtmlPreview, MarkdownEditorHook as MarkdownEditor }
