@@ -10,11 +10,11 @@
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
  * PARTICULAR PURPOSE.
  *
- * You should have received a copy of the GNU General Public License  
- * along with this program. If not, see https://www.gnu.org/licenses/agpl-3.0.html 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see https://www.gnu.org/licenses/agpl-3.0.html
  *
- * This file incorporates work covered by the following copyright and  
- * permission notice:  
+ * This file incorporates work covered by the following copyright and
+ * permission notice:
  *
  * Copyright (c) 2014 Vitaly Puzrin, Alex Kocharin.
  *
@@ -26,10 +26,10 @@
  * copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following
  * conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
  * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -42,47 +42,46 @@
 
 // Parse link destination
 //
-'use strict';
+"use strict"
 
-import markdownIt  from "markdown-it"
-const {unescapeAll} = markdownIt().utils
-
+import markdownIt from "markdown-it"
+const { unescapeAll } = markdownIt().utils
 
 module.exports = function parseLinkDestination(str, start, max) {
-  var code, level,
-      pos = start,
-      result = {
-        ok: false,
-        isLiquid: false,
-        pos: 0,
-        lines: 0,
-        str: ''
-      };
-
+  var code,
+    level,
+    pos = start,
+    result = {
+      ok: false,
+      isLiquid: false,
+      pos: 0,
+      lines: 0,
+      str: ""
+    }
 
   // Link is delimited by < and >
   if (str.charCodeAt(pos) === 0x3C /* < */) {
-    pos++;
+    pos++
     while (pos < max) {
-      code = str.charCodeAt(pos);
-      if (code === 0x0A /* \n */) { return result; }
-      if (code === 0x3C /* < */) { return result; }
+      code = str.charCodeAt(pos)
+      if (code === 0x0A /* \n */) return result
+      if (code === 0x3C /* < */) return result
       if (code === 0x3E /* > */) {
-        result.pos = pos + 1;
-        result.str = unescapeAll(str.slice(start + 1, pos));
-        result.ok = true;
-        return result;
+        result.pos = pos + 1
+        result.str = unescapeAll(str.slice(start + 1, pos))
+        result.ok = true
+        return result
       }
       if (code === 0x5C /* \ */ && pos + 1 < max) {
-        pos += 2;
-        continue;
+        pos += 2
+        continue
       }
 
-      pos++;
+      pos++
     }
 
     // no closing '>'
-    return result;
+    return result
   }
 
   // Link is a Liquid tag
@@ -92,7 +91,7 @@ module.exports = function parseLinkDestination(str, start, max) {
     let startPos = pos
     pos++
     while (pos < max) {
-      code = str.charCodeAt(pos);
+      code = str.charCodeAt(pos)
 
       if (pos === startPos + 1) {
         if (code === 0x7B) {
@@ -100,10 +99,14 @@ module.exports = function parseLinkDestination(str, start, max) {
         } else if (code === 0x25) {
           closingChar = 0x25 // {%
         } else {
-            return ""
+          return ""
         }
       } else if (!closing) {
-          if (code === closingChar) { closing = true; pos++; continue}
+        if (code === closingChar) {
+          closing = true
+          pos++
+          continue
+        }
       } else if (closing && code === 0x7D) {
         result.pos = pos + 1
         result.str = str.slice(start, pos + 1)
@@ -119,39 +122,39 @@ module.exports = function parseLinkDestination(str, start, max) {
   }
 
   // this should be ... } else { ... branch
-  level = 0;
+  level = 0
   while (pos < max) {
-    code = str.charCodeAt(pos);
+    code = str.charCodeAt(pos)
 
-    if (code === 0x20) { break; }
+    if (code === 0x20) break
 
     // ascii control characters
-    if (code < 0x20 || code === 0x7F) { break; }
+    if (code < 0x20 || code === 0x7F) break
 
     if (code === 0x5C /* \ */ && pos + 1 < max) {
-      if (str.charCodeAt(pos + 1) === 0x20) { break; }
-      pos += 2;
-      continue;
+      if (str.charCodeAt(pos + 1) === 0x20) break
+      pos += 2
+      continue
     }
 
     if (code === 0x28 /* ( */) {
-      level++;
-      if (level > 32) { return result; }
+      level++
+      if (level > 32) return result
     }
 
     if (code === 0x29 /* ) */) {
-      if (level === 0) { break; }
-      level--;
+      if (level === 0) break
+      level--
     }
 
-    pos++;
+    pos++
   }
 
-  if (start === pos) { return result; }
-  if (level !== 0) { return result; }
+  if (start === pos) return result
+  if (level !== 0) return result
 
-  result.str = unescapeAll(str.slice(start, pos));
-  result.pos = pos;
-  result.ok = true;
-  return result;
-};
+  result.str = unescapeAll(str.slice(start, pos))
+  result.pos = pos
+  result.ok = true
+  return result
+}
