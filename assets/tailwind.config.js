@@ -5,10 +5,10 @@ module.exports = {
     extend: {
       colors: {
         gray: {
-          950: "#0F131A",
-        },
-      },
-    },
+          950: "#0F131A"
+        }
+      }
+    }
   },
-  plugins: [require('@tailwindcss/forms')],
+  plugins: [require("@tailwindcss/forms")]
 }

@@ -46,6 +46,7 @@ jobs:
           mix deps.get
       - name: mix format --check-formatted
         run: mix format --check-formatted
+      - uses: dprint/check@v2.1
       - name: mix compile --warnings-as-errors
         run: mix compile --warnings-as-errors
       - name: mix ecto.create && ecto.migrate

@@ -1,13 +1,15 @@
 // This function checks for the presence of a Liquid opening tag and returns the
 // first character of the closing tag ("%" or "}")
-const getLiquidClosingChar = (state, start) => {
+const getBlockInfo = (state, start) => {
   // {
-  if (state.src.charCodeAt(start) === 0x7B) {
-    // {{
-    if (state.src.charCodeAt(start + 1) === 0x7B) return 0x7D
-    
-    // {%
-    if (state.src.charCodeAt(start + 1) === 0x25) return 0x25
+  if (state.src.charCodeAt(start) === 0x3A) {
+    const match = state.src.slice(start).match(/^:keila(?::[a-z0-9]+)+:/)
+    if (!match) return
+    const parts = match[0].split(":")
+    if (parts[1] === "col") {
+      const cols = parseInt(parts[2])
+      return { type: "col", cols: cols }
+    }
   }
 }
 
@@ -25,16 +27,15 @@ const findLiquidClosingTag = (state, start, max, closingChar) => {
   }
 }
 
-function liquid(state, silent) {
+function keilaBlock(state, silent) {
   const start = state.pos,
-        max = state.posMax
-        
+    max = state.posMax
+
   const closingChar = getLiquidClosingChar(state, start)
   if (!closingChar) return false
   if (silent) return false
   if (start + 3 >= max) return false
 
-  
   if (!findLiquidClosingTag(state, start, max, closingChar)) {
     state.pos = start
     return false
@@ -44,19 +45,18 @@ function liquid(state, silent) {
   state.posMax = state.pos
   state.pos = start + 1
 
-  state.push('liquid_open', 'liquid', 1)
+  state.push("liquid_open", "liquid", 1)
 
-  const contentToken = state.push('text', '', 0)
+  const contentToken = state.push("text", "", 0)
   contentToken.content = content
 
-  state.push('liquid_close', 'liquid', -2)
+  state.push("liquid_close", "liquid", -2)
 
   state.pos = state.posMax + 1
   state.posMax = max
   return true
 }
 
-
-export const markdownItLiquid = (md) => {
-  md.inline.ruler.after('emphasis', 'liquid', liquid)
+export const markdownItKeilaBlock = (md) => {
+  md.inline.ruler.after("emphasis", "keila-block", keilaBlock)
 }

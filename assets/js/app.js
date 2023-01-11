@@ -1,4 +1,4 @@
-import 'alpinejs'
+import "alpinejs"
 
 // webpack automatically bundles all modules in your
 // entry points. Those entry points can be configured
@@ -10,28 +10,37 @@ import 'alpinejs'
 //     import socket from "./socket"
 //
 import "phoenix_html"
-import { Socket } from "phoenix"
 import NProgress from "nprogress"
+import { Socket } from "phoenix"
 import { LiveSocket } from "phoenix_live_view"
 
 import * as CampaignEditLiveHooks from "./hooks/campaign-edit-live"
-import * as DateTimeHooks from "./hooks/date-time"
-import { RememberUnsaved } from "./hooks/remember-unsaved"
 import { CampaignSettingsDialogHook } from "./hooks/campaign-settings-dialog"
 import CampaignStatsChartHook from "./hooks/campaign-stats-chart"
+import * as DateTimeHooks from "./hooks/date-time"
+import { RememberUnsaved } from "./hooks/remember-unsaved"
 
-const Hooks = { ...DateTimeHooks, ...CampaignEditLiveHooks, RememberUnsaved, CampaignSettingsDialogHook, CampaignStatsChartHook }
+const Hooks = {
+  ...DateTimeHooks,
+  ...CampaignEditLiveHooks,
+  RememberUnsaved,
+  CampaignSettingsDialogHook,
+  CampaignStatsChartHook
+}
 
 // Make hooks available globally
 window.Hooks = Hooks
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
-let liveSocket = new LiveSocket("/live", Socket, { params: { _csrf_token: csrfToken }, hooks: Hooks, dom: {
-    onBeforeElUpdated(from, to){
+let liveSocket = new LiveSocket("/live", Socket, {
+  params: { _csrf_token: csrfToken },
+  hooks: Hooks,
+  dom: {
+    onBeforeElUpdated(from, to) {
       if (from.__x) window.Alpine.clone(from.__x, to)
     }
-  },
- })
+  }
+})
 
 // Show progress bar on live navigation and form submits
 window.addEventListener("phx:page-loading-start", info => NProgress.start())

@@ -1,4 +1,4 @@
-import { MarkdownEditor } from "../campaign-editor"
+import { MarkdownEditor } from "../campaign-editors/markdown"
 
 const putHtmlPreview = (el) => {
   const content = el.innerText
