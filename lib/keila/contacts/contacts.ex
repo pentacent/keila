@@ -305,8 +305,10 @@ defmodule Keila.Contacts do
 
   @doc """
   Updates the status of a Contact.
+
+  Returns `nil` if contact was not found.
   """
-  @spec update_contact_status(Contact.id(), atom()) :: Contact.t()
+  @spec update_contact_status(Contact.id(), atom()) :: Contact.t() | nil
   def update_contact_status(contact_id, status) do
     with %Contact{} = contact <- get_contact(contact_id) do
       contact |> change(%{status: status}) |> Repo.update!()
@@ -316,8 +318,10 @@ defmodule Keila.Contacts do
   @doc """
   Downgrades the status of a contact to the given status if that status is
   lower than the previously stored value.
+
+  Returns `nil` if contact was not found.
   """
-  @spec downgrade_contact_status(Contact.id(), :unsubscribed | :unreachable) :: Contact.t()
+  @spec downgrade_contact_status(Contact.id(), :unsubscribed | :unreachable) :: Contact.t() | nil
   def downgrade_contact_status(contact_id, :unsubscribed) do
     with %Contact{} = contact <- get_contact(contact_id) do
       if contact.status != :unsubscribed do
