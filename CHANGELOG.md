@@ -2,6 +2,30 @@
 
 ## Unreleased
 
+## Version 0.11.0
+
+Better Campaign Analytics 📈
+
+### Added
+
+- New Campaign Analytics page
+- Improved Contact Activity Stream
+- Separate lists for active/unsubscribed/unreachable contacts
+- Improved handling and logging of campaign delivery errors
+- Bot detection in campaign open tracking (#164 - thanks @panoramix360)
+- New API endpoint to list Senders (#147)
+- Added support for Postmark senders (thanks @aej)
+
+### Changed
+- Improved compatibility with SMTP servers by relaxing `gen_smtp` SSL/TLS settings
+- Upgraded to Elixir 1.14
+- Ugraded to Tailwind 3 
+- Added success hint when copying API key to clipboard
+
+### Fixed
+- Fixed error when no user content dir is set (#171)
+- Fixed error when CSRF is enabled for forms (#167)
+
 ## Version 0.10.0
 
 Image Uploads, Rate Limits, Do-not-track Campaigns 🖼️
