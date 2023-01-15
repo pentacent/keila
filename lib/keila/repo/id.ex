@@ -27,8 +27,6 @@ defmodule Keila.Id do
           {key, value}
         end
 
-        @hashids_config Hashids.new([@get.(:alphabet), @get.(:salt), @get.(:min_len)])
-
         @prefix Keyword.get_lazy(
                   unquote(opts),
                   :prefix,
@@ -43,17 +41,27 @@ defmodule Keila.Id do
         @separator Keyword.get(unquote(opts), :separator, "_")
 
         def encode(id) do
-          {:ok, @prefix <> @separator <> Hashids.encode(@hashids_config, id)}
+          {:ok, @prefix <> @separator <> Hashids.encode(hashids_config(), id)}
         end
 
         def decode(@prefix <> @separator <> hashid) do
-          case Hashids.decode(@hashids_config, hashid) do
+          case Hashids.decode(hashids_config(), hashid) do
             {:ok, [id]} -> {:ok, id}
             _ -> :error
           end
         end
 
         def decode(_), do: :error
+
+        defp hashids_config() do
+          config = Application.get_env(:keila, Keila.Id)
+
+          alphabet = config |> Keyword.get(:alphabet)
+          salt = config |> Keyword.get(:alphabet)
+          min_len = config |> Keyword.get(:min_len)
+
+          Hashids.new(alphabet: alphabet, salt: salt, min_len: min_len)
+        end
 
         @impl true
         def type, do: :integer
