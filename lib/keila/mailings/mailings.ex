@@ -505,6 +505,11 @@ defmodule Keila.Mailings do
       }
     )
     |> Repo.one()
+    |> Enum.map(fn
+      {key, nil} -> {key, 0}
+      {key, value} -> {key, value}
+    end)
+    |> Enum.into(%{})
   end
 
   defp recipient_time_series(_campaign_id, _field, nil = _start_time, _end_time), do: []
