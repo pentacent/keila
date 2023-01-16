@@ -88,7 +88,10 @@ defmodule Keila.Id do
   end
 
   def cached_hashid_config() do
-    Agent.get(Keila.Id.Cache, & &1)
+    case Process.whereis(Keila.Id.Cache) do
+      pid when is_pid(pid) -> Agent.get(pid, & &1)
+      nil -> hashid_config()
+    end
   end
 
   @spec hashid_config() :: Hashids.t()
