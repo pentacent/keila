@@ -20,7 +20,12 @@ defmodule Keila.Application do
       # Start Oban
       {Oban, oban_config()},
       # Keila Task Supervisor
-      {Task.Supervisor, name: Keila.TaskSupervisor}
+      {Task.Supervisor, name: Keila.TaskSupervisor},
+      # Keila Hashid Config cache
+      %{
+        id: Keila.Id.Cache,
+        start: {Agent, :start_link, [&Keila.Id.hashid_config/0, [name: Keila.Id.Cache]]}
+      }
       # Start a worker by calling: Keila.Worker.start_link(arg)
       # {Keila.Worker, arg}
     ]

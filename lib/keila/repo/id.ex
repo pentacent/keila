@@ -29,6 +29,7 @@ defmodule Keila.Id do
     quote do
       defmodule Id do
         use Ecto.Type
+        import Keila.Id
 
         @prefix Keyword.get_lazy(
                   unquote(opts),
@@ -45,7 +46,8 @@ defmodule Keila.Id do
         @separator "_"
 
         def encode(id) do
-          {:ok, "n" <> @prefix <> @separator <> Hashids.encode(cached_hashid_config(), id)}
+          config =
+            {:ok, "n" <> @prefix <> @separator <> Hashids.encode(cached_hashid_config(), id)}
         end
 
         def decode("n" <> @prefix <> @separator <> hashid) do
@@ -63,32 +65,6 @@ defmodule Keila.Id do
         end
 
         def decode(_), do: :error
-
-        defp cached_hashid_config() do
-          if is_nil(Process.whereis(__MODULE__.Cache)) do
-            Agent.start_link(&hashid_config/0, name: __MODULE__.Cache)
-          end
-
-          Agent.get(__MODULE__.Cache, & &1)
-        end
-
-        defp hashid_config() do
-          config = Application.get_env(:keila, Keila.Id)
-          alphabet = config |> Keyword.fetch!(:alphabet)
-          salt = config |> Keyword.get(:salt, "")
-          min_len = config |> Keyword.fetch!(:min_len)
-
-          Hashids.new(alphabet: alphabet, salt: salt, min_len: min_len)
-        end
-
-        @deprecated_salt "bF4QzDjqV"
-        defp deprecated_hashid_config() do
-          config = Application.get_env(:keila, Keila.Id)
-          alphabet = config |> Keyword.fetch!(:alphabet)
-          min_len = config |> Keyword.fetch!(:min_len)
-
-          Hashids.new(alphabet: alphabet, salt: @deprecated_salt, min_len: min_len)
-        end
 
         @impl true
         def type, do: :integer
@@ -109,5 +85,29 @@ defmodule Keila.Id do
       @type id :: binary() | integer()
       @primary_key {:id, Id, read_after_writes: true}
     end
+  end
+
+  def cached_hashid_config() do
+    Agent.get(Keila.Id.Cache, & &1)
+  end
+
+  @spec hashid_config() :: Hashids.t()
+  def hashid_config() do
+    config = Application.get_env(:keila, Keila.Id)
+    alphabet = config |> Keyword.fetch!(:alphabet)
+    salt = config |> Keyword.get(:salt, "")
+    min_len = config |> Keyword.fetch!(:min_len)
+
+    Hashids.new(alphabet: alphabet, salt: salt, min_len: min_len)
+  end
+
+  @deprecated_salt "bF4QzDjqV"
+  @spec deprecated_hashid_config() :: Hashids.t()
+  def deprecated_hashid_config() do
+    config = Application.get_env(:keila, Keila.Id)
+    alphabet = config |> Keyword.fetch!(:alphabet)
+    min_len = config |> Keyword.fetch!(:min_len)
+
+    Hashids.new(alphabet: alphabet, salt: @deprecated_salt, min_len: min_len)
   end
 end
