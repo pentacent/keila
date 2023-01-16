@@ -34,9 +34,7 @@ config :esbuild,
   ]
 
 config :keila, Keila.Id,
-  separator: "_",
   alphabet: "abcdefghijkmnopqrstuvwxyz23456789ABCDEFGHJKLMNPQRSTUVWXYZ_",
-  salt: "bF4QzDjqV",
   min_len: 8
 
 config :keila, Keila.Mailings,

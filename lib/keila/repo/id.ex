@@ -14,18 +14,21 @@ defmodule Keila.Id do
   Use in Ecto Schema modules like this:
 
       use Keila.Id, prefix: "u"
+
+  ## Deprecation Notice
+  Due to a bug in previous Keila versions, up to Keila 0.11.1, all generated
+  hash IDs were encoded with a fixed salt rather than a salt based on runtime
+  configuration.
+
+  All IDs generated after the bug was fixed are prefixed with "n". IDs using the
+  deprecated salt can still be decoded. This option will eventually be
+  removed.
   """
 
   defmacro __using__(opts \\ []) do
     quote do
       defmodule Id do
         use Ecto.Type
-
-        @get fn key ->
-          config = Application.compile_env!(:keila, Keila.Id)
-          value = unquote(opts) |> Keyword.get(key, Keyword.get(config, key))
-          {key, value}
-        end
 
         @prefix Keyword.get_lazy(
                   unquote(opts),
@@ -38,14 +41,22 @@ defmodule Keila.Id do
                     |> String.downcase()
                   end
                 )
-        @separator Keyword.get(unquote(opts), :separator, "_")
+
+        @separator "_"
 
         def encode(id) do
-          {:ok, @prefix <> @separator <> Hashids.encode(hashids_config(), id)}
+          {:ok, "n" <> @prefix <> @separator <> Hashids.encode(cached_hashid_config(), id)}
+        end
+
+        def decode("n" <> @prefix <> @separator <> hashid) do
+          case Hashids.decode(cached_hashid_config(), hashid) do
+            {:ok, [id]} -> {:ok, id}
+            _ -> :error
+          end
         end
 
         def decode(@prefix <> @separator <> hashid) do
-          case Hashids.decode(hashids_config(), hashid) do
+          case Hashids.decode(deprecated_hashid_config(), hashid) do
             {:ok, [id]} -> {:ok, id}
             _ -> :error
           end
@@ -53,14 +64,30 @@ defmodule Keila.Id do
 
         def decode(_), do: :error
 
-        defp hashids_config() do
-          config = Application.get_env(:keila, Keila.Id)
+        defp cached_hashid_config() do
+          if is_nil(Process.whereis(__MODULE__.Cache)) do
+            Agent.start_link(&hashid_config/0, name: __MODULE__.Cache)
+          end
 
-          alphabet = config |> Keyword.get(:alphabet)
-          salt = config |> Keyword.get(:alphabet)
-          min_len = config |> Keyword.get(:min_len)
+          Agent.get(__MODULE__.Cache, & &1)
+        end
+
+        defp hashid_config() do
+          config = Application.get_env(:keila, Keila.Id)
+          alphabet = config |> Keyword.fetch!(:alphabet)
+          salt = config |> Keyword.get(:salt, "")
+          min_len = config |> Keyword.fetch!(:min_len)
 
           Hashids.new(alphabet: alphabet, salt: salt, min_len: min_len)
+        end
+
+        @deprecated_salt "bF4QzDjqV"
+        defp deprecated_hashid_config() do
+          config = Application.get_env(:keila, Keila.Id)
+          alphabet = config |> Keyword.fetch!(:alphabet)
+          min_len = config |> Keyword.fetch!(:min_len)
+
+          Hashids.new(alphabet: alphabet, salt: @deprecated_salt, min_len: min_len)
         end
 
         @impl true

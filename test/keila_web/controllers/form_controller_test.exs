@@ -88,7 +88,7 @@ defmodule KeilaWeb.FormControllerTest do
     test "creates new form and redirects to edit page", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
       conn = get(conn, Routes.form_path(conn, :new, project.id))
-      assert redirected_to(conn, 302) =~ ~r{/projects/#{project.id}/forms/frm_\w+}
+      assert redirected_to(conn, 302) =~ ~r{/projects/#{project.id}/forms/nfrm_\w+}
     end
   end
 

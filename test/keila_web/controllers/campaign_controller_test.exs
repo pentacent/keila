@@ -39,7 +39,7 @@ defmodule KeilaWeb.CampaignControllerTest do
 
       params = %{"subject" => "My Campaign", "settings" => %{"type" => "text"}}
       conn = post(conn, Routes.campaign_path(conn, :post_new, project.id, campaign: params))
-      assert redirected_to(conn, 302) =~ Routes.campaign_path(conn, :edit, project.id, "mc_")
+      assert redirected_to(conn, 302) =~ Routes.campaign_path(conn, :edit, project.id, "nmc_")
     end
 
     @tag :campaign_controller
@@ -361,7 +361,7 @@ defmodule KeilaWeb.CampaignControllerTest do
       conn =
         post(conn, Routes.campaign_path(conn, :clone, project.id, campaign.id, campaign: params))
 
-      assert redirected_to(conn, 302) =~ Routes.campaign_path(conn, :edit, project.id, "mc_")
+      assert redirected_to(conn, 302) =~ Routes.campaign_path(conn, :edit, project.id, "nmc_")
 
       assert 2 == Mailings.get_project_campaigns(project.id) |> Enum.count()
     end

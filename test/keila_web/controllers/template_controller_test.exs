@@ -39,7 +39,7 @@ defmodule KeilaWeb.TemplateControllerTest do
 
       params = %{"name" => "My Template"}
       conn = post(conn, Routes.template_path(conn, :post_new, project.id, template: params))
-      assert redirected_to(conn, 302) =~ Routes.template_path(conn, :edit, project.id, "tpl_")
+      assert redirected_to(conn, 302) =~ Routes.template_path(conn, :edit, project.id, "ntpl_")
     end
 
     @tag :template_controller
@@ -149,7 +149,7 @@ defmodule KeilaWeb.TemplateControllerTest do
       conn =
         post(conn, Routes.template_path(conn, :clone, project.id, template.id, template: params))
 
-      assert redirected_to(conn, 302) =~ Routes.template_path(conn, :edit, project.id, "tpl_")
+      assert redirected_to(conn, 302) =~ Routes.template_path(conn, :edit, project.id, "ntpl_")
 
       assert 2 == Templates.get_project_templates(project.id) |> Enum.count()
     end

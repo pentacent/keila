@@ -46,6 +46,7 @@ defmodule Keila.AuthTest.Permissions do
     assert {:ok, %Auth.Role{}} = Auth.create_role(params(:role, parent_id: role.id))
 
     non_existing_parent_id = Keila.Auth.Role.Id.encode(99_999_999)
+
     assert {:error, %Ecto.Changeset{}} =
              Auth.create_role(params(:group, parent_id: non_existing_parent_id))
   end

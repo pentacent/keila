@@ -123,9 +123,6 @@ if config_env() == :prod do
       secret_key_base: secret_key_base,
       live_view: [signing_salt: live_view_salt]
     )
-
-    hashid_salt = :crypto.hash(:sha384, secret_key_base <> "hashid_salt") |> Base.url_encode64()
-    config(:keila, Keila.Id, salt: hashid_salt)
   rescue
     e ->
       exit_from_exception.(e, """
@@ -138,6 +135,26 @@ if config_env() == :prod do
       head -c 48 /dev/urandom | base64
       """)
   end
+
+  # Hashids
+  secret_key_base =
+    Application.get_env(:keila, KeilaWeb.Endpoint) |> Keyword.fetch!(:secret_key_base)
+
+  hashid_salt =
+    case System.get_env("HASHID_SALT") do
+      empty when empty in [nil, ""] ->
+        Logger.warn("""
+        You have not configured a Hashid salt. Defaulting to
+        :crypto.hash(:sha256, SECRET_KEY_BASE <> "hashid_salt") |> Base.url_encode64()
+        """)
+
+        :crypto.hash(:sha256, secret_key_base <> "hashid_salt") |> Base.url_encode64()
+
+      salt ->
+        salt
+    end
+
+  config(:keila, Keila.Id, salt: hashid_salt)
 
   # Main Endpoint
   url_host = System.get_env("URL_HOST")

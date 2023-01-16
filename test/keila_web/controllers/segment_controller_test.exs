@@ -35,7 +35,7 @@ defmodule KeilaWeb.SegmentControllerTest do
           Routes.segment_path(conn, :create, project.id, %{"segment" => %{"name" => "My Segment"}})
         )
 
-      assert redirected_to(conn, 302) =~ ~r{/projects/#{project.id}/segments/sgm_\w+}
+      assert redirected_to(conn, 302) =~ ~r{/projects/#{project.id}/segments/nsgm_\w+}
     end
   end
 
