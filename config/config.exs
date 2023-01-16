@@ -34,7 +34,7 @@ config :esbuild,
   ]
 
 config :keila, Keila.Id,
-  alphabet: "abcdefghijkmnopqrstuvwxyz23456789ABCDEFGHJKLMNPQRSTUVWXYZ_",
+  alphabet: "abcdefghijkmnopqrstuvwxyz23456789ABCDEFGHJKLMNPQRSTUVWXYZ",
   min_len: 8
 
 config :keila, Keila.Mailings,
