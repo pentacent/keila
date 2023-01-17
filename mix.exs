@@ -4,7 +4,7 @@ defmodule Keila.MixProject do
   def project do
     [
       app: :keila,
-      version: "0.11.0",
+      version: "0.11.1",
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix] ++ Mix.compilers(),

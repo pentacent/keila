@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-## Version 0.11.0
+## Version 0.11.1
 
 Better Campaign Analytics 📈
 
@@ -25,6 +25,7 @@ Better Campaign Analytics 📈
 ### Fixed
 - Fixed error when no user content dir is set (#171)
 - Fixed error when CSRF is enabled for forms (#167)
+- **Breaking:** Hashids now use configurable salt. Read more on [keila.io](https://www.keila.io/updates/breaking-hashid-update)
 
 ## Version 0.10.0
 
