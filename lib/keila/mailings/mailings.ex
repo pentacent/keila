@@ -435,7 +435,7 @@ defmodule Keila.Mailings do
           status: :insufficient_credits | :unsent | :preparing | :sending | :sent,
           recipients_count: integer(),
           unsubscribe_count: integer(),
-          bounce_count: integer(),
+          hard_bounce_count: integer(),
           complaint_count: integer(),
           sent_count: integer(),
           chart: map()
@@ -494,12 +494,8 @@ defmodule Keila.Mailings do
         failed_count: sum(fragment("CASE WHEN failed_at IS NOT NULL THEN 1 ELSE 0 END")),
         unsubscribe_count:
           sum(fragment("CASE WHEN unsubscribed_at IS NOT NULL THEN 1 ELSE 0 END")),
-        bounce_count:
-          sum(
-            fragment(
-              "CASE WHEN soft_bounce_received_at IS NOT NULL OR hard_bounce_received_at IS NOT NULL THEN 1 ELSE 0 END"
-            )
-          ),
+        hard_bounce_count:
+          sum(fragment("CASE WHEN hard_bounce_received_at IS NOT NULL THEN 1 ELSE 0 END")),
         complaint_count:
           sum(fragment("CASE WHEN complaint_received_at IS NOT NULL THEN 1 ELSE 0 END"))
       }

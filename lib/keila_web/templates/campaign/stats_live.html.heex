@@ -179,8 +179,8 @@
                 <div>
                     <div class="text-sm"><%= gettext("bounces") %></div>
                     <div class="flex flex-row gap-2 items-end">
-                        <span class="text-3xl"><%= @stats.bounce_count %></span>
-                        <span class="text-xl opacity-75"><%= (@stats.bounce_count / @stats.sent_count * 100) |> Float.round(1) %>&thinsp;%</span>
+                        <span class="text-3xl"><%= @stats.hard_bounce_count %></span>
+                        <span class="text-xl opacity-75"><%= (@stats.hard_bounce_count / @stats.sent_count * 100) |> Float.round(1) %>&thinsp;%</span>
                     </div>
                 </div>
             </div>
