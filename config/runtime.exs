@@ -61,7 +61,7 @@ if config_env() == :prod do
           user = System.fetch_env!("MAILER_SMTP_USER")
           from_email = System.get_env("MAILER_SMTP_FROM_EMAIL") || user
           password = System.fetch_env!("MAILER_SMTP_PASSWORD")
-          port = System.get_env("MAILER_SMTP_PORT") |> maybe_to_int.()
+          port = System.get_env("MAILER_SMTP_PORT", "587") |> maybe_to_int.()
 
           [
             adapter: Swoosh.Adapters.SMTP,
