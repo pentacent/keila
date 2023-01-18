@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## Version 0.11.2
+
+### Changed
+- Only hard bounces are shown as bounces on campaign statistics page
+
+### Fixed
+- Legacy IDs are now decoded correctly
+
 ## Version 0.11.1
 
 Better Campaign Analytics 📈
