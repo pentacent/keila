@@ -105,12 +105,14 @@ defmodule Keila.Id do
   end
 
   @deprecated_salt "bF4QzDjqV"
+  @deprecated_alphabet "abcdefghijkmnopqrstuvwxyz23456789ABCDEFGHJKLMNPQRSTUVWXYZ_"
+  @deprecated_min_len 8
   @spec deprecated_hashid_config() :: Hashids.t()
   def deprecated_hashid_config() do
-    config = Application.get_env(:keila, Keila.Id)
-    alphabet = config |> Keyword.fetch!(:alphabet)
-    min_len = config |> Keyword.fetch!(:min_len)
-
-    Hashids.new(alphabet: alphabet, salt: @deprecated_salt, min_len: min_len)
+    Hashids.new(
+      alphabet: @deprecated_alphabet,
+      salt: @deprecated_salt,
+      min_len: @deprecated_min_len
+    )
   end
 end
