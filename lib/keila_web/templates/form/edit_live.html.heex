@@ -142,7 +142,7 @@
             <h2 class="text-xl">
                 <%= gettext("Style") %>
             </h2>
-            <%= inputs_for(f, :settings, fn fs -> %>
+            <%= inputs_for(f, :settings, [skip_hidden: true], fn fs -> %>
                 <div class="flex flex-col">
                     <%= label(fs, :body_bg_color, "Body background") %>
                     <%= with_validation(fs, :body_bg_color) do %>
@@ -159,6 +159,24 @@
                     <%= label(fs, :text_color, "Form text color") %>
                     <%= with_validation(fs, :text_color) do %>
                         <%= text_input(fs, :text_color, class: "text-black", type: "color") %>
+                    <% end %>
+                </div>
+                <div class="flex flex-col">
+                    <%= label(fs, :input_bg_color, "Input background") %>
+                    <%= with_validation(fs, :input_bg_color) do %>
+                        <%= text_input(fs, :input_bg_color, class: "text-black", type: "color") %>
+                    <% end %>
+                </div>
+                <div class="flex flex-col">
+                    <%= label(fs, :input_text_color, "Input text color") %>
+                    <%= with_validation(fs, :input_text_color) do %>
+                        <%= text_input(fs, :input_text_color, class: "text-black", type: "color") %>
+                    <% end %>
+                </div>
+                <div class="flex flex-col">
+                    <%= label(fs, :input_border_color, "Input border color") %>
+                    <%= with_validation(fs, :input_border_color) do %>
+                        <%= text_input(fs, :input_border_color, class: "text-black", type: "color") %>
                     <% end %>
                 </div>
                 <div class="flex flex-col">

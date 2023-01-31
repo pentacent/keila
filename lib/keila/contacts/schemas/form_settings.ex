@@ -15,6 +15,9 @@ defmodule Keila.Contacts.Form.Settings do
     field(:submit_label, :string, default: "Submit")
     field(:submit_bg_color, :string, default: "#047857")
     field(:submit_text_color, :string, default: "#f9fafb")
+    field(:input_bg_color, :string, default: "#ffffff")
+    field(:input_border_color, :string, default: "#6b7280")
+    field(:input_text_color, :string, default: "#111827")
     field(:success_text, :string)
   end
 
@@ -28,6 +31,9 @@ defmodule Keila.Contacts.Form.Settings do
       :body_bg_color,
       :form_bg_color,
       :text_color,
+      :input_text_color,
+      :input_bg_color,
+      :input_border_color,
       :submit_label,
       :submit_bg_color,
       :submit_text_color,

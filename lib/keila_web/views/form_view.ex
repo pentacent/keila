@@ -117,6 +117,13 @@ defmodule KeilaWeb.FormView do
   end
 
   defp render_fields(form, f) do
+    input_styles =
+      build_styles(%{
+        "background-color" => form.settings.input_bg_color,
+        "color" => form.settings.input_text_color,
+        "border-color" => form.settings.input_border_color
+      })
+
     form.field_settings
     |> Enum.filter(& &1.cast)
     |> Enum.map(fn field_settings ->
@@ -132,9 +139,9 @@ defmodule KeilaWeb.FormView do
           end,
           with_validation(f, field) do
             if field in [:email] do
-              email_input(f, field, placeholder: field_settings.placeholder)
+              email_input(f, field, placeholder: field_settings.placeholder, style: input_styles)
             else
-              text_input(f, field, placeholder: field_settings.placeholder)
+              text_input(f, field, placeholder: field_settings.placeholder, style: input_styles)
             end
           end
         ]
