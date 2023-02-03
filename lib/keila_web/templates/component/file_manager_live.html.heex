@@ -52,7 +52,7 @@
 
         <div class="overflow-y-scroll max-h-96 grid grid-gap-4 grid-cols-2">
             <%= for {file, url} <- Enum.zip(@files.data, @file_urls) do %>
-                <div class="max-w-[10rem]" @click="$dispatch('x-file-selected', {url: $event.target.src})">
+                <div class="max-w-[10rem]" x-on:click="$dispatch('x-file-selected', {url: $event.target.src})">
                     <img id={"file-#{file.uuid}"} src={url} alt="" class="h-3/4 w-full object-cover" />
                     <p class="text-xs"><%= file.filename %></p>
                 </div>
