@@ -74,7 +74,7 @@
                             <%= render("_wysiwyg_editor.html", assigns) %>
                         </div>
                     <% else %>
-                        <%= render("_markdown_editor.html", assigns |> Map.put(:f, f)) %>
+                        <%= render("_markdown_editor.html", assigns) %>
                     <% end %>
                 </div>
             </div>

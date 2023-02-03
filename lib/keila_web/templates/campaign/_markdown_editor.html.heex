@@ -1,3 +1,5 @@
+<% f = form_for(@changeset, "#") %>
+
 <div class="relative shadow z-10 flex overflow-x-auto mt-4">
     <div class="flex-grow"></div>
     <button
@@ -9,7 +11,7 @@
     </button>
 </div>
 <div class="flex gap-4">
-    <%= textarea(@f, :text_body, rows: 20, class: "bg-gray-900 border-none appearance-none resize-y flex-grow w-1/2") %>
+    <%= textarea(f, :text_body, rows: 20, class: "bg-gray-900 border-none appearance-none resize-y flex-grow w-1/2") %>
     <div id="preview-container" class="w-1/2 flex-grow flex flex-col" phx-update="ignore">
         <iframe id="html-preview" src="about:blank" data-source="html-preview-data" class="bg-gray-100 flex-grow" :class="previewMode ? 'fixed w-full h-full inset-0 pb-10 z-40' : ''"></iframe>
         <button x-show="previewMode" @click.prevent="previewMode = !previewMode" class="fixed h-10 bg-emerald-600 text-white w-full bottom-0 left-0 z-50">
