@@ -117,7 +117,7 @@ defmodule Keila.Files do
 
   If `:pagination` is not `true` or a list of options, a list of all results is returned.
   """
-  @spec get_project_files(Project.id(), [{:paginate, boolean() | Keyword.t()}]) :: [Project.t()]
+  @spec get_project_files(Project.id(), [{:paginate, boolean() | Keyword.t()}]) :: [File.t()] | Keila.Pagination.t(File.t())
   def get_project_files(project_id, opts \\ [])
       when is_binary(project_id) or is_integer(project_id) do
     query = from(f in File, where: f.project_id == ^project_id, order_by: [desc: f.inserted_at])
