@@ -65,7 +65,11 @@ defmodule Keila.Mailings.Builder do
 
   defp put_template_assigns(assigns, _), do: assigns
 
-  defp process_assigns(value) when is_number(value) or is_binary(value) or is_nil(value) do
+  defp process_assigns(value) when is_number(value) or is_binary(value) do
+    value
+  end
+
+  defp process_assigns(value) when is_boolean(value) or is_nil(value) do
     value
   end
 
