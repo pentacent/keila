@@ -18,6 +18,8 @@ defmodule Keila.Mailings.Builder do
     data: %{"tags" => ["rocket-scientist"]}
   }
 
+  @placeholder_recipient_id "00000000-0000-4000-0000-000000000000"
+
   @doc """
   Builds a `Swoosh.Email` struct from a Campaign, Contact, and assigns.
 
@@ -36,7 +38,7 @@ defmodule Keila.Mailings.Builder do
     {recipient, contact} =
       case recipient_or_contact do
         recipient = %Recipient{} -> {recipient, recipient.contact}
-        contact = %Contact{} -> {%Recipient{id: "00000000-0000-4000-0000-000000000000"}, contact}
+        contact = %Contact{} -> {%Recipient{id: @placeholder_recipient_id}, contact}
       end
 
     unsubscribe_link = Keila.Mailings.get_unsubscribe_link(campaign.project_id, recipient.id)
@@ -242,15 +244,17 @@ defmodule Keila.Mailings.Builder do
   end
 
   # TODO add contact settings for disabling/configuring tracking
-  defp maybe_put_tracking(email, campaign, recipient) do
-    if email.html_body && recipient && !campaign.settings.do_not_track && not is_nil(campaign.id) do
-      put_tracking(email, campaign, recipient)
-    else
-      email
-    end
-  end
+  defp maybe_put_tracking(email, campaign, recipient)
 
-  def put_tracking(email, campaign, recipient) do
+  defp maybe_put_tracking(%{html_body: nil} = email, _campaign, _recipient), do: email
+
+  defp maybe_put_tracking(email, %{settings: %{do_not_track: true}}, _recipient), do: email
+
+  defp maybe_put_tracking(email, %{id: nil}, _recipient), do: email
+
+  defp maybe_put_tracking(email, _campaign, %{id: @placeholder_recipient_id}), do: email
+
+  defp maybe_put_tracking(email, campaign, recipient) do
     html =
       email.html_body
       |> Floki.parse_document!()
