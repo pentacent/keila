@@ -108,6 +108,30 @@ defmodule Keila.Templates.Css do
   end
 
   @doc """
+  Encodes a parsed inline style as a CSS string.
+
+  ## Options
+  `:compact` - `boolean`, defaults to `true`. Encodes with a reduced amount of
+  whitespace.
+
+  ## Usage
+
+      iex> styles = [{"inline", [{"text-decoration", "underline"}, {"color", "blue"}]}]
+      iex> Keila.Templates.Css.encode_inline(styles)
+      "text-decoration:underline;color:blue"
+  """
+  @spec encode_inline(t(), Keyword.t()) :: String.t()
+  def encode_inline([{"inline", styles}], opts \\ []) do
+    compact? = Keyword.get(opts, :compact, true)
+    before_value = if compact?, do: ":", else: ": "
+    properties_separator = if compact?, do: ";", else: "; "
+
+    styles
+    |> Enum.map(fn {property, value} -> property <> before_value <> value end)
+    |> Enum.join(properties_separator)
+  end
+
+  @doc """
   Merges two parsed stylesheets. Values from the second stylesheet take
   precedence over the first one.
 
