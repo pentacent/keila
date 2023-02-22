@@ -35,7 +35,7 @@ defmodule Keila.TemplatesTest do
   """
 
   @expected_html """
-                 <div style="margin: 10px;background-color:#f0f;font-family:inherit;padding:10px" class="foo">
+                 <div style="margin:10px;background-color:#f0f;font-family:inherit;padding:10px" class="foo">
                    <a href="#" style="color:blue">Link</a>
                    <a href="#" style="color:blue">Another Link</a>
                  </div>
