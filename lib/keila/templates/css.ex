@@ -48,6 +48,33 @@ defmodule Keila.Templates.Css do
   end
 
   @doc """
+  Parses an inline CSS string.
+
+    ## Usage
+
+      iex> css = "font-family: serif, sans-serif; color: blue"
+      iex> Keila.Templates.Css.parse_inline!(css)
+      [{"inline", [{"font-family", "serif, sans-serif"}, {"color", "blue"}]}]
+  """
+  @spec parse_inline!(String.t()) :: t()
+  def parse_inline!(empty) when empty in [nil, ""] do
+    []
+  end
+
+  def parse_inline!(input) do
+    {:ok, property_list, _, _, _, _} = __MODULE__.Parser.parse_inline(input)
+
+    property_list =
+      property_list
+      |> Enum.chunk_every(2)
+      |> Enum.map(fn [property: property, value: value] ->
+        {to_string(property), to_string(value)}
+      end)
+
+    [{"inline", property_list}]
+  end
+
+  @doc """
   Encodes parsed styles as a CSS string.
 
   ## Options
@@ -197,10 +224,20 @@ defmodule Keila.Templates.Css.Parser do
     |> concat(insignificant_whitespace)
     |> lookahead(basic_selector)
 
+  pseudo_class_combinator =
+    ascii_string([?:], 1)
+    |> lookahead(basic_selector)
+
+  pseudo_element_combinator =
+    ascii_string([?:], 2)
+    |> lookahead(basic_selector)
+
   combinator =
     choice([
       basic_combinator,
-      descendant_combinator
+      descendant_combinator,
+      pseudo_class_combinator,
+      pseudo_element_combinator
     ])
 
   selector =
@@ -232,6 +269,10 @@ defmodule Keila.Templates.Css.Parser do
       [?a..?z, ?A..?Z, ?0..?9, ?_, ?-, ?#, ?., ?\s, ?', ?", ?%, ?,, ?), ?(, ?:, ?/, ?=, ??, ?&],
       min: 1
     )
+    |> optional(
+      insignificant_whitespace
+      |> concat(string("!important"))
+    )
     |> map({String, :trim_trailing, []})
     |> tag(:value)
 
@@ -262,4 +303,14 @@ defmodule Keila.Templates.Css.Parser do
     )
 
   defparsec(:parse, css)
+
+  inline_css =
+    insignificant_whitespace
+    |> optional(property_value)
+    |> repeat(
+      ignore(string(";"))
+      |> concat(property_value)
+    )
+
+  defparsec(:parse_inline, inline_css)
 end
