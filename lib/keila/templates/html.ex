@@ -39,7 +39,7 @@ defmodule Keila.Templates.Html do
   """
   @spec to_document(t()) :: String.t()
   def to_document(html_tree) do
-    Floki.raw_html(html_tree)
+    "<!doctype html>\n" <> Floki.raw_html(html_tree)
   end
 
   @doc """
