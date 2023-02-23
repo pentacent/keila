@@ -135,19 +135,27 @@ defmodule Keila.Templates.Html do
 
   defp put_inline_styles(attributes, styles, opts) do
     styles_to_add =
-      Enum.filter(styles, fn {_key, value} -> value != "inherit" || !opts[:ignore_inherit] end)
+      styles
+      |> Enum.filter(fn {_key, value} ->
+        not is_nil(value) and (value != "inherit" || !opts[:ignore_inherit])
+      end)
+      |> then(fn properties -> [{"inline", properties}] end)
 
     style_attr_index = Enum.find_index(attributes, fn {attribute, _} -> attribute == "style" end)
 
     if style_attr_index do
       List.update_at(attributes, style_attr_index, fn {"style", existing_styles} ->
-        existing_styles = Keila.Templates.Css.parse_inline!(existing_styles)
-        [{"inline", merged_styles}] = Keila.Templates.Css.merge(existing_styles, styles_to_add)
+        existing_styles = Css.parse_inline!(existing_styles)
+
+        merged_styles =
+          existing_styles
+          |> Css.merge(styles_to_add)
+          |> Css.encode_inline()
 
         {"style", merged_styles}
       end)
     else
-      attributes ++ [{"style", styles}]
+      attributes ++ [{"style", Css.encode_inline(styles_to_add)}]
     end
   end
 
