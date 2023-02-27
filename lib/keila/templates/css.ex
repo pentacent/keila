@@ -22,7 +22,10 @@ defmodule Keila.Templates.Css do
   end
 
   def parse!(input) do
-    {:ok, rules, _, _, _, _} = __MODULE__.Parser.parse(input)
+    {:ok, rules, _, _, _, _} =
+      input
+      |> String.replace(~r{/\*.*\*/}sU, "")
+      |> __MODULE__.Parser.parse()
 
     rules
     |> Enum.reduce([], fn
@@ -322,7 +325,7 @@ defmodule Keila.Templates.Css.Parser do
 
   css =
     times(
-      selector_list |> concat(property_list) |> concat(insignificant_whitespace),
+      insignificant_whitespace |> concat(selector_list) |> concat(property_list),
       min: 1
     )
 
