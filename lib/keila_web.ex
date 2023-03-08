@@ -101,6 +101,7 @@ defmodule KeilaWeb do
       import KeilaWeb.DateTimeHelpers
       import KeilaWeb.Gettext
       alias KeilaWeb.Router.Helpers, as: Routes
+      alias Phoenix.LiveView.JS
     end
   end
 
