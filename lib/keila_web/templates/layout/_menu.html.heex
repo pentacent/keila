@@ -22,7 +22,7 @@
                 </label>
             </div>
             <div class="shrink-0 grow-0 flex mx-4 text-white">
-                <a href="/" class="flex items-center sm:h-24 my-4">
+                <a href={Routes.project_path(@conn, :index)} class="flex items-center sm:h-24 my-4">
                     <span class="flex justify-end h-10 w-10">
                         <%= render_icon(:logo) %>
                     </span>
@@ -31,7 +31,7 @@
             </div>
             <nav class="font-medium hidden flex-col gap-1 mt-2 mb-4 sm:flex flex-grow">
                 <%= if is_nil(assigns[:current_project]) do %>
-                    <%= menu_link(@conn, "/", gettext("Projects"), exact: true, icon: :collection) %>
+                    <%= menu_link(@conn, :project, :index, [], gettext("Projects"), exact: true, icon: :collection) %>
                 <% else %>
                     <a href={ Routes.project_path(@conn, :index) } class="block text-xs font-light text-white my-2 align-middle hover:underline">
                         <%= gettext("Back to projects overview") %>
@@ -74,7 +74,7 @@
 <% else %>
     <header class="bg-gray-900">
         <div class="container my-4 text-emerald-500 flex justify-center">
-            <a href="/" class="inline-flex items-start">
+            <a href={Routes.project_path(@conn, :index)} class="inline-flex items-start">
                 <span class="flex h-11 w-11 -mr-1">
                     <%= render_icon(:logo) %>
                 </span>
