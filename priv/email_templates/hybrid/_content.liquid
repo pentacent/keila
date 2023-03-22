@@ -1,0 +1,24 @@
+{% for block in blocks %}
+
+    {% case block.type %}
+    {% when "layout" %}
+        {% render "block--layout", block: block %}
+    {% when "paragraph" %}
+        {% render "block--paragraph", block: block %}
+    {% when "header" %}
+        {% render "block--heading", block: block %}
+    {% when "image" %}
+        {% render "block--image", block: block %}
+    {% when "quote" %}
+        {% render "block--quote", block: block %}
+    {% when "button" %}
+        {% render "block--button", block: block %}
+    {% when "separator" %}
+        {% render "block--separator", block: block %}
+    {% when "list" %}
+        {% render "block--list", block: block %}
+    {% when "markdown" %}
+        {% render "block--markdown", block: block %}
+    {% endcase %}
+
+{% endfor %}

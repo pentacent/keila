@@ -46,7 +46,12 @@
                 <%= text_input(f, :name, class: "text-black") %>
             <% end %>
 
-            <%= label(f, :assigns, gettext("Signature"), name: "template[assigns][signature]") %>
+            <%= label(f, :assigns, name: "template[assigns][signature]") do %>
+                <%= gettext("Signature") %><br>
+                <div class="text-xs">
+                    <%= gettext_md("You may use Liquid and Markdown in the signature. Use `[Unsubscribe]({{ unsubscribe_link }})` to include the unsubscribe link.") %>
+                </div>
+            <% end %>
             <%= textarea(f, :assigns, value: get_field(@changeset, :assigns)["signature"], name: "template[assigns][signature]", id: "template[assigns][signature]", rows: 10, class: "text-black text-sm") %>
         </div>
 

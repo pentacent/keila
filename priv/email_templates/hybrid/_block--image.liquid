@@ -1,0 +1,17 @@
+<tr class="block block--image {% if block.data.flush %}block--image--flush{% endif %}">
+    <td>
+        {% if block.data.url and block.data.url | strip != "" %}
+        <a href="{{ block.data.url }}" target="_blank">
+        {% endif %}
+        <img src="{{ block.data.image.src }}" width="100%" alt="{{ block.data.image.alt }}" title="{{ block.data.image.title }}" border="0" style="display:block; max-width:100%!important; height: auto!important;" class="g-img" />
+        {% if block.data.url and block.data.url | strip != "" %}
+        </a>
+        {% endif %}
+        {% unless block.data.caption | strip == "" %}
+        <br>
+        <div>
+            {{ block.data.caption }}
+        </div>
+        {% endunless %}
+    </td>
+</tr>

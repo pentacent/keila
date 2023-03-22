@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   fill="none"
+   stroke="currentColor"
+   viewBox="0 0 24 24"
+   version="1.1"
+   id="svg4"
+   sodipodi:docname="markdown.svg"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <g
+     id="g98"
+     transform="translate(0.24999973,-0.47665804)">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:10.1477px;line-height:1.25;font-family:Inter;-inkscape-font-specification:'Inter Bold';letter-spacing:0px;word-spacing:0px;fill:currentColor;fill-opacity:1;stroke:none;stroke-width:0.253693"
+       x="3.3585615"
+       y="16.166731"
+       id="text6150"><tspan
+         sodipodi:role="line"
+         id="tspan6148"
+         x="3.3585615"
+         y="16.166731"
+         style="stroke-width:0.253693">M</tspan></text>
+    <g
+       style="fill:currentColor;stroke:currentColor"
+       id="g11215"
+       transform="matrix(0.309,0,0,0.309,11.0306,9.2624889)">
+      <path
+         stroke-linecap="round"
+         stroke-linejoin="round"
+         stroke-width="2.42723"
+         d="M 26.19562,10.402086 17.700324,18.897382 9.2050288,10.402086 Z"
+         id="path11206"
+         style="fill:currentColor;stroke:currentColor"
+         sodipodi:nodetypes="cccc" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:6.58076px;line-height:1.25;font-family:Inter;-inkscape-font-specification:'Inter Bold';letter-spacing:0px;word-spacing:0px;fill:currentColor;fill-opacity:1;stroke:none;stroke-width:0.164519"
+       x="7.8780684"
+       y="23.528917"
+       id="text16081"
+       transform="scale(1.8714238,0.5343525)"><tspan
+         sodipodi:role="line"
+         id="tspan16079"
+         x="7.8780684"
+         y="23.528917"
+         style="stroke-width:0.164519">I</tspan></text>
+  </g>
+  <defs
+     id="defs8" />
+  <sodipodi:namedview
+     id="namedview6"
+     pagecolor="#ffffff"
+     bordercolor="currentColor"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="16"
+     inkscape:cx="16.65625"
+     inkscape:cy="10.84375"
+     inkscape:window-width="2486"
+     inkscape:window-height="1376"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg4" />
+</svg>

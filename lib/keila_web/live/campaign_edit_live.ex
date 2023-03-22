@@ -41,9 +41,12 @@ defmodule KeilaWeb.CampaignEditLive do
     email = Mailings.Builder.build(campaign, %{})
     preview = email.html_body || KeilaWeb.CampaignView.plain_text_preview(email.text_body)
 
+    json_body = if campaign.json_body, do: Jason.encode!(campaign.json_body), else: "{}"
+
     socket
     |> maybe_put_styles(template)
     |> assign(:preview, preview)
+    |> assign(:json_body, json_body)
   end
 
   @impl true
@@ -151,6 +154,8 @@ defmodule KeilaWeb.CampaignEditLive do
   end
 
   defp merged_changeset(socket, params) do
+    params = maybe_parse_json_body(params)
+
     merged_params =
       Mailings.Campaign.preview_changeset(socket.assigns.changeset, params)
       |> Map.fetch!(:params)
@@ -158,6 +163,16 @@ defmodule KeilaWeb.CampaignEditLive do
 
     Mailings.Campaign.preview_changeset(socket.assigns.campaign, merged_params)
   end
+
+  defp maybe_parse_json_body(%{"json_body" => raw_json_body} = params)
+       when is_binary(raw_json_body) do
+    case Jason.decode(raw_json_body) do
+      {:ok, json_body} -> Map.replace!(params, "json_body", json_body)
+      _other -> params
+    end
+  end
+
+  defp maybe_parse_json_body(params), do: params
 
   defp maybe_put_styles(socket, template) do
     if (is_nil(template) && is_nil(socket.assigns[:styles])) ||
@@ -169,21 +184,20 @@ defmodule KeilaWeb.CampaignEditLive do
           []
         end
 
-      default_styles = Keila.Templates.DefaultTemplate.styles()
+      default_styles = Keila.Templates.HybridTemplate.styles()
+
+      campaign_type = socket.assigns.campaign.settings.type
 
       styles =
         Keila.Templates.Css.merge(default_styles, template_styles)
         |> Enum.map(fn {selector, styles} ->
-          cond do
-            String.starts_with?(selector, "body") ->
-              {String.replace(selector, "body", "#wysiwyg .editor"), styles}
+          selector =
+            selector
+            |> String.split(",")
+            |> Enum.map(&transform_style_selector(&1, campaign_type))
+            |> Enum.join(",")
 
-            String.starts_with?(selector, "#content") ->
-              {String.replace(selector, "#content", "#wysiwyg .editor .ProseMirror"), styles}
-
-            true ->
-              {"#wysiwyg .ProseMirror " <> selector, styles}
-          end
+          {selector, styles}
         end)
         |> Keila.Templates.Css.encode()
 
@@ -196,6 +210,39 @@ defmodule KeilaWeb.CampaignEditLive do
       else
         socket
       end
+    end
+  end
+
+  @markdown_editor_selector "#wysiwyg .editor"
+  @markdown_editor_content_selector "#wysiwyg .editor .ProseMirror"
+  defp transform_style_selector(selector, :markdown) do
+    case selector do
+      ".email-bg" -> @markdown_editor_selector
+      "#content" <> selector -> @markdown_editor_content_selector <> selector
+      ".block--button .button-td" -> @markdown_editor_selector <> " h4 a"
+      ".block--button .button-a" -> @markdown_editor_selector <> " h4 a"
+      selector -> @markdown_editor_selector <> " " <> selector
+    end
+  end
+
+  @block_editor_selector "#block-container .editor"
+  @block_editor_content_selector "#block-container .editor .codex-editor__redactor"
+  defp transform_style_selector(selector, :block) do
+    case selector do
+      ".email-bg" ->
+        @block_editor_selector
+
+      "#content" <> selector ->
+        @block_editor_content_selector <> selector
+
+      ".block--button .button-td" ->
+        @block_editor_selector <> " .ce-block--type-button .button-contenteditable"
+
+      ".block--button .button-a" ->
+        @block_editor_selector <> " .ce-block--type-button .button-contenteditable"
+
+      selector ->
+        @block_editor_selector <> " " <> selector
     end
   end
 
