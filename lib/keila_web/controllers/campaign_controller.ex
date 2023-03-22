@@ -22,7 +22,14 @@ defmodule KeilaWeb.CampaignController do
   @spec new(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def new(conn, _params) do
     conn
-    |> render_new(change(%Mailings.Campaign{}))
+    |> render_new(new_campaign_changeset())
+  end
+
+  defp new_campaign_changeset() do
+    settings_changeset = %Mailings.Campaign.Settings{type: :block} |> change()
+
+    %Mailings.Campaign{settings: settings_changeset}
+    |> change()
   end
 
   @spec post_new(Plug.Conn.t(), map()) :: Plug.Conn.t()

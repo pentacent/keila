@@ -68,6 +68,8 @@ defmodule KeilaWeb.TemplateView do
       field,
       [
         {gettext("Default"), "inherit"},
+        {gettext("System"),
+         ~s{-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"}},
         {"Calibri", "Calibri, Carlito, PT Sans, Trebuchet MS, sans-serif"},
         {"Courier New", "Courier New, Courier, Liberation Mono, monospace"},
         {"Georgia", "Georgia, serif"},

@@ -68,17 +68,21 @@
 
             <div class="flex flex-col">
                 <div x-data="{previewMode: false}">
-                    <%= if Ecto.Changeset.get_field(@changeset, :settings).type == :markdown && Ecto.Changeset.get_field(@changeset, :settings).enable_wysiwyg do %>
+                    <% type = Ecto.Changeset.get_field(@changeset, :settings).type %>
+                    <% enable_wysiwyg? = Ecto.Changeset.get_field(@changeset, :settings).enable_wysiwyg  %>
+                    <%= cond do %>
+                    <% (type == :markdown && enable_wysiwyg?) -> %>
                         <%= textarea(f, :text_body, class: "hidden") %>
                         <div id="wysiwyg-container" phx-hook="MarkdownEditor" class="flex-grow bg-white mt-4 min-h-10">
                             <%= render("_wysiwyg_editor.html", assigns) %>
                         </div>
-                    <% else %>
+                    <% (type == :block) -> %>
+                        <%= render("_block_editor.html", assigns) %>
+                    <% true -> %>
                         <%= render("_markdown_editor.html", assigns) %>
                     <% end %>
                 </div>
             </div>
-
 
         </.form>
     </div>

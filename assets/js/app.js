@@ -31,7 +31,8 @@ const Hooks = {
 // Make hooks available globally
 window.Hooks = Hooks
 
-let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
+let csrfTokenTag = document.querySelector("meta[name='csrf-token']")
+let csrfToken = csrfTokenTag ? csrfTokenTag.getAttribute("content") : null
 let liveSocket = new LiveSocket("/live", Socket, {
   params: { _csrf_token: csrfToken },
   hooks: Hooks,

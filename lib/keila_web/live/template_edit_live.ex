@@ -1,6 +1,6 @@
 defmodule KeilaWeb.TemplateEditLive do
   use KeilaWeb, :live_view
-  alias Keila.Templates.{Template, StyleTemplate, DefaultTemplate}
+  alias Keila.Templates.{Template, StyleTemplate, HybridTemplate}
 
   @default_text_body File.read!("priv/email_templates/default-markdown-content.md")
 
@@ -11,7 +11,7 @@ defmodule KeilaWeb.TemplateEditLive do
     styles = Keila.Templates.Css.parse!(session["template"].styles || "")
 
     style_template =
-      DefaultTemplate.style_template()
+      HybridTemplate.style_template()
       |> StyleTemplate.apply_values_from_css(styles)
 
     socket =

@@ -58,7 +58,8 @@
                         <%= label(fs, :type, "Campaign Type") %>
                         <%= select(fs, :type, [
                             {gettext("Markdown"), "markdown"},
-                            {gettext("Text only"), "text"}
+                            {gettext("Text only"), "text"},
+                            {gettext("Block Editor"), "block"}
                         ], [x_model: "type"]) %>
                     <% end) %>
                 </div>
@@ -71,12 +72,25 @@
                         <% end) %>
                     </div>
                 </template>
-                <template x-if="type === 'markdown'">
+
+                <template x-if="type === 'markdown' || type === 'block'">
                     <div class="form-row">
                         <%= label(f, :template_id, gettext("Template")) %>
 
                         <%= with_validation(f, :template_id) do %>
                             <%= select(f, :template_id, [{gettext("Default"), nil} | Enum.map(@templates, &{&1.name, &1.id})], class: "text-black") %>
+                        <% end %>
+                    </div>
+                </template>
+
+                <template x-if="type === 'markdown' || type === 'block'">
+                    <div class="form-row flex flex-col">
+                        <%= label(f, :preview_text) do %>
+                            <%= gettext("Preview Text") %><br>
+                            <span class="text-sm"><%= gettext("Users see this preview before they open your email. Use up to 50 characters.") %></span>
+                        <% end %>
+                        <%= with_validation(f, :preview_text) do %>
+                            <%= textarea(f, :preview_text, placeholder: gettext("Can you summarize your campaign in 50 characters?"), class: "text-black", autofocus: true) %>
                         <% end %>
                     </div>
                 </template>

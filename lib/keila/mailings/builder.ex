@@ -7,7 +7,7 @@ defmodule Keila.Mailings.Builder do
   alias Keila.Contacts.Contact
   alias Swoosh.Email
   alias KeilaWeb.Router.Helpers, as: Routes
-  alias Keila.Templates.{Template, Css, Html, DefaultTemplate}
+  alias Keila.Templates.{Template, Css, Html, DefaultTemplate, HybridTemplate}
   import Swoosh.Email
 
   @default_contact %Keila.Contacts.Contact{
@@ -140,7 +140,11 @@ defmodule Keila.Mailings.Builder do
   defp put_body(email, campaign, assigns)
 
   defp put_body(email, campaign = %{settings: %{type: :text}}, assigns) do
-    case render_liquid(campaign.text_body || "", assigns) do
+    body_with_signature =
+      (campaign.text_body || "") <>
+        "\n\n--  \n" <> (assigns["signature"] || DefaultTemplate.signature())
+
+    case render_liquid(body_with_signature, assigns) do
       {:ok, text_body} ->
         text_body(email, text_body)
 
@@ -153,18 +157,21 @@ defmodule Keila.Mailings.Builder do
 
   defp put_body(email, campaign = %{settings: %{type: :markdown}}, assigns) do
     main_content = campaign.text_body || ""
-    signature_content = assigns["signature"] || DefaultTemplate.signature()
+
+    {email, assigns} = put_signature_content(email, assigns)
 
     with {:ok, main_content_text} <- render_liquid(main_content, assigns),
          {:ok, main_content_html, _} <- Earmark.as_html(main_content_text),
-         {:ok, signature_content_text} <- render_liquid(signature_content, assigns),
-         {:ok, signature_content_html, _} <- Earmark.as_html(signature_content_text),
-         assigns <- Map.put(assigns, "main_content", main_content_html),
-         assigns <- Map.put(assigns, "signature_content", signature_content_html),
-         {:ok, html_body} <- render_liquid(DefaultTemplate.html_template(), assigns) do
+         assigns <-
+           Map.put(assigns, "body_blocks", [%{"type" => "markdown", "data" => main_content_html}]),
+         assigns <- Map.put(assigns, "html_body_class", "keila--markdown-campaign"),
+         {:ok, html_body} <-
+           render_liquid(HybridTemplate.html_template(), assigns,
+             file_system: HybridTemplate.file_system()
+           ) do
       styles = fetch_styles(campaign)
 
-      text_body = main_content_text <> "\n\n--  \n" <> signature_content_text
+      text_body = main_content_text <> "\n\n--  \n" <> assigns["signature_content_text"]
 
       html_body =
         html_body
@@ -181,25 +188,144 @@ defmodule Keila.Mailings.Builder do
         email
         |> header("X-Keila-Invalid", error)
         |> text_body(error)
+
+      {:error, _, _} ->
+        email
+        |> header("X-Keila-Invalid", "Unexpected rendering error")
+        |> text_body("Unexpected rendering error")
+    end
+  end
+
+  defp put_body(email, campaign = %{settings: %{type: :block}}, assigns) do
+    {email, assigns} = put_signature_content(email, assigns)
+    {email, body_blocks} = get_body_blocks(email, campaign.json_body, assigns)
+
+    styles = fetch_styles(campaign)
+
+    embedded_css =
+      styles
+      |> Enum.filter(fn {selector, _} -> selector in HybridTemplate.embedded_styles() end)
+      |> Css.encode(styles)
+
+    assigns =
+      assigns
+      |> Map.put("body_blocks", body_blocks)
+      |> Map.put("embedded_css", embedded_css)
+      |> Map.put("html_body_class", "keila--block-campaign")
+
+    with {:ok, html_body} <-
+           render_liquid(HybridTemplate.html_template(), assigns,
+             file_system: HybridTemplate.file_system()
+           ) do
+      html_body =
+        html_body
+        |> Html.parse_document!()
+        |> Html.apply_inline_styles(styles, ignore_inherit: true)
+        |> Html.to_document()
+
+      email
+      |> html_body(html_body)
+    else
+      {:error, error} ->
+        email
+        |> header("X-Keila-Invalid", error)
+        |> text_body(error)
     end
   end
 
   defp fetch_styles(campaign)
 
   defp fetch_styles(%Campaign{template: %Template{styles: styles}}) when is_list(styles) do
-    default_styles = DefaultTemplate.styles()
+    default_styles = HybridTemplate.styles()
     template_styles = styles
     Css.merge(default_styles, template_styles)
   end
 
   defp fetch_styles(%Campaign{template: %Template{styles: styles}}) when is_binary(styles) do
-    default_styles = DefaultTemplate.styles()
+    default_styles = HybridTemplate.styles()
     template_styles = Css.parse!(styles)
     Css.merge(default_styles, template_styles)
   end
 
   defp fetch_styles(_) do
-    DefaultTemplate.styles()
+    HybridTemplate.styles()
+  end
+
+  defp put_signature_content(email, assigns) do
+    signature_content = assigns["signature"] || DefaultTemplate.signature()
+
+    with {:ok, signature_content_text} <- render_liquid(signature_content, assigns),
+         {:ok, signature_content_html, _} <- Earmark.as_html(signature_content_text) do
+      assigns =
+        assigns
+        |> Map.put("signature_content_text", signature_content_text)
+        |> Map.put("signature_content_html", signature_content_html)
+
+      {email, assigns}
+    else
+      error ->
+        error_message =
+          case error do
+            {:error, reason} when is_binary(reason) -> "Parsing error:\n" <> reason
+            _other -> "Unexpected parsing error"
+          end
+
+        assigns =
+          assigns
+          |> Map.put("signature_content_text", error_message)
+          |> Map.put("signature_content_html", error_message)
+
+        email = header(email, "X-Keila-Invalid", error_message)
+        {email, assigns}
+    end
+  end
+
+  defp get_body_blocks(email, json_body, assigns) do
+    (json_body || %{})
+    |> Map.get("blocks", [])
+    |> apply_liquid_to_blocks(assigns)
+    |> case do
+      {:ok, blocks} ->
+        {email, blocks}
+
+      {:error, blocks} ->
+        email = header(email, "X-Keila-Invalid", "Rendering error")
+        {email, blocks}
+    end
+  end
+
+  defp apply_liquid_to_blocks(blocks, assigns) do
+    blocks
+    |> Enum.reverse()
+    |> Enum.reduce({:ok, []}, fn block, {status, blocks} ->
+      {rendered_status, rendered_block} = apply_liquid_to_block(block, assigns)
+      updated_status = if status == :ok && rendered_status == :ok, do: :ok, else: :error
+      {updated_status, [rendered_block | blocks]}
+    end)
+  end
+
+  defp apply_liquid_to_block(block, assigns) do
+    Map.get(block, "data", %{})
+    |> Enum.reduce({:ok, %{}}, fn
+      {key, value}, {status, data} when is_binary(value) ->
+        case render_liquid(value, assigns) do
+          {:ok, rendered_value} ->
+            status = if status == :ok, do: :ok, else: :error
+            {status, Map.put(data, key, rendered_value)}
+
+          {:error, reason} ->
+            {:error, Map.put(data, key, reason)}
+        end
+
+      {key, value}, {status, data} when is_list(value) and key == "blocks" ->
+        {rendered_status, rendered_blocks} = apply_liquid_to_blocks(value, assigns)
+        updated_status = if status == :ok && rendered_status == :ok, do: :ok, else: :error
+        {updated_status, Map.put(data, key, rendered_blocks)}
+
+      {key, value}, {status, data} ->
+        {status, Map.put(data, key, value)}
+    end)
+    |> then(fn {status, data} -> {status, Map.put(block, "data", data)} end)
   end
 
   defp put_unsubscribe_header(email, unsubscribe_link) do
@@ -220,10 +346,12 @@ defmodule Keila.Mailings.Builder do
     end
   end
 
-  defp render_liquid(input, assigns) when is_binary(input) do
+  defp render_liquid(input, assigns, opts \\ [])
+
+  defp render_liquid(input, assigns, opts) when is_binary(input) do
     try do
       with {:ok, template} <- Solid.parse(input) do
-        render_liquid(template, assigns)
+        render_liquid(template, assigns, opts)
       else
         {:error, error = %Solid.TemplateError{}} -> {:error, error.message}
       end
@@ -232,14 +360,15 @@ defmodule Keila.Mailings.Builder do
     end
   end
 
-  defp render_liquid(input = %Solid.Template{}, assigns) do
+  defp render_liquid(input = %Solid.Template{}, assigns, opts) do
     try do
       input
-      |> Solid.render(assigns)
+      |> Solid.render!(assigns, opts)
       |> to_string()
       |> (fn output -> {:ok, output} end).()
     rescue
-      _e -> {:error, "Unexpected rendering error"}
+      _error ->
+        {:error, "Unexpected rendering error"}
     end
   end
 
@@ -270,7 +399,7 @@ defmodule Keila.Mailings.Builder do
   defp put_click_tracking(html, campaign, recipient) do
     Floki.find_and_update(html, @tracking_click_selector, fn {tag, attributes} ->
       href = List.keyfind(attributes, "href", 0) |> elem(1)
-      # if not keila link
+      # if not Keila link
       if String.starts_with?(href, KeilaWeb.Endpoint.url()) do
         {tag, attributes}
       else
