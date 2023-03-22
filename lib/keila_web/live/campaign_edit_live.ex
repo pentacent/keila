@@ -213,6 +213,8 @@ defmodule KeilaWeb.CampaignEditLive do
     end
   end
 
+  defp transform_style_selector(selector, :text), do: selector
+
   @markdown_editor_selector "#wysiwyg .editor"
   @markdown_editor_content_selector "#wysiwyg .editor .ProseMirror"
   defp transform_style_selector(selector, :markdown) do
