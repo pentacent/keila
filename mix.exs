@@ -71,7 +71,7 @@ defmodule Keila.MixProject do
       {:argon2_elixir, "~> 2.3"},
       {:httpoison, "~> 1.8"},
       {:nimble_csv, "~> 1.1"},
-      {:oban, "~> 2.12"},
+      {:oban, "~> 2.15"},
       {:solid, "~> 0.14.1"},
       {:earmark, "~> 1.4"},
       {:tzdata, "~> 1.1"},
