@@ -69,6 +69,7 @@ export default class BlockEditor {
           source.value = JSON.stringify(outputData)
           source.dispatchEvent(new Event("input", { bubbles: true }))
         }).catch((error) => {
+          console.warn("Error saving editor content", error)
         })
       }
     })
@@ -81,6 +82,7 @@ export default class BlockEditor {
           source.dispatchEvent(new Event("input", { bubbles: true }))
         }
       }).catch((error) => {
+        console.warn("Error saving editor content", error)
       })
     })
 
