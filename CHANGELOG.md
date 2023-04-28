@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-## Version 0.12.0
+## Version 0.12.1
 
 New Campaign Block Editor 📝
 

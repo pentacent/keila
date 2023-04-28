@@ -5,7 +5,7 @@ const _requiredClasses = "grid-cols-2 grid-cols-3 col-span-1 col-span-2 col-span
 
 export default class Layout {
   constructor({ data, config, api, block }) {
-    this.data = data.blocks ? data : { blocks: [], columns: 2 }
+    this.data = data.blocks && data.ratio ? data : { blocks: [], columns: 2, ratio: "1-1" }
     this.editors = []
     this.config = config
 
@@ -21,7 +21,7 @@ export default class Layout {
 
   drawView() {
     this.wrapper.innerHTML = ""
-    const colSpans = (this.data.ratio || "1-1").split("-").map(colSpan => parseInt(colSpan))
+    const colSpans = this.data.ratio.split("-").map(colSpan => parseInt(colSpan))
     const colSpanTotal = colSpans.reduce((acc, i) => acc + i)
     this.wrapper.className = `layout-block grid grid-cols-${colSpanTotal} gap-4`
     this.editors = []
