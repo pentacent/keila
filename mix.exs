@@ -77,7 +77,7 @@ defmodule Keila.MixProject do
       {:tzdata, "~> 1.1"},
       {:ex_aws, "~> 2.2.3"},
       {:sweet_xml, "~> 0.6"},
-      {:ex_aws_ses, git: "https://github.com/pentacent/ex_aws_ses"},
+      {:ex_aws_ses, "~> 2.4.1"},
       {:php_serializer, "~> 2.0"},
       {:open_api_spex, "~> 3.11"},
       {:ex_rated, "~> 2.1"}
