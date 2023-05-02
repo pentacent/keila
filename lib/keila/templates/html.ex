@@ -39,7 +39,7 @@ defmodule Keila.Templates.Html do
   """
   @spec to_document(t()) :: String.t()
   def to_document(html_tree) do
-    Floki.raw_html(html_tree)
+    "<!doctype html>\n" <> Floki.raw_html(html_tree)
   end
 
   @doc """
@@ -134,20 +134,28 @@ defmodule Keila.Templates.Html do
   end
 
   defp put_inline_styles(attributes, styles, opts) do
-    styles =
+    styles_to_add =
       styles
-      |> Enum.filter(fn {_key, value} -> value != "inherit" || !opts[:ignore_inherit] end)
-      |> Enum.map(fn {key, value} -> "#{key}:#{value}" end)
-      |> Enum.join(";")
+      |> Enum.filter(fn {_key, value} ->
+        not is_nil(value) and (value != "inherit" || !opts[:ignore_inherit])
+      end)
+      |> then(fn properties -> [{"inline", properties}] end)
 
-    index = Enum.find_index(attributes, fn {attribute, _} -> attribute == "style" end)
+    style_attr_index = Enum.find_index(attributes, fn {attribute, _} -> attribute == "style" end)
 
-    if index do
-      List.update_at(attributes, index, fn {"style", existing_styles} ->
-        {"style", existing_styles <> ";" <> styles}
+    if style_attr_index do
+      List.update_at(attributes, style_attr_index, fn {"style", existing_styles} ->
+        existing_styles = Css.parse_inline!(existing_styles)
+
+        merged_styles =
+          existing_styles
+          |> Css.merge(styles_to_add)
+          |> Css.encode_inline()
+
+        {"style", merged_styles}
       end)
     else
-      attributes ++ [{"style", styles}]
+      attributes ++ [{"style", Css.encode_inline(styles_to_add)}]
     end
   end
 
@@ -163,7 +171,62 @@ defmodule Keila.Templates.Html do
   end
 
   defp do_apply_email_markup({"h4", _, [{"a", a_attrs, a_children}]}) do
-    {"div", [{"class", "keila-button"}], [{"a", a_attrs, a_children}]}
+    a_attrs =
+      case Enum.find_index(a_attrs, &(elem(&1, 0) == "class")) do
+        nil ->
+          [{"class", "button-a"} | a_attrs]
+
+        i ->
+          List.update_at(a_attrs, i, fn {"class", classes} ->
+            {"class", classes <> " button-a"}
+          end)
+      end
+
+    {"table", [{"style", "width: 100%"}],
+     [
+       {"tr", [{"class", "block--button"}],
+        [
+          {"td", [{"class", "button-td"}],
+           [
+             {"a", a_attrs, a_children}
+           ]}
+        ]}
+     ]}
+  end
+
+  defp do_apply_email_markup({"blockquote", _, content}) do
+    {"table", [{"style", "width: 100%"}],
+     [
+       {"tr", [{"class", "block--quote"}],
+        [
+          {"td", [],
+           [
+             {"figure", [],
+              [
+                {"blockquote", [], content}
+              ]}
+           ]}
+        ]}
+     ]}
+  end
+
+  defp do_apply_email_markup({"img", img_attrs, _}) do
+    {"table", [{"style", "width: 100%"}],
+     [
+       {"tr", [{"class", "block--image"}],
+        [
+          {"td", [],
+           [
+             {"img",
+              img_attrs ++
+                [
+                  {"width", "100%"},
+                  {"style", "display:block; max-width:100%!important; height: auto!important;"},
+                  {"class", "g-img"}
+                ], []}
+           ]}
+        ]}
+     ]}
   end
 
   defp do_apply_email_markup(other), do: other

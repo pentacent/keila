@@ -1,19 +1,19 @@
-import { MarkdownParser } from "prosemirror-markdown"
-import { schema } from "./markdown-schema"
 import markdownit from "markdown-it"
+import { MarkdownParser } from "prosemirror-markdown"
 import { markdownItLiquid } from "./markdown-it-liquid"
 import { markdownItLinkWithLiquid } from "./markdown-it/link-with-liquid"
+import { schema } from "./markdown-schema"
 
-const md =
-  markdownit("commonmark", { html: false })
+const md = markdownit("commonmark", { html: false })
   .use(markdownItLiquid)
   .use(markdownItLinkWithLiquid)
 
 // Markdown parser based on Prosemirror’s defaultMarkdownParser
 // Extended with Liquid tag
 function listIsTight(tokens, i) {
-  while (++i < tokens.length)
+  while (++i < tokens.length) {
     if (tokens[i].type != "list_item_open") return tokens[i].hidden
+  }
   return false
 }
 
@@ -26,7 +26,8 @@ export const markdownParser = new MarkdownParser(schema, md, {
     getAttrs: (_, tokens, i) => ({ tight: listIsTight(tokens, i) })
   },
   ordered_list: {
-    block: "ordered_list", getAttrs: (tok, tokens, i) => ({
+    block: "ordered_list",
+    getAttrs: (tok, tokens, i) => ({
       order: +tok.attrGet("start") || 1,
       tight: listIsTight(tokens, i)
     })

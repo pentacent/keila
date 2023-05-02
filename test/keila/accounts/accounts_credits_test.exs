@@ -70,6 +70,25 @@ defmodule Keila.AccountsTest.Credits do
     assert {^n_plus_1, 1} = Accounts.get_credits(account.id)
   end
 
+  @tag :accounts
+  @tag :mailings
+  @tag :contacts
+  test "A campaign that failed to deliver with insufficient credits is un-scheduled", %{
+    user: user,
+    account: account
+  } do
+    {:ok, project} = Keila.Projects.create_project(user.id, params(:project))
+    :ok = Keila.Contacts.import_csv(project.id, "test/keila/contacts/import_rfc_4180.csv")
+    sender = insert!(:mailings_sender, project_id: project.id)
+    now = DateTime.utc_now() |> DateTime.truncate(:second)
+
+    campaign =
+      insert!(:mailings_campaign, project_id: project.id, sender_id: sender.id, scheduled_for: now)
+
+    assert {:error, :insufficient_credits} = Keila.Mailings.deliver_campaign(campaign.id)
+    assert %{scheduled_for: nil} = Keila.Mailings.get_campaign(campaign.id)
+  end
+
   defp set_credits_enabled(enable?) do
     config =
       Application.get_env(:keila, Keila.Accounts, [])

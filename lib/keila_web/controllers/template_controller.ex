@@ -2,7 +2,7 @@ defmodule KeilaWeb.TemplateController do
   use KeilaWeb, :controller
   alias Keila.Templates
   alias Keila.Templates.Template
-  alias Keila.Templates.DefaultTemplate
+  alias Keila.Templates.HybridTemplate
   import Ecto.Changeset
   import Phoenix.LiveView.Controller
 
@@ -29,7 +29,7 @@ defmodule KeilaWeb.TemplateController do
 
     params =
       (params["template"] || %{})
-      |> Map.put("assigns", %{"signature" => DefaultTemplate.signature()})
+      |> Map.put("assigns", %{"signature" => HybridTemplate.signature()})
 
     case Templates.create_template(project.id, params) do
       {:ok, template} ->
@@ -114,7 +114,7 @@ defmodule KeilaWeb.TemplateController do
 
   defp fetch_styles(params) do
     if is_map(params["styles"]) do
-      Keila.Templates.DefaultTemplate.style_template()
+      Keila.Templates.HybridTemplate.style_template()
       |> Keila.Templates.StyleTemplate.apply_values_from_params(params["styles"])
       |> Keila.Templates.StyleTemplate.to_css()
       |> Keila.Templates.Css.encode()

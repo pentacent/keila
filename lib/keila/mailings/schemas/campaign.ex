@@ -5,13 +5,25 @@ defmodule Keila.Mailings.Campaign do
   alias Keila.Projects.Project
   alias Keila.Templates.Template
 
-  @update_fields [:subject, :text_body, :html_body, :sender_id, :template_id, :segment_id, :data]
+  @update_fields [
+    :subject,
+    :text_body,
+    :html_body,
+    :json_body,
+    :preview_text,
+    :sender_id,
+    :template_id,
+    :segment_id,
+    :data
+  ]
   @creation_fields [:project_id | @update_fields]
 
   schema "mailings_campaigns" do
     field(:subject, :string)
     field(:text_body, :string)
     field(:html_body, :string)
+    field(:json_body, :map)
+    field(:preview_text, :string)
     field(:data, Keila.Repo.JsonField)
     field(:sent_at, :utc_datetime)
     field(:scheduled_for, :utc_datetime)
@@ -60,6 +72,7 @@ defmodule Keila.Mailings.Campaign do
     struct
     |> cast(params, [:scheduled_for])
     |> validate_scheduled_for()
+    |> validate_assocs_project()
   end
 
   defp validate_scheduled_for(changeset) do

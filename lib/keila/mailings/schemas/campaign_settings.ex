@@ -3,7 +3,7 @@ defmodule Keila.Mailings.Campaign.Settings do
   import Ecto.Changeset
 
   embedded_schema do
-    field(:type, Ecto.Enum, values: [:text, :markdown])
+    field(:type, Ecto.Enum, values: [:text, :markdown, :block])
     field(:enable_wysiwyg, :boolean, default: true)
     field(:do_not_track, :boolean, default: false)
   end

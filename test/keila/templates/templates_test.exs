@@ -22,6 +22,9 @@ defmodule Keila.TemplatesTest do
   """
 
   @input_css """
+  /*
+  Comments are ignored
+  */
   .foo {
     background-color: #f0f;
     font-family: inherit;
@@ -30,12 +33,12 @@ defmodule Keila.TemplatesTest do
     padding: 10px;
   }
   a {
-    color: blue;
+    color: blue; /* Comments are ignored everywhere */
   }
   """
 
   @expected_html """
-                 <div style="margin: 10px;background-color:#f0f;font-family:inherit;padding:10px" class="foo">
+                 <div style="margin:10px;background-color:#f0f;font-family:inherit;padding:10px" class="foo">
                    <a href="#" style="color:blue">Link</a>
                    <a href="#" style="color:blue">Another Link</a>
                  </div>

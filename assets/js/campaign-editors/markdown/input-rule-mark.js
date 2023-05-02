@@ -1,5 +1,5 @@
+import { InputRule } from "prosemirror-inputrules"
 import { schema } from "./markdown-schema"
-import { InputRule } from 'prosemirror-inputrules'
 
 /**
  * Build an input rule for automatically marking a string when a given
@@ -16,14 +16,14 @@ export function markingInputRule(
   return new InputRule(
     pattern,
     (state, match, start, end) => {
-        const content = [schema.text(match[1], [markType.create()])]
-        if (match[2]) {
-            content.push(schema.text(match[2]))
-        }
+      const content = [schema.text(match[1], [markType.create()])]
+      if (match[2]) {
+        content.push(schema.text(match[2]))
+      }
 
-        return state.tr
+      return state.tr
         .replaceRangeWith(start, end, content)
-        // .removeStoredMark(markType)
+      // .removeStoredMark(markType)
     }
   )
 }

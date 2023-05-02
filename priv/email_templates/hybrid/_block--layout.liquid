@@ -1,0 +1,178 @@
+{% case block.data.ratio %}
+{% when "1-1" %}
+<tr class="block block--layout cols-2">
+    <td align="center" valign="top">
+        <!--[if mso]>
+        <table role="presentation" border="0" cellspacing="0" cellpadding="0" width="680">
+        <tr>
+        <td valign="top" width="340">
+        <![endif]-->
+        <div style="display:inline-block; width:100%; min-width:340px; max-width:340px; vertical-align:top;" class="stack-column col-1">
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                    <td>
+                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                            {% render "content", blocks: block.data.blocks[0].blocks %}
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!--[if mso]>
+        </td>
+        <td valign="top" width="340">
+        <![endif]-->
+        <div style="display:inline-block; width:100%; min-width:340px; max-width:340px; vertical-align:top;" class="stack-column col-2">
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                    <td>
+                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                            {% render "content", blocks: block.data.blocks[1].blocks %}
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!--[if mso]>
+        </td>
+        </tr>
+        </table>
+        <![endif]-->
+    </td>
+</tr>
+<!-- 2 Even Columns : END -->
+{% when "2-1" %}
+<!-- Thumbnail Right, Text Left : BEGIN -->
+<tr class="block block--layout cols-2">
+    <td>
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+            <tr>
+                <!-- dir=rtl is where the magic happens. This can be changed to dir=ltr to swap the alignment on wide while maintaining stack order on narrow. -->
+                <td dir="ltr" height="100%" valign="top" width="100%">
+                    <!--[if mso]>
+                    <table role="presentation" border="0" cellspacing="0" cellpadding="0" width="680" style="width: 680px;">
+                    <tr>
+                    <td valign="top" width="453" style="width: 453px;">
+                    <![endif]-->
+                    <div style="display:inline-block; max-width: 453px; min-width:453px; vertical-align:top; width:100%;" class="stack-column col-1">
+                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                            {% render "content", blocks: block.data.blocks[0].blocks %}
+                        </table>
+                    </div>
+                    <!--[if mso]>
+                    </td>
+                    <td valign="top" width="227" style="width: 227px;">
+                    <![endif]-->
+                    <div style="display:inline-block; max-width: 227px; min-width:227px; vertical-align:top;" class="stack-column col-2">
+                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                            {% render "content", blocks: block.data.blocks[1].blocks %}
+                        </table>
+                    </div>
+                    <!--[if mso]>
+                    </td>
+                    </tr>
+                    </table>
+                    <![endif]-->
+                </td>
+            </tr>
+        </table>
+    </td>
+</tr>
+<!-- Thumbnail Right, Text Left : END -->
+{% when "1-2" %}
+<!-- Thumbnail Left, Text Right : BEGIN -->
+<tr class="block block--layout cols-2">
+    <td>
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+            <tr>
+                <!-- dir=rtl is where the magic happens. This can be changed to dir=ltr to swap the alignment on wide while maintaining stack order on narrow. -->
+                <td dir="ltr" height="100%" valign="top" width="100%">
+                    <!--[if mso]>
+                    <table role="presentation" border="0" cellspacing="0" cellpadding="0" width="680" style="width: 680px;">
+                    <tr>
+                    <td valign="top" width="227" style="width: 227px;">
+                    <![endif]-->
+                    <div style="display:inline-block; max-width: 227px; min-width:227px; vertical-align:top; width:100%;" class="stack-column col-1">
+                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                            {% render "content", blocks: block.data.blocks[0].blocks %}
+                        </table>
+                    </div>
+                    <!--[if mso]>
+                    </td>
+                    <td valign="top" width="453" style="width: 453px;">
+                    <![endif]-->
+                    <div style="display:inline-block; max-width: 453px; min-width:453px; vertical-align:top;" class="stack-column col-2">
+                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                            {% render "content", blocks: block.data.blocks[1].blocks %}
+                        </table>
+                    </div>
+                    <!--[if mso]>
+                    </td>
+                    </tr>
+                    </table>
+                    <![endif]-->
+                </td>
+            </tr>
+        </table>
+    </td>
+</tr>
+<!-- Thumbnail Left, Text Right : END -->
+{% when "1-1-1" %}
+<!-- 3 Even Columns : BEGIN -->
+<tr class="block block--layout cols-3">
+    <td align="center" valign="top">
+        <!--[if mso]>
+        <table role="presentation" border="0" cellspacing="0" cellpadding="0" width="680">
+        <tr>
+        <td valign="top" width="226">
+        <![endif]-->
+        <div style="display:inline-block; max-width: 226px; min-width:226px; vertical-align:top; width:100%;" class="stack-column col-1">
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                    <td>
+                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                            {% render "content", blocks: block.data.blocks[0].blocks %}           
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!--[if mso]>
+        </td>
+        <td valign="top" width="227">
+        <![endif]-->
+        <div style="display:inline-block; max-width: 227px; min-width:227px; vertical-align:top; width:100%;" class="stack-column col-2">
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                    <td>
+                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                            {% render "content", blocks: block.data.blocks[1].blocks %}
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!--[if mso]>
+        </td>
+        <td valign="top" width="226">
+        <![endif]-->
+        <div style="display:inline-block; max-width: 226px; min-width:226px; vertical-align:top; width:100%;" class="stack-column col-3">
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                    <td>
+                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                            {% render "content", blocks: block.data.blocks[2].blocks %}
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!--[if mso]>
+        </td>
+        </tr>
+        </table>
+        <![endif]-->
+    </td>
+</tr>
+<!-- 3 Even Columns : END -->
+{% endcase %}

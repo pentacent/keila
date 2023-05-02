@@ -1,0 +1,10 @@
+{% if style == "unordered" %}<ul>{% else %}<ol>{% endif %}
+    {% for item in items %}
+    <li>
+        {{ item.content }}
+        {% if item.items %}
+            {% render "block--list_items", items: item.items, style: style %}
+        {% endif %}
+    </li>
+    {% endfor %}
+{% if style == "unordered" %}</ul>{% else %}</ol>{% endif %}

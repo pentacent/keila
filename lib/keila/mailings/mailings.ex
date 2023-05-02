@@ -336,6 +336,9 @@ defmodule Keila.Mailings do
   Returns `:ok`.
   If there were no recipients, returns `{:error, :no_recipients}`
   If no sender is set, returns `{:error, :no_sender}`
+
+  In case of an error, the campaign is un-scheduled if it was previously
+  scheduled for sending.
   """
   @spec deliver_campaign(Campaign.id()) :: {:error, :no_recipients} | {:error, term()} | :ok
   def deliver_campaign(id) when is_id(id) do
@@ -349,8 +352,12 @@ defmodule Keila.Mailings do
       end)
 
     case result do
-      {:ok, _n} -> :ok
-      {:error, reason} -> {:error, reason}
+      {:ok, _n} ->
+        :ok
+
+      {:error, reason} ->
+        schedule_campaign(id, %{scheduled_for: nil})
+        {:error, reason}
     end
   end
 

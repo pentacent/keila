@@ -2,6 +2,34 @@
 
 ## Unreleased
 
+## Version 0.12.1
+
+New Campaign Block Editor 📝
+
+### Added
+- New block-style editor for building campaigns
+  - Multi-column layouts
+  - Headings, paragraphs, lists
+  - Images
+  - Buttons
+  - Blockquotes
+  - Spacers
+- More styling options in the form editor (#185)
+
+### Changed
+- Changed base email template to [Cerberus Hybrid](https://www.cerberusemail.com/hybrid-responsive)
+- Scheduled campaigns that could not be delivered are automatically un-scheduled
+- Scrolling position in template and campaign previews is retained when changes are made
+
+### Fixed
+- Invalid signature markup no longer breaks the template editor (#119)
+- Fixed error that caused uploaded images not to show up in upload modal (#186)
+- Fixed some broken URLs when Keila is configured with `URL_PATH` (#189)
+- Mailer port now defaults to `587` instead of `nil` (#182 - thanks @aej)
+- Fixed bug that could cause the content of a Markdown campaign to be erased when changing the title (#188)
+- Fixed bug that could cause the segment page to crash (#177)
+
+
 ## Version 0.11.2
 
 ### Changed
