@@ -65,11 +65,12 @@ config :keila, Keila.Billing,
   paddle_vendor: "2518",
   paddle_environment: "sandbox"
 
-# Staging configuration for hCaptcha
-config :keila, KeilaWeb.Hcaptcha,
+# Staging configuration for hCaptcha or FriendlyCaptcha
+config :keila, KeilaWeb.Captcha,
   secret_key: "0x0000000000000000000000000000000000000000",
   site_key: "10000000-ffff-ffff-ffff-000000000001",
-  url: "https://hcaptcha.com/siteverify"
+  url: "https://hcaptcha.com/siteverify",
+  type: "hcaptcha"
 
 # Configures Elixir's Logger
 config :logger, :console,

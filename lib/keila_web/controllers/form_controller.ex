@@ -32,15 +32,23 @@ defmodule KeilaWeb.FormController do
     end
   end
 
+  defp captcha_response_param() do
+    if captcha_config()[:type] == "hcaptcha" do
+      "h-captcha-response"
+    else
+      "frc-captcha-solution"
+    end
+  end
+
   defp maybe_check_captcha(%{settings: %{captcha_required: false}}, _), do: :ok
 
   defp maybe_check_captcha(form, params) do
-    if KeilaWeb.Hcaptcha.captcha_valid?(params["h-captcha-response"]) do
+    if KeilaWeb.Captcha.captcha_valid?(params[captcha_response_param()]) do
       :ok
     else
       params["contact"]
       |> Contacts.Contact.changeset_from_form(form)
-      |> Ecto.Changeset.add_error(:hcaptcha, dgettext("auth", "Please complete the captcha."))
+      |> Ecto.Changeset.add_error(:captcha, dgettext("auth", "Please complete the captcha."))
       |> Ecto.Changeset.apply_action(:insert)
     end
   end
@@ -200,5 +208,9 @@ defmodule KeilaWeb.FormController do
     else
       protect_from_forgery(conn)
     end
+  end
+
+  defp captcha_config() do
+    Application.get_env(:keila, KeilaWeb.Captcha)
   end
 end

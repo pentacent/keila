@@ -1,0 +1,74 @@
+defmodule KeilaWeb.Captcha do
+  @moduledoc """
+  Helper module for handling captchas.
+
+  Must be used with `KeilaWeb.Captcha.Plug`
+
+  ## Configuration
+  By default, the staging environment of hCaptcha is used.
+  """
+
+  use Phoenix.HTML
+
+  @script_url_hcaptcha "https://hcaptcha.com/1/api.js"
+  @script_url_friendlycaptcha "https://unpkg.com/friendly-challenge@0.9.11/widget.module.min.js"
+
+  def captcha_tag() do
+    [
+      content_tag(:div, nil,
+        class: div_class(),
+        data_sitekey: config()[:site_key],
+        data_theme: "dark"
+      ),
+      content_tag(:script, nil, src: script_url(), async: true, defer: true)
+    ]
+  end
+
+  @spec captcha_valid?(String.t()) :: boolean()
+  def captcha_valid?(response)
+
+  def captcha_valid?(response) when response in [nil, ""], do: false
+
+  def captcha_valid?(response) do
+    config = config()
+    body = request_body(response)
+
+    with {:ok, response} <- HTTPoison.post(config[:url], body, [], recv_timeout: 5_000),
+         {:ok, response_body} <- Jason.decode(response.body),
+         %{"success" => true} <- response_body do
+      true
+    else
+      _other -> false
+    end
+  end
+
+  defp request_body(response) do
+    config = config()
+
+    if config[:type] == "hcaptcha" do
+      {:form, [sitekey: config[:site_key], secret: config[:secret_key], response: response]}
+    else
+      {:form, [sitekey: config[:site_key], secret: config[:secret_key], solution: response]}
+    end
+  end
+
+  defp script_url() do
+    if config()[:type] == "hcaptcha" do
+      @script_url_hcaptcha
+    else
+      @script_url_friendlycaptcha
+    end
+  end
+
+  defp div_class() do
+    if config()[:type] == "hcaptcha" do
+      "h-captcha"
+    else
+      "frc-captcha"
+    end
+  end
+
+  defp config() do
+    Application.get_env(:keila, KeilaWeb.Captcha)
+  end
+end
