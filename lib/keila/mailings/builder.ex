@@ -48,7 +48,10 @@ defmodule Keila.Mailings.Builder do
       |> put_template_assigns(campaign.template)
       |> process_assigns()
       |> Map.put_new("contact", process_assigns(contact))
-      |> Map.put_new("campaign", process_assigns(Map.take(campaign, [:data, :subject])))
+      |> Map.put_new(
+        "campaign",
+        process_assigns(Map.take(campaign, [:data, :subject, :preview_text]))
+      )
       |> Map.put("unsubscribe_link", unsubscribe_link)
 
     Email.new()
