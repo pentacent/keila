@@ -70,7 +70,7 @@ config :keila, KeilaWeb.Captcha,
   secret_key: "0x0000000000000000000000000000000000000000",
   site_key: "10000000-ffff-ffff-ffff-000000000001",
   url: "https://hcaptcha.com/siteverify",
-  type: "hcaptcha"
+  provider: :hcaptcha
 
 # Configures Elixir's Logger
 config :logger, :console,

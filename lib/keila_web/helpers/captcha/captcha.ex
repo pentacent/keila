@@ -45,26 +45,26 @@ defmodule KeilaWeb.Captcha do
   defp request_body(response) do
     config = config()
 
-    if config[:type] == "hcaptcha" do
-      {:form, [sitekey: config[:site_key], secret: config[:secret_key], response: response]}
-    else
-      {:form, [sitekey: config[:site_key], secret: config[:secret_key], solution: response]}
+    case config[:provider] do
+      :hcaptcha ->
+        {:form, [sitekey: config[:site_key], secret: config[:secret_key], response: response]}
+
+      :friendly_captcha ->
+        {:form, [sitekey: config[:site_key], secret: config[:secret_key], solution: response]}
     end
   end
 
   defp script_url() do
-    if config()[:type] == "hcaptcha" do
-      @script_url_hcaptcha
-    else
-      @script_url_friendlycaptcha
+    case config()[:provider] do
+      :hcaptcha -> @script_url_hcaptcha
+      :friendly_captcha -> @script_url_friendlycaptcha
     end
   end
 
   defp div_class() do
-    if config()[:type] == "hcaptcha" do
-      "h-captcha"
-    else
-      "frc-captcha"
+    case config()[:provider] do
+      :hcaptcha -> "h-captcha"
+      :friendly_captcha -> "frc-captcha"
     end
   end
 

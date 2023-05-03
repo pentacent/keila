@@ -97,20 +97,29 @@ if config_env() == :prod do
   captcha_url = System.get_env("CAPTCHA_URL") || System.get_env("HCAPTCHA_URL")
 
   if captcha_site_key not in [nil, ""] and captcha_secret_key not in [nil, ""] do
-    captcha_type = if captcha_site_key =~ "-", do: "hcaptcha", else: "friendlycaptcha"
-    Logger.info("Using the #{captcha_type} captcha provider")
+    captcha_provider =
+      System.get_env("CAPTCHA_PROVIDER", "hcaptcha")
+      |> String.downcase()
+      |> case do
+        "friendly_captcha" -> :friendly_captcha
+        _other -> :hcaptcha
+      end
+    end
+    Logger.info("Using the #{captcha_provider} captcha provider")
 
     default_captcha_url =
-      if captcha_type == "hcaptcha",
-        do: "https://hcaptcha.com/siteverify",
-        else: "https://api.friendlycaptcha.com/api/v1/siteverify"
+      case captcha_provider do
+        :hcaptcha -> "https://hcaptcha.com/siteverify"
+        :friendly_captcha -> "https://api.friendlycaptcha.com/api/v1/siteverify"
+      end
+    end
 
     config =
       [
         secret_key: captcha_secret_key,
         site_key: captcha_site_key,
         url: default_captcha_url,
-        type: captcha_type
+        provider: captcha_provider
       ]
       |> put_if_not_empty.(:url, captcha_url)
 
@@ -122,9 +131,10 @@ if config_env() == :prod do
 
     To configure a captcha, use the following environment variables:
 
-    - CAPTCHA_SITE_KEY (or HCAPTCHA_SITE_KEY for compatibility purposes)
-    - CAPTCHA_SECRET_KEY (or HCAPTCHA_SECRET_KEY for compatibility purposes)
-    - CAPTCHA_URL (or HCAPTCHA_URL for compatibility purposes), defaults to https://hcaptcha.com/siteverify or https://api.friendlycaptcha.com/api/v1/siteverify
+    - CAPTCHA_SITE_KEY
+    - CAPTCHA_SECRET_KEY
+    - CAPTCHA_URL (defaults to https://hcaptcha.com/siteverify or https://api.friendlycaptcha.com/api/v1/siteverify)
+    - CAPTCHA_PROVIDER (defaults to hCaptcha, unless set to 'friendly_captcha')
     """)
   end
 

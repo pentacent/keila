@@ -33,10 +33,9 @@ defmodule KeilaWeb.FormController do
   end
 
   defp captcha_response_param() do
-    if captcha_config()[:type] == "hcaptcha" do
-      "h-captcha-response"
-    else
-      "frc-captcha-solution"
+    case captcha_config()[:provider] do
+      :hcaptcha -> "h-captcha-response"
+      :friendly_captcha -> "frc-captcha-solution"
     end
   end
 
