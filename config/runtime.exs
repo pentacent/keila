@@ -104,7 +104,7 @@ if config_env() == :prod do
         "friendly_captcha" -> :friendly_captcha
         _other -> :hcaptcha
       end
-    end
+
     Logger.info("Using the #{captcha_provider} captcha provider")
 
     default_captcha_url =
@@ -112,7 +112,6 @@ if config_env() == :prod do
         :hcaptcha -> "https://hcaptcha.com/siteverify"
         :friendly_captcha -> "https://api.friendlycaptcha.com/api/v1/siteverify"
       end
-    end
 
     config =
       [
