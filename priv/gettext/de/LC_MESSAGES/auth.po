@@ -205,7 +205,7 @@ msgstr "Willkommen bei Keila!"
 #: lib/keila/auth/emails.ex:20
 msgid "Welcome to Keila,\n\nplease confirm your new account by visiting the following link:\n\n%{url}\n\nIf you weren’t trying to create an account, simply ignore this message.\n"
 msgstr ""
-"Willkommen bei Keia,\n"
+"Willkommen bei Keila,\n"
 "\n"
 "bitte bestätige deinen neuen Account, indem du folgenden Link besuchst:\n"
 "\n"
