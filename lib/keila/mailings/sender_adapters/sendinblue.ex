@@ -21,7 +21,7 @@ defmodule Keila.Mailings.SenderAdapters.Sendinblue do
   @impl true
   def to_swoosh_config(%{config: config}) do
     [
-      adapter: Swoosh.Adapters.sendinblue,
+      adapter: Swoosh.Adapters.Sendinblue,
       api_key: config.sendinblue_api_key
     ]
   end
