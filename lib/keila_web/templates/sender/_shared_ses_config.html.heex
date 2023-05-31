@@ -1,21 +1,27 @@
 <div class="flex flex-col">
-    <%= if input_value(@form, :shared_ses_verified_at) do %>
-        <p class="flex gap-2 items-center">
-            <span class="text-emerald-500 inline-flex h-5 w-5 shrink-0">
-                <%= render_icon(:check_circle) %>
-            </span>
-            <%= gettext("You have verified your email address and can now send emails with this sender.") %>
-        </p>
-    <% else %>
-        <p class="flex gap-2 items-center">
-            <span class="text-yellow-500 inline-flex h-5 w-5 shrink-0">
-                <%= render_icon(:information_circle) %>
-            </span>
-            <%= if input_value(@form, :shared_ses_verification_requested_for) do %>
-                <%= gettext("You need to verify your email address before you can send emails with this sender.") %>
-            <% else %>
-                <%= gettext("After creating this sender, you will receive an email to verify your email address.") %>
-            <% end %>
-        </p>
-    <% end %>
+  <%= if input_value(@form, :shared_ses_verified_at) do %>
+    <p class="flex gap-2 items-center">
+      <span class="text-emerald-500 inline-flex h-5 w-5 shrink-0">
+        <%= render_icon(:check_circle) %>
+      </span>
+      <%= gettext(
+        "You have verified your email address and can now send emails with this sender."
+      ) %>
+    </p>
+  <% else %>
+    <p class="flex gap-2 items-center">
+      <span class="text-yellow-500 inline-flex h-5 w-5 shrink-0">
+        <%= render_icon(:information_circle) %>
+      </span>
+      <%= if input_value(@form, :shared_ses_verification_requested_for) do %>
+        <%= gettext(
+          "You need to verify your email address before you can send emails with this sender."
+        ) %>
+      <% else %>
+        <%= gettext(
+          "After creating this sender, you will receive an email to verify your email address."
+        ) %>
+      <% end %>
+    </p>
+  <% end %>
 </div>

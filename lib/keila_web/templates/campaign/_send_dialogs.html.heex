@@ -1,167 +1,202 @@
 <div
-    id="send-dialogs"
-    style="display: none"
-    class="fixed z-10 inset-0 overflow-y-auto bg-black/90 flex items-center justify-center"
-    x-on:x-confirm.stop="activeDialog = null"
-    x-show.transition="['send', 'schedule'].includes(activeDialog)"
-    x-on:x-cancel.stop="activeDialog = null"
-    x-on:x-show.window="activeDialog = ($event.detail && $event.detail.dialog); if (activeDialog) { $nextTick(() => {const el = $el.querySelector(`[data-dialog-for=${activeDialog}] input, [data-dialog-for=${activeDialog}] button`); el.focus()}) }"
-    @change.stop="false"
-    @input.stop="false"
-    @blur.stop="false"
+  id="send-dialogs"
+  style="display: none"
+  class="fixed z-10 inset-0 overflow-y-auto bg-black/90 flex items-center justify-center"
+  x-on:x-confirm.stop="activeDialog = null"
+  x-show.transition="['send', 'schedule'].includes(activeDialog)"
+  x-on:x-cancel.stop="activeDialog = null"
+  x-on:x-show.window="activeDialog = ($event.detail && $event.detail.dialog); if (activeDialog) { $nextTick(() => {const el = $el.querySelector(`[data-dialog-for=${activeDialog}] input, [data-dialog-for=${activeDialog}] button`); el.focus()}) }"
+  @change.stop="false"
+  @input.stop="false"
+  @blur.stop="false"
 >
-    <div
-        x-show="activeDialog == 'send'"
-        class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
-        @keydown.escape.prevent="$dispatch('x-cancel')"
-        @click.away="$dispatch('x-cancel')"
-        data-dialog-for="send"
-    >
-        <%= if @recipient_count > 0 do %>
-            <div
-                class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full p-8"
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby="modal-headline"
-            >
-                <h2 class="text-3xl">Ready to send your campaign?</h2>
-                <br>
-                <p>
-                    <%=raw gettext("Are you ready to send your campaign <em>%{subject}</em> to %{count} contacts?", subject: Ecto.Changeset.get_field(@changeset, :subject), count: @recipient_count) %>
-                </p>
-                <%= if get_field(@changeset, :scheduled_for) do %>
-                    <br>
-                    <p>
-                        <%= gettext("This campaign has already been scheduled. You can manually send it up to five minutes before the scheduled sending time.") %>
-                    </p>
-                <% end %>
-                <br>
-                <div class="flex justify-end gap-8">
-                    <button class="button button--text button--large" @click.prevent="$dispatch('x-cancel')">
-                        <%= gettext("Cancel") %>
-                    </button>
-                    <button class="button button--cta button--large" type="button" @click="setUnsavedReminder(false); $dispatch('x-confirm')" phx-click="send">
-                        <%= render_icon(:paper_airplane) %>
-                        <%= gettext("Send") %>
-                    </button>
-                </div>
-            </div>
-        <% else %>
-            <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full p-8" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
-                <h2 class="text-3xl"><%= gettext("No Contacts, No Campaign.")%></h2>
-                <br>
-                <p>
-                    <%= gettext("It looks like you don’t yet have any contacts to receive this campaign.") %>
-                </p>
-                <br>
-                <div class="flex justify-end gap-8">
-                    <button class="button button--cta button--large" @click.prevent="$dispatch('x-cancel')">
-                        <%= gettext("Ok") %>
-                    </button>
-                </div>
-            </div>
+  <div
+    x-show="activeDialog == 'send'"
+    class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
+    @keydown.escape.prevent="$dispatch('x-cancel')"
+    @click.away="$dispatch('x-cancel')"
+    data-dialog-for="send"
+  >
+    <%= if @recipient_count > 0 do %>
+      <div
+        class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full p-8"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-headline"
+      >
+        <h2 class="text-3xl">Ready to send your campaign?</h2>
+        <br />
+        <p>
+          <%= raw(
+            gettext(
+              "Are you ready to send your campaign <em>%{subject}</em> to %{count} contacts?",
+              subject: Ecto.Changeset.get_field(@changeset, :subject),
+              count: @recipient_count
+            )
+          ) %>
+        </p>
+        <%= if get_field(@changeset, :scheduled_for) do %>
+          <br />
+          <p>
+            <%= gettext(
+              "This campaign has already been scheduled. You can manually send it up to five minutes before the scheduled sending time."
+            ) %>
+          </p>
         <% end %>
-    </div>
+        <br />
+        <div class="flex justify-end gap-8">
+          <button class="button button--text button--large" @click.prevent="$dispatch('x-cancel')">
+            <%= gettext("Cancel") %>
+          </button>
+          <button
+            class="button button--cta button--large"
+            type="button"
+            @click="setUnsavedReminder(false); $dispatch('x-confirm')"
+            phx-click="send"
+          >
+            <%= render_icon(:paper_airplane) %>
+            <%= gettext("Send") %>
+          </button>
+        </div>
+      </div>
+    <% else %>
+      <div
+        class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full p-8"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-headline"
+      >
+        <h2 class="text-3xl"><%= gettext("No Contacts, No Campaign.") %></h2>
+        <br />
+        <p>
+          <%= gettext("It looks like you don’t yet have any contacts to receive this campaign.") %>
+        </p>
+        <br />
+        <div class="flex justify-end gap-8">
+          <button class="button button--cta button--large" @click.prevent="$dispatch('x-cancel')">
+            <%= gettext("Ok") %>
+          </button>
+        </div>
+      </div>
+    <% end %>
+  </div>
 
+  <div
+    x-show="activeDialog == 'schedule'"
+    class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
+    @keydown.esc.prevent="$dispatch('x-cancel')"
+    @click.away="$dispatch('x-cancel')"
+    data-dialog-for="schedule"
+  >
+    <%= if @recipient_count > 0 do %>
+      <form
+        class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full p-8"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-headline"
+        phx-submit="schedule"
+      >
+        <h2 class="text-3xl"><%= gettext("Ready to schedule your campaign?") %></h2>
+        <br />
+        <p>
+          <%= if get_field(@changeset, :scheduled_for) do %>
+            <%= gettext(
+              "This campaign has already been scheduled. You can reschedule or cancel it up to five minutes before the scheduled sending time."
+            ) %>
+          <% else %>
+            <%= raw(
+              gettext(
+                "Are you ready to schedule sending your campaign <em>%{subject}</em> to %{count} contacts?",
+                subject: Ecto.Changeset.get_field(@changeset, :subject),
+                count: @recipient_count
+              )
+            ) %>
+          <% end %>
+        </p>
+        <div class="grid gap-4 mt-4">
+          <div class="flex flex-col">
+            <label class="font-bold"><%= gettext("Date") %></label>
+            <input
+              type="date"
+              name="schedule[date]"
+              id="schedule[date]"
+              phx-hook="SetLocalDateValue"
+              data-value={raw(get_field(@changeset, :scheduled_for) |> maybe_print_datetime())}
+              class="bg-white hover:bg-emerald-100 text-black"
+            />
+          </div>
+          <div class="flex flex-col">
+            <label class="font-bold"><%= gettext("Time") %></label>
+            <input
+              type="time"
+              id="schedule[time]"
+              name="schedule[time]"
+              class="bg-white hover:bg-emerald-100 text-black"
+              phx-hook="SetLocalTimeValue"
+              data-value={raw(get_field(@changeset, :scheduled_for) |> maybe_print_datetime())}
+            />
+          </div>
+          <div class="flex flex-col">
+            <label class="font-bold"><%= gettext("Timezone") %></label>
+            <input
+              type="text"
+              name="schedule[timezone]"
+              readonly
+              value="Etc/UTC"
+              :value="Intl.DateTimeFormat().resolvedOptions().timeZone"
+              class="bg-transparent text-white"
+            />
+          </div>
+        </div>
 
-    <div
-        x-show="activeDialog == 'schedule'"
-        class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
-        @keydown.esc.prevent="$dispatch('x-cancel')"
-        @click.away="$dispatch('x-cancel')"
-        data-dialog-for="schedule"
-    >
-        <%= if @recipient_count > 0 do %>
-            <form
-                class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full p-8"
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby="modal-headline"
-                phx-submit="schedule"
+        <br />
+        <div class="flex justify-end gap-4">
+          <button class="button button--text button--large" @click.prevent="$dispatch('x-cancel')">
+            <%= gettext("Cancel") %>
+          </button>
+          <%= if get_field(@changeset, :scheduled_for) do %>
+            <button
+              id="unschedule-button"
+              class="button button--large"
+              type="button"
+              @click="setUnsavedReminder(false); $dispatch('x-confirm')"
+              phx-click="unschedule"
             >
-                <h2 class="text-3xl"><%= gettext("Ready to schedule your campaign?") %></h2>
-                <br>
-                <p>
-                    <%= if get_field(@changeset, :scheduled_for) do %>
-                        <%= gettext("This campaign has already been scheduled. You can reschedule or cancel it up to five minutes before the scheduled sending time.") %>
-                    <% else %>
-                        <%=raw gettext("Are you ready to schedule sending your campaign <em>%{subject}</em> to %{count} contacts?", subject: Ecto.Changeset.get_field(@changeset, :subject), count: @recipient_count) %>
-                    <% end %>
-                </p>
-                <div class="grid gap-4 mt-4">
-                    <div class="flex flex-col">
-                        <label class="font-bold"><%= gettext("Date") %></label>
-                        <input
-                            type="date"
-                            name="schedule[date]"
-                            id="schedule[date]"
-                            phx-hook="SetLocalDateValue"
-                            data-value={raw get_field(@changeset, :scheduled_for) |> maybe_print_datetime() }
-                            class="bg-white hover:bg-emerald-100 text-black"
-                        >
-                    </div>
-                    <div class="flex flex-col">
-                        <label class="font-bold"><%= gettext("Time") %></label>
-                        <input
-                            type="time"
-                            id="schedule[time]"
-                            name="schedule[time]"
-                            class="bg-white hover:bg-emerald-100 text-black"
-                            phx-hook="SetLocalTimeValue"
-                            data-value={raw get_field(@changeset, :scheduled_for) |> maybe_print_datetime() }
-                        >
-                    </div>
-                    <div class="flex flex-col">
-                        <label class="font-bold"><%= gettext("Timezone") %></label>
-                        <input
-                            type="text"
-                            name="schedule[timezone]"
-                            readonly
-                            value="Etc/UTC"
-                            :value="Intl.DateTimeFormat().resolvedOptions().timeZone"
-                            class="bg-transparent text-white"
-                        >
-                    </div>
-                </div>
-
-                <br>
-                <div class="flex justify-end gap-4">
-                    <button class="button button--text button--large" @click.prevent="$dispatch('x-cancel')">
-                        <%= gettext("Cancel") %>
-                    </button>
-                    <%= if get_field(@changeset, :scheduled_for) do %>
-                        <button
-                            id="unschedule-button"
-                            class="button button--large"
-                            type="button"
-                            @click="setUnsavedReminder(false); $dispatch('x-confirm')"
-                            phx-click="unschedule"
-                        >
-                            <%= render_icon(:x) %>
-                            <%= gettext("Unschedule") %>
-                        </button>
-                    <% end %>
-                    <button class="button button--cta button--large" type="submit" name="schedule[schedule]" value="true" @click="setUnsavedReminder(false); $dispatch('x-confirm')">
-                        <%= render_icon(:clock) %>
-                        <%= gettext("Schedule") %>
-                    </button>
-                </div>
-            </form>
-        <% else %>
-            <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full p-8" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
-                <h2 class="text-3xl"><%= gettext("No Contacts, No Campaign.")%></h2>
-                <br>
-                <p>
-                    <%= gettext("It looks like you don’t yet have any contacts to receive this campaign.") %>
-                </p>
-                <br>
-                <div class="flex justify-end gap-8">
-                    <button class="button button--cta button--large" @click.prevent="activeDialog = false">
-                        <%= gettext("Ok") %>
-                    </button>
-                </div>
-            </div>
-        <% end %>
-    </div>
-
+              <%= render_icon(:x) %>
+              <%= gettext("Unschedule") %>
+            </button>
+          <% end %>
+          <button
+            class="button button--cta button--large"
+            type="submit"
+            name="schedule[schedule]"
+            value="true"
+            @click="setUnsavedReminder(false); $dispatch('x-confirm')"
+          >
+            <%= render_icon(:clock) %>
+            <%= gettext("Schedule") %>
+          </button>
+        </div>
+      </form>
+    <% else %>
+      <div
+        class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full p-8"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-headline"
+      >
+        <h2 class="text-3xl"><%= gettext("No Contacts, No Campaign.") %></h2>
+        <br />
+        <p>
+          <%= gettext("It looks like you don’t yet have any contacts to receive this campaign.") %>
+        </p>
+        <br />
+        <div class="flex justify-end gap-8">
+          <button class="button button--cta button--large" @click.prevent="activeDialog = false">
+            <%= gettext("Ok") %>
+          </button>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>

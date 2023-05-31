@@ -1,80 +1,101 @@
 <div id="block-container-assets" class="hidden">
-    <div class="icon-photograph"><%= render_icon(:photograph) %></div>
-    <div class="icon-horizontal-rule"><%= render_icon(:horizontal_rule) %></div>
-    <div class="icon-button-alt"><%= render_icon(:button_alt) %></div>
-    <div class="icon-block"><%= render_icon(:block) %></div>
-    <div class="image-placeholder">
-        <div class="w-full p-4 my-4 bg-white cursor-pointer text-gray-200 hover:text-gray-300">
-            <div class="flex w-32 h-32">
-                <%= render_icon(:photograph) %>
-            </div>
-            <p class="text-gray-800">
-                <%= gettext("Click here to select an image.") %>
-            </p>
-        </div>
+  <div class="icon-photograph"><%= render_icon(:photograph) %></div>
+  <div class="icon-horizontal-rule"><%= render_icon(:horizontal_rule) %></div>
+  <div class="icon-button-alt"><%= render_icon(:button_alt) %></div>
+  <div class="icon-block"><%= render_icon(:block) %></div>
+  <div class="image-placeholder">
+    <div class="w-full p-4 my-4 bg-white cursor-pointer text-gray-200 hover:text-gray-300">
+      <div class="flex w-32 h-32">
+        <%= render_icon(:photograph) %>
+      </div>
+      <p class="text-gray-800">
+        <%= gettext("Click here to select an image.") %>
+      </p>
     </div>
-    <div class="image-caption-placeholder">
-        <%= gettext("Image caption (optional)") %>
-    </div>
-    <div class="image-url-placeholder">
-        <%= gettext("Link for this image (optional)") %>
-    </div>
-    <div class="editor-placeholder">
-        <%= gettext("Start creating your newsletter here …") %>
-    </div>
-    <div class="editor-layout-placeholder">
-        <%= gettext("Add content to this column here …") %>
-    </div>
-    <div class="editor-layout-title">
-        <%= gettext("Layout") %>
-    </div>
-    <div class="editor-separator-title">
-        <%= gettext("Separator") %>
-    </div>
-    <div class="editor-image-title">
-        <%= gettext("Image") %>
-    </div>
-    <div class="editor-image-edit-label">
-        <%= gettext("Edit") %>
-    </div>
-    <div class="editor-button-title">
-        <%= gettext("Button") %>
-    </div>
-    <div class="editor-button-make-centered-label">
-        <%= gettext("Make centered") %>
-    </div>
-    <div class="editor-button-make-full-width-label">
-        <%= gettext("Make full width") %>
-    </div>
+  </div>
+  <div class="image-caption-placeholder">
+    <%= gettext("Image caption (optional)") %>
+  </div>
+  <div class="image-url-placeholder">
+    <%= gettext("Link for this image (optional)") %>
+  </div>
+  <div class="editor-placeholder">
+    <%= gettext("Start creating your newsletter here …") %>
+  </div>
+  <div class="editor-layout-placeholder">
+    <%= gettext("Add content to this column here …") %>
+  </div>
+  <div class="editor-layout-title">
+    <%= gettext("Layout") %>
+  </div>
+  <div class="editor-separator-title">
+    <%= gettext("Separator") %>
+  </div>
+  <div class="editor-image-title">
+    <%= gettext("Image") %>
+  </div>
+  <div class="editor-image-edit-label">
+    <%= gettext("Edit") %>
+  </div>
+  <div class="editor-button-title">
+    <%= gettext("Button") %>
+  </div>
+  <div class="editor-button-make-centered-label">
+    <%= gettext("Make centered") %>
+  </div>
+  <div class="editor-button-make-full-width-label">
+    <%= gettext("Make full width") %>
+  </div>
 </div>
 
-<div id="block-editor-toolbar" phx-update="ignore" >
-    <div class="relative shadow z-10 flex overflow-x-auto mt-4">
-        <div class="flex-grow"></div>
-        <button
-            title={ gettext("Preview") }
-            class="flex w-10 h-10 p-2 items-center justify-center bg-gray-800 hover:bg-gray-600 text-white"
-            @click.prevent="$dispatch('x-toggle-preview')"
-        >
-            <%= render_icon(:eye) %>
-        </button>
-    </div>
+<div id="block-editor-toolbar" phx-update="ignore">
+  <div class="relative shadow z-10 flex overflow-x-auto mt-4">
+    <div class="flex-grow"></div>
+    <button
+      title={gettext("Preview")}
+      class="flex w-10 h-10 p-2 items-center justify-center bg-gray-800 hover:bg-gray-600 text-white"
+      @click.prevent="$dispatch('x-toggle-preview')"
+    >
+      <%= render_icon(:eye) %>
+    </button>
+  </div>
 </div>
 
 <% f = form_for(@changeset, "#") %>
 <%= textarea(f, :json_body, class: "hidden", value: @json_body, phx_debounce: "1000") %>
 
-<div id="block-container" phx-hook="BlockEditor" class="flex-grow bg-white mt-4 min-h-10 text-gray-800">
-    <div id="block-editor" class="editor" style="min-height: 25vh;" phx-update="ignore"></div>
-    <style><%= raw @styles %></style>
+<div
+  id="block-container"
+  phx-hook="BlockEditor"
+  class="flex-grow bg-white mt-4 min-h-10 text-gray-800"
+>
+  <div id="block-editor" class="editor" style="min-height: 25vh;" phx-update="ignore"></div>
+  <style>
+    <%= raw(@styles) %>
+  </style>
 </div>
 
 <div x-data="{previewMode: false}" x-on:x-toggle-preview.document="previewMode = !previewMode">
-    <div id="preview-container" x-show="previewMode">
-        <iframe id="block-html-preview" data-source="html-preview-data" class="bg-gray-100 fixed left-0 top-0 w-full h-screen inset-0 pb-10 z-40"></iframe>
-        <button @click.prevent="previewMode = !previewMode" class="fixed h-10 bg-emerald-600 text-white w-full bottom-0 left-0 z-50">
-            <%= gettext("Close preview") %>
-        </button>
-    </div>
-    <div id="block-html-preview-data" phx-hook="HtmlPreview" class="hidden" data-iframe="block-html-preview"><%= @preview %></div>
+  <div id="preview-container" x-show="previewMode">
+    <iframe
+      id="block-html-preview"
+      data-source="html-preview-data"
+      class="bg-gray-100 fixed left-0 top-0 w-full h-screen inset-0 pb-10 z-40"
+    >
+    </iframe>
+    <button
+      @click.prevent="previewMode = !previewMode"
+      class="fixed h-10 bg-emerald-600 text-white w-full bottom-0 left-0 z-50"
+    >
+      <%= gettext("Close preview") %>
+    </button>
+  </div>
+  <div
+    id="block-html-preview-data"
+    phx-hook="HtmlPreview"
+    class="hidden"
+    data-iframe="block-html-preview"
+  >
+    <%= @preview %>
+  </div>
 </div>

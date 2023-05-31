@@ -1,145 +1,188 @@
 <div class="container flex py-8 sm:py-11 mb-4">
-    <div class="flex-grow gap-4 flex flex-col sm:flex-row sm:items-center">
-        <h1 class="text-2xl sm:text-3xl text-gray-100">
-            <%= gettext("Import Contacts") %>
-        </h1>
-    </div>
+  <div class="flex-grow gap-4 flex flex-col sm:flex-row sm:items-center">
+    <h1 class="text-2xl sm:text-3xl text-gray-100">
+      <%= gettext("Import Contacts") %>
+    </h1>
+  </div>
 </div>
-
 
 <div class="container flex-col">
-    <h2 class="text-2xl mb-4 font-light">
-        <%= gettext("Import") %>
-    </h2>
+  <h2 class="text-2xl mb-4 font-light">
+    <%= gettext("Import") %>
+  </h2>
 
-    <%= cond do %>
+  <%= cond do %>
     <% @import_total == 0 -> %>
-        <.form let={f} for={:import} id="import-form" phx-submit="import" phx-change="validate" class="flex flex-col items-start gap-4">
-            <% class = "button #{ if Enum.empty?(@uploads.csv.entries), do: "button--cta button--large" }" %>
-            <label class={class}>
-                <%= render_icon(:upload) %>
-                <%= gettext("Select a file") %>
-                <%= live_file_input(@uploads.csv, class: "hidden") %>
-                <%= for entry <- @uploads.csv.entries do %>
-                    <p class="text-sm font-italic"><%= entry.client_name %> - <%= entry.progress %>%</p>
-                <% end %>
-            </label>
+      <.form
+        let={f}
+        for={:import}
+        id="import-form"
+        phx-submit="import"
+        phx-change="validate"
+        class="flex flex-col items-start gap-4"
+      >
+        <% class =
+          "button #{if Enum.empty?(@uploads.csv.entries), do: "button--cta button--large"}" %>
+        <label class={class}>
+          <%= render_icon(:upload) %>
+          <%= gettext("Select a file") %>
+          <%= live_file_input(@uploads.csv, class: "hidden") %>
+          <%= for entry <- @uploads.csv.entries do %>
+            <p class="text-sm font-italic"><%= entry.client_name %> - <%= entry.progress %>%</p>
+          <% end %>
+        </label>
 
-            <%= if not Enum.empty?(@uploads.csv.entries) do %>
-                <button class="button button--cta button--large" type="submit">
-                    <%= render_icon(:cursor_click) %>
-                    <%= gettext("Start Import") %>
-                </button>
-            <% end %>
+        <%= if not Enum.empty?(@uploads.csv.entries) do %>
+          <button class="button button--cta button--large" type="submit">
+            <%= render_icon(:cursor_click) %>
+            <%= gettext("Start Import") %>
+          </button>
+        <% end %>
 
-            <div class="form-row form-row-checkbox">
-                <%= checkbox(f, :replace, checked: @import_replace, class: "appearance-none checked:bg-emerald-600") %>
-                <%= label(f, :replace, gettext("Replace duplicates")) %>
-            </div>
-        </.form>
-
+        <div class="form-row form-row-checkbox">
+          <%= checkbox(f, :replace,
+            checked: @import_replace,
+            class: "appearance-none checked:bg-emerald-600"
+          ) %>
+          <%= label(f, :replace, gettext("Replace duplicates")) %>
+        </div>
+      </.form>
     <% @import_total > @import_progress -> %>
-        <h2 class="text-xl sm:text-3xl">Importing Contacts (<%= @import_progress %> / <%= @import_total %>) …</h2>
-        <div class="h-3 relative w-full rounded-full overflow-hidden mt-4">
-            <div class="w-full h-full bg-gray-200 absolute"></div>
-            <div class="h-full bg-emerald-500 absolute" style={"width:#{ @import_progress / ( case @import_total do 0 -> 1; other -> other; end) * 100 }%"}></div>
+      <h2 class="text-xl sm:text-3xl">
+        Importing Contacts (<%= @import_progress %> / <%= @import_total %>) …
+      </h2>
+      <div class="h-3 relative w-full rounded-full overflow-hidden mt-4">
+        <div class="w-full h-full bg-gray-200 absolute"></div>
+        <div
+          class="h-full bg-emerald-500 absolute"
+          style={
+            "width:#{@import_progress / case @import_total do
+              0 -> 1
+              other -> other
+            end * 100}%"
+          }
+        >
         </div>
-
+      </div>
     <% @import_total == @import_progress -> %>
-        <h2 class="text-xl sm:text-3xl flex gap-2">
-            <span class="inline-flex h-20 w-20"><%= render_icon(:sparkles) %></span>
-            <%= gettext("You have successfully imported %{number} contacts!", number: @import_total) %>
-        </h2>
-        <a class="button button--text" href={ Routes.contact_path(@socket, :index, @current_project.id) }>
-            <%= gettext("Back to Contacts overview") %>
-        </a>
-    <% end %>
+      <h2 class="text-xl sm:text-3xl flex gap-2">
+        <span class="inline-flex h-20 w-20"><%= render_icon(:sparkles) %></span>
+        <%= gettext("You have successfully imported %{number} contacts!", number: @import_total) %>
+      </h2>
+      <a
+        class="button button--text"
+        href={Routes.contact_path(@socket, :index, @current_project.id)}
+      >
+        <%= gettext("Back to Contacts overview") %>
+      </a>
+  <% end %>
 
-    <%= if @import_error do %>
-        <div class="bg-red-800 color-gray-50 mt-4 p-2 rounded">
-            <%= gettext("There was an error importing your contacts.") %>
-            <br>
-            <%= @import_error %>
-        </div>
-    <% end %>
-
+  <%= if @import_error do %>
+    <div class="bg-red-800 color-gray-50 mt-4 p-2 rounded">
+      <%= gettext("There was an error importing your contacts.") %>
+      <br />
+      <%= @import_error %>
+    </div>
+  <% end %>
 </div>
 
-
 <div class="container mt-8">
+  <h2 class="text-2xl font-light">
+    <%= gettext("Instructions") %>
+  </h2>
 
-    <h2 class="text-2xl font-light">
-        <%= gettext("Instructions") %>
-    </h2>
+  <div class="flex gap-4 max-w-1/3 with-ol with-ul">
+    <div>
+      <%= gettext_md("""
+      Please follow the **exact** instructions on this page.
+      Incorrectly formatted files can not be imported.
+      """) %>
+      <br />
+      <div x-data="{ tab: 'excel' }" class="tabs" phx-update="ignore" id="tabs">
+        <a
+          href="#"
+          class="tab-label"
+          :class="{ 'active': tab === 'excel' }"
+          @click.prevent="tab = 'excel'"
+        >
+          Excel
+        </a>
+        <a
+          href="#"
+          class="tab-label"
+          :class="{ 'active': tab === 'libreoffice' }"
+          @click.prevent="tab = 'libreoffice'"
+        >
+          LibreOffice
+        </a>
+        <a
+          href="#"
+          class="tab-label"
+          :class="{ 'active': tab === 'code' }"
+          @click.prevent="tab = 'code'"
+        >
+          Code
+        </a>
 
-    <div class="flex gap-4 max-w-1/3 with-ol with-ul">
-        <div>
+        <div class="tab-content" x-show="tab === 'excel'">
+          <p>
             <%= gettext_md("""
-            Please follow the **exact** instructions on this page.
-            Incorrectly formatted files can not be imported.
+            1. Download the template.
+            2. Fill in the template in the same way that the sample data is filled in.
+            3. Click on *File*, then *Save as*.
+                Select _CSV UTF-8 (comma delimited) (*.csv)_ and save the file.
             """) %>
-            <br>
-            <div x-data="{ tab: 'excel' }" class="tabs" phx-update="ignore" id="tabs">
-                <a href="#" class="tab-label" :class="{ 'active': tab === 'excel' }" @click.prevent="tab = 'excel'">
-                    Excel
-                </a>
-                <a href="#" class="tab-label" :class="{ 'active': tab === 'libreoffice' }" @click.prevent="tab = 'libreoffice'">
-                    LibreOffice
-                </a>
-                <a href="#" class="tab-label" :class="{ 'active': tab === 'code' }" @click.prevent="tab = 'code'">
-                    Code
-                </a>
-
-                <div class="tab-content" x-show="tab === 'excel'">
-                    <p>
-                        <%= gettext_md("""
-                        1. Download the template.
-                        2. Fill in the template in the same way that the sample data is filled in.
-                        3. Click on *File*, then *Save as*.
-                            Select _CSV UTF-8 (comma delimited) (*.csv)_ and save the file.
-                        """) %>
-                    </p>
-                    <p class="flex flex-start">
-                        <a href={ Routes.static_path(@socket, "/downloads/keila_import_template.ods") } class="button inline-block">
-                            <%= gettext("Download template") %>
-                        </a>
-                    </p>
-                </div>
-                <div class="tab-content" x-show="tab === 'libreoffice'">
-                    <p>
-                        <%= gettext_md("""
-                        1. Download the template.
-                        2. Fill in the template in the same way that the sample data is filled in.
-                        2. Click on *File*, then *Save as*. Select *Text CSV (.csv)* and save the file.
-                            In the following dialogue pick:
-                            - **Character set:** *Unicode (UTF-8)*
-                            - **Field delimiter:** *, (Comma)*
-                            - **String delimiter:** *" (Double Quote)*
-                        """) %>
-                    </p>
-                    <p class="flex flex-start">
-                        <a href={ Routes.static_path(@socket, "/downloads/keila_import_template.ods") } class="button inline-block">
-                            <%= gettext("Download template") %>
-                        </a>
-                    </p>
-                </div>
-                <div class="tab-content" x-show="tab === 'code'">
-                    <p>
-                        <%= gettext_md("""
-                        1. Download the template.
-                        2. Fill in the template in the same way that the sample data is filled in.
-                        3. In order to successfully import contacts, your CSV file needs be RFC 4180 compliant:
-                            - Comma-separated
-                            - UTF-8 encoding
-                        """) %>
-                    </p>
-                    <p class="flex flex-start">
-                        <a href={ Routes.static_path(@socket, "/downloads/keila_import_template.csv") } class="button inline-block">
-                            <%= gettext("Download template") %>
-                        </a>
-                    </p>
-                </div>
-            </div>
+          </p>
+          <p class="flex flex-start">
+            <a
+              href={Routes.static_path(@socket, "/downloads/keila_import_template.ods")}
+              class="button inline-block"
+            >
+              <%= gettext("Download template") %>
+            </a>
+          </p>
         </div>
+        <div class="tab-content" x-show="tab === 'libreoffice'">
+          <p>
+            <%= gettext_md("""
+            1. Download the template.
+            2. Fill in the template in the same way that the sample data is filled in.
+            2. Click on *File*, then *Save as*. Select *Text CSV (.csv)* and save the file.
+                In the following dialogue pick:
+                - **Character set:** *Unicode (UTF-8)*
+                - **Field delimiter:** *, (Comma)*
+                - **String delimiter:** *" (Double Quote)*
+            """) %>
+          </p>
+          <p class="flex flex-start">
+            <a
+              href={Routes.static_path(@socket, "/downloads/keila_import_template.ods")}
+              class="button inline-block"
+            >
+              <%= gettext("Download template") %>
+            </a>
+          </p>
+        </div>
+        <div class="tab-content" x-show="tab === 'code'">
+          <p>
+            <%= gettext_md("""
+            1. Download the template.
+            2. Fill in the template in the same way that the sample data is filled in.
+            3. In order to successfully import contacts, your CSV file needs be RFC 4180 compliant:
+                - Comma-separated
+                - UTF-8 encoding
+            """) %>
+          </p>
+          <p class="flex flex-start">
+            <a
+              href={Routes.static_path(@socket, "/downloads/keila_import_template.csv")}
+              class="button inline-block"
+            >
+              <%= gettext("Download template") %>
+            </a>
+          </p>
+        </div>
+      </div>
     </div>
+  </div>
 </div>

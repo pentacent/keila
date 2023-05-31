@@ -1,24 +1,27 @@
 <div class="container">
-    <div class="flex gap-4 p-4 sm:p-8 bg-onboarding">
-        <span class="hidden sm:flex h-24 w-24 grow-0 shrink-0">
-            <%= render_icon(:speakerphone) %>
-        </span>
-        <div class="flex flex-col gap-4 max-w-xl">
-            <h2 class="text-xl sm:text-2xl">
-                <%= gettext("Wow, such empty!") %>
-            </h2>
-            <%= gettext_md("""
-                Before you can send any emails, you need to create a *sender*.
+  <div class="flex gap-4 p-4 sm:p-8 bg-onboarding">
+    <span class="hidden sm:flex h-24 w-24 grow-0 shrink-0">
+      <%= render_icon(:speakerphone) %>
+    </span>
+    <div class="flex flex-col gap-4 max-w-xl">
+      <h2 class="text-xl sm:text-2xl">
+        <%= gettext("Wow, such empty!") %>
+      </h2>
+      <%= gettext_md("""
+      Before you can send any emails, you need to create a *sender*.
 
-                In the sender settings, you specify the email address
-                and the name  from which you send your emails.
-                """) %>
-            <p>
-                <a class="button button--cta button--large" href={ Routes.sender_path(@conn, :new, @current_project.id) }>
-                    <%= render_icon(:document_add) %>
-                    <%= gettext("Create your first sender") %>
-                </a>
-            </p>
-        </div>
+      In the sender settings, you specify the email address
+      and the name  from which you send your emails.
+      """) %>
+      <p>
+        <a
+          class="button button--cta button--large"
+          href={Routes.sender_path(@conn, :new, @current_project.id)}
+        >
+          <%= render_icon(:document_add) %>
+          <%= gettext("Create your first sender") %>
+        </a>
+      </p>
     </div>
+  </div>
 </div>

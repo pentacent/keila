@@ -1,66 +1,67 @@
 <div>
-    <h3 class="font-bold mb-4">
-        <%= gettext("Upload a new file") %>
-    </h3>
+  <h3 class="font-bold mb-4">
+    <%= gettext("Upload a new file") %>
+  </h3>
 
-    <form phx-submit="upload" phx-change="validate-upload" phx-target={@myself}>
-
-        <% class = "button flex gap-2 #{ if Enum.empty?(@uploads.files.entries), do: "button--cta button--large" }" %>
-        <label class={class}>
-            <%= render_icon(:upload) %>
-            <%= if Enum.empty?(@uploads.files.entries) do %>
-                <%= gettext("Select a file") %>
-            <% end %>
-            <%= live_file_input(@uploads.files, class: "hidden") %>
-            <div class="flex flex-col gap-2">
-                <%= for entry <- @uploads.files.entries do %>
-                    <p class="text-sm font-italic text-ellipsis flex-grow max-w-8">
-                        <%= entry.client_name %>
-                    </p>
-                <% end %>
-            </div>
-        </label>
-        <%= if not Enum.empty?(@uploads.files.entries) do %>
-            <br>
-            <button class="button button--cta button--large mt-4" type="submit">
-                <%= render_icon(:cursor_click) %>
-                <%= gettext("Start Upload") %>
-            </button>
+  <form phx-submit="upload" phx-change="validate-upload" phx-target={@myself}>
+    <% class =
+      "button flex gap-2 #{if Enum.empty?(@uploads.files.entries), do: "button--cta button--large"}" %>
+    <label class={class}>
+      <%= render_icon(:upload) %>
+      <%= if Enum.empty?(@uploads.files.entries) do %>
+        <%= gettext("Select a file") %>
+      <% end %>
+      <%= live_file_input(@uploads.files, class: "hidden") %>
+      <div class="flex flex-col gap-2">
+        <%= for entry <- @uploads.files.entries do %>
+          <p class="text-sm font-italic text-ellipsis flex-grow max-w-8">
+            <%= entry.client_name %>
+          </p>
         <% end %>
-    </form>
-
-    <br>
-    <hr>
-    <br>
-
-    <%= if Enum.empty?(@files.data) do %>
-        <div class="flex gap-4 p-4 sm:p-8 bg-onboarding">
-            <span class="hidden sm:flex h-24 w-24 grow-0 shrink-0">
-                <%= render_icon(:photograph) %>
-            </span>
-            <div class="flex flex-col gap-4">
-                <h2 class="text-xl sm:text-2xl">
-                    <%= gettext("Wow, such empty!") %>
-                </h2>
-                <%= gettext_md("""
-                    Use the upload form to upload your first image.
-                    """) %>
-            </div>
-        </div>
-
-    <% else %>
-
-        <div class="overflow-y-scroll max-h-96 grid grid-gap-4 grid-cols-2">
-            <%= for {file, url} <- Enum.zip(@files.data, @file_urls) do %>
-                <div class="max-w-[10rem]" phx-click={JS.dispatch("x-file-selected", detail: %{url: url, id: file.uuid})}>
-                    <img id={"file-#{file.uuid}"} src={url} alt="" class="h-3/4 w-full object-cover" />
-                    <p class="text-xs"><%= file.filename %></p>
-                </div>
-            <% end %>
-        </div>
-
-        <div class="flex gap-3 justify-center py-8">
-            <%= pagination_nav(@files, [phx_click: "change-page", phx_target: @myself]) %>
-        </div>
+      </div>
+    </label>
+    <%= if not Enum.empty?(@uploads.files.entries) do %>
+      <br />
+      <button class="button button--cta button--large mt-4" type="submit">
+        <%= render_icon(:cursor_click) %>
+        <%= gettext("Start Upload") %>
+      </button>
     <% end %>
+  </form>
+
+  <br />
+  <hr />
+  <br />
+
+  <%= if Enum.empty?(@files.data) do %>
+    <div class="flex gap-4 p-4 sm:p-8 bg-onboarding">
+      <span class="hidden sm:flex h-24 w-24 grow-0 shrink-0">
+        <%= render_icon(:photograph) %>
+      </span>
+      <div class="flex flex-col gap-4">
+        <h2 class="text-xl sm:text-2xl">
+          <%= gettext("Wow, such empty!") %>
+        </h2>
+        <%= gettext_md("""
+        Use the upload form to upload your first image.
+        """) %>
+      </div>
+    </div>
+  <% else %>
+    <div class="overflow-y-scroll max-h-96 grid grid-gap-4 grid-cols-2">
+      <%= for {file, url} <- Enum.zip(@files.data, @file_urls) do %>
+        <div
+          class="max-w-[10rem]"
+          phx-click={JS.dispatch("x-file-selected", detail: %{url: url, id: file.uuid})}
+        >
+          <img id={"file-#{file.uuid}"} src={url} alt="" class="h-3/4 w-full object-cover" />
+          <p class="text-xs"><%= file.filename %></p>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="flex gap-3 justify-center py-8">
+      <%= pagination_nav(@files, phx_click: "change-page", phx_target: @myself) %>
+    </div>
+  <% end %>
 </div>
