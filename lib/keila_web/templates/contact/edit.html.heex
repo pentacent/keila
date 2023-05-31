@@ -1,144 +1,184 @@
 <div x-data x-init="Hooks.RememberUnsaved.mounted.call({el: $el})"></div>
 
 <div class="container flex py-8 sm:py-11 sm:mb-4">
-    <div class="flex-grow gap-4 flex flex-col-reverse sm:flex-row sm:items-center">
-        <h1 class="text-2xl flex-grow md:text-3xl text-gray-100">
-            <%= if assigns[:contact] do %>
-                <%= @contact.email %>
-            <% else %>
-                <%= gettext("New Contact") %>
-            <% end %>
-        </h1>
-        <div class="flex-grow flex flex-row justify-end gap-4 sm:flex-row" x-data>
-            <a href={ Routes.contact_path(@conn, :index, @current_project.id) } class="button button--large button--text" @click="setUnsavedReminder(false)">
-                <%= gettext("Cancel") %>
-            </a>
-            <%= if assigns[:contact] do %>
-                <%= delete_form_tag(@contact, Routes.contact_path(@conn, :delete, @current_project.id), as: :contact) %>
-                <%= delete_button_tag(@contact, class: "button button--text", "@click": "setUnsavedReminder(false)") do %>
-                    <%= gettext("Delete") %>
-                <% end %>
-            <% end %>
-            <button form="form" class="button button--cta button--large" @click="setUnsavedReminder(false)">
-                <%= gettext("Save") %>
-            </button>
-        </div>
+  <div class="flex-grow gap-4 flex flex-col-reverse sm:flex-row sm:items-center">
+    <h1 class="text-2xl flex-grow md:text-3xl text-gray-100">
+      <%= if assigns[:contact] do %>
+        <%= @contact.email %>
+      <% else %>
+        <%= gettext("New Contact") %>
+      <% end %>
+    </h1>
+    <div class="flex-grow flex flex-row justify-end gap-4 sm:flex-row" x-data>
+      <a
+        href={Routes.contact_path(@conn, :index, @current_project.id)}
+        class="button button--large button--text"
+        @click="setUnsavedReminder(false)"
+      >
+        <%= gettext("Cancel") %>
+      </a>
+      <%= if assigns[:contact] do %>
+        <%= delete_form_tag(@contact, Routes.contact_path(@conn, :delete, @current_project.id),
+          as: :contact
+        ) %>
+        <%= delete_button_tag(@contact, class: "button button--text", "@click": "setUnsavedReminder(false)") do %>
+          <%= gettext("Delete") %>
+        <% end %>
+      <% end %>
+      <button
+        form="form"
+        class="button button--cta button--large"
+        @click="setUnsavedReminder(false)"
+      >
+        <%= gettext("Save") %>
+      </button>
     </div>
+  </div>
 </div>
 
 <div class="container flex flex-col gap-12 lg:flex-row">
-    <div class="flex">
-        <% path = case assigns[:contact] do
-            nil -> Routes.contact_path(@conn, :post_new, @current_project.id)
-            contact -> Routes.contact_path(@conn, :post_edit, @current_project.id, contact.id)
-        end %>
-        <.form let={f} for={@changeset} id="form" action={path} class="max-w-md flex flex-col gap-4" x-data @change="setUnsavedReminder(true)" >
-            <div class="form-row">
-                <%= label(f, :email, "Email") %>
-                <%= with_validation(f, :email) do %>
-                    <%= text_input(f, :email, placeholder: gettext("subscriber@example.com"), class: "text-black", autofocus: true) %>
-                <% end %>
+  <div class="flex">
+    <% path =
+      case assigns[:contact] do
+        nil -> Routes.contact_path(@conn, :post_new, @current_project.id)
+        contact -> Routes.contact_path(@conn, :post_edit, @current_project.id, contact.id)
+      end %>
+    <.form
+      let={f}
+      for={@changeset}
+      id="form"
+      action={path}
+      class="max-w-md flex flex-col gap-4"
+      x-data
+      @change="setUnsavedReminder(true)"
+    >
+      <div class="form-row">
+        <%= label(f, :email, "Email") %>
+        <%= with_validation(f, :email) do %>
+          <%= text_input(f, :email,
+            placeholder: gettext("subscriber@example.com"),
+            class: "text-black",
+            autofocus: true
+          ) %>
+        <% end %>
+      </div>
+      <div class="form-row">
+        <%= label(f, :first_name, "Contact name") %>
+        <%= with_validation(f, :first_name) do %>
+          <%= text_input(f, :first_name, placeholder: gettext("Jane"), class: "text-black") %>
+        <% end %>
+      </div>
+      <div class="form-row">
+        <%= label(f, :last_name, "Last name") %>
+        <%= with_validation(f, :last_name) do %>
+          <%= text_input(f, :last_name, placeholder: gettext("Doe"), class: "text-black") %>
+        <% end %>
+      </div>
+      <div class="form-row">
+        <%= label(f, :data, "Data") %>
+        <span class="block text-sm mb-2">
+          <%= gettext("You can add any JSON object as custom data to your contacts.") %>
+        </span>
+        <%= with_validation(f, :data) do %>
+          <%= if assigns[:data] do %>
+            <%= textarea(f, :data,
+              value: @data,
+              class: "text-white bg-gray-900",
+              x_data: "{}",
+              x_init: "$el.value = $el.value && JSON.stringify(JSON.parse($el.value), null, 2)",
+              rows: 5
+            ) %>
+          <% else %>
+            <%= textarea(f, :data, class: "text-white bg-gray-900", rows: 5) %>
+          <% end %>
+        <% end %>
+      </div>
+    </.form>
+  </div>
+
+  <%= if assigns[:events] && not Enum.empty?(@events) do %>
+    <div class="flex flex-col">
+      <h2 class="text-xl font-bold mb-4">Contact Activities</h2>
+      <div class="grid grid-cols-1 gap-4">
+        <%= for event <- @events do %>
+          <div class="flex gap-4">
+            <div class="inline-flex h-8 w-8">
+              <%= case event.type do %>
+                <% :create -> %>
+                  <%= render_icon(:sparkles) %>
+                <% :import -> %>
+                  <%= render_icon(:sparkles) %>
+                <% :subscribe -> %>
+                  <%= render_icon(:sparkles) %>
+                <% :open -> %>
+                  <%= render_icon(:mail_open) %>
+                <% :click -> %>
+                  <%= render_icon(:cursor_click) %>
+                <% :unsubscribe -> %>
+                  <%= render_icon(:thumb_down) %>
+                <% :soft_bounce -> %>
+                  <%= render_icon(:arrow_uturn_left) %>
+                <% :hard_bounce -> %>
+                  <%= render_icon(:arrow_uturn_left) %>
+                <% :complaint -> %>
+                  <%= render_icon(:exclamation_circle) %>
+                <% _other -> %>
+                  <%= render_icon(:plus) %>
+              <% end %>
             </div>
-            <div class="form-row">
-                <%= label(f, :first_name, "Contact name") %>
-                <%= with_validation(f, :first_name) do %>
-                    <%= text_input(f, :first_name, placeholder: gettext("Jane"), class: "text-black") %>
-                <% end %>
-            </div>
-            <div class="form-row">
-                <%= label(f, :last_name, "Last name") %>
-                <%= with_validation(f, :last_name) do %>
-                    <%= text_input(f, :last_name, placeholder: gettext("Doe"), class: "text-black") %>
-                <% end %>
-            </div>
-            <div class="form-row">
-                <%= label(f, :data, "Data") %>
-                <span class="block text-sm mb-2"><%= gettext("You can add any JSON object as custom data to your contacts.") %></span>
-                <%= with_validation(f, :data) do %>
-                    <%= if assigns[:data] do %>
-                        <%= textarea(f, :data, value: @data, class: "text-white bg-gray-900", x_data: "{}", x_init: "$el.value = $el.value && JSON.stringify(JSON.parse($el.value), null, 2)", rows: 5) %>
-                    <% else %>
-                        <%= textarea(f, :data, class: "text-white bg-gray-900", rows: 5) %>
+            <div>
+              <span class="text-sm">
+                <%= local_datetime_tag(event.inserted_at) %>
+              </span>
+              <br />
+              <span class="font-bold">
+                <%= case event.type do %>
+                  <% :create -> %>
+                    <%= gettext("created") %>
+                  <% :import -> %>
+                    <%= gettext("imported") %>
+                  <% :subscribe -> %>
+                    <%= gettext("subscribed") %>
+                    <%= if get_in(event.data, ["captcha"]) do %>
+                      <%= gettext("with captcha") %>
                     <% end %>
+                  <% :open -> %>
+                    <%= gettext("opened campaign") %>
+                  <% :click -> %>
+                    <%= gettext("clicked campaign link") %>
+                  <% :unsubscribe -> %>
+                    <%= gettext("unsubscribed") %>
+                  <% :soft_bounce -> %>
+                    <%= gettext("email bounced") %>
+                  <% :hard_bounce -> %>
+                    <%= gettext("permanently unreachable") %>
+                  <% :complaint -> %>
+                    <%= gettext("filed a complaint") %>
+                  <% other -> %>
+                    <%= Atom.to_string(other) %>
                 <% end %>
+              </span>
+              <%= if event.recipient && event.recipient.campaign do %>
+                <br />
+                <%= gettext("from campaign") %>
+                <a
+                  class="underline"
+                  href={
+                    Routes.campaign_path(
+                      @conn,
+                      :stats,
+                      @current_project.id,
+                      event.recipient.campaign.id
+                    )
+                  }
+                >
+                  <%= event.recipient.campaign.subject %>
+                </a>
+              <% end %>
             </div>
-
-        </.form>
+          </div>
+        <% end %>
+      </div>
     </div>
-
-    <%= if assigns[:events] && not Enum.empty?(@events) do %>
-        <div class="flex flex-col">
-            <h2 class="text-xl font-bold mb-4">Contact Activities</h2>
-            <div class="grid grid-cols-1 gap-4">
-                <%= for event <- @events do %>
-                    <div class="flex gap-4">
-                        <div class="inline-flex h-8 w-8">
-                            <%= case event.type do %>
-                                <% :create -> %>
-                                    <%= render_icon(:sparkles) %>
-                                <% :import -> %>
-                                    <%= render_icon(:sparkles) %>
-                                <% :subscribe -> %>
-                                    <%= render_icon(:sparkles) %>
-                                <% :open -> %>
-                                    <%= render_icon(:mail_open) %>
-                                <% :click -> %>
-                                    <%= render_icon(:cursor_click) %>
-                                <% :unsubscribe -> %>
-                                    <%= render_icon(:thumb_down) %>
-                                <% :soft_bounce -> %>
-                                    <%= render_icon(:arrow_uturn_left) %>
-                                <% :hard_bounce -> %>
-                                    <%= render_icon(:arrow_uturn_left) %>
-                                <% :complaint -> %>
-                                    <%= render_icon(:exclamation_circle) %>
-                                <% _other -> %>
-                                    <%= render_icon(:plus) %>
-                            <% end %>
-                        </div>
-                        <div>
-                            <span class="text-sm">
-                                <%= local_datetime_tag(event.inserted_at) %>
-                            </span>
-                            <br>
-                            <span class="font-bold">
-                                <%= case event.type do %>
-                                    <% :create -> %>
-                                        <%= gettext("created") %>
-                                    <% :import -> %>
-                                        <%= gettext("imported") %>
-                                    <% :subscribe -> %>
-                                        <%= gettext("subscribed") %>
-                                        <%= if get_in(event.data, ["captcha"]) do %>
-                                            <%= gettext("with captcha") %>
-                                        <% end %>
-                                    <% :open -> %>
-                                        <%= gettext("opened campaign") %>
-                                    <% :click -> %>
-                                        <%= gettext("clicked campaign link") %>
-                                    <% :unsubscribe -> %>
-                                        <%= gettext("unsubscribed") %>
-                                    <% :soft_bounce -> %>
-                                        <%= gettext("email bounced") %>
-                                    <% :hard_bounce -> %>
-                                        <%= gettext("permanently unreachable") %>
-                                    <% :complaint -> %>
-                                        <%= gettext("filed a complaint") %>
-                                    <% other -> %>
-                                        <%= Atom.to_string(other) %>
-                                <% end %>
-                            </span>
-                            <%= if event.recipient && event.recipient.campaign do %>
-                                <br>
-                                <%= gettext("from campaign") %>
-                                <a class="underline" href={ Routes.campaign_path(@conn, :stats, @current_project.id, event.recipient.campaign.id) }>
-                                    <%= event.recipient.campaign.subject %>
-                                </a>
-                            <% end %>
-                        </div>
-                    </div>
-                <% end %>
-            </div>
-        </div>
-    <% end %>
+  <% end %>
 </div>

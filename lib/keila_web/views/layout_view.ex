@@ -24,14 +24,14 @@ defmodule KeilaWeb.LayoutView do
     assigns = %{label: label, icon: icon}
 
     ~H"""
-      <a href={ path } class={ class }>
-        <%= if icon do %>
-          <span class="flex h-4 w-4">
-            <%= render_icon(icon) %>
-          </span>
-        <% end %>
-        <%= label %>
-      </a>
+    <a href={path} class={class}>
+      <%= if icon do %>
+        <span class="flex h-4 w-4">
+          <%= render_icon(icon) %>
+        </span>
+      <% end %>
+      <%= label %>
+    </a>
     """
   end
 
