@@ -1,28 +1,30 @@
 <div class="flex flex-col">
+  <%= if is_nil(input_value(@form, :postmark_api_key)) do %>
+    <div class="form-row">
+      <%= label(@form, :postmark_api_key, gettext("API Key")) %>
+      <%= with_validation(@form, :postmark_api_key) do %>
+        <%= password_input(@form, :postmark_api_key, class: "text-black") %>
+      <% end %>
+    </div>
+  <% else %>
+    <div
+      x-data="{ show: false }"
+      x-init="$watch('show', show => { $nextTick(() => { if (show) $refs.password.focus() }) })"
+      class="form-row"
+    >
+      <div class="flex gap-5">
+        <%= label(@form, :postmark_api_key, gettext("API Key")) %>
+        <label>
+          <input type="checkbox" x-model="show" />
+          <%= gettext("Change") %>
+        </label>
+      </div>
 
-    <%= if is_nil(input_value(@form, :postmark_api_key)) do %>
-        <div class="form-row">
-            <%= label(@form, :postmark_api_key, gettext("API Key")) %>
-            <%= with_validation(@form, :postmark_api_key) do %>
-                <%= password_input(@form, :postmark_api_key, class: "text-black") %>
-            <% end %>
-        </div>
-    <% else %>
-        <div x-data="{ show: false }" x-init="$watch('show', show => { $nextTick(() => { if (show) $refs.password.focus() }) })" class="form-row">
-            <div class="flex gap-5">
-                <%= label(@form, :postmark_api_key, gettext("API Key")) %>
-                <label>
-                    <input type="checkbox" x-model="show">
-                    <%= gettext("Change") %>
-                </label>
-            </div>
-
-            <template x-if="show">
-                <%= with_validation(@form, :postmark_api_key) do %>
-                    <%= password_input(@form, :postmark_api_key, class: "text-black", x_ref: "password") %>
-                <% end %>
-            </template>
-        </div>
-    <% end %>
-
+      <template x-if="show">
+        <%= with_validation(@form, :postmark_api_key) do %>
+          <%= password_input(@form, :postmark_api_key, class: "text-black", x_ref: "password") %>
+        <% end %>
+      </template>
+    </div>
+  <% end %>
 </div>

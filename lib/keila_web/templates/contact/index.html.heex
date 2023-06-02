@@ -1,34 +1,33 @@
 <div class="container flex py-8 sm:py-11 mb-4">
-    <div class="flex-grow gap-4 flex flex-col sm:flex-row sm:items-center">
-        <h1 class="text-2xl sm:text-3xl text-gray-100">
-            <%= gettext("Contacts") %>
-        </h1>
-        <div class="flex-grow flex flex-row-reverse justify-end gap-4 sm:flex-row">
-            <a href={ Routes.contact_path(@conn, :new, @current_project.id) } class="button">
-                <%= render_icon(:document_add) %>
-                <%= gettext("Create") %>
-            </a>
-            <a href={ Routes.contact_path(@conn, :import, @current_project.id) } class="button">
-                <%= render_icon(:user_add) %>
-                <%= gettext("Import") %>
-            </a>
-        </div>
+  <div class="flex-grow gap-4 flex flex-col sm:flex-row sm:items-center">
+    <h1 class="text-2xl sm:text-3xl text-gray-100">
+      <%= gettext("Contacts") %>
+    </h1>
+    <div class="flex-grow flex flex-row-reverse justify-end gap-4 sm:flex-row">
+      <a href={Routes.contact_path(@conn, :new, @current_project.id)} class="button">
+        <%= render_icon(:document_add) %>
+        <%= gettext("Create") %>
+      </a>
+      <a href={Routes.contact_path(@conn, :import, @current_project.id)} class="button">
+        <%= render_icon(:user_add) %>
+        <%= gettext("Import") %>
+      </a>
     </div>
+  </div>
 </div>
 
 <%= if (@contacts_stats.active + @contacts_stats.unsubscribed + @contacts_stats.unreachable) == 0  do %>
-    <%= render("_empty_state.html", assigns) %>
+  <%= render("_empty_state.html", assigns) %>
 <% else %>
-    <%= render("_tabs.html", assigns) %>
+  <%= render("_tabs.html", assigns) %>
 
-    <%= cond do %>
+  <%= cond do %>
     <% @contacts.count > 0 -> %>
-        <%= render("_list.html", assigns) %>
-
+      <%= render("_list.html", assigns) %>
     <% @contacts_stats.active == 0 -> %>
-        <div class="mt-4">
-            <%= render("_empty_state.html", assigns) %>
-        </div>
+      <div class="mt-4">
+        <%= render("_empty_state.html", assigns) %>
+      </div>
     <% true -> %>
-    <% end %>
+  <% end %>
 <% end %>

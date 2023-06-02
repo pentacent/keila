@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## Version 0.12.2
+
+### Fixed
+- Email preview text is now actually included in emails
+- Layout blocks now have a default 1:1 ratio, ensuring they are always rendered
+  correctly
+
 ## Version 0.12.1
 
 New Campaign Block Editor 📝

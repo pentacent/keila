@@ -6,28 +6,31 @@
   "service": "elixir",
   "workspaceFolder": "/workspace",
 
-  // Set *default* container specific settings.json values on container create.
-  "settings": {
-    "sqltools.connections": [{
-      "name": "Container database",
-      "driver": "PostgreSQL",
-      "previewLimit": 50,
-      "server": "localhost",
-      "port": 5432,
-      "database": "postgres",
-      "username": "postgres",
-      "password": "postgres"
-    }]
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "sqltools.connections": [
+          {
+            "name": "Container database",
+            "driver": "PostgreSQL",
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "database": "postgres",
+            "username": "postgres",
+            "password": "postgres"
+          }
+        ]
+      },
+      "extensions": [
+        "jakebecker.elixir-ls",
+        "mtxr.sqltools",
+        "mtxr.sqltools-driver-pg",
+        "phoenixframework.phoenix",
+        "dprint.dprint"
+      ]
+    }
   },
-
-  // Add the IDs of extensions you want installed when the container is created.
-  "extensions": [
-    "jakebecker.elixir-ls",
-    "mtxr.sqltools",
-    "mtxr.sqltools-driver-pg",
-    "phoenixframework.phoenix",
-    "dprint.dprint"
-  ],
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   "forwardPorts": [4000, 4001, 5432],

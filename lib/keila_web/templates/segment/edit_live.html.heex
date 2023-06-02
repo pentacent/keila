@@ -1,157 +1,200 @@
 <div x-data x-init="Hooks.RememberUnsaved.mounted.call({el: $el})"></div>
 
 <div class="container flex py-8 sm:py-11 sm:mb-4">
-    <div class="flex-grow gap-4 flex flex-col-reverse sm:flex-row sm:items-center">
-        <h1 class="text-2xl md:text-3xl text-gray-100">
-            <%= gettext("Edit Segment") %>
-        </h1>
-        <div class="flex-grow flex flex-row justify-end gap-4 sm:flex-row" x-data>
-            <a class="button button--text button--large" href={ Routes.segment_path(@socket, :index, @current_project.id) } @click="setUnsavedReminder(false)">
-                <%= gettext("Cancel") %>
-            </a>
-            <%= delete_form_tag(@segment, Routes.segment_path(KeilaWeb.Endpoint, :delete, @current_project.id), as: :segment) %>
-            <%= delete_button_tag(@segment, [class: "button button--text", "@click": "setUnsavedReminder(false)"], gettext("Delete")) %>
-            <button class="button button--cta button--large" form="form" value="save" @click="setUnsavedReminder(false)">
-                <%= gettext("Save") %>
-            </button>
-        </div>
+  <div class="flex-grow gap-4 flex flex-col-reverse sm:flex-row sm:items-center">
+    <h1 class="text-2xl md:text-3xl text-gray-100">
+      <%= gettext("Edit Segment") %>
+    </h1>
+    <div class="flex-grow flex flex-row justify-end gap-4 sm:flex-row" x-data>
+      <a
+        class="button button--text button--large"
+        href={Routes.segment_path(@socket, :index, @current_project.id)}
+        @click="setUnsavedReminder(false)"
+      >
+        <%= gettext("Cancel") %>
+      </a>
+      <%= delete_form_tag(
+        @segment,
+        Routes.segment_path(KeilaWeb.Endpoint, :delete, @current_project.id),
+        as: :segment
+      ) %>
+      <%= delete_button_tag(
+        @segment,
+        [class: "button button--text", "@click": "setUnsavedReminder(false)"],
+        gettext("Delete")
+      ) %>
+      <button
+        class="button button--cta button--large"
+        form="form"
+        value="save"
+        @click="setUnsavedReminder(false)"
+      >
+        <%= gettext("Save") %>
+      </button>
     </div>
+  </div>
 </div>
 
 <div class="container flex gap-4 tabs" x-data="{tab: 'settings', showClipboardMessage: false}">
-    <.form let={f} for={@changeset} id="form" phx-change="change" phx-submit="save" class="w-full flex flex-col gap-4" x-on:change="setUnsavedReminder(true)">
-        <div class="form-row max-w-xl">
-            <%= label(f, :name, gettext("Name")) %>
-            <%= with_validation(f, :name) do %>
-                <%= text_input(f, :name, class: "text-black") %>
-            <% end %>
-        </div>
-        <br>
-        <%= if @use_editor do %>
-            <div class="form-row">
-                <%= label(f, :filter, gettext("Filter")) %>
-                <div class="flex flex-col gap-4 bg-gradient-to-r from-gray-900 to-emerald-900 p-4">
-                    <%= for {group_index, fields} <- @form_data do %>
-                        <div class="and-group rounded ring-1 ring-gray-600 p-4 flex flex-col gap-4">
-                            <%= for {field_index, selected_field} <- fields do %>
-                                <% index = "filter[#{group_index}][#{field_index}]" %>
+  <.form
+    let={f}
+    for={@changeset}
+    id="form"
+    phx-change="change"
+    phx-submit="save"
+    class="w-full flex flex-col gap-4"
+    x-on:change="setUnsavedReminder(true)"
+  >
+    <div class="form-row max-w-xl">
+      <%= label(f, :name, gettext("Name")) %>
+      <%= with_validation(f, :name) do %>
+        <%= text_input(f, :name, class: "text-black") %>
+      <% end %>
+    </div>
+    <br />
+    <%= if @use_editor do %>
+      <div class="form-row">
+        <%= label(f, :filter, gettext("Filter")) %>
+        <div class="flex flex-col gap-4 bg-gradient-to-r from-gray-900 to-emerald-900 p-4">
+          <%= for {group_index, fields} <- @form_data do %>
+            <div class="and-group rounded ring-1 ring-gray-600 p-4 flex flex-col gap-4">
+              <%= for {field_index, selected_field} <- fields do %>
+                <% index = "filter[#{group_index}][#{field_index}]" %>
 
-                                <div class="flex flex-row gap-4">
-                                    <select name={ "#{index}[field]" }>
-                                        <%= for {field, %{label: label}} <- @fields do %>
-                                            <option value={field} selected={ field == selected_field["field"] }><%= label %></option>
-                                        <% end %>
-                                    </select>
-
-                                    <select name={ "#{index}[widget]" }>
-                                        <%= for %{name: widget, label: label} <- @widgets[selected_field["type"]] do %>
-                                            <option value={widget} selected={ widget == selected_field["widget"] }><%= label %></option>
-                                        <% end %>
-                                    </select>
-
-                                    <%= render_widget(index, selected_field) %>
-
-                                    <input name={ "#{index}[type]" } value={ selected_field["type"] } type="hidden" />
-
-                                    <a href="#" class="button button--text" phx-click="remove-field" phx-value-group={ group_index } phx-value-field={ field_index }>
-                                        <%= render_icon(:x_circle) %>
-                                    </a>
-                                </div>
-
-                            <% end %>
-                            <div>
-                                <a href="#" class="button button--muted button--small"o phx-click="add-field" phx-value-group={ group_index }>
-                                    <%= render_icon(:plus) %>
-                                    Add AND condition
-                                </a>
-                            </div>
-                        </div>
+                <div class="flex flex-row gap-4">
+                  <select name={"#{index}[field]"}>
+                    <%= for {field, %{label: label}} <- @fields do %>
+                      <option value={field} selected={field == selected_field["field"]}>
+                        <%= label %>
+                      </option>
                     <% end %>
-                    <div>
-                        <a href="#" class="button button--muted button--small mt-2"o phx-click="add-group">
-                            <%= render_icon(:plus) %>
-                            Add OR condition
-                        </a>
-                    </div>
-                </div>
+                  </select>
 
-            </div>
-        <% end %>
-
-        <div class="form-row">
-            <div class="flex flex-row gap-2 items-center ">
-                <h2>
-                    <%= gettext("Query") %>
-                </h2>
-            </div>
-            <div class="form-row">
-                <div>
-                    <%= if @use_editor || @can_use_editor do %>
-                        <a class="button button--small button--text" phx-click="toggle-editor">
-                            <%= if @use_editor do %>
-                                <%= render_icon(:pencil_alt) %>
-                                <%= gettext("edit") %>
-                            <% else %>
-                                <%= render_icon(:switch_vertical) %>
-                                <%= gettext("use filter editor") %>
-                            <% end %>
-                        </a>
+                  <select name={"#{index}[widget]"}>
+                    <%= for %{name: widget, label: label} <- @widgets[selected_field["type"]] do %>
+                      <option value={widget} selected={widget == selected_field["widget"]}>
+                        <%= label %>
+                      </option>
                     <% end %>
-                    <%= if !@can_use_editor do %>
-                        <p class="text-sm">
-                            <%= gettext("This query can only be edited manually.") %>
-                        </p>
-                    <% end %>
-                </div>
-            </div>
-            <textarea
-                readonly={ @use_editor }
-                name={ if !@use_editor, do: "filter" }
-                class="bg-transparent text-gray-400 border-gray-800 text-sm w-full max-w-xl"
-                rows="5"
-                phx-debounce="500"><%= @filter_json %></textarea>
+                  </select>
 
-            <%= if !@valid_filter do %>
-                <p class="bg-red-800 p-4 max-w-xl">
-                    <%= gettext("Invalid filter") %>
-                </p>
-            <% end %>
-        </div>
-        <div class="form-row">
-            <%= if @valid_filter do %>
-                <div>
-                    <h2 class=""><%= gettext("Contacts in this segment (%{count})", count: @contacts.count) %></h2>
-                    <table class="w-full text-sm">
-                        <tr class="text-left">
-                            <th class="p-2">Email</th>
-                            <th class="p-2 hidden lg:table-cell">First name</th>
-                            <th class="p-2 hidden lg:table-cell">Last name</th>
-                            <th class="p-2 hidden lg:table-cell">Added</th>
-                        </tr>
-                        <%= for contact <- @contacts.data do %>
-                            <tr>
-                                <td class="p-2">
-                                    <a class="button button--text overflow-x-hidden" href={ Routes.contact_path(@socket, :edit, @current_project.id, contact.id) }>
-                                        <%= contact.email %>
-                                    </a>
-                                </td>
-                                <td class="p-2 hidden lg:table-cell">
-                                    <%= contact.first_name %>
-                                </td>
-                                <td class="p-2 hidden lg:table-cell">
-                                    <%= contact.last_name %>
-                                </td>
-                                <td class="p-2 hidden lg:table-cell">
-                                    <%= Calendar.strftime(contact.inserted_at, "%c") %>
-                                </td>
-                            </tr>
-                        <% end %>
-                    </table>
-                    <div class="flex gap-3 justify-center py-8">
-                        <%= pagination_nav(@contacts, [phx_click: "change-page"]) %>
-                    </div>
+                  <%= render_widget(index, selected_field) %>
+
+                  <input name={"#{index}[type]"} value={selected_field["type"]} type="hidden" />
+
+                  <a
+                    href="#"
+                    class="button button--text"
+                    phx-click="remove-field"
+                    phx-value-group={group_index}
+                    phx-value-field={field_index}
+                  >
+                    <%= render_icon(:x_circle) %>
+                  </a>
                 </div>
-            <% end %>
+              <% end %>
+              <div>
+                <a
+                  href="#"
+                  class="button button--muted button--small"
+                  o
+                  phx-click="add-field"
+                  phx-value-group={group_index}
+                >
+                  <%= render_icon(:plus) %> Add AND condition
+                </a>
+              </div>
+            </div>
+          <% end %>
+          <div>
+            <a href="#" class="button button--muted button--small mt-2" o phx-click="add-group">
+              <%= render_icon(:plus) %> Add OR condition
+            </a>
+          </div>
         </div>
-    </.form>
+      </div>
+    <% end %>
+
+    <div class="form-row">
+      <div class="flex flex-row gap-2 items-center ">
+        <h2>
+          <%= gettext("Query") %>
+        </h2>
+      </div>
+      <div class="form-row">
+        <div>
+          <%= if @use_editor || @can_use_editor do %>
+            <a class="button button--small button--text" phx-click="toggle-editor">
+              <%= if @use_editor do %>
+                <%= render_icon(:pencil_alt) %>
+                <%= gettext("edit") %>
+              <% else %>
+                <%= render_icon(:switch_vertical) %>
+                <%= gettext("use filter editor") %>
+              <% end %>
+            </a>
+          <% end %>
+          <%= if !@can_use_editor do %>
+            <p class="text-sm">
+              <%= gettext("This query can only be edited manually.") %>
+            </p>
+          <% end %>
+        </div>
+      </div>
+      <textarea
+        readonly={@use_editor}
+        name={if !@use_editor, do: "filter"}
+        class="bg-transparent text-gray-400 border-gray-800 text-sm w-full max-w-xl"
+        rows="5"
+        phx-debounce="500"
+      ><%= @filter_json %></textarea>
+
+      <%= if !@valid_filter do %>
+        <p class="bg-red-800 p-4 max-w-xl">
+          <%= gettext("Invalid filter") %>
+        </p>
+      <% end %>
+    </div>
+    <div class="form-row">
+      <%= if @valid_filter do %>
+        <div>
+          <h2 class="">
+            <%= gettext("Contacts in this segment (%{count})", count: @contacts.count) %>
+          </h2>
+          <table class="w-full text-sm">
+            <tr class="text-left">
+              <th class="p-2">Email</th>
+              <th class="p-2 hidden lg:table-cell">First name</th>
+              <th class="p-2 hidden lg:table-cell">Last name</th>
+              <th class="p-2 hidden lg:table-cell">Added</th>
+            </tr>
+            <%= for contact <- @contacts.data do %>
+              <tr>
+                <td class="p-2">
+                  <a
+                    class="button button--text overflow-x-hidden"
+                    href={Routes.contact_path(@socket, :edit, @current_project.id, contact.id)}
+                  >
+                    <%= contact.email %>
+                  </a>
+                </td>
+                <td class="p-2 hidden lg:table-cell">
+                  <%= contact.first_name %>
+                </td>
+                <td class="p-2 hidden lg:table-cell">
+                  <%= contact.last_name %>
+                </td>
+                <td class="p-2 hidden lg:table-cell">
+                  <%= Calendar.strftime(contact.inserted_at, "%c") %>
+                </td>
+              </tr>
+            <% end %>
+          </table>
+          <div class="flex gap-3 justify-center py-8">
+            <%= pagination_nav(@contacts, phx_click: "change-page") %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </.form>
 </div>
