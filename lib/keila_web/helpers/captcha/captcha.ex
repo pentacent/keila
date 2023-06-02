@@ -2,8 +2,6 @@ defmodule KeilaWeb.Captcha do
   @moduledoc """
   Helper module for handling captchas.
 
-  Must be used with `KeilaWeb.Captcha.Plug`
-
   ## Configuration
   By default, the staging environment of hCaptcha is used.
   """
@@ -22,6 +20,11 @@ defmodule KeilaWeb.Captcha do
       ),
       content_tag(:script, nil, src: script_url(), async: true, defer: true)
     ]
+  end
+
+  @spec get_captcha_response(map()) :: String.t() | nil
+  def get_captcha_response(params) when is_map(params) do
+    params[response_param()]
   end
 
   @spec captcha_valid?(String.t()) :: boolean()
@@ -65,6 +68,13 @@ defmodule KeilaWeb.Captcha do
     case config()[:provider] do
       :hcaptcha -> "h-captcha"
       :friendly_captcha -> "frc-captcha"
+    end
+  end
+
+  defp response_param() do
+    case config()[:provider] do
+      :hcaptcha -> "h-captcha-response"
+      :friendly_captcha -> "frc-captcha-solution"
     end
   end
 

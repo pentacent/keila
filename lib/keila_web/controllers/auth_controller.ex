@@ -20,26 +20,11 @@ defmodule KeilaWeb.AuthController do
     end
   end
 
-  defp do_post_register(conn, %{
-         "user" => params,
-         "h-captcha-response" => captcha
-       }) do
-    do_post_register_inner(conn, params, captcha)
-  end
+  defp do_post_register(conn, params = %{"user" => user_params}) do
+    captcha_response = KeilaWeb.Captcha.get_captcha_response(params)
 
-  defp do_post_register(conn, %{
-         "user" => params,
-         "frc-captcha-response" => captcha
-       }) do
-    do_post_register_inner(conn, params, captcha)
-  end
-
-  defp do_post_register(conn, _),
-    do: post_register(conn, %{"user" => %{}, "h-captcha-response" => ""})
-
-  defp do_post_register_inner(conn, params, captcha) do
-    if captcha_valid?(captcha) do
-      case Auth.create_user(params, url_fn: &Routes.auth_url(conn, :activate, &1)) do
+    if captcha_valid?(captcha_response) do
+      case Auth.create_user(user_params, url_fn: &Routes.auth_url(conn, :activate, &1)) do
         {:ok, user} ->
           conn
           |> assign(:user, user)
@@ -61,6 +46,8 @@ defmodule KeilaWeb.AuthController do
       |> render_register(400, changeset)
     end
   end
+
+  defp do_post_register(conn, _), do: post_register(conn, %{"user" => %{}})
 
   defp render_register(conn, status \\ 200, changeset) do
     conn

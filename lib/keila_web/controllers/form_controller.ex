@@ -32,17 +32,12 @@ defmodule KeilaWeb.FormController do
     end
   end
 
-  defp captcha_response_param() do
-    case captcha_config()[:provider] do
-      :hcaptcha -> "h-captcha-response"
-      :friendly_captcha -> "frc-captcha-solution"
-    end
-  end
-
   defp maybe_check_captcha(%{settings: %{captcha_required: false}}, _), do: :ok
 
   defp maybe_check_captcha(form, params) do
-    if KeilaWeb.Captcha.captcha_valid?(params[captcha_response_param()]) do
+    captcha_response = KeilaWeb.Captcha.get_captcha_response(params)
+
+    if KeilaWeb.Captcha.captcha_valid?(captcha_response) do
       :ok
     else
       params["contact"]
@@ -207,9 +202,5 @@ defmodule KeilaWeb.FormController do
     else
       protect_from_forgery(conn)
     end
-  end
-
-  defp captcha_config() do
-    Application.get_env(:keila, KeilaWeb.Captcha)
   end
 end
