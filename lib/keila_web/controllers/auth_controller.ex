@@ -20,9 +20,11 @@ defmodule KeilaWeb.AuthController do
     end
   end
 
-  defp do_post_register(conn, %{"user" => params, "h-captcha-response" => captcha}) do
-    if captcha_valid?(captcha) do
-      case Auth.create_user(params, url_fn: &Routes.auth_url(conn, :activate, &1)) do
+  defp do_post_register(conn, params = %{"user" => user_params}) do
+    captcha_response = KeilaWeb.Captcha.get_captcha_response(params)
+
+    if captcha_valid?(captcha_response) do
+      case Auth.create_user(user_params, url_fn: &Routes.auth_url(conn, :activate, &1)) do
         {:ok, user} ->
           conn
           |> assign(:user, user)
@@ -37,7 +39,7 @@ defmodule KeilaWeb.AuthController do
       {:error, changeset} =
         params
         |> Auth.User.creation_changeset()
-        |> Ecto.Changeset.add_error(:hcaptcha, dgettext("auth", "Please complete the captcha."))
+        |> Ecto.Changeset.add_error(:captcha, dgettext("auth", "Please complete the captcha."))
         |> Ecto.Changeset.apply_action(:insert)
 
       conn
@@ -45,8 +47,7 @@ defmodule KeilaWeb.AuthController do
     end
   end
 
-  defp do_post_register(conn, _),
-    do: post_register(conn, %{"user" => %{}, "h-captcha-response" => ""})
+  defp do_post_register(conn, _), do: post_register(conn, %{"user" => %{}})
 
   defp render_register(conn, status \\ 200, changeset) do
     conn

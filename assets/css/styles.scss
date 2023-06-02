@@ -95,7 +95,8 @@ input[type="date"] {
   @apply bg-red-300 text-gray-900;
 }
 
-.form-error-indicator + div.h-captcha iframe {
+.form-error-indicator + div.h-captcha iframe,
+.form-error-indicator + div.frc-captcha {
   border: none;
   @apply ring-2 ring-red-300;
 }
