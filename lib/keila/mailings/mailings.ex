@@ -440,12 +440,16 @@ defmodule Keila.Mailings do
   """
   @spec get_campaign_stats(Campaign.id()) :: %{
           status: :insufficient_credits | :unsent | :preparing | :sending | :sent,
-          recipients_count: integer(),
-          unsubscribe_count: integer(),
-          hard_bounce_count: integer(),
-          complaint_count: integer(),
-          sent_count: integer(),
-          chart: map()
+          recipients_count: non_neg_integer(),
+          sent_count: non_neg_integer(),
+          open_count: non_neg_integer(),
+          click_count: non_neg_integer(),
+          failed_count: non_neg_integer(),
+          unsubscribe_count: non_neg_integer(),
+          hard_bounce_count: non_neg_integer(),
+          complaint_count: non_neg_integer(),
+          clicked_at_series: list({hour :: non_neg_integer(), count :: non_neg_integer()}),
+          opened_at_series: list({hour :: non_neg_integer(), count :: non_neg_integer()})
         }
   def get_campaign_stats(campaign_id) when is_id(campaign_id) do
     campaign = get_campaign(campaign_id)
