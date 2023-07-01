@@ -42,13 +42,13 @@ defmodule KeilaWeb.Router do
     post "/auth/reset/:token", AuthController, :post_reset_change_password
   end
 
-  # Activation Routes
-  pipeline :activation do
+  # Authenticated Routes without activation requirement
+  pipeline :activation_not_required do
     plug KeilaWeb.AuthSession.RequireAuthPlug, allow_not_activated: true
   end
 
   scope "/", KeilaWeb do
-    pipe_through [:browser, :activation]
+    pipe_through [:browser, :activation_not_required]
 
     get "/auth/activate", AuthController, :activate_required
     post "/auth/activate", AuthController, :post_activate_resend
