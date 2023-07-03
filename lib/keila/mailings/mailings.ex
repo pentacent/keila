@@ -559,7 +559,7 @@ defmodule Keila.Mailings do
   def get_unsubscribe_link(project_id, recipient_id) do
     hmac = unsubscribe_hmac(project_id, recipient_id)
 
-    Routes.form_url(KeilaWeb.Endpoint, :unsubscribe, project_id, recipient_id, hmac)
+    Routes.public_form_url(KeilaWeb.Endpoint, :unsubscribe, project_id, recipient_id, hmac)
   end
 
   @doc """

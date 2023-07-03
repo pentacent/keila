@@ -233,7 +233,7 @@
         class="form-main p-4 md:p-8"
         style={build_styles(%{"background-color" => @form_preview.settings.body_bg_color})}
       >
-        <%= render("form.html",
+        <%= KeilaWeb.PublicFormView.render("show.html",
           form: @form_preview,
           mode: :preview,
           changeset: Ecto.Changeset.change(%Keila.Contacts.Contact{})
@@ -248,7 +248,7 @@
         class="w-full bg-gray-800"
         readonly
         x-ref="form-link"
-        value={Routes.form_url(@socket, :display, @form.id)}
+        value={Routes.public_form_url(@socket, :show, @form.id)}
       />
       <button
         class="button"

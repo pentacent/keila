@@ -140,7 +140,7 @@ defmodule KeilaWeb.Router do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_live_flash
-    plug :put_root_layout, {KeilaWeb.FormLayoutView, :root}
+    plug :put_root_layout, {KeilaWeb.PublicFormLayoutView, :root}
     plug :put_layout, false
     plug :put_secure_browser_headers
     plug KeilaWeb.Meta.Plug
@@ -149,16 +149,17 @@ defmodule KeilaWeb.Router do
   scope "/", KeilaWeb do
     pipe_through [:browser_embeddable]
 
-    get "/forms/:id", FormController, :display
-    post "/forms/:id", FormController, :submit
-    get "/unsubscribe/:project_id/:recipient_id/:hmac", FormController, :unsubscribe
-    post "/unsubscribe/:project_id/:recipient_id/:hmac", FormController, :unsubscribe
+    get "/forms/:id", PublicFormController, :show
+    post "/forms/:id", PublicFormController, :submit
+    get "/unsubscribe/:project_id/:recipient_id/:hmac", PublicFormController, :unsubscribe
+    post "/unsubscribe/:project_id/:recipient_id/:hmac", PublicFormController, :unsubscribe
+    get "/opt_in/contact_attrs_id/:hmac", FormController, :opt_in
     get "/r/:encoded_url/:recipient_id/:hmac", TrackingController, :track_open
     get "/c/:encoded_url/:recipient_id/:link_id/:hmac", TrackingController, :track_click
 
     # DEPRECATED: These routes will be removed in a future Keila release
-    get "/unsubscribe/:project_id/:contact_id", FormController, :unsubscribe
-    post "/unsubscribe/:project_id/:contact_id", FormController, :unsubscribe
+    get "/unsubscribe/:project_id/:contact_id", PublicFormController, :unsubscribe
+    post "/unsubscribe/:project_id/:contact_id", PublicFormController, :unsubscribe
   end
 
   scope "/uploads", KeilaWeb do

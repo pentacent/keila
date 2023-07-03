@@ -40,7 +40,7 @@ defmodule KeilaWeb.FormEditLive do
       end
 
     embed =
-      KeilaWeb.FormView.render("form.html", %{
+      KeilaWeb.PublicFormView.render("show.html", %{
         form: form_preview,
         mode: :embed,
         changeset: Ecto.Changeset.change(%Keila.Contacts.Contact{})
