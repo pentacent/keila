@@ -1,4 +1,4 @@
-FROM elixir:1.14-alpine as build
+FROM elixir:1.15-alpine as build
 ENV MIX_ENV=prod
 
 RUN apk add git npm build-base
@@ -18,7 +18,7 @@ RUN mix deps.clean mime --build && \
     mix assets.deploy && \
     mix release
 
-FROM elixir:1.14-alpine
+FROM elixir:1.15-alpine
 ENV HOME=/opt/app
 
 WORKDIR ${HOME}
