@@ -88,7 +88,7 @@ defmodule Keila.Mailings.Worker do
 
   # Another error occurred. Sending is not retried.
   defp handle_result({:error, reason}, recipient) do
-    Logger.debug(
+    Logger.warning(
       "Failed sending email to #{recipient.contact.email} for campaign #{recipient.campaign.id}: #{inspect(reason)}"
     )
 
