@@ -2,12 +2,20 @@
 
 ## Unreleased
 
+## Version 0.12.3
+
+### Changed
+- Failed campaign emails are now logged via `Logger.warning/1` instead of
+  `Logger.debug/1`.
+
+
 ## Version 0.12.2
 
 ### Fixed
 - Email preview text is now actually included in emails
 - Layout blocks now have a default 1:1 ratio, ensuring they are always rendered
   correctly
+
 
 ## Version 0.12.1
 
