@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+
+## Version 0.12.4
+
+### Added
+- Support for Captchas from [Friendly Captcha](https://friendlycaptcha.com/) (thanks @beeb)
+
+### Changed
+- Segments are now ordered alphabetically (#203 - thanks @panoramix360)
+
+
 ## Version 0.12.3
 
 ### Changed
