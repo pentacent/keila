@@ -122,7 +122,7 @@ if config_env() == :prod do
       ]
       |> put_if_not_empty.(:url, captcha_url)
 
-    config :keila, KeilaWeb.captcha(), config
+    config :keila, KeilaWeb.Captcha, config
   else
     Logger.warn("""
     Captcha not configured.
