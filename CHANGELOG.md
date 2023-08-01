@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## Version 0.12.5
+
+### Fixed
+- Fixed crash when using data URLs in campaigns (#218 - thanks @katafrakt)
 
 ## Version 0.12.4
 
