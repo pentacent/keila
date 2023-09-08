@@ -88,27 +88,52 @@ if config_env() == :prod do
       """)
   end
 
-  # hCaptcha
-  hcaptcha_site_key = System.get_env("HCAPTCHA_SITE_KEY")
-  hcaptcha_secret_key = System.get_env("HCAPTCHA_SECRET_KEY")
-  hcaptcha_url = System.get_env("HCAPTCHA_URL")
+  # Captcha
+  captcha_site_key = System.get_env("CAPTCHA_SITE_KEY") || System.get_env("HCAPTCHA_SITE_KEY")
 
-  if hcaptcha_site_key not in [nil, ""] and hcaptcha_secret_key not in [nil, ""] do
+  captcha_secret_key =
+    System.get_env("CAPTCHA_SECRET_KEY") || System.get_env("HCAPTCHA_SECRET_KEY")
+
+  captcha_url = System.get_env("CAPTCHA_URL") || System.get_env("HCAPTCHA_URL")
+
+  if captcha_site_key not in [nil, ""] and captcha_secret_key not in [nil, ""] do
+    captcha_provider =
+      System.get_env("CAPTCHA_PROVIDER", "hcaptcha")
+      |> String.downcase()
+      |> case do
+        "friendly_captcha" -> :friendly_captcha
+        _other -> :hcaptcha
+      end
+
+    Logger.info("Using the #{captcha_provider} captcha provider")
+
+    default_captcha_url =
+      case captcha_provider do
+        :hcaptcha -> "https://hcaptcha.com/siteverify"
+        :friendly_captcha -> "https://api.friendlycaptcha.com/api/v1/siteverify"
+      end
+
     config =
-      [secret_key: hcaptcha_secret_key, site_key: hcaptcha_site_key]
-      |> put_if_not_empty.(:url, hcaptcha_url)
+      [
+        secret_key: captcha_secret_key,
+        site_key: captcha_site_key,
+        url: default_captcha_url,
+        provider: captcha_provider
+      ]
+      |> put_if_not_empty.(:url, captcha_url)
 
-    config :keila, KeilaWeb.Hcaptcha, config
+    config :keila, KeilaWeb.Captcha, config
   else
     Logger.warn("""
-    hCaptcha not configured.
+    Captcha not configured.
     Keila will fall back to using hCaptcha’s staging configuration.
 
-    To configure hCaptcha, use the following environment variables:
+    To configure a captcha, use the following environment variables:
 
-    - HCAPTCHA_SITE_KEY
-    - HCAPTCHA_SECRET_KEY
-    - HCAPTCHA_URL (defaults to https://hcaptcha.com/siteverify)
+    - CAPTCHA_SITE_KEY
+    - CAPTCHA_SECRET_KEY
+    - CAPTCHA_URL (defaults to https://hcaptcha.com/siteverify or https://api.friendlycaptcha.com/api/v1/siteverify)
+    - CAPTCHA_PROVIDER (defaults to hCaptcha, unless set to 'friendly_captcha')
     """)
   end
 

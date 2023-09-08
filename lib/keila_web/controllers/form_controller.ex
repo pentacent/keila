@@ -35,12 +35,14 @@ defmodule KeilaWeb.FormController do
   defp maybe_check_captcha(%{settings: %{captcha_required: false}}, _), do: :ok
 
   defp maybe_check_captcha(form, params) do
-    if KeilaWeb.Hcaptcha.captcha_valid?(params["h-captcha-response"]) do
+    captcha_response = KeilaWeb.Captcha.get_captcha_response(params)
+
+    if KeilaWeb.Captcha.captcha_valid?(captcha_response) do
       :ok
     else
       params["contact"]
       |> Contacts.Contact.changeset_from_form(form)
-      |> Ecto.Changeset.add_error(:hcaptcha, dgettext("auth", "Please complete the captcha."))
+      |> Ecto.Changeset.add_error(:captcha, dgettext("auth", "Please complete the captcha."))
       |> Ecto.Changeset.apply_action(:insert)
     end
   end

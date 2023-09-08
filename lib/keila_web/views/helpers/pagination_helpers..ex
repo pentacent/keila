@@ -27,7 +27,8 @@ defmodule KeilaWeb.PaginationHelpers do
       <%= if page + n > 0 and page + n < page_count - 1, do: pagination_button(page, page + n, opts) %>
     <% end %>
     <%= if page_count > 1, do: pagination_button(page, page_count - 1, opts) %>
-    <%= if page < page_count - 1, do: pagination_button(page, page + 1, opts, render_icon(:chevron_right)) %>
+    <%= if page < page_count - 1,
+      do: pagination_button(page, page + 1, opts, render_icon(:chevron_right)) %>
     """
   end
 
@@ -40,7 +41,7 @@ defmodule KeilaWeb.PaginationHelpers do
     assigns = %{content: content || to_string(page + 1)}
 
     ~H"""
-    <a href={ route } class={ class }><%= @content %></a>
+    <a href={route} class={class}><%= @content %></a>
     """
   end
 
@@ -51,7 +52,9 @@ defmodule KeilaWeb.PaginationHelpers do
     assigns = %{content: content || to_string(page + 1)}
 
     ~H"""
-    <a phx-click={ event_name } phx-target={ event_target } phx-value-page={ page } class={ class }><%= @content %></a>
+    <a phx-click={event_name} phx-target={event_target} phx-value-page={page} class={class}>
+      <%= @content %>
+    </a>
     """
   end
 end

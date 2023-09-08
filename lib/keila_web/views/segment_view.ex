@@ -19,36 +19,36 @@ defmodule KeilaWeb.SegmentView do
 
     ~H"""
     <input
-      id={ "#{index}[value][date]" }
+      id={"#{index}[value][date]"}
       class="text-black"
-      name={ "#{index}[value][date]" }
+      name={"#{index}[value][date]"}
       type="date"
-      value={ date_value }
-      data-value={ date }
+      value={date_value}
+      data-value={date}
       phx-hook="SetLocalDateValue"
       phx-update="ignore"
-      />
+    />
     <input
-      id={ "#{index}[value][time]" }
+      id={"#{index}[value][time]"}
       class="text-black"
-      name={ "#{index}[value][time]" }
+      name={"#{index}[value][time]"}
       type="time"
-      value={ time_value }
-      data-value={ time }
+      value={time_value}
+      data-value={time}
       phx-hook="SetLocalTimeValue"
       phx-update="ignore"
-      />
+    />
     <input
-      id={ "#{index}[value][timezone]" }
+      id={"#{index}[value][timezone]"}
       class="bg-transparent text-white"
-      name={ "#{index}[value][timezone]" }
+      name={"#{index}[value][timezone]"}
       type="text"
       readonly
-      value={ timezone }
+      value={timezone}
       x-data="{}"
       :value="Intl.DateTimeFormat().resolvedOptions().timeZone"
       phx-update="ignore"
-      />
+    />
     """
   end
 
@@ -65,7 +65,13 @@ defmodule KeilaWeb.SegmentView do
     value = condition["value"]
     assigns = %{}
 
-    ~H(<input id={ "#{index}[value]" } name={ "#{index}[value]" } type="text" value={ value } class="text-black" />)
+    ~H(<input
+  id={"#{index}[value]"}
+  name={"#{index}[value]"}
+  type="text"
+  value={value}
+  class="text-black"
+/>)
   end
 
   defp render_widget(index, condition = %{"type" => "custom"}) do
@@ -75,15 +81,31 @@ defmodule KeilaWeb.SegmentView do
     assigns = %{}
 
     ~H"""
-    <label for={ "#{index}[value][key]" } class="self-center text-right"><%= gettext("Field:") %></label>
-    <input id={ "#{index}[value][key]" } name={ "#{index}[value][key]" } type="text" value={ key } class="text-black w-28" />
-    <label for={ "#{index}[value][match]" } class="self-center text-right"><%= gettext("Match:") %></label>
-    <input id={ "#{index}[value][match]" } name={ "#{index}[value][match]" } type="text" value={ match } class="text-black" />
+    <label for={"#{index}[value][key]"} class="self-center text-right">
+      <%= gettext("Field:") %>
+    </label>
+    <input
+      id={"#{index}[value][key]"}
+      name={"#{index}[value][key]"}
+      type="text"
+      value={key}
+      class="text-black w-28"
+    />
+    <label for={"#{index}[value][match]"} class="self-center text-right">
+      <%= gettext("Match:") %>
+    </label>
+    <input
+      id={"#{index}[value][match]"}
+      name={"#{index}[value][match]"}
+      type="text"
+      value={match}
+      class="text-black"
+    />
     """
   end
 
   defp render_widget(_widget, field_form_data) do
     assigns = %{condition: field_form_data}
-    ~H{<p><%= inspect @condition %></p>}
+    ~H{<p><%= inspect(@condition) %></p>}
   end
 end

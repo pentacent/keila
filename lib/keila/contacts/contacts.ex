@@ -413,7 +413,7 @@ defmodule Keila.Contacts do
   """
   @spec get_project_segments(Project.id()) :: [Segment.t()] | []
   def get_project_segments(project_id) when is_id(project_id) do
-    from(s in Segment, where: s.project_id == ^project_id)
+    from(s in Segment, where: s.project_id == ^project_id, order_by: s.name)
     |> Repo.all()
   end
 end

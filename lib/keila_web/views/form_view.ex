@@ -79,8 +79,8 @@ defmodule KeilaWeb.FormView do
 
       form.settings.captcha_required ->
         content_tag(:div, class: "flex flex-col") do
-          with_validation(f, :hcaptcha) do
-            KeilaWeb.Hcaptcha.captcha_tag()
+          with_validation(f, :captcha) do
+            KeilaWeb.Captcha.captcha_tag()
           end
         end
 

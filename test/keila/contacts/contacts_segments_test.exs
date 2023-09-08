@@ -25,13 +25,15 @@ defmodule Keila.ContactsSegmentsTest do
 
   @tag :contacts_segments
   test "List project segments", %{project: project} do
-    segment1 = insert!(:contacts_segment, %{project_id: project.id})
-    segment2 = insert!(:contacts_segment, %{project_id: project.id})
+    segment1 = insert!(:contacts_segment, %{project_id: project.id, name: "Z segment"})
+    segment2 = insert!(:contacts_segment, %{project_id: project.id, name: "A segment"})
     _segment3 = insert!(:contacts_segment)
 
     assert segments = [%Segment{}, %Segment{}] = Contacts.get_project_segments(project.id)
     assert segment1 in segments
     assert segment2 in segments
+    assert segment1 == Enum.at(segments, 1)
+    assert segment2 == Enum.at(segments, 0)
   end
 
   @tag :contacts_segments

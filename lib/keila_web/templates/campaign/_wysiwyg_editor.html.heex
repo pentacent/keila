@@ -1,123 +1,139 @@
 <div id="wysiwyg" phx-update="ignore" x-on:x-toggle-preview="previewMode = !previewMode">
+  <div class="wysiwyg--menu bg-white relative shadow z-10 flex overflow-x-auto">
+    <button
+      title={gettext("Bold")}
+      class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black font-bold"
+      data-action="strong"
+    >
+      b
+    </button>
+    <button
+      title={gettext("Italics")}
+      class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black italic"
+      data-action="em"
+    >
+      i
+    </button>
+    <button
+      title={gettext("Decrease indent")}
+      class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black italic"
+      data-action="indent-decrease"
+    >
+      <%= render_icon(:indent_decrease) %>
+    </button>
+    <button
+      title={gettext("Increase indent")}
+      class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black italic"
+      data-action="indent-increase"
+    >
+      <%= render_icon(:indent_increase) %>
+    </button>
+    <button
+      title={gettext("Unordered list")}
+      class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black italic"
+      data-action="ul"
+    >
+      <%= render_icon(:list_unordered) %>
+    </button>
+    <button
+      title={gettext("Ordered list")}
+      class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black italic"
+      data-action="ol"
+    >
+      <%= render_icon(:list_ordered) %>
+    </button>
+    <button
+      title={gettext("Heading 1")}
+      class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
+      data-action="h1"
+    >
+      h1
+    </button>
+    <button
+      title={gettext("Heading 2")}
+      class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
+      data-action="h2"
+    >
+      h2
+    </button>
+    <button
+      title={gettext("Heading 3")}
+      class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
+      data-action="h3"
+    >
+      h3
+    </button>
+    <button
+      title={gettext("Link")}
+      class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
+      data-action="link"
+    >
+      <%= render_icon(:link) %>
+    </button>
+    <button
+      title={gettext("Image")}
+      class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
+      data-action="img"
+    >
+      <%= render_icon(:photograph) %>
+    </button>
+    <button
+      title={gettext("Button")}
+      class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
+      data-action="button"
+    >
+      <%= render_icon(:button_alt) %>
+    </button>
+    <button
+      title={gettext("Spacer")}
+      class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
+      data-action="hr"
+    >
+      <%= render_icon(:horizontal_rule) %>
+    </button>
+    <button
+      title={gettext("Insert code")}
+      class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
+      data-action="liquid"
+    >
+      <%= render_icon(:code) %>
+    </button>
+    <div class="flex-grow"></div>
+    <button
+      title={gettext("Preview")}
+      class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
+      data-action="toggle-preview"
+    >
+      <%= render_icon(:eye) %>
+    </button>
+  </div>
 
-    <div class="wysiwyg--menu bg-white relative shadow z-10 flex overflow-x-auto">
-        <button
-            title={ gettext("Bold") }
-            class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black font-bold"
-            data-action="strong"
-        >
-            b
-        </button>
-        <button
-            title={ gettext("Italics") }
-            class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black italic"
-            data-action="em"
-        >
-            i
-        </button>
-        <button
-            title={ gettext("Decrease indent") }
-            class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black italic"
-            data-action="indent-decrease"
-        >
-            <%= render_icon(:indent_decrease) %>
-        </button>
-        <button
-            title={ gettext("Increase indent") }
-            class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black italic"
-            data-action="indent-increase"
-        >
-            <%= render_icon(:indent_increase) %>
-        </button>
-        <button
-            title={ gettext("Unordered list") }
-            class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black italic"
-            data-action="ul"
-        >
-            <%= render_icon(:list_unordered) %>
-        </button>
-        <button
-            title={ gettext("Ordered list") }
-            class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black italic"
-            data-action="ol"
-        >
-            <%= render_icon(:list_ordered) %>
-        </button>
-        <button
-            title={ gettext("Heading 1") }
-            class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
-            data-action="h1"
-        >
-            h1
-        </button>
-        <button
-            title={ gettext("Heading 2") }
-            class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
-            data-action="h2"
-        >
-            h2
-        </button>
-        <button
-            title={ gettext("Heading 3") }
-            class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
-            data-action="h3"
-        >
-            h3
-        </button>
-        <button
-            title={ gettext("Link") }
-            class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
-            data-action="link"
-        >
-            <%= render_icon(:link) %>
-        </button>
-        <button
-            title={ gettext("Image") }
-            class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
-            data-action="img"
-        >
-            <%= render_icon(:photograph) %>
-        </button>
-        <button
-            title={ gettext("Button") }
-            class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
-            data-action="button"
-        >
-            <%= render_icon(:button_alt) %>
-        </button>
-        <button
-            title={ gettext("Spacer") }
-            class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
-            data-action="hr"
-        >
-            <%= render_icon(:horizontal_rule) %>
-        </button>
-        <button
-            title={ gettext("Insert code") }
-            class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
-            data-action="liquid"
-        >
-            <%= render_icon(:code) %>
-        </button>
-        <div class="flex-grow"></div>
-        <button
-            title={ gettext("Preview") }
-            class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
-            data-action="toggle-preview"
-        >
-            <%= render_icon(:eye) %>
-        </button>
-    </div>
-
-    <div class="editor overflow-y-scroll" style="max-height: 75vh; min-height: 25vh"></div>
-
+  <div class="editor overflow-y-scroll" style="max-height: 75vh; min-height: 25vh"></div>
 </div>
-<style><%= raw @styles %></style>
+<style>
+  <%= raw(@styles) %>
+</style>
 
 <div id="preview-container" x-show="previewMode">
-    <iframe id="wysiwyg-html-preview" src="about:blank" data-source="html-preview-data" class="bg-gray-100 fixed w-full h-full inset-0 pb-10 z-40"></iframe>
-    <button @click.prevent="previewMode = !previewMode" class="fixed h-10 bg-emerald-600 text-white w-full bottom-0 left-0 z-50">
-        <%= gettext("Close preview") %>
-    </button>
+  <iframe
+    id="wysiwyg-html-preview"
+    src="about:blank"
+    data-source="html-preview-data"
+    class="bg-gray-100 fixed w-full h-full inset-0 pb-10 z-40"
+  >
+  </iframe>
+  <button
+    @click.prevent="previewMode = !previewMode"
+    class="fixed h-10 bg-emerald-600 text-white w-full bottom-0 left-0 z-50"
+  >
+    <%= gettext("Close preview") %>
+  </button>
 </div>
-<div id="wysiwyg-html-preview-data" phx-hook="HtmlPreview" class="hidden" data-iframe="wysiwyg-html-preview"><%= @preview %></div>
+<div
+  id="wysiwyg-html-preview-data"
+  phx-hook="HtmlPreview"
+  class="hidden"
+  data-iframe="wysiwyg-html-preview"
+>
+  <%= @preview %>
+</div>
