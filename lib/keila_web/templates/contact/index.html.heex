@@ -20,7 +20,7 @@
   <div class="flex-grow gap-4 flex flex-col sm:flex-row sm:items-center">
     <div class="flex-grow flex flex-row-reverse justify-end gap-4 sm:flex-row">
       <a href={Routes.contact_path(@conn, :export, @current_project.id)} class="button">
-        <%= render_icon(:document_add) %>
+        <%= render_icon(:download) %>
         <%= gettext("Export to CSV") %>
       </a>
     </div>
