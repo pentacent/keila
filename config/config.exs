@@ -8,7 +8,8 @@
 import Config
 
 config :keila,
-  ecto_repos: [Keila.Repo]
+  ecto_repos: [Keila.Repo],
+  csv_export_chunk_size: 100
 
 # Configures the endpoint
 config :keila, KeilaWeb.Endpoint,

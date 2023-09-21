@@ -161,4 +161,35 @@ defmodule KeilaWeb.ContactControllerTest do
     assert Keila.Contacts.get_project_contacts(project.id) |> Enum.count() == 201
     assert render(lv) =~ "You have successfully imported 201 contacts!"
   end
+
+  @tag :contact_controller
+  test "GET /projects/:p_id/export CSV export single contact", %{conn: conn} do
+    {conn, project} = with_login_and_project(conn)
+    contact = insert!(:contact, project_id: project.id, data: %{"age" => 42})
+    conn = get(conn, Routes.contact_path(conn, :export, project.id))
+    rows = String.split(response(conn, 200), "\r\n")
+
+    {_, disposition} = List.keyfind(conn.resp_headers, "content-disposition", 0)
+    assert disposition == "attachment; filename=\"contacts_#{project.id}.csv\""
+
+    assert rows == [
+             "Email,First name,Last name,Data",
+             "#{contact.email},#{contact.first_name},#{contact.last_name},\"{\"\"age\"\":42}\"",
+             ""
+           ]
+  end
+
+  @tag :contact_controller
+  test "GET /projects/:p_id/export CSV export contacts in multiple chunks", %{conn: conn} do
+    {conn, project} = with_login_and_project(conn)
+    insert!(:contact, project_id: project.id)
+    insert!(:contact, project_id: project.id)
+    insert!(:contact, project_id: project.id)
+    insert!(:contact, project_id: project.id)
+    conn = get(conn, Routes.contact_path(conn, :export, project.id))
+
+    assert conn.state == :chunked
+    rows = String.split(response(conn, 200), "\r\n")
+    assert length(rows) == 6
+  end
 end

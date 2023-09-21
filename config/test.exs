@@ -14,7 +14,7 @@ config :keila, Keila.Repo,
   timeout: 60_000,
   pool_size: 16
 
-config :keila, skip_migrations: true
+config :keila, skip_migrations: true, csv_export_chunk_size: 3
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.

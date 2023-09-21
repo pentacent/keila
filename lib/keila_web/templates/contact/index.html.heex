@@ -1,4 +1,4 @@
-<div class="container flex py-8 sm:py-11 mb-4">
+<div class="container flex pt-8 sm:pt-11 mb-4">
   <div class="flex-grow gap-4 flex flex-col sm:flex-row sm:items-center">
     <h1 class="text-2xl sm:text-3xl text-gray-100">
       <%= gettext("Contacts") %>
@@ -11,6 +11,17 @@
       <a href={Routes.contact_path(@conn, :import, @current_project.id)} class="button">
         <%= render_icon(:user_add) %>
         <%= gettext("Import") %>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="container flex pb-8 sm:pb-11 mb-4">
+  <div class="flex-grow gap-4 flex flex-col sm:flex-row sm:items-center">
+    <div class="flex-grow flex flex-row-reverse justify-end gap-4 sm:flex-row">
+      <a href={Routes.contact_path(@conn, :export, @current_project.id)} class="button">
+        <%= render_icon(:document_add) %>
+        <%= gettext("Export to CSV") %>
       </a>
     </div>
   </div>
