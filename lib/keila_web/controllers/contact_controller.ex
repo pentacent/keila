@@ -168,7 +168,7 @@ defmodule KeilaWeb.ContactController do
       |> send_chunked(200)
 
     header =
-      [["Email", "First name", "Last name", "Data"]]
+      [["Email", "First name", "Last name", "Data", "Status"]]
       |> NimbleCSV.RFC4180.dump_to_iodata()
       |> IO.iodata_to_binary()
 
@@ -178,7 +178,7 @@ defmodule KeilaWeb.ContactController do
       Contacts.stream_project_contacts(project_id, max_rows: @csv_export_chunk_size)
       |> Stream.map(fn contact ->
         data = if is_nil(contact.data), do: nil, else: Jason.encode!(contact.data)
-        [[contact.email, contact.first_name, contact.last_name, data]]
+        [[contact.email, contact.first_name, contact.last_name, data, contact.status]]
         |> NimbleCSV.RFC4180.dump_to_iodata()
         |> IO.iodata_to_binary()
       end)
