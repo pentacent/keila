@@ -4,7 +4,9 @@ defmodule KeilaWeb.SegmentController do
   import Ecto.Changeset
   import Phoenix.LiveView.Controller
 
-  plug :authorize when action not in [:index, :new, :create, :delete]
+  @csv_export_chunk_size Application.compile_env!(:keila, :csv_export_chunk_size)
+
+  plug(:authorize when action not in [:index, :new, :create, :delete])
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, _params) do
@@ -69,6 +71,48 @@ defmodule KeilaWeb.SegmentController do
     |> put_meta(:title, gettext("Confirm Segment Deletion"))
     |> assign(:segments, segments)
     |> render("delete.html")
+  end
+
+  @spec contacts_export(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def contacts_export(conn, %{"project_id" => project_id, "id" => segment_id}) do
+    filename = "contacts_#{project_id}_segment_#{segment_id}.csv"
+
+    conn =
+      conn
+      |> put_resp_header("content-disposition", "attachment; filename=\"#{filename}\"")
+      |> put_resp_header("content-type", "text/csv")
+      |> send_chunked(200)
+
+    header =
+      [["Email", "First name", "Last name", "Data", "Status"]]
+      |> NimbleCSV.RFC4180.dump_to_iodata()
+      |> IO.iodata_to_binary()
+
+    {:ok, conn} = chunk(conn, header)
+
+    args = [
+      max_rows: @csv_export_chunk_size,
+      filter: conn.assigns.segment.filter || %{}
+    ]
+
+    Keila.Repo.transaction(fn ->
+      Contacts.stream_project_contacts(project_id, args)
+      |> Stream.map(fn contact ->
+        data = if is_nil(contact.data), do: nil, else: Jason.encode!(contact.data)
+
+        [[contact.email, contact.first_name, contact.last_name, data, contact.status]]
+        |> NimbleCSV.RFC4180.dump_to_iodata()
+        |> IO.iodata_to_binary()
+      end)
+      |> Stream.chunk_every(@csv_export_chunk_size)
+      |> Enum.reduce_while(conn, fn chunk, conn ->
+        case Plug.Conn.chunk(conn, chunk) do
+          {:ok, conn} -> {:cont, conn}
+          {:error, :closed} -> {:halt, conn}
+        end
+      end)
+    end)
+    |> then(fn {:ok, conn} -> conn end)
   end
 
   defp current_project(conn), do: conn.assigns.current_project

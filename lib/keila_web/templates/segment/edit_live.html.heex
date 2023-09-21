@@ -194,6 +194,12 @@
             <%= pagination_nav(@contacts, phx_click: "change-page") %>
           </div>
         </div>
+        <div>
+          <a href={Routes.segment_path(@socket, :contacts_export, @current_project.id, @segment.id)} class="button">
+            <%= render_icon(:document_add) %>
+            <%= gettext("Export contacts to CSV") %>
+          </a>
+        </div>
       <% end %>
     </div>
   </.form>
