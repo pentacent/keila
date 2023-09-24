@@ -7,9 +7,9 @@
 # General application configuration
 import Config
 
-config :keila,
-  ecto_repos: [Keila.Repo],
-  csv_export_chunk_size: 100
+config :keila, ecto_repos: [Keila.Repo]
+
+config :keila, KeilaWeb.ContactsCsvExport, chunk_size: 100
 
 # Configures the endpoint
 config :keila, KeilaWeb.Endpoint,

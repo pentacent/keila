@@ -18,8 +18,6 @@ defmodule KeilaWeb.ContactController do
          ]
   )
 
-  @csv_export_chunk_size Application.compile_env!(:keila, :csv_export_chunk_size)
-
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, params) do
     conn
@@ -160,38 +158,7 @@ defmodule KeilaWeb.ContactController do
   @spec export(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def export(conn, %{"project_id" => project_id}) do
     filename = "contacts_#{project_id}.csv"
-
-    conn =
-      conn
-      |> put_resp_header("content-disposition", "attachment; filename=\"#{filename}\"")
-      |> put_resp_header("content-type", "text/csv")
-      |> send_chunked(200)
-
-    header =
-      [["Email", "First name", "Last name", "Data", "Status"]]
-      |> NimbleCSV.RFC4180.dump_to_iodata()
-      |> IO.iodata_to_binary()
-
-    {:ok, conn} = chunk(conn, header)
-
-    Keila.Repo.transaction(fn ->
-      Contacts.stream_project_contacts(project_id, max_rows: @csv_export_chunk_size)
-      |> Stream.map(fn contact ->
-        data = if is_nil(contact.data), do: nil, else: Jason.encode!(contact.data)
-
-        [[contact.email, contact.first_name, contact.last_name, data, contact.status]]
-        |> NimbleCSV.RFC4180.dump_to_iodata()
-        |> IO.iodata_to_binary()
-      end)
-      |> Stream.chunk_every(@csv_export_chunk_size)
-      |> Enum.reduce_while(conn, fn chunk, conn ->
-        case Plug.Conn.chunk(conn, chunk) do
-          {:ok, conn} -> {:cont, conn}
-          {:error, :closed} -> {:halt, conn}
-        end
-      end)
-    end)
-    |> then(fn {:ok, conn} -> conn end)
+    KeilaWeb.ContactsCsvExport.stream_csv_response(conn, filename, project_id)
   end
 
   defp current_project(conn), do: conn.assigns.current_project
