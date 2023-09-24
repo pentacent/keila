@@ -80,7 +80,8 @@ defmodule Keila.MixProject do
       {:ex_aws_ses, "~> 2.4.1"},
       {:php_serializer, "~> 2.0"},
       {:open_api_spex, "~> 3.11"},
-      {:ex_rated, "~> 2.1"}
+      {:ex_rated, "~> 2.1"},
+      {:tls_certificate_check, "~> 1.20"}
     ]
   end
 

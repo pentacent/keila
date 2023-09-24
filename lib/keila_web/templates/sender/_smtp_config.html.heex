@@ -44,15 +44,28 @@
 <% end %>
 
 <div class="form-row">
-  <%= label(@form, :smtp_password, "Port") %>
-  <%= with_validation(@form, :smtp_port) do %>
-    <%= number_input(@form, :smtp_port, class: "text-black") %>
+  <%= label(@form, :smtp_password, "Connection security") %>
+  <%= with_validation(@form, :smtp_tls_mode) do %>
+    <%= label(@form, :smtp_tls_mode) do %>
+      <%= select(
+        @form,
+        :smtp_tls_mode,
+        [
+          {gettext("SSL/TLS"), "tls"},
+          {gettext("STARTTLS"), "starttls"},
+          {gettext("None"), "none"}
+        ],
+        "x-ref": "smtpTlsMode",
+        "x-on:change":
+          "switch ($refs.smtpTlsMode.value) {case 'tls': $refs.smtpPort.value = '465';break; case 'starttls': $refs.smtpPort.value = '587';break}"
+      ) %>
+    <% end %>
   <% end %>
 </div>
+
 <div class="form-row">
-  <%= with_validation(@form, :smtp_tls) do %>
-    <%= label(@form, :smtp_tls) do %>
-      <%= checkbox(@form, :smtp_tls) %> Require TLS
-    <% end %>
+  <%= label(@form, :smtp_password, "Port") %>
+  <%= with_validation(@form, :smtp_port) do %>
+    <%= number_input(@form, :smtp_port, class: "text-black", "x-ref": "smtpPort") %>
   <% end %>
 </div>
