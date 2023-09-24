@@ -4,6 +4,10 @@
       <%= gettext("Contacts") %>
     </h1>
     <div class="flex-grow flex flex-row-reverse justify-end gap-4 sm:flex-row">
+      <a href={Routes.contact_path(@conn, :export, @current_project.id)} class="button">
+        <%= render_icon(:download) %>
+        <%= gettext("Export to CSV") %>
+      </a>
       <a href={Routes.contact_path(@conn, :new, @current_project.id)} class="button">
         <%= render_icon(:document_add) %>
         <%= gettext("Create") %>
@@ -11,17 +15,6 @@
       <a href={Routes.contact_path(@conn, :import, @current_project.id)} class="button">
         <%= render_icon(:user_add) %>
         <%= gettext("Import") %>
-      </a>
-    </div>
-  </div>
-</div>
-
-<div class="container flex pb-8 sm:pb-11 mb-4">
-  <div class="flex-grow gap-4 flex flex-col sm:flex-row sm:items-center">
-    <div class="flex-grow flex flex-row-reverse justify-end gap-4 sm:flex-row">
-      <a href={Routes.contact_path(@conn, :export, @current_project.id)} class="button">
-        <%= render_icon(:download) %>
-        <%= gettext("Export to CSV") %>
       </a>
     </div>
   </div>

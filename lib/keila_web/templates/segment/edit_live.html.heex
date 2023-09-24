@@ -7,6 +7,13 @@
     </h1>
     <div class="flex-grow flex flex-row justify-end gap-4 sm:flex-row" x-data>
       <a
+        href={Routes.segment_path(@socket, :contacts_export, @current_project.id, @segment.id)}
+        class="button button--text button--large"
+      >
+        <%= render_icon(:download) %>
+        <%= gettext("Export contacts to CSV") %>
+      </a>
+      <a
         class="button button--text button--large"
         href={Routes.segment_path(@socket, :index, @current_project.id)}
         @click="setUnsavedReminder(false)"
@@ -194,17 +201,7 @@
             <%= pagination_nav(@contacts, phx_click: "change-page") %>
           </div>
         </div>
-        <div>
-          <a
-            href={
-              Routes.segment_path(@socket, :contacts_export, @current_project.id, @segment.id)
-            }
-            class="button"
-          >
-            <%= render_icon(:download) %>
-            <%= gettext("Export contacts to CSV") %>
-          </a>
-        </div>
+        <div></div>
       <% end %>
     </div>
   </.form>
