@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+## Version 0.12.6
+
+### Fixed
+- Fixed SSL/TLS errors when sending emails with SMTP senders
+- Fixed potential exception for image blocks without captions/urls
+
+### Added
+- Improved configuration form for SMTP senders with automatic port selection
+  depending on security mode
+
+
 ## Version 0.12.5
 
 ### Fixed
