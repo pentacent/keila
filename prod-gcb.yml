@@ -1,19 +1,23 @@
 # See https://cloud.google.com/cloud-build/docs/build-config
 steps:
-  - name: 'gcr.io/cloud-builders/docker'
-    entrypoint: 'bash'
-    args: ['-c', 'docker buildx create --use --driver=docker-container']
+  - name: "gcr.io/cloud-builders/docker"
+    entrypoint: "bash"
+    args: ["-c", "docker buildx create --use --driver=docker-container"]
 
-  - name: 'gcr.io/cloud-builders/docker'
-    entrypoint: 'bash'
-    args: ['-c', 'docker buildx build --push --build-arg PROJECT_ID=$PROJECT_ID --build-arg COMMIT_SHA=$COMMIT_SHA --tag us-central1-docker.pkg.dev/$PROJECT_ID/keila/keila:$COMMIT_SHA --tag us-central1-docker.pkg.dev/$PROJECT_ID/keila/keila:latest --cache-to type=registry,ref=us-central1-docker.pkg.dev/$PROJECT_ID/keila/keila:build-cache,mode=max --cache-from type=registry,ref=us-central1-docker.pkg.dev/$PROJECT_ID/keila/keila:build-cache .']
+  - name: "gcr.io/cloud-builders/docker"
+    entrypoint: "bash"
+    args:
+      [
+        "-c",
+        "docker buildx build --push --build-arg PROJECT_ID=$PROJECT_ID --build-arg COMMIT_SHA=$COMMIT_SHA --tag us-central1-docker.pkg.dev/$PROJECT_ID/keila/keila:$COMMIT_SHA --tag us-central1-docker.pkg.dev/$PROJECT_ID/keila/keila:latest --cache-to type=registry,ref=us-central1-docker.pkg.dev/$PROJECT_ID/keila/keila:build-cache,mode=max --cache-from type=registry,ref=us-central1-docker.pkg.dev/$PROJECT_ID/keila/keila:build-cache --file ops/Dockerfile .",
+      ]
 
   # Deploy production
-  - name: 'gcr.io/cloud-builders/kubectl'
+  - name: "gcr.io/cloud-builders/kubectl"
     env:
-      - 'CLOUDSDK_COMPUTE_ZONE=us-central1'
+      - "CLOUDSDK_COMPUTE_ZONE=us-central1"
       # If cluster name changes, remeber to update cluster settings
-      - 'CLOUDSDK_CONTAINER_CLUSTER=prod-cluster-2'
+      - "CLOUDSDK_CONTAINER_CLUSTER=prod-cluster-2"
     args:
       - set
       - image
