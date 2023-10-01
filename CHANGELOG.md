@@ -9,6 +9,7 @@
 - Fixed potential exception for image blocks without captions/urls
 
 ### Added
+- CSV download for contacts and segments (#238 - thanks @katafrakt)
 - Improved configuration form for SMTP senders with automatic port selection
   depending on security mode
 
