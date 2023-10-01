@@ -97,6 +97,7 @@ defmodule KeilaWeb.Router do
     get "/projects/:project_id/contacts/new", ContactController, :new
     post "/projects/:project_id/contacts/new", ContactController, :post_new
     get "/projects/:project_id/contacts/import", ContactController, :import
+    get "/projects/:project_id/contacts/export", ContactController, :export
     get "/projects/:project_id/contacts/:id", ContactController, :edit
     put "/projects/:project_id/contacts/:id", ContactController, :post_edit
     delete "/projects/:project_id/contacts", ContactController, :delete
@@ -120,6 +121,7 @@ defmodule KeilaWeb.Router do
     get "/projects/:project_id/segments/new", SegmentController, :new
     post "/projects/:project_id/segments", SegmentController, :create
     get "/projects/:project_id/segments/:id", SegmentController, :edit
+    get "/projects/:project_id/segments/:id/contacts_export", SegmentController, :contacts_export
     delete "/projects/:project_id/segments", SegmentController, :delete
 
     get "/projects/:project_id/campaigns", CampaignController, :index
