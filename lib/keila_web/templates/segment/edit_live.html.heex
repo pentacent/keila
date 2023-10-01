@@ -7,13 +7,6 @@
     </h1>
     <div class="flex-grow flex flex-row justify-end gap-4 sm:flex-row" x-data>
       <a
-        href={Routes.segment_path(@socket, :contacts_export, @current_project.id, @segment.id)}
-        class="button button--text button--large"
-      >
-        <%= render_icon(:download) %>
-        <%= gettext("Export contacts to CSV") %>
-      </a>
-      <a
         class="button button--text button--large"
         href={Routes.segment_path(@socket, :index, @current_project.id)}
         @click="setUnsavedReminder(false)"
@@ -165,19 +158,32 @@
     <div class="form-row">
       <%= if @valid_filter do %>
         <div>
-          <h2 class="">
-            <%= gettext("Contacts in this segment (%{count})", count: @contacts.count) %>
-          </h2>
+          <div class="sm:flex gap-4 items-center mb-4 mt-4">
+            <h2 class="font-light text-2xl">
+              <%= gettext("Contacts in this segment (%{count})", count: @contacts.count) %>
+            </h2>
+
+            <a
+              href={
+                Routes.segment_path(@socket, :contacts_export, @current_project.id, @segment.id)
+              }
+              class="button button--small"
+              target="_blank"
+            >
+              <%= render_icon(:download) %>
+              <%= gettext("Download") %>
+            </a>
+          </div>
           <table class="w-full text-sm">
             <tr class="text-left">
-              <th class="p-2">Email</th>
+              <th class="p-2 pl-0">Email</th>
               <th class="p-2 hidden lg:table-cell">First name</th>
               <th class="p-2 hidden lg:table-cell">Last name</th>
               <th class="p-2 hidden lg:table-cell">Added</th>
             </tr>
             <%= for contact <- @contacts.data do %>
               <tr>
-                <td class="p-2">
+                <td class="p-2 pl-0">
                   <a
                     class="button button--text overflow-x-hidden"
                     href={Routes.contact_path(@socket, :edit, @current_project.id, contact.id)}

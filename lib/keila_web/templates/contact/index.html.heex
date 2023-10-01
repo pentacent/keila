@@ -4,17 +4,19 @@
       <%= gettext("Contacts") %>
     </h1>
     <div class="flex-grow flex flex-row-reverse justify-end gap-4 sm:flex-row">
-      <a href={Routes.contact_path(@conn, :export, @current_project.id)} class="button">
-        <%= render_icon(:download) %>
-        <%= gettext("Export to CSV") %>
+      <%= if @contacts.count > 0 do %>
+        <a href={Routes.contact_path(@conn, :export, @current_project.id)} class="button">
+          <%= render_icon(:download) %>
+          <%= gettext("Download") %>
+        </a>
+      <% end %>
+      <a href={Routes.contact_path(@conn, :import, @current_project.id)} class="button">
+        <%= render_icon(:user_add) %>
+        <%= gettext("Import") %>
       </a>
       <a href={Routes.contact_path(@conn, :new, @current_project.id)} class="button">
         <%= render_icon(:document_add) %>
         <%= gettext("Create") %>
-      </a>
-      <a href={Routes.contact_path(@conn, :import, @current_project.id)} class="button">
-        <%= render_icon(:user_add) %>
-        <%= gettext("Import") %>
       </a>
     </div>
   </div>
