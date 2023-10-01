@@ -4,16 +4,19 @@ defmodule KeilaWeb.ContactController do
   import Ecto.Changeset
   alias Keila.Contacts
 
-  plug :authorize
-       when action not in [
-              :index,
-              :index_unsubscribed,
-              :index_unreachable,
-              :new,
-              :post_new,
-              :delete,
-              :import
-            ]
+  plug(
+    :authorize
+    when action not in [
+           :index,
+           :index_unsubscribed,
+           :index_unreachable,
+           :new,
+           :post_new,
+           :delete,
+           :import,
+           :export
+         ]
+  )
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, params) do
@@ -150,6 +153,12 @@ defmodule KeilaWeb.ContactController do
     |> put_meta(:title, gettext("Edit Contact"))
     |> assign(:changeset, changeset)
     |> render("edit.html")
+  end
+
+  @spec export(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def export(conn, %{"project_id" => project_id}) do
+    filename = "contacts_#{project_id}.csv"
+    KeilaWeb.ContactsCsvExport.stream_csv_response(conn, filename, project_id)
   end
 
   defp current_project(conn), do: conn.assigns.current_project
