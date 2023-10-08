@@ -24,19 +24,34 @@ if config_env() == :prod do
   try do
     db_url = System.fetch_env!("DB_URL")
     ssl = System.get_env("DB_ENABLE_SSL") in [1, "1", "true", "TRUE"]
-    ca_cert_pem = System.get_env("DB_CA_CERT")
 
     ssl_opts =
-      if ca_cert_pem not in [nil, ""] do
-        cacerts =
-          ca_cert_pem
-          |> :public_key.pem_decode()
-          |> Enum.map(fn {_, der_or_encrypted_der, _} -> der_or_encrypted_der end)
+      []
+      |> then(fn opts ->
+        verify_peer? = System.get_env("DB_VERIFY_SSL_HOST", "TRUE") in [1, "1", "true", "TRUE"]
 
-        [verify: :verify_peer, cacerts: cacerts]
-      else
-        []
-      end
+        if verify_peer? do
+          Keyword.put(opts, :verify, :verify_peer)
+        else
+          Keyword.put(opts, :verify, :verify_none)
+        end
+      end)
+      |> then(fn opts ->
+        ca_cert_pem = System.get_env("DB_CA_CERT")
+
+        cacerts =
+          if ca_cert_pem not in [nil, ""] do
+            ca_cert_pem
+            |> :public_key.pem_decode()
+            |> Enum.map(fn {_, der_or_encrypted_der, _} -> der_or_encrypted_der end)
+          end
+
+        if cacerts do
+          Keyword.put(opts, :cacerts, cacerts)
+        else
+          opts
+        end
+      end)
 
     config :keila, Keila.Repo,
       url: db_url,
