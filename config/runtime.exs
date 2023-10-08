@@ -124,7 +124,7 @@ if config_env() == :prod do
 
     config :keila, KeilaWeb.Captcha, config
   else
-    Logger.warn("""
+    Logger.warning("""
     Captcha not configured.
     Keila will fall back to using hCaptcha’s staging configuration.
 
@@ -168,7 +168,7 @@ if config_env() == :prod do
   hashid_salt =
     case System.get_env("HASHID_SALT") do
       empty when empty in [nil, ""] ->
-        Logger.warn("""
+        Logger.warning("""
         You have not configured a Hashid salt. Defaulting to
         :crypto.hash(:sha256, SECRET_KEY_BASE <> "hashid_salt") |> Base.url_encode64()
         """)
@@ -209,7 +209,7 @@ if config_env() == :prod do
 
     config(:keila, KeilaWeb.Endpoint, url: config)
   else
-    Logger.warn("""
+    Logger.warning("""
     You have not configured the application URL. Defaulting to http://localhost.
 
     Use the following environment variables:
@@ -229,7 +229,7 @@ if config_env() == :prod do
   if user_content_dir not in [nil, ""] do
     config(:keila, Keila.Files.StorageAdapters.Local, dir: user_content_dir)
   else
-    Logger.warn("""
+    Logger.warning("""
     You have not configured a directory for user uploads.
     Default directory "#{default_user_content_dir}" will be used.
 
@@ -246,7 +246,7 @@ if config_env() == :prod do
   else
     config(:keila, Keila.Files.StorageAdapters.Local, serve: true)
 
-    Logger.warn("""
+    Logger.warning("""
     You have not configured a separate URL for untrusted content uploaded by
     users.
 
