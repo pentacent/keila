@@ -1,7 +1,6 @@
 import Config
 require Logger
 :ok == Application.ensure_started(:logger)
-:ok == Application.ensure_started(:tls_certificate_check)
 
 exit_from_exception = fn exception, message ->
   Logger.error(exception.message)
@@ -85,18 +84,10 @@ if config_env() == :prod do
             relay: host,
             username: user,
             password: password,
-            from_email: from_email
+            from_email: from_email,
+            ssl: ssl?
           ]
           |> put_if_not_empty.(:port, port)
-          |> then(fn config ->
-            if ssl? do
-              config
-              |> Keyword.put(:ssl, true)
-              |> Keyword.put(:sockopts, :tls_certificate_check.options(host))
-            else
-              config
-            end
-          end)
       end
 
     config(:keila, Keila.Mailer, config)
