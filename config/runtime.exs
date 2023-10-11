@@ -77,6 +77,7 @@ if config_env() == :prod do
           from_email = System.get_env("MAILER_SMTP_FROM_EMAIL") || user
           password = System.fetch_env!("MAILER_SMTP_PASSWORD")
           port = System.get_env("MAILER_SMTP_PORT", "587") |> maybe_to_int.()
+          ssl? = System.get_env("MAILER_ENABLE_SSL", "FALSE") in [1, "1", "true", "TRUE"]
 
           [
             adapter: Swoosh.Adapters.SMTP,
@@ -86,6 +87,15 @@ if config_env() == :prod do
             from_email: from_email
           ]
           |> put_if_not_empty.(:port, port)
+          |> then(fn config ->
+            if ssl? do
+              config
+              |> Keyword.put(:ssl, true)
+              |> Keyword.put(:sockopts, :tls_certificate_check.options(host))
+            else
+              config
+            end
+          end)
       end
 
     config(:keila, Keila.Mailer, config)
