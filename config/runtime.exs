@@ -1,6 +1,7 @@
 import Config
 require Logger
 :ok == Application.ensure_started(:logger)
+:ok == Application.ensure_started(:tls_certificate_check)
 
 exit_from_exception = fn exception, message ->
   Logger.error(exception.message)
