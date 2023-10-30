@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Fixed
+- Markdown campaigns now allow adding links to images
+
+
 ## Version 0.12.6
 
 ### Fixed

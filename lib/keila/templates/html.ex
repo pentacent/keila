@@ -210,6 +210,24 @@ defmodule Keila.Templates.Html do
      ]}
   end
 
+  defp do_apply_email_markup(
+         {"a", a_attrs, [{"table", _, [{"tr", _, [{"td", _, [{"img", img_attrs, _}]}]}]}]}
+       ) do
+    {"table", [{"style", "width: 100%"}],
+     [
+       {"tr", [{"class", "block--image"}],
+        [
+          {"td", [],
+           [
+             {"a", a_attrs,
+              [
+                {"img", img_attrs, []}
+              ]}
+           ]}
+        ]}
+     ]}
+  end
+
   defp do_apply_email_markup({"img", img_attrs, _}) do
     {"table", [{"style", "width: 100%"}],
      [
