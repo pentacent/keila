@@ -80,6 +80,9 @@ if config_env() == :prod do
           port = System.get_env("MAILER_SMTP_PORT", "587") |> maybe_to_int.()
           ssl? = System.get_env("MAILER_ENABLE_SSL", "FALSE") in [1, "1", "true", "TRUE"]
 
+          starttls? =
+            System.get_env("MAILER_ENABLE_STARTTLS", "FALSE") in [1, "1", "true", "TRUE"]
+
           [
             adapter: Swoosh.Adapters.SMTP,
             relay: host,
@@ -93,6 +96,15 @@ if config_env() == :prod do
               config
               |> Keyword.put(:ssl, true)
               |> Keyword.put(:sockopts, :tls_certificate_check.options(host))
+            else
+              config
+            end
+          end)
+          |> then(fn config ->
+            if starttls? do
+              config
+              |> Keyword.put(:tls, :always)
+              |> Keyword.put(:tls_options, :tls_certificate_check.options(host))
             else
               config
             end
