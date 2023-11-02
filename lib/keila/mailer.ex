@@ -4,26 +4,6 @@ defmodule Keila.Mailer do
   alias Keila.Mailings.SharedSender
 
   @doc """
-  Delivers an email using the configured system mailer.
-  """
-  @spec deliver_system_email!(Swoosh.Email.t()) :: term()
-  def deliver_system_email!(email) do
-    config =
-      Application.get_env(:keila, __MODULE__)
-      |> maybe_put_tls_opts()
-
-    deliver!(email, config)
-  end
-
-  defp maybe_put_tls_opts(config) do
-    if Keyword.get(config, :ssl) do
-      Keyword.put(config, :sockopts, :tls_certificate_check.options(config[:relay]))
-    else
-      config
-    end
-  end
-
-  @doc """
   Delivers an email using a given sender.
   """
   @spec deliver_with_sender(Swoosh.Email.t(), Sender.t() | SharedSender.t()) ::

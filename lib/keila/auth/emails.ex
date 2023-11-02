@@ -7,7 +7,7 @@ defmodule Keila.Auth.Emails do
   def send!(email, params) do
     email
     |> build(params)
-    |> Keila.Mailer.deliver_system_email!()
+    |> Keila.Mailer.deliver!()
   end
 
   @spec build(:activate, %{url: String.t(), user: Keila.Auth.User.t()}) :: term() | no_return()
