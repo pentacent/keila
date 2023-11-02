@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+
+## Version 0.12.7
+
+### Added
+- Added `MAILER_ENABLE_SSL` option to configure a system mailer with SSL/TLS
+
 ### Fixed
 - Markdown campaigns now allow adding links to images
 
