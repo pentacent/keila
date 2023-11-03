@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Fixed
+- API DELETE endpoints for campaigns, contacts, segments now return the
+  correct 204 response
+
 
 ## Version 0.12.8
 
