@@ -3,13 +3,19 @@
 ## Unreleased
 
 
+## Version 0.12.8
+
+### Added
+- Added `MAILER_ENABLE_STARTTLS` option to configure a system mailer with STARTTLS (#247)
+
+
 ## Version 0.12.7
 
 ### Added
 - Added `MAILER_ENABLE_SSL` option to configure a system mailer with SSL/TLS
 
 ### Fixed
-- Markdown campaigns now allow adding links to images
+- Markdown campaigns now allow adding links to images (#245)
 
 
 ## Version 0.12.6
