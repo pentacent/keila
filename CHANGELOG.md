@@ -2,15 +2,15 @@
 
 ## Unreleased
 
-### Fixed
-- API DELETE endpoints for campaigns, contacts, segments now return the
-  correct 204 response
-
 
 ## Version 0.12.8
 
 ### Added
 - Added `MAILER_ENABLE_STARTTLS` option to configure a system mailer with STARTTLS (#247)
+
+### Fixed
+- API DELETE endpoints for campaigns, contacts, segments now return the
+  correct 204 response
 
 
 ## Version 0.12.7
