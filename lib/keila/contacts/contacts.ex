@@ -326,6 +326,20 @@ defmodule Keila.Contacts do
   end
 
   @doc """
+  Retrieves, deletes, and returns the `FormAttrs` entity with the given `id`.
+  Returns `nil` if no such entity exists.
+  """
+  @spec get_and_delete_form_attrs(FormAttrs.id()) :: FormAttrs.t() | nil
+  def get_and_delete_form_attrs(id) do
+    from(fa in FormAttrs, where: fa.id == ^id, select: fa)
+    |> Repo.delete_all()
+    |> case do
+      {1, [form_attrs]} -> form_attrs
+      _ -> nil
+    end
+  end
+
+  @doc """
   Deletes the `FormAttrs` entity with the given `id`. Always returns `:ok`.
   """
   @spec delete_form_attrs(FormAttrs.id()) :: :ok

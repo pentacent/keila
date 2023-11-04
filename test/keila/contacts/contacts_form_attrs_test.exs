@@ -1,6 +1,6 @@
 defmodule Keila.Contacts.ContactsFormAttrsTest do
   use Keila.DataCase, async: true
-  alias Keila.{Projects, Contacts, Contacts.Form}
+  alias Keila.{Projects, Contacts}
 
   setup do
     _root = insert!(:group)
@@ -24,14 +24,22 @@ defmodule Keila.Contacts.ContactsFormAttrsTest do
   end
 
   describe "get_form_attrs/1" do
-    test "retrieves  new form Attrs", %{form: form} do
+    test "retrieves FormAttrs entity", %{form: form} do
       {:ok, form_attrs} = Contacts.create_form_attrs(form.id, @attrs)
       assert form_attrs == Contacts.get_form_attrs(form_attrs.id)
     end
   end
 
+  describe "get_and_delete_form_attrs/1" do
+    test "retrieves and deletes FormAttrs entity", %{form: form} do
+      {:ok, form_attrs} = Contacts.create_form_attrs(form.id, @attrs)
+      assert form_attrs == Contacts.get_and_delete_form_attrs(form_attrs.id)
+      assert nil == Contacts.get_and_delete_form_attrs(form_attrs.id)
+    end
+  end
+
   describe "delete_form_attrs/1" do
-    test "retrieves  new form Attrs", %{form: form} do
+    test "deletes FormAttrs entity", %{form: form} do
       {:ok, form_attrs} = Contacts.create_form_attrs(form.id, @attrs)
       assert :ok == Contacts.delete_form_attrs(form_attrs.id)
       refute form_attrs == Contacts.get_form_attrs(form_attrs.id)
