@@ -351,6 +351,30 @@ defmodule Keila.Contacts do
   end
 
   @doc """
+  Returns an HMAC string for the given `FormAttrs` ID that can be
+  used when verifying a contact in the double opt-in process.
+  """
+  @spec double_opt_in_hmac(FormAttrs.id()) :: String.t()
+  def double_opt_in_hmac(form_attrs_id) do
+    key = Application.get_env(:keila, KeilaWeb.Endpoint) |> Keyword.fetch!(:secret_key_base)
+    message = "double-opt-in:" <> form_attrs_id
+
+    :crypto.mac(:hmac, :sha256, key, message)
+    |> Base.url_encode64(padding: false)
+  end
+
+  @doc """
+  Verifies a HMAC string for the given `FormAttrs` ID.
+  """
+  @spec valid_double_opt_in_hmac?(String.t(), FormAttrs.id()) :: boolean()
+  def valid_double_opt_in_hmac?(hmac, form_attrs_id) do
+    case double_opt_in_hmac(form_attrs_id) do
+      ^hmac -> true
+      _other -> false
+    end
+  end
+
+  @doc """
   Updates the status of a Contact.
 
   Returns `nil` if contact was not found.
