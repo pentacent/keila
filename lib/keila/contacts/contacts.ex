@@ -6,7 +6,7 @@ defmodule Keila.Contacts do
   """
   use Keila.Repo
   alias Keila.Projects.Project
-  alias __MODULE__.{Contact, Import, Form, Segment}
+  alias __MODULE__.{Contact, Import, Form, FormAttrs, Segment}
   import KeilaWeb.Gettext
 
   @doc """
