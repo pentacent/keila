@@ -304,6 +304,39 @@ defmodule Keila.Contacts do
   end
 
   @doc """
+  Creates a new `FormAttrs` entity for the given `Form` ID and `attrs` map.
+  `FormAttrs` are used to implement the double opt-in mechanism; they are an
+  intermediate storage for the attributes submitted by a contact who has
+  submitted a signup form.
+  """
+  @spec create_form_attrs(Form.id(), map()) ::
+          {:ok, FormAttrs.t()} | {:error, Changeset.t(FormAttrs.t())}
+  def create_form_attrs(form_id, attrs) do
+    FormAttrs.changeset(form_id, attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Returns the `FormAttrs` entity for the given `id`. Returns `nil` if no such
+  entity exists.
+  """
+  @spec get_form_attrs(FormAttrs.id()) :: FormAttrs.t() | nil
+  def get_form_attrs(id) do
+    Repo.get(FormAttrs, id)
+  end
+
+  @doc """
+  Deletes the `FormAttrs` entity with the given `id`. Always returns `:ok`.
+  """
+  @spec delete_form_attrs(FormAttrs.id()) :: :ok
+  def delete_form_attrs(id) do
+    from(fa in FormAttrs, where: fa.id == ^id)
+    |> Repo.delete_all()
+
+    :ok
+  end
+
+  @doc """
   Updates the status of a Contact.
 
   Returns `nil` if contact was not found.
