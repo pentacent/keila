@@ -16,6 +16,8 @@ config :keila, Keila.Repo,
 
 config :keila, skip_migrations: true
 
+config :keila, KeilaWeb.ContactsCsvExport, chunk_size: 3
+
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
 config :keila, KeilaWeb.Endpoint,

@@ -10,15 +10,17 @@ defmodule Keila.Mailings.SenderAdapters.SMTP do
       smtp_relay: :string,
       smtp_username: :string,
       smtp_password: :string,
-      smtp_tls: :boolean,
-      smtp_port: :integer
+      smtp_tls_mode: :string,
+      smtp_port: :integer,
+      # deprecated:
+      smtp_tls: :boolean
     ]
   end
 
   @impl true
   def changeset(changeset, params) do
     changeset
-    |> cast(params, [:smtp_relay, :smtp_username, :smtp_password, :smtp_tls, :smtp_port])
+    |> cast(params, [:smtp_relay, :smtp_username, :smtp_password, :smtp_tls_mode, :smtp_port])
     |> validate_required([:smtp_relay, :smtp_username, :smtp_password])
   end
 
@@ -32,14 +34,23 @@ defmodule Keila.Mailings.SenderAdapters.SMTP do
       auth: :always,
       port: config.smtp_port
     ]
-    |> maybe_put_ssl_opt(config)
+    |> maybe_put_tls_opts(config)
   end
 
-  defp maybe_put_ssl_opt(opts, config) do
-    if config.smtp_tls do
-      Keyword.put(opts, :ssl, true)
-    else
-      opts
+  defp maybe_put_tls_opts(opts, config) do
+    cond do
+      (config.smtp_tls && config.smtp_tls_mode in [nil, ""]) || config.smtp_tls_mode == "tls" ->
+        opts
+        |> Keyword.put(:ssl, true)
+        |> Keyword.put(:sockopts, :tls_certificate_check.options(config.smtp_relay))
+
+      config.smtp_tls_mode == "starttls" ->
+        opts
+        |> Keyword.put(:tls, :always)
+        |> Keyword.put(:tls_options, :tls_certificate_check.options(config.smtp_relay))
+
+      true ->
+        opts
     end
   end
 end

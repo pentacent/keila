@@ -4,7 +4,7 @@ defmodule Keila.MixProject do
   def project do
     [
       app: :keila,
-      version: "0.12.2",
+      version: "0.12.8",
       elixir: "~> 1.15",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix] ++ Mix.compilers(),
@@ -80,7 +80,8 @@ defmodule Keila.MixProject do
       {:ex_aws_ses, "~> 2.4.1"},
       {:php_serializer, "~> 2.0"},
       {:open_api_spex, "~> 3.11"},
-      {:ex_rated, "~> 2.1"}
+      {:ex_rated, "~> 2.1"},
+      {:tls_certificate_check, "~> 1.20"}
     ]
   end
 

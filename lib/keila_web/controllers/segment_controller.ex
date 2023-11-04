@@ -4,7 +4,7 @@ defmodule KeilaWeb.SegmentController do
   import Ecto.Changeset
   import Phoenix.LiveView.Controller
 
-  plug :authorize when action not in [:index, :new, :create, :delete]
+  plug(:authorize when action not in [:index, :new, :create, :delete])
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, _params) do
@@ -69,6 +69,14 @@ defmodule KeilaWeb.SegmentController do
     |> put_meta(:title, gettext("Confirm Segment Deletion"))
     |> assign(:segments, segments)
     |> render("delete.html")
+  end
+
+  @spec contacts_export(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def contacts_export(conn, %{"project_id" => project_id, "id" => segment_id}) do
+    filename = "contacts_#{project_id}_segment_#{segment_id}.csv"
+
+    filter = conn.assigns.segment.filter || %{}
+    KeilaWeb.ContactsCsvExport.stream_csv_response(conn, filename, project_id, filter: filter)
   end
 
   defp current_project(conn), do: conn.assigns.current_project

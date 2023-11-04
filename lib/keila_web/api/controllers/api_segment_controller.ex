@@ -98,7 +98,7 @@ defmodule KeilaWeb.ApiSegmentController do
     Contacts.delete_project_segments(project_id(conn), [id])
 
     conn
-    |> put_status(204)
+    |> send_resp(:no_content, "")
   end
 
   defp project_id(conn), do: conn.assigns.current_project.id

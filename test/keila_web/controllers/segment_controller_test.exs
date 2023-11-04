@@ -83,4 +83,42 @@ defmodule KeilaWeb.SegmentControllerTest do
       assert segment == Contacts.get_segment(segment.id)
     end
   end
+
+  @tag :segment_controller
+  test "GET /projects/:p_id/export CSV export contacts in multiple chunks", %{conn: conn} do
+    {conn, project} = with_login_and_project(conn)
+
+    segment =
+      insert!(:contacts_segment,
+        project_id: project.id,
+        filter: %{"email" => %{"$like" => "%keila.io"}}
+      )
+
+    insert!(:contact, project_id: project.id, email: "test@example.com")
+
+    contact =
+      insert!(:contact, project_id: project.id, status: :unreachable, email: "test1@keila.io")
+
+    insert!(:contact, project_id: project.id, email: "test2@keila.io")
+    insert!(:contact, project_id: project.id, email: "test3@keila.io")
+    insert!(:contact, project_id: project.id, email: "test4@keila.io")
+    conn = get(conn, Routes.segment_path(conn, :contacts_export, project.id, segment.id))
+
+    assert conn.state == :chunked
+    rows = String.split(response(conn, 200), "\r\n")
+    assert length(rows) == 6
+    assert Enum.at(rows, 1) =~ ~r/,unreachable/
+
+    {_, disposition} = List.keyfind(conn.resp_headers, "content-disposition", 0)
+
+    assert disposition ==
+             "attachment; filename=\"contacts_#{project.id}_segment_#{segment.id}.csv\""
+
+    assert [
+             "Email,First name,Last name,Data,Status",
+             contact_row | _
+           ] = rows
+
+    assert contact_row == "test1@keila.io,#{contact.first_name},#{contact.last_name},,unreachable"
+  end
 end

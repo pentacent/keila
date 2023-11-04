@@ -1,6 +1,7 @@
 import Config
 require Logger
-:ok == Application.ensure_started(:logger)
+:ok = Application.ensure_started(:logger)
+{:ok, _} = Application.ensure_all_started(:tls_certificate_check)
 
 exit_from_exception = fn exception, message ->
   Logger.error(exception.message)
@@ -24,19 +25,34 @@ if config_env() == :prod do
   try do
     db_url = System.fetch_env!("DB_URL")
     ssl = System.get_env("DB_ENABLE_SSL") in [1, "1", "true", "TRUE"]
-    ca_cert_pem = System.get_env("DB_CA_CERT")
 
     ssl_opts =
-      if ca_cert_pem not in [nil, ""] do
-        cacerts =
-          ca_cert_pem
-          |> :public_key.pem_decode()
-          |> Enum.map(fn {_, der_or_encrypted_der, _} -> der_or_encrypted_der end)
+      []
+      |> then(fn opts ->
+        verify_peer? = System.get_env("DB_VERIFY_SSL_HOST", "TRUE") in [1, "1", "true", "TRUE"]
 
-        [verify: :verify_peer, cacerts: cacerts]
-      else
-        []
-      end
+        if verify_peer? do
+          Keyword.put(opts, :verify, :verify_peer)
+        else
+          Keyword.put(opts, :verify, :verify_none)
+        end
+      end)
+      |> then(fn opts ->
+        ca_cert_pem = System.get_env("DB_CA_CERT")
+
+        cacerts =
+          if ca_cert_pem not in [nil, ""] do
+            ca_cert_pem
+            |> :public_key.pem_decode()
+            |> Enum.map(fn {_, der_or_encrypted_der, _} -> der_or_encrypted_der end)
+          end
+
+        if cacerts do
+          Keyword.put(opts, :cacerts, cacerts)
+        else
+          opts
+        end
+      end)
 
     config :keila, Keila.Repo,
       url: db_url,
@@ -62,6 +78,10 @@ if config_env() == :prod do
           from_email = System.get_env("MAILER_SMTP_FROM_EMAIL") || user
           password = System.fetch_env!("MAILER_SMTP_PASSWORD")
           port = System.get_env("MAILER_SMTP_PORT", "587") |> maybe_to_int.()
+          ssl? = System.get_env("MAILER_ENABLE_SSL", "FALSE") in [1, "1", "true", "TRUE"]
+
+          starttls? =
+            System.get_env("MAILER_ENABLE_STARTTLS", "FALSE") in [1, "1", "true", "TRUE"]
 
           [
             adapter: Swoosh.Adapters.SMTP,
@@ -71,6 +91,24 @@ if config_env() == :prod do
             from_email: from_email
           ]
           |> put_if_not_empty.(:port, port)
+          |> then(fn config ->
+            if ssl? do
+              config
+              |> Keyword.put(:ssl, true)
+              |> Keyword.put(:sockopts, :tls_certificate_check.options(host))
+            else
+              config
+            end
+          end)
+          |> then(fn config ->
+            if starttls? do
+              config
+              |> Keyword.put(:tls, :always)
+              |> Keyword.put(:tls_options, :tls_certificate_check.options(host))
+            else
+              config
+            end
+          end)
       end
 
     config(:keila, Keila.Mailer, config)
@@ -122,7 +160,7 @@ if config_env() == :prod do
       ]
       |> put_if_not_empty.(:url, captcha_url)
 
-    config :keila, KeilaWeb.captcha(), config
+    config :keila, KeilaWeb.Captcha, config
   else
     Logger.warning("""
     Captcha not configured.
