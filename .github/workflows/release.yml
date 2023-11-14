@@ -90,6 +90,7 @@ jobs:
             pentacent/keila:${{ steps.meta.outputs.major_version }}
             pentacent/keila:${{ steps.meta.outputs.minor_version }}
           push: true
+          platforms: linux/amd64,linux/arm64
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,mode=max,dest=/tmp/.buildx-cache
       - uses: actions/create-release@v1
