@@ -33,6 +33,7 @@ defmodule KeilaWeb.SenderView do
   def sender_adapter_name("sendgrid"), do: "Sendgrid"
   def sender_adapter_name("mailgun"), do: "Mailgun"
   def sender_adapter_name("postmark"), do: "Postmark"
+  def sender_adapter_name("sendinblue"), do: "Sendinblue"
   def sender_adapter_name("shared_ses"), do: "Shared SES"
 
   if Mix.env() == :test do
@@ -62,6 +63,10 @@ defmodule KeilaWeb.SenderView do
 
   def render_sender_adapter_form(form, "postmark") do
     render("_postmark_config.html", form: form)
+  end
+
+  def render_sender_adapter_form(form, "sendinblue") do
+    render("_sendinblue_config.html", form: form)
   end
 
   if Mix.env() == :test do
