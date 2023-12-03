@@ -4,7 +4,7 @@ defmodule Keila.Templates.StyleTemplate do
 
   Style templates are lists of tuples, each representing a group of styles that
   are grouped together semantically.
-  For an example, refer to `@style_template` in `Keila.Templates.DefaultTemplate`.
+  For an example, refer to `@style_template` in `Keila.Templates.HybridTemplate`.
   """
   @type t :: list()
 

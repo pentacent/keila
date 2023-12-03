@@ -3,7 +3,7 @@ defmodule Keila.Templates do
   Context for building and managing templates.
 
   The following submodules are intended for direct use as well:
-  - `Keila.Templates.DefaultTemplate`
+  - `Keila.Templates.HybridTemplate`
   - `Keila.Templates.Html`
   - `Keila.Templates.Css`
   - `Keila.Templates.StyleTemplate`

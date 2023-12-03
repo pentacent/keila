@@ -167,7 +167,7 @@ defmodule Keila.Mailings.Builder do
   end
 
   defp put_body(email, campaign = %{settings: %{type: :block}}, assigns) do
-    {email, assigns} = put_signature_content(email, assigns)
+    {email, assigns} = put_signature(email, assigns)
     {email, body_blocks} = get_body_blocks(email, campaign.json_body, assigns)
 
     styles = fetch_styles(campaign)
@@ -221,15 +221,15 @@ defmodule Keila.Mailings.Builder do
     HybridTemplate.styles()
   end
 
-  defp put_signature_content(email, assigns) do
-    signature_content = assigns["signature"] || HybridTemplate.signature()
+  defp put_signature(email, assigns) do
+    signature = assigns["signature"] || HybridTemplate.signature()
 
-    with {:ok, signature_content_text} <- render_liquid(signature_content, assigns),
-         {:ok, signature_content_html, _} <- Earmark.as_html(signature_content_text) do
+    with {:ok, signature_text} <- render_liquid(signature, assigns),
+         {:ok, signature_html, _} <- Earmark.as_html(signature_text) do
       assigns =
         assigns
-        |> Map.put("signature_content_text", signature_content_text)
-        |> Map.put("signature_content_html", signature_content_html)
+        |> Map.put("signature_text", signature_text)
+        |> Map.put("signature_html", signature_html)
 
       {email, assigns}
     else
@@ -242,8 +242,8 @@ defmodule Keila.Mailings.Builder do
 
         assigns =
           assigns
-          |> Map.put("signature_content_text", error_message)
-          |> Map.put("signature_content_html", error_message)
+          |> Map.put("signature_text", error_message)
+          |> Map.put("signature_html", error_message)
 
         email = header(email, "X-Keila-Invalid", error_message)
         {email, assigns}

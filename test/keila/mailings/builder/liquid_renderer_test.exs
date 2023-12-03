@@ -23,7 +23,7 @@ defmodule Keila.Mailings.Builder.LiquidRendererTest do
                render_liquid(input, %{})
     end
 
-    test "returns an error tuple from an invalid Liquid templatex" do
+    test "returns an error tuple when there is a Liquid rendering error" do
       input = "Hello {{ foo | abs }}"
       assigns = %{"foo" => "bar"}
       assert {:error, "Unexpected rendering error"} = render_liquid(input, assigns)
