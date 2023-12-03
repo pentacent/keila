@@ -1,6 +1,8 @@
 defmodule Keila.Mailings.Builder do
   @moduledoc """
   Module for building Swoosh.Email structs from Campaigns and Contacts.
+
+  TODO: Refactor to move building for all campaign types to separate modules.
   """
 
   alias Keila.Mailings.{Campaign, Recipient}
@@ -9,6 +11,7 @@ defmodule Keila.Mailings.Builder do
   alias KeilaWeb.Router.Helpers, as: Routes
   alias Keila.Templates.{Template, Css, Html, DefaultTemplate, HybridTemplate}
   import Swoosh.Email
+  import __MODULE__.Markdown
 
   @default_contact %Keila.Contacts.Contact{
     id: "c_id",
@@ -158,43 +161,9 @@ defmodule Keila.Mailings.Builder do
 
   defp put_body(email, campaign = %{settings: %{type: :markdown}}, assigns) do
     main_content = campaign.text_body || ""
+    styles = fetch_styles(campaign)
 
-    {email, assigns} = put_signature_content(email, assigns)
-
-    with {:ok, main_content_text} <- render_liquid(main_content, assigns),
-         {:ok, main_content_html, _} <- Earmark.as_html(main_content_text),
-         assigns <-
-           Map.put(assigns, "body_blocks", [%{"type" => "markdown", "data" => main_content_html}]),
-         assigns <- Map.put(assigns, "html_body_class", "keila--markdown-campaign"),
-         {:ok, html_body} <-
-           render_liquid(HybridTemplate.html_template(), assigns,
-             file_system: HybridTemplate.file_system()
-           ) do
-      styles = fetch_styles(campaign)
-
-      text_body = main_content_text <> "\n\n--  \n" <> assigns["signature_content_text"]
-
-      html_body =
-        html_body
-        |> Html.parse_document!()
-        |> Html.apply_email_markup()
-        |> Html.apply_inline_styles(styles, ignore_inherit: true)
-        |> Html.to_document()
-
-      email
-      |> text_body(text_body)
-      |> html_body(html_body)
-    else
-      {:error, error} ->
-        email
-        |> header("X-Keila-Invalid", error)
-        |> text_body(error)
-
-      {:error, _, _} ->
-        email
-        |> header("X-Keila-Invalid", "Unexpected rendering error")
-        |> text_body("Unexpected rendering error")
-    end
+    __MODULE__.Markdown.put_body(email, main_content, styles, assigns)
   end
 
   defp put_body(email, campaign = %{settings: %{type: :block}}, assigns) do
@@ -344,32 +313,6 @@ defmodule Keila.Mailings.Builder do
       header(email, "Precedence", "Bulk")
     else
       email
-    end
-  end
-
-  defp render_liquid(input, assigns, opts \\ [])
-
-  defp render_liquid(input, assigns, opts) when is_binary(input) do
-    try do
-      with {:ok, template} <- Solid.parse(input) do
-        render_liquid(template, assigns, opts)
-      else
-        {:error, error = %Solid.TemplateError{}} -> {:error, error.message}
-      end
-    rescue
-      _e -> {:error, "Unexpected parsing error"}
-    end
-  end
-
-  defp render_liquid(input = %Solid.Template{}, assigns, opts) do
-    try do
-      input
-      |> Solid.render!(assigns, opts)
-      |> to_string()
-      |> (fn output -> {:ok, output} end).()
-    rescue
-      _error ->
-        {:error, "Unexpected rendering error"}
     end
   end
 
