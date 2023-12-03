@@ -38,4 +38,24 @@ defmodule Keila.Mailings.Builder.LiquidRenderer do
   defp template_error_to_string(%{line: {line, _}, reason: reason}) do
     "Parsing error in line #{line}: #{reason}"
   end
+
+  @doc """
+  Parse and render a string as a liquid template and then transform from
+  Markdown to HTML.
+  """
+  @spec render_liquid_and_markdown(input :: String.t(), assigns :: map()) ::
+          {:ok, html :: String.t()} | {:error, String.t()}
+  def render_liquid_and_markdown(input, assigns) do
+    with {:ok, markdown} <- render_liquid(input, assigns),
+         {:ok, html} <- render_markdown(markdown) do
+      {:ok, markdown, html}
+    end
+  end
+
+  defp render_markdown(markdown) do
+    case Earmark.as_html(markdown) do
+      {:ok, html, _} -> {:ok, html}
+      {:error, _, _} -> {:error, "Error processing Markdown"}
+    end
+  end
 end

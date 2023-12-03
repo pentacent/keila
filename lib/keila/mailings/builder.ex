@@ -9,9 +9,9 @@ defmodule Keila.Mailings.Builder do
   alias Keila.Contacts.Contact
   alias Swoosh.Email
   alias KeilaWeb.Router.Helpers, as: Routes
-  alias Keila.Templates.{Template, Css, Html, DefaultTemplate, HybridTemplate}
+  alias Keila.Templates.{Template, Css, Html, HybridTemplate}
   import Swoosh.Email
-  import __MODULE__.Markdown
+  import __MODULE__.LiquidRenderer
 
   @default_contact %Keila.Contacts.Contact{
     id: "c_id",
@@ -146,7 +146,7 @@ defmodule Keila.Mailings.Builder do
   defp put_body(email, campaign = %{settings: %{type: :text}}, assigns) do
     body_with_signature =
       (campaign.text_body || "") <>
-        "\n\n--  \n" <> (assigns["signature"] || DefaultTemplate.signature())
+        "\n\n--  \n" <> (assigns["signature"] || HybridTemplate.signature())
 
     case render_liquid(body_with_signature, assigns) do
       {:ok, text_body} ->
@@ -222,7 +222,7 @@ defmodule Keila.Mailings.Builder do
   end
 
   defp put_signature_content(email, assigns) do
-    signature_content = assigns["signature"] || DefaultTemplate.signature()
+    signature_content = assigns["signature"] || HybridTemplate.signature()
 
     with {:ok, signature_content_text} <- render_liquid(signature_content, assigns),
          {:ok, signature_content_html, _} <- Earmark.as_html(signature_content_text) do
