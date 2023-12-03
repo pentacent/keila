@@ -304,71 +304,71 @@ defmodule Keila.Contacts do
   end
 
   @doc """
-  Creates a new `FormAttrs` entity for the given `Form` ID and `attrs` map.
-  `FormAttrs` are used to implement the double opt-in mechanism; they are an
+  Creates a new `FormParams` entity for the given `Form` ID and `attrs` map.
+  `FormParams` are used to implement the double opt-in mechanism; they are an
   intermediate storage for the attributes submitted by a contact who has
   submitted a signup form.
   """
-  @spec create_form_attrs(Form.id(), map()) ::
-          {:ok, FormAttrs.t()} | {:error, Changeset.t(FormAttrs.t())}
-  def create_form_attrs(form_id, attrs) do
-    FormAttrs.changeset(form_id, attrs)
+  @spec create_form_params(Form.id(), map()) ::
+          {:ok, FormParams.t()} | {:error, Changeset.t(FormParams.t())}
+  def create_form_params(form_id, attrs) do
+    FormParams.changeset(form_id, attrs)
     |> Repo.insert()
   end
 
   @doc """
-  Returns the `FormAttrs` entity for the given `id`. Returns `nil` if no such
+  Returns the `FormParams` entity for the given `id`. Returns `nil` if no such
   entity exists.
   """
-  @spec get_form_attrs(FormAttrs.id()) :: FormAttrs.t() | nil
-  def get_form_attrs(id) do
-    Repo.get(FormAttrs, id)
+  @spec get_form_params(FormParams.id()) :: FormParams.t() | nil
+  def get_form_params(id) do
+    Repo.get(FormParams, id)
   end
 
   @doc """
-  Retrieves, deletes, and returns the `FormAttrs` entity with the given `id`.
+  Retrieves, deletes, and returns the `FormParams` entity with the given `id`.
   Returns `nil` if no such entity exists.
   """
-  @spec get_and_delete_form_attrs(FormAttrs.id()) :: FormAttrs.t() | nil
-  def get_and_delete_form_attrs(id) do
-    from(fa in FormAttrs, where: fa.id == ^id, select: fa)
+  @spec get_and_delete_form_params(FormParams.id()) :: FormParams.t() | nil
+  def get_and_delete_form_params(id) do
+    from(fa in FormParams, where: fa.id == ^id, select: fa)
     |> Repo.delete_all()
     |> case do
-      {1, [form_attrs]} -> form_attrs
+      {1, [form_params]} -> form_params
       _ -> nil
     end
   end
 
   @doc """
-  Deletes the `FormAttrs` entity with the given `id`. Always returns `:ok`.
+  Deletes the `FormParams` entity with the given `id`. Always returns `:ok`.
   """
-  @spec delete_form_attrs(FormAttrs.id()) :: :ok
-  def delete_form_attrs(id) do
-    from(fa in FormAttrs, where: fa.id == ^id)
+  @spec delete_form_params(FormParams.id()) :: :ok
+  def delete_form_params(id) do
+    from(fa in FormParams, where: fa.id == ^id)
     |> Repo.delete_all()
 
     :ok
   end
 
   @doc """
-  Returns an HMAC string for the given `FormAttrs` ID that can be
+  Returns an HMAC string for the given `FormParams` ID that can be
   used when verifying a contact in the double opt-in process.
   """
-  @spec double_opt_in_hmac(FormAttrs.id()) :: String.t()
-  def double_opt_in_hmac(form_attrs_id) do
+  @spec double_opt_in_hmac(FormParams.id()) :: String.t()
+  def double_opt_in_hmac(form_params_id) do
     key = Application.get_env(:keila, KeilaWeb.Endpoint) |> Keyword.fetch!(:secret_key_base)
-    message = "double-opt-in:" <> form_attrs_id
+    message = "double-opt-in:" <> form_params_id
 
     :crypto.mac(:hmac, :sha256, key, message)
     |> Base.url_encode64(padding: false)
   end
 
   @doc """
-  Verifies a HMAC string for the given `FormAttrs` ID.
+  Verifies a HMAC string for the given `FormParams` ID.
   """
-  @spec valid_double_opt_in_hmac?(String.t(), FormAttrs.id()) :: boolean()
-  def valid_double_opt_in_hmac?(hmac, form_attrs_id) do
-    case double_opt_in_hmac(form_attrs_id) do
+  @spec valid_double_opt_in_hmac?(String.t(), FormParams.id()) :: boolean()
+  def valid_double_opt_in_hmac?(hmac, form_params_id) do
+    case double_opt_in_hmac(form_params_id) do
       ^hmac -> true
       _other -> false
     end

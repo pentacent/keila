@@ -1,21 +1,25 @@
-defmodule Keila.Contacts.FormAttrs do
+defmodule Keila.Contacts.FormParams do
+  @moduledoc """
+  FormParams hold the parameters for a `Keila.Contacts.Form` to be submitted
+  again after a double opt-in process.
+  """
   use Keila.Schema, prefix: "f_attr"
   alias Keila.Contacts.Form
 
   @expiry_in_days 60
 
-  schema "contacts_form_attrs" do
-    field :attrs, :map
+  schema "contacts_form_params" do
+    field :params, :map
     field :expires_at, :utc_datetime
     belongs_to :form, Form, type: Form.Id
     timestamps()
   end
 
-  def changeset(struct \\ %__MODULE__{}, form_id, attrs) do
+  def changeset(struct \\ %__MODULE__{}, form_id, params) do
     struct
     |> change()
     |> put_change(:form_id, form_id)
-    |> put_change(:attrs, attrs)
+    |> put_change(:params, params)
     |> maybe_put_expires_at()
   end
 
