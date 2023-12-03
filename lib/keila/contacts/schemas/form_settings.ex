@@ -6,6 +6,7 @@ defmodule Keila.Contacts.Form.Settings do
 
   embedded_schema do
     field(:captcha_required, :boolean, default: true)
+    field(:double_opt_in_required, :boolean, default: false)
     field(:csrf_disabled, :boolean, default: true)
     field(:intro_text, :string)
     field(:fine_print, :string)
