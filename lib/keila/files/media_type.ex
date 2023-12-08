@@ -48,6 +48,7 @@ defmodule Keila.Files.MediaType do
   defp do_type_from_magic_number(<<0xFF, 0xD8, 0xFF, 0xDB>> <> _), do: {:ok, "image/jpeg"}
   defp do_type_from_magic_number(<<0xFF, 0xD8, 0xFF, 0xE0>> <> _), do: {:ok, "image/jpeg"}
   defp do_type_from_magic_number(<<0xFF, 0xD8, 0xFF, 0xEE>> <> _), do: {:ok, "image/jpeg"}
+  defp do_type_from_magic_number(<<0xFF, 0xD8, 0xFF, 0xE1>> <> _), do: {:ok, "image/jpeg"}
 
   defp do_type_from_magic_number(<<0x47, 0x49, 0x46, 0x38, 0x37, 0x61>> <> _),
     do: {:ok, "image/gif"}
