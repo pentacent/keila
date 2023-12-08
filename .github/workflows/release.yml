@@ -85,10 +85,10 @@ jobs:
           context: .
           file: ./ops/Dockerfile
           tags: |
-            pentacent/keila:latest
-            pentacent/keila:${{ steps.meta.outputs.version }}
-            pentacent/keila:${{ steps.meta.outputs.major_version }}
-            pentacent/keila:${{ steps.meta.outputs.minor_version }}
+            moritztopp/keila:latest
+            moritztopp/keila:${{ steps.meta.outputs.version }}
+            moritztopp/keila:${{ steps.meta.outputs.major_version }}
+            moritztopp/keila:${{ steps.meta.outputs.minor_version }}
           push: true
           platforms: linux/amd64,linux/arm64
           cache-from: type=local,src=/tmp/.buildx-cache
