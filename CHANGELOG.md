@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Fixed
+- Added support for additional JPEG variant (this avoids errors when uploading
+  previously unrecognized JPEG files)
+
 
 ## Version 0.12.8
 
