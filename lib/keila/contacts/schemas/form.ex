@@ -28,9 +28,10 @@ defmodule Keila.Contacts.Form do
 
   def update_changeset(struct \\ %__MODULE__{}, params) do
     struct
-    |> cast(params, [:name, :sender_id])
+    |> cast(params, [:name, :sender_id, :template_id])
     |> cast_embed(:settings)
     |> cast_embed(:field_settings)
     |> validate_assoc_project(:sender, Sender)
+    |> validate_assoc_project(:template, Template)
   end
 end

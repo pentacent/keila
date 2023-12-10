@@ -35,14 +35,15 @@ defmodule Keila.Mailings.SendDoubleOptInMailWorker do
         hmac
       )
 
-    subject = gettext("Please confirm your email address")
+    subject = form.settings.double_opt_in_subject || gettext("Please confirm your email address")
 
     body_markdown =
-      gettext("""
-      Please click here to confirm your subscription:
+      form.settings.double_opt_in_markdown_body ||
+        gettext("""
+        Please click here to confirm your subscription:
 
-      ### [Confirm subscription]({{ double_opt_in_link }})
-      """)
+        ### [Confirm subscription]({{ double_opt_in_link }})
+        """)
 
     template =
       if form.template_id,
@@ -59,7 +60,8 @@ defmodule Keila.Mailings.SendDoubleOptInMailWorker do
 
     assigns = %{
       "double_opt_in_link" => double_opt_in_link,
-      "unsubscribe_link" => unsubscribe_link
+      "unsubscribe_link" => unsubscribe_link,
+      "contact" => form_params.params
     }
 
     Email.new()

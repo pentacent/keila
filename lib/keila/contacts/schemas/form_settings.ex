@@ -7,6 +7,8 @@ defmodule Keila.Contacts.Form.Settings do
   embedded_schema do
     field(:captcha_required, :boolean, default: true)
     field(:double_opt_in_required, :boolean, default: false)
+    field(:double_opt_in_subject, :string)
+    field(:double_opt_in_markdown_body, :string)
     field(:csrf_disabled, :boolean, default: true)
     field(:intro_text, :string)
     field(:fine_print, :string)
@@ -27,6 +29,8 @@ defmodule Keila.Contacts.Form.Settings do
     |> cast(params, [
       :captcha_required,
       :double_opt_in_required,
+      :double_opt_in_subject,
+      :double_opt_in_markdown_body,
       :csrf_disabled,
       :intro_text,
       :fine_print,
