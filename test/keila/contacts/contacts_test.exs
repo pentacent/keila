@@ -69,6 +69,29 @@ defmodule Keila.ContactsTest do
     assert updated_contact.email == params["email"]
   end
 
+  @tag :double_opt_in
+  test "Not changing the contact email keeps the double_opt_in_at value", %{project: project} do
+    contact =
+      insert!(:contact, %{project_id: project.id, double_opt_in_at: DateTime.utc_now(:second)})
+
+    params = params(:contact) |> Map.delete("email")
+    assert {:ok, updated_contact = %Contact{}} = Contacts.update_contact(contact.id, params)
+    assert updated_contact.first_name == params["first_name"]
+    assert updated_contact.double_opt_in_at
+  end
+
+  @tag :double_opt_in
+  test "Editing an email address removes the double_opt_in_at value", %{project: project} do
+    contact =
+      insert!(:contact, %{project_id: project.id, double_opt_in_at: DateTime.utc_now(:second)})
+
+    assert contact.double_opt_in_at
+    params = params(:contact)
+    assert {:ok, updated_contact = %Contact{}} = Contacts.update_contact(contact.id, params)
+    assert updated_contact.email == params["email"]
+    refute updated_contact.double_opt_in_at
+  end
+
   @tag :contacts
   test "List project contacts", %{project: project} do
     contact1 = insert!(:contact, %{project_id: project.id})

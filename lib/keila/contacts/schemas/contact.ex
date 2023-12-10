@@ -14,6 +14,7 @@ defmodule Keila.Contacts.Contact do
     field(:last_name, :string)
     field(:status, Ecto.Enum, values: @statuses, default: :active)
     field(:data, Keila.Repo.JsonField)
+    field(:double_opt_in_at, :utc_datetime)
     belongs_to(:project, Keila.Projects.Project, type: Keila.Projects.Project.Id)
     timestamps()
   end
@@ -34,6 +35,7 @@ defmodule Keila.Contacts.Contact do
     |> cast(params, [:email, :first_name, :last_name, :data])
     |> validate_email()
     |> check_data_size_constraint()
+    |> maybe_remove_double_opt_in_at()
   end
 
   @spec changeset_from_form(t(), Ecto.Changeset.data(), Form.t()) :: Ecto.Changeset.t(t())
@@ -84,13 +86,24 @@ defmodule Keila.Contacts.Contact do
     |> unique_constraint([:email, :project_id])
   end
 
+  defp maybe_remove_double_opt_in_at(changeset) do
+    changed_email = get_change(changeset, :email)
+    current_email = changeset.data.email
+
+    if not is_nil(changed_email) and not is_nil(current_email) and changed_email != current_email do
+      put_change(changeset, :double_opt_in_at, nil)
+    else
+      changeset
+    end
+  end
+
   defp validate_double_opt_in(changeset, %{settings: %{double_opt_in_required: false}}, _, _),
     do: changeset
 
   defp validate_double_opt_in(changeset, form, form_params_id, hmac)
        when is_binary(form_params_id) and is_binary(hmac) do
     if Keila.Contacts.valid_double_opt_in_hmac?(hmac, form.id, form_params_id) do
-      changeset
+      put_change(changeset, :double_opt_in_at, DateTime.utc_now(:second))
     else
       add_error(changeset, :double_opt_in, "Invalid HMAC")
     end
