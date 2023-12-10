@@ -2,16 +2,19 @@ defmodule KeilaWeb.PublicFormController do
   use KeilaWeb, :controller
   alias Keila.{Contacts, Mailings, Tracking}
   alias Keila.Contacts.Contact
+  alias Keila.Contacts.FormParams
   import Ecto.Changeset
 
   plug :fetch when action in [:show, :submit]
-  plug :maybe_put_protect_from_forgery when action in [:show, :submit]
+  plug :fetch_form_params when action in [:double_opt_in, :cancel_double_opt_in]
+
+  plug :maybe_put_protect_from_forgery
+       when action in [:show, :submit, :double_opt_in, :cancel_double_opt_in]
 
   @spec show(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def show(conn, _params) do
     form = conn.assigns.form
 
-    Keil
     render_form(conn, change(%Contact{}), form)
   end
 
@@ -20,29 +23,37 @@ defmodule KeilaWeb.PublicFormController do
     form = conn.assigns.form
     contact_params = params["contact"] || %{}
 
-    with :ok <- maybe_check_captcha(form, params),
-         {:ok, %{id: id}} <- Contacts.create_contact_from_form(form, contact_params) do
-      data = %{"captcha" => form.settings.captcha_required}
-      Tracking.log_event("subscribe", id, data)
+    opts =
+      if form.settings.captcha_required,
+        do: [changeset_transform: check_captcha_changeset_transform(params)],
+        else: []
 
-      render(conn, "success.html")
-    else
-      {:error, changeset} -> render_form(conn, 400, changeset, form)
+    case Contacts.perform_form_action(form, contact_params, opts) do
+      {:ok, contact = %Contact{}} ->
+        data = if form.settings.captcha_required, do: %{"captcha" => true}, else: %{}
+        Tracking.log_event("subscribe", contact.id, data)
+        render(conn, "success.html")
+
+      {:ok, form_params = %FormParams{}} ->
+        conn
+        |> assign(:email, form_params.params[:email])
+        |> render("double_opt_in_required.html")
+
+      {:error, changeset} ->
+        render_form(conn, 400, changeset, form)
     end
   end
 
-  defp maybe_check_captcha(%{settings: %{captcha_required: false}}, _), do: :ok
+  defp check_captcha_changeset_transform(params) do
+    fn changeset ->
+      captcha_response = KeilaWeb.Captcha.get_captcha_response(params)
 
-  defp maybe_check_captcha(form, params) do
-    captcha_response = KeilaWeb.Captcha.get_captcha_response(params)
-
-    if KeilaWeb.Captcha.captcha_valid?(captcha_response) do
-      :ok
-    else
-      params["contact"]
-      |> Contacts.Contact.changeset_from_form(form)
-      |> Ecto.Changeset.add_error(:captcha, dgettext("auth", "Please complete the captcha."))
-      |> Ecto.Changeset.apply_action(:insert)
+      if KeilaWeb.Captcha.captcha_valid?(captcha_response) do
+        changeset
+      else
+        changeset
+        |> add_error(:captcha, dgettext("auth", "Please complete the captcha."))
+      end
     end
   end
 
@@ -55,9 +66,48 @@ defmodule KeilaWeb.PublicFormController do
     |> render("show.html")
   end
 
+  def double_opt_in(conn, %{"hmac" => hmac}) do
+    form = conn.assigns.form
+    form_params = conn.assigns.form_params
+
+    params =
+      form_params.params
+      |> Map.put("form_params_id", form_params.id)
+      |> Map.put("double_opt_in_hmac", hmac)
+
+    case Contacts.perform_form_action(form, params) do
+      {:ok, %Contact{id: id}} ->
+        data = %{"double_opt_in" => true}
+        Tracking.log_event("subscribe", id, data)
+        Contacts.delete_form_params(form_params.id)
+
+        render(conn, "success.html")
+
+      {:ok, form_params = %FormParams{}} ->
+        conn
+        |> assign(:email, form_params.params[:email])
+        |> render("double_opt_in_required.html")
+
+      {:error, changeset} ->
+        render_form(conn, 400, changeset, form)
+    end
+  end
+
+  def cancel_double_opt_in(conn, %{"hmac" => hmac}) do
+    form = conn.assigns.form
+    form_params = conn.assigns.form_params
+
+    if Contacts.valid_double_opt_in_hmac?(hmac, form.id, form_params.id) do
+      :ok = Contacts.delete_form_params(form_params.id)
+
+      render(conn, "double_opt_in_cancelled.html")
+    else
+      conn |> redirect(to: Routes.public_form_path(conn, :show, form.id))
+    end
+  end
+
   @default_unsubscribe_form %Contacts.Form{settings: %Contacts.Form.Settings{}}
   @spec unsubscribe(Plug.Conn.t(), map()) :: Plug.Conn.t()
-
   def unsubscribe(conn, %{
         "project_id" => project_id,
         "recipient_id" => recipient_id,
@@ -106,6 +156,22 @@ defmodule KeilaWeb.PublicFormController do
 
       form ->
         assign(conn, :form, form)
+    end
+  end
+
+  defp fetch_form_params(conn, _) do
+    form = conn.path_params["form_id"] |> Contacts.get_form()
+    form_params = conn.path_params["form_params_id"] |> Contacts.get_form_params()
+
+    cond do
+      form && form_params ->
+        conn |> assign(:form, form) |> assign(:form_params, form_params)
+
+      form ->
+        conn |> redirect(to: Routes.public_form_path(conn, :show, form.id))
+
+      true ->
+        conn |> put_status(404) |> halt()
     end
   end
 

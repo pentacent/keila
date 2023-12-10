@@ -37,7 +37,7 @@ defmodule Keila.ContactsTest do
     params = %{email: email, first_name: _} = build(:contact) |> Map.from_struct()
 
     form = insert!(:contacts_form, project_id: project.id)
-    {:ok, contact} = Contacts.create_contact_from_form(form, params)
+    {:ok, contact} = Contacts.perform_form_action(form, params)
     assert %Contact{email: ^email, first_name: nil, last_name: nil} = contact
 
     form =
@@ -52,11 +52,11 @@ defmodule Keila.ContactsTest do
     params = %{email: email, first_name: first_name} = build(:contact) |> Map.from_struct()
 
     assert {:error, changeset} =
-             Contacts.create_contact_from_form(form, Map.take(params, [:email]))
+             Contacts.perform_form_action(form, Map.take(params, [:email]))
 
     assert [first_name: {_, [validation: :required]}] = changeset.errors
 
-    assert {:ok, contact} = Contacts.create_contact_from_form(form, params)
+    assert {:ok, contact} = Contacts.perform_form_action(form, params)
 
     assert %Contact{email: ^email, first_name: ^first_name, last_name: nil} = contact
   end

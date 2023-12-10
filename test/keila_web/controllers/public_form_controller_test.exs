@@ -1,11 +1,10 @@
 defmodule KeilaWeb.PublicFormControllerTest do
   use KeilaWeb.ConnCase
-  import Phoenix.LiveViewTest
   alias Keila.Contacts
   @endpoint KeilaWeb.Endpoint
 
   describe "GET /forms/:id" do
-    @tag :public_form_controller
+    @describetag :public_form_controller
     test "displays configured form", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
       {:ok, form} = Contacts.create_empty_form(project.id)
@@ -16,7 +15,7 @@ defmodule KeilaWeb.PublicFormControllerTest do
   end
 
   describe "POST /forms/:id" do
-    @tag :public_form_controller
+    @describetag :public_form_controller
     test "submits configured form", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
       form = insert!(:contacts_form, project_id: project.id, settings: %{captcha_required: false})
@@ -27,7 +26,6 @@ defmodule KeilaWeb.PublicFormControllerTest do
       assert contact.email == params["email"]
     end
 
-    @tag :public_form_controller
     test "Requires Captcha and validates fields", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
       form = insert!(:contacts_form, project_id: project.id, settings: %{captcha_required: true})
@@ -39,7 +37,7 @@ defmodule KeilaWeb.PublicFormControllerTest do
   end
 
   describe "GET /unsubscribe/:p_id/:c_id" do
-    @tag :public_form_controller
+    @describetag :public_form_controller
     test "unsubscribes contact", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
       contact = insert!(:contact, project_id: project.id)
@@ -48,7 +46,6 @@ defmodule KeilaWeb.PublicFormControllerTest do
       assert %{status: :unsubscribed} = Contacts.get_contact(contact.id)
     end
 
-    @tag :public_form_controller
     test "shows no error for non-existent contacts", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
 

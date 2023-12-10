@@ -26,6 +26,7 @@ defmodule Keila.Contacts.Form.Settings do
     struct
     |> cast(params, [
       :captcha_required,
+      :double_opt_in_required,
       :csrf_disabled,
       :intro_text,
       :fine_print,

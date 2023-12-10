@@ -20,17 +20,8 @@ defmodule Keila.Contacts do
     |> Repo.insert()
   end
 
-  @doc """
-  Creates a new Contact within the given Project with dynamic casts and
-  validations based on the given form.
-  """
-  @spec create_contact_from_form(Form.t(), map()) ::
-          {:ok, Contact.t()} | {:error, Changeset.t(Contact.t())}
-  def create_contact_from_form(form, params) do
-    params
-    |> Contact.changeset_from_form(form)
-    |> Repo.insert()
-  end
+  defdelegate perform_form_action(form, params, opts), to: __MODULE__.FormActionHandler
+  defdelegate perform_form_action(form, params), to: __MODULE__.FormActionHandler
 
   @doc """
   Updates the specified Contact.
@@ -354,10 +345,10 @@ defmodule Keila.Contacts do
   Returns an HMAC string for the given `FormParams` ID that can be
   used when verifying a contact in the double opt-in process.
   """
-  @spec double_opt_in_hmac(FormParams.id()) :: String.t()
-  def double_opt_in_hmac(form_params_id) do
+  @spec double_opt_in_hmac(Form.id(), FormParams.id()) :: String.t()
+  def double_opt_in_hmac(form_id, form_params_id) do
     key = Application.get_env(:keila, KeilaWeb.Endpoint) |> Keyword.fetch!(:secret_key_base)
-    message = "double-opt-in:" <> form_params_id
+    message = "double-opt-in:" <> form_id <> ":" <> form_params_id
 
     :crypto.mac(:hmac, :sha256, key, message)
     |> Base.url_encode64(padding: false)
@@ -366,9 +357,9 @@ defmodule Keila.Contacts do
   @doc """
   Verifies a HMAC string for the given `FormParams` ID.
   """
-  @spec valid_double_opt_in_hmac?(String.t(), FormParams.id()) :: boolean()
-  def valid_double_opt_in_hmac?(hmac, form_params_id) do
-    case double_opt_in_hmac(form_params_id) do
+  @spec valid_double_opt_in_hmac?(String.t(), Form.id(), FormParams.id()) :: boolean()
+  def valid_double_opt_in_hmac?(hmac, form_id, form_params_id) do
+    case double_opt_in_hmac(form_id, form_params_id) do
       ^hmac -> true
       _other -> false
     end

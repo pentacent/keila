@@ -6,6 +6,14 @@ defmodule KeilaWeb.PublicFormView do
 
   @form_classes "contact-form container bg-white rounded py-4 md:py-8 flex flex-col gap-4"
 
+  defp form_class_attr(_form) do
+    @form_classes
+  end
+
+  defp form_style_attr(form) do
+    build_form_styles(form)
+  end
+
   def render_form(form, changeset \\ Ecto.Changeset.change(%Contact{}), mode) do
     form_opts =
       []
