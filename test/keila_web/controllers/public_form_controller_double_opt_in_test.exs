@@ -51,7 +51,8 @@ defmodule KeilaWeb.PublicFormControllerDoubleOptInTest do
 
       assert html_response(conn, 200)
 
-      assert [%Contact{email: ^email}] = Contacts.get_project_contacts(project.id)
+      assert [contact = %Contact{email: ^email}] = Contacts.get_project_contacts(project.id)
+      assert contact.double_opt_in_at
     end
   end
 

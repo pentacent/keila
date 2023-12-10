@@ -69,7 +69,14 @@ defmodule KeilaWeb.ContactControllerTest do
     {conn, project} = with_login_and_project(conn)
     contact = insert!(:contact, project_id: project.id)
     conn = get(conn, Routes.contact_path(conn, :edit, project.id, contact.id))
-    assert html_response(conn, 200) =~ ~r{#{contact.email}\s*</h1>}
+
+    assert contact.email ==
+             conn
+             |> html_response(200)
+             |> Floki.parse_document!()
+             |> Floki.find("h1")
+             |> hd()
+             |> Floki.text()
   end
 
   @tag :contact_controller
