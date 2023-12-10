@@ -38,7 +38,7 @@ defmodule Keila.Contacts.Query do
 
   @type opts :: {:filter, map()} | {:sort, map()}
 
-  @fields ["id", "email", "inserted_at", "first_name", "last_name", "status"]
+  @fields ["id", "email", "inserted_at", "first_name", "last_name", "status", "double_opt_in_at"]
 
   @spec apply(Ecto.Query.t(), [opts]) :: Ecto.Query.t()
   def apply(query, opts) do
