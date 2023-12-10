@@ -132,7 +132,14 @@
           x-data="{cast: $el.querySelector('input[type=checkbox]').checked}"
         >
           <h3 class="font-bold">
-            <%= String.capitalize(fs.data.field || fs.source.changes[:field] || "") %>
+            <%= case fs.data.field || fs.source.changes[:field] || "" do %>
+              <% "first_name" -> %>
+                <%= gettext("First name") %>
+              <% "last_name" -> %>
+                <%= gettext("Last name") %>
+              <% other -> %>
+                <%= String.capitalize(other) %>
+            <% end %>
           </h3>
 
           <%= hidden_input(fs, :field) %>

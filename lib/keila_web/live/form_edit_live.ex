@@ -4,12 +4,17 @@ defmodule KeilaWeb.FormEditLive do
   @impl true
   def mount(_params, session, socket) do
     Gettext.put_locale(session["locale"])
+    current_project = session["current_project"]
+    senders = Keila.Mailings.get_project_senders(current_project.id)
+    templates = Keila.Templates.get_project_templates(current_project.id)
 
     socket =
       socket
       |> assign(:form, session["form"])
       |> assign(:changeset, Ecto.Changeset.change(session["form"]))
-      |> assign(:current_project, session["current_project"])
+      |> assign(:current_project, current_project)
+      |> assign(:senders, senders)
+      |> assign(:templates, templates)
       |> put_default_assigns()
 
     {:ok, socket}
