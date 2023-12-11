@@ -128,4 +128,6 @@ defmodule Keila.Billing do
   def get_plan(paddle_plan_id) do
     Plans.all() |> Enum.find(&(&1.paddle_id == paddle_plan_id))
   end
+
+  defdelegate feature_available?(project_id, feature), to: __MODULE__.Features
 end

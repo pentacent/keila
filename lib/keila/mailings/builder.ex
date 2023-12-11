@@ -1,14 +1,17 @@
 defmodule Keila.Mailings.Builder do
   @moduledoc """
   Module for building Swoosh.Email structs from Campaigns and Contacts.
+
+  TODO: Refactor to move building for all campaign types to separate modules.
   """
 
   alias Keila.Mailings.{Campaign, Recipient}
   alias Keila.Contacts.Contact
   alias Swoosh.Email
   alias KeilaWeb.Router.Helpers, as: Routes
-  alias Keila.Templates.{Template, Css, Html, DefaultTemplate, HybridTemplate}
+  alias Keila.Templates.{Template, Css, Html, HybridTemplate}
   import Swoosh.Email
+  import __MODULE__.LiquidRenderer
 
   @default_contact %Keila.Contacts.Contact{
     id: "c_id",
@@ -143,7 +146,7 @@ defmodule Keila.Mailings.Builder do
   defp put_body(email, campaign = %{settings: %{type: :text}}, assigns) do
     body_with_signature =
       (campaign.text_body || "") <>
-        "\n\n--  \n" <> (assigns["signature"] || DefaultTemplate.signature())
+        "\n\n--  \n" <> (assigns["signature"] || HybridTemplate.signature())
 
     case render_liquid(body_with_signature, assigns) do
       {:ok, text_body} ->
@@ -158,47 +161,13 @@ defmodule Keila.Mailings.Builder do
 
   defp put_body(email, campaign = %{settings: %{type: :markdown}}, assigns) do
     main_content = campaign.text_body || ""
+    styles = fetch_styles(campaign)
 
-    {email, assigns} = put_signature_content(email, assigns)
-
-    with {:ok, main_content_text} <- render_liquid(main_content, assigns),
-         {:ok, main_content_html, _} <- Earmark.as_html(main_content_text),
-         assigns <-
-           Map.put(assigns, "body_blocks", [%{"type" => "markdown", "data" => main_content_html}]),
-         assigns <- Map.put(assigns, "html_body_class", "keila--markdown-campaign"),
-         {:ok, html_body} <-
-           render_liquid(HybridTemplate.html_template(), assigns,
-             file_system: HybridTemplate.file_system()
-           ) do
-      styles = fetch_styles(campaign)
-
-      text_body = main_content_text <> "\n\n--  \n" <> assigns["signature_content_text"]
-
-      html_body =
-        html_body
-        |> Html.parse_document!()
-        |> Html.apply_email_markup()
-        |> Html.apply_inline_styles(styles, ignore_inherit: true)
-        |> Html.to_document()
-
-      email
-      |> text_body(text_body)
-      |> html_body(html_body)
-    else
-      {:error, error} ->
-        email
-        |> header("X-Keila-Invalid", error)
-        |> text_body(error)
-
-      {:error, _, _} ->
-        email
-        |> header("X-Keila-Invalid", "Unexpected rendering error")
-        |> text_body("Unexpected rendering error")
-    end
+    __MODULE__.Markdown.put_body(email, main_content, styles, assigns)
   end
 
   defp put_body(email, campaign = %{settings: %{type: :block}}, assigns) do
-    {email, assigns} = put_signature_content(email, assigns)
+    {email, assigns} = put_signature(email, assigns)
     {email, body_blocks} = get_body_blocks(email, campaign.json_body, assigns)
 
     styles = fetch_styles(campaign)
@@ -252,15 +221,15 @@ defmodule Keila.Mailings.Builder do
     HybridTemplate.styles()
   end
 
-  defp put_signature_content(email, assigns) do
-    signature_content = assigns["signature"] || DefaultTemplate.signature()
+  defp put_signature(email, assigns) do
+    signature = assigns["signature"] || HybridTemplate.signature()
 
-    with {:ok, signature_content_text} <- render_liquid(signature_content, assigns),
-         {:ok, signature_content_html, _} <- Earmark.as_html(signature_content_text) do
+    with {:ok, signature_text} <- render_liquid(signature, assigns),
+         {:ok, signature_html, _} <- Earmark.as_html(signature_text) do
       assigns =
         assigns
-        |> Map.put("signature_content_text", signature_content_text)
-        |> Map.put("signature_content_html", signature_content_html)
+        |> Map.put("signature_text", signature_text)
+        |> Map.put("signature_html", signature_html)
 
       {email, assigns}
     else
@@ -273,8 +242,8 @@ defmodule Keila.Mailings.Builder do
 
         assigns =
           assigns
-          |> Map.put("signature_content_text", error_message)
-          |> Map.put("signature_content_html", error_message)
+          |> Map.put("signature_text", error_message)
+          |> Map.put("signature_html", error_message)
 
         email = header(email, "X-Keila-Invalid", error_message)
         {email, assigns}
@@ -344,32 +313,6 @@ defmodule Keila.Mailings.Builder do
       header(email, "Precedence", "Bulk")
     else
       email
-    end
-  end
-
-  defp render_liquid(input, assigns, opts \\ [])
-
-  defp render_liquid(input, assigns, opts) when is_binary(input) do
-    try do
-      with {:ok, template} <- Solid.parse(input) do
-        render_liquid(template, assigns, opts)
-      else
-        {:error, error = %Solid.TemplateError{}} -> {:error, error.message}
-      end
-    rescue
-      _e -> {:error, "Unexpected parsing error"}
-    end
-  end
-
-  defp render_liquid(input = %Solid.Template{}, assigns, opts) do
-    try do
-      input
-      |> Solid.render!(assigns, opts)
-      |> to_string()
-      |> (fn output -> {:ok, output} end).()
-    rescue
-      _error ->
-        {:error, "Unexpected rendering error"}
     end
   end
 

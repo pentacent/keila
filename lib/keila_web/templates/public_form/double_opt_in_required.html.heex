@@ -1,0 +1,13 @@
+<div style={form_style_attr(@form)} class={form_class_attr(@form)}>
+  <%= render_h1(@form) %>
+  <h2 class="text-xl">
+    <%= gettext("Please confirm your email") %>
+  </h2>
+  <p>
+    <%= gettext(
+      "We’ve just sent an email to %{email}. Please click the link in that email to confirm your subscription.",
+      email: @email
+    ) %>
+  </p>
+  <%= render_fine_print(@form) %>
+</div>

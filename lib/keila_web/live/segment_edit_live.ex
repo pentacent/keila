@@ -7,6 +7,7 @@ defmodule KeilaWeb.SegmentEditLive do
     "email" => %{type: "string", label: gettext("Email")},
     "first_name" => %{type: "string", label: gettext("First name")},
     "last_name" => %{type: "string", label: gettext("Last name")},
+    "double_opt_in_at" => %{type: "date", label: gettext("Double opt-in date")},
     "data" => %{type: "custom", label: gettext("Custom data")}
   }
 

@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - version: "1.14"
+          - version: "1.15"
     services:
       postgres:
         image: postgres:13-alpine

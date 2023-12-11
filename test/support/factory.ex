@@ -115,6 +115,10 @@ defmodule Keila.Factory do
     }
   end
 
+  defp do_build(:contacts_form_params) do
+    %Keila.Contacts.FormParams{}
+  end
+
   defp do_build(:contacts_segment) do
     %Keila.Contacts.Segment{
       name: "segment-#{get_counter_value()}@example.org",

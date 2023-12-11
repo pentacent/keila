@@ -42,13 +42,13 @@ defmodule KeilaWeb.Router do
     post "/auth/reset/:token", AuthController, :post_reset_change_password
   end
 
-  # Activation Routes
-  pipeline :activation do
+  # Authenticated Routes without activation requirement
+  pipeline :activation_not_required do
     plug KeilaWeb.AuthSession.RequireAuthPlug, allow_not_activated: true
   end
 
   scope "/", KeilaWeb do
-    pipe_through [:browser, :activation]
+    pipe_through [:browser, :activation_not_required]
 
     get "/auth/activate", AuthController, :activate_required
     post "/auth/activate", AuthController, :post_activate_resend
@@ -142,7 +142,7 @@ defmodule KeilaWeb.Router do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_live_flash
-    plug :put_root_layout, {KeilaWeb.FormLayoutView, :root}
+    plug :put_root_layout, {KeilaWeb.PublicFormLayoutView, :root}
     plug :put_layout, false
     plug :put_secure_browser_headers
     plug KeilaWeb.Meta.Plug
@@ -151,16 +151,22 @@ defmodule KeilaWeb.Router do
   scope "/", KeilaWeb do
     pipe_through [:browser_embeddable]
 
-    get "/forms/:id", FormController, :display
-    post "/forms/:id", FormController, :submit
-    get "/unsubscribe/:project_id/:recipient_id/:hmac", FormController, :unsubscribe
-    post "/unsubscribe/:project_id/:recipient_id/:hmac", FormController, :unsubscribe
+    get "/forms/:id", PublicFormController, :show
+    post "/forms/:id", PublicFormController, :submit
+    get "/unsubscribe/:project_id/:recipient_id/:hmac", PublicFormController, :unsubscribe
+    post "/unsubscribe/:project_id/:recipient_id/:hmac", PublicFormController, :unsubscribe
+    get "/double-opt-in/:form_id/:form_params_id/:hmac", PublicFormController, :double_opt_in
+
+    get "/double-opt-in/:form_id/:form_params_id/:hmac/cancel",
+        PublicFormController,
+        :cancel_double_opt_in
+
     get "/r/:encoded_url/:recipient_id/:hmac", TrackingController, :track_open
     get "/c/:encoded_url/:recipient_id/:link_id/:hmac", TrackingController, :track_click
 
     # DEPRECATED: These routes will be removed in a future Keila release
-    get "/unsubscribe/:project_id/:contact_id", FormController, :unsubscribe
-    post "/unsubscribe/:project_id/:contact_id", FormController, :unsubscribe
+    get "/unsubscribe/:project_id/:contact_id", PublicFormController, :unsubscribe
+    post "/unsubscribe/:project_id/:contact_id", PublicFormController, :unsubscribe
   end
 
   scope "/uploads", KeilaWeb do
