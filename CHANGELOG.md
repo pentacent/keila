@@ -2,6 +2,24 @@
 
 ## Unreleased
 
+
+## Version 0.13.0
+
+Double Opt-In ✅ 
+
+### Added
+- Added support for double opt-in/confirmed opt in.
+  Forms can now be configured to enable double opt-in to require new subscribers
+  to confirm their email address before they are added as contacts to the
+  project.
+
+### Changed
+- Updated Elixir to 1.15
+- Translatable labels for first name and last name in form builder
+- Refactored Form controller to separate config UI from public routes
+- Refactored how form submissions are processed
+- Refactored how Markdown campaigns are built
+
 ### Fixed
 - Added support for additional JPEG variant (this avoids errors when uploading
   previously unrecognized JPEG files)
