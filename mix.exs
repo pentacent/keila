@@ -59,7 +59,7 @@ defmodule Keila.MixProject do
       {:phoenix_live_dashboard, "~> 0.5"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 0.5"},
-      {:esbuild, "~> 0.2", runtime: Mix.env() == :dev},
+      {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
