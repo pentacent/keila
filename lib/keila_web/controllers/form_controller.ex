@@ -24,11 +24,17 @@ defmodule KeilaWeb.FormController do
 
   @spec edit(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def edit(conn, _params) do
+    current_project = current_project(conn)
+
+    double_opt_in_available? =
+      Keila.Billing.feature_available?(current_project.id, :double_opt_in)
+
     live_render(conn, KeilaWeb.FormEditLive,
       session: %{
         "current_project" => current_project(conn),
         "form" => conn.assigns.form,
-        "locale" => Gettext.get_locale()
+        "locale" => Gettext.get_locale(),
+        "double_opt_in_available" => double_opt_in_available?
       }
     )
   end

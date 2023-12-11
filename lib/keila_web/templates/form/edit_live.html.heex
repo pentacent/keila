@@ -186,119 +186,141 @@
     </div>
 
     <div class="tab-content bg-gray-800" x-show="tab === 'double-opt-in'">
-      <div
-        class="flex flex-col gap-4"
-        x-data="{enable: $el.querySelector('input[type=checkbox]').checked}"
-      >
-        <h2 class="text-xl">
-          <%= gettext("Double Opt-in") %>
-        </h2>
-        <%= inputs_for(f, :settings, [skip_hidden: true], fn fs -> %>
-          <%= with_validation(fs, :double_opt_in_required) do %>
-            <%= label(fs, :double_opt_in_required) do %>
-              <%= checkbox(fs, :double_opt_in_required,
-                class: "text-emerald-500",
-                x_model: "enable"
-              ) %>
-              <%= gettext("Require double opt-in") %>
-            <% end %>
-          <% end %>
+      <%= if @double_opt_in_available do %>
+        <div
+          class="flex flex-col gap-4"
+          x-data="{enable: $el.querySelector('input[type=checkbox]').checked}"
+        >
+          <h2 class="text-xl">
+            <%= gettext("Double Opt-in") %>
+          </h2>
 
-          <template x-if="enable">
-            <div class="form-row">
-              <%= label(fs, :double_opt_in_sender_id, "Sender") %>
-              <%= if Enum.any?(@senders) do %>
-                <%= with_validation(f, :double_opt_in_sender_id) do %>
+          <%= inputs_for(f, :settings, [skip_hidden: true], fn fs -> %>
+            <%= with_validation(fs, :double_opt_in_required) do %>
+              <%= label(fs, :double_opt_in_required) do %>
+                <%= checkbox(fs, :double_opt_in_required,
+                  class: "text-emerald-500",
+                  x_model: "enable"
+                ) %>
+                <%= gettext("Require double opt-in") %>
+              <% end %>
+            <% end %>
+
+            <template x-if="enable">
+              <div class="form-row">
+                <%= label(fs, :double_opt_in_sender_id, "Sender") %>
+                <%= if Enum.any?(@senders) do %>
+                  <%= with_validation(f, :double_opt_in_sender_id) do %>
+                    <%= select(
+                      f,
+                      :sender_id,
+                      if(input_value(f, :sender_id) == nil,
+                        do: [{gettext("Please select a sender"), nil}],
+                        else: []
+                      ) ++
+                        Enum.map(
+                          @senders,
+                          &{"#{&1.name} (#{&1.from_name} <#{&1.from_email}>)", &1.id}
+                        ),
+                      class: "text-black w-full"
+                    ) %>
+                  <% end %>
+                <% else %>
+                  <div class="flex flex-row gap-4 items-center">
+                    <span class="text-red-700 flex w-12">
+                      <%= render_icon(:exclamation_triangle) %>
+                    </span>
+                    <div>
+                      <%= gettext_md(
+                        "**Important:** You must create and select a sender here. Otherwise, no opt-in emails will be sent."
+                      ) %>
+                      <br />
+                      <a
+                        href={Routes.sender_path(@socket, :new, @current_project.id)}
+                        class="button button--cta"
+                      >
+                        <%= gettext("Create your first sender") %>
+                      </a>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </template>
+
+            <template x-if="enable">
+              <div class="form-row">
+                <%= label(f, :template_id, gettext("Template")) %>
+
+                <%= with_validation(f, :template_id) do %>
                   <%= select(
                     f,
-                    :sender_id,
-                    if(input_value(f, :sender_id) == nil,
-                      do: [{gettext("Please select a sender"), nil}],
-                      else: []
-                    ) ++
-                      Enum.map(
-                        @senders,
-                        &{"#{&1.name} (#{&1.from_name} <#{&1.from_email}>)", &1.id}
-                      ),
-                    class: "text-black w-full"
+                    :template_id,
+                    [{gettext("Default"), nil} | Enum.map(@templates, &{&1.name, &1.id})],
+                    class: "text-black"
                   ) %>
                 <% end %>
-              <% else %>
-                <div class="flex flex-row gap-4 items-center">
-                  <span class="text-red-700 flex w-12">
-                    <%= render_icon(:exclamation_triangle) %>
-                  </span>
-                  <div>
-                    <%= gettext_md(
-                      "**Important:** You must create and select a sender here. Otherwise, no opt-in emails will be sent."
-                    ) %>
-                    <br />
-                    <a
-                      href={Routes.sender_path(@socket, :new, @current_project.id)}
-                      class="button button--cta"
-                    >
-                      <%= gettext("Create your first sender") %>
-                    </a>
-                  </div>
-                </div>
-              <% end %>
-            </div>
-          </template>
-
-          <template x-if="enable">
-            <div class="form-row">
-              <%= label(f, :template_id, gettext("Template")) %>
-
-              <%= with_validation(f, :template_id) do %>
-                <%= select(
-                  f,
-                  :template_id,
-                  [{gettext("Default"), nil} | Enum.map(@templates, &{&1.name, &1.id})],
-                  class: "text-black"
-                ) %>
-              <% end %>
-            </div>
-          </template>
-
-          <template x-if="enable">
-            <div class="form-row">
-              <%= label(fs, :double_opt_in_subject, "Custom email subject") %>
-              <%= with_validation(fs, :double_opt_in_subject) do %>
-                <%= text_input(fs, :double_opt_in_subject,
-                  class: "text-black",
-                  placeholder: gettext("Please confirm your email address")
-                ) %>
-              <% end %>
-            </div>
-          </template>
-
-          <template x-if="enable">
-            <div class="form-row">
-              <%= label(fs, :double_opt_in_subject, "Custom email text") %>
-              <div class="text-xs">
-                <%= gettext_md("""
-                  You may use Liquid and Markdown in the email body.
-                  
-                  Use `[Confirm]({{ double_opt_in_link }})` to include the opt-in link.
-                """) %>
               </div>
-              <br />
-              <%= with_validation(fs, :double_opt_in_text_body) do %>
-                <%= textarea(fs, :double_opt_in_markdown_body,
-                  class: "text-black",
-                  rows: 6,
-                  placeholder:
-                    gettext("""
-                    Please click here to confirm your subscription:
+            </template>
 
-                    ### [Confirm subscription]({{ double_opt_in_link }})
-                    """)
-                ) %>
-              <% end %>
-            </div>
-          </template>
-        <% end) %>
-      </div>
+            <template x-if="enable">
+              <div class="form-row">
+                <%= label(fs, :double_opt_in_subject, "Custom email subject") %>
+                <%= with_validation(fs, :double_opt_in_subject) do %>
+                  <%= text_input(fs, :double_opt_in_subject,
+                    class: "text-black",
+                    placeholder: gettext("Please confirm your email address")
+                  ) %>
+                <% end %>
+              </div>
+            </template>
+
+            <template x-if="enable">
+              <div class="form-row">
+                <%= label(fs, :double_opt_in_subject, "Custom email text") %>
+                <div class="text-xs">
+                  <%= gettext_md("""
+                    You may use Liquid and Markdown in the email body.
+                    
+                    Use `[Confirm]({{ double_opt_in_link }})` to include the opt-in link.
+                  """) %>
+                </div>
+                <br />
+                <%= with_validation(fs, :double_opt_in_text_body) do %>
+                  <%= textarea(fs, :double_opt_in_markdown_body,
+                    class: "text-black",
+                    rows: 6,
+                    placeholder:
+                      gettext("""
+                      Please click here to confirm your subscription:
+
+                      ### [Confirm subscription]({{ double_opt_in_link }})
+                      """)
+                  ) %>
+                <% end %>
+              </div>
+            </template>
+          <% end) %>
+        </div>
+      <% else %>
+        <div class="flex gap-4 items-center">
+          <span class="inline-flex h-12 w-12 flex-shrink-0">
+            <%= render_icon(:paper_airplane) %>
+          </span>
+          <p class="text-2xl">
+            <%= gettext("Thanks for trying out Keila!") %>
+          </p>
+        </div>
+        <p>
+          <%= gettext(
+            "To prevent abuse by spammers, the double opt-in feature is currently only available if you have a subscription. Sorry for the inconvenience!"
+          ) %>
+        </p>
+        <p>
+          <a href={Routes.account_path(@socket, :edit)} class="button button--large button--cta">
+            <%= gettext("Start your subscription now") %>
+          </a>
+        </p>
+      <% end %>
     </div>
 
     <div class="flex flex-col gap-4 tab-content bg-gray-800" x-show="tab === 'style'">

@@ -15,6 +15,7 @@ defmodule KeilaWeb.FormEditLive do
       |> assign(:current_project, current_project)
       |> assign(:senders, senders)
       |> assign(:templates, templates)
+      |> assign(:double_opt_in_available, session["double_opt_in_available"])
       |> put_default_assigns()
 
     {:ok, socket}

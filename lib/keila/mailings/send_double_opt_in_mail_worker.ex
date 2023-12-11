@@ -13,10 +13,15 @@ defmodule Keila.Mailings.SendDoubleOptInMailWorker do
     form_params = Contacts.get_form_params(form_params_id)
     form = Contacts.get_form(form_params.form_id)
     sender = Keila.Mailings.get_sender(form.sender_id)
+    project_id = form.project_id
 
-    case Keila.Mailer.check_sender_rate_limit(sender) do
-      :ok -> send_double_opt_in_email(form_params, form, sender)
-      {:error, min_delay} -> {:snooze, min_delay + 5}
+    if Keila.Billing.feature_available?(project_id, :double_opt_in) do
+      case Keila.Mailer.check_sender_rate_limit(sender) do
+        :ok -> send_double_opt_in_email(form_params, form, sender)
+        {:error, min_delay} -> {:snooze, min_delay + 5}
+      end
+    else
+      {:cancel, "Double opt-in not enabled for account of project #{form.project_id}"}
     end
   end
 
