@@ -57,8 +57,8 @@ defmodule Keila.Mailings.SendDoubleOptInMailWorker do
     default_styles = Keila.Templates.HybridTemplate.styles()
 
     styles =
-      if template do
-        Keila.Templates.Css.merge(default_styles, template.styles)
+      if template && is_binary(template.styles) do
+        Keila.Templates.Css.merge(default_styles, Keila.Templates.Css.parse!(template.styles))
       else
         default_styles
       end
