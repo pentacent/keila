@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Fixed
+- If the `status` column is present in a CSV import, only rows where this column
+  is set to "active" are imported. Fixes #253 (thanks @VZsI for reporting)
+
 
 ## Version 0.13.1
 

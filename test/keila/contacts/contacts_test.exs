@@ -231,6 +231,22 @@ defmodule Keila.ContactsTest do
   end
 
   @tag :contacts
+  test "Import RFC 4180 CSV with status column", %{project: project} do
+    assert :ok ==
+             Contacts.import_csv(
+               project.id,
+               "test/keila/contacts/import_rfc_4180_with_status.csv"
+             )
+
+    assert_received {:contacts_import_progress, 1, 4}
+
+    assert Repo.get_by(Contacts.Contact, email: "active@example.com")
+    refute Repo.get_by(Contacts.Contact, email: "unsubscribed@example.com")
+    refute Repo.get_by(Contacts.Contact, email: "unreachable@example.com")
+    refute Repo.get_by(Contacts.Contact, email: "empty@example.com")
+  end
+
+  @tag :contacts
   test "Import Excel TSV/CSV", %{project: project} do
     assert :ok == Contacts.import_csv(project.id, "test/keila/contacts/import_excel.csv")
     contacts = Contacts.get_project_contacts(project.id)
