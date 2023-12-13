@@ -3,6 +3,13 @@
 ## Unreleased
 
 
+## Version 0.13.1
+
+### Fixed
+- API Contact response now includes status field
+- Fixed error when using custom email template for double opt-in emails
+
+
 ## Version 0.13.0
 
 Double Opt-In ✅ 
