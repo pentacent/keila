@@ -21,10 +21,23 @@ defmodule KeilaWeb.ApiContactControllerTest do
   describe "GET /api/v1/contacts" do
     @tag :api_contact_controller
     test "list contacts", %{authorized_conn: conn, project: project} do
-      %{id: contact_id} = insert!(:contact, project_id: project.id)
+      contact = insert!(:contact, project_id: project.id)
 
       conn = get(conn, Routes.api_contact_path(conn, :index))
-      assert %{"data" => [%{"id" => ^contact_id}]} = json_response(conn, 200)
+      assert %{"data" => [contact_json]} = json_response(conn, 200)
+
+      assert contact_json["id"] == contact.id
+      assert contact_json["first_name"] == contact.first_name
+      assert contact_json["last_name"] == contact.last_name
+      assert contact_json["status"] |> String.to_atom() == contact.status
+      assert contact_json["data"] == contact.data
+      assert contact_json["inserted_at"] |> from_iso8601!() == contact.inserted_at
+      assert contact_json["updated_at"] |> from_iso8601!() == contact.updated_at
+    end
+
+    defp from_iso8601!(string) do
+      {:ok, date, _} = DateTime.from_iso8601(string)
+      date
     end
 
     @tag :api_contact_controller
