@@ -1,0 +1,5 @@
+Email,First name,Last name,Status
+active@example.com,Foo,Bar,active
+unsubscribed@example.com,Foo,Bar,unsubscribed
+unreachable@example.com,Foo,Bar,unreachable
+empty@example.com,Foo,Bar,

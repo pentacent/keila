@@ -2,6 +2,71 @@
 
 ## Unreleased
 
+### Fixed
+- If the `status` column is present in a CSV import, only rows where this column
+  is set to "active" are imported. Fixes #253 (thanks @VZsI for reporting)
+
+
+## Version 0.13.1
+
+### Fixed
+- API Contact response now includes status field
+- Fixed error when using custom email template for double opt-in emails
+
+
+## Version 0.13.0
+
+Double Opt-In ✅ 
+
+### Added
+- Added support for double opt-in/confirmed opt in.
+  Forms can now be configured to enable double opt-in to require new subscribers
+  to confirm their email address before they are added as contacts to the
+  project.
+
+### Changed
+- Updated Elixir to 1.15
+- Translatable labels for first name and last name in form builder
+- Refactored Form controller to separate config UI from public routes
+- Refactored how form submissions are processed
+- Refactored how Markdown campaigns are built
+
+### Fixed
+- Added support for additional JPEG variant (this avoids errors when uploading
+  previously unrecognized JPEG files)
+
+
+## Version 0.12.8
+
+### Added
+- Added `MAILER_ENABLE_STARTTLS` option to configure a system mailer with STARTTLS (#247)
+
+### Fixed
+- API DELETE endpoints for campaigns, contacts, segments now return the
+  correct 204 response
+
+
+## Version 0.12.7
+
+### Added
+- Added `MAILER_ENABLE_SSL` option to configure a system mailer with SSL/TLS
+
+### Fixed
+- Markdown campaigns now allow adding links to images (#245)
+
+
+## Version 0.12.6
+
+### Fixed
+- Fixed SSL/TLS errors when sending emails with SMTP senders
+- Fixed potential exception for image blocks without captions/urls
+
+### Added
+- CSV download for contacts and segments (#238 - thanks @katafrakt)
+- Improved configuration form for SMTP senders with automatic port selection
+  depending on security mode
+
+
 ## Version 0.12.5
 
 ### Fixed

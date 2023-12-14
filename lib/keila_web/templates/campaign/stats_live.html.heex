@@ -166,7 +166,7 @@
   </div>
 <% end %>
 
-<%= if @stats.sent_count > 0 do %>
+<%= if @stats.sent_count > 0 || @stats.failed_count > 0 do %>
   <div class="container">
     <div class="bg-gray-800 p-4 grid lg:grid-cols-2 gap-8 items-center xl:p-4 xl:grid-cols-3 xl:gap-4 whitespace-nowrap">
       <div class="flex flex-row gap-4 xl:p-4">
@@ -187,9 +187,11 @@
             <div class="text-sm"><%= gettext("emails opened") %></div>
             <div class="flex flex-row gap-2 items-end">
               <span class="text-3xl"><%= @stats.open_count %></span>
-              <span class="text-xl opacity-75">
-                <%= (@stats.open_count / @stats.sent_count * 100) |> Float.round(1) %>&thinsp;%
-              </span>
+              <%= if @stats.sent_count > 0 do %>
+                <span class="text-xl opacity-75">
+                  <%= (@stats.open_count / @stats.sent_count * 100) |> Float.round(1) %>&thinsp;%
+                </span>
+              <% end %>
             </div>
           </div>
         </div>
@@ -201,9 +203,11 @@
             <div class="text-sm"><%= gettext("emails clicked") %></div>
             <div class="flex flex-row gap-2 items-end">
               <span class="text-3xl"><%= @stats.click_count %></span>
-              <span class="text-xl opacity-75">
-                <%= (@stats.click_count / @stats.sent_count * 100) |> Float.round(1) %>&thinsp;%
-              </span>
+              <%= if @stats.sent_count > 0 do %>
+                <span class="text-xl opacity-75">
+                  <%= (@stats.click_count / @stats.sent_count * 100) |> Float.round(1) %>&thinsp;%
+                </span>
+              <% end %>
             </div>
           </div>
         </div>
@@ -231,9 +235,11 @@
           <div class="text-sm"><%= gettext("unsubscribes") %></div>
           <div class="flex flex-row gap-2 items-end">
             <span class="text-3xl"><%= @stats.unsubscribe_count %></span>
-            <span class="text-xl opacity-75">
-              <%= (@stats.unsubscribe_count / @stats.sent_count * 100) |> Float.round(1) %>&thinsp;%
-            </span>
+            <%= if @stats.sent_count > 0 do %>
+              <span class="text-xl opacity-75">
+                <%= (@stats.unsubscribe_count / @stats.sent_count * 100) |> Float.round(1) %>&thinsp;%
+              </span>
+            <% end %>
           </div>
         </div>
       </div>
@@ -245,9 +251,11 @@
           <div class="text-sm"><%= gettext("bounces") %></div>
           <div class="flex flex-row gap-2 items-end">
             <span class="text-3xl"><%= @stats.hard_bounce_count %></span>
-            <span class="text-xl opacity-75">
-              <%= (@stats.hard_bounce_count / @stats.sent_count * 100) |> Float.round(1) %>&thinsp;%
-            </span>
+            <%= if @stats.sent_count > 0 do %>
+              <span class="text-xl opacity-75">
+                <%= (@stats.hard_bounce_count / @stats.sent_count * 100) |> Float.round(1) %>&thinsp;%
+              </span>
+            <% end %>
           </div>
         </div>
       </div>
@@ -259,9 +267,11 @@
           <div class="text-sm"><%= gettext("complaints") %></div>
           <div class="flex flex-row gap-2 items-end">
             <span class="text-3xl"><%= @stats.complaint_count %></span>
-            <span class="text-xl opacity-75">
-              <%= (@stats.complaint_count / @stats.sent_count * 100) |> Float.round(1) %>&thinsp;%
-            </span>
+            <%= if @stats.sent_count > 0 do %>
+              <span class="text-xl opacity-75">
+                <%= (@stats.complaint_count / @stats.sent_count * 100) |> Float.round(1) %>&thinsp;%
+              </span>
+            <% end %>
           </div>
         </div>
       </div>
@@ -298,7 +308,11 @@
           <tr>
             <td><%= link %></td>
             <td><%= clicks %></td>
-            <td><%= (clicks / @stats.sent_count * 100) |> Float.round(2) %>%</td>
+            <td>
+              <%= if @stats.sent_count > 0 do %>
+                <%= (clicks / @stats.sent_count * 100) |> Float.round(2) %>%
+              <% end %>
+            </td>
           </tr>
         <% end %>
       </table>

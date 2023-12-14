@@ -16,6 +16,8 @@ config :keila, Keila.Repo,
 
 config :keila, skip_migrations: true
 
+config :keila, KeilaWeb.ContactsCsvExport, chunk_size: 3
+
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
 config :keila, KeilaWeb.Endpoint,
@@ -23,7 +25,7 @@ config :keila, KeilaWeb.Endpoint,
   server: false
 
 # Print only warnings and errors during test
-config :logger, level: :warn
+config :logger, level: :warning
 
 # Configure Swoosh
 config :keila, Keila.Mailer, adapter: Swoosh.Adapters.Test

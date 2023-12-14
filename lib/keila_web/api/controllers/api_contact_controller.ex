@@ -129,7 +129,7 @@ defmodule KeilaWeb.ApiContactController do
     Contacts.delete_project_contacts(project_id(conn), filter: %{"id" => id})
 
     conn
-    |> put_status(204)
+    |> send_resp(:no_content, "")
   end
 
   defp project_id(conn), do: conn.assigns.current_project.id

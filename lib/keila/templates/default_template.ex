@@ -1,5 +1,7 @@
 defmodule Keila.Templates.DefaultTemplate do
   @doc """
+  DEPRECATED. Use `Keila.Templates.HybridTemplate` instead.
+
   Convenience module providing defaults for html and styles, as well as a style
   template configuration.
   """
@@ -98,21 +100,25 @@ defmodule Keila.Templates.DefaultTemplate do
   Powered by [Keila - OpenSource Newsletters](https://www.keila.io/)
   """
 
+  @deprecated "Use HybridTemplate instead"
   @spec styles() :: Keila.Templates.Css.t()
   def styles() do
     @styles
   end
 
+  @deprecated "Use HybridTemplate instead"
   @spec html_template() :: %Solid.Template{}
   def html_template() do
     @html_body
   end
 
+  @deprecated "Use HybridTemplate instead"
   @spec style_template() :: Keila.Templates.StyleTemplate.t()
   def style_template() do
     @style_template
   end
 
+  @deprecated "Use HybridTemplate instead"
   @spec signature() :: String.t()
   def signature() do
     @signature

@@ -1,4 +1,4 @@
-defmodule KeilaWeb.FormLayoutView do
+defmodule KeilaWeb.PublicFormLayoutView do
   use KeilaWeb, :view
   use Phoenix.HTML
 

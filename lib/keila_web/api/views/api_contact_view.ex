@@ -19,7 +19,7 @@ defmodule KeilaWeb.ApiContactView do
     }
   end
 
-  @properties [:id, :first_name, :last_name, :email, :data, :updated_at, :inserted_at]
+  @properties [:id, :first_name, :last_name, :email, :data, :status, :updated_at, :inserted_at]
   defp contact_data(contact) do
     contact
     |> Map.take(@properties)

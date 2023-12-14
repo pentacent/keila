@@ -8,11 +8,11 @@ alias Keila.{Repo, Auth}
 
 default_email = "root@localhost"
 
-if Keila.Repo.all(Auth.Group) == [] do
-  group = Keila.Repo.insert!(%Auth.Group{name: "root"})
-  role = Keila.Repo.insert!(%Auth.Role{name: "root"})
-  permission = Keila.Repo.insert!(%Auth.Permission{name: "administer_keila"})
-  Keila.Repo.insert!(%Auth.RolePermission{role_id: role.id, permission_id: permission.id})
+if Repo.all(Auth.Group) == [] do
+  group = Repo.insert!(%Auth.Group{name: "root"})
+  role = Repo.insert!(%Auth.Role{name: "root"})
+  permission = Repo.insert!(%Auth.Permission{name: "administer_keila"})
+  Repo.insert!(%Auth.RolePermission{role_id: role.id, permission_id: permission.id})
 
   email =
     case System.get_env("KEILA_USER") do
@@ -20,7 +20,7 @@ if Keila.Repo.all(Auth.Group) == [] do
         email
 
       _empty ->
-        Logger.warn("KEILA_USER not set. Creating root user with email: #{default_email}")
+        Logger.warning("KEILA_USER not set. Creating root user with email: #{default_email}")
         default_email
     end
 
@@ -31,7 +31,7 @@ if Keila.Repo.all(Auth.Group) == [] do
 
       _empty ->
         password = :crypto.strong_rand_bytes(24) |> Base.url_encode64()
-        Logger.warn("KEILA_PASSWORD not set. Setting random root user password: #{password}")
+        Logger.warning("KEILA_PASSWORD not set. Setting random root user password: #{password}")
         password
     end
 

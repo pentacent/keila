@@ -4,8 +4,8 @@ defmodule Keila.MixProject do
   def project do
     [
       app: :keila,
-      version: "0.12.5",
-      elixir: "~> 1.14",
+      version: "0.13.1",
+      elixir: "~> 1.15",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
@@ -23,7 +23,7 @@ defmodule Keila.MixProject do
   def application do
     [
       mod: {Keila.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :public_key, :crypto]
     ]
   end
 
@@ -59,7 +59,7 @@ defmodule Keila.MixProject do
       {:phoenix_live_dashboard, "~> 0.5"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 0.5"},
-      {:esbuild, "~> 0.2", runtime: Mix.env() == :dev},
+      {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
@@ -80,7 +80,8 @@ defmodule Keila.MixProject do
       {:ex_aws_ses, "~> 2.4.1"},
       {:php_serializer, "~> 2.0"},
       {:open_api_spex, "~> 3.11"},
-      {:ex_rated, "~> 2.1"}
+      {:ex_rated, "~> 2.1"},
+      {:tls_certificate_check, "~> 1.20"}
     ]
   end
 

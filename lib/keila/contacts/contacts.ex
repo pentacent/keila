@@ -6,7 +6,7 @@ defmodule Keila.Contacts do
   """
   use Keila.Repo
   alias Keila.Projects.Project
-  alias __MODULE__.{Contact, Import, Form, Segment}
+  alias __MODULE__.{Contact, Import, Form, FormParams, Segment}
   import KeilaWeb.Gettext
 
   @doc """
@@ -20,17 +20,8 @@ defmodule Keila.Contacts do
     |> Repo.insert()
   end
 
-  @doc """
-  Creates a new Contact within the given Project with dynamic casts and
-  validations based on the given form.
-  """
-  @spec create_contact_from_form(Form.t(), map()) ::
-          {:ok, Contact.t()} | {:error, Changeset.t(Contact.t())}
-  def create_contact_from_form(form, params) do
-    params
-    |> Contact.changeset_from_form(form)
-    |> Repo.insert()
-  end
+  defdelegate perform_form_action(form, params, opts), to: __MODULE__.FormActionHandler
+  defdelegate perform_form_action(form, params), to: __MODULE__.FormActionHandler
 
   @doc """
   Updates the specified Contact.
@@ -301,6 +292,77 @@ defmodule Keila.Contacts do
     |> Repo.delete_all()
 
     :ok
+  end
+
+  @doc """
+  Creates a new `FormParams` entity for the given `Form` ID and `attrs` map.
+  `FormParams` are used to implement the double opt-in mechanism; they are an
+  intermediate storage for the attributes submitted by a contact who has
+  submitted a signup form.
+  """
+  @spec create_form_params(Form.id(), map()) ::
+          {:ok, FormParams.t()} | {:error, Changeset.t(FormParams.t())}
+  def create_form_params(form_id, attrs) do
+    FormParams.changeset(form_id, attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Returns the `FormParams` entity for the given `id`. Returns `nil` if no such
+  entity exists.
+  """
+  @spec get_form_params(FormParams.id()) :: FormParams.t() | nil
+  def get_form_params(id) do
+    Repo.get(FormParams, id)
+  end
+
+  @doc """
+  Retrieves, deletes, and returns the `FormParams` entity with the given `id`.
+  Returns `nil` if no such entity exists.
+  """
+  @spec get_and_delete_form_params(FormParams.id()) :: FormParams.t() | nil
+  def get_and_delete_form_params(id) do
+    from(fa in FormParams, where: fa.id == ^id, select: fa)
+    |> Repo.delete_all()
+    |> case do
+      {1, [form_params]} -> form_params
+      _ -> nil
+    end
+  end
+
+  @doc """
+  Deletes the `FormParams` entity with the given `id`. Always returns `:ok`.
+  """
+  @spec delete_form_params(FormParams.id()) :: :ok
+  def delete_form_params(id) do
+    from(fa in FormParams, where: fa.id == ^id)
+    |> Repo.delete_all()
+
+    :ok
+  end
+
+  @doc """
+  Returns an HMAC string for the given `FormParams` ID that can be
+  used when verifying a contact in the double opt-in process.
+  """
+  @spec double_opt_in_hmac(Form.id(), FormParams.id()) :: String.t()
+  def double_opt_in_hmac(form_id, form_params_id) do
+    key = Application.get_env(:keila, KeilaWeb.Endpoint) |> Keyword.fetch!(:secret_key_base)
+    message = "double-opt-in:" <> form_id <> ":" <> form_params_id
+
+    :crypto.mac(:hmac, :sha256, key, message)
+    |> Base.url_encode64(padding: false)
+  end
+
+  @doc """
+  Verifies a HMAC string for the given `FormParams` ID.
+  """
+  @spec valid_double_opt_in_hmac?(String.t(), Form.id(), FormParams.id()) :: boolean()
+  def valid_double_opt_in_hmac?(hmac, form_id, form_params_id) do
+    case double_opt_in_hmac(form_id, form_params_id) do
+      ^hmac -> true
+      _other -> false
+    end
   end
 
   @doc """

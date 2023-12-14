@@ -25,12 +25,12 @@ defmodule Keila.Contacts.Import do
           :ok | {:error, String.t()}
   def import_csv(project_id, filename, opts) do
     notify_pid = Keyword.get(opts, :notify, self())
-    on_conflicts = Keyword.get(opts, :on_conflict, :replace)
+    on_conflict = Keyword.get(opts, :on_conflict, :replace)
 
     Repo.transaction(
       fn ->
         try do
-          import_csv!(project_id, filename, notify_pid, on_conflicts)
+          import_csv!(project_id, filename, notify_pid, on_conflict)
         rescue
           e in NimbleCSV.ParseError ->
             Repo.rollback(e.message)
@@ -51,7 +51,7 @@ defmodule Keila.Contacts.Import do
     end
   end
 
-  defp import_csv!(project_id, filename, notify_pid, on_conflicts) do
+  defp import_csv!(project_id, filename, notify_pid, on_conflict) do
     first_line = read_first_line!(filename)
     parser = determine_parser(first_line)
     row_function = build_row_function(parser, first_line, project_id)
@@ -59,19 +59,15 @@ defmodule Keila.Contacts.Import do
     lines = read_file_line_count!(filename)
     send(notify_pid, {:contacts_import_progress, 0, lines})
 
-    insert_ops =
-      [returning: false, conflict_target: [:email, :project_id]] ++
-        case on_conflicts do
-          :replace -> [on_conflict: {:replace_all_except, [:id, :email, :project_id]}]
-          :ignore -> [on_conflict: :nothing]
-        end
+    insert_opts = insert_opts(on_conflict)
 
     File.stream!(filename)
     |> parser.parse_stream()
     |> Stream.map(row_function)
+    |> Stream.reject(&is_nil/1)
     |> Stream.with_index()
     |> Stream.map(fn {changeset, n} ->
-      case Repo.insert(changeset, insert_ops) do
+      case Repo.insert(changeset, insert_opts) do
         {:ok, %{id: id}} ->
           Keila.Tracking.log_event("import", id, %{})
           n
@@ -113,7 +109,8 @@ defmodule Keila.Contacts.Import do
         email: find_header_column(headers, ~r{email.?(address)?}i),
         first_name: find_header_column(headers, ~r{first.?name}i),
         last_name: find_header_column(headers, ~r{last.?name}i),
-        data: find_header_column(headers, ~r{data}i)
+        data: find_header_column(headers, ~r{data}i),
+        status: find_header_column(headers, ~r{status}i)
       ]
       |> Enum.filter(fn {_key, column} -> not is_nil(column) end)
       |> Enum.sort_by(fn {_key, column} -> column end)
@@ -123,7 +120,11 @@ defmodule Keila.Contacts.Import do
       Enum.zip(columns, row)
       |> Enum.into(%{})
       |> Map.update(:data, nil, &update_data_param/1)
-      |> Contact.creation_changeset(project_id)
+      |> then(fn row ->
+        unless contact_not_active?(row) do
+          Contact.creation_changeset(row, project_id)
+        end
+      end)
     end
   end
 
@@ -140,10 +141,35 @@ defmodule Keila.Contacts.Import do
 
   defp update_data_param(_), do: nil
 
+  # If the :status column is present, it must be "active"
+  defp contact_not_active?(row)
+
+  defp contact_not_active?(%{status: status}) when is_binary(status) do
+    if status =~ ~r{active}i do
+      false
+    else
+      true
+    end
+  end
+
+  defp contact_not_active?(%{status: _}), do: false
+
+  defp contact_not_active?(_), do: false
+
   defp read_file_line_count!(filename) do
     File.stream!(filename)
     |> Enum.count()
     |> then(fn lines -> max(lines - 1, 0) end)
+  end
+
+  defp insert_opts(on_conflict) do
+    conflict_opts =
+      case on_conflict do
+        :replace -> [on_conflict: {:replace_all_except, [:id, :email, :project_id]}]
+        :ignore -> [on_conflict: :nothing]
+      end
+
+    [returning: false, conflict_target: [:email, :project_id]] ++ conflict_opts
   end
 
   defp raise_import_error!(changeset, line) do

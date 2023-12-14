@@ -12,19 +12,19 @@ defmodule Keila.Test.Hasher do
   setup_all do
     timestamp = System.os_time()
 
-    file =
+    file_path =
       System.tmp_dir!()
       |> Path.join("hasher-test-#{timestamp}")
 
-    File.open!(file, [:write], fn file ->
+    File.open!(file_path, [:write], fn file ->
       IO.write(file, @input)
     end)
 
     on_exit(fn ->
-      File.rm!(file)
+      File.rm!(file_path)
     end)
 
-    {:ok, file: file}
+    {:ok, file_path: file_path}
   end
 
   @tag :hasher
@@ -65,7 +65,7 @@ defmodule Keila.Test.Hasher do
 
   @tag :hasher
   test "hash a file", context do
-    sha = Hasher.hash_file(context[:file], :sha)
+    sha = Hasher.hash_file(context[:file_path], :sha)
     assert sha == @hash_sha
   end
 end

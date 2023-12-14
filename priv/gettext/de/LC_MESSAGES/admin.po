@@ -11,113 +11,113 @@ msgstr ""
 "Language: de\n"
 "Plural-Forms: nplurals=2\n"
 
-#, elixir-format
-#: lib/keila_web/templates/user_admin/show_credits.html.heex:13
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:12
+#, elixir-autogen, elixir-format
 msgid "%{remaining} / %{total} credits"
 msgstr ""
 
-#, elixir-format
 #: lib/keila_web/templates/user_admin/index.html.heex:19
+#, elixir-autogen, elixir-format
 msgid "Activation"
 msgstr ""
 
-#, elixir-format
-#: lib/keila_web/templates/user_admin/show_credits.html.heex:65
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:85
+#, elixir-autogen, elixir-format
 msgid "Add Credits"
 msgstr ""
 
-#, elixir-format
-#: lib/keila_web/templates/user_admin/index.html.heex:45
-#: lib/keila_web/templates/user_admin/show_credits.html.heex:18
+#: lib/keila_web/templates/user_admin/index.html.heex:47
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:26
+#, elixir-autogen, elixir-format
 msgid "Add credits"
 msgstr ""
 
-#, elixir-format
 #: lib/keila_web/templates/user_admin/show_credits.html.heex:3
+#, elixir-autogen, elixir-format
 msgid "Administer Credits for %{email}"
 msgstr ""
 
-#, elixir-format
 #: lib/keila_web/controllers/user_admin_controller.ex:14
+#, elixir-autogen, elixir-format
 msgid "Administrate Users"
 msgstr ""
 
-#, elixir-format
-#: lib/keila_web/templates/user_admin/show_credits.html.heex:21
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:29
+#, elixir-autogen, elixir-format
 msgid "Amount"
 msgstr ""
 
-#, elixir-format
 #: lib/keila_web/templates/shared_sender_admin/delete.html.heex:10
+#, elixir-autogen, elixir-format
 msgid "Campaigns associated with this sender will not be deleted."
 msgstr ""
 
-#, elixir-format
 #: lib/keila_web/templates/shared_sender_admin/index.html.heex:9
+#, elixir-autogen, elixir-format
 msgid "Create a new Shared Sender"
 msgstr ""
 
-#, elixir-format
 #: lib/keila_web/templates/user_admin/index.html.heex:21
+#, elixir-autogen, elixir-format
 msgid "Credits"
 msgstr ""
 
-#, elixir-format
-#: lib/keila_web/templates/user_admin/show_credits.html.heex:10
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:9
+#, elixir-autogen, elixir-format
 msgid "Credits for account %{account}"
 msgstr ""
 
-#, elixir-format
 #: lib/keila_web/templates/shared_sender_admin/delete.html.heex:3
+#, elixir-autogen, elixir-format
 msgid "Delete Shared Sender %{sender}?"
 msgstr ""
 
-#, elixir-format
 #: lib/keila_web/templates/shared_sender_admin/delete.html.heex:13
+#, elixir-autogen, elixir-format
 msgid "Deleting a shared sender cannot be undone."
 msgstr ""
 
-#, elixir-format
 #: lib/keila_web/templates/user_admin/index.html.heex:17
+#, elixir-autogen, elixir-format
 msgid "Email"
 msgstr ""
 
-#, elixir-format
 #: lib/keila_web/templates/user_admin/index.html.heex:9
+#, elixir-autogen, elixir-format
 msgid "Here you can manage other users on your Keila instance."
 msgstr ""
 
-#, elixir-format
-#: lib/keila_web/templates/shared_sender_admin/edit.html.heex:33
+#: lib/keila_web/templates/shared_sender_admin/edit.html.heex:54
+#, elixir-autogen, elixir-format
 msgid "My Shared Sender"
 msgstr ""
 
-#, elixir-format
 #: lib/keila_web/templates/shared_sender_admin/edit.html.heex:9
+#, elixir-autogen, elixir-format
 msgid "New Shared Sender"
 msgstr ""
 
-#, elixir-format
 #: lib/keila_web/templates/shared_sender_admin/index.html.heex:4
+#, elixir-autogen, elixir-format
 msgid "Shared Senders"
 msgstr ""
 
-#, elixir-format
 #: lib/keila_web/templates/shared_sender_admin/index.html.heex:17
+#, elixir-autogen, elixir-format
 msgid "Shared Senders are available to all users on this instance of Keila."
 msgstr ""
 
-#, elixir-format
 #: lib/keila_web/templates/user_admin/index.html.heex:18
+#, elixir-autogen, elixir-format
 msgid "Sign-up"
 msgstr ""
 
-#, elixir-format
-#: lib/keila_web/templates/shared_sender_admin/delete.html.heex:17
+#: lib/keila_web/templates/shared_sender_admin/delete.html.heex:25
+#, elixir-autogen, elixir-format
 msgid "Type in the shared sender name to confirm its deletion:"
 msgstr ""
 
-#, elixir-format
-#: lib/keila_web/templates/user_admin/index.html.heex:50
+#: lib/keila_web/templates/user_admin/index.html.heex:57
+#, elixir-autogen, elixir-format
 msgid "Login as"
 msgstr ""
