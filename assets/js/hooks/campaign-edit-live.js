@@ -1,5 +1,6 @@
 import BlockEditor from "../campaign-editors/block"
 import { MarkdownEditor } from "../campaign-editors/markdown"
+import MarkdownSimpleEditor from "../campaign-editors/markdown-simple"
 
 const putHtmlPreview = (el) => {
   const content = el.innerText
@@ -15,6 +16,12 @@ const putHtmlPreview = (el) => {
   doc.write(content)
   doc.close()
   iframe.contentWindow.scrollTo(scrollX, scrollY)
+}
+
+const MarkdownSimpleEditorHook = {
+  mounted() {
+    new MarkdownSimpleEditor(this.el)
+  }
 }
 
 const MarkdownEditorHook = {
@@ -40,4 +47,9 @@ const HtmlPreviewHook = {
   }
 }
 
-export { BlockEditorHook as BlockEditor, HtmlPreviewHook as HtmlPreview, MarkdownEditorHook as MarkdownEditor }
+export {
+  BlockEditorHook as BlockEditor,
+  HtmlPreviewHook as HtmlPreview,
+  MarkdownEditorHook as MarkdownEditor,
+  MarkdownSimpleEditorHook as MarkdownSimpleEditor
+}

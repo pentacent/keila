@@ -1,6 +1,27 @@
 <% f = form_for(@changeset, "#") %>
 
 <div class="relative shadow z-10 flex overflow-x-auto mt-4">
+  <button
+    title={gettext("Link")}
+    class="flex w-10 h-10 p-2 items-center justify-center bg-gray-800 hover:bg-gray-600 text-white"
+    @click.prevent="$dispatch('x-show-link-dialog')"
+  >
+    <%= render_icon(:link) %>
+  </button>
+  <button
+    title={gettext("Image")}
+    class="flex w-10 h-10 p-2 items-center justify-center bg-gray-800 hover:bg-gray-600 text-white"
+    @click.prevent="$dispatch('x-show-image-dialog')"
+  >
+    <%= render_icon(:photograph) %>
+  </button>
+  <button
+    title={gettext("Button")}
+    class="flex w-10 h-10 p-2 items-center justify-center bg-gray-800 hover:bg-gray-600 text-white"
+    @click.prevent="$dispatch('x-show-button-dialog')"
+  >
+    <%= render_icon(:button_alt) %>
+  </button>
   <div class="flex-grow"></div>
   <button
     title={gettext("Preview")}
