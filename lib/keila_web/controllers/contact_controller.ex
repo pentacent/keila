@@ -111,6 +111,9 @@ defmodule KeilaWeb.ContactController do
         Keila.Tracking.log_event("create", id, %{})
         redirect(conn, to: Routes.contact_path(conn, :index, current_project(conn).id))
 
+      {:error, changeset = %{changes: %{data: data}}} when is_map(data) ->
+        conn |> assign(:data, Jason.encode!(data)) |> render_edit(400, changeset)
+
       {:error, changeset} ->
         render_edit(conn, 400, changeset)
     end
