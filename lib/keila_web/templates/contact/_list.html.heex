@@ -1,19 +1,56 @@
-<div class="container py-4">
+<div class="container">
   <.form
     let={f}
     for={@conn}
     as="contact"
     action={Routes.contact_path(@conn, :delete, @current_project.id)}
     method="delete"
+    class=" p-4 bg-gray-800"
   >
     <%= hidden_input(f, :require_confirmation, value: "true") %>
-    <table x-data="{checked: false}" class="w-full">
+    <table
+      x-data="{checked: false}"
+      class="w-full"
+      x-init="Hooks.ContactsTable.mounted.call({el: $el})"
+    >
       <tr class="text-left">
         <th><input type="checkbox" x-model="checked" class="text-emerald-500" /></th>
-        <th class="p-2">Email</th>
-        <th class="p-2 hidden lg:table-cell">First name</th>
-        <th class="p-2 hidden lg:table-cell">Last name</th>
-        <th class="p-2 hidden lg:table-cell">Added</th>
+        <th class="p-2">
+          <div class="flex gap-1">
+            <.table_sort_button key="email" current_key={@sort_by} current_order={@sort_order} />
+            <%= gettext("Email") %>
+          </div>
+        </th>
+        <th class="p-2 hidden lg:table-cell gap-2">
+          <div class="flex gap-1">
+            <.table_sort_button
+              key="first_name"
+              current_key={@sort_by}
+              current_order={@sort_order}
+            />
+            <%= gettext("First name") %>
+          </div>
+        </th>
+        <th class="p-2 hidden lg:table-cell gap-2">
+          <div class="flex gap-1">
+            <.table_sort_button
+              key="last_name"
+              current_key={@sort_by}
+              current_order={@sort_order}
+            />
+            <%= gettext("Last name") %>
+          </div>
+        </th>
+        <th class="p-2 hidden lg:table-cell gap-2">
+          <div class="flex gap-1">
+            <.table_sort_button
+              key="inserted_at"
+              current_key={@sort_by}
+              current_order={@sort_order}
+            />
+            <%= gettext("Added") %>
+          </div>
+        </th>
         <th class="p-2"></th>
       </tr>
       <%= for contact <- @contacts.data do %>
@@ -44,7 +81,7 @@
           <td class="p-2 hidden lg:table-cell">
             <%= Calendar.strftime(contact.inserted_at, "%c") %>
           </td>
-          <td class="p-2 flex gap-2">
+          <td class="p-2 flex justify-end gap-2">
             <%= delete_button_tag(contact, icon: :trash, class: "button button--text") %>
 
             <a
@@ -72,11 +109,18 @@
     <div class="flex gap-3 justify-center py-8">
       <%= pagination_nav(@contacts,
         href: fn n ->
+          query = %{
+            "page" => n + 1,
+            "sort_by" => @sort_by,
+            "sort_order" => @sort_order,
+            "search" => @search
+          }
+
           Routes.contact_path(
             @conn,
             if(@contacts_status == :active, do: :index, else: :"index_#{@contacts_status}"),
             @current_project.id,
-            %{"page" => n + 1}
+            query
           )
         end
       ) %>

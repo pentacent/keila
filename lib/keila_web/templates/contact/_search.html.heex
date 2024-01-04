@@ -1,0 +1,21 @@
+<div class="container">
+  <form
+    id="search-form"
+    class="flex flex-row gap-2 justify-end mt-4 bg-gradient-to-r from-gray-950 to-gray-800 p-2"
+    method="GET"
+  >
+    <input type="search" name="search" value={@search} class="text-white bg-gray-800" />
+    <select name="sort_by" value={@sort_by} class="hidden">
+      <option value="email"></option>
+      <option value="first_name"></option>
+      <option value="last_name"></option>
+      <option value="inserted_at"></option>
+    </select>
+    <select name="sort_order" value={@sort_order} class="hidden">
+      <option value="1"></option>
+      <option value="-1"></option>
+    </select>
+    <input type="hidden" name="page" value="1" />
+    <button class="button"><%= gettext("Search") %></button>
+  </form>
+</div>
