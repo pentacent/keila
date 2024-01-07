@@ -10,6 +10,7 @@ defmodule Keila.Mailings.RecipientActions.SoftBounce do
   def handle(recipient_id, data \\ %{}) do
     recipient_id
     |> maybe_update_recipient()
+    |> tap_if_not_nil(&maybe_update_contact(&1))
     |> tap_if_not_nil(&log_event(&1, data))
   end
 
@@ -20,6 +21,20 @@ defmodule Keila.Mailings.RecipientActions.SoftBounce do
       update: [set: [soft_bounce_received_at: fragment("now()")]]
     )
     |> Repo.update_one([])
+  end
+
+  defp maybe_update_contact(%{contact_id: contact_id}) do
+    recent_soft_bounces =
+      from(r in Recipient,
+        where: r.contact_id == ^contact_id and not is_nil(r.sent_at),
+        order_by: r.sent_at,
+        limit: 5
+      )
+      |> Repo.aggregate(:count, :id)
+
+    if recent_soft_bounces >= 3 do
+      Keila.Contacts.update_contact_status(contact_id, :unreachable)
+    end
   end
 
   defp log_event(%Recipient{id: recipient_id, contact_id: contact_id}, data) do
