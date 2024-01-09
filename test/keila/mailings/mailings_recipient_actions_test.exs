@@ -28,4 +28,45 @@ defmodule Keila.Mailings.MailingsRecipientActionsTest do
     assert Mailings.get_recipient(recipient.id).unsubscribed_at
     assert Contacts.get_contact(contact.id).status == :unsubscribed
   end
+
+  test "Three soft bounces in the last five recipients mark contact as unreachable" do
+    project = insert!(:project)
+    campaign = insert!(:mailings_campaign, project_id: project.id)
+
+    contact = insert!(:contact, project_id: project.id)
+
+    recipient =
+      insert!(:mailings_recipient,
+        contact_id: contact.id,
+        campaign_id: campaign.id,
+        sent_at: mins_ago(5)
+      )
+
+    Mailings.handle_recipient_soft_bounce(recipient.id, %{})
+    assert %{status: :active} = Repo.reload(contact)
+
+    recipient =
+      insert!(:mailings_recipient,
+        contact_id: contact.id,
+        campaign_id: campaign.id,
+        sent_at: mins_ago(4)
+      )
+
+    Mailings.handle_recipient_soft_bounce(recipient.id, %{})
+    assert %{status: :active} = Repo.reload(contact)
+
+    recipient =
+      insert!(:mailings_recipient,
+        contact_id: contact.id,
+        campaign_id: campaign.id,
+        sent_at: mins_ago(3)
+      )
+
+    Mailings.handle_recipient_soft_bounce(recipient.id, %{})
+    assert %{status: :unreachable} = Repo.reload(contact)
+  end
+
+  defp mins_ago(n) do
+    DateTime.utc_now(:second) |> DateTime.add(-5 * n, :minute)
+  end
 end

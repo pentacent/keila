@@ -17,12 +17,14 @@ import { LiveSocket } from "phoenix_live_view"
 import * as CampaignEditLiveHooks from "./hooks/campaign-edit-live"
 import { CampaignSettingsDialogHook } from "./hooks/campaign-settings-dialog"
 import CampaignStatsChartHook from "./hooks/campaign-stats-chart"
+import * as ContactsTable from "./hooks/contacts-table"
 import * as DateTimeHooks from "./hooks/date-time"
 import { RememberUnsaved } from "./hooks/remember-unsaved"
 
 const Hooks = {
   ...DateTimeHooks,
   ...CampaignEditLiveHooks,
+  ...ContactsTable,
   RememberUnsaved,
   CampaignSettingsDialogHook,
   CampaignStatsChartHook

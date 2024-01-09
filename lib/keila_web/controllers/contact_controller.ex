@@ -45,17 +45,65 @@ defmodule KeilaWeb.ContactController do
   defp do_index(conn, params) do
     project_id = current_project(conn).id
 
-    page = String.to_integer(Map.get(params, "page", "1")) - 1
-    filter = %{"status" => conn.assigns.contacts_status |> to_string()}
-    query_opts = [filter: filter, paginate: [page: page, page_size: 50]]
+    page = get_page(params)
+
+    search = Map.get(params, "search")
+    search_filter = build_search_filter(search)
+    status_filter = %{"status" => conn.assigns.contacts_status |> to_string()}
+    filter = Map.merge(status_filter, search_filter)
+
+    sort_by = get_sort_by(params)
+    sort_order = get_sort_order(params)
+
+    query_opts = [
+      filter: filter,
+      paginate: [page: page, page_size: 50],
+      sort: %{sort_by => sort_order}
+    ]
+
     contacts = Contacts.get_project_contacts(project_id, query_opts)
     contacts_stats = Contacts.get_project_contacts_stats(project_id)
 
     conn
     |> assign(:contacts, contacts)
+    |> assign(:search, search)
+    |> assign(:sort_by, sort_by)
+    |> assign(:sort_order, sort_order)
     |> assign(:contacts_stats, contacts_stats)
     |> render("index.html")
   end
+
+  defp get_page(%{"page" => raw_page}) when is_binary(raw_page) do
+    case Integer.parse(raw_page) do
+      {page, ""} -> page - 1
+      _ -> 0
+    end
+  end
+
+  defp get_page(_), do: 0
+
+  defp build_search_filter(empty) when empty in [nil, ""], do: %{}
+
+  defp build_search_filter(search) do
+    %{
+      "$or" => [
+        %{
+          "first_name" => %{"$like" => "%#{search}%"}
+        },
+        %{"last_name" => %{"$like" => "%#{search}%"}},
+        %{"email" => %{"$like" => "%#{search}%"}}
+      ]
+    }
+  end
+
+  defp get_sort_by(%{"sort_by" => sort_by})
+       when sort_by in ["email", "first_name", "last_name", "inserted_at"],
+       do: sort_by
+
+  defp get_sort_by(_), do: "inserted_at"
+
+  defp get_sort_order(%{"sort_order" => "-1"}), do: -1
+  defp get_sort_order(_), do: 1
 
   @spec delete(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def delete(conn, params) do
@@ -110,6 +158,9 @@ defmodule KeilaWeb.ContactController do
       {:ok, %{id: id}} ->
         Keila.Tracking.log_event("create", id, %{})
         redirect(conn, to: Routes.contact_path(conn, :index, current_project(conn).id))
+
+      {:error, changeset = %{changes: %{data: data}}} when is_map(data) ->
+        conn |> assign(:data, Jason.encode!(data)) |> render_edit(400, changeset)
 
       {:error, changeset} ->
         render_edit(conn, 400, changeset)

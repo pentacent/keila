@@ -26,6 +26,7 @@
   <%= render("_empty_state.html", assigns) %>
 <% else %>
   <%= render("_tabs.html", assigns) %>
+  <%= render("_search.html", assigns) %>
 
   <%= cond do %>
     <% @contacts.count > 0 -> %>

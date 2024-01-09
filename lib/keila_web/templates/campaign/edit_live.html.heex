@@ -120,7 +120,9 @@
             <% (type == :block) -> %>
               <%= render("_block_editor.html", assigns) %>
             <% true -> %>
-              <%= render("_markdown_editor.html", assigns) %>
+              <div id="markdown-simple-container" phx-hook="MarkdownSimpleEditor">
+                <%= render("_markdown_editor.html", assigns) %>
+              </div>
           <% end %>
         </div>
       </div>

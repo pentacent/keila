@@ -2,9 +2,15 @@
 
 ## Unreleased
 
+### Added
+- Added buttons for inserting images, links, and buttons to plain Markdown
+  editor. Fixes #255 (thanks @lukaprincic for suggesting)
+
 ### Fixed
 - If the `status` column is present in a CSV import, only rows where this column
   is set to "active" are imported. Fixes #253 (thanks @VZsI for reporting)
+- Live preview in plain Markdown editor no longer disappears when switching to
+  rich editor and back.
 
 
 ## Version 0.13.1
