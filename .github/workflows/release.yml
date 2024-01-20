@@ -59,6 +59,10 @@ jobs:
     environment: build
     steps:
       - uses: actions/checkout@v3
+      - uses: docker/setup-qemu-action@v3
+        with:
+          # Due to https://gitlab.com/qemu-project/qemu/-/issues/1034 we must use qemu version >= 8.1.0
+          image: tonistiigi/binfmt:qemu-v8.1.4
       - uses: docker/setup-buildx-action@v2
       - uses: actions/cache@v3
         with:
@@ -89,6 +93,7 @@ jobs:
             pentacent/keila:${{ steps.meta.outputs.version }}
             pentacent/keila:${{ steps.meta.outputs.major_version }}
             pentacent/keila:${{ steps.meta.outputs.minor_version }}
+          platforms: linux/amd64,linux/arm64
           push: true
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,mode=max,dest=/tmp/.buildx-cache
