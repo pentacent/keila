@@ -44,14 +44,12 @@ defmodule Keila.Contacts.FormActionHandler do
     end
   end
 
-  defp create_form_params_from_changeset(form, changeset) do
-    changes =
-      Map.update(changeset.changes, :data, nil, fn
-        changeset = %Ecto.Changeset{} -> apply_changes(changeset)
-        other -> other
-      end)
+  defp create_form_params_from_changeset(form, changeset = %{errors: [double_opt_in: _]}) do
+    changeset =
+      %{changeset | valid?: true, errors: []}
+      |> EctoStringMap.finalize_string_map(:data)
 
-    {:ok, form_params} = Contacts.create_form_params(form.id, changes)
+    {:ok, form_params} = Contacts.create_form_params(form.id, changeset.changes)
 
     SendDoubleOptInMailWorker.new(%{"form_params_id" => form_params.id})
     |> Oban.insert()
