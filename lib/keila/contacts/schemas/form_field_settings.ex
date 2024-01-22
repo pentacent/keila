@@ -23,6 +23,7 @@ defmodule Keila.Contacts.Form.FieldSettings do
   def changeset(struct \\ %__MODULE__{}, params) do
     struct
     |> cast(params, [
+      :id,
       :field,
       :key,
       :required,
