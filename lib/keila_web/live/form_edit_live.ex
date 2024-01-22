@@ -56,7 +56,7 @@ defmodule KeilaWeb.FormEditLive do
           key: "my_custom_field",
           label: gettext("My Custom Field"),
           cast: true,
-          type: :enum
+          type: :string
         }
 
         Ecto.Changeset.put_embed(changeset, :field_settings, existing ++ [new])
