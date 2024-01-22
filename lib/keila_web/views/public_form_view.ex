@@ -1,6 +1,7 @@
 defmodule KeilaWeb.PublicFormView do
   use KeilaWeb, :view
   alias Keila.Contacts.Contact
+  alias Keila.Contacts.EctoStringMap
 
   import KeilaWeb.PublicFormLayoutView, only: [build_styles: 1]
 
@@ -12,6 +13,14 @@ defmodule KeilaWeb.PublicFormView do
 
   defp form_style_attr(form) do
     build_form_styles(form)
+  end
+
+  defp input_styles(form) do
+    build_styles(%{
+      "background-color" => form.settings.input_bg_color,
+      "color" => form.settings.input_text_color,
+      "border-color" => form.settings.input_border_color
+    })
   end
 
   def render_form(form, changeset \\ Ecto.Changeset.change(%Contact{}), mode) do
@@ -125,36 +134,136 @@ defmodule KeilaWeb.PublicFormView do
   end
 
   defp render_fields(form, f) do
-    input_styles =
-      build_styles(%{
-        "background-color" => form.settings.input_bg_color,
-        "color" => form.settings.input_text_color,
-        "border-color" => form.settings.input_border_color
-      })
+    field_mapping = data_field_mapping(form)
+    data_inputs = Phoenix.HTML.FormData.to_form(f.source.changes.data, as: "data")
 
     form.field_settings
     |> Enum.filter(& &1.cast)
     |> Enum.map(fn field_settings ->
-      field = String.to_existing_atom(field_settings.field)
-
       content_tag(:div, class: "flex flex-col") do
-        [
-          label(f, field) do
-            [
-              field_settings.label || to_string(field),
-              if(field_settings.required, do: "", else: [" ", gettext("(optional)")])
-            ]
-          end,
-          with_validation(f, field) do
-            if field in [:email] do
-              email_input(f, field, placeholder: field_settings.placeholder, style: input_styles)
-            else
-              text_input(f, field, placeholder: field_settings.placeholder, style: input_styles)
-            end
-          end
-        ]
+        if field_settings.field == :data do
+          atom_key = find_mapping_atom_key(field_mapping, field_settings.key)
+          render_field(form, data_inputs, atom_key, field_settings)
+        else
+          render_field(form, f, field_settings.field, field_settings)
+        end
       end
     end)
+  end
+
+  defp render_field(form, f, field, field_settings = %{type: type})
+       when type in [:string, :email, :integer] or field in [:email, :first_name, :last_name] do
+    name = form_input_name(f, field_settings)
+    id = form_input_id(f, field_settings)
+    input_styles = input_styles(form)
+
+    [
+      label(f, field, for: id) do
+        [
+          field_settings.label || to_string(field),
+          if(field_settings.required, do: "", else: [" ", gettext("(optional)")])
+        ]
+      end,
+      with_validation(f, field) do
+        cond do
+          field == :email or type == :email ->
+            email_input(f, field,
+              placeholder: field_settings.placeholder,
+              style: input_styles,
+              name: name,
+              id: id
+            )
+
+          type == :integer ->
+            number_input(f, field,
+              placeholder: field_settings.placeholder,
+              style: input_styles,
+              step: "1",
+              name: name,
+              id: id
+            )
+
+          true ->
+            text_input(f, field,
+              placeholder: field_settings.placeholder,
+              style: input_styles,
+              name: name,
+              id: id
+            )
+        end
+      end
+    ]
+  end
+
+  defp render_field(_form, f, field, field_settings = %{type: type}) when type in [:boolean] do
+    name = form_input_name(f, field_settings)
+    id = form_input_id(f, field_settings)
+
+    label(f, field, for: id) do
+      with_validation(f, field) do
+        [
+          checkbox(f, field, style: "mr-4", name: name, id: id),
+          " ",
+          field_settings.label,
+          if(field_settings.required, do: "", else: [" ", gettext("(optional)")])
+        ]
+      end
+    end
+  end
+
+  defp render_field(form, f, field, field_settings = %{type: :enum}) do
+    name = form_input_name(f, field_settings)
+    id = form_input_id(f, field_settings)
+    input_styles = input_styles(form)
+
+    options =
+      for %{label: label, value: value} <- field_settings.allowed_values, do: {label, value}
+
+    [
+      label(f, field, for: id) do
+        [
+          field_settings.label || to_string(field),
+          if(field_settings.required, do: "", else: [" ", gettext("(optional)")])
+        ]
+      end,
+      with_validation(f, field) do
+        select(f, field, options,
+          placeholder: field_settings.placeholder,
+          style: input_styles,
+          name: name,
+          id: id
+        )
+      end
+    ]
+  end
+
+  defp render_field(_form, f, field, field_settings = %{type: :tags}) do
+    name = form_input_name(f, field_settings) <> "[]"
+    values = Ecto.Changeset.get_field(f.source, field, [])
+
+    [
+      content_tag(:label, field_settings.label),
+      with_validation(f, field) do
+        content_tag(:div, class: "flex gap-4") do
+          for %{label: label, value: value} <- field_settings.allowed_values do
+            checked? = value in values
+
+            content_tag(:label) do
+              [
+                tag(:input,
+                  name: name,
+                  value: value,
+                  type: "checkbox",
+                  checked: checked?,
+                  class: "mr-1"
+                ),
+                label
+              ]
+            end
+          end
+        end
+      end
+    ]
   end
 
   def render_form_success(form) do
@@ -176,6 +285,40 @@ defmodule KeilaWeb.PublicFormView do
 
     content_tag(:div, class: @form_classes, style: form_styles) do
       gettext("You have been unsubscribed from this list.")
+    end
+  end
+
+  defp data_field_mapping(form) do
+    form.field_settings
+    |> Enum.filter(&(&1.field == :data))
+    |> Enum.map(&EctoStringMap.FieldDefinition.from_field_settings/1)
+    |> EctoStringMap.build_field_mapping()
+  end
+
+  defp find_mapping_atom_key(field_mapping, string_key) do
+    Enum.find_value(field_mapping, fn
+      {atom_key, %{key: ^string_key}} -> atom_key
+      _other -> nil
+    end)
+  end
+
+  defp form_input_name(f, field_settings) do
+    case field_settings.field do
+      :data ->
+        "contact[data][#{field_settings.key}]"
+
+      other ->
+        Phoenix.HTML.Form.input_name(f, other)
+    end
+  end
+
+  defp form_input_id(f, field_settings) do
+    case field_settings.field do
+      :data ->
+        "contact_data_#{field_settings.key}"
+
+      other ->
+        Phoenix.HTML.Form.input_id(f, other)
     end
   end
 end

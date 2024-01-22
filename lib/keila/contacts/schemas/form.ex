@@ -8,7 +8,7 @@ defmodule Keila.Contacts.Form do
     field(:name, :string)
 
     embeds_one(:settings, Keila.Contacts.Form.Settings)
-    embeds_many(:field_settings, Keila.Contacts.Form.FieldSettings)
+    embeds_many(:field_settings, Keila.Contacts.Form.FieldSettings, on_replace: :delete)
 
     # Double opt-in properties
     belongs_to(:sender, Sender, type: Sender.Id)
