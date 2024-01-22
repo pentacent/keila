@@ -40,7 +40,7 @@ defmodule Keila.ContactsFormTest do
              },
              field_settings: [
                %Form.FieldSettings{
-                 field: "email",
+                 field: :email,
                  label: "Enter your email here"
                }
              ]

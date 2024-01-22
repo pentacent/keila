@@ -231,25 +231,28 @@ defmodule Keila.Contacts do
         }),
       field_settings: [
         Map.from_struct(%Form.FieldSettings{
-          field: "email",
+          field: :email,
           label: gettext("Email"),
           placeholder: "",
           required: true,
-          cast: true
+          cast: true,
+          type: :email
         }),
         Map.from_struct(%Form.FieldSettings{
-          field: "first_name",
+          field: :first_name,
           label: gettext("First name"),
           placeholder: "",
           required: false,
-          cast: false
+          cast: false,
+          type: :string
         }),
         Map.from_struct(%Form.FieldSettings{
-          field: "last_name",
+          field: :last_name,
           label: gettext("Last name"),
           placeholder: "",
           required: false,
-          cast: false
+          cast: false,
+          type: :string
         })
       ]
     }

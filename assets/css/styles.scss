@@ -82,7 +82,11 @@ html {
 }
 
 .form-errors {
-  @apply italic;
+  @apply py-2;
+
+  .invalid-feedback {
+    @apply p-1 italic font-bold border-2 border-red-500 rounded rounded-l-none
+  }
 }
 
 select,

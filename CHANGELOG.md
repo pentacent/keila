@@ -3,8 +3,13 @@
 ## Unreleased
 
 ### Added
+- Added ability to add custom fields to contact signup forms. Implements #135
 - Added buttons for inserting images, links, and buttons to plain Markdown
   editor. Fixes #255 (thanks @lukaprincic for suggesting)
+
+## Improved
+- Errors in signup forms are displayed with a prominent red border and bold text
+  now.
 
 ### Fixed
 - If the `status` column is present in a CSV import, only rows where this column

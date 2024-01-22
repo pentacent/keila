@@ -44,8 +44,8 @@ defmodule Keila.ContactsTest do
       insert!(:contacts_form,
         project_id: project.id,
         field_settings: [
-          %{field: "email", cast: true, required: true},
-          %{field: "first_name", cast: true, required: true}
+          %{field: :email, cast: true, required: true},
+          %{field: :first_name, cast: true, required: true}
         ]
       )
 
