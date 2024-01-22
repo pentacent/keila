@@ -30,12 +30,10 @@ defmodule KeilaWeb.FormEditLive do
   def handle_event("form_updated", params, socket) do
     changeset =
       Keila.Contacts.Form.update_changeset(socket.assigns.form, params["form"])
-      |> then(fn
-        changeset = %{valid?: true} ->
-          changeset
-
-        changeset ->
-          Ecto.Changeset.apply_action(changeset, :update) |> elem(1)
+      |> then(fn changeset ->
+        if changeset.valid?,
+          do: changeset,
+          else: Ecto.Changeset.apply_action(changeset, :update) |> elem(1)
       end)
 
     socket =
@@ -55,8 +53,8 @@ defmodule KeilaWeb.FormEditLive do
         new = %Keila.Contacts.Form.FieldSettings{
           id: Ecto.UUID.generate(),
           field: :data,
-          key: "foo",
-          label: "Test",
+          key: "my_custom_field",
+          label: gettext("My Custom Field"),
           cast: true,
           type: :enum
         }
@@ -93,8 +91,8 @@ defmodule KeilaWeb.FormEditLive do
 
               new = %Keila.Contacts.Form.FieldSettings.AllowedValue{
                 id: Ecto.UUID.generate(),
-                value: "foo",
-                label: "Bar"
+                value: "option-1",
+                label: gettext("My Custom Option")
               }
 
               field_setting
