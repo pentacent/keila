@@ -6,6 +6,7 @@ defmodule Keila.Contacts.FormActionHandler do
   use Keila.Repo
   alias Keila.Contacts
   alias Keila.Contacts.Contact
+  alias Keila.Contacts.EctoStringMap
   alias Keila.Contacts.FormParams
   alias Keila.Mailings.SendDoubleOptInMailWorker
 
@@ -28,6 +29,7 @@ defmodule Keila.Contacts.FormActionHandler do
 
     params
     |> Contact.changeset_from_form(form)
+    |> EctoStringMap.finalize_string_map(:data)
     |> changeset_transform.()
     |> Repo.insert()
     |> case do
@@ -38,11 +40,15 @@ defmodule Keila.Contacts.FormActionHandler do
         create_form_params_from_changeset(form, changeset)
 
       {:error, changeset} ->
-        {:error, changeset}
+        {:error, postprocess_error_changeset(changeset, form)}
     end
   end
 
-  defp create_form_params_from_changeset(form, changeset) do
+  defp create_form_params_from_changeset(form, changeset = %{errors: [double_opt_in: _]}) do
+    changeset =
+      %{changeset | valid?: true, errors: []}
+      |> EctoStringMap.finalize_string_map(:data)
+
     {:ok, form_params} = Contacts.create_form_params(form.id, changeset.changes)
 
     SendDoubleOptInMailWorker.new(%{"form_params_id" => form_params.id})
@@ -50,4 +56,25 @@ defmodule Keila.Contacts.FormActionHandler do
 
     {:ok, form_params}
   end
+
+  # This function normalizes the error changeset to make sure the data field is
+  # always passed as a changeset if there are changes.
+  # This is necessary if there was a constraint error and the StringMap changeset
+  # was unable to pick up the parent changeset error
+  defp postprocess_error_changeset(changeset, form)
+
+  defp postprocess_error_changeset(changeset = %{changes: %{data: %Ecto.Changeset{}}}, _),
+    do: changeset
+
+  defp postprocess_error_changeset(changeset = %{changes: %{data: %{}}}, form) do
+    %{changes: changes} =
+      changeset
+      |> apply_changes()
+      |> Map.from_struct()
+      |> Contact.changeset_from_form(form)
+
+    %{changeset | changes: changes}
+  end
+
+  defp postprocess_error_changeset(changeset, _), do: changeset
 end

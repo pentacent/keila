@@ -1,5 +1,6 @@
 defmodule Keila.Contacts.Contact do
   use Keila.Schema, prefix: "c"
+  alias Keila.Contacts.EctoStringMap
   alias Keila.Contacts.Form
 
   @statuses Enum.with_index([
@@ -45,13 +46,21 @@ defmodule Keila.Contacts.Contact do
 
     cast_fields =
       form.field_settings
-      |> Enum.filter(& &1.cast)
-      |> Enum.map(&String.to_existing_atom(&1.field))
+      |> Enum.filter(&(&1.cast and &1.field != :data))
+      |> Enum.map(& &1.field)
 
     required_fields =
       form.field_settings
-      |> Enum.filter(&(&1.cast and &1.required))
-      |> Enum.map(&String.to_existing_atom(&1.field))
+      |> Enum.filter(&(&1.field != :data and &1.cast and &1.required))
+      |> Enum.map(& &1.field)
+
+    data_field_definitions =
+      form.field_settings
+      |> Enum.filter(&(&1.field == :data and &1.cast))
+      |> Enum.map(&EctoStringMap.FieldDefinition.from_field_settings/1)
+
+    field_mapping =
+      EctoStringMap.build_field_mapping(data_field_definitions)
 
     struct
     |> cast(params, cast_fields)
@@ -59,6 +68,7 @@ defmodule Keila.Contacts.Contact do
     |> validate_email()
     |> validate_double_opt_in(form, form_params_id, double_opt_in_hmac)
     |> put_change(:project_id, form.project_id)
+    |> EctoStringMap.cast_string_map(:data, field_mapping)
   end
 
   defp get_param(params, param) do

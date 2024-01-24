@@ -14,8 +14,9 @@ defmodule KeilaWeb.PublicFormController do
   @spec show(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def show(conn, _params) do
     form = conn.assigns.form
+    changeset = Keila.Contacts.Contact.changeset_from_form(%{}, form)
 
-    render_form(conn, change(%Contact{}), form)
+    render_form(conn, changeset, form)
   end
 
   @spec submit(Plug.Conn.t(), map()) :: Plug.Conn.t()
