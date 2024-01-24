@@ -2,8 +2,15 @@
 
 ## Unreleased
 
+
+## Version 0.14.0
+
+Custom signup form fields + contacts search 🔎
+
 ### Added
-- Added ability to add custom fields to contact signup forms. Implements #135
+- Custom fields (text, checkbox, dropdown, tags, numbers) can now be added to
+  contact signup forms. Implements #135
+- Search and sorting on contacts page
 - Added buttons for inserting images, links, and buttons to plain Markdown
   editor. Fixes #255 (thanks @lukaprincic for suggesting)
 
@@ -16,6 +23,7 @@
   is set to "active" are imported. Fixes #253 (thanks @VZsI for reporting)
 - Live preview in plain Markdown editor no longer disappears when switching to
   rich editor and back.
+- Fixed error when saving a contact with JSON data and a constraint error
 
 
 ## Version 0.13.1
