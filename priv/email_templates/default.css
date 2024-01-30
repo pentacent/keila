@@ -11,7 +11,7 @@ h1 {
     font-weight: bold;
     text-decoration: none;
     font-size: 30px;
-    line-height: 36px
+    line-height: 36px;
 }
 
 h2 {
@@ -22,7 +22,7 @@ h2 {
     font-weight: bold;
     text-decoration: none;
     font-size: 25px;
-    line-height: 30px
+    line-height: 30px;
 }
 
 h3 {
@@ -33,7 +33,7 @@ h3 {
     font-weight: bold;
     text-decoration: none;
     font-size: 18px;
-    line-height: 22px
+    line-height: 22px;
 }
 
 ul {
@@ -43,7 +43,7 @@ ul {
 }
 
 ul > li {
-    margin: 0 0 10px 30px
+    margin: 0 0 10px 30px;
 }
 
 h4 {
