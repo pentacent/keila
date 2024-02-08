@@ -7,6 +7,10 @@
 - Return to list of unsubscribed/unreachable contacts after delete action from
   one of those pages. Implements #193 (thanks @digitalfredy for reporting)
 
+## Fixed
+- Clicking "Delete all" on the contacts list no longer causes a server error
+  when no contacts have been selected. Fixes #260 (thanks @CSDUMMI for reporting)
+
 
 ## Version 0.14.0
 
