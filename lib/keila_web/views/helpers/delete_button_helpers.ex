@@ -9,6 +9,7 @@ defmodule KeilaWeb.DeleteButtonHelpers do
   @spec delete_form_tag(struct(), String.t(), Keyword.t()) :: Phoenix.HTML.safe()
   def delete_form_tag(struct, route, opts) do
     as = Keyword.fetch!(opts, :as)
+    return = Keyword.get(opts, :return)
 
     form_for(
       as,
@@ -17,6 +18,7 @@ defmodule KeilaWeb.DeleteButtonHelpers do
       fn f ->
         [
           hidden_input(f, :require_confirmation, value: "true"),
+          hidden_input(f, :return, value: return),
           hidden_input(f, :id, value: struct.id)
         ]
       end

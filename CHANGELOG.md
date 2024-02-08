@@ -4,6 +4,8 @@
 
 ## Improved
 - Added new Gmail user agent to avoid tracking invalid clicks/opens
+- Return to list of unsubscribed/unreachable contacts after delete action from
+  one of those pages. Implements #193 (thanks @digitalfredy for reporting)
 
 
 ## Version 0.14.0

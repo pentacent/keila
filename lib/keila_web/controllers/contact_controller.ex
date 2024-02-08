@@ -113,15 +113,26 @@ defmodule KeilaWeb.ContactController do
         id when is_binary(id) -> [id]
       end
 
+    return = get_in(params, ["contact", "return"])
+
     case get_in(params, ["contact", "require_confirmation"]) do
       "true" ->
-        render_delete_confirmation(conn, ids)
+        conn
+        |> assign(:return, return)
+        |> render_delete_confirmation(ids)
 
       _ ->
         opts = [filter: %{"id" => %{"$in" => ids}}, sort: false]
         :ok = Contacts.delete_project_contacts(current_project(conn).id, opts)
 
-        redirect(conn, to: Routes.contact_path(conn, :index, current_project(conn).id))
+        action =
+          case return do
+            "unsubscribed" -> :index_unsubscribed
+            "unreachable" -> :index_unreachable
+            _other -> :index
+          end
+
+        redirect(conn, to: Routes.contact_path(conn, action, current_project(conn).id))
     end
   end
 
