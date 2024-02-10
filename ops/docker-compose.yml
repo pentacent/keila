@@ -1,3 +1,6 @@
+# This docker-compose file is intended for local testing and NOT intended to be
+# production ready.
+
 version: "3"
 
 services:
