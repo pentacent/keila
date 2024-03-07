@@ -2104,7 +2104,7 @@ msgstr "Widerrufen"
 #: lib/keila_web/templates/api_key/index.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "The following is your private API Key. Use it to authorize API calls."
-msgstr "Hier ist dein private API-Schlüssel. Nutze ihn, um API-Aufrufe zu autorisieren."
+msgstr "Hier ist dein privater API-Schlüssel. Nutze ihn, um API-Aufrufe zu autorisieren."
 
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:151
 #: lib/keila_web/templates/campaign/new.html.heex:187
