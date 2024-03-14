@@ -1584,7 +1584,7 @@ msgstr ""
 "2. Klicke auf *Datei*, dann *Speichern unter*. Wähle *Text CSV (.csv)*, um die Datei zu speichern.\n"
 "    Wähle im Dialog die folgenden Einstellungen:\n"
 "    - **Zeichensatz:** *Unicode (UTF-8)*\n"
-"    - **Feld Trennzeichen:** *, (Komma)*\n"
+"    - **Feld-Trennzeichen:** *, (Komma)*\n"
 "    - **Textqualifizierer:** *\" (Doppeltes Anführungszeichen)*\n"
 
 #: lib/keila_web/templates/contact/import_live.html.heex:129
