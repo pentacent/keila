@@ -400,7 +400,7 @@ msgstr "Datum"
 #: lib/keila_web/views/template_view.ex:44
 #, elixir-autogen, elixir-format
 msgid "Decoration"
-msgstr "Decoration"
+msgstr "Dekoration"
 
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:101
 #: lib/keila_web/templates/campaign/new.html.heex:144
@@ -991,7 +991,7 @@ msgstr "Passwort"
 #: lib/keila/mailings/sender_adapters/shared_ses.ex:76
 #, elixir-autogen, elixir-format
 msgid "Please click on the following link to verify your email address %{email} for use with Keila."
-msgstr "Bitte klicken Sie auf den  %{email} for use with Keila."
+msgstr "Bitte klicken Sie auf den Link um Ihre E-Mail Adresse %{email} für die Nutzung bei Keila zu bestätigen."
 
 #: lib/keila_web/templates/auth/registration_disabled.html.heex:10
 #, elixir-autogen, elixir-format
@@ -1583,9 +1583,9 @@ msgstr ""
 "2. Fülle die Vorlage so aus wie die Beispielzeile ausgefüllt ist.\n"
 "2. Klicke auf *Datei*, dann *Speichern unter*. Wähle *Text CSV (.csv)*, um die Datei zu speichern.\n"
 "    Wähle im Dialog die folgenden Einstellungen:\n"
-"    - **Character set:** *Unicode (UTF-8)*\n"
-"    - **Field delimiter:** *, (Komma)*\n"
-"    - **String delimiter:** *\" (Doppeltes Anführungszeichen)*\n"
+"    - **Zeichensatz:** *Unicode (UTF-8)*\n"
+"    - **Feld Trennzeichen:** *, (Komma)*\n"
+"    - **Textqualifizierer:** *\" (Doppeltes Anführungszeichen)*\n"
 
 #: lib/keila_web/templates/contact/import_live.html.heex:129
 #, elixir-autogen, elixir-format
@@ -1600,9 +1600,9 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "1. Download the template.\n2. Fill in the template in the same way that the sample data is filled in.\n3. In order to successfully import contacts, your CSV file needs be RFC 4180 compliant:\n    - Comma-separated\n    - UTF-8 encoding\n"
 msgstr ""
-"1. Download the template.\n"
-"2. Fill in the template in the same way that the sample data is filled in.\n"
-"3. Damit die Datei erfolgreich importiert werden kann, muss sie gemäß RFC 4180 formatiert sein::\n"
+"1. Lade die Vorlage herunter.\n"
+"2. Fülle die Vorlage so aus wie die Beispielzeile ausgefüllt ist.\n"
+"3. Damit die Datei erfolgreich importiert werden kann, muss sie gemäß RFC 4180 formatiert sein:\n"
 "    - Spalten kommagetrennt\n"
 "    - UTF-8-Zeichensatz\n"
 
@@ -2104,7 +2104,7 @@ msgstr "Widerrufen"
 #: lib/keila_web/templates/api_key/index.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "The following is your private API Key. Use it to authorize API calls."
-msgstr "Hier ist dein private API-Schlüssel. Nutze ihn, um API-Aufrufe zu autorisieren."
+msgstr "Hier ist dein privater API-Schlüssel. Nutze ihn, um API-Aufrufe zu autorisieren."
 
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:151
 #: lib/keila_web/templates/campaign/new.html.heex:187
@@ -2658,7 +2658,7 @@ msgstr "Diese Seite existiert nicht oder wurde entfernt."
 #, elixir-autogen, elixir-format
 msgid "To prevent abuse by spammers, the double opt-in feature is currently only available if you have a subscription. Sorry for the inconvenience!"
 msgstr ""
-"Um den Missbrauch durch Spammer zu verhindern, ist die Double-Opt-In-Funktion momentan nur für Abonnenten verfügbar. Wir bitten um Entschuldigung."
+"Um den Missbrauch durch Spammer zu verhindern, ist die Double-Opt-In-Funktion momentan nur für Abonnenten verfügbar. Wir bitten um Verständnis."
 
 #: lib/keila_web/templates/error/404.html.heex:18
 #, elixir-autogen, elixir-format
