@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-## Version 0.14.1
+## Version 0.14.2
 
 ## Improved
 - Added new Gmail user agent to avoid tracking invalid clicks/opens

@@ -47,7 +47,8 @@ defmodule Keila.Mailings.SenderAdapters.SMTP do
       config.smtp_tls_mode == "starttls" ->
         opts
         |> Keyword.put(:tls, :always)
-        |> Keyword.put(:sockopts, :tls_certificate_check.options(config.smtp_relay))
+        |> Keyword.put(:tls_options, :tls_certificate_check.options(config.smtp_relay))
+        |> put_in([:tls_options, :versions], [:"tlsv1.2", :"tlsv1.3"])
 
       true ->
         opts
