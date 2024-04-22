@@ -104,7 +104,10 @@ if config_env() == :prod do
             if starttls? do
               config
               |> Keyword.put(:tls, :always)
-              |> Keyword.put(:tls_options, :tls_certificate_check.options(host))
+              |> Keyword.put(
+                :tls_options,
+                :tls_certificate_check.options(host) ++ [versions: [:"tlsv1.2"]]
+              )
             else
               config
             end

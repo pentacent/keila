@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## Version 0.14.3
+
+## Fixed
+- Only support TLSv1.2 for STARTTLS SMTP Senders to avoid issues with
+  non-compliant TLSv1.3 implementation in OTP
+
 ## Version 0.14.2
 
 ## Improved
