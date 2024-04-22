@@ -2,15 +2,19 @@
 
 ## Unreleased
 
+## Version 0.14.1
+
 ## Improved
 - Added new Gmail user agent to avoid tracking invalid clicks/opens
 - Return to list of unsubscribed/unreachable contacts after delete action from
   one of those pages. Implements #193 (thanks @digitalfredy for reporting)
 - It's now possible to choose between the US and EU API endpoints for Mailgun senders (thanks @harryfear for reporting)
+- Improvements to German translation (thanks @dompie)
 
 ## Fixed
 - Clicking "Delete all" on the contacts list no longer causes a server error
   when no contacts have been selected. Fixes #260 (thanks @CSDUMMI for reporting)
+- Fixed connection errors when using SMTP senders with STARTTLS (thanks @beep and @CodeOfTim for reporting)
 
 
 ## Version 0.14.0
