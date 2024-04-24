@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+
+## Version 0.14.4
+
+## Fixed
+- Avoid potential partial merging of system sender config with user-configured senders
+
+
 ## Version 0.14.3
 
 ## Fixed
