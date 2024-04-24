@@ -114,7 +114,7 @@ if config_env() == :prod do
           end)
       end
 
-    config(:keila, Keila.Mailer, config)
+    config(:keila, Keila.Auth.Emails, config)
   rescue
     e ->
       exit_from_exception.(e, """
