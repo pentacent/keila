@@ -9,6 +9,7 @@ defmodule KeilaWeb.ContactView do
     <button
       data-sort-key={@key}
       data-sort-order={if active? and @current_order == 1, do: "-1", else: "1"}
+      type="button"
       class={
         "w-6 px-1 rounded hover:bg-gray-600" <>
           ((active? && " bg-gray-600 hover:bg-gray-700") || "")
