@@ -102,8 +102,8 @@ defmodule KeilaWeb.ContactController do
 
   defp get_sort_by(_), do: "inserted_at"
 
-  defp get_sort_order(%{"sort_order" => "-1"}), do: -1
-  defp get_sort_order(_), do: 1
+  defp get_sort_order(%{"sort_order" => "1"}), do: 1
+  defp get_sort_order(_), do: -1
 
   @spec delete(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def delete(conn, params) do
