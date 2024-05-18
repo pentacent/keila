@@ -109,6 +109,6 @@ defmodule Keila.Auth.Emails do
   end
 
   defp system_from_email() do
-    Application.get_env(:keila, Keila.Mailer) |> Keyword.fetch!(:from_email)
+    Application.get_env(:keila, __MODULE__) |> Keyword.fetch!(:from_email)
   end
 end
