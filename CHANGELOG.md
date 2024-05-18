@@ -3,6 +3,19 @@
 ## Unreleased
 
 
+## Version 0.14.5
+
+## Changed
+- Creating and updating contacts via the API now allows setting the `status`
+  field.
+- Contacts list is now sorted in decending order by default
+
+## Fixed
+- Segments are now guaranteed to be initialized with a valid (empty) filter,
+  avoiding potential crashes with `nil` filters.
+- `MAILER_SMTP_FROM_EMAIL` is now used for sending system emails again.
+
+
 ## Version 0.14.4
 
 ## Fixed
