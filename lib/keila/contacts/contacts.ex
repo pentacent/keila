@@ -11,25 +11,42 @@ defmodule Keila.Contacts do
 
   @doc """
   Creates a new Contact within the given Project.
+
+
+  ## Options
+  - `:set_status` - Also sets the `status` field from `params` when `true`.
   """
-  @spec create_contact(Project.id(), map()) ::
+  @spec create_contact(Project.id(), map(), Keyword.t()) ::
           {:ok, Contact.t()} | {:error, Changeset.t(Contact.t())}
-  def create_contact(project_id, params) when is_binary(project_id) or is_integer(project_id) do
+  def create_contact(project_id, params, opts \\ [])
+      when is_binary(project_id) or is_integer(project_id) do
     params
     |> Contact.creation_changeset(project_id)
+    |> maybe_update_contact_status(params, opts[:set_status])
     |> Repo.insert()
   end
+
+  defp maybe_update_contact_status(changeset, params, update?)
+
+  defp maybe_update_contact_status(changeset, params, true),
+    do: Contact.update_status_changeset(changeset, params)
+
+  defp maybe_update_contact_status(changeset, _params, _), do: changeset
 
   defdelegate perform_form_action(form, params, opts), to: __MODULE__.FormActionHandler
   defdelegate perform_form_action(form, params), to: __MODULE__.FormActionHandler
 
   @doc """
   Updates the specified Contact.
+
+  ## Options
+  - `:update_status` - Also updates the `status` field from `params` when `true`.
   """
-  @spec update_contact(Contact.id(), map()) :: {:ok, Contact} | {:error, Contact}
-  def update_contact(id, params) do
+  @spec update_contact(Contact.id(), map(), Keyword.t()) :: {:ok, Contact} | {:error, Contact}
+  def update_contact(id, params, opts \\ []) do
     get_contact(id)
     |> Contact.update_changeset(params)
+    |> maybe_update_contact_status(params, opts[:update_status])
     |> Repo.update()
   end
 

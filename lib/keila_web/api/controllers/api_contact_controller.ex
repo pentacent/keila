@@ -73,7 +73,7 @@ defmodule KeilaWeb.ApiContactController do
 
   @spec create(Plug.Conn.t(), Map.t()) :: Plug.Conn.t()
   def create(conn, _params) do
-    case Contacts.create_contact(project_id(conn), conn.body_params.data) do
+    case Contacts.create_contact(project_id(conn), conn.body_params.data, set_status: true) do
       {:ok, contact} -> render(conn, "contact.json", %{contact: contact})
       {:error, changeset} -> Errors.send_changeset_error(conn, changeset)
     end
@@ -107,7 +107,7 @@ defmodule KeilaWeb.ApiContactController do
   @spec update(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def update(conn, %{id: id}) do
     if Contacts.get_project_contact(project_id(conn), id) do
-      case Contacts.update_contact(id, conn.body_params.data) do
+      case Contacts.update_contact(id, conn.body_params.data, update_status: true) do
         {:ok, contact} -> render(conn, "contact.json", %{contact: contact})
         {:error, changeset} -> Errors.send_changeset_error(conn, changeset)
       end

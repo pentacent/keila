@@ -172,6 +172,13 @@ defmodule KeilaWeb.ApiContactControllerTest do
       assert %{"data" => %{"first_name" => "Updated Name"}} = json_response(conn, 200)
     end
 
+    test "allows changing contact status", %{authorized_conn: conn, project: project} do
+      contact = insert!(:contact, project_id: project.id)
+      body = %{"data" => %{"status" => "unsubscribed"}}
+      conn = patch_json(conn, Routes.api_contact_path(conn, :update, contact.id), body)
+      assert %{"data" => %{"status" => "unsubscribed"}} = json_response(conn, 200)
+    end
+
     @tag :api_contact_controller
     test "renders changeset error", %{authorized_conn: conn, project: project} do
       contact = insert!(:contact, project_id: project.id)

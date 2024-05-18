@@ -30,6 +30,13 @@ defmodule Keila.Contacts.Contact do
     |> check_data_size_constraint()
   end
 
+  @spec update_status_changeset(t() | Ecto.Changeset.t(t()), Ecto.Changeset.data()) ::
+          Ecto.Changeset.t(t())
+  def update_status_changeset(struct \\ %__MODULE__{}, params) do
+    struct
+    |> cast(params, [:status])
+  end
+
   @spec update_changeset(t(), Ecto.Changeset.data()) :: Ecto.Changeset.t(t())
   def update_changeset(struct \\ %__MODULE__{}, params) do
     struct
