@@ -29,12 +29,10 @@ defmodule Keila.Mailings.Builder do
   `contact` is automatically merged into assigns. If no contact is provided
   (e.g. when building a preview), a default contact is injected.
 
-  The Liquid tempplating language can be used within email bodies and subjects.
+  The Liquid templating language can be used within email bodies and subjects.
 
   Adds `X-Keila-Invalid` header if there was an error creating the email.
   Such emails should not be delivered.
-
-  TODO: Right now, only plain-text campaigns are supported.
   """
   @spec build(Campaign.t(), Recipient.t() | Contact.t(), map()) :: Swoosh.Email.t()
   def build(campaign, recipient_or_contact \\ @default_contact, assigns) do
