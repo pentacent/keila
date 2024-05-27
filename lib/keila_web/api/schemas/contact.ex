@@ -68,3 +68,18 @@ defmodule KeilaWeb.Api.Schemas.Contact.Params do
   @allowed_properties [:email, :first_name, :last_name, :data, :status]
   build_open_api_schema(@properties, only: @allowed_properties)
 end
+
+defmodule KeilaWeb.Api.Schemas.Contact.DataParams do
+  require OpenApiSpex
+
+  %OpenApiSpex.Schema{
+    type: :object,
+    properties: %{
+      data: %OpenApiSpex.Schema{
+        type: :object,
+        example: %{"tags" => ["rocket-scientist"]}
+      }
+    }
+  }
+  |> OpenApiSpex.schema()
+end

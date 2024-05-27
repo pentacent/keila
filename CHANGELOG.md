@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## Added
+- Added PATCH and POST API endpoints for updating just the data field of a
+  contact
+
 ## Fixed
 - Liquid tags are now correctly rendered in layout blocks in the Block Editor
 

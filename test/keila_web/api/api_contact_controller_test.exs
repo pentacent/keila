@@ -204,6 +204,26 @@ defmodule KeilaWeb.ApiContactControllerTest do
     end
   end
 
+  describe "PATCH /api/v1/contacts/:id/data" do
+    @tag :api_contact_controller
+    test "updates contact data", %{authorized_conn: conn, project: project} do
+      contact = insert!(:contact, project_id: project.id, data: %{"foo" => "bar"})
+      body = %{"data" => %{"fizz" => "buzz"}}
+      conn = patch_json(conn, Routes.api_contact_path(conn, :update_data, contact.id), body)
+      assert %{"foo" => "bar", "fizz" => "buzz"} == json_response(conn, 200)["data"]["data"]
+    end
+  end
+
+  describe "POST /api/v1/contacts/:id/data" do
+    @tag :api_contact_controller
+    test "replaces contact data", %{authorized_conn: conn, project: project} do
+      contact = insert!(:contact, project_id: project.id, data: %{"foo" => "bar"})
+      body = %{"data" => %{"fizz" => "buzz"}}
+      conn = post_json(conn, Routes.api_contact_path(conn, :update_data, contact.id), body)
+      assert %{"fizz" => "buzz"} == json_response(conn, 200)["data"]["data"]
+    end
+  end
+
   describe "DELETE /api/v1/contacts/:id" do
     @tag :api_contact_controller
     test "always returns 204", %{authorized_conn: conn, project: project} do
