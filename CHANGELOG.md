@@ -2,12 +2,18 @@
 
 ## Unreleased
 
+
+## Version 0.14.6
+
 ## Added
 - Added PATCH and POST API endpoints for updating just the data field of a
   contact
 
 ## Fixed
 - Liquid tags are now correctly rendered in layout blocks in the Block Editor
+  (thanks @dompie for reporting)
+- Fixed bug that caused "starts with" and "ends with" to be inverted in
+  segment editor (thanks @dompie for reporting)
 
 
 ## Version 0.14.5
