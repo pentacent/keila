@@ -272,6 +272,13 @@ defmodule Keila.Mailings.Builder do
     end)
   end
 
+  # Layout blocks don’t have "blocks" not nested within "data"
+  defp apply_liquid_to_block(block = %{"blocks" => blocks}, assigns) do
+    {status, rendered_blocks} = apply_liquid_to_blocks(blocks, assigns)
+    {status, Map.put(block, "blocks", rendered_blocks)}
+  end
+
+  # Regular blocks have everything that needs to be rendered in "data"
   defp apply_liquid_to_block(block, assigns) do
     Map.get(block, "data", %{})
     |> Enum.reduce({:ok, %{}}, fn

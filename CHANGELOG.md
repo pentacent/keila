@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+## Fixed
+- Liquid tags are now correctly rendered in layout blocks in the Block Editor
+
 
 ## Version 0.14.5
 
