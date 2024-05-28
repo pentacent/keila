@@ -29,12 +29,10 @@ defmodule Keila.Mailings.Builder do
   `contact` is automatically merged into assigns. If no contact is provided
   (e.g. when building a preview), a default contact is injected.
 
-  The Liquid tempplating language can be used within email bodies and subjects.
+  The Liquid templating language can be used within email bodies and subjects.
 
   Adds `X-Keila-Invalid` header if there was an error creating the email.
   Such emails should not be delivered.
-
-  TODO: Right now, only plain-text campaigns are supported.
   """
   @spec build(Campaign.t(), Recipient.t() | Contact.t(), map()) :: Swoosh.Email.t()
   def build(campaign, recipient_or_contact \\ @default_contact, assigns) do
@@ -274,6 +272,13 @@ defmodule Keila.Mailings.Builder do
     end)
   end
 
+  # Layout blocks don’t have "blocks" not nested within "data"
+  defp apply_liquid_to_block(block = %{"blocks" => blocks}, assigns) do
+    {status, rendered_blocks} = apply_liquid_to_blocks(blocks, assigns)
+    {status, Map.put(block, "blocks", rendered_blocks)}
+  end
+
+  # Regular blocks have everything that needs to be rendered in "data"
   defp apply_liquid_to_block(block, assigns) do
     Map.get(block, "data", %{})
     |> Enum.reduce({:ok, %{}}, fn

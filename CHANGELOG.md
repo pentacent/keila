@@ -3,6 +3,32 @@
 ## Unreleased
 
 
+## Version 0.14.6
+
+## Added
+- Added PATCH and POST API endpoints for updating just the data field of a
+  contact
+
+## Fixed
+- Liquid tags are now correctly rendered in layout blocks in the Block Editor
+  (thanks @dompie for reporting)
+- Fixed bug that caused "starts with" and "ends with" to be inverted in
+  segment editor (thanks @dompie for reporting)
+
+
+## Version 0.14.5
+
+## Changed
+- Creating and updating contacts via the API now allows setting the `status`
+  field.
+- Contacts list is now sorted in decending order by default
+
+## Fixed
+- Segments are now guaranteed to be initialized with a valid (empty) filter,
+  avoiding potential crashes with `nil` filters.
+- `MAILER_SMTP_FROM_EMAIL` is now used for sending system emails again.
+
+
 ## Version 0.14.4
 
 ## Fixed

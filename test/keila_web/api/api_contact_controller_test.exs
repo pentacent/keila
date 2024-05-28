@@ -172,6 +172,13 @@ defmodule KeilaWeb.ApiContactControllerTest do
       assert %{"data" => %{"first_name" => "Updated Name"}} = json_response(conn, 200)
     end
 
+    test "allows changing contact status", %{authorized_conn: conn, project: project} do
+      contact = insert!(:contact, project_id: project.id)
+      body = %{"data" => %{"status" => "unsubscribed"}}
+      conn = patch_json(conn, Routes.api_contact_path(conn, :update, contact.id), body)
+      assert %{"data" => %{"status" => "unsubscribed"}} = json_response(conn, 200)
+    end
+
     @tag :api_contact_controller
     test "renders changeset error", %{authorized_conn: conn, project: project} do
       contact = insert!(:contact, project_id: project.id)
@@ -194,6 +201,26 @@ defmodule KeilaWeb.ApiContactControllerTest do
 
       assert %{"errors" => [%{"status" => "404", "title" => "Not found"}]} =
                json_response(conn, 404)
+    end
+  end
+
+  describe "PATCH /api/v1/contacts/:id/data" do
+    @tag :api_contact_controller
+    test "updates contact data", %{authorized_conn: conn, project: project} do
+      contact = insert!(:contact, project_id: project.id, data: %{"foo" => "bar"})
+      body = %{"data" => %{"fizz" => "buzz"}}
+      conn = patch_json(conn, Routes.api_contact_path(conn, :update_data, contact.id), body)
+      assert %{"foo" => "bar", "fizz" => "buzz"} == json_response(conn, 200)["data"]["data"]
+    end
+  end
+
+  describe "POST /api/v1/contacts/:id/data" do
+    @tag :api_contact_controller
+    test "replaces contact data", %{authorized_conn: conn, project: project} do
+      contact = insert!(:contact, project_id: project.id, data: %{"foo" => "bar"})
+      body = %{"data" => %{"fizz" => "buzz"}}
+      conn = post_json(conn, Routes.api_contact_path(conn, :update_data, contact.id), body)
+      assert %{"fizz" => "buzz"} == json_response(conn, 200)["data"]["data"]
     end
   end
 

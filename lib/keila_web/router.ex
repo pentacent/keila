@@ -192,6 +192,8 @@ defmodule KeilaWeb.Router do
     pipe_through [:api, :open_api]
 
     resources "/contacts", ApiContactController, only: [:index, :show, :create, :update, :delete]
+    patch "/contacts/:id/data", ApiContactController, :update_data
+    post "/contacts/:id/data", ApiContactController, :replace_data
 
     resources "/campaigns", ApiCampaignController,
       only: [:index, :show, :create, :update, :delete]
