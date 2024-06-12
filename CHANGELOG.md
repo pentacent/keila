@@ -3,6 +3,11 @@
 ## Unreleased
 
 
+## Version 0.14.8
+## Added
+- Campaigns with type `block` and `json_body` can now be created via the API. Implements #300 (thanks @dompie for suggesting)
+
+
 ## Version 0.14.7
 ## Added
 - Image blocks now allow the use of Liquid in `src` and other attributes.
