@@ -297,10 +297,36 @@ defmodule Keila.Mailings.Builder do
         updated_status = if status == :ok && rendered_status == :ok, do: :ok, else: :error
         {updated_status, Map.put(data, key, rendered_blocks)}
 
+      {key, value}, {status, data} when is_map(value) ->
+        {rendered_status, rendered_value} = apply_liquid_to_map(value, assigns)
+        updated_status = if status == :ok && rendered_status == :ok, do: :ok, else: :error
+        {updated_status, Map.put(data, key, rendered_value)}
+
       {key, value}, {status, data} ->
         {status, Map.put(data, key, value)}
     end)
     |> then(fn {status, data} -> {status, Map.put(block, "data", data)} end)
+  end
+
+  defp apply_liquid_to_map(map, assigns) do
+    map
+    |> Enum.reduce(
+      {:ok, %{}},
+      fn
+        {key, value}, {status, map} when is_binary(value) ->
+          case render_liquid(value, assigns) do
+            {:ok, rendered_value} ->
+              updated_status = if status == :ok, do: :ok, else: :error
+              {updated_status, Map.put(map, key, rendered_value)}
+
+            {:error, reason} ->
+              {:error, Map.put(map, key, reason)}
+          end
+
+        {key, value}, {status, map} ->
+          {status, Map.put(map, key, value)}
+      end
+    )
   end
 
   defp put_unsubscribe_header(email, unsubscribe_link) do
