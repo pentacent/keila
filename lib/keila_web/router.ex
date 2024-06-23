@@ -146,6 +146,7 @@ defmodule KeilaWeb.Router do
     plug :put_layout, false
     plug :put_secure_browser_headers
     plug KeilaWeb.Meta.Plug
+    plug KeilaWeb.PutLocalePlug
   end
 
   scope "/", KeilaWeb do
