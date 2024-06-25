@@ -23,6 +23,18 @@ defmodule KeilaWeb.Api.Schemas.MailingsCampaign do
       {% endfor %}
       """
     },
+    json_body: %{
+      type: :map,
+      example: """
+      {
+        "blocks": [{
+          "id":"ff0011",
+          "type":"paragraph",
+          "data": {"text": "Hello, I am a block campaign!"}
+        }]
+      }
+      """
+    },
     data: %{
       type: :map,
       example: %{
@@ -38,7 +50,7 @@ defmodule KeilaWeb.Api.Schemas.MailingsCampaign do
         type: %{
           type: :string,
           required: true,
-          enum: ["markdown", "text"],
+          enum: ["markdown", "text", "block"],
           example: "markdown"
         }
       }
@@ -101,6 +113,7 @@ defmodule KeilaWeb.Api.Schemas.MailingsCampaign.Params do
   @allowed_properties [
     :subject,
     :text_body,
+    :json_body,
     :settings,
     :template_id,
     :sender_id,
