@@ -197,6 +197,7 @@ defmodule Keila.Tracking do
     |> group_by([l, c], l.url)
     |> order_by([l, c], desc: count(c.id), asc: l.url)
     |> select([l, c], [l.url, count(c.id)])
+    |> limit(20)
     |> Repo.all()
     |> Enum.map(&List.to_tuple/1)
   end
