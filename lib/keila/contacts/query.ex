@@ -162,7 +162,7 @@ defmodule Keila.Contacts.Query do
     do: dynamic([c], fragment("?#>?", c.data, ^path) in ^value)
 
   defp build_data_condition(path, %{"$like" => value}),
-    do: dynamic([c], ilike(fragment("?#>?", c.data, ^path), ^value))
+    do: dynamic([c], ilike(fragment("?#>>?", c.data, ^path), ^value))
 
   defp build_data_condition(path, value) when is_binary(value) or is_number(value) do
     value_in_array = [value]

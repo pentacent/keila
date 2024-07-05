@@ -195,8 +195,8 @@ defmodule Keila.ContactsQueryTest do
     assert [c2] == filter_contacts(%{"data.array.0" => %{"$gte" => 4}})
 
     # Like operator
-    assert [c1] == filter_contacts(%{"data.array.0" => %{"$like" => "%o%"}})
-    assert [c2] == filter_contacts(%{"data.array.0" => %{"$like" => "%A%"}})
+    assert [c1] == filter_contacts(%{"data.string" => %{"$like" => "%o%"}})
+    assert [c2] == filter_contacts(%{"data.string" => %{"$like" => "%A%"}})
   end
 
   @tag :contacts_query
