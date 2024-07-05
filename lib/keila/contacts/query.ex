@@ -21,7 +21,7 @@ defmodule Keila.Contacts.Query do
   - `"$lte"` - lesser-than-or-equal operator.
   - `"$in"` - queries if field value is part of a set.
      `%{"email" => %{"$in" => ["foo@example.com", "bar@example.com"]}}`
-  - `"$like"` - queries if the field matches using the SQL `LIKE` statement.
+  - `"$like"` - queries if the field matches using the SQL `ILIKE` statement.
      `%{"email" => %{"$like" => "%keila.io"}}`
 
   ## Sorting
@@ -127,7 +127,7 @@ defmodule Keila.Contacts.Query do
     do: dynamic([c], field(c, ^field) in ^value)
 
   defp build_condition(field, %{"$like" => value}) when is_atom(field),
-    do: dynamic([c], like(field(c, ^field), ^value))
+    do: dynamic([c], ilike(field(c, ^field), ^value))
 
   defp build_condition(field, value) when is_atom(field) and value in [nil],
     do: dynamic([c], is_nil(field(c, ^field)))
@@ -162,7 +162,7 @@ defmodule Keila.Contacts.Query do
     do: dynamic([c], fragment("?#>?", c.data, ^path) in ^value)
 
   defp build_data_condition(path, %{"$like" => value}),
-    do: dynamic([c], like(fragment("?#>?", c.data, ^path), ^value))
+    do: dynamic([c], ilike(fragment("?#>?", c.data, ^path), ^value))
 
   defp build_data_condition(path, value) when is_binary(value) or is_number(value) do
     value_in_array = [value]
