@@ -3,6 +3,13 @@
 ## Unreleased
 
 
+## Version 0.14.10
+## Changed
+- The analytics UI now shows a maximum of 20 links to avoid performance issues
+  with large campaigns and individualized links
+
+
+
 ## Version 0.14.9
 ## Fixed
 - Enabled translation of system strings on public forms.
