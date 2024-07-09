@@ -3,11 +3,15 @@
 ## Unreleased
 
 
+## Version 0.14.11
+## Changed
+- Increased database timeout when inserting recipients to 60 seconds
+
+
 ## Version 0.14.10
 ## Changed
 - The analytics UI now shows a maximum of 20 links to avoid performance issues
   with large campaigns and individualized links
-
 
 
 ## Version 0.14.9
