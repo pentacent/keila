@@ -343,13 +343,16 @@ defmodule Keila.Mailings do
   @spec deliver_campaign(Campaign.id()) :: {:error, :no_recipients} | {:error, term()} | :ok
   def deliver_campaign(id) when is_id(id) do
     result =
-      Repo.transaction(fn ->
-        case get_and_lock_campaign(id) do
-          %Campaign{sent_at: sent_at} when not is_nil(sent_at) -> Repo.rollback(:already_sent)
-          %Campaign{sender_id: nil} -> Repo.rollback(:no_sender)
-          campaign = %Campaign{} -> do_deliver_campaign(campaign)
-        end
-      end)
+      Repo.transaction(
+        fn ->
+          case get_and_lock_campaign(id) do
+            %Campaign{sent_at: sent_at} when not is_nil(sent_at) -> Repo.rollback(:already_sent)
+            %Campaign{sender_id: nil} -> Repo.rollback(:no_sender)
+            campaign = %Campaign{} -> do_deliver_campaign(campaign)
+          end
+        end,
+        timeout: 60_000
+      )
 
     case result do
       {:ok, _n} ->
