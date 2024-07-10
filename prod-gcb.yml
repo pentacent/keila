@@ -19,8 +19,12 @@ steps:
       # If cluster name changes, remeber to update cluster settings
       - "CLOUDSDK_CONTAINER_CLUSTER=prod-cluster-2"
     args:
-      - set
-      - image
-      - deployment
-      - prod-keila
-      - prod-keila=us-central1-docker.pkg.dev/$PROJECT_ID/keila/keila:$COMMIT_SHA
+      [
+        "set",
+        "image",
+        "deployment",
+        "--namespace",
+        "keila",
+        "prod-keila",
+        "prod-keila=us-central1-docker.pkg.dev/$PROJECT_ID/keila/keila:$COMMIT_SHA",
+      ]
