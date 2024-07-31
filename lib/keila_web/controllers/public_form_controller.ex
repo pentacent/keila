@@ -33,7 +33,8 @@ defmodule KeilaWeb.PublicFormController do
       {:ok, contact = %Contact{}} ->
         data = if form.settings.captcha_required, do: %{"captcha" => true}, else: %{}
         Tracking.log_event("subscribe", contact.id, data)
-        render(conn, "success.html")
+
+        render_success_or_redirect(conn)
 
       {:ok, form_params = %FormParams{}} ->
         conn
@@ -82,7 +83,7 @@ defmodule KeilaWeb.PublicFormController do
         Tracking.log_event("subscribe", id, data)
         Contacts.delete_form_params(form_params.id)
 
-        render(conn, "success.html")
+        render_success_or_redirect(conn)
 
       {:ok, form_params = %FormParams{}} ->
         conn
@@ -91,6 +92,13 @@ defmodule KeilaWeb.PublicFormController do
 
       {:error, changeset} ->
         render_form(conn, 400, changeset, form)
+    end
+  end
+
+  defp render_success_or_redirect(conn) do
+    case conn.assigns.form.settings.success_url do
+      url when url not in [nil, ""] -> redirect(conn, external: url)
+      _other -> render(conn, "success.html")
     end
   end
 

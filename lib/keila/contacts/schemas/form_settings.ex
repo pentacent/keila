@@ -22,6 +22,7 @@ defmodule Keila.Contacts.Form.Settings do
     field(:input_border_color, :string, default: "#6b7280")
     field(:input_text_color, :string, default: "#111827")
     field(:success_text, :string)
+    field(:success_url, :string)
   end
 
   def changeset(struct \\ %__MODULE__{}, params) do
@@ -43,7 +44,8 @@ defmodule Keila.Contacts.Form.Settings do
       :submit_label,
       :submit_bg_color,
       :submit_text_color,
-      :success_text
+      :success_text,
+      :success_url
     ])
   end
 end

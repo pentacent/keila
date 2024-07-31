@@ -108,6 +108,12 @@
           <% end %>
         </div>
         <div class="flex flex-col">
+          <%= label(fs, :success_text, gettext("Success redirect URL")) %>
+          <%= with_validation(fs, :success_url) do %>
+            <%= url_input(fs, :success_url, class: "text-black") %>
+          <% end %>
+        </div>
+        <div class="flex flex-col">
           <%= label(fs, :fine_print, gettext("Fine print")) %>
           <%= with_validation(fs, :fine_print) do %>
             <%= textarea(fs, :fine_print, class: "text-black", rows: 8) %>
@@ -390,7 +396,7 @@
                 <div class="text-xs">
                   <%= gettext_md("""
                     You may use Liquid and Markdown in the email body.
-                    
+
                     Use `[Confirm]({{ double_opt_in_link }})` to include the opt-in link.
                   """) %>
                 </div>
