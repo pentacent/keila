@@ -480,11 +480,16 @@ defmodule Keila.Mailings do
 
     recipients_count = recipient_stats[:recipients_count] - recipient_stats[:failed_count]
 
+    locked? =
+      !Repo.exists?(
+        from(c in Campaign, where: c.id == ^campaign_id, lock: "FOR UPDATE SKIP LOCKED")
+      )
+
     status =
       cond do
         is_nil(campaign.sent_at) and insufficient_credits? -> :insufficient_credits
+        locked? and recipients_count == 0 -> :preparing
         is_nil(campaign.sent_at) -> :unsent
-        not is_nil(campaign.sent_at) and recipient_stats[:recipients_count] == 0 -> :preparing
         recipient_stats[:sent_count] != recipients_count -> :sending
         recipient_stats[:sent_count] == recipients_count -> :sent
       end
