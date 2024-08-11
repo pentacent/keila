@@ -1,6 +1,11 @@
 # Changelog
 
 ## Unreleased
+## Improved
+- New email scheduler and rate limiter with significantly improved performance
+
+## Fixed
+- Show correct state while campaign is being prepared for sending on stats page
 
 
 ## Version 0.14.11
@@ -118,7 +123,7 @@ Custom signup form fields + contacts search 🔎
 
 ## Version 0.13.0
 
-Double Opt-In ✅ 
+Double Opt-In ✅
 
 ### Added
 - Added support for double opt-in/confirmed opt in.
@@ -251,7 +256,7 @@ Better Campaign Analytics 📈
 ### Changed
 - Improved compatibility with SMTP servers by relaxing `gen_smtp` SSL/TLS settings
 - Upgraded to Elixir 1.14
-- Ugraded to Tailwind 3 
+- Ugraded to Tailwind 3
 - Added success hint when copying API key to clipboard
 
 ### Fixed
