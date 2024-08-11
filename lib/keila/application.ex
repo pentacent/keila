@@ -25,7 +25,8 @@ defmodule Keila.Application do
       %{
         id: Keila.Id.Cache,
         start: {Agent, :start_link, [&Keila.Id.hashid_config/0, [name: Keila.Id.Cache]]}
-      }
+      },
+      {Keila.Mailings.RateLimiter, []}
       # Start a worker by calling: Keila.Worker.start_link(arg)
       # {Keila.Worker, arg}
     ]
