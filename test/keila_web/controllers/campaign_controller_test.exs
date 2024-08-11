@@ -301,7 +301,7 @@ defmodule KeilaWeb.CampaignControllerTest do
 
       Oban.drain_queue(queue: :periodic)
       Oban.drain_queue(queue: :mailer, with_scheduled: true)
-      :timer.sleep(500)
+      :timer.sleep(1500)
 
       assert render(lv) =~
                "<div class=\"text-sm\">emails sent</div><div class=\"text-3xl\">10</div>"

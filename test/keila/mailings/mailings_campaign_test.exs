@@ -83,7 +83,7 @@ defmodule Keila.MailingsCampaignTest do
 
     assert :ok = Mailings.deliver_campaign(campaign.id)
 
-    Oban.drain_queue(queue: :periodic)
+    assert %{success: 1} = Oban.drain_queue(queue: :periodic)
     assert %{success: ^n, failure: 0} = Oban.drain_queue(queue: :mailer, with_scheduled: true)
 
     for _ <- 1..n do
@@ -122,7 +122,7 @@ defmodule Keila.MailingsCampaignTest do
 
     assert :ok = Mailings.deliver_campaign(campaign.id)
 
-    Oban.drain_queue(queue: :periodic)
+    assert %{success: 1} = Oban.drain_queue(queue: :periodic)
 
     assert %{success: ^n_expected_sent, failure: 0, snoozed: ^n_expected_snoozed} =
              Oban.drain_queue(queue: :mailer, with_scheduled: true)
@@ -161,7 +161,7 @@ defmodule Keila.MailingsCampaignTest do
 
     assert :ok = Mailings.deliver_campaign(campaign.id)
 
-    Oban.drain_queue(queue: :periodic)
+    assert %{success: 1} = Oban.drain_queue(queue: :periodic)
     assert %{success: ^n, failure: 0} = Oban.drain_queue(queue: :mailer, with_scheduled: true)
 
     for _ <- 1..n do
@@ -186,7 +186,7 @@ defmodule Keila.MailingsCampaignTest do
 
     assert :ok = Mailings.deliver_campaign(campaign.id)
 
-    Oban.drain_queue(queue: :periodic)
+    assert %{success: 1} = Oban.drain_queue(queue: :periodic)
     assert %{success: ^n, failure: 0} = Oban.drain_queue(queue: :mailer, with_scheduled: true)
 
     for _ <- 1..n do
@@ -308,7 +308,7 @@ defmodule Keila.MailingsCampaignTest do
       )
 
     assert :ok = Mailings.deliver_campaign(campaign.id)
-    Oban.drain_queue(queue: :periodic)
+    assert %{success: 1} = Oban.drain_queue(queue: :periodic)
     assert %{success: 1, failure: 0} = Oban.drain_queue(queue: :mailer, with_scheduled: true)
 
     receive do
@@ -343,7 +343,7 @@ defmodule Keila.MailingsCampaignTest do
 
     assert :ok = Mailings.deliver_campaign(campaign.id)
 
-    Oban.drain_queue(queue: :periodic)
+    assert %{success: 1} = Oban.drain_queue(queue: :periodic)
     assert %{success: 1, cancelled: 1} = Oban.drain_queue(queue: :mailer, with_scheduled: true)
     assert %{status: :sent} = Mailings.get_campaign_stats(campaign.id)
   end

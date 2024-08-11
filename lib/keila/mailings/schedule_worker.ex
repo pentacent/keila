@@ -29,14 +29,17 @@ defmodule Keila.Mailings.ScheduleWorker do
   @impl true
   def perform(%Oban.Job{}) do
     Enum.reduce_while(1..@passes, :ok, fn _, _ ->
-      Repo.transaction(fn ->
-        if jobs_below_threshold?() do
-          schedule_recipients()
-          {:cont, :ok}
-        else
-          {:halt, :ok}
-        end
-      end)
+      {_, acc} =
+        Repo.transaction(fn ->
+          if jobs_below_threshold?() do
+            schedule_recipients()
+            {:cont, :ok}
+          else
+            {:halt, :ok}
+          end
+        end)
+
+      acc
     end)
   end
 
@@ -58,6 +61,7 @@ defmodule Keila.Mailings.ScheduleWorker do
       limit: @limit,
       lock: "FOR NO KEY UPDATE"
     )
+    |> Repo.all()
     |> Enum.group_by(& &1.campaign_id)
     |> Enum.each(fn {campaign_id, recipients} ->
       insert_jobs(campaign_id, recipients)
