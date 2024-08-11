@@ -91,7 +91,8 @@ config :keila, Oban,
     {Oban.Plugins.Pruner, max_age: 1800},
     {Oban.Plugins.Cron,
      crontab: [
-       {"* * * * *", Keila.Mailings.DeliverScheduledCampaignsWorker}
+       {"* * * * *", Keila.Mailings.DeliverScheduledCampaignsWorker},
+       {"* * * * *", Keila.Mailings.ScheduleWorker}
      ]}
   ]
 

@@ -1,21 +1,26 @@
 defmodule Keila.Mailings.Worker do
-  use Oban.Worker, queue: :mailer
+  @moduledoc """
+  This worker builds and delivers queued emails.
+  """
+
+  use Oban.Worker,
+    queue: :mailer,
+    unique: [
+      period: :infinity,
+      states: [:available, :scheduled, :executing],
+      fields: [:args],
+      keys: [:recipient_id]
+    ]
+
   use Keila.Repo
-  alias Keila.Mailings.{Recipient, Builder}
-  require ExRated
+  alias Keila.Mailings.{Recipient, Builder, RateLimiter}
   require Logger
 
   @impl true
-  def perform(%Oban.Job{args: args}) do
-    # TODO: recipient_count is currently not used but could be used to improve
-    # the algorithm snoozing delivery when running for the first time.
-    # This would also require check_sender_rate/1 to return information about
-    # active rate limits (bucket sizes and scales).
-    %{"recipient_id" => recipient_id, "recipient_count" => _recipient_count} = args
-
+  def perform(%Oban.Job{args: %{"recipient_id" => recipient_id}} = job) do
     recipient = load_recipient(recipient_id)
 
-    with :ok <- check_sender_rate_limit(recipient),
+    with :ok <- check_sender_rate_limit(recipient, job),
          :ok <- ensure_valid_recipient(recipient),
          email <- Builder.build(recipient.campaign, recipient, %{}),
          :ok <- ensure_valid_email(email) do
@@ -41,23 +46,38 @@ defmodule Keila.Mailings.Worker do
 
   defp ensure_valid_recipient(_recipient), do: {:error, :invalid_contact}
 
-  defp check_sender_rate_limit(recipient) do
-    case Keila.Mailer.check_sender_rate_limit(recipient.campaign.sender) do
+  defp check_sender_rate_limit(recipient, job) do
+    scheduling_requested_at = scheduling_requested_at(job)
+
+    case RateLimiter.check_sender_rate_limit(recipient.campaign.sender, scheduling_requested_at) do
       :ok ->
         :ok
 
-      {:error, min_delay} ->
-        # wait until the minimum delay + add randomness to even out load
-        random_delay = :rand.uniform(60)
-        delay = min_delay + :rand.uniform(60)
+      {:error, {schedule_at, scheduling_requested_at}} ->
+        job.args
+        |> Map.put("scheduling_requested_at", scheduling_requested_at)
+        |> __MODULE__.new(replace: [executing: [:args]])
+        |> Oban.insert!()
+
+        delay = DateTime.diff(schedule_at, scheduling_requested_at)
 
         Logger.debug(
-          "Snoozing email to #{recipient.contact.email} for campaign #{recipient.campaign.id} for #{min_delay} + #{random_delay} s"
+          "Snoozing email to #{recipient.contact.email} for campaign #{recipient.campaign.id} for #{delay}s."
         )
 
         {:snooze, delay}
     end
   end
+
+  defp scheduling_requested_at(%{args: %{"scheduling_requested_at" => scheduling_requested_at}})
+       when is_binary(scheduling_requested_at) do
+    case DateTime.from_iso8601(scheduling_requested_at) do
+      {:ok, scheduling_requested_at, 0} -> scheduling_requested_at
+      _other -> nil
+    end
+  end
+
+  defp scheduling_requested_at(_job), do: nil
 
   defp ensure_valid_email(email) do
     if Enum.find(email.headers, fn {name, _} -> name == "X-Keila-Invalid" end) do

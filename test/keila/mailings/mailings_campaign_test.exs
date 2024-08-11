@@ -83,7 +83,8 @@ defmodule Keila.MailingsCampaignTest do
 
     assert :ok = Mailings.deliver_campaign(campaign.id)
 
-    assert %{success: ^n, failure: 0} = Oban.drain_queue(queue: :mailer)
+    Oban.drain_queue(queue: :periodic)
+    assert %{success: ^n, failure: 0} = Oban.drain_queue(queue: :mailer, with_scheduled: true)
 
     for _ <- 1..n do
       assert_email_sent()
@@ -93,7 +94,7 @@ defmodule Keila.MailingsCampaignTest do
   end
 
   @tag :mailings_campaign
-  test "deliver campaign will snooze senders after the limit in minutes", %{project: project} do
+  test "deliver campaign only delivers up to the limit in minutes", %{project: project} do
     rate_limit_per_minute = 10
     n = @emails_to_deliver
     n_expected_sent = rate_limit_per_minute
@@ -121,8 +122,10 @@ defmodule Keila.MailingsCampaignTest do
 
     assert :ok = Mailings.deliver_campaign(campaign.id)
 
+    Oban.drain_queue(queue: :periodic)
+
     assert %{success: ^n_expected_sent, failure: 0, snoozed: ^n_expected_snoozed} =
-             Oban.drain_queue(queue: :mailer)
+             Oban.drain_queue(queue: :mailer, with_scheduled: true)
 
     for _ <- 1..n_expected_sent do
       assert_email_sent()
@@ -158,7 +161,8 @@ defmodule Keila.MailingsCampaignTest do
 
     assert :ok = Mailings.deliver_campaign(campaign.id)
 
-    assert %{success: ^n, failure: 0, snoozed: 0} = Oban.drain_queue(queue: :mailer)
+    Oban.drain_queue(queue: :periodic)
+    assert %{success: ^n, failure: 0} = Oban.drain_queue(queue: :mailer, with_scheduled: true)
 
     for _ <- 1..n do
       assert_email_sent()
@@ -182,7 +186,8 @@ defmodule Keila.MailingsCampaignTest do
 
     assert :ok = Mailings.deliver_campaign(campaign.id)
 
-    assert %{success: ^n, failure: 0} = Oban.drain_queue(queue: :mailer)
+    Oban.drain_queue(queue: :periodic)
+    assert %{success: ^n, failure: 0} = Oban.drain_queue(queue: :mailer, with_scheduled: true)
 
     for _ <- 1..n do
       assert_email_sent()
@@ -303,7 +308,8 @@ defmodule Keila.MailingsCampaignTest do
       )
 
     assert :ok = Mailings.deliver_campaign(campaign.id)
-    assert %{success: 1, failure: 0} = Oban.drain_queue(queue: :mailer)
+    Oban.drain_queue(queue: :periodic)
+    assert %{success: 1, failure: 0} = Oban.drain_queue(queue: :mailer, with_scheduled: true)
 
     receive do
       {:email, %{to: [{_, email}]}} ->
@@ -337,7 +343,8 @@ defmodule Keila.MailingsCampaignTest do
 
     assert :ok = Mailings.deliver_campaign(campaign.id)
 
-    assert %{success: 1, cancelled: 1} = Oban.drain_queue(queue: :mailer)
+    Oban.drain_queue(queue: :periodic)
+    assert %{success: 1, cancelled: 1} = Oban.drain_queue(queue: :mailer, with_scheduled: true)
     assert %{status: :sent} = Mailings.get_campaign_stats(campaign.id)
   end
 end
