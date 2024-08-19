@@ -201,6 +201,12 @@ defmodule Keila.Mailings.Builder do
     end
   end
 
+  defp put_body(email, campaign = %{settings: %{type: :mjml}}, assigns) do
+    mjml_content = campaign.mjml_body || ""
+
+    __MODULE__.MJML.put_body(email, mjml_content, assigns)
+  end
+
   defp fetch_styles(campaign)
 
   defp fetch_styles(%Campaign{template: %Template{styles: styles}}) when is_list(styles) do

@@ -81,7 +81,8 @@ defmodule Keila.MixProject do
       {:php_serializer, "~> 2.0"},
       {:open_api_spex, "~> 3.11"},
       {:ex_rated, "~> 2.1"},
-      {:tls_certificate_check, "~> 1.20"}
+      {:tls_certificate_check, "~> 1.20"},
+      {:mjml, "~> 4.0"}
     ]
   end
 
