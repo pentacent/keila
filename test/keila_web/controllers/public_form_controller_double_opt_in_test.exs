@@ -29,6 +29,24 @@ defmodule KeilaWeb.PublicFormControllerDoubleOptInTest do
         args: %{"form_params_id" => form_params.id}
       )
     end
+
+    test "redirects to double_opt_in_url if set", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+
+      form =
+        insert!(:contacts_form,
+          project_id: project.id,
+          settings: %{
+            captcha_required: false,
+            double_opt_in_required: true,
+            double_opt_in_url: "https://example.com"
+          }
+        )
+
+      params = params(:contact) |> Map.delete(:project_id)
+      conn = post(conn, Routes.public_form_path(conn, :show, form.id), contact: params)
+      assert redirected_to(conn, 302) == form.settings.double_opt_in_url
+    end
   end
 
   @tag :double_opt_in

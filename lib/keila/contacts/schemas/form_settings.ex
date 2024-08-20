@@ -9,6 +9,8 @@ defmodule Keila.Contacts.Form.Settings do
     field(:double_opt_in_required, :boolean, default: false)
     field(:double_opt_in_subject, :string)
     field(:double_opt_in_markdown_body, :string)
+    field(:double_opt_in_message, :string)
+    field(:double_opt_in_url, :string)
     field(:csrf_disabled, :boolean, default: true)
     field(:intro_text, :string)
     field(:fine_print, :string)
@@ -32,6 +34,8 @@ defmodule Keila.Contacts.Form.Settings do
       :double_opt_in_required,
       :double_opt_in_subject,
       :double_opt_in_markdown_body,
+      :double_opt_in_message,
+      :double_opt_in_url,
       :csrf_disabled,
       :intro_text,
       :fine_print,
