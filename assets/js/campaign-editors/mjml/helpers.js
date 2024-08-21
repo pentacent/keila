@@ -1,5 +1,6 @@
 import { acceptCompletion, completionStatus } from "@codemirror/autocomplete"
 import { indentLess, indentMore } from "@codemirror/commands"
+import { EditorView, keymap } from "@codemirror/view"
 
 export const indentAndAutocompleteWithTab = {
   key: "Tab",
