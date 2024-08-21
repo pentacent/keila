@@ -1,11 +1,23 @@
 # Changelog
 
 ## Unreleased
+
+## Version 0.15.0
+
+## Added
+- Support for MJML campaigns.
+- Forms can now be configured to redirect users after successful submission and when double opt-in
+  is required.
+- Forms can now be configured with a custom message when double opt-in is required
+
 ## Improved
-- New email scheduler and rate limiter with significantly improved performance
+- New email scheduler and rate limiter with significantly improved performance. (thanks @dompie
+  for supporting the development of this feature)
 
 ## Fixed
 - Show correct state while campaign is being prepared for sending on stats page
+- Marking custom checkboxes as *required* actually requires users to check them now.
+  Fixes #328. (thanks @cyberwuulf for reporting)
 
 
 ## Version 0.14.11
