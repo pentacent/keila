@@ -9,6 +9,8 @@ defmodule Keila.Contacts.Form.Settings do
     field(:double_opt_in_required, :boolean, default: false)
     field(:double_opt_in_subject, :string)
     field(:double_opt_in_markdown_body, :string)
+    field(:double_opt_in_message, :string)
+    field(:double_opt_in_url, :string)
     field(:csrf_disabled, :boolean, default: true)
     field(:intro_text, :string)
     field(:fine_print, :string)
@@ -22,6 +24,7 @@ defmodule Keila.Contacts.Form.Settings do
     field(:input_border_color, :string, default: "#6b7280")
     field(:input_text_color, :string, default: "#111827")
     field(:success_text, :string)
+    field(:success_url, :string)
   end
 
   def changeset(struct \\ %__MODULE__{}, params) do
@@ -31,6 +34,8 @@ defmodule Keila.Contacts.Form.Settings do
       :double_opt_in_required,
       :double_opt_in_subject,
       :double_opt_in_markdown_body,
+      :double_opt_in_message,
+      :double_opt_in_url,
       :csrf_disabled,
       :intro_text,
       :fine_print,
@@ -43,7 +48,8 @@ defmodule Keila.Contacts.Form.Settings do
       :submit_label,
       :submit_bg_color,
       :submit_text_color,
-      :success_text
+      :success_text,
+      :success_url
     ])
   end
 end

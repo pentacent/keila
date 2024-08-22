@@ -1,4 +1,5 @@
 defmodule Keila.Mailings.SendDoubleOptInMailWorker do
+  alias Keila.Mailings.RateLimiter
   use Oban.Worker, queue: :mailer
   use Keila.Repo
 
@@ -16,9 +17,12 @@ defmodule Keila.Mailings.SendDoubleOptInMailWorker do
     project_id = form.project_id
 
     if Keila.Billing.feature_available?(project_id, :double_opt_in) do
-      case Keila.Mailer.check_sender_rate_limit(sender) do
-        :ok -> send_double_opt_in_email(form_params, form, sender)
-        {:error, min_delay} -> {:snooze, min_delay + 5}
+      case RateLimiter.check_sender_rate_limit(sender) do
+        :ok ->
+          send_double_opt_in_email(form_params, form, sender)
+
+        {:error, {schedule_at, scheduling_requested_at}} ->
+          {:snooze, DateTime.diff(schedule_at, scheduling_requested_at)}
       end
     else
       {:cancel, "Double opt-in not enabled for account of project #{form.project_id}"}

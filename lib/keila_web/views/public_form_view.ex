@@ -7,14 +7,6 @@ defmodule KeilaWeb.PublicFormView do
 
   @form_classes "contact-form container bg-white rounded py-4 md:py-8 flex flex-col gap-4"
 
-  defp form_class_attr(_form) do
-    @form_classes
-  end
-
-  defp form_style_attr(form) do
-    build_form_styles(form)
-  end
-
   defp input_styles(form) do
     build_styles(%{
       "background-color" => form.settings.input_bg_color,
@@ -276,8 +268,38 @@ defmodule KeilaWeb.PublicFormView do
     end
   end
 
+  def render_form_double_opt_in_required(form, email) do
+    content_tag(:div, class: @form_classes, style: build_form_styles(form)) do
+      [
+        render_h1(form),
+        render_double_opt_in_required(form, email),
+        render_fine_print(form)
+      ]
+    end
+  end
+
   defp render_success(form) do
     content_tag(:div, form.settings.success_text || gettext("Thank you!"), class: "text-xl")
+  end
+
+  defp render_double_opt_in_required(form, email) do
+    case form.settings.double_opt_in_message do
+      message when message not in [nil, ""] ->
+        content_tag(:p, message)
+
+      _other ->
+        [
+          content_tag(:h2, class: "text-xl") do
+            gettext("Please confirm your email")
+          end,
+          content_tag(:p) do
+            gettext(
+              "We’ve just sent an email to %{email}. Please click the link in that email to confirm your subscription.",
+              email: email
+            )
+          end
+        ]
+    end
   end
 
   def render_unsubscribe_form(form) do

@@ -102,12 +102,6 @@
           <% end %>
         </div>
         <div class="flex flex-col">
-          <%= label(fs, :success_text, gettext("Thank you message")) %>
-          <%= with_validation(fs, :success_text) do %>
-            <%= text_input(fs, :success_text, class: "text-black") %>
-          <% end %>
-        </div>
-        <div class="flex flex-col">
           <%= label(fs, :fine_print, gettext("Fine print")) %>
           <%= with_validation(fs, :fine_print) do %>
             <%= textarea(fs, :fine_print, class: "text-black", rows: 8) %>
@@ -119,6 +113,18 @@
             <%= gettext("Require captcha") %>
           <% end %>
         <% end %>
+        <div class="flex flex-col">
+          <%= label(fs, :success_text, gettext("Thank you message")) %>
+          <%= with_validation(fs, :success_text) do %>
+            <%= text_input(fs, :success_text, class: "text-black") %>
+          <% end %>
+        </div>
+        <div class="flex flex-col">
+          <%= label(fs, :success_text, gettext("Thank you redirect URL")) %>
+          <%= with_validation(fs, :success_url) do %>
+            <%= url_input(fs, :success_url, class: "text-black") %>
+          <% end %>
+        </div>
         <%= with_validation(fs, :csrf_disabled) do %>
           <%= label(fs, :csrf_disabled) do %>
             <%= checkbox(fs, :csrf_disabled, class: "text-emerald-500") %>
@@ -386,16 +392,16 @@
 
             <template x-if="enable">
               <div class="form-row">
-                <%= label(fs, :double_opt_in_subject, "Custom email text") %>
+                <%= label(fs, :double_opt_in_markdown_body, "Custom email text") %>
                 <div class="text-xs">
                   <%= gettext_md("""
                     You may use Liquid and Markdown in the email body.
-                    
+
                     Use `[Confirm]({{ double_opt_in_link }})` to include the opt-in link.
                   """) %>
                 </div>
                 <br />
-                <%= with_validation(fs, :double_opt_in_text_body) do %>
+                <%= with_validation(fs, :double_opt_in_markdown_body) do %>
                   <%= textarea(fs, :double_opt_in_markdown_body,
                     class: "text-black",
                     rows: 6,
@@ -406,6 +412,36 @@
                       ### [Confirm subscription]({{ double_opt_in_link }})
                       """)
                   ) %>
+                <% end %>
+              </div>
+            </template>
+
+            <template x-if="enable">
+              <div class="form-row">
+                <%= label(fs, :double_opt_in_message, gettext("Double Opt-in Info Message")) %>
+                <%= with_validation(fs, :double_opt_in_message) do %>
+                  <div class="text-xs">
+                    <%= gettext_md("""
+                      Custom message that is shown when a user submits the form and double opt-in
+                      is required.
+                    """) %>
+                  </div>
+                  <%= text_input(fs, :double_opt_in_message, class: "text-black") %>
+                <% end %>
+              </div>
+            </template>
+
+            <template x-if="enable">
+              <div class="form-row">
+                <%= label(fs, :success_text, gettext("Double Opt-in Info Redirect URL")) %>
+                <%= with_validation(fs, :double_opt_in_url) do %>
+                  <div class="text-xs">
+                    <%= gettext_md("""
+                      Custom URL to which users are redirected when they submit the form and double opt-in
+                      is required.
+                    """) %>
+                  </div>
+                  <%= url_input(fs, :double_opt_in_url, class: "text-black") %>
                 <% end %>
               </div>
             </template>

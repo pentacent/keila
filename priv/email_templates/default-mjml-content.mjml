@@ -1,0 +1,121 @@
+<mjml>
+  <mj-head>
+    <mj-title>{{ campaign.subject }}</mj-title>
+    <mj-preview>{{ campaign.preview_text }}</mj-preview>
+    <mj-attributes>
+      <mj-text
+        font-size="15px"
+        line-height="1.6"
+        color="#111827"
+        font-family="inter, sans-serif"
+      ></mj-text>
+      <mj-button
+        font-size="15px"
+        line-height="1.6"
+        color="#111827"
+        font-family="inter, sans-serif"
+      ></mj-button>
+    </mj-attributes>
+    <mj-style inline="inline">
+      a { color: inherit; text-decoration: underline; }
+    </mj-style>
+  </mj-head>
+  <mj-body background-color="#f3f4f6">
+    <mj-section>
+      <mj-column>
+        <mj-image
+          width="175px"
+          src="https://www.keila.io/newsletter-assets/logo-with-text.png"
+        ></mj-image>
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#ffffff">
+      <mj-column>
+        <mj-text font-size="18px">
+          Hey {{contact.first_name }}, this is an
+          <strong>MJML</strong> campaign!
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section
+      background-url="https://www.keila.io/newsletter-assets/ai-elephant.jpg"
+      padding="80px 20px"
+    >
+      <mj-column></mj-column>
+      <mj-column background-color="#dcfce7">
+        <mj-text>
+          MJML is an easy way to create complex email layouts with multiple
+          columns that are fully responsive and work on a wide range of devices.
+        </mj-text>
+        <mj-text>
+          Lorem Ipsum Dolor Sit Amet Consecuteor Est Lirum Larum.
+        </mj-text>
+        <mj-button
+          background-color="#111827"
+          color="white"
+          href="https://www.keila.io"
+        >
+          Click me!
+        </mj-button>
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#ffffff" padding-bottom="0">
+      <mj-column>
+        <mj-text font-weight="bold"> Use Multiple Columns! </mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#ffffff" padding-top="0">
+      <mj-column>
+        <mj-text>Build responsive email templates with MJML.</mj-text>
+      </mj-column>
+      <mj-column>
+        <mj-text
+          >Use the <code>&lt;mj-raw&gt;</code> tag to include
+          <a href="https://shopify.github.io/liquid/" target="_blank"
+            >Liquid template</a
+          >
+          tags.</mj-text
+        >
+      </mj-column>
+      <mj-column>
+        <mj-text
+          >If you prefer simpler emails, you can also write newsletters in
+          Markdown!</mj-text
+        >
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text align="center"
+          >The following sections are dynamically generated with
+          Liquid:</mj-text
+        >
+      </mj-column>
+    </mj-section>
+    <mj-raw
+      >{% assign colors = "#41b8da,#8bb746,#0b3622" | split: "," %}</mj-raw
+    >
+    <mj-raw>{% for color in colors %}</mj-raw>
+    <mj-section background-color="{{ color }}" padding="20px">
+      <mj-column padding-top="20px">
+        <mj-text font-size="31px" color="#ffffff">{{ color }}</mj-text>
+      </mj-column>
+      <mj-column background-color="#ffffff">
+        <mj-text font-size="18px" font-weight="bold"
+          >Section #{{forloop.index}}</mj-text
+        >
+        <mj-text> This is a dynamically generated section. </mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-raw>{% endfor %}</mj-raw>
+    <mj-section>
+      <mj-column>
+        <mj-text font-size="12.5px" align="center">
+          Powered by Keila - Open Source Newsletters
+          <br />
+          <a style="color: #292524" href="{{unsubscribe_link}}">Unsubscribe</a>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

@@ -74,7 +74,8 @@
               [
                 {gettext("Markdown"), "markdown"},
                 {gettext("Text only"), "text"},
-                {gettext("Block Editor"), "block"}
+                {gettext("Block Editor"), "block"},
+                {gettext("MJML"), "mjml"}
               ],
               x_model: "type"
             ) %>
@@ -105,7 +106,7 @@
           </div>
         </template>
 
-        <template x-if="type === 'markdown' || type === 'block'">
+        <template x-if="type === 'markdown' || type === 'block' || type === 'mjml'">
           <div class="form-row flex flex-col">
             <%= label(f, :preview_text) do %>
               <%= gettext("Preview Text") %><br />

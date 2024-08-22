@@ -8,6 +8,7 @@ defmodule KeilaWeb.CampaignController do
 
   @default_text_body File.read!("priv/email_templates/default-text-content.txt")
   @default_markdown_body File.read!("priv/email_templates/default-markdown-content.md")
+  @default_mjml_body File.read!("priv/email_templates/default-mjml-content.mjml")
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, _params) do
@@ -70,6 +71,7 @@ defmodule KeilaWeb.CampaignController do
     # TODO Maybe this would be better implemented as a Context module function
     case get_in(params, ["settings", "type"]) do
       "markdown" -> Map.put(params, "text_body", @default_markdown_body)
+      "mjml" -> Map.put(params, "mjml_body", @default_mjml_body)
       _ -> Map.put(params, "text_body", @default_text_body)
     end
   end

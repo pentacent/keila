@@ -343,13 +343,16 @@ defmodule Keila.Mailings do
   @spec deliver_campaign(Campaign.id()) :: {:error, :no_recipients} | {:error, term()} | :ok
   def deliver_campaign(id) when is_id(id) do
     result =
-      Repo.transaction(fn ->
-        case get_and_lock_campaign(id) do
-          %Campaign{sent_at: sent_at} when not is_nil(sent_at) -> Repo.rollback(:already_sent)
-          %Campaign{sender_id: nil} -> Repo.rollback(:no_sender)
-          campaign = %Campaign{} -> do_deliver_campaign(campaign)
-        end
-      end)
+      Repo.transaction(
+        fn ->
+          case get_and_lock_campaign(id) do
+            %Campaign{sent_at: sent_at} when not is_nil(sent_at) -> Repo.rollback(:already_sent)
+            %Campaign{sender_id: nil} -> Repo.rollback(:no_sender)
+            campaign = %Campaign{} -> do_deliver_campaign(campaign)
+          end
+        end,
+        timeout: 60_000
+      )
 
     case result do
       {:ok, _n} ->
@@ -376,39 +379,40 @@ defmodule Keila.Mailings do
     filter = %{"$and" => [segment_filter, %{"status" => "active"}]}
 
     Keila.Contacts.stream_project_contacts(campaign.project_id, filter: filter)
-    |> Stream.chunk_every(1000)
-    |> Stream.map(&insert_recipients(&1, campaign))
-    |> Stream.map(&insert_jobs/1)
-    |> Stream.map(&Enum.count/1)
+    |> Stream.chunk_every(5000)
+    |> Stream.map(fn contacts ->
+      insert_recipients(contacts, campaign)
+    end)
     |> Enum.sum()
     |> tap(&maybe_consume_credits(&1, campaign))
+    |> tap(&insert_scheduling_job/1)
     |> tap(&ensure_not_empty/1)
   end
 
   defp insert_recipients(contacts, campaign) do
-    now = DateTime.utc_now() |> DateTime.truncate(:second)
+    {:ok, campaign_id} = Keila.Mailings.Campaign.Id.dump(campaign.id)
 
-    contacts
-    |> Enum.map(fn contact ->
-      %{contact_id: contact.id, campaign_id: campaign.id, inserted_at: now, updated_at: now}
-    end)
-    |> then(fn entries ->
-      Repo.insert_all(Recipient, entries, returning: [:id])
-    end)
-    |> elem(1)
-  end
+    recipient_params =
+      Enum.map(contacts, fn contact ->
+        {:ok, id} = Keila.Contacts.Contact.Id.dump(contact.id)
+        %{id: id}
+      end)
 
-  defp insert_jobs(recipients) do
-    recipient_count = length(recipients)
+    # Inserting entries like this is about 1/3 more performant than constructing structs first
+    {count, _} =
+      Repo.insert_all(
+        Recipient,
+        from(r in values(recipient_params, %{id: :integer}),
+          select: %{
+            contact_id: r.id,
+            campaign_id: ^campaign_id,
+            inserted_at: fragment("now()"),
+            updated_at: fragment("now()")
+          }
+        )
+      )
 
-    recipients
-    |> Enum.map(fn recipient ->
-      Keila.Mailings.Worker.new(%{
-        "recipient_id" => recipient.id,
-        "recipient_count" => recipient_count
-      })
-    end)
-    |> Oban.insert_all()
+    count
   end
 
   defp maybe_consume_credits(recipients_count, _campaign = %{project_id: project_id}) do
@@ -422,6 +426,9 @@ defmodule Keila.Mailings do
 
     :ok
   end
+
+  defp insert_scheduling_job(0), do: :ok
+  defp insert_scheduling_job(_), do: Keila.Mailings.ScheduleWorker.new(%{}) |> Oban.insert()
 
   defp ensure_not_empty(0), do: Repo.rollback(:no_recipients)
   defp ensure_not_empty(_), do: :ok
@@ -477,11 +484,16 @@ defmodule Keila.Mailings do
 
     recipients_count = recipient_stats[:recipients_count] - recipient_stats[:failed_count]
 
+    locked? =
+      !Repo.exists?(
+        from(c in Campaign, where: c.id == ^campaign_id, lock: "FOR UPDATE SKIP LOCKED")
+      )
+
     status =
       cond do
         is_nil(campaign.sent_at) and insufficient_credits? -> :insufficient_credits
+        locked? and recipients_count == 0 -> :preparing
         is_nil(campaign.sent_at) -> :unsent
-        not is_nil(campaign.sent_at) and recipient_stats[:recipients_count] == 0 -> :preparing
         recipient_stats[:sent_count] != recipients_count -> :sending
         recipient_stats[:sent_count] == recipients_count -> :sent
       end

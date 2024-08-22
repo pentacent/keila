@@ -210,7 +210,7 @@ defmodule Keila.Contacts.EctoStringMap.FieldDefinition do
 
   defp type_validations(_), do: []
 
-  defp required_validations(%{type: :bool, required: true}),
+  defp required_validations(%{type: :boolean, required: true}),
     do: [&validate_acceptance(&1, &2, [])]
 
   defp required_validations(%{required: true}),

@@ -299,8 +299,9 @@ defmodule KeilaWeb.CampaignControllerTest do
       {:ok, lv, html} = live(conn)
       assert html =~ "This campaign is currently being sent out."
 
-      Oban.drain_queue(queue: :mailer, with_safety: false)
-      :timer.sleep(1_500)
+      Oban.drain_queue(queue: :periodic)
+      Oban.drain_queue(queue: :mailer, with_scheduled: true)
+      :timer.sleep(1500)
 
       assert render(lv) =~
                "<div class=\"text-sm\">emails sent</div><div class=\"text-3xl\">10</div>"

@@ -2,6 +2,7 @@ defmodule Keila.Mailings.SenderTest do
   use Keila.DataCase, async: true
   alias Keila.Mailings
   alias Mailings.Sender
+  alias Mailings.RateLimiter
 
   @tag :mailings
   describe "Creating senders" do
@@ -141,10 +142,10 @@ defmodule Keila.Mailings.SenderTest do
       assert rate_limit_per_second == sender.config.rate_limit_per_second
 
       for _ <- 1..rate_limit_per_second do
-        assert :ok = Keila.Mailer.check_sender_rate_limit(sender)
+        assert :ok = RateLimiter.check_sender_rate_limit(sender)
       end
 
-      assert {:error, _min_delay} = Keila.Mailer.check_sender_rate_limit(sender)
+      assert {:error, {_schedule_at, _}} = RateLimiter.check_sender_rate_limit(sender)
     end
 
     test "using check rate limit by minutes of new sender" do
@@ -167,10 +168,10 @@ defmodule Keila.Mailings.SenderTest do
       assert rate_limit_per_minute == sender.config.rate_limit_per_minute
 
       for _ <- 1..rate_limit_per_minute do
-        assert :ok = Keila.Mailer.check_sender_rate_limit(sender)
+        assert :ok = RateLimiter.check_sender_rate_limit(sender)
       end
 
-      assert {:error, _min_delay} = Keila.Mailer.check_sender_rate_limit(sender)
+      assert {:error, {_schedule_at, _}} = RateLimiter.check_sender_rate_limit(sender)
     end
 
     test "using check rate limit by hours of new sender" do
@@ -193,10 +194,10 @@ defmodule Keila.Mailings.SenderTest do
       assert rate_limit_per_hour == sender.config.rate_limit_per_hour
 
       for _ <- 1..rate_limit_per_hour do
-        assert :ok = Keila.Mailer.check_sender_rate_limit(sender)
+        assert :ok = RateLimiter.check_sender_rate_limit(sender)
       end
 
-      assert {:error, _min_delay} = Keila.Mailer.check_sender_rate_limit(sender)
+      assert {:error, {_schedule_at, _}} = RateLimiter.check_sender_rate_limit(sender)
     end
 
     test "using check rate without limit of new sender" do
@@ -210,7 +211,7 @@ defmodule Keila.Mailings.SenderTest do
       assert sender.config.rate_limit_per_hour == nil
 
       for _ <- 1..50 do
-        assert :ok = Keila.Mailer.check_sender_rate_limit(sender)
+        assert :ok = RateLimiter.check_sender_rate_limit(sender)
       end
     end
   end
