@@ -136,4 +136,3 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Add user"
 msgstr ""
-
