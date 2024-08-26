@@ -28,7 +28,7 @@ defmodule KeilaWeb.UserAdminControllerTest do
 
   describe "POST /admin/users" do
     @tag :admin_controller
-    test "creates user", %{conn: conn} do
+    test "creates user as admin", %{conn: conn} do
       {root, user} = with_seed()
       conn = with_login(conn, user: root)
 
@@ -36,6 +36,17 @@ defmodule KeilaWeb.UserAdminControllerTest do
       conn = post(conn, Routes.user_admin_path(conn, :create, user: params))
 
       assert html_response(conn, 200) =~ user.email
+    end
+
+    @tag :admin_controller
+    test "is only accessible to users with admin permissions", %{conn: conn} do
+      {root, user} = with_seed()
+      conn = with_login(conn, user: user)
+
+      params = %{"email" => user.email, "password" => user.password}
+      conn = post(conn, Routes.user_admin_path(conn, :create, user: params))
+
+      assert conn.status == 404
     end
   end
 
