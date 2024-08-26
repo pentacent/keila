@@ -66,12 +66,6 @@ defmodule Keila.Auth.User do
     |> prepare_changes(&put_password_hash/1)
   end
 
-  def validate_changeset(changeset) do
-    changeset
-    |> validate_email()
-    |> validate_password()
-  end
-
   defp put_password_hash(changeset) do
     password = get_change(changeset, :password)
 
