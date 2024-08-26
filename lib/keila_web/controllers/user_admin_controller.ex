@@ -32,8 +32,7 @@ defmodule KeilaWeb.UserAdminController do
 
   @spec new(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def new(conn, _) do
-    conn
-    |> render("new.html", changeset: %Plug.Conn{})
+    live_render(conn, KeilaWeb.CreateUserLive)
   end
 
   @spec create(Plug.Conn.t(), map()) :: Plug.Conn.t()
