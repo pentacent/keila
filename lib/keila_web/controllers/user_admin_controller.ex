@@ -1,6 +1,7 @@
 defmodule KeilaWeb.UserAdminController do
   use KeilaWeb, :controller
   alias Keila.{Auth, Accounts, Admin}
+  import Phoenix.LiveView.Controller
 
   plug :authorize
 
@@ -26,6 +27,27 @@ defmodule KeilaWeb.UserAdminController do
         {user.id, credits}
       end)
       |> Enum.into(%{})
+    end
+  end
+
+  @spec new(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def new(conn, _) do
+    conn
+    |> render("new.html", changeset: %Plug.Conn{})
+  end
+
+  @spec create(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def create(conn, %{"user" => user_params}) do
+    case Auth.create_user(user_params) do
+      {:ok, _user} ->
+        conn
+        |> put_flash(:info, gettext("User created successfully"))
+        |> redirect(to: "/admin/users")
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        conn
+        |> put_flash(:error, gettext("Could not create user"))
+        |> render("new.html", changeset: changeset)
     end
   end
 

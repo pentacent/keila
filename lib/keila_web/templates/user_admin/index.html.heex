@@ -68,6 +68,10 @@
       <% end %>
     </table>
 
+      <a href="/admin/users/new" class="button button--cta mt-8">
+        <%= render_icon(:plus) %> <%= gettext("Add user") %>
+      </a>
+
     <%= if @users.page_count > 1 do %>
       <div class="flex gap-3 justify-center py-8">
         <%= pagination_nav(@users,

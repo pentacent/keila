@@ -1,0 +1,34 @@
+<div class="flex m-16">
+  <.form
+    let={u}
+    for={@changeset}
+    as="user"
+    id="form"
+    phx-change="validate"
+    action={Routes.user_admin_path(@conn, :create)}
+    class="bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full p-8"
+  >
+    <div class="form-row">
+      <%= label(u, :email, "Email") %>
+      <%= with_validation(u, :email) do %>
+        <%= text_input(u, :email,
+          placeholder: gettext("foo@bar.com"),
+          class: "text-black",
+          autofocus: true
+        ) %>
+      <% end %>
+    </div>
+    <div class="form-row">
+      <%= label(u, :password, "Password") %>
+      <%= with_validation(u, :password) do %>
+        <%= text_input(u, :password,
+          class: "text-black",
+          autofocus: true
+        ) %>
+      <% end %>
+    </div>
+    <button class="button button--cta button--large mt-8" type="submit">
+      <%= gettext("Create user") %>
+    </button>
+  </.form>
+</div>
