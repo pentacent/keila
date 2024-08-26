@@ -26,6 +26,19 @@ defmodule KeilaWeb.UserAdminControllerTest do
     end
   end
 
+  describe "POST /admin/users" do
+    @tag :admin_controller
+    test "creates user", %{conn: conn} do
+      {root, user} = with_seed()
+      conn = with_login(conn, user: root)
+
+      params = %{"email" => user.email, "password" => user.password}
+      conn = post(conn, Routes.user_admin_path(conn, :create, user: params))
+
+      assert html_response(conn, 200) =~ user.email
+    end
+  end
+
   describe "DELETE /admin/users" do
     @tag :admin_controller
     test "shows deletion confirmation", %{conn: conn} do
