@@ -132,6 +132,11 @@ msgstr ""
 msgid "Could not create the user"
 msgstr ""
 
+#: lib/keila_web/templates/user_admin/index.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "Password"
+msgstr ""
+
 #: lib/keila_web/templates/user_admin/index.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "Add user"
