@@ -98,7 +98,8 @@ jobs:
           context: .
           file: ./ops/Dockerfile
           tags: |
-            ghcr.io/pentacent/keila-service:latest
+            ghcr.io/pentacent/keila:with-tag-latest
+            ghcr.io/pentacent/keila:with-tag-${{ github.sha }}
           labels: |
             service=keila
           push: true
