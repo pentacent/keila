@@ -19,13 +19,9 @@ defmodule KeilaWeb.CreateUserLive do
   @impl true
   def handle_event("validate", params, socket) do
     changeset =
-      %User{}
-      |> User.creation_changeset(params["user"])
-      |> then(fn changeset ->
-        if changeset.valid?,
-          do: changeset,
-          else: Ecto.Changeset.apply_action(changeset, :update) |> elem(1)
-      end)
+      params["user"]
+      |> User.creation_changeset()
+      |> Map.replace!(:action, :insert)
 
     socket =
       socket
