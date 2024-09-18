@@ -1,0 +1,145 @@
+## "msgid"s in this file come from POT (.pot) files.
+##
+## Do not add, change, or remove "msgid"s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
+##
+## Use "mix gettext.extract --merge" or "mix gettext.merge"
+## to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: zh\n"
+"Plural-Forms: nplurals=2\n"
+
+
+
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "%{remaining} / %{total} credits"
+msgstr "%{remaining} / %{total} 额度"
+
+#: lib/keila_web/templates/user_admin/index.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Activation"
+msgstr "激活"
+
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:85
+#, elixir-autogen, elixir-format
+msgid "Add Credits"
+msgstr "添加额度"
+
+#: lib/keila_web/templates/user_admin/index.html.heex:47
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Add credits"
+msgstr "添加额度"
+
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:3
+#, elixir-autogen, elixir-format
+msgid "Administer Credits for %{email}"
+msgstr "管理 %{email} 的额度"
+
+#: lib/keila_web/controllers/user_admin_controller.ex:14
+#, elixir-autogen, elixir-format
+msgid "Administrate Users"
+msgstr "管理用户"
+
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Amount"
+msgstr "数量"
+
+#: lib/keila_web/templates/shared_sender_admin/delete.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Campaigns associated with this sender will not be deleted."
+msgstr "与此发件人关联的活动不会被删除。"
+
+#: lib/keila_web/templates/shared_sender_admin/index.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Create a new Shared Sender"
+msgstr "创建新的共享发件人"
+
+#: lib/keila_web/templates/user_admin/index.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Credits"
+msgstr "额度"
+
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Credits for account %{account}"
+msgstr "账户 %{account} 的额度"
+
+#: lib/keila_web/templates/shared_sender_admin/delete.html.heex:3
+#, elixir-autogen, elixir-format
+msgid "Delete Shared Sender %{sender}?"
+msgstr "删除共享发件人 %{sender}？"
+
+#: lib/keila_web/templates/shared_sender_admin/delete.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Deleting a shared sender cannot be undone."
+msgstr "删除共享发件人的操作无法撤销。"
+
+#: lib/keila_web/templates/user_admin/index.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Email"
+msgstr "电子邮箱"
+
+#: lib/keila_web/templates/user_admin/index.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Here you can manage other users on your Keila instance."
+msgstr "在这里您可以管理您的Keila实例上的其他用户。"
+
+#: lib/keila_web/templates/shared_sender_admin/edit.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "My Shared Sender"
+msgstr "我的共享发件人"
+
+#: lib/keila_web/templates/shared_sender_admin/edit.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "New Shared Sender"
+msgstr "新建共享发件人"
+
+#: lib/keila_web/templates/shared_sender_admin/index.html.heex:4
+#, elixir-autogen, elixir-format
+msgid "Shared Senders"
+msgstr "共享发件人"
+
+#: lib/keila_web/templates/shared_sender_admin/index.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Shared Senders are available to all users on this instance of Keila."
+msgstr "共享发件人对此Keila实例上的所有用户可用。"
+
+#: lib/keila_web/templates/user_admin/index.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Sign-up"
+msgstr "注册"
+
+#: lib/keila_web/templates/shared_sender_admin/delete.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Type in the shared sender name to confirm its deletion:"
+msgstr "输入共享发件人名称以确认删除："
+
+#: lib/keila_web/templates/user_admin/index.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "Login"
+msgstr "登录"
+
+#: lib/keila_web/controllers/user_admin_controller.ex:43
+#, elixir-autogen, elixir-format
+msgid "User created successfully"
+msgstr ""
+
+#: lib/keila_web/controllers/user_admin_controller.ex:48
+#, elixir-autogen, elixir-format
+msgid "Could not create the user"
+msgstr "无法创建用户"
+
+#: lib/keila_web/templates/user_admin/index.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "Password"
+msgstr ""
+
+#: lib/keila_web/templates/user_admin/index.html.heex:72
+#, elixir-autogen, elixir-format
+msgid "Add user"
+msgstr "添加用户"
