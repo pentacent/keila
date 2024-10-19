@@ -1,7 +1,14 @@
 <div class="container flex py-8 sm:py-11 mb-4">
-  <h1 class="text-2xl sm:text-3xl text-gray-100">
-    <%= gettext("Administer Users") %>
-  </h1>
+  <div class="flex-grow gap-4 flex flex-col sm:flex-row sm:items-center">
+    <h1 class="text-2xl sm:text-3xl text-gray-100">
+      <%= gettext("Administer Users") %>
+    </h1>
+    <div class="flex-grow flex flex-row-reverse justify-end gap-4 sm:flex-row">
+      <a href={Routes.user_admin_path(@conn, :new)} class="button">
+        <%= render_icon(:plus) %> <%= gettext("Add user") %>
+      </a>
+    </div>
+  </div>
 </div>
 
 <div class="container mb-4">

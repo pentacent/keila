@@ -13,11 +13,12 @@
     <.form
       let={f}
       for={@conn}
-      as="contacts"
+      as="contact"
       action={Routes.contact_path(@conn, :delete, @current_project.id)}
       method="delete"
       class="flex flex-col gap-4"
     >
+      <%= hidden_input(f, :return, value: @return) %>
       <table class="my-8 w-full">
         <tr class="text-left">
           <th class="p-2 pl-0">Email</th>

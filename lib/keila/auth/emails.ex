@@ -5,9 +5,11 @@ defmodule Keila.Auth.Emails do
 
   @spec send!(atom(), map()) :: term() | no_return()
   def send!(email, params) do
+    config = Application.get_env(:keila, __MODULE__, [])
+
     email
     |> build(params)
-    |> Keila.Mailer.deliver!()
+    |> Keila.Mailer.deliver!(config)
   end
 
   @spec build(:activate, %{url: String.t(), user: Keila.Auth.User.t()}) :: term() | no_return()
@@ -107,6 +109,6 @@ defmodule Keila.Auth.Emails do
   end
 
   defp system_from_email() do
-    Application.get_env(:keila, Keila.Mailer) |> Keyword.fetch!(:from_email)
+    Application.get_env(:keila, __MODULE__) |> Keyword.fetch!(:from_email)
   end
 end

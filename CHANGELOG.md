@@ -2,15 +2,128 @@
 
 ## Unreleased
 
+## Version 0.15.0
+
+## Added
+- Support for MJML campaigns.
+- Forms can now be configured to redirect users after successful submission and when double opt-in
+  is required.
+- Forms can now be configured with a custom message when double opt-in is required
+
+## Improved
+- New email scheduler and rate limiter with significantly improved performance. (thanks @dompie
+  for supporting the development of this feature)
+
+## Fixed
+- Show correct state while campaign is being prepared for sending on stats page
+- Marking custom checkboxes as *required* actually requires users to check them now.
+  Fixes #328. (thanks @cyberwuulf for reporting)
+
+
+## Version 0.14.11
+## Changed
+- Increased database timeout when inserting recipients to 60 seconds
+
+
+## Version 0.14.10
+## Changed
+- The analytics UI now shows a maximum of 20 links to avoid performance issues
+  with large campaigns and individualized links
+
+
+## Version 0.14.9
+## Fixed
+- Enabled translation of system strings on public forms.
+
+
+## Version 0.14.8
+## Added
+- Campaigns with type `block` and `json_body` can now be created via the API. Implements #300 (thanks @dompie for suggesting)
+
+
+## Version 0.14.7
+## Added
+- Image blocks now allow the use of Liquid in `src` and other attributes.
+  Fixes #297 (thanks @dompie for reporting)
+
+## Fixed
+- Separators are now rendered more faithfully in the block editor
+
+
+## Version 0.14.6
+
+## Added
+- Added PATCH and POST API endpoints for updating just the data field of a
+  contact
+
+## Fixed
+- Liquid tags are now correctly rendered in layout blocks in the Block Editor
+  (thanks @dompie for reporting)
+- Fixed bug that caused "starts with" and "ends with" to be inverted in
+  segment editor (thanks @dompie for reporting)
+
+
+## Version 0.14.5
+
+## Changed
+- Creating and updating contacts via the API now allows setting the `status`
+  field.
+- Contacts list is now sorted in decending order by default
+
+## Fixed
+- Segments are now guaranteed to be initialized with a valid (empty) filter,
+  avoiding potential crashes with `nil` filters.
+- `MAILER_SMTP_FROM_EMAIL` is now used for sending system emails again.
+
+
+## Version 0.14.4
+
+## Fixed
+- Avoid potential partial merging of system sender config with user-configured senders
+
+
+## Version 0.14.3
+
+## Fixed
+- Only support TLSv1.2 for STARTTLS SMTP Senders to avoid issues with
+  non-compliant TLSv1.3 implementation in OTP
+
+## Version 0.14.2
+
+## Improved
+- Added new Gmail user agent to avoid tracking invalid clicks/opens
+- Return to list of unsubscribed/unreachable contacts after delete action from
+  one of those pages. Implements #193 (thanks @digitalfredy for reporting)
+- It's now possible to choose between the US and EU API endpoints for Mailgun senders (thanks @harryfear for reporting)
+- Improvements to German translation (thanks @dompie)
+
+## Fixed
+- Clicking "Delete all" on the contacts list no longer causes a server error
+  when no contacts have been selected. Fixes #260 (thanks @CSDUMMI for reporting)
+- Fixed connection errors when using SMTP senders with STARTTLS (thanks @beep and @CodeOfTim for reporting)
+
+
+## Version 0.14.0
+
+Custom signup form fields + contacts search 🔎
+
 ### Added
+- Custom fields (text, checkbox, dropdown, tags, numbers) can now be added to
+  contact signup forms. Implements #135
+- Search and sorting on contacts page
 - Added buttons for inserting images, links, and buttons to plain Markdown
   editor. Fixes #255 (thanks @lukaprincic for suggesting)
+
+## Improved
+- Errors in signup forms are displayed with a prominent red border and bold text
+  now.
 
 ### Fixed
 - If the `status` column is present in a CSV import, only rows where this column
   is set to "active" are imported. Fixes #253 (thanks @VZsI for reporting)
 - Live preview in plain Markdown editor no longer disappears when switching to
   rich editor and back.
+- Fixed error when saving a contact with JSON data and a constraint error
 
 
 ## Version 0.13.1
@@ -22,7 +135,7 @@
 
 ## Version 0.13.0
 
-Double Opt-In ✅ 
+Double Opt-In ✅
 
 ### Added
 - Added support for double opt-in/confirmed opt in.
@@ -155,7 +268,7 @@ Better Campaign Analytics 📈
 ### Changed
 - Improved compatibility with SMTP servers by relaxing `gen_smtp` SSL/TLS settings
 - Upgraded to Elixir 1.14
-- Ugraded to Tailwind 3 
+- Ugraded to Tailwind 3
 - Added success hint when copying API key to clipboard
 
 ### Fixed

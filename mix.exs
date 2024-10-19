@@ -4,7 +4,7 @@ defmodule Keila.MixProject do
   def project do
     [
       app: :keila,
-      version: "0.13.1",
+      version: "0.15.0",
       elixir: "~> 1.15",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix] ++ Mix.compilers(),
@@ -71,7 +71,7 @@ defmodule Keila.MixProject do
       {:argon2_elixir, "~> 2.3"},
       {:httpoison, "~> 1.8"},
       {:nimble_csv, "~> 1.1"},
-      {:oban, "~> 2.15"},
+      {:oban, "~> 2.18"},
       {:solid, "~> 0.14.1"},
       {:earmark, "~> 1.4"},
       {:tzdata, "~> 1.1"},
@@ -81,7 +81,8 @@ defmodule Keila.MixProject do
       {:php_serializer, "~> 2.0"},
       {:open_api_spex, "~> 3.11"},
       {:ex_rated, "~> 2.1"},
-      {:tls_certificate_check, "~> 1.20"}
+      {:tls_certificate_check, "~> 1.20"},
+      {:mjml, "~> 4.0"}
     ]
   end
 

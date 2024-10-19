@@ -5,6 +5,21 @@
   <% end %>
 </div>
 
+<div class="form-row">
+  <%= label(@form, :mailgun_base_url, "Base URL") %>
+  <%= with_validation(@form, :mailgun_base_url) do %>
+    <%= select(
+      @form,
+      :mailgun_base_url,
+      [
+        "https://api.mailgun.net/v3",
+        "https://api.eu.mailgun.net/v3"
+      ],
+      class: "text-black"
+    ) %>
+  <% end %>
+</div>
+
 <%= if is_nil(input_value(@form, :mailgun_api_key)) do %>
   <div class="form-row">
     <%= label(@form, :mailgun_api_key, gettext("API Key")) %>

@@ -40,7 +40,6 @@
     id="form"
     action={Routes.form_path(@socket, :post_edit, @current_project.id, @form.id)}
     phx-change="form_updated"
-    phx-update="ignore"
     class="w-1/3"
     x-on:change="setUnsavedReminder(true)"
   >
@@ -103,12 +102,6 @@
           <% end %>
         </div>
         <div class="flex flex-col">
-          <%= label(fs, :success_text, gettext("Thank you message")) %>
-          <%= with_validation(fs, :success_text) do %>
-            <%= text_input(fs, :success_text, class: "text-black") %>
-          <% end %>
-        </div>
-        <div class="flex flex-col">
           <%= label(fs, :fine_print, gettext("Fine print")) %>
           <%= with_validation(fs, :fine_print) do %>
             <%= textarea(fs, :fine_print, class: "text-black", rows: 8) %>
@@ -120,6 +113,18 @@
             <%= gettext("Require captcha") %>
           <% end %>
         <% end %>
+        <div class="flex flex-col">
+          <%= label(fs, :success_text, gettext("Thank you message")) %>
+          <%= with_validation(fs, :success_text) do %>
+            <%= text_input(fs, :success_text, class: "text-black") %>
+          <% end %>
+        </div>
+        <div class="flex flex-col">
+          <%= label(fs, :success_text, gettext("Thank you redirect URL")) %>
+          <%= with_validation(fs, :success_url) do %>
+            <%= url_input(fs, :success_url, class: "text-black") %>
+          <% end %>
+        </div>
         <%= with_validation(fs, :csrf_disabled) do %>
           <%= label(fs, :csrf_disabled) do %>
             <%= checkbox(fs, :csrf_disabled, class: "text-emerald-500") %>
@@ -134,39 +139,86 @@
         <%= gettext("Fields") %>
       </h2>
 
-      <%= inputs_for(f, :field_settings, fn fs -> %>
-        <div
-          class="flex flex-col gap-2"
-          x-data="{cast: $el.querySelector('input[type=checkbox]').checked}"
-        >
-          <h3 class="font-bold">
-            <%= case fs.data.field || fs.source.changes[:field] || "" do %>
-              <% "first_name" -> %>
-                <%= gettext("First name") %>
-              <% "last_name" -> %>
-                <%= gettext("Last name") %>
-              <% other -> %>
-                <%= String.capitalize(other) %>
-            <% end %>
-          </h3>
-
+      <%= for fs <- inputs_for(f, :field_settings) do %>
+        <div class="flex flex-col gap-2" x-data="{cast: $el.querySelector('input.cast').checked}">
+          <%= hidden_inputs_for(fs) %>
           <%= hidden_input(fs, :field) %>
+          <% field = fs.source.changes[:field] || fs.data.field %>
+          <% key = fs.source.changes[:key] || fs.data.key %>
 
-          <%= with_validation(fs, :cast) do %>
-            <%= label(fs, :cast) do %>
-              <%= checkbox(fs, :cast, x_model: "cast") %>
-              <%= gettext("Include") %>
-            <% end %>
+          <%= case field do %>
+            <% :email -> %>
+              <h3 class="font-bold">
+                <%= checkbox(fs, :cast, x_model: "cast", class: "cast hidden") %>
+                <%= gettext("Email") %>
+              </h3>
+            <% :first_name -> %>
+              <h3 class="font-bold pt-4 border-solid border-t-2 border-gray-600">
+                <%= label(fs, :cast) do %>
+                  <%= checkbox(fs, :cast, x_model: "cast", class: "cast") %>
+                  <%= gettext("First name") %>
+                <% end %>
+              </h3>
+            <% :last_name -> %>
+              <h3 class="font-bold pt-4 border-solid border-t-2 border-gray-600">
+                <%= label(fs, :cast) do %>
+                  <%= checkbox(fs, :cast, x_model: "cast", class: "cast") %>
+                  <%= gettext("Last name") %>
+                <% end %>
+              </h3>
+            <% :data -> %>
+              <h3 class="font-bold pt-4 border-solid border-t-2 border-gray-600">
+                <%= label(fs, :cast) do %>
+                  <%= checkbox(fs, :cast, x_model: "cast", class: "cast") %>
+                  <%= gettext("Custom field: data.%{key}", key: key) %>
+                <% end %>
+              </h3>
           <% end %>
 
-          <div class="flex flex-col" x-show="cast">
-            <%= with_validation(fs, :required) do %>
-              <%= label(fs, :required) do %>
-                <%= checkbox(fs, :required) %>
-                <%= gettext("Require") %>
+          <%= if field != :email do %>
+            <div class="flex flex-col" x-show="cast">
+              <%= with_validation(fs, :required) do %>
+                <%= label(fs, :required) do %>
+                  <%= checkbox(fs, :required) %>
+                  <%= gettext("Require") %>
+                <% end %>
               <% end %>
-            <% end %>
-          </div>
+            </div>
+          <% end %>
+
+          <%= if field == :data do %>
+            <div class="flex flex-col" x-show="cast">
+              <%= select(
+                fs,
+                :type,
+                [
+                  {gettext("Text"), "string"},
+                  {gettext("Email"), "email"},
+                  {gettext("Number"), "integer"},
+                  {gettext("Checkbox"), "boolean"},
+                  {gettext("Dropdown"), "enum"},
+                  {gettext("Tags"), "tags"}
+                ],
+                class: "text-black"
+              ) %>
+            </div>
+            <div class="flex flex-col" x-show="cast">
+              <%= label(fs, :key, "Data Key") %>
+              <%= with_validation(fs, :key) do %>
+                <%= text_input(fs, :key, class: "text-black", required: true) %>
+              <% end %>
+              <div class="text-xs">
+                <%= gettext_md(
+                  """
+                  You can use data from this field as
+                  `{{ contact.data.%{key} }}` in your emails or segments.
+                  """,
+                  key: key
+                ) %>
+              </div>
+              <br />
+            </div>
+          <% end %>
 
           <div class="flex flex-col" x-show="cast">
             <%= label(fs, :label, "Label") %>
@@ -175,14 +227,78 @@
             <% end %>
           </div>
 
-          <div class="flex flex-col" x-show="cast">
-            <%= label(fs, :placeholder, "Placeholder") %>
-            <%= with_validation(fs, :placeholder) do %>
-              <%= text_input(fs, :placeholder, class: "text-black") %>
-            <% end %>
-          </div>
+          <%= case Ecto.Changeset.get_field(fs.source, :type) do %>
+            <% type when type in [:string, :email, nil] -> %>
+              <div class="flex flex-col" x-show="cast">
+                <%= label(fs, :placeholder, "Placeholder") %>
+                <%= with_validation(fs, :placeholder) do %>
+                  <%= text_input(fs, :placeholder, class: "text-black") %>
+                <% end %>
+              </div>
+            <% type when type in [:enum, :tags] -> %>
+              <div class="flex flex-col mt-2" x-show="cast">
+                <%= label(fs, :allowed_values, "Options") %>
+                <table class="w-full">
+                  <tr>
+                    <th>Value</th>
+                    <th>Label</th>
+                    <th></th>
+                  </tr>
+                  <%= inputs_for(fs, :allowed_values, fn fo -> %>
+                    <tr>
+                      <td>
+                        <%= text_input(fo, :value, class: "w-full bg-transparent text-white") %>
+                      </td>
+                      <td>
+                        <%= text_input(fo, :label, class: "w-full bg-transparent text-white") %>
+                      </td>
+                      <td>
+                        <button
+                          class="button button--text"
+                          type="button"
+                          phx-click="remove_allowed_value"
+                          phx-value-fs-id={Ecto.Changeset.get_field(fs.source, :id)}
+                          phx-value-av-id={Ecto.Changeset.get_field(fo.source, :id)}
+                        >
+                          <span class="w-4"><%= render_icon(:trash) %></span>
+                        </button>
+                      </td>
+                    </tr>
+                  <% end) %>
+                </table>
+                <button
+                  type="button"
+                  class="button button--sm inline-flex self-start mt-4"
+                  phx-click="add_allowed_value"
+                  phx-value-fs-id={Ecto.Changeset.get_field(fs.source, :id)}
+                >
+                  <%= gettext("Add option") %>
+                </button>
+              </div>
+            <% _other -> %>
+              <br />
+          <% end %>
+
+          <%= if field == :data do %>
+            <div>
+              <button
+                class="button button--text"
+                type="button"
+                phx-click="remove_custom_field"
+                phx-value-fs-id={Ecto.Changeset.get_field(fs.source, :id)}
+              >
+                <%= gettext("Remove field") %>
+                <span class="w-4"><%= render_icon(:trash) %></span>
+              </button>
+            </div>
+          <% end %>
         </div>
-      <% end) %>
+      <% end %>
+      <div class="mt-4">
+        <button type="button" class="button button--cta" phx-click="add_custom_field">
+          <%= render_icon(:plus) %> <%= gettext("Add custom field") %>
+        </button>
+      </div>
     </div>
 
     <div class="tab-content bg-gray-800" x-show="tab === 'double-opt-in'">
@@ -276,16 +392,16 @@
 
             <template x-if="enable">
               <div class="form-row">
-                <%= label(fs, :double_opt_in_subject, "Custom email text") %>
+                <%= label(fs, :double_opt_in_markdown_body, "Custom email text") %>
                 <div class="text-xs">
                   <%= gettext_md("""
                     You may use Liquid and Markdown in the email body.
-                    
+
                     Use `[Confirm]({{ double_opt_in_link }})` to include the opt-in link.
                   """) %>
                 </div>
                 <br />
-                <%= with_validation(fs, :double_opt_in_text_body) do %>
+                <%= with_validation(fs, :double_opt_in_markdown_body) do %>
                   <%= textarea(fs, :double_opt_in_markdown_body,
                     class: "text-black",
                     rows: 6,
@@ -296,6 +412,36 @@
                       ### [Confirm subscription]({{ double_opt_in_link }})
                       """)
                   ) %>
+                <% end %>
+              </div>
+            </template>
+
+            <template x-if="enable">
+              <div class="form-row">
+                <%= label(fs, :double_opt_in_message, gettext("Double Opt-in Info Message")) %>
+                <%= with_validation(fs, :double_opt_in_message) do %>
+                  <div class="text-xs">
+                    <%= gettext_md("""
+                      Custom message that is shown when a user submits the form and double opt-in
+                      is required.
+                    """) %>
+                  </div>
+                  <%= text_input(fs, :double_opt_in_message, class: "text-black") %>
+                <% end %>
+              </div>
+            </template>
+
+            <template x-if="enable">
+              <div class="form-row">
+                <%= label(fs, :success_text, gettext("Double Opt-in Info Redirect URL")) %>
+                <%= with_validation(fs, :double_opt_in_url) do %>
+                  <div class="text-xs">
+                    <%= gettext_md("""
+                      Custom URL to which users are redirected when they submit the form and double opt-in
+                      is required.
+                    """) %>
+                  </div>
+                  <%= url_input(fs, :double_opt_in_url, class: "text-black") %>
                 <% end %>
               </div>
             </template>
@@ -389,7 +535,7 @@
         <%= KeilaWeb.PublicFormView.render("show.html",
           form: @form_preview,
           mode: :preview,
-          changeset: Ecto.Changeset.change(%Keila.Contacts.Contact{})
+          changeset: Keila.Contacts.Contact.changeset_from_form(%{}, @form_preview)
         ) %>
       </div>
     <% end %>

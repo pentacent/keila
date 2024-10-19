@@ -6,6 +6,8 @@
     "deploy": "NODE_ENV=production tailwindcss --input=css/app.scss --output=../priv/static/css/app.css --postcss --minify"
   },
   "dependencies": {
+    "@codemirror/basic-setup": "^0.20.0",
+    "@codemirror/lang-html": "^6.4.9",
     "@editorjs/editorjs": "git+https://github.com/pentacent/editor.js.git#ff6e6ac3272f29e02229cd97ebffa5acf6c0e0fe",
     "@editorjs/header": "^2.7.0",
     "@editorjs/image": "^2.8.1",
@@ -15,6 +17,7 @@
     "@editorjs/quote": "^2.5.0",
     "alpinejs": "^2.8.0",
     "chart.js": "^4.1.1",
+    "codemirror": "^6.0.1",
     "nprogress": "^0.2.0",
     "phoenix": "file:../deps/phoenix",
     "phoenix_html": "file:../deps/phoenix_html",

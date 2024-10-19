@@ -26,6 +26,21 @@ defmodule KeilaWeb.PublicFormControllerTest do
       assert contact.email == params["email"]
     end
 
+    test "ignores submissions with honeypot field", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+      form = insert!(:contacts_form, project_id: project.id, settings: %{captcha_required: false})
+      params = params(:contact, project_id: project.id)
+
+      conn =
+        post(conn, Routes.public_form_path(conn, :show, form.id),
+          contact: params,
+          h: %{foo: "bar"}
+        )
+
+      assert html_response(conn, 200) =~ ~r{Thank you}
+      assert [] == Contacts.get_project_contacts(project.id)
+    end
+
     test "Requires Captcha and validates fields", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
       form = insert!(:contacts_form, project_id: project.id, settings: %{captcha_required: true})
@@ -33,6 +48,20 @@ defmodule KeilaWeb.PublicFormControllerTest do
       assert html_response(conn, 400) =~ ~r{Please complete the captcha}
       assert html_response(conn, 400) =~ ~r{can&#39;t be blank}
       assert [] == Contacts.get_project_contacts(project.id)
+    end
+
+    test "redirects if settings.success_url is set", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+
+      form =
+        insert!(:contacts_form,
+          project_id: project.id,
+          settings: %{captcha_required: false, success_url: "https://example.com"}
+        )
+
+      params = params(:contact, project_id: project.id)
+      conn = post(conn, Routes.public_form_path(conn, :show, form.id), contact: params)
+      assert redirected_to(conn, 302) == "https://example.com"
     end
   end
 

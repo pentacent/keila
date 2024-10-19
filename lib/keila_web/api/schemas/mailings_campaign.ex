@@ -23,6 +23,32 @@ defmodule KeilaWeb.Api.Schemas.MailingsCampaign do
       {% endfor %}
       """
     },
+    json_body: %{
+      type: :map,
+      example: """
+      {
+        "blocks": [{
+          "id":"ff0011",
+          "type":"paragraph",
+          "data": {"text": "Hello, I am a block campaign!"}
+        }]
+      }
+      """
+    },
+    mjml_body: %{
+      type: :string,
+      example: """
+      <mjml>
+        <mj-body>
+          <mj-section>
+            <mj-column>
+              <mj-text>Hello I’m an MJML campaign!</mj-text>
+            </mj-column>
+          </mj-section>
+        </mj-body>
+      </mjml>
+      """
+    },
     data: %{
       type: :map,
       example: %{
@@ -38,7 +64,7 @@ defmodule KeilaWeb.Api.Schemas.MailingsCampaign do
         type: %{
           type: :string,
           required: true,
-          enum: ["markdown", "text"],
+          enum: ["markdown", "text", "block", "mjml"],
           example: "markdown"
         }
       }
@@ -101,6 +127,8 @@ defmodule KeilaWeb.Api.Schemas.MailingsCampaign.Params do
   @allowed_properties [
     :subject,
     :text_body,
+    :json_body,
+    :mjml_body,
     :settings,
     :template_id,
     :sender_id,

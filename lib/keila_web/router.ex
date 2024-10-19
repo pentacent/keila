@@ -69,6 +69,8 @@ defmodule KeilaWeb.Router do
     post "/projects/new", ProjectController, :post_new
 
     get "/admin/users", UserAdminController, :index
+    get "/admin/users/new", UserAdminController, :new
+    post "/admin/users", UserAdminController, :create
     delete "/admin/users", UserAdminController, :delete
     get "/admin/users/:id/impersonate", UserAdminController, :impersonate
     get "/admin/users/:id/credits", UserAdminController, :show_credits
@@ -146,6 +148,7 @@ defmodule KeilaWeb.Router do
     plug :put_layout, false
     plug :put_secure_browser_headers
     plug KeilaWeb.Meta.Plug
+    plug KeilaWeb.PutLocalePlug
   end
 
   scope "/", KeilaWeb do
@@ -192,6 +195,8 @@ defmodule KeilaWeb.Router do
     pipe_through [:api, :open_api]
 
     resources "/contacts", ApiContactController, only: [:index, :show, :create, :update, :delete]
+    patch "/contacts/:id/data", ApiContactController, :update_data
+    post "/contacts/:id/data", ApiContactController, :replace_data
 
     resources "/campaigns", ApiCampaignController,
       only: [:index, :show, :create, :update, :delete]

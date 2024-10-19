@@ -91,7 +91,8 @@ config :keila, Oban,
     {Oban.Plugins.Pruner, max_age: 1800},
     {Oban.Plugins.Cron,
      crontab: [
-       {"* * * * *", Keila.Mailings.DeliverScheduledCampaignsWorker}
+       {"* * * * *", Keila.Mailings.DeliverScheduledCampaignsWorker},
+       {"* * * * *", Keila.Mailings.ScheduleWorker}
      ]}
   ]
 
@@ -108,7 +109,7 @@ config :keila, KeilaWeb.Gettext,
   default_locale: "en",
   locales: ["de", "en"]
 
-config(:keila, Keila.Mailer, from_email: "keila@localhost")
+config(:keila, Keila.Auth.Emails, from_email: "keila@localhost")
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

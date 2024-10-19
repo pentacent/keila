@@ -1,6 +1,7 @@
 import BlockEditor from "../campaign-editors/block"
 import { MarkdownEditor } from "../campaign-editors/markdown"
 import MarkdownSimpleEditor from "../campaign-editors/markdown-simple"
+import MjmlEditor from "../campaign-editors/mjml"
 
 const putHtmlPreview = (el) => {
   const content = el.innerText
@@ -38,6 +39,13 @@ const BlockEditorHook = {
   }
 }
 
+const MjmlEditorHook = {
+  mounted() {
+    let place = this.el.querySelector(".editor")
+    new MjmlEditor(place, document.querySelector("#campaign_mjml_body"))
+  }
+}
+
 const HtmlPreviewHook = {
   mounted() {
     putHtmlPreview(this.el)
@@ -51,5 +59,6 @@ export {
   BlockEditorHook as BlockEditor,
   HtmlPreviewHook as HtmlPreview,
   MarkdownEditorHook as MarkdownEditor,
-  MarkdownSimpleEditorHook as MarkdownSimpleEditor
+  MarkdownSimpleEditorHook as MarkdownSimpleEditor,
+  MjmlEditorHook as MjmlEditor
 }

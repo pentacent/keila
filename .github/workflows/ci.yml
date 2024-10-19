@@ -98,3 +98,15 @@ jobs:
           push: true
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,mode=max,dest=/tmp/.buildx-cache
+      - uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./ops/Dockerfile
+          tags: |
+            ghcr.io/pentacent/keila:with-tag-latest
+            ghcr.io/pentacent/keila:with-tag-${{ github.sha }}
+          labels: |
+            service=keila
+          push: true
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,mode=max,dest=/tmp/.buildx-cache

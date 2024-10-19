@@ -29,6 +29,24 @@ defmodule KeilaWeb.PublicFormControllerDoubleOptInTest do
         args: %{"form_params_id" => form_params.id}
       )
     end
+
+    test "redirects to double_opt_in_url if set", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+
+      form =
+        insert!(:contacts_form,
+          project_id: project.id,
+          settings: %{
+            captcha_required: false,
+            double_opt_in_required: true,
+            double_opt_in_url: "https://example.com"
+          }
+        )
+
+      params = params(:contact) |> Map.delete(:project_id)
+      conn = post(conn, Routes.public_form_path(conn, :show, form.id), contact: params)
+      assert redirected_to(conn, 302) == form.settings.double_opt_in_url
+    end
   end
 
   @tag :double_opt_in
@@ -52,6 +70,45 @@ defmodule KeilaWeb.PublicFormControllerDoubleOptInTest do
       assert html_response(conn, 200)
 
       assert [contact = %Contact{email: ^email}] = Contacts.get_project_contacts(project.id)
+      assert contact.double_opt_in_at
+    end
+
+    test "also works with custom data fields", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+
+      form =
+        insert!(:contacts_form,
+          project_id: project.id,
+          settings: %{captcha_required: false, double_opt_in_required: true},
+          field_settings: [
+            %{field: :email, cast: true, required: true},
+            %{
+              field: :data,
+              key: "custom",
+              cast: true,
+              required: true,
+              type: :enum,
+              allowed_values: [%{label: "Foo", value: "foo"}]
+            }
+          ]
+        )
+
+      email = "test@example.com"
+      custom = "foo"
+
+      {:ok, form_params} =
+        Contacts.create_form_params(form.id, %{email: email, data: %{"custom" => custom}})
+
+      hmac = Contacts.double_opt_in_hmac(form.id, form_params.id)
+
+      conn =
+        get(conn, Routes.public_form_path(conn, :double_opt_in, form.id, form_params.id, hmac))
+
+      assert html_response(conn, 200)
+
+      assert [contact = %Contact{email: ^email, data: %{"custom" => ^custom}}] =
+               Contacts.get_project_contacts(project.id)
+
       assert contact.double_opt_in_at
     end
   end

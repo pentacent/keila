@@ -82,7 +82,11 @@ html {
 }
 
 .form-errors {
-  @apply italic;
+  @apply py-2;
+
+  .invalid-feedback {
+    @apply p-1 italic font-bold border-2 border-red-500 rounded rounded-l-none
+  }
 }
 
 select,
@@ -195,7 +199,7 @@ Block Editor Styles
   margin: 0 auto;
   margin-right: auto !important;
   background: white;
-  padding-bottom: 0 !important;
+  padding-bottom: 20px !important;
 
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial,
@@ -241,11 +245,12 @@ Block Editor Styles
 }
 
 .ce-block + .ce-block--type-separator > div {
-  margin-top: -20px;
+  margin-top: -1px 0;
+  padding: 1px 0;
 }
 
 .ce-block.ce-block--type-separator > * > :last-child {
-  padding-bottom: 0;
+  padding-bottom: 0px;
 }
 }
 

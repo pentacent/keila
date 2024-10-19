@@ -19,17 +19,18 @@ For smaller newsletters, you can use your own email inbox to send out campaigns.
 For larger newsletter projects, AWS SES, Sendgrid, Mailgun, and Postmark are supported in addition
 to SMTP.
 
-![Screenshot of the Keila campaign editor showing the WYSIWYG editor and the default template](.github/assets/keila-20211203.jpg)
+![Screenshot of the Keila campaign editor showing the WYSIWYG editor and the default template](https://www.keila.io/_astro/keila-2024-05-01.BUp8L2VZ.png)
 
 ## Give Keila a Try!
 
-You can give a hosted version of Keila a try at [keila.io/try](https://www.keila.io/try).
+You can give a hosted version of Keila a try on [app.keila.io](https://app.keila.io/auth/register).
+More information about the pricing of Keila Cloud [here](https://www.keila.io/pricing).
 
 If you want to deploy Keila on your own server, you can use the official Docker
 image `pentacent/keila` or use the [sample Docker Compose config](ops/docker-compose.yml)
 in this repo.
 
-Follow the [Installation Docs](https://keila.io/docs/installation)
+Follow the [Installation Docs](https://www.keila.io/docs/installation)
 for more details.
 
 ## Contributing

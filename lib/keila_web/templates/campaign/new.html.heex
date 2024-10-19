@@ -121,6 +121,21 @@
               beta
             </span>
           </label>
+
+          <%= radio_button(fs, :type, "mjml", class: "hidden", x_model: "type") %>
+          <label
+            for={input_id(fs, :type, "mjml")}
+            class="bg-gray-800 p-4"
+            x-bind:class="type == 'mjml' && 'outline outline-2 outline-green-500'"
+          >
+            <h3 class="text-bold text-xl"><%= gettext("MJML") %></h3>
+            <div class="flex w-24 h-24 bg-gradient-to-br from-gray-200 to-gray-300 rounded text-gray-600 p-2 my-4">
+              <%= render_icon(:mjml) %>
+            </div>
+            <p class="text-sm">
+              <%= gettext("Build fully customized responsive email layouts with MJML.") %>
+            </p>
+          </label>
         </div>
       <% end) %>
     </div>
@@ -148,7 +163,7 @@
       </div>
     </template>
 
-    <template x-if="type === 'markdown' || type === 'block'">
+    <template x-if="type === 'markdown' || type === 'block' || type === 'mjml'">
       <div class="flex flex-col">
         <%= label(f, :preview_text) do %>
           <%= gettext("Preview Text") %><br />

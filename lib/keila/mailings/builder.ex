@@ -29,12 +29,10 @@ defmodule Keila.Mailings.Builder do
   `contact` is automatically merged into assigns. If no contact is provided
   (e.g. when building a preview), a default contact is injected.
 
-  The Liquid tempplating language can be used within email bodies and subjects.
+  The Liquid templating language can be used within email bodies and subjects.
 
   Adds `X-Keila-Invalid` header if there was an error creating the email.
   Such emails should not be delivered.
-
-  TODO: Right now, only plain-text campaigns are supported.
   """
   @spec build(Campaign.t(), Recipient.t() | Contact.t(), map()) :: Swoosh.Email.t()
   def build(campaign, recipient_or_contact \\ @default_contact, assigns) do
@@ -203,6 +201,12 @@ defmodule Keila.Mailings.Builder do
     end
   end
 
+  defp put_body(email, campaign = %{settings: %{type: :mjml}}, assigns) do
+    mjml_content = campaign.mjml_body || ""
+
+    __MODULE__.MJML.put_body(email, mjml_content, assigns)
+  end
+
   defp fetch_styles(campaign)
 
   defp fetch_styles(%Campaign{template: %Template{styles: styles}}) when is_list(styles) do
@@ -274,6 +278,13 @@ defmodule Keila.Mailings.Builder do
     end)
   end
 
+  # Layout blocks don’t have "blocks" not nested within "data"
+  defp apply_liquid_to_block(block = %{"blocks" => blocks}, assigns) do
+    {status, rendered_blocks} = apply_liquid_to_blocks(blocks, assigns)
+    {status, Map.put(block, "blocks", rendered_blocks)}
+  end
+
+  # Regular blocks have everything that needs to be rendered in "data"
   defp apply_liquid_to_block(block, assigns) do
     Map.get(block, "data", %{})
     |> Enum.reduce({:ok, %{}}, fn
@@ -292,10 +303,36 @@ defmodule Keila.Mailings.Builder do
         updated_status = if status == :ok && rendered_status == :ok, do: :ok, else: :error
         {updated_status, Map.put(data, key, rendered_blocks)}
 
+      {key, value}, {status, data} when is_map(value) ->
+        {rendered_status, rendered_value} = apply_liquid_to_map(value, assigns)
+        updated_status = if status == :ok && rendered_status == :ok, do: :ok, else: :error
+        {updated_status, Map.put(data, key, rendered_value)}
+
       {key, value}, {status, data} ->
         {status, Map.put(data, key, value)}
     end)
     |> then(fn {status, data} -> {status, Map.put(block, "data", data)} end)
+  end
+
+  defp apply_liquid_to_map(map, assigns) do
+    map
+    |> Enum.reduce(
+      {:ok, %{}},
+      fn
+        {key, value}, {status, map} when is_binary(value) ->
+          case render_liquid(value, assigns) do
+            {:ok, rendered_value} ->
+              updated_status = if status == :ok, do: :ok, else: :error
+              {updated_status, Map.put(map, key, rendered_value)}
+
+            {:error, reason} ->
+              {:error, Map.put(map, key, reason)}
+          end
+
+        {key, value}, {status, map} ->
+          {status, Map.put(map, key, value)}
+      end
+    )
   end
 
   defp put_unsubscribe_header(email, unsubscribe_link) do

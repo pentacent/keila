@@ -121,3 +121,23 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Login as"
 msgstr ""
+
+#: lib/keila_web/controllers/user_admin_controller.ex:43
+#, elixir-autogen, elixir-format
+msgid "User created successfully"
+msgstr ""
+
+#: lib/keila_web/controllers/user_admin_controller.ex:48
+#, elixir-autogen, elixir-format
+msgid "Could not create the user"
+msgstr ""
+
+#: lib/keila_web/templates/user_admin/index.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "Password"
+msgstr ""
+
+#: lib/keila_web/templates/user_admin/index.html.heex:72
+#, elixir-autogen, elixir-format
+msgid "Add user"
+msgstr ""

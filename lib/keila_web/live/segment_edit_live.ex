@@ -295,10 +295,10 @@ defmodule KeilaWeb.SegmentEditLive do
         %{"value" => String.slice(value, 1..-2), "widget" => "includes"}
 
       String.starts_with?(value, "%") ->
-        %{"value" => String.slice(value, 1..-1), "widget" => "starts_with"}
+        %{"value" => String.slice(value, 1..-1), "widget" => "ends_with"}
 
       String.ends_with?(value, "%") ->
-        %{"value" => String.slice(value, 0..-2), "widget" => "ends_with"}
+        %{"value" => String.slice(value, 0..-2), "widget" => "starts_with"}
     end
   end
 
