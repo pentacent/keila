@@ -77,7 +77,7 @@ defmodule KeilaWeb.PublicFormView do
   @honeypot_field_name "h[url]"
   defp render_honeypot(_form) do
     [
-      content_tag(:input, "",
+      tag(:input,
         aria_hidden: "true",
         name: @honeypot_field_name,
         style: "display: none",
