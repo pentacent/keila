@@ -112,6 +112,15 @@ defmodule Keila.ContactsTest do
   end
 
   @tag :contacts
+  test "Get project contact by ID and email", %{project: project} do
+    contact1 = insert!(:contact, %{project_id: project.id})
+    contact2 = insert!(:contact, %{project_id: project.id})
+
+    assert contact1 == Contacts.get_project_contact(contact1.project_id, contact1.id)
+    assert contact2 == Contacts.get_project_contact_by_email(contact2.project_id, contact2.email)
+  end
+
+  @tag :contacts
   test "List project contacts", %{project: project} do
     contact1 = insert!(:contact, %{project_id: project.id})
     contact2 = insert!(:contact, %{project_id: project.id})
