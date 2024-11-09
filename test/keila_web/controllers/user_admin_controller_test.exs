@@ -40,7 +40,7 @@ defmodule KeilaWeb.UserAdminControllerTest do
 
     @tag :admin_controller
     test "is only accessible to users with admin permissions", %{conn: conn} do
-      {root, user} = with_seed()
+      {_root, user} = with_seed()
       conn = with_login(conn, user: user)
 
       params = %{"email" => user.email, "password" => user.password}
