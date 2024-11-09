@@ -17,6 +17,7 @@
       for={@changeset}
       action={Routes.shared_sender_admin_path(@conn, :delete, @shared_sender.id)}
       class="mt-8 max-w-md flex flex-col gap-4"
+      method="delete"
     >
       <div class="form-row">
         <%= label(
