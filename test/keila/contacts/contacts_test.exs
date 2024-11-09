@@ -33,6 +33,25 @@ defmodule Keila.ContactsTest do
   end
 
   @tag :contacts
+  test "first_name and last_name are limited to 50 characters", %{project: project} do
+    assert {:error, _changeset} =
+             Contacts.create_contact(
+               project.id,
+               params(:contact,
+                 first_name: "This is not a real first name it's actually spam!!!"
+               )
+             )
+
+    assert {:error, _changeset} =
+             Contacts.create_contact(
+               project.id,
+               params(:contact,
+                 last_name: "This is not actually a genuine last name it's spam!!!"
+               )
+             )
+  end
+
+  @tag :contacts
   test "Create contact with dynamic cast/validation options from form", %{project: project} do
     params = %{email: email, first_name: _} = build(:contact) |> Map.from_struct()
 

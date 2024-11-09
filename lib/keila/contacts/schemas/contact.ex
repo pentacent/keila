@@ -27,6 +27,7 @@ defmodule Keila.Contacts.Contact do
     |> cast(params, [:email, :first_name, :last_name, :project_id, :data])
     |> put_change(:project_id, project_id)
     |> validate_email()
+    |> validate_max_name_length()
     |> check_data_size_constraint()
   end
 
@@ -42,6 +43,7 @@ defmodule Keila.Contacts.Contact do
     struct
     |> cast(params, [:email, :first_name, :last_name, :data])
     |> validate_email()
+    |> validate_max_name_length()
     |> check_data_size_constraint()
     |> maybe_remove_double_opt_in_at()
   end
@@ -73,6 +75,7 @@ defmodule Keila.Contacts.Contact do
     |> cast(params, cast_fields)
     |> validate_dynamic_required(required_fields)
     |> validate_email()
+    |> validate_max_name_length()
     |> validate_double_opt_in(form, form_params_id, double_opt_in_hmac)
     |> put_change(:project_id, form.project_id)
     |> EctoStringMap.cast_string_map(:data, field_mapping)
@@ -128,5 +131,11 @@ defmodule Keila.Contacts.Contact do
 
   defp validate_double_opt_in(changeset, _, _, _) do
     add_error(changeset, :double_opt_in, "HMAC missing")
+  end
+
+  defp validate_max_name_length(changeset) do
+    changeset
+    |> validate_length(:first_name, max: 50)
+    |> validate_length(:last_name, max: 50)
   end
 end
