@@ -37,7 +37,7 @@ defmodule KeilaWeb.UserAdminController do
 
   @spec create(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def create(conn, %{"user" => user_params}) do
-    case Auth.create_user(user_params) do
+    case Auth.create_user(user_params, url_fn: &Routes.auth_url(conn, :activate, &1)) do
       {:ok, _user} ->
         conn
         |> put_flash(:info, gettext("User created successfully"))
