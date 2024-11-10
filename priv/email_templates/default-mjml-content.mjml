@@ -32,7 +32,7 @@
     <mj-section background-color="#ffffff">
       <mj-column>
         <mj-text font-size="18px">
-          Hey {{contact.first_name }}, this is an
+          Hey {{contact.first_name | default: "there" }}, this is an
           <strong>MJML</strong> campaign!
         </mj-text>
       </mj-column>
