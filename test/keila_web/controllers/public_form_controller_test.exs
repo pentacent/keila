@@ -26,6 +26,30 @@ defmodule KeilaWeb.PublicFormControllerTest do
       assert contact.email == params["email"]
     end
 
+    test "updates existing contact and marks them as active", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+      existing_contact = insert!(:contact, project_id: project.id, status: :unreachable)
+
+      form =
+        insert!(:contacts_form,
+          project_id: project.id,
+          settings: %{captcha_required: false},
+          field_settings: [
+            %{field: :email, cast: true},
+            %{field: :first_name, cast: true}
+          ]
+        )
+
+      params = params(:contact, project_id: project.id, email: existing_contact.email)
+      conn = post(conn, Routes.public_form_path(conn, :show, form.id), contact: params)
+      assert html_response(conn, 200) =~ ~r{Thank you}
+      assert [contact] = Contacts.get_project_contacts(project.id)
+      assert contact.id == existing_contact.id
+      assert contact.status == :active
+      assert contact.first_name == params["first_name"]
+      assert contact.last_name == existing_contact.last_name
+    end
+
     test "ignores submissions with honeypot field", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
       form = insert!(:contacts_form, project_id: project.id, settings: %{captcha_required: false})

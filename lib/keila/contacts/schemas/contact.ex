@@ -78,6 +78,7 @@ defmodule Keila.Contacts.Contact do
     |> validate_max_name_length()
     |> validate_double_opt_in(form, form_params_id, double_opt_in_hmac)
     |> put_change(:project_id, form.project_id)
+    |> put_change(:status, :active)
     |> EctoStringMap.cast_string_map(:data, field_mapping)
   end
 
