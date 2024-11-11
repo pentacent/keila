@@ -27,11 +27,11 @@ defmodule Keila.Contacts.FormActionHandler do
   def perform_form_action(form, params, opts \\ []) do
     changeset_transform = Keyword.get(opts, :changeset_transform, & &1)
 
-    params
-    |> Contact.changeset_from_form(form)
+    maybe_get_existing_contact(form, params)
+    |> Contact.changeset_from_form(params, form)
     |> EctoStringMap.finalize_string_map(:data)
     |> changeset_transform.()
-    |> Repo.insert()
+    |> Repo.insert_or_update()
     |> case do
       {:ok, contact} ->
         {:ok, contact}
@@ -42,6 +42,12 @@ defmodule Keila.Contacts.FormActionHandler do
       {:error, changeset} ->
         {:error, postprocess_error_changeset(changeset, form)}
     end
+  end
+
+  defp maybe_get_existing_contact(form, params) do
+    email = params["email"] || params[:email]
+
+    (email && Contacts.get_project_contact_by_email(form.project_id, email)) || %Contact{}
   end
 
   defp create_form_params_from_changeset(form, changeset = %{errors: [double_opt_in: _]}) do
@@ -61,10 +67,13 @@ defmodule Keila.Contacts.FormActionHandler do
   # always passed as a changeset if there are changes.
   # This is necessary if there was a constraint error and the StringMap changeset
   # was unable to pick up the parent changeset error
+  #
+  # The function also sanitizes the changeset by resetting the `data` key in order to
+  # avoid leaking existing contact information.
   defp postprocess_error_changeset(changeset, form)
 
   defp postprocess_error_changeset(changeset = %{changes: %{data: %Ecto.Changeset{}}}, _),
-    do: changeset
+    do: %{changeset | action: :insert, data: %Contact{}}
 
   defp postprocess_error_changeset(changeset = %{changes: %{data: %{}}}, form) do
     %{changes: changes} =
@@ -73,7 +82,7 @@ defmodule Keila.Contacts.FormActionHandler do
       |> Map.from_struct()
       |> Contact.changeset_from_form(form)
 
-    %{changeset | changes: changes}
+    %{changeset | changes: changes, data: %Contact{}, action: :insert}
   end
 
   defp postprocess_error_changeset(changeset, _), do: changeset

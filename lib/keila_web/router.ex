@@ -69,6 +69,8 @@ defmodule KeilaWeb.Router do
     post "/projects/new", ProjectController, :post_new
 
     get "/admin/users", UserAdminController, :index
+    get "/admin/users/new", UserAdminController, :new
+    post "/admin/users", UserAdminController, :create
     delete "/admin/users", UserAdminController, :delete
     get "/admin/users/:id/impersonate", UserAdminController, :impersonate
     get "/admin/users/:id/credits", UserAdminController, :show_credits

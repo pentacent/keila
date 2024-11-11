@@ -2,6 +2,24 @@
 
 ## Unreleased
 
+## Version 0.15.1
+
+## Added
+- Button for creating new users as admin (thanks @pmareke and @hellehata)
+- Contacts can now re-subscribe or update their data by submitting a form again
+  (thanks @lislegaard for suggesting)
+- Honeypot fields to block bot subscriptions
+
+## Changed
+- Limited `first_name` and `last_name` fields to 50 characters.
+  Implements #342 (thanks @lislegaard for suggesting)
+
+## Fixed
+- Updated broken tzdata library. Fixes #336. (thanks @VincentSC for reporting)
+- Deletion of shared senders from the UI is now working.
+  Fixes #326 (thanks @bpivk for reporting)
+
+
 ## Version 0.15.0
 
 ## Added

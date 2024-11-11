@@ -63,4 +63,39 @@ defmodule Keila.Contacts.EctoStringMapTest do
              |> EctoStringMap.finalize_string_map(:data)
              |> Changeset.apply_action(:insert)
   end
+
+  test "leaves existing data intact" do
+    field_definitions = [
+      %FieldDefinition{
+        key: "stringB",
+        type: :string
+      },
+      %FieldDefinition{
+        key: "stringC",
+        type: :string
+      }
+    ]
+
+    field_mapping = EctoStringMap.build_field_mapping(field_definitions)
+
+    params = %{
+      "data" => %{
+        "stringB" => "bar",
+        "stringC" => "foobar"
+      }
+    }
+
+    assert {:ok, contact} =
+             %Keila.Contacts.Contact{data: %{"stringA" => "foo", "stringC" => "foobar"}}
+             |> Changeset.cast(params, [])
+             |> EctoStringMap.cast_string_map(:data, field_mapping)
+             |> EctoStringMap.finalize_string_map(:data)
+             |> Changeset.apply_action(:insert)
+
+    assert %{
+             "stringA" => "foo",
+             "stringB" => "bar",
+             "stringC" => "foobar"
+           } == contact.data
+  end
 end

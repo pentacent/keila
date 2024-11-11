@@ -105,7 +105,9 @@ defmodule Keila.Contacts.EctoStringMap do
          _
        ) do
     field_content = changeset_to_map(string_map_changeset)
-    put_change(changeset, field, field_content)
+    previous_field_content = get_in(changeset.data, [Access.key!(field)]) || %{}
+    merged_field_content = Map.merge(previous_field_content, field_content)
+    put_change(changeset, field, merged_field_content)
   end
 
   defp do_finalize_string_map(

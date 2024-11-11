@@ -71,6 +71,15 @@ defmodule Keila.Contacts do
   end
 
   @doc """
+  Gets the Contact with the given `email` address within Project context.
+  Returns `nil` if Contact couldn‘t be found.
+  """
+  @spec get_project_contact_by_email(Project.id(), String.t()) :: Contact.t() | nil
+  def get_project_contact_by_email(project_id, email) do
+    Repo.get_by(Contact, project_id: project_id, email: email)
+  end
+
+  @doc """
   Returns Contacts for specified Project.
 
   This function accepts options for the `Keila.Contacts.Query` and `Keila.Contacts.Pagination` modules:

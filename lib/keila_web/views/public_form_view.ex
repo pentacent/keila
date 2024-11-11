@@ -30,6 +30,7 @@ defmodule KeilaWeb.PublicFormView do
           render_h1(form),
           render_intro(form),
           render_fields(form, f),
+          render_honeypot(form),
           render_captcha(form, mode, f),
           render_submit(form, f),
           render_fine_print(form)
@@ -71,6 +72,19 @@ defmodule KeilaWeb.PublicFormView do
     else
       []
     end
+  end
+
+  @honeypot_field_name "h[url]"
+  defp render_honeypot(_form) do
+    [
+      tag(:input,
+        aria_hidden: "true",
+        name: @honeypot_field_name,
+        style: "display: none",
+        autocomplete: "off",
+        novalidate: true
+      )
+    ]
   end
 
   defp render_captcha(form, mode, f) do

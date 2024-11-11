@@ -1,5 +1,6 @@
 defmodule KeilaWeb.PublicFormController do
   use KeilaWeb, :controller
+  require Logger
   alias Keila.{Contacts, Mailings, Tracking}
   alias Keila.Contacts.Contact
   alias Keila.Contacts.FormParams
@@ -19,6 +20,7 @@ defmodule KeilaWeb.PublicFormController do
     render_form(conn, changeset, form)
   end
 
+  plug :check_honeypot when action == :submit
   @spec submit(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def submit(conn, params) do
     form = conn.assigns.form
@@ -198,6 +200,24 @@ defmodule KeilaWeb.PublicFormController do
       conn
     else
       protect_from_forgery(conn)
+    end
+  end
+
+  defp check_honeypot(conn, _) do
+    honeypot_values =
+      (conn.params["h"] || %{})
+      |> Enum.map(fn {_k, value} -> value end)
+      |> Enum.filter(&(is_binary(&1) and &1 != ""))
+
+    if Enum.empty?(honeypot_values) do
+      conn
+    else
+      Logger.debug("Blocked form submission with honeypot fields #{inspect(conn.remote_ip)}")
+      :timer.sleep(500)
+
+      conn
+      |> render_success_or_redirect()
+      |> halt()
     end
   end
 end

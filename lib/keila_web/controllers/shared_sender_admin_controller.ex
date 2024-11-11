@@ -84,7 +84,7 @@ defmodule KeilaWeb.SharedSenderAdminController do
   @spec delete(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def delete(conn, params) do
     shared_sender = conn.assigns.shared_sender
-    changeset = deletion_changeset(shared_sender, params)
+    changeset = deletion_changeset(shared_sender, params["shared_sender"] || %{})
 
     if changeset.valid? do
       :ok = Mailings.delete_shared_sender(shared_sender.id)
