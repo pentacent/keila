@@ -163,6 +163,7 @@ defmodule Keila.ContactsQueryTest do
       insert!(:contact, %{
         data: %{
           "string" => "bar",
+          "stringOnly2" => "yes",
           "array" => [4, 5, 6],
           "object" => %{"d" => %{"e" => "f"}},
           "objects" => [%{"e" => "f"}]
@@ -197,6 +198,11 @@ defmodule Keila.ContactsQueryTest do
     # Like operator
     assert [c1] == filter_contacts(%{"data.string" => %{"$like" => "%o%"}})
     assert [c2] == filter_contacts(%{"data.string" => %{"$like" => "%A%"}})
+
+    # Not operator
+    assert [c1, c2] == filter_contacts(%{"$not" => %{"data.string" => "no_match"}})
+    assert [c1, c2] == filter_contacts(%{"$not" => %{"data.stringOnly2" => "no_match"}})
+    assert [c1] == filter_contacts(%{"$not" => %{"data.stringOnly2" => "yes"}})
   end
 
   @tag :contacts_query
