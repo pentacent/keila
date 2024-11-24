@@ -65,6 +65,28 @@ defmodule Keila.Mailings do
   end
 
   @doc """
+  Returns the Sender from line in the form of `"Name <test@example.com>"`
+  If the Sender uses a Send with Keila proxy address, the Reply-to email is printed instead.
+  """
+  @spec sender_from_line(Sender.t()) :: String.t()
+  def sender_from_line(sender) do
+    email =
+      if String.ends_with?(sender.from_email, "@mailings.keilausercontent.com") do
+        sender.reply_to_email
+      else
+        sender.from_email
+      end
+
+    name = sender.from_name || sender.reply_to_name
+
+    if name do
+      "#{name} <#{email}>"
+    else
+      email
+    end
+  end
+
+  @doc """
   Updates an existing Sender with given params.
   """
   @spec update_sender(Sender.id(), map()) :: {:ok, Sender.t()} | {:error, Changeset.t(Sender.t())}
