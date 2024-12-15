@@ -9,5 +9,15 @@
       <p class="container py-5 my-0"><%= get_flash(@conn, :error) %></p>
     </div>
   <% end %>
+  <%= if assigns[:is_admin?] && assigns[:instance_updates_available?] do %>
+    <div class="bg-amber-200 text-black" role="alert">
+      <p class="container py-5 my-0">
+        <a href={Routes.instance_admin_path(@conn, :show)}>
+          <%= dgettext("admin", "A new version of Keila is available.") %>
+          <span class="underline"><%= dgettext("admin", "Read more") %></span>
+        </a>
+      </p>
+    </div>
+  <% end %>
   <%= @inner_content %>
 </main>

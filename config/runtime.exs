@@ -324,6 +324,11 @@ if config_env() == :prod do
   config :keila, Keila.Billing,
     enabled: System.get_env("ENABLE_BILLING") in [1, "1", "true", "TRUE"]
 
+  # Enable update check
+  config :keila,
+         :update_checks_enabled,
+         System.get_env("DISABLE_UPDATE_CHECKS") not in [nil, "", "0", "false", "FALSE"]
+
   paddle_vendor = System.get_env("PADDLE_VENDOR")
 
   if paddle_vendor not in [nil, ""],

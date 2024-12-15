@@ -1,0 +1,44 @@
+<div class="container flex py-8 sm:py-11 mb-4">
+  <div class="flex-grow gap-4 flex flex-col sm:flex-row sm:items-center">
+    <h1 class="text-2xl sm:text-3xl text-gray-100">
+      <%= dgettext("admin", "You are currently running Keila %{version} on %{host}.",
+        version: @current_version,
+        host: @host
+      ) %>
+    </h1>
+  </div>
+</div>
+
+<div class="container mb-4">
+  <%= if @update_checks_enabled? do %>
+    <%= if Enum.any?(@available_updates) do %>
+      <div class="flex gap-4 items-center text-3xl max-w-xl">
+        <div class="flex size-16">
+          <%= render_icon(:newspaper) %>
+        </div>
+        There are updates available for your Keila instance!
+      </div>
+      <br /><br />
+      <%= for release <- @available_updates do %>
+        <div class="mb-4 max-w-prose">
+          <p class="p-4 italic bg-gray-700">
+            <%= local_datetime_tag(release.published_at) %>
+          </p>
+          <div class="bg-gray-800 p-4 prose prose-lg prose-invert">
+            <%= raw(Earmark.as_html!(release.changelog)) %>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="flex gap-4 items-center text-3xl max-w-xl">
+        <div class="flex size-16">
+          <%= render_icon(:check_circle) %>
+        </div>
+        You seem to be running the most recent version of Keila!
+      </div>
+      <br />
+    <% end %>
+  <% else %>
+    <p>Update checks are disabled.</p>
+  <% end %>
+</div>

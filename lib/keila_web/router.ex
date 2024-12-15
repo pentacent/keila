@@ -11,6 +11,7 @@ defmodule KeilaWeb.Router do
     plug KeilaWeb.Meta.Plug
     plug KeilaWeb.AuthSession.Plug
     plug KeilaWeb.PutLocalePlug
+    plug KeilaWeb.InstanceInfoPlug
   end
 
   # Non-authenticated Routes
@@ -78,6 +79,8 @@ defmodule KeilaWeb.Router do
 
     resources "/admin/shared-senders", SharedSenderAdminController
     get "/admin/shared-senders/:id/delete", SharedSenderAdminController, :delete_confirmation
+
+    get "/admin/instance", InstanceAdminController, :show
   end
 
   # Authenticated Routes within a Project context
