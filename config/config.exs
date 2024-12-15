@@ -84,7 +84,8 @@ config :phoenix, :json_library, Jason
 config :keila, Oban,
   queues: [
     mailer: 50,
-    periodic: 1
+    mailer_scheduler: 1,
+    updater: 1
   ],
   repo: Keila.Repo,
   plugins: [
@@ -92,7 +93,8 @@ config :keila, Oban,
     {Oban.Plugins.Cron,
      crontab: [
        {"* * * * *", Keila.Mailings.DeliverScheduledCampaignsWorker},
-       {"* * * * *", Keila.Mailings.ScheduleWorker}
+       {"* * * * *", Keila.Mailings.ScheduleWorker},
+       {"0 0 * * *", Keila.Instance.UpdateCronWorker}
      ]}
   ]
 
