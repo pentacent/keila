@@ -25,15 +25,15 @@ defmodule KeilaWeb.Api.Schemas.MailingsCampaign do
     },
     json_body: %{
       type: :map,
-      example: """
-      {
-        "blocks": [{
-          "id":"ff0011",
-          "type":"paragraph",
-          "data": {"text": "Hello, I am a block campaign!"}
-        }]
+      example: %{
+        "blocks" => [
+          %{
+            "id" => "ff0011",
+            "type" => "paragraph",
+            "data" => %{"text" => "Hello, I am a block campaign!"}
+          }
+        ]
       }
-      """
     },
     mjml_body: %{
       type: :string,
