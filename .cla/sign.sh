@@ -62,7 +62,7 @@ if ! confirm "Write an encrypted version of this signature to .cla/contributors.
     exit 1
 fi
 
-echo $signature | openssl pkeyutl -encrypt -pubin -inkey "$path/key.pub" | base64 >> "$path/contributors.txt"
+echo $signature | openssl pkeyutl -encrypt -pubin -inkey "$path/key.pub" | base64 | tr -d "\n" >> "$path/contributors.txt"
 echo >> "$path/contributors.txt"
 echo "Written signature to .cla/contributors.txt."
 
