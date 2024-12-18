@@ -23,6 +23,8 @@ defmodule KeilaWeb.ApiCampaignView do
     :id,
     :subject,
     :text_body,
+    :mjml_body,
+    :json_body,
     :data,
     :settings,
     :template_id,
