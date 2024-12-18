@@ -74,8 +74,8 @@ if config_env() == :prod do
       case mailer_type do
         "smtp" ->
           host = System.fetch_env!("MAILER_SMTP_HOST")
-          user = System.fetch_env!("MAILER_SMTP_USER")
-          from_email = System.get_env("MAILER_SMTP_FROM_EMAIL") || user
+          from_email = System.fetch_env!("MAILER_SMTP_FROM_EMAIL")
+          user = System.get_env("MAILER_SMTP_USER") || from_email
           password = System.fetch_env!("MAILER_SMTP_PASSWORD")
           port = System.get_env("MAILER_SMTP_PORT", "587") |> maybe_to_int.()
           ssl? = System.get_env("MAILER_ENABLE_SSL", "FALSE") in [1, "1", "true", "TRUE"]
