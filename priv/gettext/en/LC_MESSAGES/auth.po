@@ -43,17 +43,17 @@ msgstr ""
 msgid "Get started!"
 msgstr ""
 
-#: lib/keila/auth/emails.ex:44
+#: lib/keila/auth/emails.ex:46
 #, elixir-autogen, elixir-format
 msgid "Hey there,\n\nplease confirm your new email address by visiting the following link:\n\n%{url}\n\nIf you weren’t trying to change your email address, simply ignore this message.\n"
 msgstr ""
 
-#: lib/keila/auth/emails.ex:93
+#: lib/keila/auth/emails.ex:95
 #, elixir-autogen, elixir-format
 msgid "Hey there,\n\nyou can login to Keila with the following link:\n\n%{url}\n\nIf you haven’t requested a login, simply ignore this message.\n"
 msgstr ""
 
-#: lib/keila/auth/emails.ex:68
+#: lib/keila/auth/emails.ex:70
 #, elixir-autogen, elixir-format
 msgid "Hey there,\n\nyou have requested a password reset for your Keila account.\n\nYou can set a new password by visiting the following link:\n\n%{url}\n\nIf you weren’t trying to reset your password, simply ignore this message.\n"
 msgstr ""
@@ -95,12 +95,12 @@ msgstr ""
 msgid "Password reset successful"
 msgstr ""
 
-#: lib/keila/auth/emails.ex:17
+#: lib/keila/auth/emails.ex:19
 #, elixir-autogen, elixir-format
 msgid "Please Verify Your Account"
 msgstr ""
 
-#: lib/keila/auth/emails.ex:41
+#: lib/keila/auth/emails.ex:43
 #, elixir-autogen, elixir-format
 msgid "Please Verify Your Email"
 msgstr ""
@@ -111,7 +111,7 @@ msgid "Please activate your account first."
 msgstr ""
 
 #: lib/keila_web/controllers/auth_controller.ex:42
-#: lib/keila_web/controllers/public_form_controller.ex:55
+#: lib/keila_web/controllers/public_form_controller.ex:59
 #, elixir-autogen, elixir-format
 msgid "Please complete the captcha."
 msgstr ""
@@ -172,7 +172,7 @@ msgstr ""
 msgid "Welcome to Keila!"
 msgstr ""
 
-#: lib/keila/auth/emails.ex:20
+#: lib/keila/auth/emails.ex:22
 #, elixir-autogen, elixir-format
 msgid "Welcome to Keila,\n\nplease confirm your new account by visiting the following link:\n\n%{url}\n\nIf you weren’t trying to create an account, simply ignore this message.\n"
 msgstr ""
@@ -197,12 +197,12 @@ msgstr ""
 msgid "You need to verify your email before you can use Keila. Please check your inbox."
 msgstr ""
 
-#: lib/keila/auth/emails.ex:64
+#: lib/keila/auth/emails.ex:66
 #, elixir-autogen, elixir-format
 msgid "Your Account Reset Link"
 msgstr ""
 
-#: lib/keila/auth/emails.ex:89
+#: lib/keila/auth/emails.ex:91
 #, elixir-autogen, elixir-format
 msgid "Your Login Link"
 msgstr ""

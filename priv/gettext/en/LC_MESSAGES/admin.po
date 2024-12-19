@@ -16,7 +16,7 @@ msgstr ""
 msgid "%{remaining} / %{total} credits"
 msgstr ""
 
-#: lib/keila_web/templates/user_admin/index.html.heex:19
+#: lib/keila_web/templates/user_admin/index.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Activation"
 msgstr ""
@@ -26,7 +26,7 @@ msgstr ""
 msgid "Add Credits"
 msgstr ""
 
-#: lib/keila_web/templates/user_admin/index.html.heex:47
+#: lib/keila_web/templates/user_admin/index.html.heex:54
 #: lib/keila_web/templates/user_admin/show_credits.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Add credits"
@@ -37,7 +37,7 @@ msgstr ""
 msgid "Administer Credits for %{email}"
 msgstr ""
 
-#: lib/keila_web/controllers/user_admin_controller.ex:14
+#: lib/keila_web/controllers/user_admin_controller.ex:15
 #, elixir-autogen, elixir-format
 msgid "Administrate Users"
 msgstr ""
@@ -57,7 +57,7 @@ msgstr ""
 msgid "Create a new Shared Sender"
 msgstr ""
 
-#: lib/keila_web/templates/user_admin/index.html.heex:21
+#: lib/keila_web/templates/user_admin/index.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Credits"
 msgstr ""
@@ -77,12 +77,12 @@ msgstr ""
 msgid "Deleting a shared sender cannot be undone."
 msgstr ""
 
-#: lib/keila_web/templates/user_admin/index.html.heex:17
+#: lib/keila_web/templates/user_admin/index.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Email"
 msgstr ""
 
-#: lib/keila_web/templates/user_admin/index.html.heex:9
+#: lib/keila_web/templates/user_admin/index.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Here you can manage other users on your Keila instance."
 msgstr ""
@@ -107,37 +107,37 @@ msgstr ""
 msgid "Shared Senders are available to all users on this instance of Keila."
 msgstr ""
 
-#: lib/keila_web/templates/user_admin/index.html.heex:18
+#: lib/keila_web/templates/user_admin/index.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "Sign-up"
 msgstr ""
 
-#: lib/keila_web/templates/shared_sender_admin/delete.html.heex:25
+#: lib/keila_web/templates/shared_sender_admin/delete.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Type in the shared sender name to confirm its deletion:"
 msgstr ""
 
-#: lib/keila_web/templates/user_admin/index.html.heex:57
+#: lib/keila_web/templates/user_admin/index.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "Login as"
 msgstr ""
 
-#: lib/keila_web/controllers/user_admin_controller.ex:43
+#: lib/keila_web/templates/layout/app.html.heex:16
 #, elixir-autogen, elixir-format
-msgid "User created successfully"
+msgid "A new version of Keila is available."
 msgstr ""
 
-#: lib/keila_web/controllers/user_admin_controller.ex:48
+#: lib/keila_web/templates/layout/app.html.heex:17
 #, elixir-autogen, elixir-format
-msgid "Could not create the user"
+msgid "Read more"
 msgstr ""
 
-#: lib/keila_web/templates/user_admin/index.html.heex:36
+#: lib/keila_web/templates/layout/_menu.html.heex:156
 #, elixir-autogen, elixir-format
-msgid "Password"
+msgid "System Info"
 msgstr ""
 
-#: lib/keila_web/templates/user_admin/index.html.heex:72
+#: lib/keila_web/templates/instance_admin/show.html.heex:4
 #, elixir-autogen, elixir-format
-msgid "Add user"
+msgid "You are currently running Keila %{version} on %{host}."
 msgstr ""
