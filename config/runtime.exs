@@ -345,8 +345,8 @@ if config_env() == :prod do
   end
 
   # Default to info messages in production
-  case System.get_env("SET_LOG_LEVEL") do
-    level when level in ["info", "error"] -> config :logger, level: String.to_existing_atom(level)
+  case System.get_env("LOG_LEVEL") do
+    level when level in ["info", "error", "debug"] -> config :logger, level: String.to_existing_atom(level)
     _ -> config :logger, level: :info
   end
 end
