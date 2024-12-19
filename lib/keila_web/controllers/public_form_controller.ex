@@ -151,16 +151,26 @@ defmodule KeilaWeb.PublicFormController do
     form = Contacts.get_project_forms(project_id) |> List.first() || @default_unsubscribe_form
     contact = Contacts.get_project_contact(project_id, contact_id)
 
-    if contact && contact.status != :unsubscribed do
-      Keila.Contacts.update_contact_status(contact_id, :unsubscribed)
-      Keila.Tracking.log_event("unsubscribe", contact_id, %{})
-    end
+    cond do
+      contact == nil ->
+        conn
+        |> put_status(404)
+        |> put_meta(:title, gettext("Unsubscribe"))
+        |> assign(:mode, :full)
+        |> render("unsubscribe.html")
 
-    conn
-    |> put_meta(:title, gettext("Unsubscribe"))
-    |> assign(:form, form)
-    |> assign(:mode, :full)
-    |> render("unsubscribe.html")
+      true ->
+        if contact.status != :unsubscribed do
+          Keila.Contacts.update_contact_status(contact_id, :unsubscribed)
+          Keila.Tracking.log_event("unsubscribe", contact_id, %{})
+        end
+
+        conn
+        |> put_meta(:title, gettext("Unsubscribe"))
+        |> assign(:form, form)
+        |> assign(:mode, :full)
+        |> render("unsubscribe.html")
+    end
   end
 
   defp fetch(conn, _) do
