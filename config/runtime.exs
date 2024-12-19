@@ -343,6 +343,12 @@ if config_env() == :prod do
   if System.get_env("DISABLE_PRECEDENCE_HEADER") in [1, "1", "true", "TRUE"] do
     config(:keila, Keila.Mailings, enable_precedence_header: false)
   end
+
+  # Default to info messages in production
+  case System.get_env("SET_LOG_LEVEL") do
+    level when level in ["info", "error"] -> config :logger, level: String.to_existing_atom(level)
+    _ -> config :logger, level: :info
+  end
 end
 
 if config_env() == :test do
