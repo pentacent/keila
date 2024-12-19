@@ -4,17 +4,17 @@
 
 ## Version 0.15.1
 
-## Added
+### Added
 - Button for creating new users as admin (thanks @pmareke and @hellehata)
 - Contacts can now re-subscribe or update their data by submitting a form again
   (thanks @lislegaard for suggesting)
 - Honeypot fields to block bot subscriptions
 
-## Changed
+### Changed
 - Limited `first_name` and `last_name` fields to 50 characters.
   Implements #342 (thanks @lislegaard for suggesting)
 
-## Fixed
+### Fixed
 - Updated broken tzdata library. Fixes #336. (thanks @VincentSC for reporting)
 - Deletion of shared senders from the UI is now working.
   Fixes #326 (thanks @bpivk for reporting)
@@ -22,59 +22,60 @@
 
 ## Version 0.15.0
 
-## Added
+### Added
 - Support for MJML campaigns.
 - Forms can now be configured to redirect users after successful submission and when double opt-in
   is required.
 - Forms can now be configured with a custom message when double opt-in is required
 
-## Improved
+### Improved
 - New email scheduler and rate limiter with significantly improved performance. (thanks @dompie
   for supporting the development of this feature)
 
-## Fixed
+### Fixed
 - Show correct state while campaign is being prepared for sending on stats page
 - Marking custom checkboxes as *required* actually requires users to check them now.
   Fixes #328. (thanks @cyberwuulf for reporting)
 
 
 ## Version 0.14.11
-## Changed
+### Changed
 - Increased database timeout when inserting recipients to 60 seconds
 
 
 ## Version 0.14.10
-## Changed
+### Changed
 - The analytics UI now shows a maximum of 20 links to avoid performance issues
   with large campaigns and individualized links
 
 
 ## Version 0.14.9
-## Fixed
+### Fixed
 - Enabled translation of system strings on public forms.
 
 
 ## Version 0.14.8
-## Added
+### Added
 - Campaigns with type `block` and `json_body` can now be created via the API. Implements #300 (thanks @dompie for suggesting)
 
 
 ## Version 0.14.7
-## Added
+
+### Added
 - Image blocks now allow the use of Liquid in `src` and other attributes.
   Fixes #297 (thanks @dompie for reporting)
 
-## Fixed
+### Fixed
 - Separators are now rendered more faithfully in the block editor
 
 
 ## Version 0.14.6
 
-## Added
+### Added
 - Added PATCH and POST API endpoints for updating just the data field of a
   contact
 
-## Fixed
+### Fixed
 - Liquid tags are now correctly rendered in layout blocks in the Block Editor
   (thanks @dompie for reporting)
 - Fixed bug that caused "starts with" and "ends with" to be inverted in
@@ -83,7 +84,7 @@
 
 ## Version 0.14.5
 
-## Changed
+### Changed
 - Creating and updating contacts via the API now allows setting the `status`
   field.
 - Contacts list is now sorted in decending order by default
@@ -96,26 +97,26 @@
 
 ## Version 0.14.4
 
-## Fixed
+### Fixed
 - Avoid potential partial merging of system sender config with user-configured senders
 
 
 ## Version 0.14.3
 
-## Fixed
+### Fixed
 - Only support TLSv1.2 for STARTTLS SMTP Senders to avoid issues with
   non-compliant TLSv1.3 implementation in OTP
 
 ## Version 0.14.2
 
-## Improved
+### Improved
 - Added new Gmail user agent to avoid tracking invalid clicks/opens
 - Return to list of unsubscribed/unreachable contacts after delete action from
   one of those pages. Implements #193 (thanks @digitalfredy for reporting)
 - It's now possible to choose between the US and EU API endpoints for Mailgun senders (thanks @harryfear for reporting)
 - Improvements to German translation (thanks @dompie)
 
-## Fixed
+### Fixed
 - Clicking "Delete all" on the contacts list no longer causes a server error
   when no contacts have been selected. Fixes #260 (thanks @CSDUMMI for reporting)
 - Fixed connection errors when using SMTP senders with STARTTLS (thanks @beep and @CodeOfTim for reporting)
@@ -132,7 +133,7 @@ Custom signup form fields + contacts search 🔎
 - Added buttons for inserting images, links, and buttons to plain Markdown
   editor. Fixes #255 (thanks @lukaprincic for suggesting)
 
-## Improved
+### Improved
 - Errors in signup forms are displayed with a prominent red border and bold text
   now.
 
@@ -208,6 +209,7 @@ Double Opt-In ✅
 
 ### Fixed
 - Fixed crash when using data URLs in campaigns (#218 - thanks @katafrakt)
+
 
 ## Version 0.12.4
 
