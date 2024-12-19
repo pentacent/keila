@@ -2,6 +2,36 @@
 
 ## Unreleased
 
+## Version 0.16.0
+
+🔄 Automatic Update Notifications
+
+### Breaking Changes
+
+- `MAILER_SMTP_FROM_EMAIL` is now used as the default for `MAILER_SMTP_USER` when only
+  `MAILER_SMTP_FROM_EMAIL` is set.
+  Before, the inverse was true (only `MAILER_SMTP_USER` needed to be set and was used
+  as the default for `MAILER_SMTP_FROM_EMAIL`).
+  This change was made to address the fact that the SMTP username might be confidential
+  and shouldn’t be accidentally exposed by using it as the FROM address in system emails.
+  If you are already setting both environment variables, you don’t need to change anything but if
+  you were only setting `MAILER_SMTP_USER`, you need to update your configuration.
+  Fixes #356 (thanks @kevinam99 for implementing)
+
+### Added
+- Information about new releases is now automatically fetched and displayed on a new "System info"
+  admin page. You can disable this by setting `DISABLE_UPDATE_CHECKS=true`.
+- The log level can now be configured by setting `LOG_LEVEL` to `debug`, `info`, and `warning`.
+  Implements #360 (thanks @kevinam99)
+- `mjml_body` an `html_body` are now included in the Campaign API responses
+
+### Fixed
+- Segment queries with the `$not` operator (e.g. `{"$not": {"data.foo": "bar"}}`)
+  now also correctly include entries where the queried data keys don't exist at all.
+- Fixed possible exception when removing "Reply To" setting from sender settings.
+- Fixed Campaign API docs to include `json_body` as a map instead of a string.
+
+
 ## Version 0.15.1
 
 ### Added
@@ -39,6 +69,7 @@
 
 
 ## Version 0.14.11
+
 ### Changed
 - Increased database timeout when inserting recipients to 60 seconds
 
@@ -50,6 +81,7 @@
 
 
 ## Version 0.14.9
+
 ### Fixed
 - Enabled translation of system strings on public forms.
 
@@ -271,6 +303,7 @@ New Campaign Block Editor 📝
 ### Fixed
 - Legacy IDs are now decoded correctly
 
+
 ## Version 0.11.1
 
 Better Campaign Analytics 📈
@@ -295,6 +328,7 @@ Better Campaign Analytics 📈
 - Fixed error when no user content dir is set (#171)
 - Fixed error when CSRF is enabled for forms (#167)
 - **Breaking:** Hashids now use configurable salt. Read more on [keila.io](https://www.keila.io/updates/breaking-hashid-update)
+
 
 ## Version 0.10.0
 
