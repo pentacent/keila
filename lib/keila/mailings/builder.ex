@@ -144,7 +144,7 @@ defmodule Keila.Mailings.Builder do
   defp put_body(email, campaign = %{settings: %{type: :text}}, assigns) do
     body_with_signature =
       (campaign.text_body || "") <>
-        "\n\n--  \n" <> (assigns["signature"] || HybridTemplate.signature())
+        "\n\n--  \n" <> (assigns["signature"] || HybridTemplate.text_signature())
 
     case render_liquid(body_with_signature, assigns) do
       {:ok, text_body} ->
