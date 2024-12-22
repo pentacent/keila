@@ -84,6 +84,26 @@ defmodule KeilaWeb.ApiCampaignControllerTest do
 
       assert %{subject: "Updated Subject"} = Keila.Mailings.get_campaign(id)
     end
+
+    @tag :api_campaign_controller
+    test "also works when settings are not provided", %{authorized_conn: conn, project: project} do
+      %{id: id} = insert!(:mailings_campaign, project_id: project.id, settings: %{type: "mjml"})
+
+      body = %{"data" => %{"subject" => "Updated Subject"}}
+      conn = patch_json(conn, Routes.api_campaign_path(conn, :update, id), body)
+
+      assert %{
+               "data" => %{
+                 "id" => ^id,
+                 "subject" => "Updated Subject",
+                 "settings" => %{
+                   "type" => "mjml"
+                 }
+               }
+             } = json_response(conn, 200)
+
+      assert %{subject: "Updated Subject"} = Keila.Mailings.get_campaign(id)
+    end
   end
 
   describe "DELETE /api/v1/campaigns/:id" do

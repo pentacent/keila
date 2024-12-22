@@ -79,8 +79,13 @@ defmodule KeilaWeb.ApiCampaignController do
     project_id = project_id(conn)
 
     with campaign = %Mailings.Campaign{} <- Mailings.get_project_campaign(project_id, id) do
-      settings_id = campaign.settings.id
-      params = put_in(conn.body_params.data, [:settings, :id], settings_id)
+      settings_params =
+        campaign.settings
+        |> Mailings.Campaign.Settings.changeset(conn.body_params.data[:settings] || %{})
+        |> Ecto.Changeset.apply_changes()
+        |> Map.from_struct()
+
+      params = Map.put(conn.body_params.data, :settings, settings_params)
 
       case Mailings.update_campaign(id, params) do
         {:ok, campaign} -> render(conn, "campaign.json", %{campaign: campaign})
