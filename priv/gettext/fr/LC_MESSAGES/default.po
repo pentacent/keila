@@ -1614,7 +1614,7 @@ msgstr "Avant de commencer, vous devez créer un *expéditeur*.\nDans les param�
 #: lib/keila_web/templates/sender/_empty_state.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Before you can send any emails, you need to create a *sender*.\n\nIn the sender settings, you specify the email address\nand the name  from which you send your emails.\n"
-msgstr ""
+msgstr "Avant de pouvoir envoyer des e-mails, vous devez créer un *émetteur*.\n\nDans les paramètres des émetteurs, vous spécifiez l’adresse e-mail\net le nom depuis lequel vous envoyez vos e-mails.\n"
 
 #: lib/keila_web/templates/layout/_footer.html.heex:28
 #, elixir-autogen, elixir-format
@@ -1630,7 +1630,7 @@ msgstr ""
 #: lib/keila_web/templates/sender/index.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Create"
-msgstr ""
+msgstr "Créer"
 
 #: lib/keila_web/templates/project/_empty_state_templates_campaigns.html.heex:26
 #, elixir-autogen, elixir-format
@@ -1750,7 +1750,7 @@ msgstr ""
 #: lib/keila_web/templates/template/_empty_state.html.heex:8
 #, elixir-autogen, elixir-format
 msgid "Wow, such empty!"
-msgstr ""
+msgstr "Wow, c’est tout vide!"
 
 #: lib/keila_web/templates/contact/edit.html.heex:85
 #, elixir-autogen, elixir-format
