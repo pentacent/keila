@@ -2700,3 +2700,13 @@ msgstr "Limite de débit par minute"
 #, elixir-autogen, elixir-format
 msgid "Rate limit per hour"
 msgstr "Limite de débit par heure"
+
+#: lib/keila_web/templates/sender/_mailgun_config.html.heex:9
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Base URL"
+msgstr "URL de base"
+
+#: lib/keila_web/templates/sender/_mailgun_config.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Domain"
+msgstr "Domaine"

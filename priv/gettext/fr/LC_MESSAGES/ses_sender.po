@@ -11,11 +11,6 @@ msgstr ""
 "Language: fr\n"
 "Plural-Forms: nplurals=2\n"
 
-#: lib/keila_web/templates/sender/_ses_config.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Region"
-msgstr "Région"
-
 #: lib/keila_web/templates/sender/_ses_config.html.heex:5
 #, elixir-autogen, elixir-format
 msgid "US East (Ohio)"
@@ -137,3 +132,7 @@ msgstr "Vous devez vérifier votre adresse e-mail avant de pouveoir envoyer des 
 msgid "After creating this sender, you will receive an email to verify your email address."
 msgstr "Après la création de cet expéditeur, vous allez recevoir un e-mail pour vérifier votre adresse e-mail."
 
+#: lib/keila_web/templates/sender/_ses_config.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Region"
+msgstr "Région"

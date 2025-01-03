@@ -11,15 +11,15 @@ msgstr ""
 "Language: de\n"
 "Plural-Forms: nplurals=2\n"
 
-#: lib/keila_web/templates/sender/_ses_config.html.heex:6
-#, elixir-autogen, elixir-format
-msgid "US East (N. Virginia)"
-msgstr "USA Ost (Nord-Virginia)"
-
 #: lib/keila_web/templates/sender/_ses_config.html.heex:5
 #, elixir-autogen, elixir-format
 msgid "US East (Ohio)"
 msgstr "USA Ost (Ohio)"
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:6
+#, elixir-autogen, elixir-format
+msgid "US East (N. Virginia)"
+msgstr "USA Ost (Nord-Virginia)"
 
 #: lib/keila_web/templates/sender/_ses_config.html.heex:7
 #, elixir-autogen, elixir-format

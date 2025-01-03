@@ -2699,3 +2699,13 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Rate limit per hour"
 msgstr ""
+
+#: lib/keila_web/templates/sender/_mailgun_config.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Base URL"
+msgstr ""
+
+#: lib/keila_web/templates/sender/_mailgun_config.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Domain"
+msgstr ""
