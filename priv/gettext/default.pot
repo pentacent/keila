@@ -2639,3 +2639,63 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Project name"
 msgstr ""
+
+#: lib/keila_web/templates/sender/edit.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Sender name"
+msgstr ""
+
+#: lib/keila_web/templates/sender/edit.html.heex:61
+#, elixir-autogen, elixir-format
+msgid "From address"
+msgstr ""
+
+#: lib/keila_web/templates/sender/edit.html.heex:70
+#, elixir-autogen, elixir-format
+msgid "From name"
+msgstr ""
+
+#: lib/keila_web/templates/sender/edit.html.heex:76
+#, elixir-autogen, elixir-format
+msgid "Reply-to address"
+msgstr ""
+
+#: lib/keila_web/templates/sender/edit.html.heex:85
+#, elixir-autogen, elixir-format
+msgid "Reply-to name"
+msgstr ""
+
+#: lib/keila_web/templates/sender/_smtp_config.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Server"
+msgstr ""
+
+#: lib/keila_web/templates/sender/_smtp_config.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Username"
+msgstr ""
+
+#: lib/keila_web/templates/sender/_smtp_config.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Connection security"
+msgstr ""
+
+#: lib/keila_web/templates/sender/_smtp_config.html.heex:67
+#, elixir-autogen, elixir-format
+msgid "Port"
+msgstr ""
+
+#: lib/keila_web/templates/sender/_config.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "Rate limit per second"
+msgstr ""
+
+#: lib/keila_web/templates/sender/_config.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "Rate limit per minute"
+msgstr ""
+
+#: lib/keila_web/templates/sender/_config.html.heex:60
+#, elixir-autogen, elixir-format
+msgid "Rate limit per hour"
+msgstr ""
