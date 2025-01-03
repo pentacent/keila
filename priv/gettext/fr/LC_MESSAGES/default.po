@@ -1218,7 +1218,7 @@ msgstr ""
 #: lib/keila_web/templates/sender/_local_config.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "The local sender adapter is useful for testing during development. Inspect its mailbox at: %{url}"
-msgstr ""
+msgstr "L’adaptateur d’expéditeur local est utile pour tester pendant le développement. Inspectez sa boîte aux lettres à: %{url}"
 
 #: lib/keila_web/templates/contact/import_live.html.heex:82
 #, elixir-autogen, elixir-format
