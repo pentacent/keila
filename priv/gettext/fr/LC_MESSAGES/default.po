@@ -424,7 +424,7 @@ msgstr ""
 #: lib/keila_web/templates/user_admin/delete.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Delete"
-msgstr ""
+msgstr "Supprimer"
 
 #: lib/keila_web/controllers/project_controller.ex:112
 #, elixir-autogen, elixir-format
@@ -1072,7 +1072,7 @@ msgstr ""
 #: lib/keila_web/templates/user_admin/new.html.heex:8
 #, elixir-autogen, elixir-format
 msgid "Save"
-msgstr ""
+msgstr "Enregistrer"
 
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:177
 #: lib/keila_web/templates/campaign/edit_live.html.heex:49
@@ -1723,7 +1723,7 @@ msgstr ""
 #: lib/keila_web/templates/project/edit.html.heex:6
 #, elixir-autogen, elixir-format
 msgid "Project settings"
-msgstr ""
+msgstr "Paramètres du projet"
 
 #: lib/keila_web/templates/layout/_menu.html.heex:35
 #, elixir-autogen, elixir-format
