@@ -1600,7 +1600,6 @@ msgstr ""
 msgid "After creating this sender, you will receive an email to verify your email address."
 msgstr ""
 
-#: lib/keila_web/templates/error/404.html.heex:10
 #: lib/keila_web/templates/layout/_menu.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Back to projects overview"
@@ -1693,7 +1692,6 @@ msgstr ""
 msgid "Keila organizes contacts, forms, and campaigns in *projects*.\n\nYou can create multiple projects, e.g. if you want\nto separate your gardening business newsletter from\nyour chess club member list.\n"
 msgstr ""
 
-#: lib/keila_web/templates/onboarding/show.html.heex:8
 #: lib/keila_web/templates/project/_empty_state_senders.html.heex:6
 #, elixir-autogen, elixir-format
 msgid "Let’s get started!"
@@ -2171,7 +2169,6 @@ msgid "My template name"
 msgstr ""
 
 #: lib/keila_web/templates/sender/_shared_local_config.html.heex:6
-#: lib/keila_web/templates/sender/_shared_smtp_config.html.heex:6
 #, elixir-autogen, elixir-format
 msgid "No configuration is required for this sender."
 msgstr ""
@@ -2433,7 +2430,6 @@ msgid "System"
 msgstr ""
 
 #: lib/keila_web/templates/campaign/new.html.heex:84
-#: lib/keila_web/templates/onboarding/show.html.heex:76
 #, elixir-autogen, elixir-format
 msgid "The simplest type of email. Text and nothing else. No images, no links, just text."
 msgstr ""
@@ -2551,11 +2547,6 @@ msgstr ""
 msgid "Double opt-in date"
 msgstr ""
 
-#: lib/keila_web/templates/error/404.html.heex:3
-#, elixir-autogen, elixir-format
-msgid "Not found."
-msgstr ""
-
 #: lib/keila/mailings/send_double_opt_in_mail_worker.ex:51
 #: lib/keila_web/templates/form/edit_live.html.heex:409
 #, elixir-autogen, elixir-format
@@ -2578,24 +2569,9 @@ msgstr ""
 msgid "Require double opt-in"
 msgstr ""
 
-#: lib/keila_web/templates/error/404.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "Sign in"
-msgstr ""
-
-#: lib/keila_web/templates/error/404.html.heex:5
-#, elixir-autogen, elixir-format
-msgid "The page you’re looking for doesn’t exist or has been removed."
-msgstr ""
-
 #: lib/keila_web/templates/form/edit_live.html.heex:460
 #, elixir-autogen, elixir-format
 msgid "To prevent abuse by spammers, the double opt-in feature is currently only available if you have a subscription. Sorry for the inconvenience!"
-msgstr ""
-
-#: lib/keila_web/templates/error/404.html.heex:18
-#, elixir-autogen, elixir-format
-msgid "Visit the docs"
 msgstr ""
 
 #: lib/keila_web/views/public_form_view.ex:310
@@ -2653,11 +2629,6 @@ msgstr ""
 msgid "Added"
 msgstr ""
 
-#: lib/keila_web/templates/onboarding/show.html.heex:71
-#, elixir-autogen, elixir-format
-msgid "Bring your own server"
-msgstr ""
-
 #: lib/keila_web/templates/campaign/new.html.heex:136
 #, elixir-autogen, elixir-format
 msgid "Build fully customized responsive email layouts with MJML."
@@ -2713,20 +2684,9 @@ msgstr ""
 msgid "Expand editor"
 msgstr ""
 
-#: lib/keila_web/templates/onboarding/show.html.heex:24
-#, elixir-autogen, elixir-format
-msgid "How do you want to send your emails?"
-msgstr ""
-
 #: lib/keila_web/templates/campaign/_mjml_editor.html.heex:4
 #, elixir-autogen, elixir-format
 msgid "Insert image"
-msgstr ""
-
-#: lib/keila_web/templates/onboarding/show.html.heex:109
-#: lib/keila_web/templates/onboarding/show.html.heex:158
-#, elixir-autogen, elixir-format
-msgid "Let’s get to know each other!"
 msgstr ""
 
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:81
@@ -2770,11 +2730,6 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: lib/keila_web/templates/onboarding/show.html.heex:34
-#, elixir-autogen, elixir-format
-msgid "Send with Keila"
-msgstr ""
-
 #: lib/keila_web/templates/form/edit_live.html.heex:200
 #, elixir-autogen, elixir-format
 msgid "Tags"
@@ -2793,11 +2748,6 @@ msgstr ""
 #: lib/keila_web/controllers/user_admin_controller.ex:43
 #, elixir-autogen, elixir-format
 msgid "User created successfully"
-msgstr ""
-
-#: lib/keila_web/templates/onboarding/show.html.heex:39
-#, elixir-autogen, elixir-format
-msgid "We take care of sending. You need access to a custom domain and your DNS settings."
 msgstr ""
 
 #: lib/keila_web/templates/form/edit_live.html.heex:211

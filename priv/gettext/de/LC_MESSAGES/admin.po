@@ -132,7 +132,7 @@ msgstr ""
 msgid "Read more"
 msgstr ""
 
-#: lib/keila_web/templates/layout/_menu.html.heex:156
+#: lib/keila_web/templates/layout/_menu.html.heex:155
 #, elixir-autogen, elixir-format
 msgid "System Info"
 msgstr ""
