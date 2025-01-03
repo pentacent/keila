@@ -2709,3 +2709,129 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Domain"
 msgstr ""
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "US East (Ohio)"
+msgstr ""
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:6
+#, elixir-autogen, elixir-format
+msgid "US East (N. Virginia)"
+msgstr ""
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "US West (N. California)"
+msgstr ""
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "US West (Oregon)"
+msgstr ""
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Asia Pacific (Mumbai)"
+msgstr ""
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Asia Pacific (Seoul)"
+msgstr ""
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Asia Pacific (Singapore)"
+msgstr ""
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "Asia Pacific (Sydney)"
+msgstr ""
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Asia Pacific (Tokyo)"
+msgstr ""
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Canada (Central)"
+msgstr ""
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Europe (Frankfurt)"
+msgstr ""
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Europe (Ireland)"
+msgstr ""
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Europe (London)"
+msgstr ""
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Europe (Paris)"
+msgstr ""
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Europe (Stockholm)"
+msgstr ""
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "South America (São Paulo)"
+msgstr ""
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Access Key"
+msgstr ""
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:33
+#: lib/keila_web/templates/sender/_ses_config.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Secret"
+msgstr ""
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:61
+#, elixir-autogen, elixir-format
+msgid "Configuration Set"
+msgstr ""
+
+#: lib/keila/mailings/sender_adapters/shared_ses.ex:73
+#, elixir-autogen, elixir-format
+msgid "Verify Your Email for Keila"
+msgstr ""
+
+#: lib/keila/mailings/sender_adapters/shared_ses.ex:76
+#, elixir-autogen, elixir-format
+msgid "Please click on the following link to verify your email address %{email} for use with Keila."
+msgstr ""
+
+#: lib/keila_web/templates/sender/_shared_ses_config.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "You have verified your email address and can now send emails with this sender."
+msgstr ""
+
+#: lib/keila_web/templates/sender/_shared_ses_config.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "You need to verify your email address before you can send emails with this sender."
+msgstr ""
+
+#: lib/keila_web/templates/sender/_shared_ses_config.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "After creating this sender, you will receive an email to verify your email address."
+msgstr ""
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Region"
+msgstr ""
