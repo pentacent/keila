@@ -51,11 +51,6 @@ msgstr "(optionnel)"
 msgid "API Key"
 msgstr "Clé API"
 
-#: lib/keila_web/templates/sender/_ses_config.html.heex:25
-#, elixir-autogen, elixir-format
-msgid "Access Key"
-msgstr "Clé d'accès"
-
 #: lib/keila_web/templates/layout/_menu.html.heex:144
 #, elixir-autogen, elixir-format
 msgid "Account"
@@ -86,31 +81,6 @@ msgstr "Êtes-vous prêt(e) à programmer l’envoi de votre campagne <em>%{subj
 #, elixir-autogen, elixir-format
 msgid "Are you ready to send your campaign <em>%{subject}</em> to %{count} contacts?"
 msgstr "Êtes-vous prêt(e) à envoyer votre campagne <em>%{subject}</em> à %{count} contacts?"
-
-#: lib/keila_web/templates/sender/_ses_config.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Asia Pacific (Mumbai)"
-msgstr "Asie Pacifique (Mumbai)"
-
-#: lib/keila_web/templates/sender/_ses_config.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "Asia Pacific (Seoul)"
-msgstr "Asie Pacifique (Seoul)"
-
-#: lib/keila_web/templates/sender/_ses_config.html.heex:11
-#, elixir-autogen, elixir-format
-msgid "Asia Pacific (Singapore)"
-msgstr "Asie Pacifique (Singapore)"
-
-#: lib/keila_web/templates/sender/_ses_config.html.heex:12
-#, elixir-autogen, elixir-format
-msgid "Asia Pacific (Sydney)"
-msgstr "Asie Pacifique (Sydney)"
-
-#: lib/keila_web/templates/sender/_ses_config.html.heex:13
-#, elixir-autogen, elixir-format
-msgid "Asia Pacific (Tokyo)"
-msgstr "Asie Pacifique (Tokyo)"
 
 #: lib/keila_web/templates/contact/import_live.html.heex:76
 #, elixir-autogen, elixir-format
@@ -167,11 +137,6 @@ msgstr "Campagnes"
 #, elixir-autogen, elixir-format
 msgid "Campaigns associated with this sender will not be deleted."
 msgstr "Les campagnes associées à cet expéditeur ne seront pas supprimées."
-
-#: lib/keila_web/templates/sender/_ses_config.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "Canada (Central)"
-msgstr "Canada (Central)"
 
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:49
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:155
@@ -606,31 +571,6 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: lib/keila_web/templates/sender/_ses_config.html.heex:15
-#, elixir-autogen, elixir-format
-msgid "Europe (Frankfurt)"
-msgstr ""
-
-#: lib/keila_web/templates/sender/_ses_config.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Europe (Ireland)"
-msgstr ""
-
-#: lib/keila_web/templates/sender/_ses_config.html.heex:17
-#, elixir-autogen, elixir-format
-msgid "Europe (London)"
-msgstr ""
-
-#: lib/keila_web/templates/sender/_ses_config.html.heex:18
-#, elixir-autogen, elixir-format
-msgid "Europe (Paris)"
-msgstr ""
-
-#: lib/keila_web/templates/sender/_ses_config.html.heex:19
-#, elixir-autogen, elixir-format
-msgid "Europe (Stockholm)"
-msgstr ""
-
 #: lib/keila/contacts/import.ex:179
 #, elixir-autogen, elixir-format
 msgid "Field %{field}: %{message}"
@@ -894,7 +834,7 @@ msgstr ""
 #: lib/keila_web/templates/sender/edit.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "My Sender"
-msgstr ""
+msgstr "Mon expéditeur"
 
 #: lib/keila_web/templates/template/new.html.heex:26
 #, elixir-autogen, elixir-format
@@ -936,7 +876,7 @@ msgstr "Nouveau projet"
 #: lib/keila_web/views/sender_view.ex:10
 #, elixir-autogen, elixir-format
 msgid "New Sender"
-msgstr ""
+msgstr "Nouvel expéditeur"
 
 #: lib/keila_web/controllers/template_controller.ex:46
 #: lib/keila_web/templates/template/new.html.heex:4
@@ -984,12 +924,7 @@ msgstr ""
 #: lib/keila_web/templates/user_admin/new.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Password"
-msgstr ""
-
-#: lib/keila/mailings/sender_adapters/shared_ses.ex:76
-#, elixir-autogen, elixir-format
-msgid "Please click on the following link to verify your email address %{email} for use with Keila."
-msgstr ""
+msgstr "Mot de passe"
 
 #: lib/keila_web/templates/auth/registration_disabled.html.heex:10
 #, elixir-autogen, elixir-format
@@ -1085,12 +1020,6 @@ msgstr ""
 msgid "Scheduled for:"
 msgstr ""
 
-#: lib/keila_web/templates/sender/_ses_config.html.heex:33
-#: lib/keila_web/templates/sender/_ses_config.html.heex:45
-#, elixir-autogen, elixir-format
-msgid "Secret"
-msgstr ""
-
 #: lib/keila_web/templates/component/file_manager_live.html.heex:12
 #: lib/keila_web/templates/contact/import_live.html.heex:28
 #, elixir-autogen, elixir-format
@@ -1180,11 +1109,6 @@ msgstr ""
 #: lib/keila/templates/default_template.ex:90
 #, elixir-autogen, elixir-format
 msgid "Signature links"
-msgstr ""
-
-#: lib/keila_web/templates/sender/_ses_config.html.heex:20
-#, elixir-autogen, elixir-format
-msgid "South America (São Paulo)"
 msgstr ""
 
 #: lib/keila_web/templates/contact/import_live.html.heex:38
@@ -1374,26 +1298,6 @@ msgstr ""
 msgid "URL"
 msgstr ""
 
-#: lib/keila_web/templates/sender/_ses_config.html.heex:6
-#, elixir-autogen, elixir-format
-msgid "US East (N. Virginia)"
-msgstr ""
-
-#: lib/keila_web/templates/sender/_ses_config.html.heex:5
-#, elixir-autogen, elixir-format
-msgid "US East (Ohio)"
-msgstr ""
-
-#: lib/keila_web/templates/sender/_ses_config.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "US West (N. California)"
-msgstr ""
-
-#: lib/keila_web/templates/sender/_ses_config.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "US West (Oregon)"
-msgstr ""
-
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Unordered list"
@@ -1433,11 +1337,6 @@ msgstr ""
 msgid "Users"
 msgstr ""
 
-#: lib/keila/mailings/sender_adapters/shared_ses.ex:73
-#, elixir-autogen, elixir-format
-msgid "Verify Your Email for Keila"
-msgstr ""
-
 #: lib/keila_web/templates/project/index.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Welcome to Keila!"
@@ -1463,16 +1362,11 @@ msgstr ""
 msgid "You have successfully imported %{number} contacts!"
 msgstr ""
 
-#: lib/keila_web/templates/sender/_shared_ses_config.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "You have verified your email address and can now send emails with this sender."
-msgstr ""
-
 #: lib/keila_web/templates/sender/edit.html.heex:72
 #: lib/keila_web/templates/sender/edit.html.heex:87
 #, elixir-autogen, elixir-format
 msgid "You, Inc"
-msgstr ""
+msgstr "Vous, SARL"
 
 #: lib/keila_web/templates/campaign/edit_live.html.heex:100
 #, elixir-autogen, elixir-format
@@ -1596,11 +1490,6 @@ msgstr ""
 msgid "Administer Users"
 msgstr ""
 
-#: lib/keila_web/templates/sender/_shared_ses_config.html.heex:21
-#, elixir-autogen, elixir-format
-msgid "After creating this sender, you will receive an email to verify your email address."
-msgstr ""
-
 #: lib/keila_web/templates/layout/_menu.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Back to projects overview"
@@ -1619,11 +1508,6 @@ msgstr "Avant de pouvoir envoyer des e-mails, vous devez créer un *émetteur*.\
 #: lib/keila_web/templates/layout/_footer.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Community"
-msgstr ""
-
-#: lib/keila_web/templates/sender/_ses_config.html.heex:61
-#, elixir-autogen, elixir-format
-msgid "Configuration Set"
 msgstr ""
 
 #: lib/keila_web/templates/contact/index.html.heex:19
@@ -1765,11 +1649,6 @@ msgstr ""
 #: lib/keila_web/templates/project/_empty_state_templates_campaigns.html.heex:8
 #, elixir-autogen, elixir-format
 msgid "You can get started sending campaigns with Keila’s default template now.\n\nTo create your design, you can use the template editor.\n"
-msgstr ""
-
-#: lib/keila_web/templates/sender/_shared_ses_config.html.heex:17
-#, elixir-autogen, elixir-format
-msgid "You need to verify your email address before you can send emails with this sender."
 msgstr ""
 
 #: lib/keila_web/templates/project/_empty_state_campaigns.html.heex:8
@@ -2520,7 +2399,7 @@ msgstr ""
 #: lib/keila_web/templates/sender/_smtp_config.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "None"
-msgstr ""
+msgstr "Aucun(e)"
 
 #: lib/keila_web/templates/sender/_smtp_config.html.heex:54
 #, elixir-autogen, elixir-format
@@ -2756,6 +2635,7 @@ msgstr ""
 msgid "You can use data from this field as\n`{{ contact.data.%{key} }}` in your emails or segments.\n"
 msgstr ""
 
+#: lib/keila_web/templates/project/edit.html.heex:45
 #: lib/keila_web/templates/project/new.html.heex:23
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Project name"

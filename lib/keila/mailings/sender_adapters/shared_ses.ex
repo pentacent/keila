@@ -70,10 +70,10 @@ defmodule Keila.Mailings.SenderAdapters.Shared.SES do
 
     failure_url = Routes.sender_url(KeilaWeb.Endpoint, :cancel_verification_from_token, token.key)
 
-    subject = KeilaWeb.Gettext.gettext("Verify Your Email for Keila")
+    subject = KeilaWeb.Gettext.dgettext("ses_sender","Verify Your Email for Keila")
 
     content =
-      KeilaWeb.Gettext.gettext(
+      KeilaWeb.Gettext.dgettext("ses_sender",
         "Please click on the following link to verify your email address %{email} for use with Keila.",
         email: email
       )

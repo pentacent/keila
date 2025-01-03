@@ -4,7 +4,7 @@
       <span class="text-emerald-500 inline-flex h-5 w-5 shrink-0">
         <%= render_icon(:check_circle) %>
       </span>
-      <%= gettext(
+      <%= dgettext("ses_sender",
         "You have verified your email address and can now send emails with this sender."
       ) %>
     </p>
@@ -14,11 +14,11 @@
         <%= render_icon(:information_circle) %>
       </span>
       <%= if input_value(@form, :shared_ses_verification_requested_for) do %>
-        <%= gettext(
+        <%= dgettext("ses_sender",
           "You need to verify your email address before you can send emails with this sender."
         ) %>
       <% else %>
-        <%= gettext(
+        <%= dgettext("ses_sender",
           "After creating this sender, you will receive an email to verify your email address."
         ) %>
       <% end %>
