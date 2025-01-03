@@ -1,0 +1,143 @@
+## "msgid"s in this file come from POT (.pot) files.
+##
+## Do not add, change, or remove "msgid"s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
+##
+## Use "mix gettext.extract --merge" or "mix gettext.merge"
+## to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: fr\n"
+"Plural-Forms: nplurals=2\n"
+
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "%{remaining} / %{total} credits"
+msgstr ""
+
+#: lib/keila_web/templates/user_admin/index.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Activation"
+msgstr ""
+
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:85
+#, elixir-autogen, elixir-format
+msgid "Add Credits"
+msgstr ""
+
+#: lib/keila_web/templates/user_admin/index.html.heex:54
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Add credits"
+msgstr ""
+
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:3
+#, elixir-autogen, elixir-format
+msgid "Administer Credits for %{email}"
+msgstr ""
+
+#: lib/keila_web/controllers/user_admin_controller.ex:15
+#, elixir-autogen, elixir-format
+msgid "Administrate Users"
+msgstr ""
+
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Amount"
+msgstr ""
+
+#: lib/keila_web/templates/shared_sender_admin/delete.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Campaigns associated with this sender will not be deleted."
+msgstr ""
+
+#: lib/keila_web/templates/shared_sender_admin/index.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Create a new Shared Sender"
+msgstr ""
+
+#: lib/keila_web/templates/user_admin/index.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Credits"
+msgstr ""
+
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Credits for account %{account}"
+msgstr ""
+
+#: lib/keila_web/templates/shared_sender_admin/delete.html.heex:3
+#, elixir-autogen, elixir-format
+msgid "Delete Shared Sender %{sender}?"
+msgstr ""
+
+#: lib/keila_web/templates/shared_sender_admin/delete.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Deleting a shared sender cannot be undone."
+msgstr ""
+
+#: lib/keila_web/templates/user_admin/index.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Email"
+msgstr ""
+
+#: lib/keila_web/templates/user_admin/index.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Here you can manage other users on your Keila instance."
+msgstr ""
+
+#: lib/keila_web/templates/shared_sender_admin/edit.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "My Shared Sender"
+msgstr ""
+
+#: lib/keila_web/templates/shared_sender_admin/edit.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "New Shared Sender"
+msgstr ""
+
+#: lib/keila_web/templates/shared_sender_admin/index.html.heex:4
+#, elixir-autogen, elixir-format
+msgid "Shared Senders"
+msgstr ""
+
+#: lib/keila_web/templates/shared_sender_admin/index.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Shared Senders are available to all users on this instance of Keila."
+msgstr ""
+
+#: lib/keila_web/templates/user_admin/index.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Sign-up"
+msgstr ""
+
+#: lib/keila_web/templates/shared_sender_admin/delete.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Type in the shared sender name to confirm its deletion:"
+msgstr ""
+
+#: lib/keila_web/templates/user_admin/index.html.heex:64
+#, elixir-autogen, elixir-format
+msgid "Login as"
+msgstr ""
+
+#: lib/keila_web/templates/layout/app.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "A new version of Keila is available."
+msgstr ""
+
+#: lib/keila_web/templates/layout/app.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Read more"
+msgstr ""
+
+#: lib/keila_web/templates/layout/_menu.html.heex:155
+#, elixir-autogen, elixir-format
+msgid "System Info"
+msgstr ""
+
+#: lib/keila_web/templates/instance_admin/show.html.heex:4
+#, elixir-autogen, elixir-format
+msgid "You are currently running Keila %{version} on %{host}."
+msgstr ""
