@@ -14,12 +14,12 @@ msgstr ""
 #: lib/keila_web/templates/user_admin/show_credits.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "%{remaining} / %{total} credits"
-msgstr ""
+msgstr "%{remaining} / %{total} crédits"
 
 #: lib/keila_web/templates/user_admin/index.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Activation"
-msgstr ""
+msgstr "Activation"
 
 #: lib/keila_web/templates/user_admin/show_credits.html.heex:85
 #, elixir-autogen, elixir-format

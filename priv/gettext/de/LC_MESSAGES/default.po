@@ -2830,3 +2830,8 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "You can use data from this field as\n`{{ contact.data.%{key} }}` in your emails or segments.\n"
 msgstr ""
+
+#: lib/keila_web/templates/project/new.html.heex:23
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Project name"
+msgstr "Projektname"
