@@ -38,7 +38,7 @@
         x-init="type = $el.querySelector('[name=\'campaign[settings][type]\']').value"
       >
         <div class="form-row">
-          <%= label(f, :sender_id, "Sender") %>
+          <%= label(f, :sender_id, gettext("Sender")) %>
 
           <%= if not Enum.empty?(@senders) do %>
             <%= with_validation(f, :sender_id) do %>
