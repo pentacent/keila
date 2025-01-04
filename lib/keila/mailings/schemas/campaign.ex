@@ -4,6 +4,8 @@ defmodule Keila.Mailings.Campaign do
   alias Keila.Mailings.Sender
   alias Keila.Projects.Project
   alias Keila.Templates.Template
+  # FIXME Don't depend on Web App here
+  import KeilaWeb.Gettext
 
   @update_fields [
     :subject,
@@ -102,7 +104,7 @@ defmodule Keila.Mailings.Campaign do
     {offset, threshold} = min_campaign_schedule_offset_and_threshold()
 
     case DateTime.compare(threshold, scheduled_for) do
-      :gt -> [scheduled_for: "must be at least #{offset} seconds in the future"]
+      :gt -> [scheduled_for: dgettext("errors", "must be at least %{number} seconds in the future", number: offset)]
       _ -> []
     end
   end

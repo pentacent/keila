@@ -92,3 +92,8 @@ msgstr ""
 
 msgid "must be equal to %{number}"
 msgstr ""
+
+#: lib/keila/mailings/schemas/campaign.ex:107
+#, elixir-autogen, elixir-format
+msgid "must be at least %{number} seconds in the future"
+msgstr ""
