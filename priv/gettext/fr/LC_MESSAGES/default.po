@@ -965,7 +965,7 @@ msgstr "Aperçu"
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:99
 #, elixir-autogen, elixir-format
 msgid "Ready to schedule your campaign?"
-msgstr "Prêt(e) à planifier votre campagne?"
+msgstr "Prêt(e) à programmer votre campagne?"
 
 #: lib/keila_web/templates/auth/register.html.heex:12
 #, elixir-autogen, elixir-format
@@ -1031,7 +1031,7 @@ msgstr "Enregistrer"
 #: lib/keila_web/templates/campaign/edit_live.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "Schedule"
-msgstr "Planifier"
+msgstr "Programmer"
 
 #: lib/keila_web/templates/campaign/index.html.heex:38
 #, elixir-autogen, elixir-format
@@ -1968,7 +1968,7 @@ msgstr "Vous pouvez ajouter n’importe quel objet JSON comme données personnal
 #: lib/keila_web/templates/campaign/edit_live.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "You must specify a sender before sending/scheduling a campaign."
-msgstr "Vous devez spécifier un expéditeur avant d’envoyer/planifier une campagne."
+msgstr "Vous devez spécifier un expéditeur avant d’envoyer/programmer une campagne."
 
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:199
 #, elixir-autogen, elixir-format
