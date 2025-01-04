@@ -456,6 +456,11 @@ msgstr ""
 msgid "Deleting a project cannot be undone."
 msgstr ""
 
+#: lib/keila_web/templates/project/delete.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Type in the project name to confirm its deletion:"
+msgstr ""
+
 #: lib/keila_web/templates/sender/delete.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Deleting a sender cannot be undone."

@@ -414,7 +414,7 @@ msgstr ""
 #: lib/keila_web/templates/project/delete.html.heex:3
 #, elixir-autogen, elixir-format
 msgid "Delete Project %{project}?"
-msgstr ""
+msgstr "Supprimer le projet %{project}?"
 
 #: lib/keila_web/templates/sender/delete.html.heex:3
 #: lib/keila_web/views/sender_view.ex:13
@@ -455,7 +455,12 @@ msgstr ""
 #: lib/keila_web/templates/project/delete.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "Deleting a project cannot be undone."
-msgstr ""
+msgstr "Supprimer un projet est définitif."
+
+#: lib/keila_web/templates/project/delete.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Type in the project name to confirm its deletion:"
+msgstr "Saisissez le nom du projet pour confirmer sa suppression:"
 
 #: lib/keila_web/templates/sender/delete.html.heex:13
 #, elixir-autogen, elixir-format
@@ -1268,7 +1273,7 @@ msgstr ""
 #: lib/keila_web/templates/project/delete.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "This will delete all contacts, campaigns, and forms associated with this project."
-msgstr ""
+msgstr "Ceci supprimera tous les contacts, campagnes et formulaires associés à ce projet."
 
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:129
 #: lib/keila_web/templates/user_admin/show_credits.html.heex:59
