@@ -210,19 +210,19 @@ msgstr "Clics"
 #: lib/keila_web/templates/template/index.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Clone"
-msgstr "Cloner"
+msgstr "Dupliquer"
 
 #: lib/keila_web/controllers/campaign_controller.ex:102
 #: lib/keila_web/templates/campaign/clone.html.heex:4
 #, elixir-autogen, elixir-format
 msgid "Clone Campaign"
-msgstr "Cloner la campagne"
+msgstr "Dupliquer la campagne"
 
 #: lib/keila_web/controllers/template_controller.ex:74
 #: lib/keila_web/templates/template/clone.html.heex:4
 #, elixir-autogen, elixir-format
 msgid "Clone Template"
-msgstr "Cloner le modèle"
+msgstr "Dupliquer le modèle"
 
 #: lib/keila_web/templates/layout/_menu.html.heex:21
 #, elixir-autogen, elixir-format
@@ -1335,7 +1335,7 @@ msgstr ""
 #: lib/keila_web/templates/template/index.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Updated at:"
-msgstr ""
+msgstr "Mis à jour:"
 
 #: lib/keila_web/templates/layout/_menu.html.heex:146
 #, elixir-autogen, elixir-format
@@ -1627,7 +1627,7 @@ msgstr ""
 #: lib/keila_web/templates/campaign/_empty_state.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Use the campaign editor to create, schedule, and send campaigns\nto your contacts.\n"
-msgstr ""
+msgstr "Utilisez l’éditeur de campagne pour créer, programmer et envoyer des campagnes\nà vos contacts.\n"
 
 #: lib/keila_web/templates/api_key/_empty_state.html.heex:8
 #: lib/keila_web/templates/campaign/_empty_state.html.heex:8
