@@ -687,7 +687,7 @@ msgstr ""
 #: lib/keila_web/templates/project/_empty_state_forms_contacts.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "Import contacts"
-msgstr ""
+msgstr "Importer des contacts"
 
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:25
 #, elixir-autogen, elixir-format
@@ -1564,7 +1564,7 @@ msgstr ""
 #: lib/keila_web/templates/contact/_empty_state.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "If you already have an existing audience for your newsletter,\nyou can use the *Import Contacts* feature.\n\nIf you just want to try things out, you can also manually add\nnew contacts.\n"
-msgstr ""
+msgstr "Si vous avez déjà une audience existante pour votre infolettre,\nvous pouvez utiliser la fonctionnalité d’*Import de contacts*.\n\nSi vous voulez juste essayer, vous pouvez aussi ajouter manuellement\nde nouveaux contacts."
 
 #: lib/keila_web/templates/contact/import_live.html.heex:11
 #: lib/keila_web/templates/contact/index.html.heex:15
@@ -1595,7 +1595,7 @@ msgstr "Gérer les modèles"
 #: lib/keila_web/templates/contact/_empty_state.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Manually create new contact"
-msgstr ""
+msgstr "Créer un nouveau contact manuellement"
 
 #: lib/keila_web/templates/auth/register.html.heex:29
 #: lib/keila_web/templates/auth/reset_change_password.html.heex:17
