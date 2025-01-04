@@ -2271,7 +2271,7 @@ msgstr ""
 #: lib/keila_web/live/campaign_stats_live.ex:67
 #, elixir-autogen, elixir-format
 msgid "Opens"
-msgstr ""
+msgstr "Ouvertures"
 
 #: lib/keila_web/templates/campaign/new.html.heex:79
 #, elixir-autogen, elixir-format
