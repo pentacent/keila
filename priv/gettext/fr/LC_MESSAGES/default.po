@@ -1192,10 +1192,15 @@ msgstr "Modèles"
 msgid "Text color"
 msgstr ""
 
+#: lib/keila_web/templates/campaign/_settings_dialog.html.heex:73
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Campaign Type"
+msgstr "Type de campagne"
+
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:79
 #, elixir-autogen, elixir-format
 msgid "Text only"
-msgstr ""
+msgstr "Texte uniquement"
 
 #: lib/keila/contacts/contacts.ex:256
 #, elixir-autogen, elixir-format
@@ -2228,7 +2233,7 @@ msgstr "Bloc"
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "Block Editor"
-msgstr ""
+msgstr "Éditeur bloc"
 
 #: lib/keila/templates/hybrid_template.ex:60
 #, elixir-autogen, elixir-format
