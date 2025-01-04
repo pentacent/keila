@@ -512,6 +512,11 @@ msgstr "Sollen die folgenden Templates wirklich gelöscht werden?"
 msgid "Do you really want to delete the following users? This will also delete their projects and contacts."
 msgstr "Sollen die folgenden User wirklich gelöscht werden? Dieser Vorgang wird auch deren Projekte und Kontakte löschen."
 
+#: lib/keila_web/templates/contact/edit.html.heex:15
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Contact Name"
+msgstr ""
+
 #: lib/keila_web/templates/contact/edit.html.heex:79
 #, elixir-autogen, elixir-format
 msgid "Doe"
@@ -579,6 +584,7 @@ msgstr "Diese Kampagne bearbeiten"
 #: lib/keila_web/templates/auth/register.html.heex:17
 #: lib/keila_web/templates/auth/reset.html.heex:15
 #: lib/keila_web/templates/contact/_list.html.heex:22
+#: lib/keila_web/templates/contact/delete.html.heex:24
 #: lib/keila_web/templates/form/edit_live.html.heex:153
 #: lib/keila_web/templates/form/edit_live.html.heex:196
 #: lib/keila_web/templates/user_admin/new.html.heex:25
@@ -605,6 +611,7 @@ msgstr "Kleingedrucktes"
 #: lib/keila/contacts/contacts.ex:269
 #: lib/keila_web/live/segment_edit_live.ex:8
 #: lib/keila_web/templates/contact/_list.html.heex:32
+#: lib/keila_web/templates/contact/delete.html.heex:25
 #: lib/keila_web/templates/form/edit_live.html.heex:159
 #, elixir-autogen, elixir-format
 msgid "First name"
@@ -759,6 +766,7 @@ msgstr "Erika"
 #: lib/keila/contacts/contacts.ex:277
 #: lib/keila_web/live/segment_edit_live.ex:9
 #: lib/keila_web/templates/contact/_list.html.heex:42
+#: lib/keila_web/templates/contact/delete.html.heex:26
 #: lib/keila_web/templates/form/edit_live.html.heex:166
 #, elixir-autogen, elixir-format
 msgid "Last name"
@@ -1727,6 +1735,16 @@ msgstr "Du bist bereit, deine erste Kampagne mit Keila zu versenden.\n"
 msgid "active subscribers"
 msgstr "Aktive Abonnenten"
 
+#: lib/keila_web/templates/contact/edit.html.heex:83
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Data"
+msgstr "Datum"
+
+#: lib/keila_web/templates/contact/edit.html.heex:106
+#, elixir-autogen, elixir-format
+msgid "Contact Activities"
+msgstr ""
+
 #: lib/keila_web/templates/contact/edit.html.heex:156
 #, elixir-autogen, elixir-format
 msgid "clicked campaign link"
@@ -2061,6 +2079,7 @@ msgstr "Rich-Text-Editor aktivieren"
 msgid "Segment"
 msgstr "Segment"
 
+#: lib/keila_web/templates/campaign/_settings_dialog.html.heex:41
 #: lib/keila_web/templates/campaign/new.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Sender"
@@ -2585,6 +2604,7 @@ msgid "Add user"
 msgstr ""
 
 #: lib/keila_web/templates/contact/_list.html.heex:52
+#: lib/keila_web/templates/contact/delete.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "Added"
 msgstr ""
