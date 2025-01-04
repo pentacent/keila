@@ -22,7 +22,7 @@
       class="max-w-md flex flex-col gap-4"
     >
       <div class="form-row">
-        <%= label(f, :delete_confirmation, "Type in the sender name to confirm its deletion:") %>
+        <%= label(f, :delete_confirmation, gettext("Type in the sender name to confirm its deletion:")) %>
         <%= with_validation(f, :delete_confirmation) do %>
           <%= text_input(f, :delete_confirmation, placeholder: @sender.name, class: "text-black") %>
         <% end %>

@@ -420,7 +420,12 @@ msgstr "Supprimer le projet %{project}?"
 #: lib/keila_web/views/sender_view.ex:13
 #, elixir-autogen, elixir-format
 msgid "Delete Sender %{sender}?"
-msgstr ""
+msgstr "Supprimer l’expéditeur %{sender}?"
+
+#: lib/keila_web/templates/sender/delete.html.heex:3
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Type in the sender name to confirm its deletion:"
+msgstr "Saisissez le nom de l’expéditeur pour confirmer sa suppression:"
 
 #: lib/keila_web/templates/template/delete.html.heex:3
 #, elixir-autogen, elixir-format
@@ -465,7 +470,7 @@ msgstr "Saisissez le nom du projet pour confirmer sa suppression:"
 #: lib/keila_web/templates/sender/delete.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Deleting a sender cannot be undone."
-msgstr ""
+msgstr "Supprimer un expéditeur est irréversible"
 
 #: lib/keila_web/templates/template/delete.html.heex:28
 #, elixir-autogen, elixir-format

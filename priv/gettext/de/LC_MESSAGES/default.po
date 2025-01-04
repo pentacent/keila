@@ -432,6 +432,11 @@ msgstr "Projekt %{project} löschen?"
 msgid "Delete Sender %{sender}?"
 msgstr "Sender %{sender} löschen?"
 
+#: lib/keila_web/templates/sender/delete.html.heex:3
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Type in the sender name to confirm its deletion:"
+msgstr ""
+
 #: lib/keila_web/templates/template/delete.html.heex:3
 #, elixir-autogen, elixir-format
 msgid "Delete Templates?"
