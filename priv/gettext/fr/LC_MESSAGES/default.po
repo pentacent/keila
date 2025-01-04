@@ -367,7 +367,7 @@ msgstr "Décoration"
 #: lib/keila_web/views/template_view.ex:70
 #, elixir-autogen, elixir-format
 msgid "Default"
-msgstr ""
+msgstr "Par défaut"
 
 #: lib/keila_web/templates/campaign/delete.html.heex:37
 #: lib/keila_web/templates/campaign/edit_live.html.heex:23
@@ -813,13 +813,13 @@ msgstr "Gérer les expéditeurs"
 #: lib/keila_web/templates/campaign/new.html.heex:95
 #, elixir-autogen, elixir-format
 msgid "Markdown"
-msgstr ""
+msgstr "Markdown"
 
 #: lib/keila_web/templates/campaign/clone.html.heex:27
 #: lib/keila_web/templates/campaign/new.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "My Campaign Subject"
-msgstr ""
+msgstr "Le sujet de ma campagne"
 
 #: lib/keila_web/templates/project/new.html.heex:26
 #, elixir-autogen, elixir-format
@@ -859,7 +859,7 @@ msgstr ""
 #: lib/keila_web/templates/campaign/new.html.heex:4
 #, elixir-autogen, elixir-format
 msgid "New Campaign"
-msgstr ""
+msgstr "Nouvelle campagne"
 
 #: lib/keila_web/templates/contact/edit.html.heex:14
 #, elixir-autogen, elixir-format
@@ -1149,7 +1149,7 @@ msgstr ""
 #: lib/keila_web/templates/campaign/new.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "Subject"
-msgstr ""
+msgstr "Sujet"
 
 #: lib/keila_web/views/public_form_view.ex:118
 #, elixir-autogen, elixir-format
@@ -1715,7 +1715,7 @@ msgstr ""
 #: lib/keila_web/templates/campaign/new.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "All Contacts"
-msgstr ""
+msgstr "Tous les contacts"
 
 #: lib/keila_web/controllers/segment_controller.ex:69
 #, elixir-autogen, elixir-format
@@ -1940,7 +1940,7 @@ msgstr ""
 #: lib/keila_web/templates/campaign/new.html.heex:202
 #, elixir-autogen, elixir-format
 msgid "You can add any JSON object as custom data to your campaign."
-msgstr ""
+msgstr "Vous pouvez ajouter n’importe quel objet JSON comme données personnalisées à votre campagne."
 
 #: lib/keila_web/templates/campaign/edit_live.html.heex:67
 #, elixir-autogen, elixir-format
@@ -1981,31 +1981,31 @@ msgstr ""
 #: lib/keila_web/templates/campaign/new.html.heex:200
 #, elixir-autogen, elixir-format
 msgid "Campaign data"
-msgstr ""
+msgstr "Données de campagne"
 
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:92
 #: lib/keila_web/templates/campaign/new.html.heex:147
 #, elixir-autogen, elixir-format
 msgid "Enable rich text editor"
-msgstr ""
+msgstr "Activer l’éditeur de texte riche"
 
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:133
 #: lib/keila_web/templates/campaign/new.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Segment"
-msgstr ""
+msgstr "Segment"
 
 #: lib/keila_web/templates/campaign/new.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Sender"
-msgstr ""
+msgstr "Expéditeur"
 
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:99
 #: lib/keila_web/templates/campaign/new.html.heex:153
 #: lib/keila_web/templates/form/edit_live.html.heex:368
 #, elixir-autogen, elixir-format
 msgid "Template"
-msgstr ""
+msgstr "Modèle"
 
 #: lib/keila_web/templates/account/edit.html.heex:223
 #, elixir-autogen, elixir-format
@@ -2036,7 +2036,7 @@ msgstr ""
 #: lib/keila_web/templates/campaign/new.html.heex:192
 #, elixir-autogen, elixir-format
 msgid "Enable click/open tracking"
-msgstr ""
+msgstr "Activer le suivi des clics/ouvertures"
 
 #: lib/keila_web/templates/account/edit.html.heex:226
 #, elixir-autogen, elixir-format
@@ -2194,7 +2194,7 @@ msgstr ""
 #: lib/keila_web/templates/campaign/new.html.heex:111
 #, elixir-autogen, elixir-format
 msgid "Block"
-msgstr ""
+msgstr "Bloc"
 
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:80
 #, elixir-autogen, elixir-format
@@ -2210,12 +2210,12 @@ msgstr ""
 #: lib/keila_web/templates/campaign/new.html.heex:178
 #, elixir-autogen, elixir-format
 msgid "Can you summarize your campaign in 50 characters?"
-msgstr ""
+msgstr "Pouvez-vous résumer votre campagne en 50 caractères?"
 
 #: lib/keila_web/templates/campaign/new.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "Choose Your Editor"
-msgstr ""
+msgstr "Choisissez votre éditeur"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:12
 #, elixir-autogen, elixir-format
@@ -2230,7 +2230,7 @@ msgstr ""
 #: lib/keila_web/templates/campaign/new.html.heex:116
 #, elixir-autogen, elixir-format
 msgid "Create stunning emails with multi-column layouts with the Block editor."
-msgstr ""
+msgstr "Créez des e-mails époustouflants avec des agencements multi-colonnes grâce à l’éditeur de blocs."
 
 #: lib/keila_web/templates/contact/index.html.heex:10
 #: lib/keila_web/templates/segment/edit_live.html.heex:174
@@ -2276,13 +2276,13 @@ msgstr ""
 #: lib/keila_web/templates/campaign/new.html.heex:79
 #, elixir-autogen, elixir-format
 msgid "Plain Text"
-msgstr ""
+msgstr "Texte simple"
 
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:115
 #: lib/keila_web/templates/campaign/new.html.heex:169
 #, elixir-autogen, elixir-format
 msgid "Preview Text"
-msgstr ""
+msgstr "Aperçu textuel"
 
 #: lib/keila/templates/hybrid_template.ex:74
 #, elixir-autogen, elixir-format
@@ -2317,7 +2317,7 @@ msgstr ""
 #: lib/keila_web/templates/campaign/new.html.heex:84
 #, elixir-autogen, elixir-format
 msgid "The simplest type of email. Text and nothing else. No images, no links, just text."
-msgstr ""
+msgstr "Le type d’e-mail le plus simple. Du texte et rien d’autre. Pas d’images, pas de liens, juste du texte."
 
 #: lib/keila_web/controllers/contact_controller.ex:32
 #: lib/keila_web/controllers/contact_controller.ex:40
@@ -2333,13 +2333,13 @@ msgstr ""
 #: lib/keila_web/templates/campaign/new.html.heex:100
 #, elixir-autogen, elixir-format
 msgid "Use the Markdown editor to create beautiful single-column hybrid emails."
-msgstr ""
+msgstr "Utilisez l’éditeur Markdown pour créer de magnifiques e-mails hybrides sur une colonne."
 
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:117
 #: lib/keila_web/templates/campaign/new.html.heex:171
 #, elixir-autogen, elixir-format
 msgid "Users see this preview before they open your email. Use up to 50 characters."
-msgstr ""
+msgstr "Les utilisateurs verront cet aperçu avant d'ouvrir votre e-mail. Utilisez jusqu'à 50 caractères."
 
 #: lib/keila_web/templates/campaign/stats_live.html.heex:222
 #, elixir-autogen, elixir-format
@@ -2517,7 +2517,7 @@ msgstr ""
 #: lib/keila_web/templates/campaign/new.html.heex:136
 #, elixir-autogen, elixir-format
 msgid "Build fully customized responsive email layouts with MJML."
-msgstr ""
+msgstr "Créez des mises en page d’e-mail réactives entièrement personnalisées avec MJML."
 
 #: lib/keila_web/templates/form/edit_live.html.heex:198
 #, elixir-autogen, elixir-format
@@ -2578,7 +2578,7 @@ msgstr ""
 #: lib/keila_web/templates/campaign/new.html.heex:131
 #, elixir-autogen, elixir-format
 msgid "MJML"
-msgstr ""
+msgstr "MJML"
 
 #: lib/keila_web/templates/campaign/_mjml_editor.html.heex:66
 #, elixir-autogen, elixir-format
