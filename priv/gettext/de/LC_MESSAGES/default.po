@@ -1881,6 +1881,11 @@ msgstr "Mein Kontakte-Segment"
 msgid "New Segment"
 msgstr "Neues Segment"
 
+#: lib/keila_web/templates/segment/new.html.heex:10
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Segment Name"
+msgstr ""
+
 #: lib/keila_web/templates/segment/edit_live.html.heex:121
 #, elixir-autogen, elixir-format
 msgid "Query"

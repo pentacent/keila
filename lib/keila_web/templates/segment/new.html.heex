@@ -20,7 +20,7 @@
     class="max-w-md flex flex-col gap-4"
   >
     <div class="form-row">
-      <%= label(f, :name, "Segment name") %>
+      <%= label(f, :name, gettext("Segment Name")) %>
       <%= with_validation(f, :name) do %>
         <%= text_input(f, :name,
           placeholder: gettext("My Contact Segment"),

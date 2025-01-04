@@ -1819,6 +1819,11 @@ msgstr ""
 msgid "New Segment"
 msgstr ""
 
+#: lib/keila_web/templates/segment/new.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Segment Name"
+msgstr ""
+
 #: lib/keila_web/templates/segment/edit_live.html.heex:121
 #, elixir-autogen, elixir-format
 msgid "Query"

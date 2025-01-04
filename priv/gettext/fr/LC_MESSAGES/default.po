@@ -1813,12 +1813,17 @@ msgstr ""
 #: lib/keila_web/templates/segment/new.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "My Contact Segment"
-msgstr ""
+msgstr "Mon segment de contacts"
 
 #: lib/keila_web/templates/segment/new.html.heex:4
 #, elixir-autogen, elixir-format
 msgid "New Segment"
-msgstr ""
+msgstr "Nouveau segment"
+
+#: lib/keila_web/templates/segment/new.html.heex:10
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Segment Name"
+msgstr "Nom du segment"
 
 #: lib/keila_web/templates/segment/edit_live.html.heex:121
 #, elixir-autogen, elixir-format
