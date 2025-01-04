@@ -399,7 +399,7 @@ msgstr ""
 #: lib/keila_web/templates/campaign/delete.html.heex:3
 #, elixir-autogen, elixir-format
 msgid "Delete Campaigns?"
-msgstr ""
+msgstr "Supprimer les campagnes?"
 
 #: lib/keila_web/templates/contact/delete.html.heex:3
 #, elixir-autogen, elixir-format
@@ -440,7 +440,7 @@ msgstr ""
 #: lib/keila_web/templates/campaign/delete.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "Deleting a campaign cannot be undone."
-msgstr ""
+msgstr "Supprimer une campagne est définitif."
 
 #: lib/keila_web/templates/contact/delete.html.heex:48
 #, elixir-autogen, elixir-format
@@ -480,7 +480,7 @@ msgstr ""
 #: lib/keila_web/templates/campaign/delete.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Do you really want to delete the following campaigns?"
-msgstr ""
+msgstr "Voulez-vous réellement supprimer les campagnes suivantes?"
 
 #: lib/keila_web/templates/contact/delete.html.heex:10
 #, elixir-autogen, elixir-format
