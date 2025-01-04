@@ -113,12 +113,12 @@ msgstr "Bouton"
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:165
 #, elixir-autogen, elixir-format
 msgid "Button Text"
-msgstr "Texte de bouton"
+msgstr "Texte du bouton"
 
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:157
 #, elixir-autogen, elixir-format
 msgid "Button URL"
-msgstr "URL de bouton"
+msgstr "URL du bouton"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:93
 #, elixir-autogen, elixir-format
@@ -630,7 +630,7 @@ msgstr ""
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:105
 #, elixir-autogen, elixir-format
 msgid "For best results, choose an image that is 600px wide."
-msgstr ""
+msgstr "Pour de meilleurs résultats, choisissez une image de 600px de largeur."
 
 #: lib/keila_web/controllers/form_controller.ex:14
 #: lib/keila_web/templates/form/index.html.heex:4
@@ -687,7 +687,7 @@ msgstr ""
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:103
 #, elixir-autogen, elixir-format
 msgid "Image URL"
-msgstr ""
+msgstr "URL de l’image"
 
 #: lib/keila_web/templates/contact/import_live.html.heex:4
 #, elixir-autogen, elixir-format
@@ -709,17 +709,17 @@ msgstr ""
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:153
 #, elixir-autogen, elixir-format
 msgid "Insert Button"
-msgstr ""
+msgstr "Insérer un bouton"
 
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "Insert Image"
-msgstr ""
+msgstr "Insérer une image"
 
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Insert Link"
-msgstr ""
+msgstr "Insérer un lien"
 
 #: lib/keila_web/templates/contact/import_live.html.heex:91
 #, elixir-autogen, elixir-format
@@ -783,12 +783,12 @@ msgstr ""
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Link Title"
-msgstr ""
+msgstr "Titre du lien"
 
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Link URL"
-msgstr ""
+msgstr "URL du lien"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:543
 #, elixir-autogen, elixir-format
@@ -1303,7 +1303,7 @@ msgstr "Fuseau horaire"
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:122
 #, elixir-autogen, elixir-format
 msgid "Title"
-msgstr ""
+msgstr "Titre"
 
 #: lib/keila_web/templates/auth/reset.html.heex:34
 #, elixir-autogen, elixir-format
@@ -1973,12 +1973,12 @@ msgstr "Vous devez spécifier un expéditeur avant d’envoyer/programmer une ca
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:199
 #, elixir-autogen, elixir-format
 msgid "Code"
-msgstr ""
+msgstr "Code"
 
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:195
 #, elixir-autogen, elixir-format
 msgid "Insert Code"
-msgstr ""
+msgstr "Insérer du code"
 
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:95
 #, elixir-autogen, elixir-format
@@ -1988,12 +1988,12 @@ msgstr ""
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:263
 #, elixir-autogen, elixir-format
 msgid "Read more about [how to use Liquid in Keila](https://www.keila.io/docs/campaigns#liquid-templating)\nor about [custom contact data](https://www.keila.io/docs/contacts#contact-data).\n"
-msgstr ""
+msgstr "En savoir plus pour savoir [comment utiliser Liquid dans Keila](https://www.keila.io/docs/campaigns#liquid-templating)\nou pour utiliser [des données de contact personnalisées](https://www.keila.io/docs/contacts#contact-data).\n"
 
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:224
 #, elixir-autogen, elixir-format
 msgid "You can insert data from your contacts or your campaign\nusing the [Liquid template language](https://shopify.github.io/liquid/basics/introduction/).\n"
-msgstr ""
+msgstr "Vous pouvez insérer des données depuis vos contacts depuis vos contacts ou votre campagne\nen utilisant le [langage de modèle Liquid](https://shopify.github.io/liquid/basics/introduction/).\n"
 
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:18
 #, elixir-autogen, elixir-format
@@ -2097,7 +2097,7 @@ msgstr ""
 #: lib/keila_web/templates/component/file_manager_live.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "Start Upload"
-msgstr ""
+msgstr "Démarrer l’envoi"
 
 #: lib/keila_web/views/template_view.ex:49
 #, elixir-autogen, elixir-format
@@ -2107,17 +2107,17 @@ msgstr ""
 #: lib/keila_web/templates/component/file_manager_live.html.heex:3
 #, elixir-autogen, elixir-format
 msgid "Upload a new file"
-msgstr ""
+msgstr "Téléverser un nouveau fichier"
 
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:84
 #, elixir-autogen, elixir-format
 msgid "Uploads"
-msgstr ""
+msgstr "Fichiers téléversés"
 
 #: lib/keila_web/templates/component/file_manager_live.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Use the upload form to upload your first image.\n"
-msgstr ""
+msgstr "Utilisez le formulaire d’envoi pour téléverser votre première image.\n"
 
 #: lib/keila_web/templates/api_key/_empty_state.html.heex:10
 #, elixir-autogen, elixir-format
