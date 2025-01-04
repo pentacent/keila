@@ -536,7 +536,7 @@ msgstr ""
 #: lib/keila_web/templates/campaign/edit_live.html.heex:5
 #, elixir-autogen, elixir-format
 msgid "Edit Campaign"
-msgstr ""
+msgstr "Modifier la campagne"
 
 #: lib/keila_web/controllers/contact_controller.ex:218
 #, elixir-autogen, elixir-format
@@ -947,7 +947,7 @@ msgstr ""
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:103
 #, elixir-autogen, elixir-format
 msgid "Preview"
-msgstr ""
+msgstr "Aperçu"
 
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:99
 #, elixir-autogen, elixir-format
@@ -1018,7 +1018,7 @@ msgstr "Enregistrer"
 #: lib/keila_web/templates/campaign/edit_live.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "Schedule"
-msgstr ""
+msgstr "Planifier"
 
 #: lib/keila_web/templates/campaign/index.html.heex:38
 #, elixir-autogen, elixir-format
@@ -1035,7 +1035,7 @@ msgstr ""
 #: lib/keila_web/templates/campaign/edit_live.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Send"
-msgstr ""
+msgstr "Envoyer"
 
 #: lib/keila_web/templates/sender/verification_failure.html.heex:4
 #, elixir-autogen, elixir-format
@@ -1238,7 +1238,7 @@ msgstr ""
 #: lib/keila_web/templates/campaign/edit_live.html.heex:81
 #, elixir-autogen, elixir-format
 msgid "There was an error scheduling your campaign:"
-msgstr ""
+msgstr "Une erreur est survenue lors de la planification de votre campagne:"
 
 #: lib/keila_web/templates/sender/verification_failure.html.heex:7
 #, elixir-autogen, elixir-format
@@ -1376,7 +1376,7 @@ msgstr "Vous, SARL"
 #: lib/keila_web/templates/campaign/edit_live.html.heex:100
 #, elixir-autogen, elixir-format
 msgid "Your Campaign Subject"
-msgstr ""
+msgstr "Le sujet de votre campagne"
 
 #: lib/keila_web/templates/project/index.html.heex:33
 #, elixir-autogen, elixir-format
@@ -1945,7 +1945,7 @@ msgstr "Vous pouvez ajouter n’importe quel objet JSON comme données personnal
 #: lib/keila_web/templates/campaign/edit_live.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "You must specify a sender before sending/scheduling a campaign."
-msgstr ""
+msgstr "Vous devez spécifier un expéditeur avant d’envoyer/planifier une campagne."
 
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:199
 #, elixir-autogen, elixir-format
