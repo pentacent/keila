@@ -517,7 +517,7 @@ msgstr ""
 #: lib/keila_web/templates/contact/import_live.html.heex:181
 #, elixir-autogen, elixir-format
 msgid "Download template"
-msgstr ""
+msgstr "Télécharger le modèle"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:38
 #: lib/keila_web/templates/campaign/index.html.heex:66
@@ -680,7 +680,7 @@ msgstr ""
 #: lib/keila_web/templates/contact/import_live.html.heex:4
 #, elixir-autogen, elixir-format
 msgid "Import Contacts"
-msgstr ""
+msgstr "Importer des contacts"
 
 #: lib/keila_web/templates/contact/_empty_state.html.heex:23
 #: lib/keila_web/templates/layout/_menu.html.heex:85
@@ -712,7 +712,7 @@ msgstr ""
 #: lib/keila_web/templates/contact/import_live.html.heex:91
 #, elixir-autogen, elixir-format
 msgid "Instructions"
-msgstr ""
+msgstr "Instructions"
 
 #: lib/keila_web/templates/campaign/stats_live.html.heex:69
 #: lib/keila_web/templates/campaign/stats_live.html.heex:91
@@ -1029,7 +1029,7 @@ msgstr ""
 #: lib/keila_web/templates/contact/import_live.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Select a file"
-msgstr ""
+msgstr "Sélectionner un fichier"
 
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:58
 #: lib/keila_web/templates/campaign/edit_live.html.heex:58
@@ -1119,7 +1119,7 @@ msgstr ""
 #: lib/keila_web/templates/contact/import_live.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Start Import"
-msgstr ""
+msgstr "Démarrer l’import"
 
 #: lib/keila_web/templates/auth/register.html.heex:9
 #, elixir-autogen, elixir-format
@@ -1228,7 +1228,7 @@ msgstr "L’adaptateur d’expéditeur local est utile pour tester pendant le d�
 #: lib/keila_web/templates/contact/import_live.html.heex:82
 #, elixir-autogen, elixir-format
 msgid "There was an error importing your contacts."
-msgstr ""
+msgstr "Une erreur est survenue lors de l’import des contacts."
 
 #: lib/keila_web/templates/account/edit.html.heex:33
 #, elixir-autogen, elixir-format
@@ -1365,7 +1365,7 @@ msgstr ""
 #: lib/keila_web/templates/contact/import_live.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "You have successfully imported %{number} contacts!"
-msgstr ""
+msgstr "Vous avez importé %{number} contacts avec succès!"
 
 #: lib/keila_web/templates/sender/edit.html.heex:72
 #: lib/keila_web/templates/sender/edit.html.heex:87
@@ -1478,17 +1478,17 @@ msgstr ""
 #: lib/keila_web/templates/contact/import_live.html.heex:147
 #, elixir-autogen, elixir-format
 msgid "1. Download the template.\n2. Fill in the template in the same way that the sample data is filled in.\n2. Click on *File*, then *Save as*. Select *Text CSV (.csv)* and save the file.\n    In the following dialogue pick:\n    - **Character set:** *Unicode (UTF-8)*\n    - **Field delimiter:** *, (Comma)*\n    - **String delimiter:** *\" (Double Quote)*\n"
-msgstr ""
+msgstr "1. Télécharger le modèle.\n2. Remplissez le modèle de la même façon que les donées d’exemple.\n2. Cliquer sur *Fichier*, puis *Enregistrer sous*. Sélectionner *CSV (séparateur: virgule) (.csv)* et enregistrer le fichier.\n    Dans la boîte de dialogue suivante choisissez:\n    - **Codage:** *Unicode (UTF-8)*\n    - **Séparateur de champ:** *, (Virgule)*\n    - **Séparateur de texte:** *\" (Guillemet double)*\n"
 
 #: lib/keila_web/templates/contact/import_live.html.heex:129
 #, elixir-autogen, elixir-format
 msgid "1. Download the template.\n2. Fill in the template in the same way that the sample data is filled in.\n3. Click on *File*, then *Save as*.\n    Select _CSV UTF-8 (comma delimited) (*.csv)_ and save the file.\n"
-msgstr ""
+msgstr "1. Télécharger le modèle.\n2. Remplissez le modèle de la même façon que les donées d’exemple.\n3. Cliquez sur *Fichier*, puis *Enregistrer sous*.\n    Sélectionnez _CSV UTF-8 (séparateur virgule) (*.csv)_ et enregistrez le fichier.\n"
 
 #: lib/keila_web/templates/contact/import_live.html.heex:168
 #, elixir-autogen, elixir-format
 msgid "1. Download the template.\n2. Fill in the template in the same way that the sample data is filled in.\n3. In order to successfully import contacts, your CSV file needs be RFC 4180 compliant:\n    - Comma-separated\n    - UTF-8 encoding\n"
-msgstr ""
+msgstr "1. Téléchargez le modèle.\n2. Remplissez le modèle de la même façon que les donées d’exemple.\n3. Pour importer des contacts avec succès, votre fichier CSV doit être conforme à la RFC 4180:\n    - séparé par virgules\n    - encodage UTF-8\n"
 
 #: lib/keila_web/templates/user_admin/index.html.heex:4
 #, elixir-autogen, elixir-format
@@ -1559,7 +1559,7 @@ msgstr ""
 #: lib/keila_web/templates/project/_empty_state_forms_contacts.html.heex:8
 #, elixir-autogen, elixir-format
 msgid "If you already have an existing audience for your newsletter,\nyou can use the *Import Contacts* feature or manually create a new contact.\n\nYou can also invite new people to subscribe and create a\nsign-up *form*.\n"
-msgstr ""
+msgstr "Si vous avez déjà une audience existante pour votre infolettre,\nvous pouvez utiliser la fonctionnalité d’*Import de contacts* ou créer un contact manuellement.\n\nVous pouvez également inviter de nouvelles personnes à s’abonner et créer un\n*formulaire* d’abonnement."
 
 #: lib/keila_web/templates/contact/_empty_state.html.heex:10
 #, elixir-autogen, elixir-format
@@ -1606,7 +1606,7 @@ msgstr ""
 #: lib/keila_web/templates/contact/import_live.html.heex:96
 #, elixir-autogen, elixir-format
 msgid "Please follow the **exact** instructions on this page.\nIncorrectly formatted files can not be imported.\n"
-msgstr ""
+msgstr "Veuillez suivre les instructions **exactes** sur cette page.\nLes fichiers incorrectement formatés ne peuvent pas être importés.\n"
 
 #: lib/keila_web/templates/layout/_menu.html.heex:56
 #: lib/keila_web/templates/project/edit.html.heex:6
@@ -1924,7 +1924,7 @@ msgstr ""
 #: lib/keila_web/templates/contact/import_live.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Replace duplicates"
-msgstr ""
+msgstr "Remplacer les doublons"
 
 #: lib/keila_web/templates/api_key/index.html.heex:96
 #, elixir-autogen, elixir-format
