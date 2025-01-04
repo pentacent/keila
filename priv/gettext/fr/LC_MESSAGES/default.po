@@ -1266,7 +1266,7 @@ msgstr "Cette campagne a déjà été programmée. Vous pouvez l’envoyer manue
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:103
 #, elixir-autogen, elixir-format
 msgid "This campaign has already been scheduled. You can reschedule or cancel it up to five minutes before the scheduled sending time."
-msgstr "Cette campagne a déjà été programmée. Vous pouvez le reprogrammer ou l'annuler jusqu'à cinq minutes avant l'heure d'envoi prévue."
+msgstr "Cette campagne a déjà été programmée. Vous pouvez le reprogrammer ou l’annuler jusqu’à cinq minutes avant l’heure d’envoi prévue."
 
 #: lib/keila_web/templates/campaign/stats_live.html.heex:33
 #, elixir-autogen, elixir-format
@@ -1516,7 +1516,7 @@ msgstr ""
 #: lib/keila_web/templates/project/_empty_state_senders.html.heex:8
 #, elixir-autogen, elixir-format
 msgid "Before you can get started, you need to create a *sender*.\n\nIn the sender settings, you specify the email address\nand the name from which to send your emails.\n"
-msgstr "Avant de commencer, vous devez créer un *expéditeur*.\nDans les paramètres de l'expéditeur, vous spécifiez l'adresse e-mail et le nom à partir desquels vous envoyez vos e-mails."
+msgstr "Avant de commencer, vous devez créer un *expéditeur*.\nDans les paramètres de l’expéditeur, vous spécifiez l’adresse e-mail et le nom à partir desquels vous envoyez vos e-mails."
 
 #: lib/keila_web/templates/sender/_empty_state.html.heex:10
 #, elixir-autogen, elixir-format
@@ -1753,12 +1753,12 @@ msgstr ""
 #: lib/keila_web/templates/segment/index.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Create a new segment"
-msgstr ""
+msgstr "Créer un nouveau segment"
 
 #: lib/keila_web/templates/segment/_empty_state.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "Create your first segment"
-msgstr ""
+msgstr "Créez votre premier segment"
 
 #: lib/keila_web/live/segment_edit_live.ex:11
 #, elixir-autogen, elixir-format
@@ -1840,7 +1840,7 @@ msgstr ""
 #: lib/keila_web/templates/segment/_empty_state.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "You can create Segments to define subsets of your contacts.\n\nThis allows you to send campaigns only to those contacts who\nfulfill certain criteria.\n"
-msgstr ""
+msgstr "Vous pouvez créer des segments pour définir des sous-ensembles de vos contacts.\n\nCela vous permet d’envoyer des campagnes seulement à ceux qui\nremplissent certains critères.\n"
 
 #: lib/keila_web/templates/segment/edit_live.html.heex:130
 #, elixir-autogen, elixir-format
@@ -2363,7 +2363,7 @@ msgstr "Utilisez l’éditeur Markdown pour créer de magnifiques e-mails hybrid
 #: lib/keila_web/templates/campaign/new.html.heex:171
 #, elixir-autogen, elixir-format
 msgid "Users see this preview before they open your email. Use up to 50 characters."
-msgstr "Les utilisateurs verront cet aperçu avant d'ouvrir votre e-mail. Utilisez jusqu'à 50 caractères."
+msgstr "Les utilisateurs verront cet aperçu avant d’ouvrir votre e-mail. Utilisez jusqu’à 50 caractères."
 
 #: lib/keila_web/templates/campaign/stats_live.html.heex:222
 #, elixir-autogen, elixir-format
