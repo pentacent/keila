@@ -42,7 +42,7 @@
     @change="setUnsavedReminder(true)"
   >
     <div class="form-row">
-      <%= label(f, :name, "Project name") %>
+      <%= label(f, :name, gettext("Project name")) %>
       <%= with_validation(f, :name) do %>
         <%= text_input(f, :name,
           placeholder: gettext("My Newsletter Project"),

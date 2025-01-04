@@ -1,12 +1,12 @@
 <div class="form-row">
-  <%= label(@form, :mailgun_domain, "Domain") %>
+  <%= label(@form, :mailgun_domain, gettext("Domain")) %>
   <%= with_validation(@form, :mailgun_domain) do %>
     <%= text_input(@form, :mailgun_domain, class: "text-black") %>
   <% end %>
 </div>
 
 <div class="form-row">
-  <%= label(@form, :mailgun_base_url, "Base URL") %>
+  <%= label(@form, :mailgun_base_url, gettext("Base URL")) %>
   <%= with_validation(@form, :mailgun_base_url) do %>
     <%= select(
       @form,

@@ -109,7 +109,7 @@ config :mime, :types, %{
 # Configure locales
 config :keila, KeilaWeb.Gettext,
   default_locale: "en",
-  locales: ["de", "en"]
+  locales: ["de", "en", "fr"]
 
 config(:keila, Keila.Auth.Emails, from_email: "keila@localhost")
 
