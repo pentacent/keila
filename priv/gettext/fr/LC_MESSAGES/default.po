@@ -526,7 +526,7 @@ msgstr ""
 #: lib/keila_web/templates/template/index.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "Edit"
-msgstr ""
+msgstr "Modifier"
 
 #: lib/keila_web/controllers/project_controller.ex:77
 #, elixir-autogen, elixir-format
@@ -729,7 +729,7 @@ msgstr ""
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:191
 #, elixir-autogen, elixir-format
 msgid "It looks like you don’t yet have any contacts to receive this campaign."
-msgstr ""
+msgstr "On dirait que vous n’ayez pas encore de contacts pour recevoir cette campagne."
 
 #: lib/keila_web/templates/campaign/stats_live.html.heex:72
 #, elixir-autogen, elixir-format
@@ -893,7 +893,7 @@ msgstr ""
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:188
 #, elixir-autogen, elixir-format
 msgid "No Contacts, No Campaign."
-msgstr ""
+msgstr "Pas de contacts, pas de campagne."
 
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:77
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:196
@@ -904,7 +904,7 @@ msgstr ""
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:214
 #, elixir-autogen, elixir-format
 msgid "Ok"
-msgstr ""
+msgstr "Ok"
 
 #: lib/keila_web/templates/layout/root.html.heex:14
 #: lib/keila_web/templates/public_form_layout/root.html.heex:15
@@ -952,7 +952,7 @@ msgstr "Aperçu"
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:99
 #, elixir-autogen, elixir-format
 msgid "Ready to schedule your campaign?"
-msgstr ""
+msgstr "Prêt(e) à planifier votre campagne?"
 
 #: lib/keila_web/templates/auth/register.html.heex:12
 #, elixir-autogen, elixir-format
@@ -1064,7 +1064,7 @@ msgstr ""
 #: lib/keila_web/templates/campaign/index.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Sent at:"
-msgstr ""
+msgstr "Envoyé le:"
 
 #: lib/keila_web/templates/auth/reset_change_password.html.heex:12
 #, elixir-autogen, elixir-format
@@ -1135,7 +1135,7 @@ msgstr ""
 #: lib/keila_web/templates/campaign/index.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "Stats"
-msgstr ""
+msgstr "Statistiques"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:77
 #: lib/keila_web/templates/form/edit_live.html.heex:474
@@ -1248,12 +1248,12 @@ msgstr ""
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "This campaign has already been scheduled. You can manually send it up to five minutes before the scheduled sending time."
-msgstr ""
+msgstr "Cette campagne a déjà été programmée. Vous pouvez l’envoyer manuellement jusqu’à cinq minutes avant l’heure d’envoi prévue"
 
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:103
 #, elixir-autogen, elixir-format
 msgid "This campaign has already been scheduled. You can reschedule or cancel it up to five minutes before the scheduled sending time."
-msgstr ""
+msgstr "Cette campagne a déjà été programmée. Vous pouvez le reprogrammer ou l'annuler jusqu'à cinq minutes avant l'heure d'envoi prévue."
 
 #: lib/keila_web/templates/campaign/stats_live.html.heex:33
 #, elixir-autogen, elixir-format
@@ -1279,13 +1279,13 @@ msgstr "Ceci supprimera tous les contacts, campagnes et formulaires associés à
 #: lib/keila_web/templates/user_admin/show_credits.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Time"
-msgstr ""
+msgstr "Heure"
 
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:140
 #: lib/keila_web/templates/user_admin/show_credits.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "Timezone"
-msgstr ""
+msgstr "Fuseau horaire"
 
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:122
 #, elixir-autogen, elixir-format
@@ -1311,7 +1311,7 @@ msgstr ""
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:166
 #, elixir-autogen, elixir-format
 msgid "Unschedule"
-msgstr ""
+msgstr "Déprogrammer"
 
 #: lib/keila_web/controllers/public_form_controller.ex:140
 #: lib/keila_web/controllers/public_form_controller.ex:160
@@ -1539,7 +1539,7 @@ msgstr ""
 #: lib/keila_web/templates/campaign/index.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Create new campaign"
-msgstr ""
+msgstr "Créer une nouvelle campagne"
 
 #: lib/keila_web/templates/project/_empty_state_templates_campaigns.html.heex:19
 #, elixir-autogen, elixir-format
