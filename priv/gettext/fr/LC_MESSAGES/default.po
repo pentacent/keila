@@ -77,6 +77,31 @@ msgstr "Vous avez déjà un compte?"
 msgid "Alt Text"
 msgstr "Texte alternatif"
 
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:220
+#, elixir-autogen, elixir-format
+msgid "How does this work?"
+msgstr "Comment ça marche?"
+
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:246
+#, elixir-autogen, elixir-format
+msgid "Contact email address"
+msgstr "Adresse e-mail du contact"
+
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:238
+#, elixir-autogen, elixir-format
+msgid "Contact first name"
+msgstr "Prénom du contact"
+
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:254
+#, elixir-autogen, elixir-format
+msgid "Greeting with first name"
+msgstr "Salutations avec le prénom"
+
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:231
+#, elixir-autogen, elixir-format
+msgid "You can get started by trying one of these examples:"
+msgstr "Vous pouvez commencer en essayant un de ces exemples:"
+
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:108
 #, elixir-autogen, elixir-format
 msgid "Are you ready to schedule sending your campaign <em>%{subject}</em> to %{count} contacts?"
@@ -2263,7 +2288,7 @@ msgstr "Clé d’API copiée dans le presse-papier"
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Add content to this column here …"
-msgstr ""
+msgstr "Ajouter du contenu à cette colonne ici …"
 
 #: lib/keila_web/templates/campaign/stats_live.html.heex:11
 #, elixir-autogen, elixir-format
@@ -2299,7 +2324,7 @@ msgstr "Choisissez votre éditeur"
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "Click here to select an image."
-msgstr ""
+msgstr "Cliquez ici pour sélectionner une image."
 
 #: lib/keila_web/templates/api_key/index.html.heex:58
 #, elixir-autogen, elixir-format
@@ -2330,22 +2355,22 @@ msgstr "Liens de pied de page"
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "Image caption (optional)"
-msgstr ""
+msgstr "Légende de l’image (optionnel)"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Link for this image (optional)"
-msgstr ""
+msgstr "Lien pour cette image (optionnel)"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Make centered"
-msgstr ""
+msgstr "Rendre centré"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Make full width"
-msgstr ""
+msgstr "Prendre toute la largeur"
 
 #: lib/keila_web/live/campaign_stats_live.ex:67
 #, elixir-autogen, elixir-format
@@ -2381,12 +2406,12 @@ msgstr "Citations"
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Separator"
-msgstr ""
+msgstr "Séparateur"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Start creating your newsletter here …"
-msgstr ""
+msgstr "Commencez à créer votre infolettre ici …"
 
 #: lib/keila_web/views/template_view.ex:71
 #, elixir-autogen, elixir-format

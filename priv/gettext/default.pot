@@ -76,6 +76,32 @@ msgstr ""
 msgid "Alt Text"
 msgstr ""
 
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:220
+#, elixir-autogen, elixir-format
+msgid "How does this work?"
+msgstr ""
+
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:246
+#, elixir-autogen, elixir-format
+msgid "Contact email address"
+msgstr ""
+
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:238
+#, elixir-autogen, elixir-format
+msgid "Contact first name"
+msgstr ""
+
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:254
+#, elixir-autogen, elixir-format
+msgid "Greeting with first name"
+msgstr ""
+
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:231
+#, elixir-autogen, elixir-format
+msgid "You can get started by trying one of these examples:"
+msgstr ""
+
+
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:108
 #, elixir-autogen, elixir-format
 msgid "Are you ready to schedule sending your campaign <em>%{subject}</em> to %{count} contacts?"
