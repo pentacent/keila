@@ -161,11 +161,11 @@ msgstr "Kampagnen, die mit diesem Sender verknüpft sind, werden nicht gelöscht
 #: lib/keila_web/templates/contact/edit.html.heex:23
 #: lib/keila_web/templates/form/delete.html.heex:34
 #: lib/keila_web/templates/form/edit_live.html.heex:14
-#: lib/keila_web/templates/project/delete.html.heex:37
+#: lib/keila_web/templates/project/delete.html.heex:41
 #: lib/keila_web/templates/project/edit.html.heex:14
 #: lib/keila_web/templates/segment/delete.html.heex:34
 #: lib/keila_web/templates/segment/edit_live.html.heex:14
-#: lib/keila_web/templates/sender/delete.html.heex:35
+#: lib/keila_web/templates/sender/delete.html.heex:39
 #: lib/keila_web/templates/sender/edit.html.heex:18
 #: lib/keila_web/templates/shared_sender_admin/delete.html.heex:40
 #: lib/keila_web/templates/shared_sender_admin/edit.html.heex:18
@@ -386,11 +386,11 @@ msgstr "Standard"
 #: lib/keila_web/templates/contact/edit.html.heex:30
 #: lib/keila_web/templates/form/delete.html.heex:37
 #: lib/keila_web/templates/form/edit_live.html.heex:22
-#: lib/keila_web/templates/project/delete.html.heex:40
+#: lib/keila_web/templates/project/delete.html.heex:44
 #: lib/keila_web/templates/project/edit.html.heex:21
 #: lib/keila_web/templates/segment/delete.html.heex:37
 #: lib/keila_web/templates/segment/edit_live.html.heex:24
-#: lib/keila_web/templates/sender/delete.html.heex:38
+#: lib/keila_web/templates/sender/delete.html.heex:42
 #: lib/keila_web/templates/sender/edit.html.heex:26
 #: lib/keila_web/templates/shared_sender_admin/delete.html.heex:43
 #: lib/keila_web/templates/shared_sender_admin/edit.html.heex:26
@@ -432,7 +432,7 @@ msgstr "Projekt %{project} löschen?"
 msgid "Delete Sender %{sender}?"
 msgstr "Sender %{sender} löschen?"
 
-#: lib/keila_web/templates/sender/delete.html.heex:3
+#: lib/keila_web/templates/sender/delete.html.heex:28
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Type in the sender name to confirm its deletion:"
 msgstr ""
@@ -472,7 +472,7 @@ msgstr "Das Löschen eines Formulars kann nicht rückgängig gemacht werden."
 msgid "Deleting a project cannot be undone."
 msgstr "Das Löschen eines Projekts kann nicht rückgängig gemacht werden."
 
-#: lib/keila_web/templates/project/delete.html.heex:24
+#: lib/keila_web/templates/project/delete.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "Type in the project name to confirm its deletion:"
 msgstr ""
@@ -517,7 +517,7 @@ msgstr "Sollen die folgenden Templates wirklich gelöscht werden?"
 msgid "Do you really want to delete the following users? This will also delete their projects and contacts."
 msgstr "Sollen die folgenden User wirklich gelöscht werden? Dieser Vorgang wird auch deren Projekte und Kontakte löschen."
 
-#: lib/keila_web/templates/contact/edit.html.heex:15
+#: lib/keila_web/templates/contact/edit.html.heex:71
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Contact Name"
 msgstr ""
@@ -590,8 +590,10 @@ msgstr "Diese Kampagne bearbeiten"
 #: lib/keila_web/templates/auth/reset.html.heex:15
 #: lib/keila_web/templates/contact/_list.html.heex:22
 #: lib/keila_web/templates/contact/delete.html.heex:24
+#: lib/keila_web/templates/contact/edit.html.heex:61
 #: lib/keila_web/templates/form/edit_live.html.heex:153
 #: lib/keila_web/templates/form/edit_live.html.heex:196
+#: lib/keila_web/templates/segment/edit_live.html.heex:179
 #: lib/keila_web/templates/user_admin/new.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "Email"
@@ -618,6 +620,7 @@ msgstr "Kleingedrucktes"
 #: lib/keila_web/templates/contact/_list.html.heex:32
 #: lib/keila_web/templates/contact/delete.html.heex:25
 #: lib/keila_web/templates/form/edit_live.html.heex:159
+#: lib/keila_web/templates/segment/edit_live.html.heex:180
 #, elixir-autogen, elixir-format
 msgid "First name"
 msgstr "Vorname"
@@ -772,7 +775,9 @@ msgstr "Erika"
 #: lib/keila_web/live/segment_edit_live.ex:9
 #: lib/keila_web/templates/contact/_list.html.heex:42
 #: lib/keila_web/templates/contact/delete.html.heex:26
+#: lib/keila_web/templates/contact/edit.html.heex:77
 #: lib/keila_web/templates/form/edit_live.html.heex:166
+#: lib/keila_web/templates/segment/edit_live.html.heex:181
 #, elixir-autogen, elixir-format
 msgid "Last name"
 msgstr "Nachname"
@@ -1866,6 +1871,16 @@ msgstr "Feld:"
 msgid "Filter"
 msgstr "Filter"
 
+#: lib/keila_web/templates/segment/edit_live.html.heex:104
+#, elixir-autogen, elixir-format
+msgid "Add AND condition"
+msgstr ""
+
+#: lib/keila_web/templates/segment/edit_live.html.heex:111
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Add OR condition"
+msgstr ""
+
 #: lib/keila_web/templates/segment/edit_live.html.heex:154
 #, elixir-autogen, elixir-format
 msgid "Invalid filter"
@@ -1886,7 +1901,7 @@ msgstr "Mein Kontakte-Segment"
 msgid "New Segment"
 msgstr "Neues Segment"
 
-#: lib/keila_web/templates/segment/new.html.heex:10
+#: lib/keila_web/templates/segment/new.html.heex:23
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Segment Name"
 msgstr ""
@@ -2620,6 +2635,7 @@ msgstr ""
 
 #: lib/keila_web/templates/contact/_list.html.heex:52
 #: lib/keila_web/templates/contact/delete.html.heex:27
+#: lib/keila_web/templates/segment/edit_live.html.heex:182
 #, elixir-autogen, elixir-format
 msgid "Added"
 msgstr ""

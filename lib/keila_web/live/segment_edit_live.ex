@@ -2,30 +2,34 @@ defmodule KeilaWeb.SegmentEditLive do
   use KeilaWeb, :live_view
   alias Keila.Contacts
 
-  @fields %{
-    "inserted_at" => %{type: "date", label: gettext("Date added")},
-    "email" => %{type: "string", label: gettext("Email")},
-    "first_name" => %{type: "string", label: gettext("First name")},
-    "last_name" => %{type: "string", label: gettext("Last name")},
-    "double_opt_in_at" => %{type: "date", label: gettext("Double opt-in date")},
-    "data" => %{type: "custom", label: gettext("Custom data")}
-  }
+  defp fields do
+    %{
+      "inserted_at" => %{type: "date", label: gettext("Date added")},
+      "email" => %{type: "string", label: gettext("Email")},
+      "first_name" => %{type: "string", label: gettext("First name")},
+      "last_name" => %{type: "string", label: gettext("Last name")},
+      "double_opt_in_at" => %{type: "date", label: gettext("Double opt-in date")},
+      "data" => %{type: "custom", label: gettext("Custom data")}
+    }
+  end
 
-  @widgets %{
-    "date" => [
-      %{name: "lt", label: gettext("is before")},
-      %{name: "gt", label: gettext("is after")}
-    ],
-    "string" => [
-      %{name: "eq", label: gettext("is equal")},
-      %{name: "starts_with", label: gettext("starts with")},
-      %{name: "ends_with", label: gettext("ends with")},
-      %{name: "includes", label: gettext("includes")}
-    ],
-    "custom" => [
-      %{name: "matches", label: gettext("matches")}
-    ]
-  }
+  defp widgets do
+    %{
+      "date" => [
+        %{name: "lt", label: gettext("is before")},
+        %{name: "gt", label: gettext("is after")}
+      ],
+      "string" => [
+        %{name: "eq", label: gettext("is equal")},
+        %{name: "starts_with", label: gettext("starts with")},
+        %{name: "ends_with", label: gettext("ends with")},
+        %{name: "includes", label: gettext("includes")}
+      ],
+      "custom" => [
+        %{name: "matches", label: gettext("matches")}
+      ]
+    }
+  end
 
   @empty_state %{"0" => %{}}
   @default_field %{
@@ -44,8 +48,8 @@ defmodule KeilaWeb.SegmentEditLive do
       |> assign(:current_project, session["current_project"])
       |> assign(:segment, session["segment"])
       |> assign(:changeset, Ecto.Changeset.change(session["segment"]))
-      |> assign(:fields, @fields)
-      |> assign(:widgets, @widgets)
+      |> assign(:fields, fields())
+      |> assign(:widgets, widgets())
       |> assign(:page, 0)
       |> put_filter(session["segment"].filter || %{})
       |> update_assigns()
@@ -274,7 +278,7 @@ defmodule KeilaWeb.SegmentEditLive do
       type =
         case field do
           "data." <> _ -> "custom"
-          field -> @fields[field].type
+          field -> fields()[field].type
         end
 
       form_data =
@@ -344,7 +348,7 @@ defmodule KeilaWeb.SegmentEditLive do
       field = form_data_condition["field"]
       widget = form_data_condition["widget"]
       value = form_data_condition["value"]
-      type = @fields[field].type
+      type = fields()[field].type
       form_data_condition_to_filter(field, type, widget, value)
     end)
     |> Enum.filter(& &1)
@@ -403,8 +407,8 @@ defmodule KeilaWeb.SegmentEditLive do
       form_data_conditions =
         form_data_conditions
         |> Enum.map(fn {condition_index, condition} ->
-          type = @fields[condition["field"]].type
-          allowed_widgets = Enum.map(@widgets[type], & &1.name)
+          type = fields()[condition["field"]].type
+          allowed_widgets = Enum.map(widgets()[type], & &1.name)
 
           if condition["type"] != type || condition["widget"] not in allowed_widgets do
             condition =

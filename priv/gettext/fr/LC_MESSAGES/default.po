@@ -151,11 +151,11 @@ msgstr "Les campagnes associées à cet expéditeur ne seront pas supprimées."
 #: lib/keila_web/templates/contact/edit.html.heex:23
 #: lib/keila_web/templates/form/delete.html.heex:34
 #: lib/keila_web/templates/form/edit_live.html.heex:14
-#: lib/keila_web/templates/project/delete.html.heex:37
+#: lib/keila_web/templates/project/delete.html.heex:41
 #: lib/keila_web/templates/project/edit.html.heex:14
 #: lib/keila_web/templates/segment/delete.html.heex:34
 #: lib/keila_web/templates/segment/edit_live.html.heex:14
-#: lib/keila_web/templates/sender/delete.html.heex:35
+#: lib/keila_web/templates/sender/delete.html.heex:39
 #: lib/keila_web/templates/sender/edit.html.heex:18
 #: lib/keila_web/templates/shared_sender_admin/delete.html.heex:40
 #: lib/keila_web/templates/shared_sender_admin/edit.html.heex:18
@@ -376,11 +376,11 @@ msgstr "Par défaut"
 #: lib/keila_web/templates/contact/edit.html.heex:30
 #: lib/keila_web/templates/form/delete.html.heex:37
 #: lib/keila_web/templates/form/edit_live.html.heex:22
-#: lib/keila_web/templates/project/delete.html.heex:40
+#: lib/keila_web/templates/project/delete.html.heex:44
 #: lib/keila_web/templates/project/edit.html.heex:21
 #: lib/keila_web/templates/segment/delete.html.heex:37
 #: lib/keila_web/templates/segment/edit_live.html.heex:24
-#: lib/keila_web/templates/sender/delete.html.heex:38
+#: lib/keila_web/templates/sender/delete.html.heex:42
 #: lib/keila_web/templates/sender/edit.html.heex:26
 #: lib/keila_web/templates/shared_sender_admin/delete.html.heex:43
 #: lib/keila_web/templates/shared_sender_admin/edit.html.heex:26
@@ -422,7 +422,7 @@ msgstr "Supprimer le projet %{project}?"
 msgid "Delete Sender %{sender}?"
 msgstr "Supprimer l’expéditeur %{sender}?"
 
-#: lib/keila_web/templates/sender/delete.html.heex:3
+#: lib/keila_web/templates/sender/delete.html.heex:28
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Type in the sender name to confirm its deletion:"
 msgstr "Saisissez le nom de l’expéditeur pour confirmer sa suppression:"
@@ -462,7 +462,7 @@ msgstr ""
 msgid "Deleting a project cannot be undone."
 msgstr "Supprimer un projet est définitif."
 
-#: lib/keila_web/templates/project/delete.html.heex:24
+#: lib/keila_web/templates/project/delete.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "Type in the project name to confirm its deletion:"
 msgstr "Saisissez le nom du projet pour confirmer sa suppression:"
@@ -507,7 +507,7 @@ msgstr ""
 msgid "Do you really want to delete the following users? This will also delete their projects and contacts."
 msgstr ""
 
-#: lib/keila_web/templates/contact/edit.html.heex:15
+#: lib/keila_web/templates/contact/edit.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "Contact Name"
 msgstr "Nom de contact"
@@ -580,8 +580,10 @@ msgstr "Modifier cette campagne"
 #: lib/keila_web/templates/auth/reset.html.heex:15
 #: lib/keila_web/templates/contact/_list.html.heex:22
 #: lib/keila_web/templates/contact/delete.html.heex:24
+#: lib/keila_web/templates/contact/edit.html.heex:61
 #: lib/keila_web/templates/form/edit_live.html.heex:153
 #: lib/keila_web/templates/form/edit_live.html.heex:196
+#: lib/keila_web/templates/segment/edit_live.html.heex:179
 #: lib/keila_web/templates/user_admin/new.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "Email"
@@ -608,6 +610,7 @@ msgstr ""
 #: lib/keila_web/templates/contact/_list.html.heex:32
 #: lib/keila_web/templates/contact/delete.html.heex:25
 #: lib/keila_web/templates/form/edit_live.html.heex:159
+#: lib/keila_web/templates/segment/edit_live.html.heex:180
 #, elixir-autogen, elixir-format
 msgid "First name"
 msgstr "Prénom"
@@ -762,7 +765,9 @@ msgstr "Truc"
 #: lib/keila_web/live/segment_edit_live.ex:9
 #: lib/keila_web/templates/contact/_list.html.heex:42
 #: lib/keila_web/templates/contact/delete.html.heex:26
+#: lib/keila_web/templates/contact/edit.html.heex:77
 #: lib/keila_web/templates/form/edit_live.html.heex:166
+#: lib/keila_web/templates/segment/edit_live.html.heex:181
 #, elixir-autogen, elixir-format
 msgid "Last name"
 msgstr "Nom"
@@ -866,7 +871,7 @@ msgstr ""
 #: lib/keila_web/templates/template/new.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Name"
-msgstr ""
+msgstr "Nom"
 
 #: lib/keila_web/controllers/campaign_controller.ex:62
 #: lib/keila_web/templates/campaign/new.html.heex:4
@@ -1753,7 +1758,7 @@ msgstr ""
 #: lib/keila_web/templates/segment/edit_live.html.heex:163
 #, elixir-autogen, elixir-format
 msgid "Contacts in this segment (%{count})"
-msgstr ""
+msgstr "Contacts dans ce segment (%{count})"
 
 #: lib/keila_web/templates/segment/index.html.heex:9
 #, elixir-autogen, elixir-format
@@ -1768,12 +1773,12 @@ msgstr "Créez votre premier segment"
 #: lib/keila_web/live/segment_edit_live.ex:11
 #, elixir-autogen, elixir-format
 msgid "Custom data"
-msgstr ""
+msgstr "Données personnalisées"
 
 #: lib/keila_web/live/segment_edit_live.ex:6
 #, elixir-autogen, elixir-format
 msgid "Date added"
-msgstr ""
+msgstr "Date d’ajout"
 
 #: lib/keila_web/templates/segment/delete.html.heex:3
 #, elixir-autogen, elixir-format
@@ -1793,27 +1798,37 @@ msgstr ""
 #: lib/keila_web/templates/segment/edit_live.html.heex:6
 #, elixir-autogen, elixir-format
 msgid "Edit Segment"
-msgstr ""
+msgstr "Modifier le segment"
 
 #: lib/keila_web/views/segment_view.ex:85
 #, elixir-autogen, elixir-format
 msgid "Field:"
-msgstr ""
+msgstr "Champ:"
 
 #: lib/keila_web/templates/segment/edit_live.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "Filter"
-msgstr ""
+msgstr "Filtre"
+
+#: lib/keila_web/templates/segment/edit_live.html.heex:104
+#, elixir-autogen, elixir-format
+msgid "Add AND condition"
+msgstr "Ajouter une condition ET"
+
+#: lib/keila_web/templates/segment/edit_live.html.heex:111
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Add OR condition"
+msgstr "Ajouter une condition OU"
 
 #: lib/keila_web/templates/segment/edit_live.html.heex:154
 #, elixir-autogen, elixir-format
 msgid "Invalid filter"
-msgstr ""
+msgstr "Filtre invalide"
 
 #: lib/keila_web/views/segment_view.ex:95
 #, elixir-autogen, elixir-format
 msgid "Match:"
-msgstr ""
+msgstr "Correspondance:"
 
 #: lib/keila_web/templates/segment/new.html.heex:26
 #, elixir-autogen, elixir-format
@@ -1825,7 +1840,7 @@ msgstr "Mon segment de contacts"
 msgid "New Segment"
 msgstr "Nouveau segment"
 
-#: lib/keila_web/templates/segment/new.html.heex:10
+#: lib/keila_web/templates/segment/new.html.heex:23
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Segment Name"
 msgstr "Nom du segment"
@@ -1833,7 +1848,7 @@ msgstr "Nom du segment"
 #: lib/keila_web/templates/segment/edit_live.html.heex:121
 #, elixir-autogen, elixir-format
 msgid "Query"
-msgstr ""
+msgstr "Requête"
 
 #: lib/keila_web/templates/layout/_menu.html.heex:91
 #: lib/keila_web/templates/project/show.html.heex:59
@@ -1845,7 +1860,7 @@ msgstr "Segments"
 #: lib/keila_web/templates/segment/edit_live.html.heex:139
 #, elixir-autogen, elixir-format
 msgid "This query can only be edited manually."
-msgstr ""
+msgstr "Cette requête ne peut être modifiée que manuellement."
 
 #: lib/keila_web/templates/segment/_empty_state.html.heex:10
 #, elixir-autogen, elixir-format
@@ -1855,47 +1870,47 @@ msgstr "Vous pouvez créer des segments pour définir des sous-ensembles de vos 
 #: lib/keila_web/templates/segment/edit_live.html.heex:130
 #, elixir-autogen, elixir-format
 msgid "edit"
-msgstr ""
+msgstr "modifier"
 
 #: lib/keila_web/live/segment_edit_live.ex:22
 #, elixir-autogen, elixir-format
 msgid "ends with"
-msgstr ""
+msgstr "se termine par"
 
 #: lib/keila_web/live/segment_edit_live.ex:23
 #, elixir-autogen, elixir-format
 msgid "includes"
-msgstr ""
+msgstr "inclut"
 
 #: lib/keila_web/live/segment_edit_live.ex:17
 #, elixir-autogen, elixir-format
 msgid "is after"
-msgstr ""
+msgstr "est après"
 
 #: lib/keila_web/live/segment_edit_live.ex:16
 #, elixir-autogen, elixir-format
 msgid "is before"
-msgstr ""
+msgstr "est avant"
 
 #: lib/keila_web/live/segment_edit_live.ex:20
 #, elixir-autogen, elixir-format
 msgid "is equal"
-msgstr ""
+msgstr "est égal à"
 
 #: lib/keila_web/live/segment_edit_live.ex:26
 #, elixir-autogen, elixir-format
 msgid "matches"
-msgstr ""
+msgstr "correspond à"
 
 #: lib/keila_web/live/segment_edit_live.ex:21
 #, elixir-autogen, elixir-format
 msgid "starts with"
-msgstr ""
+msgstr "commence par"
 
 #: lib/keila_web/templates/segment/edit_live.html.heex:133
 #, elixir-autogen, elixir-format
 msgid "use filter editor"
-msgstr ""
+msgstr "utiliser l’éditeur de filtre"
 
 #: lib/keila/contacts/import.ex:187
 #, elixir-autogen, elixir-format
@@ -2464,7 +2479,7 @@ msgstr ""
 #: lib/keila_web/live/segment_edit_live.ex:10
 #, elixir-autogen, elixir-format
 msgid "Double opt-in date"
-msgstr ""
+msgstr "Date de double opt-in"
 
 #: lib/keila/mailings/send_double_opt_in_mail_worker.ex:51
 #: lib/keila_web/templates/form/edit_live.html.heex:409
@@ -2545,6 +2560,7 @@ msgstr ""
 
 #: lib/keila_web/templates/contact/_list.html.heex:52
 #: lib/keila_web/templates/contact/delete.html.heex:27
+#: lib/keila_web/templates/segment/edit_live.html.heex:182
 #, elixir-autogen, elixir-format
 msgid "Added"
 msgstr "Ajouté"
