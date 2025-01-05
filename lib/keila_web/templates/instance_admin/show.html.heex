@@ -16,7 +16,7 @@
         <div class="flex size-16">
           <%= render_icon(:newspaper) %>
         </div>
-        There are updates available for your Keila instance!
+        <%= dgettext("admin", "There are updates available for your Keila instance!") %>
       </div>
       <br /><br />
       <%= for release <- @available_updates do %>
@@ -34,11 +34,11 @@
         <div class="flex size-16">
           <%= render_icon(:check_circle) %>
         </div>
-        You seem to be running the most recent version of Keila!
+        <%= dgettext("admin", "You seem to be running the most recent version of Keila!") %>
       </div>
       <br />
     <% end %>
   <% else %>
-    <p>Update checks are disabled.</p>
+    <p><%= dgettext("admin", "Update checks are disabled.") %></p>
   <% end %>
 </div>

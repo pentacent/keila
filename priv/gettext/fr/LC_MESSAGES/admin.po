@@ -145,4 +145,19 @@ msgstr "Informations système"
 #: lib/keila_web/templates/instance_admin/show.html.heex:4
 #, elixir-autogen, elixir-format
 msgid "You are currently running Keila %{version} on %{host}."
-msgstr ""
+msgstr "Vous utilisez actuellement la version %{version} de Keila sur %{host}."
+
+#: lib/keila_web/templates/instance_admin/show.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "There are updates available for your Keila instance!"
+msgstr "Des mises à jour sont disponibles pour votre instance Keila!"
+
+#: lib/keila_web/templates/instance_admin/show.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "Update checks are disabled."
+msgstr "La vérification des mises à jours est désactivée."
+
+#: lib/keila_web/templates/instance_admin/show.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "You seem to be running the most recent version of Keila!"
+msgstr "Vous semblez utiliser la version la plus récente de Keila!"

@@ -145,3 +145,18 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "You are currently running Keila %{version} on %{host}."
 msgstr ""
+
+#: lib/keila_web/templates/instance_admin/show.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "There are updates available for your Keila instance!"
+msgstr ""
+
+#: lib/keila_web/templates/instance_admin/show.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "Update checks are disabled."
+msgstr ""
+
+#: lib/keila_web/templates/instance_admin/show.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "You seem to be running the most recent version of Keila!"
+msgstr ""
