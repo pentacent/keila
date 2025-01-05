@@ -1,0 +1,33 @@
+<div class="container flex py-8 sm:py-11 mb-4">
+  <h1 class="text-2xl sm:text-3xl">
+    <%= gettext("Delete Account?") %>
+  </h1>
+</div>
+
+<div class="container">
+  <div class="p-4 ring ring-red-900">
+    <p class="text-lg text-gray-200">
+      <%= gettext("Do you really want to delete your account?") %>
+    </p>
+
+    <.form
+      for={@conn}
+      as="account"
+      action={Routes.account_path(@conn, :delete)}
+      method="delete"
+      class="flex flex-col gap-4"
+    >
+      <p class="text-lg text-gray-200 font-bold">
+        <%= gettext("Deleting an account cannot be undone.") %>
+      </p>
+      <div class="flex gap-4 mt-4">
+        <a class="button button--text button--large" href={Routes.account_path(@conn, :edit)}>
+          <%= gettext("Cancel") %>
+        </a>
+        <button type="submit" class="button button--warn button--large">
+          <%= gettext("Delete") %>
+        </button>
+      </div>
+    </.form>
+  </div>
+</div>
