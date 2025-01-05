@@ -857,7 +857,7 @@ msgstr "Mon nouveau formulaire"
 #: lib/keila_web/templates/project/edit.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "My Newsletter Project"
-msgstr ""
+msgstr "Mon projet d’infolettre"
 
 #: lib/keila_web/templates/sender/edit.html.heex:54
 #, elixir-autogen, elixir-format
