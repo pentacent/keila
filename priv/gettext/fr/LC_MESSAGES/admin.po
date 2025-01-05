@@ -140,7 +140,7 @@ msgstr ""
 #: lib/keila_web/templates/layout/_menu.html.heex:155
 #, elixir-autogen, elixir-format
 msgid "System Info"
-msgstr ""
+msgstr "Informations système"
 
 #: lib/keila_web/templates/instance_admin/show.html.heex:4
 #, elixir-autogen, elixir-format
