@@ -677,7 +677,7 @@ msgstr "Ici, vous pouvez mettre à jour votre mot de passe Keila."
 #: lib/keila_web/views/public_form_view.ex:98
 #, elixir-autogen, elixir-format
 msgid "I am human."
-msgstr ""
+msgstr "Je suis humain"
 
 #: lib/keila_web/templates/auth/reset.html.heex:12
 #, elixir-autogen, elixir-format
@@ -1235,7 +1235,7 @@ msgstr "Message de remerciement"
 #: lib/keila_web/views/public_form_view.ex:296
 #, elixir-autogen, elixir-format
 msgid "Thank you!"
-msgstr ""
+msgstr "Merci!"
 
 #: lib/keila_web/templates/campaign/stats_live.html.heex:49
 #: lib/keila_web/templates/form/edit_live.html.heex:456
@@ -1388,7 +1388,7 @@ msgstr "Vous avez actuellement un abonnement actif. Merci de soutenir Keila!"
 #: lib/keila_web/views/public_form_view.ex:323
 #, elixir-autogen, elixir-format
 msgid "You have been unsubscribed from this list."
-msgstr ""
+msgstr "Vous avez été désabonné de cette liste."
 
 #: lib/keila_web/templates/contact/import_live.html.heex:70
 #, elixir-autogen, elixir-format
@@ -2524,7 +2524,7 @@ msgstr "Veuillez cliquer ici pour confirmer votre abonnement:\n\n### [Confirmer 
 #: lib/keila_web/views/public_form_view.ex:307
 #, elixir-autogen, elixir-format
 msgid "Please confirm your email"
-msgstr ""
+msgstr "Veuillez confirmer votre adresse e-mail"
 
 #: lib/keila/mailings/send_double_opt_in_mail_worker.ex:47
 #: lib/keila_web/templates/form/edit_live.html.heex:387
@@ -2545,7 +2545,7 @@ msgstr "Pour éviter les abus par les spammeurs, la fonctionnalité de double op
 #: lib/keila_web/views/public_form_view.ex:310
 #, elixir-autogen, elixir-format
 msgid "We’ve just sent an email to %{email}. Please click the link in that email to confirm your subscription."
-msgstr ""
+msgstr "Nous venons d’envoyer un e-mail à %{email}. Veuillez cliquer sur le lien présent dans cet e-mail pour confirmer votre abonnement."
 
 #: lib/keila_web/templates/public_form/double_opt_in_cancelled.html.heex:7
 #, elixir-autogen, elixir-format
