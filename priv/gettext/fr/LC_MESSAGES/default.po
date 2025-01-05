@@ -1581,12 +1581,12 @@ msgstr "Créer"
 #: lib/keila_web/templates/project/_empty_state_templates_campaigns.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Create a campaign"
-msgstr ""
+msgstr "Créer une campagne"
 
 #: lib/keila_web/templates/project/_empty_state_templates_campaigns.html.heex:6
 #, elixir-autogen, elixir-format
 msgid "Create engaging designs and campaigns!"
-msgstr ""
+msgstr "Créez des designs et des campagnes attrayants!"
 
 #: lib/keila_web/templates/layout/_menu.html.heex:100
 #, elixir-autogen, elixir-format
@@ -1601,7 +1601,7 @@ msgstr "Créer une nouvelle campagne"
 #: lib/keila_web/templates/project/_empty_state_templates_campaigns.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "Create your own design"
-msgstr ""
+msgstr "Créez votre propre design"
 
 #: lib/keila_web/templates/project/_empty_state_forms_contacts.html.heex:6
 #, elixir-autogen, elixir-format
@@ -1674,7 +1674,7 @@ msgstr "Projets"
 #: lib/keila_web/templates/project/_empty_state_campaigns.html.heex:6
 #, elixir-autogen, elixir-format
 msgid "Ready, set, send!"
-msgstr ""
+msgstr "À vos marques, prêt, envoyez!"
 
 #: lib/keila_web/templates/campaign/_empty_state.html.heex:10
 #, elixir-autogen, elixir-format
@@ -1706,12 +1706,12 @@ msgstr "Vous pouvez créer un ou plusieurs formulaires pour permettre à de nouv
 #: lib/keila_web/templates/project/_empty_state_templates_campaigns.html.heex:8
 #, elixir-autogen, elixir-format
 msgid "You can get started sending campaigns with Keila’s default template now.\n\nTo create your design, you can use the template editor.\n"
-msgstr ""
+msgstr "You pouvez commencer à envoyer des campagnes avec le modèle par défaut Keila maintenant.\n\nPour créer votre design, vous pouvez utiliser l'éditeur de modèle.\n"
 
 #: lib/keila_web/templates/project/_empty_state_campaigns.html.heex:8
 #, elixir-autogen, elixir-format
 msgid "You’re ready to send your first campaign with Keila.\n"
-msgstr ""
+msgstr "Vous êtes prêt à envoyer votre première campagne avec Keila.\n"
 
 #: lib/keila_web/templates/contact/_tabs.html.heex:9
 #, elixir-autogen, elixir-format
