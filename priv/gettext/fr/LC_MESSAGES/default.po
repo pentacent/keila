@@ -597,7 +597,7 @@ msgstr "E-mail"
 #: lib/keila/contacts/import.ex:179
 #, elixir-autogen, elixir-format
 msgid "Field %{field}: %{message}"
-msgstr ""
+msgstr "Champ %{field}: %{message}"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:61
 #: lib/keila_web/templates/form/edit_live.html.heex:139
@@ -1246,7 +1246,7 @@ msgstr "Merci d’avoir essayé Keila!"
 #: lib/keila/contacts/import.ex:42
 #, elixir-autogen, elixir-format
 msgid "The file you provided could not be processed."
-msgstr ""
+msgstr "Le fichier fourni n’a pas pu être traité."
 
 #: lib/keila_web/templates/sender/_local_config.html.heex:2
 #, elixir-autogen, elixir-format
@@ -1924,7 +1924,7 @@ msgstr "utiliser l’éditeur de filtre"
 #: lib/keila/contacts/import.ex:187
 #, elixir-autogen, elixir-format
 msgid "Error importing contact in line %{line} (email: %{email}): %{message}"
-msgstr ""
+msgstr "Erreur lors de l’import de contact à la ligne %{line} (e-mail: %{email}): %{message}"
 
 #: lib/keila_web/templates/project/show.html.heex:63
 #, elixir-autogen, elixir-format
