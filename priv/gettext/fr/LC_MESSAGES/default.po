@@ -1490,7 +1490,7 @@ msgstr "souligné"
 #: lib/keila/contacts/import.ex:182
 #, elixir-autogen, elixir-format
 msgid "unknown data error"
-msgstr ""
+msgstr "erreur de donnée inconnue"
 
 #: lib/keila_web/templates/account/edit.html.heex:81
 #: lib/keila_web/templates/account/edit.html.heex:134
