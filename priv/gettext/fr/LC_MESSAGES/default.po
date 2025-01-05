@@ -1606,7 +1606,7 @@ msgstr "Créez votre propre design"
 #: lib/keila_web/templates/project/_empty_state_forms_contacts.html.heex:6
 #, elixir-autogen, elixir-format
 msgid "Grow your audience with Keila!"
-msgstr ""
+msgstr "Développez votre audience avec Keila!"
 
 #: lib/keila_web/templates/project/_empty_state_forms_contacts.html.heex:8
 #, elixir-autogen, elixir-format
