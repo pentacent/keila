@@ -265,7 +265,7 @@ msgstr "Confirmer la suppression du modèle"
 #: lib/keila_web/controllers/user_admin_controller.ex:78
 #, elixir-autogen, elixir-format
 msgid "Confirm User Deletion"
-msgstr "Confirmer la suppression de l’utilisateur(ice)"
+msgstr "Confirmer la suppression de l’utilisateur"
 
 #: lib/keila_web/controllers/campaign_controller.ex:173
 #, elixir-autogen, elixir-format
@@ -1525,7 +1525,7 @@ msgstr "1. Téléchargez le modèle.\n2. Remplissez le modèle de la même faço
 #: lib/keila_web/templates/user_admin/index.html.heex:4
 #, elixir-autogen, elixir-format
 msgid "Administer Users"
-msgstr ""
+msgstr "Administrer les utilisateurs"
 
 #: lib/keila_web/templates/layout/_menu.html.heex:44
 #, elixir-autogen, elixir-format
@@ -2570,7 +2570,7 @@ msgstr "Ajouter un choix"
 #: lib/keila_web/templates/user_admin/index.html.heex:8
 #, elixir-autogen, elixir-format
 msgid "Add user"
-msgstr ""
+msgstr "Ajouter un utilisateur"
 
 #: lib/keila_web/templates/contact/_list.html.heex:52
 #: lib/keila_web/templates/contact/delete.html.heex:27
@@ -2592,7 +2592,7 @@ msgstr "Case à cocher"
 #: lib/keila_web/controllers/user_admin_controller.ex:48
 #, elixir-autogen, elixir-format
 msgid "Could not create user"
-msgstr ""
+msgstr "Impossible de créer l’utilisateur"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:173
 #, elixir-autogen, elixir-format
@@ -2768,7 +2768,7 @@ msgstr "URL de redirection pour remerciements"
 #: lib/keila_web/controllers/user_admin_controller.ex:43
 #, elixir-autogen, elixir-format
 msgid "User created successfully"
-msgstr ""
+msgstr "Utilisateur créé avec succès"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:211
 #, elixir-autogen, elixir-format

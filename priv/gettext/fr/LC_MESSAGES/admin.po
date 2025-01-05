@@ -56,7 +56,7 @@ msgstr "Créer un nouvel expéditeur partagé"
 #: lib/keila_web/templates/user_admin/index.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Credits"
-msgstr ""
+msgstr "Crédits"
 
 #: lib/keila_web/templates/user_admin/show_credits.html.heex:9
 #, elixir-autogen, elixir-format
@@ -76,12 +76,12 @@ msgstr "Supprimer un expéditeur partagé est irréversible."
 #: lib/keila_web/templates/user_admin/index.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Email"
-msgstr ""
+msgstr "E-mail"
 
 #: lib/keila_web/templates/user_admin/index.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Here you can manage other users on your Keila instance."
-msgstr ""
+msgstr "Ici, vous pouvez gérer les autres utilisateurs de votre instance Keila."
 
 #: lib/keila_web/templates/shared_sender_admin/edit.html.heex:9
 #, elixir-autogen, elixir-format
@@ -111,7 +111,7 @@ msgstr "Les expéditeurs partagés sont disponibles pour l’ensemble des utilis
 #: lib/keila_web/templates/user_admin/index.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "Sign-up"
-msgstr ""
+msgstr "Inscription"
 
 #: lib/keila_web/templates/shared_sender_admin/delete.html.heex:26
 #, elixir-autogen, elixir-format
@@ -121,7 +121,7 @@ msgstr "Saisissez le nom de l’expéditeur partagé pour confirmer sa suppressi
 #: lib/keila_web/templates/user_admin/index.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "Login as"
-msgstr ""
+msgstr "Se connecter en tant que"
 
 #: lib/keila_web/templates/layout/app.html.heex:16
 #, elixir-autogen, elixir-format
