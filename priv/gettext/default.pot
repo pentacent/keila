@@ -101,7 +101,6 @@ msgstr ""
 msgid "You can get started by trying one of these examples:"
 msgstr ""
 
-
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:108
 #, elixir-autogen, elixir-format
 msgid "Are you ready to schedule sending your campaign <em>%{subject}</em> to %{count} contacts?"
@@ -3016,4 +3015,9 @@ msgstr ""
 #: lib/keila_web/templates/sender/_ses_config.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Region"
+msgstr ""
+
+#: lib/keila_web/templates/account/edit.html.heex:145
+#, elixir-autogen, elixir-format
+msgid "Get started"
 msgstr ""

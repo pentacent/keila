@@ -3092,3 +3092,8 @@ msgstr "Nach der Erstellung dieses Senders erhältst du eine E-Mail, um die ange
 #, elixir-autogen, elixir-format
 msgid "Region"
 msgstr ""
+
+#: lib/keila_web/templates/account/edit.html.heex:145
+#, elixir-autogen, elixir-format
+msgid "Get started"
+msgstr ""

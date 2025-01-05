@@ -3017,3 +3017,8 @@ msgstr "Après la création de cet expéditeur, vous allez recevoir un e-mail po
 #, elixir-autogen, elixir-format
 msgid "Region"
 msgstr "Région"
+
+#: lib/keila_web/templates/account/edit.html.heex:145
+#, elixir-autogen, elixir-format
+msgid "Get started"
+msgstr "C’est parti!"
