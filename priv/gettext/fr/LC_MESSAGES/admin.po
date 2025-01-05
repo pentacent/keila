@@ -95,7 +95,7 @@ msgstr "Nouvel expéditeur partagé"
 #: lib/keila_web/templates/shared_sender_admin/edit.html.heex:51
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Shared Sender Name"
-msgstr "Expéditeurs partagés"
+msgstr "Nom de l’expéditeur partagé"
 
 #: lib/keila_web/templates/shared_sender_admin/edit.html.heex:54
 #, elixir-autogen, elixir-format
