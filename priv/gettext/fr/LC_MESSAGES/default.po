@@ -2513,12 +2513,12 @@ msgstr "Aucun(e)"
 #: lib/keila_web/templates/sender/_smtp_config.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "SSL/TLS"
-msgstr ""
+msgstr "SSL/TLS"
 
 #: lib/keila_web/templates/sender/_smtp_config.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "STARTTLS"
-msgstr ""
+msgstr "STARTTLS"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:350
 #, elixir-autogen, elixir-format
