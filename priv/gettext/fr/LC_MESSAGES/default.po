@@ -2571,12 +2571,12 @@ msgstr "Nous venons d’envoyer un e-mail à %{email}. Veuillez cliquer sur le l
 #: lib/keila_web/templates/public_form/double_opt_in_cancelled.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "You will not be subscribed to this list."
-msgstr ""
+msgstr "Vous ne serez plus abonné à cette liste."
 
 #: lib/keila_web/templates/public_form/double_opt_in_cancelled.html.heex:4
 #, elixir-autogen, elixir-format
 msgid "Your data has been deleted."
-msgstr ""
+msgstr "Vos données ont été supprimées."
 
 #: lib/keila_web/templates/contact/edit.html.heex:151
 #, elixir-autogen, elixir-format
