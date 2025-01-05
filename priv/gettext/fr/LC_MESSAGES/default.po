@@ -938,7 +938,7 @@ msgstr ""
 #: lib/keila_web/templates/layout/_menu.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "Open menu"
-msgstr ""
+msgstr "Ouvrir le menu"
 
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:39
 #, elixir-autogen, elixir-format
@@ -1116,7 +1116,7 @@ msgstr ""
 #: lib/keila_web/templates/layout/_menu.html.heex:159
 #, elixir-autogen, elixir-format
 msgid "Sign out"
-msgstr ""
+msgstr "Se déconnecter"
 
 #: lib/keila_web/templates/auth/register.html.heex:43
 #, elixir-autogen, elixir-format
@@ -1368,7 +1368,7 @@ msgstr "Mis à jour:"
 #: lib/keila_web/templates/layout/_menu.html.heex:146
 #, elixir-autogen, elixir-format
 msgid "Users"
-msgstr ""
+msgstr "Utilisateurs"
 
 #: lib/keila_web/templates/project/index.html.heex:10
 #, elixir-autogen, elixir-format
@@ -1409,7 +1409,7 @@ msgstr "Le sujet de votre campagne"
 #: lib/keila_web/templates/project/index.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Your Projects"
-msgstr ""
+msgstr "Vos projets"
 
 #: lib/keila_web/templates/campaign/stats_live.html.heex:94
 #, elixir-autogen, elixir-format
@@ -1530,7 +1530,7 @@ msgstr ""
 #: lib/keila_web/templates/layout/_menu.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Back to projects overview"
-msgstr ""
+msgstr "Retour à l’aperçu des projets"
 
 #: lib/keila_web/templates/project/_empty_state_senders.html.heex:8
 #, elixir-autogen, elixir-format
@@ -1566,7 +1566,7 @@ msgstr ""
 #: lib/keila_web/templates/layout/_menu.html.heex:100
 #, elixir-autogen, elixir-format
 msgid "Create form"
-msgstr ""
+msgstr "Créer un formulaire"
 
 #: lib/keila_web/templates/campaign/index.html.heex:9
 #, elixir-autogen, elixir-format
@@ -1649,7 +1649,7 @@ msgstr "Paramètres du projet"
 #: lib/keila_web/templates/layout/_menu.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Projects"
-msgstr ""
+msgstr "Projets"
 
 #: lib/keila_web/templates/project/_empty_state_campaigns.html.heex:6
 #, elixir-autogen, elixir-format
