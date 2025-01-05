@@ -440,7 +440,7 @@ msgstr "Supprimer les modèles?"
 #: lib/keila_web/templates/user_admin/delete.html.heex:3
 #, elixir-autogen, elixir-format
 msgid "Delete Users?"
-msgstr ""
+msgstr "Supprimer les utilisateurs?"
 
 #: lib/keila_web/templates/contact/_list.html.heex:99
 #, elixir-autogen, elixir-format
@@ -485,7 +485,7 @@ msgstr "Supprimer un modèle est irréversible."
 #: lib/keila_web/templates/user_admin/delete.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Deleting a user cannot be undone."
-msgstr ""
+msgstr "Supprimer un utilisateur est irréversible."
 
 #: lib/keila_web/templates/campaign/delete.html.heex:10
 #, elixir-autogen, elixir-format
@@ -510,7 +510,7 @@ msgstr "Voulez-vous réellement supprimer les modèles suivants?"
 #: lib/keila_web/templates/user_admin/delete.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Do you really want to delete the following users? This will also delete their projects and contacts."
-msgstr ""
+msgstr "Voulez-vous vraiment supprimer les utilisateurs suivants? Cela supprimera également leurs projets et contacts."
 
 #: lib/keila_web/templates/contact/edit.html.heex:71
 #, elixir-autogen, elixir-format
