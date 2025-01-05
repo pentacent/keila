@@ -2694,12 +2694,12 @@ msgstr "Aperçu mobile"
 #: lib/keila_web/live/form_edit_live.ex:57
 #, elixir-autogen, elixir-format
 msgid "My Custom Field"
-msgstr ""
+msgstr "Mon champ personnalisé"
 
 #: lib/keila_web/live/form_edit_live.ex:95
 #, elixir-autogen, elixir-format
 msgid "My Custom Option"
-msgstr ""
+msgstr "Mon choix personnalisé"
 
 #: lib/keila_web/templates/user_admin/new.html.heex:4
 #, elixir-autogen, elixir-format
