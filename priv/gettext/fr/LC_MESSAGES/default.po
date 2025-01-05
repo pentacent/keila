@@ -2663,12 +2663,12 @@ msgstr "Liste déroulante"
 #: lib/keila/mailings/builder/mjml.ex:37
 #, elixir-autogen, elixir-format
 msgid "Error compiling Liquid: %{reason}"
-msgstr ""
+msgstr "Errde de compilation Liquid: %{reason}"
 
 #: lib/keila/mailings/builder/mjml.ex:27
 #, elixir-autogen, elixir-format
 msgid "Error compiling MJML: %{reason}"
-msgstr ""
+msgstr "Erreur de compilation MJML: %{reason}"
 
 #: lib/keila_web/templates/campaign/_mjml_editor.html.heex:11
 #, elixir-autogen, elixir-format
