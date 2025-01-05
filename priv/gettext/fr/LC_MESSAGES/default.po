@@ -867,7 +867,7 @@ msgstr "Mon expéditeur"
 #: lib/keila_web/templates/template/new.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "My Template name"
-msgstr ""
+msgstr "Nom de mon modèle"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:87
 #: lib/keila_web/templates/segment/edit_live.html.heex:49
@@ -910,7 +910,7 @@ msgstr "Nouvel expéditeur"
 #: lib/keila_web/templates/template/new.html.heex:4
 #, elixir-autogen, elixir-format
 msgid "New Template"
-msgstr ""
+msgstr "Nouveau modèle"
 
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:69
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:188
