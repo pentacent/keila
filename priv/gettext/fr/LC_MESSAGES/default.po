@@ -1439,7 +1439,7 @@ msgstr "gras"
 #: lib/keila_web/templates/sender/edit.html.heex:79
 #, elixir-autogen, elixir-format
 msgid "hello@example.org"
-msgstr ""
+msgstr "hello@example.org"
 
 #: lib/keila_web/views/template_view.ex:111
 #, elixir-autogen, elixir-format
@@ -1459,12 +1459,12 @@ msgstr "légère"
 #: lib/keila_web/templates/sender/_smtp_config.html.heex:5
 #, elixir-autogen, elixir-format
 msgid "mail.example.org"
-msgstr ""
+msgstr "mail.example.org"
 
 #: lib/keila_web/templates/sender/edit.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "newsletter@example.org"
-msgstr ""
+msgstr "newsletter@example.org"
 
 #: lib/keila_web/views/template_view.ex:125
 #, elixir-autogen, elixir-format
