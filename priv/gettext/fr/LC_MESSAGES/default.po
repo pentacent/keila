@@ -712,7 +712,7 @@ msgstr "Importer des contacts"
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "Increase indent"
-msgstr ""
+msgstr "Augmenter l’indentation"
 
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:153
 #, elixir-autogen, elixir-format
@@ -759,7 +759,7 @@ msgstr "Il semble que vous ayez déjà utilisé le quota d’e-mails de votre ab
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "Italics"
-msgstr ""
+msgstr "Italiques"
 
 #: lib/keila_web/templates/contact/edit.html.heex:73
 #, elixir-autogen, elixir-format
@@ -788,7 +788,7 @@ msgstr "Général"
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "Link"
-msgstr ""
+msgstr "Lien"
 
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:43
 #, elixir-autogen, elixir-format
@@ -943,7 +943,7 @@ msgstr "Ouvrir le menu"
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Ordered list"
-msgstr ""
+msgstr "Liste ordonnée"
 
 #: lib/keila_web/templates/auth/register.html.heex:27
 #: lib/keila_web/templates/auth/reset_change_password.html.heex:15
