@@ -98,12 +98,12 @@ msgstr "Réinitialisation du mot de passe réussie"
 #: lib/keila/auth/emails.ex:19
 #, elixir-autogen, elixir-format
 msgid "Please Verify Your Account"
-msgstr ""
+msgstr "Veuillez vérifier votre compte"
 
 #: lib/keila/auth/emails.ex:43
 #, elixir-autogen, elixir-format
 msgid "Please Verify Your Email"
-msgstr ""
+msgstr "Veuillez vérifier votre adresse e-email"
 
 #: lib/keila_web/templates/auth/activate_required.html.heex:4
 #, elixir-autogen, elixir-format
@@ -200,12 +200,12 @@ msgstr "Vous devez vérifier votre e-mail avant de pouvoir utiliser Keila. Veuil
 #: lib/keila/auth/emails.ex:66
 #, elixir-autogen, elixir-format
 msgid "Your Account Reset Link"
-msgstr ""
+msgstr "Votre lien de réinitialisation de compte"
 
 #: lib/keila/auth/emails.ex:91
 #, elixir-autogen, elixir-format
 msgid "Your Login Link"
-msgstr ""
+msgstr "Votre lien de connexion"
 
 #: lib/keila_web/templates/auth/reset_change_password_success.html.heex:12
 #, elixir-autogen, elixir-format
