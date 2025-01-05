@@ -1935,18 +1935,18 @@ msgstr "Gérer les segments"
 #: lib/keila_web/templates/api_key/index.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "API Docs"
-msgstr ""
+msgstr "Documentation d’API"
 
 #: lib/keila_web/templates/api_key/index.html.heex:4
 #: lib/keila_web/templates/layout/_menu.html.heex:138
 #, elixir-autogen, elixir-format
 msgid "API Keys"
-msgstr ""
+msgstr "Clés d’API"
 
 #: lib/keila_web/templates/api_key/index.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Create a new API Key"
-msgstr ""
+msgstr "Créer une nouvelle clé d’API"
 
 #: lib/keila_web/templates/api_key/_empty_state.html.heex:20
 #, elixir-autogen, elixir-format
@@ -1956,7 +1956,7 @@ msgstr ""
 #: lib/keila_web/templates/api_key/index.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Important: The private API Key is displayed only once and cannot be recovered."
-msgstr ""
+msgstr "Important: La clé d’API privée n’est affichée qu’une seule fois et ne peut pas être récupérée."
 
 #: lib/keila_web/templates/api_key/new.html.heex:27
 #, elixir-autogen, elixir-format
@@ -1971,7 +1971,7 @@ msgstr ""
 #: lib/keila_web/templates/api_key/index.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "New API key created:"
-msgstr ""
+msgstr "Une nouvelle clé d’API a été créée:"
 
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:49
 #: lib/keila_web/templates/form/edit_live.html.heex:334
@@ -1987,12 +1987,12 @@ msgstr "Remplacer les doublons"
 #: lib/keila_web/templates/api_key/index.html.heex:96
 #, elixir-autogen, elixir-format
 msgid "Revoke"
-msgstr ""
+msgstr "Révoquer"
 
 #: lib/keila_web/templates/api_key/index.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "The following is your private API Key. Use it to authorize API calls."
-msgstr ""
+msgstr "Ci dessous, votre clé d’API privée. Utilisez la pour autoriser vos appels d’API."
 
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:155
 #: lib/keila_web/templates/campaign/new.html.heex:202
@@ -2238,7 +2238,7 @@ msgstr "Performances 24h depuis l’envoi de la campagne"
 #: lib/keila_web/templates/api_key/index.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "API key copied to clipboard"
-msgstr ""
+msgstr "Clé d’API copiée dans le presse-papier"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:26
 #, elixir-autogen, elixir-format
@@ -2284,7 +2284,7 @@ msgstr ""
 #: lib/keila_web/templates/api_key/index.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Copy to clipboard"
-msgstr ""
+msgstr "Copier dans le presse-papier"
 
 #: lib/keila_web/templates/campaign/new.html.heex:116
 #, elixir-autogen, elixir-format
