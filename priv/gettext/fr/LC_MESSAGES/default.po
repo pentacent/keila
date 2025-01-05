@@ -414,7 +414,7 @@ msgstr "Supprimer les contacts?"
 #: lib/keila_web/templates/form/delete.html.heex:3
 #, elixir-autogen, elixir-format
 msgid "Delete Forms?"
-msgstr ""
+msgstr "Supprimer les formulaires?"
 
 #: lib/keila_web/templates/project/delete.html.heex:3
 #, elixir-autogen, elixir-format
@@ -460,7 +460,7 @@ msgstr "Supprimer un contact est définitif."
 #: lib/keila_web/templates/form/delete.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "Deleting a form cannot be undone."
-msgstr ""
+msgstr "Supprimer un formulaire est définitif."
 
 #: lib/keila_web/templates/project/delete.html.heex:15
 #, elixir-autogen, elixir-format
@@ -500,7 +500,7 @@ msgstr "Voulez-vous réellement supprimer les contacts suivants?"
 #: lib/keila_web/templates/form/delete.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Do you really want to delete the following forms?"
-msgstr ""
+msgstr "Voulez-vous réellement supprimer les formulaires suivants?"
 
 #: lib/keila_web/templates/template/delete.html.heex:10
 #, elixir-autogen, elixir-format
