@@ -50,7 +50,7 @@ msgstr ""
 #: lib/keila_web/templates/shared_sender_admin/delete.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Campaigns associated with this sender will not be deleted."
-msgstr ""
+msgstr "Les campagnes associées à cet expéditeur ne seront pas supprimées."
 
 #: lib/keila_web/templates/shared_sender_admin/index.html.heex:9
 #, elixir-autogen, elixir-format
@@ -70,12 +70,12 @@ msgstr ""
 #: lib/keila_web/templates/shared_sender_admin/delete.html.heex:3
 #, elixir-autogen, elixir-format
 msgid "Delete Shared Sender %{sender}?"
-msgstr ""
+msgstr "Supprimer l’expéditeur partagé %{sender}?"
 
 #: lib/keila_web/templates/shared_sender_admin/delete.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Deleting a shared sender cannot be undone."
-msgstr ""
+msgstr "Supprimer un expéditeur partagé est irréversible."
 
 #: lib/keila_web/templates/user_admin/index.html.heex:24
 #, elixir-autogen, elixir-format
@@ -120,7 +120,7 @@ msgstr ""
 #: lib/keila_web/templates/shared_sender_admin/delete.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Type in the shared sender name to confirm its deletion:"
-msgstr ""
+msgstr "Saisissez le nom de l’expéditeur partagé pour confirmer sa suppression:"
 
 #: lib/keila_web/templates/user_admin/index.html.heex:64
 #, elixir-autogen, elixir-format
