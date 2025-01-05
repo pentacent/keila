@@ -126,12 +126,12 @@ msgstr "Se connecter en tant que"
 #: lib/keila_web/templates/layout/app.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "A new version of Keila is available."
-msgstr ""
+msgstr "Une nouvelle version de Keila est disponible."
 
 #: lib/keila_web/templates/layout/app.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "Read more"
-msgstr ""
+msgstr "En savoir plus"
 
 #: lib/keila_web/templates/layout/_menu.html.heex:155
 #, elixir-autogen, elixir-format
