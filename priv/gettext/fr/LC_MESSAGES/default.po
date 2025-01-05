@@ -1187,7 +1187,7 @@ msgstr ""
 #: lib/keila_web/templates/account/edit.html.heex:5
 #, elixir-autogen, elixir-format
 msgid "Subscription"
-msgstr ""
+msgstr "Abonnement"
 
 #: lib/keila_web/controllers/template_controller.ex:17
 #: lib/keila_web/templates/layout/_menu.html.heex:106
@@ -1220,7 +1220,7 @@ msgstr "Merci pour votre abonnement!"
 #: lib/keila_web/templates/account/await_subscription_live.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "Thank you for subscribing to Keila!"
-msgstr ""
+msgstr "Merci de vous être abonné à Keila!"
 
 #: lib/keila_web/templates/sender/verification_success.html.heex:7
 #, elixir-autogen, elixir-format
@@ -1261,7 +1261,7 @@ msgstr "Une erreur est survenue lors de l’import des contacts."
 #: lib/keila_web/templates/account/edit.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "There was an error processing your payment. Please update your payment method to continue using Keila."
-msgstr ""
+msgstr "Une erreur est survenue lors du traitement de votre paiement. Veuillez mettre à jour votre méthode de paiement pour continuer à utiliser Keila."
 
 #: lib/keila_web/templates/campaign/edit_live.html.heex:81
 #, elixir-autogen, elixir-format
@@ -1350,12 +1350,12 @@ msgstr "Se désabonner"
 #: lib/keila_web/templates/account/edit.html.heex:211
 #, elixir-autogen, elixir-format
 msgid "Update password"
-msgstr ""
+msgstr "Mettre à jour le mot de passe"
 
 #: lib/keila_web/templates/account/edit.html.heex:87
 #, elixir-autogen, elixir-format
 msgid "Update payment method"
-msgstr ""
+msgstr "Mettre à jour la méthode de paiement"
 
 #: lib/keila_web/templates/campaign/index.html.heex:45
 #: lib/keila_web/templates/form/index.html.heex:26
@@ -1378,7 +1378,7 @@ msgstr "Bienvenue à Keila!"
 #: lib/keila_web/templates/account/await_subscription_live.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "We’re currently processing your subscription. This shouldn’t take longer than a minute …"
-msgstr ""
+msgstr "Nous traitons actuellement votre abonnement. Cela devrait prendre moins d’une minute …"
 
 #: lib/keila_web/templates/account/edit.html.heex:15
 #, elixir-autogen, elixir-format
