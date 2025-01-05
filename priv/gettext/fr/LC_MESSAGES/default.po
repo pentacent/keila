@@ -1961,12 +1961,12 @@ msgstr "Important: La clé d’API privée n’est affichée qu’une seule fois
 #: lib/keila_web/templates/api_key/new.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "My API Key"
-msgstr ""
+msgstr "Ma clé d’API"
 
 #: lib/keila_web/templates/api_key/new.html.heex:4
 #, elixir-autogen, elixir-format
 msgid "New API Key"
-msgstr ""
+msgstr "Nouvelle clé d’API"
 
 #: lib/keila_web/templates/api_key/index.html.heex:27
 #, elixir-autogen, elixir-format
