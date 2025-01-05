@@ -957,7 +957,7 @@ msgstr "Mot de passe"
 #: lib/keila_web/templates/auth/registration_disabled.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Please contact an administrator."
-msgstr ""
+msgstr "Veuillez contacter un administrateur"
 
 #: lib/keila_web/templates/campaign/stats_live.html.heex:52
 #, elixir-autogen, elixir-format
@@ -985,7 +985,7 @@ msgstr "Enregistrez votre compte Keila dès maintenant et démarrez votre projet
 #: lib/keila_web/templates/auth/registration_disabled.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Registration disabled."
-msgstr ""
+msgstr "Inscription désactivée."
 
 #: lib/keila_web/templates/auth/reset.html.heex:32
 #, elixir-autogen, elixir-format
