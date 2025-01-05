@@ -2053,7 +2053,7 @@ msgstr "Vous pouvez insérer des données depuis vos contacts depuis vos contact
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Decrease indent"
-msgstr ""
+msgstr "Réduire l’indentation"
 
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:153
 #: lib/keila_web/templates/campaign/new.html.heex:200
