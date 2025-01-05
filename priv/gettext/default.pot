@@ -1173,7 +1173,6 @@ msgstr ""
 msgid "Subject"
 msgstr ""
 
-#: lib/keila/contacts/schemas/form_settings.ex:21
 #: lib/keila_web/views/public_form_view.ex:118
 #, elixir-autogen, elixir-format
 msgid "Submit"
@@ -1447,12 +1446,12 @@ msgid "italic"
 msgstr ""
 
 #: lib/keila_web/views/template_view.ex:96
-#, elixir-format
+#, elixir-autogen, elixir-format
 msgid "light"
 msgstr ""
 
 #: lib/keila_web/views/template_view.ex:142
-#, elixir-format
+#, elixir-autogen, elixir-format
 msgid "opacity-light"
 msgstr ""
 
@@ -1955,6 +1954,11 @@ msgstr ""
 #: lib/keila_web/templates/api_key/index.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Important: The private API Key is displayed only once and cannot be recovered."
+msgstr ""
+
+#: lib/keila_web/templates/api_key/new.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "API Key Name"
 msgstr ""
 
 #: lib/keila_web/templates/api_key/new.html.heex:27

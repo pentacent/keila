@@ -21,7 +21,7 @@
     class="max-w-md flex flex-col gap-4"
   >
     <div class="form-row">
-      <%= label(f, :name, "API Key Name") %>
+      <%= label(f, :name, gettext("API Key Name")) %>
       <%= with_validation(f, :name) do %>
         <%= text_input(f, :name,
           placeholder: gettext("My API Key"),
