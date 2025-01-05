@@ -2130,7 +2130,7 @@ msgstr "Marge"
 #: lib/keila_web/templates/template/clone.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "My template name"
-msgstr ""
+msgstr "Nom de mon modèle"
 
 #: lib/keila_web/templates/sender/_shared_local_config.html.heex:6
 #, elixir-autogen, elixir-format
