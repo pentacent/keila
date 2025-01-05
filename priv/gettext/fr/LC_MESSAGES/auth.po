@@ -180,7 +180,7 @@ msgstr "Bienvenue sur Keila,\n\nveuillez confirmer votre nouveau compte en visit
 #: lib/keila_web/templates/auth/activate_resend_success.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "We’ve resent your verification link to %{email}."
-msgstr ""
+msgstr "Nous vous avons renvoyé un lien de vérification à %{email}."
 
 #: lib/keila_web/templates/auth/register_success.html.heex:7
 #, elixir-autogen, elixir-format
