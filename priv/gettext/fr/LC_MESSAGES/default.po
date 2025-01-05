@@ -399,7 +399,7 @@ msgstr "Supprimer"
 #: lib/keila_web/controllers/project_controller.ex:112
 #, elixir-autogen, elixir-format
 msgid "Delete %{project_name}"
-msgstr ""
+msgstr "Supprimer %{project_name}"
 
 #: lib/keila_web/templates/campaign/delete.html.heex:3
 #, elixir-autogen, elixir-format
@@ -546,7 +546,7 @@ msgstr "Modifier"
 #: lib/keila_web/controllers/project_controller.ex:77
 #, elixir-autogen, elixir-format
 msgid "Edit %{project_name}"
-msgstr ""
+msgstr "Modifier %{project_name}"
 
 #: lib/keila_web/templates/campaign/edit_live.html.heex:5
 #, elixir-autogen, elixir-format
