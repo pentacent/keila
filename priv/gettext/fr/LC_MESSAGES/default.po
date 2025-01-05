@@ -2622,7 +2622,7 @@ msgstr "Champ personnalisé: data.%{key}"
 #: lib/keila_web/templates/campaign/_mjml_editor.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Desktop preview"
-msgstr ""
+msgstr "Aperçu ordinateur de bureau"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:421
 #, elixir-autogen, elixir-format
@@ -2652,12 +2652,12 @@ msgstr ""
 #: lib/keila_web/templates/campaign/_mjml_editor.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "Expand editor"
-msgstr ""
+msgstr "Agrandir l’éditeur"
 
 #: lib/keila_web/templates/campaign/_mjml_editor.html.heex:4
 #, elixir-autogen, elixir-format
 msgid "Insert image"
-msgstr ""
+msgstr "Insérer une image"
 
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:81
 #: lib/keila_web/templates/campaign/new.html.heex:131
@@ -2668,7 +2668,7 @@ msgstr "MJML"
 #: lib/keila_web/templates/campaign/_mjml_editor.html.heex:66
 #, elixir-autogen, elixir-format
 msgid "Mobile preview"
-msgstr ""
+msgstr "Aperçu mobile"
 
 #: lib/keila_web/live/form_edit_live.ex:57
 #, elixir-autogen, elixir-format
