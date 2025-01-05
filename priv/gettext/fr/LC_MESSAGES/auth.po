@@ -31,12 +31,12 @@ msgstr "Vérifiez votre boîte de réception!"
 #: lib/keila_web/templates/auth/login.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Don’t have an account?"
-msgstr ""
+msgstr "Vous n’avez pas de compte?"
 
 #: lib/keila_web/templates/auth/login.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Forgot your password?"
-msgstr ""
+msgstr "Mot de passe oublié?"
 
 #: lib/keila_web/templates/auth/activate_success.html.heex:12
 #, elixir-autogen, elixir-format
@@ -124,28 +124,28 @@ msgstr ""
 #: lib/keila_web/templates/auth/login.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "Reset your password."
-msgstr ""
+msgstr "Réinitialisez votre mot de passe."
 
 #: lib/keila_web/controllers/auth_controller.ex:185
 #: lib/keila_web/templates/auth/login.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Sign in"
-msgstr ""
+msgstr "Connectez-vous"
 
 #: lib/keila_web/templates/auth/login.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Sign in with your email address and password here."
-msgstr ""
+msgstr "Connectez-vous avec votre adresse e-mail et votre mot de passe ici."
 
 #: lib/keila_web/templates/auth/login.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Sign in."
-msgstr ""
+msgstr "Connectez-vous."
 
 #: lib/keila_web/controllers/auth_controller.ex:56
 #, elixir-autogen, elixir-format
 msgid "Sign up"
-msgstr ""
+msgstr "Inscription"
 
 #: lib/keila_web/controllers/auth_controller.ex:31
 #, elixir-autogen, elixir-format
@@ -155,7 +155,7 @@ msgstr ""
 #: lib/keila_web/templates/auth/login.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Sign up."
-msgstr ""
+msgstr "Inscrivez-vous."
 
 #: lib/keila_web/templates/auth/activate_success.html.heex:7
 #, elixir-autogen, elixir-format
