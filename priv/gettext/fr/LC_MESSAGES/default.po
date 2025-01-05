@@ -2981,12 +2981,12 @@ msgstr "Clé d’accès"
 #: lib/keila_web/templates/sender/_ses_config.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Secret"
-msgstr ""
+msgstr "Secret"
 
 #: lib/keila_web/templates/sender/_ses_config.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "Configuration Set"
-msgstr ""
+msgstr "Configuration Set"
 
 #: lib/keila/mailings/sender_adapters/shared_ses.ex:73
 #, elixir-autogen, elixir-format
