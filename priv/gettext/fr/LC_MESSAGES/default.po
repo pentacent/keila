@@ -1419,7 +1419,7 @@ msgstr "Votre quota d’e-mail n’est pas suffisant pour envoyer cette campagne
 #: lib/keila_web/templates/auth/reset_change_password_success.html.heex:4
 #, elixir-autogen, elixir-format
 msgid "Your password was changed!"
-msgstr ""
+msgstr "Votre mot de passe a été changé!"
 
 #: lib/keila_web/templates/account/edit.html.heex:42
 #, elixir-autogen, elixir-format
