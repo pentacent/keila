@@ -14,12 +14,12 @@ msgstr ""
 #: lib/keila_web/controllers/auth_controller.ex:78
 #, elixir-autogen, elixir-format
 msgid "Activation required"
-msgstr ""
+msgstr "Activation requise"
 
 #: lib/keila_web/controllers/auth_controller.ex:66
 #, elixir-autogen, elixir-format
 msgid "Activation successful"
-msgstr ""
+msgstr "Activation réussie"
 
 #: lib/keila_web/templates/auth/activate_resend_success.html.heex:4
 #: lib/keila_web/templates/auth/register_success.html.heex:4
@@ -81,7 +81,7 @@ msgstr "Nouveau mot de passe enregistré."
 #: lib/keila_web/controllers/auth_controller.ex:205
 #, elixir-autogen, elixir-format
 msgid "Not found"
-msgstr ""
+msgstr "Non trouvé"
 
 #: lib/keila_web/controllers/auth_controller.ex:116
 #: lib/keila_web/controllers/auth_controller.ex:129
@@ -150,7 +150,7 @@ msgstr "Inscription"
 #: lib/keila_web/controllers/auth_controller.ex:31
 #, elixir-autogen, elixir-format
 msgid "Sign up successful"
-msgstr ""
+msgstr "Inscription réussie"
 
 #: lib/keila_web/templates/auth/login.html.heex:36
 #, elixir-autogen, elixir-format
