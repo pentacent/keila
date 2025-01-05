@@ -1951,7 +1951,7 @@ msgstr "Créer une nouvelle clé d’API"
 #: lib/keila_web/templates/api_key/_empty_state.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Create your first API key"
-msgstr ""
+msgstr "Créez votre première clé d’API"
 
 #: lib/keila_web/templates/api_key/index.html.heex:40
 #, elixir-autogen, elixir-format
@@ -2157,7 +2157,7 @@ msgstr "Utilisez le formulaire d’envoi pour téléverser votre première image
 #: lib/keila_web/templates/api_key/_empty_state.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "With API keys, you can use the Keila API to manage campaigns\nand contacts programmatically.\n"
-msgstr ""
+msgstr "Avec les clés d’API, vous pouvez utiliser l’API de Keila pour gérer vos campagnes et contacts programmatiquement.\n"
 
 #: lib/keila_web/views/template_view.ex:144
 #, elixir-autogen, elixir-format
