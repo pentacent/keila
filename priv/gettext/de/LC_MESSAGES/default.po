@@ -2099,13 +2099,9 @@ msgid "Code"
 msgstr "Code"
 
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:195
-#, elixir-autogen, elixir-format
-msgid "Insert Code"
-msgstr "Code einfügen"
-
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:95
 #, elixir-autogen, elixir-format
-msgid "Insert code"
+msgid "Insert Code"
 msgstr "Code einfügen"
 
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:263

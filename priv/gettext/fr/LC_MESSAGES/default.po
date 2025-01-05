@@ -759,7 +759,7 @@ msgstr "Il semble que vous ayez déjà utilisé le quota d’e-mails de votre ab
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "Italics"
-msgstr "Italiques"
+msgstr "Italique"
 
 #: lib/keila_web/templates/contact/edit.html.heex:73
 #, elixir-autogen, elixir-format
@@ -1137,7 +1137,7 @@ msgstr "Signature"
 #: lib/keila/templates/default_template.ex:90
 #, elixir-autogen, elixir-format
 msgid "Signature links"
-msgstr ""
+msgstr "Liens de la signature"
 
 #: lib/keila_web/templates/contact/import_live.html.heex:38
 #, elixir-autogen, elixir-format
@@ -1334,7 +1334,7 @@ msgstr "URL"
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Unordered list"
-msgstr "Liste désordonnée"
+msgstr "Liste"
 
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:166
 #, elixir-autogen, elixir-format
@@ -2035,14 +2035,10 @@ msgid "Code"
 msgstr "Code"
 
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:195
+#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:95
 #, elixir-autogen, elixir-format
 msgid "Insert Code"
 msgstr "Insérer du code"
-
-#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:95
-#, elixir-autogen, elixir-format
-msgid "Insert code"
-msgstr ""
 
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:263
 #, elixir-autogen, elixir-format

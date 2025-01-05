@@ -83,7 +83,6 @@ msgstr "doit être inférieur ou égal à %{number}"
 msgid "must be greater than or equal to %{number}"
 msgstr "doit être supérieur ou égal à %{number}"
 
-
 msgid "must be equal to %{number}"
 msgstr "doit être égal à %{number}"
 
