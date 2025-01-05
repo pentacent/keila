@@ -1783,17 +1783,17 @@ msgstr "Date d’ajout"
 #: lib/keila_web/templates/segment/delete.html.heex:3
 #, elixir-autogen, elixir-format
 msgid "Delete Segments?"
-msgstr ""
+msgstr "Supprimer les segments?"
 
 #: lib/keila_web/templates/segment/delete.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "Deleting a segment cannot be undone."
-msgstr ""
+msgstr "Supprimer un segment est irréversible."
 
 #: lib/keila_web/templates/segment/delete.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Do you really want to delete the following segments?"
-msgstr ""
+msgstr "Voulez-vous vraiment supprimer les segments suivants?"
 
 #: lib/keila_web/templates/segment/edit_live.html.heex:6
 #, elixir-autogen, elixir-format
