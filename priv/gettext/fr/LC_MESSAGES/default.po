@@ -933,7 +933,7 @@ msgstr "Ok"
 #: lib/keila_web/templates/public_form_layout/root.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "Open Source Newsletter Tool"
-msgstr ""
+msgstr "Outil d’infolettre open-source"
 
 #: lib/keila_web/templates/layout/_menu.html.heex:12
 #, elixir-autogen, elixir-format
