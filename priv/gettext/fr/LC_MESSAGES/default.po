@@ -1545,7 +1545,32 @@ msgstr "Avant de pouvoir envoyer des e-mails, vous devez créer un *émetteur*.\
 #: lib/keila_web/templates/layout/_footer.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Community"
-msgstr ""
+msgstr "Communauté"
+
+#: lib/keila_web/templates/layout/_footer.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Docs"
+msgstr "Documentation"
+
+#: lib/keila_web/templates/layout/_footer.html.heex:40
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Newsletter"
+msgstr "Infolettre"
+
+#: lib/keila_web/templates/layout/_footer.html.heex:10
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Open Source Newsletters"
+msgstr "Infolettres open-source"
+
+#: lib/keila_web/templates/layout/_footer.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Usage"
+msgstr "Utilisation"
+
+#: lib/keila_web/templates/layout/_footer.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Self-hosting"
+msgstr "Auto-hébergement"
 
 #: lib/keila_web/templates/contact/index.html.heex:19
 #: lib/keila_web/templates/sender/index.html.heex:9
@@ -1576,11 +1601,6 @@ msgstr "Créer une nouvelle campagne"
 #: lib/keila_web/templates/project/_empty_state_templates_campaigns.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "Create your own design"
-msgstr ""
-
-#: lib/keila_web/templates/layout/_footer.html.heex:15
-#, elixir-autogen, elixir-format
-msgid "Docs"
 msgstr ""
 
 #: lib/keila_web/templates/project/_empty_state_forms_contacts.html.heex:6

@@ -1581,6 +1581,31 @@ msgstr ""
 msgid "Community"
 msgstr "Community"
 
+#: lib/keila_web/templates/layout/_footer.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Docs"
+msgstr ""
+
+#: lib/keila_web/templates/layout/_footer.html.heex:40
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Newsletter"
+msgstr ""
+
+#: lib/keila_web/templates/layout/_footer.html.heex:10
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Open Source Newsletters"
+msgstr ""
+
+#: lib/keila_web/templates/layout/_footer.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Usage"
+msgstr ""
+
+#: lib/keila_web/templates/layout/_footer.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Self-hosting"
+msgstr ""
+
 #: lib/keila_web/templates/contact/index.html.heex:19
 #: lib/keila_web/templates/sender/index.html.heex:9
 #, elixir-autogen, elixir-format
@@ -1611,11 +1636,6 @@ msgstr "Neue Kampagne"
 #, elixir-autogen, elixir-format
 msgid "Create your own design"
 msgstr "Erstelle dein eigenes Design"
-
-#: lib/keila_web/templates/layout/_footer.html.heex:15
-#, elixir-autogen, elixir-format
-msgid "Docs"
-msgstr "Dokumentation"
 
 #: lib/keila_web/templates/project/_empty_state_forms_contacts.html.heex:6
 #, elixir-autogen, elixir-format
