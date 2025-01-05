@@ -21,21 +21,17 @@ msgstr "%{remaining} / %{total} crédits"
 msgid "Activation"
 msgstr "Activation"
 
+#: lib/keila_web/templates/user_admin/index.html.heex:54
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:26
 #: lib/keila_web/templates/user_admin/show_credits.html.heex:85
 #, elixir-autogen, elixir-format
 msgid "Add Credits"
-msgstr ""
-
-#: lib/keila_web/templates/user_admin/index.html.heex:54
-#: lib/keila_web/templates/user_admin/show_credits.html.heex:26
-#, elixir-autogen, elixir-format
-msgid "Add credits"
-msgstr ""
+msgstr "Ajouter des crédits"
 
 #: lib/keila_web/templates/user_admin/show_credits.html.heex:3
 #, elixir-autogen, elixir-format
 msgid "Administer Credits for %{email}"
-msgstr ""
+msgstr "Administrer les crédits pour %{email}"
 
 #: lib/keila_web/controllers/user_admin_controller.ex:15
 #, elixir-autogen, elixir-format
@@ -45,7 +41,7 @@ msgstr ""
 #: lib/keila_web/templates/user_admin/show_credits.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Amount"
-msgstr ""
+msgstr "Quantité"
 
 #: lib/keila_web/templates/shared_sender_admin/delete.html.heex:10
 #, elixir-autogen, elixir-format
@@ -65,7 +61,7 @@ msgstr ""
 #: lib/keila_web/templates/user_admin/show_credits.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Credits for account %{account}"
-msgstr ""
+msgstr "Crédits pour le compte %{account}"
 
 #: lib/keila_web/templates/shared_sender_admin/delete.html.heex:3
 #, elixir-autogen, elixir-format

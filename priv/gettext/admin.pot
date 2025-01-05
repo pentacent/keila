@@ -20,15 +20,11 @@ msgstr ""
 msgid "Activation"
 msgstr ""
 
+#: lib/keila_web/templates/user_admin/index.html.heex:54
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:26
 #: lib/keila_web/templates/user_admin/show_credits.html.heex:85
 #, elixir-autogen, elixir-format
 msgid "Add Credits"
-msgstr ""
-
-#: lib/keila_web/templates/user_admin/index.html.heex:54
-#: lib/keila_web/templates/user_admin/show_credits.html.heex:26
-#, elixir-autogen, elixir-format
-msgid "Add credits"
 msgstr ""
 
 #: lib/keila_web/templates/user_admin/show_credits.html.heex:3
