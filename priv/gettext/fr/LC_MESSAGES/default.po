@@ -2135,7 +2135,7 @@ msgstr "Nom de mon modèle"
 #: lib/keila_web/templates/sender/_shared_local_config.html.heex:6
 #, elixir-autogen, elixir-format
 msgid "No configuration is required for this sender."
-msgstr ""
+msgstr "Pas de configuration nécessaire pour cet expéditeur."
 
 #: lib/keila_web/views/template_view.ex:47
 #, elixir-autogen, elixir-format
