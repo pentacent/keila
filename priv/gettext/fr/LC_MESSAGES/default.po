@@ -1672,7 +1672,7 @@ msgstr "Vous pouvez ajouter n’importe quel objet JSON en tant que données per
 #: lib/keila_web/templates/form/_empty_state.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "You can create one or multiple forms to let new contacts sign\nup to your newsletter.\n\nWith the form editor, you can customize the look & feel of the\nforms and decide which input fields to include.\n"
-msgstr ""
+msgstr "Vous pouvez créer un ou plusieurs formulaires pour permettre à de nouveaux contacts de s’abonner à votre infolettre.\n\nAvec l’éditeur de formulaire, vous pouvez personnaliser l’apparence des\nformuaires et décider des champs à inclure.\n"
 
 #: lib/keila_web/templates/project/_empty_state_templates_campaigns.html.heex:8
 #, elixir-autogen, elixir-format
