@@ -566,7 +566,7 @@ msgstr "Modifier le formulaire"
 #: lib/keila_web/views/sender_view.ex:8
 #, elixir-autogen, elixir-format
 msgid "Edit Sender %{sender}"
-msgstr ""
+msgstr "Modifier l’expéditeur %{sender}"
 
 #: lib/keila_web/templates/template/edit_live.html.heex:6
 #, elixir-autogen, elixir-format
