@@ -46,7 +46,7 @@ msgstr "C’est parti!"
 #: lib/keila/auth/emails.ex:46
 #, elixir-autogen, elixir-format
 msgid "Hey there,\n\nplease confirm your new email address by visiting the following link:\n\n%{url}\n\nIf you weren’t trying to change your email address, simply ignore this message.\n"
-msgstr ""
+msgstr "Coucou,\n\nveuillez confirmer votre nouvelle adresse e-mail en visitant le lien suivant:\n\n%{url}\n\nSi vous n’étiez pas en train d’essayer de changer votre adresse e-mail, ignorez simplement ce message.\n"
 
 #: lib/keila/auth/emails.ex:95
 #, elixir-autogen, elixir-format
