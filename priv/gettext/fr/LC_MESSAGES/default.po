@@ -1604,7 +1604,7 @@ msgstr "Importer"
 #: lib/keila_web/templates/template/_empty_state.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Keila comes with a great default template so you don’t have\nto become a designer before you start sending emails.\n\nBut if you want a more personalized look for your campaigns,\ncreate your own design with the template editor.\n"
-msgstr ""
+msgstr "Keila propose un excellent modèle par défaut vous évitant de devoir devenir un designer avant de pouvoir commencer à envoyer des e-mails.\n\nMais si vous voulez une apparence personnalisée pour vos campagnes,\ncréez votre propre design avec l’éditeur de modèle.\n"
 
 #: lib/keila_web/templates/project/index.html.heex:12
 #, elixir-autogen, elixir-format
