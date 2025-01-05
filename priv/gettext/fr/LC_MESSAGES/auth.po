@@ -41,7 +41,7 @@ msgstr "Mot de passe oublié?"
 #: lib/keila_web/templates/auth/activate_success.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "Get started!"
-msgstr ""
+msgstr "C’est parti!"
 
 #: lib/keila/auth/emails.ex:46
 #, elixir-autogen, elixir-format
@@ -160,7 +160,7 @@ msgstr "Inscrivez-vous."
 #: lib/keila_web/templates/auth/activate_success.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Thanks for verifying your email."
-msgstr ""
+msgstr "Merci d’avoir validé votre adresse e-mail."
 
 #: lib/keila_web/templates/auth/404.html.heex:4
 #, elixir-autogen, elixir-format
@@ -170,7 +170,7 @@ msgstr "Ça n’a pas fonctionné :-("
 #: lib/keila_web/templates/auth/activate_success.html.heex:4
 #, elixir-autogen, elixir-format
 msgid "Welcome to Keila!"
-msgstr ""
+msgstr "Bienvenue à Keila!"
 
 #: lib/keila/auth/emails.ex:22
 #, elixir-autogen, elixir-format
