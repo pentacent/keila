@@ -36,7 +36,7 @@ msgstr "Administrer les crédits pour %{email}"
 #: lib/keila_web/controllers/user_admin_controller.ex:15
 #, elixir-autogen, elixir-format
 msgid "Administrate Users"
-msgstr ""
+msgstr "Administrer les utilisateurs"
 
 #: lib/keila_web/templates/user_admin/show_credits.html.heex:29
 #, elixir-autogen, elixir-format
