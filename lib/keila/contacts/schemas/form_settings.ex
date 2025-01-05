@@ -1,6 +1,7 @@
 defmodule Keila.Contacts.Form.Settings do
   use Ecto.Schema
   import Ecto.Changeset
+  import KeilaWeb.Gettext
 
   @type t :: %__MODULE__{}
 
@@ -17,7 +18,7 @@ defmodule Keila.Contacts.Form.Settings do
     field(:body_bg_color, :string, default: "#e5e7eb")
     field(:form_bg_color, :string, default: "#f9fafb")
     field(:text_color, :string, default: "#111827")
-    field(:submit_label, :string, default: "Submit")
+    field(:submit_label, :string, default: gettext("Submit"))
     field(:submit_bg_color, :string, default: "#047857")
     field(:submit_text_color, :string, default: "#f9fafb")
     field(:input_bg_color, :string, default: "#ffffff")

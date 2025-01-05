@@ -59,7 +59,12 @@ msgstr "Compte"
 #: lib/keila_web/templates/form/edit_live.html.heex:131
 #, elixir-autogen, elixir-format
 msgid "Allow embedding as HTML"
-msgstr ""
+msgstr "Permettre l’intégration HTML"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:560
+#, elixir-autogen, elixir-format
+msgid "Form HTML"
+msgstr "Code de l’intégration HTML du formulaire"
 
 #: lib/keila_web/templates/auth/register.html.heex:47
 #: lib/keila_web/templates/auth/registration_disabled.html.heex:13
@@ -123,7 +128,7 @@ msgstr "URL du bouton"
 #: lib/keila_web/templates/form/edit_live.html.heex:93
 #, elixir-autogen, elixir-format
 msgid "Button label"
-msgstr "Libellé de bouton"
+msgstr "Libellé du bouton"
 
 #: lib/keila_web/controllers/campaign_controller.ex:19
 #: lib/keila_web/templates/campaign/index.html.heex:4
@@ -151,11 +156,11 @@ msgstr "Les campagnes associées à cet expéditeur ne seront pas supprimées."
 #: lib/keila_web/templates/contact/edit.html.heex:23
 #: lib/keila_web/templates/form/delete.html.heex:34
 #: lib/keila_web/templates/form/edit_live.html.heex:14
-#: lib/keila_web/templates/project/delete.html.heex:41
+#: lib/keila_web/templates/project/delete.html.heex:37
 #: lib/keila_web/templates/project/edit.html.heex:14
 #: lib/keila_web/templates/segment/delete.html.heex:34
 #: lib/keila_web/templates/segment/edit_live.html.heex:14
-#: lib/keila_web/templates/sender/delete.html.heex:39
+#: lib/keila_web/templates/sender/delete.html.heex:35
 #: lib/keila_web/templates/sender/edit.html.heex:18
 #: lib/keila_web/templates/shared_sender_admin/delete.html.heex:40
 #: lib/keila_web/templates/shared_sender_admin/edit.html.heex:18
@@ -376,11 +381,11 @@ msgstr "Par défaut"
 #: lib/keila_web/templates/contact/edit.html.heex:30
 #: lib/keila_web/templates/form/delete.html.heex:37
 #: lib/keila_web/templates/form/edit_live.html.heex:22
-#: lib/keila_web/templates/project/delete.html.heex:44
+#: lib/keila_web/templates/project/delete.html.heex:40
 #: lib/keila_web/templates/project/edit.html.heex:21
 #: lib/keila_web/templates/segment/delete.html.heex:37
 #: lib/keila_web/templates/segment/edit_live.html.heex:24
-#: lib/keila_web/templates/sender/delete.html.heex:42
+#: lib/keila_web/templates/sender/delete.html.heex:38
 #: lib/keila_web/templates/sender/edit.html.heex:26
 #: lib/keila_web/templates/shared_sender_admin/delete.html.heex:43
 #: lib/keila_web/templates/shared_sender_admin/edit.html.heex:26
@@ -422,7 +427,7 @@ msgstr "Supprimer le projet %{project}?"
 msgid "Delete Sender %{sender}?"
 msgstr "Supprimer l’expéditeur %{sender}?"
 
-#: lib/keila_web/templates/sender/delete.html.heex:28
+#: lib/keila_web/templates/sender/delete.html.heex:25
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Type in the sender name to confirm its deletion:"
 msgstr "Saisissez le nom de l’expéditeur pour confirmer sa suppression:"
@@ -462,7 +467,7 @@ msgstr ""
 msgid "Deleting a project cannot be undone."
 msgstr "Supprimer un projet est définitif."
 
-#: lib/keila_web/templates/project/delete.html.heex:27
+#: lib/keila_web/templates/project/delete.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Type in the project name to confirm its deletion:"
 msgstr "Saisissez le nom du projet pour confirmer sa suppression:"
@@ -556,7 +561,7 @@ msgstr ""
 #: lib/keila_web/templates/form/edit_live.html.heex:6
 #, elixir-autogen, elixir-format
 msgid "Edit Form"
-msgstr ""
+msgstr "Modifier le formulaire"
 
 #: lib/keila_web/views/sender_view.ex:8
 #, elixir-autogen, elixir-format
@@ -574,7 +579,7 @@ msgid "Edit this campaign"
 msgstr "Modifier cette campagne"
 
 #: lib/keila/contacts/contacts.ex:261
-#: lib/keila_web/live/segment_edit_live.ex:7
+#: lib/keila_web/live/segment_edit_live.ex:8
 #: lib/keila_web/templates/account/edit.html.heex:194
 #: lib/keila_web/templates/auth/register.html.heex:17
 #: lib/keila_web/templates/auth/reset.html.heex:15
@@ -598,15 +603,15 @@ msgstr ""
 #: lib/keila_web/templates/form/edit_live.html.heex:139
 #, elixir-autogen, elixir-format
 msgid "Fields"
-msgstr ""
+msgstr "Champs"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:105
 #, elixir-autogen, elixir-format
 msgid "Fine print"
-msgstr ""
+msgstr "Texte en petits caractères"
 
 #: lib/keila/contacts/contacts.ex:269
-#: lib/keila_web/live/segment_edit_live.ex:8
+#: lib/keila_web/live/segment_edit_live.ex:9
 #: lib/keila_web/templates/contact/_list.html.heex:32
 #: lib/keila_web/templates/contact/delete.html.heex:25
 #: lib/keila_web/templates/form/edit_live.html.heex:159
@@ -738,7 +743,7 @@ msgstr "Quota e-mail insuffisant."
 #: lib/keila_web/templates/form/edit_live.html.heex:99
 #, elixir-autogen, elixir-format
 msgid "Intro text"
-msgstr ""
+msgstr "Texte d’introduction"
 
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:72
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:191
@@ -762,7 +767,7 @@ msgid "Jane"
 msgstr "Truc"
 
 #: lib/keila/contacts/contacts.ex:277
-#: lib/keila_web/live/segment_edit_live.ex:9
+#: lib/keila_web/live/segment_edit_live.ex:10
 #: lib/keila_web/templates/contact/_list.html.heex:42
 #: lib/keila_web/templates/contact/delete.html.heex:26
 #: lib/keila_web/templates/contact/edit.html.heex:77
@@ -798,7 +803,7 @@ msgstr "URL du lien"
 #: lib/keila_web/templates/form/edit_live.html.heex:543
 #, elixir-autogen, elixir-format
 msgid "Link to this form"
-msgstr ""
+msgstr "Lien vers ce formulaire"
 
 #: lib/keila/templates/default_template.ex:58
 #: lib/keila/templates/hybrid_template.ex:55
@@ -847,7 +852,7 @@ msgstr "Mon projet Keila"
 #: lib/keila/contacts/contacts.ex:253
 #, elixir-autogen, elixir-format
 msgid "My New Form"
-msgstr ""
+msgstr "Mon nouveau formulaire"
 
 #: lib/keila_web/templates/project/edit.html.heex:48
 #, elixir-autogen, elixir-format
@@ -995,12 +1000,12 @@ msgstr ""
 #: lib/keila_web/templates/form/edit_live.html.heex:183
 #, elixir-autogen, elixir-format
 msgid "Require"
-msgstr ""
+msgstr "Nécessaire"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:113
 #, elixir-autogen, elixir-format
 msgid "Require captcha"
-msgstr ""
+msgstr "Nécessite un captcha"
 
 #: lib/keila_web/templates/auth/reset_change_password.html.heex:26
 #, elixir-autogen, elixir-format
@@ -1161,7 +1166,7 @@ msgstr "Statistiques"
 #: lib/keila_web/templates/template/edit_live.html.heex:92
 #, elixir-autogen, elixir-format
 msgid "Style"
-msgstr ""
+msgstr "Style"
 
 #: lib/keila_web/templates/campaign/clone.html.heex:24
 #: lib/keila_web/templates/campaign/new.html.heex:57
@@ -1169,10 +1174,11 @@ msgstr ""
 msgid "Subject"
 msgstr "Sujet"
 
+#: lib/keila/contacts/schemas/form_settings.ex:21
 #: lib/keila_web/views/public_form_view.ex:118
 #, elixir-autogen, elixir-format
 msgid "Submit"
-msgstr ""
+msgstr "Soumettre"
 
 #: lib/keila_web/templates/account/edit.html.heex:100
 #, elixir-autogen, elixir-format
@@ -1210,7 +1216,7 @@ msgstr "Texte uniquement"
 #: lib/keila/contacts/contacts.ex:256
 #, elixir-autogen, elixir-format
 msgid "Thank you for signing up!"
-msgstr ""
+msgstr "Merci pour votre abonnement!"
 
 #: lib/keila_web/templates/account/await_subscription_live.html.heex:22
 #, elixir-autogen, elixir-format
@@ -1225,7 +1231,7 @@ msgstr ""
 #: lib/keila_web/templates/form/edit_live.html.heex:117
 #, elixir-autogen, elixir-format
 msgid "Thank you message"
-msgstr ""
+msgstr "Message de remerciement"
 
 #: lib/keila_web/views/public_form_view.ex:296
 #, elixir-autogen, elixir-format
@@ -1770,12 +1776,12 @@ msgstr "Créer un nouveau segment"
 msgid "Create your first segment"
 msgstr "Créez votre premier segment"
 
-#: lib/keila_web/live/segment_edit_live.ex:11
+#: lib/keila_web/live/segment_edit_live.ex:12
 #, elixir-autogen, elixir-format
 msgid "Custom data"
 msgstr "Données personnalisées"
 
-#: lib/keila_web/live/segment_edit_live.ex:6
+#: lib/keila_web/live/segment_edit_live.ex:7
 #, elixir-autogen, elixir-format
 msgid "Date added"
 msgstr "Date d’ajout"
@@ -1872,37 +1878,37 @@ msgstr "Vous pouvez créer des segments pour définir des sous-ensembles de vos 
 msgid "edit"
 msgstr "modifier"
 
-#: lib/keila_web/live/segment_edit_live.ex:22
+#: lib/keila_web/live/segment_edit_live.ex:25
 #, elixir-autogen, elixir-format
 msgid "ends with"
 msgstr "se termine par"
 
-#: lib/keila_web/live/segment_edit_live.ex:23
+#: lib/keila_web/live/segment_edit_live.ex:26
 #, elixir-autogen, elixir-format
 msgid "includes"
 msgstr "inclut"
 
-#: lib/keila_web/live/segment_edit_live.ex:17
+#: lib/keila_web/live/segment_edit_live.ex:20
 #, elixir-autogen, elixir-format
 msgid "is after"
 msgstr "est après"
 
-#: lib/keila_web/live/segment_edit_live.ex:16
+#: lib/keila_web/live/segment_edit_live.ex:19
 #, elixir-autogen, elixir-format
 msgid "is before"
 msgstr "est avant"
 
-#: lib/keila_web/live/segment_edit_live.ex:20
+#: lib/keila_web/live/segment_edit_live.ex:23
 #, elixir-autogen, elixir-format
 msgid "is equal"
 msgstr "est égal à"
 
-#: lib/keila_web/live/segment_edit_live.ex:26
+#: lib/keila_web/live/segment_edit_live.ex:29
 #, elixir-autogen, elixir-format
 msgid "matches"
 msgstr "correspond à"
 
-#: lib/keila_web/live/segment_edit_live.ex:21
+#: lib/keila_web/live/segment_edit_live.ex:24
 #, elixir-autogen, elixir-format
 msgid "starts with"
 msgstr "commence par"
@@ -1967,7 +1973,7 @@ msgstr ""
 #: lib/keila_web/templates/form/edit_live.html.heex:334
 #, elixir-autogen, elixir-format
 msgid "Please select a sender"
-msgstr ""
+msgstr "Veuillez sélectionner un expéditeur"
 
 #: lib/keila_web/templates/contact/import_live.html.heex:47
 #, elixir-autogen, elixir-format
@@ -2468,15 +2474,15 @@ msgstr ""
 #: lib/keila_web/templates/form/edit_live.html.heex:350
 #, elixir-autogen, elixir-format
 msgid "**Important:** You must create and select a sender here. Otherwise, no opt-in emails will be sent."
-msgstr ""
+msgstr "**Important:** Vous devez créer et sélectionner un expéditeur ici. Dans le cas contraire, aucuns e-mails d‘opt-in ne pourront être envoyés."
 
 #: lib/keila_web/templates/form/edit_live.html.heex:69
 #: lib/keila_web/templates/form/edit_live.html.heex:311
 #, elixir-autogen, elixir-format
 msgid "Double Opt-in"
-msgstr ""
+msgstr "Double opt-in"
 
-#: lib/keila_web/live/segment_edit_live.ex:10
+#: lib/keila_web/live/segment_edit_live.ex:11
 #, elixir-autogen, elixir-format
 msgid "Double opt-in date"
 msgstr "Date de double opt-in"
@@ -2485,7 +2491,7 @@ msgstr "Date de double opt-in"
 #: lib/keila_web/templates/form/edit_live.html.heex:409
 #, elixir-autogen, elixir-format
 msgid "Please click here to confirm your subscription:\n\n### [Confirm subscription]({{ double_opt_in_link }})\n"
-msgstr ""
+msgstr "Veuillez cliquer ici pour confirmer votre abonnement:\n\n### [Confirmer l’abonnement]({{ double_opt_in_link }})\n"
 
 #: lib/keila_web/views/public_form_view.ex:307
 #, elixir-autogen, elixir-format
@@ -2496,17 +2502,17 @@ msgstr ""
 #: lib/keila_web/templates/form/edit_live.html.heex:387
 #, elixir-autogen, elixir-format
 msgid "Please confirm your email address"
-msgstr ""
+msgstr "Veuillez confirmer votre adresse e-mail"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:321
 #, elixir-autogen, elixir-format
 msgid "Require double opt-in"
-msgstr ""
+msgstr "Nécessite un double opt-in"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:460
 #, elixir-autogen, elixir-format
 msgid "To prevent abuse by spammers, the double opt-in feature is currently only available if you have a subscription. Sorry for the inconvenience!"
-msgstr ""
+msgstr "Pour éviter les abus par les spammeurs, la fonctionnalité de double opt-in n’est actuellement disponible que si vous avez un abonnement. Désolé pour le désagrément!"
 
 #: lib/keila_web/views/public_form_view.ex:310
 #, elixir-autogen, elixir-format
@@ -2531,27 +2537,27 @@ msgstr "avec double opt-in"
 #: lib/keila_web/templates/form/edit_live.html.heex:439
 #, elixir-autogen, elixir-format
 msgid "  Custom URL to which users are redirected when they submit the form and double opt-in\n  is required.\n"
-msgstr ""
+msgstr "  URL personnalisée vers laquelle les utilisateurs sont redirigés quand ils soumettent le formulaire et que le double opt-in est requis.\n"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:424
 #, elixir-autogen, elixir-format
 msgid "  Custom message that is shown when a user submits the form and double opt-in\n  is required.\n"
-msgstr ""
+msgstr "  Message personnalisé affiché quand un utilisateur soumet le formulaire et que le double opt-in est requis.\n"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:397
 #, elixir-autogen, elixir-format
 msgid "  You may use Liquid and Markdown in the email body.\n\n  Use `[Confirm]({{ double_opt_in_link }})` to include the opt-in link.\n"
-msgstr ""
+msgstr "  Vous pouvez utiliser Liquid et Markdown dans le corps de l’e-mail.\n\n  Utilisez `[Confirmer]({{ double_opt_in_link }})` pour inclure le lien d’opt-in.\n"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:299
 #, elixir-autogen, elixir-format
 msgid "Add custom field"
-msgstr ""
+msgstr "Ajouter un champ personnalisé"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:275
 #, elixir-autogen, elixir-format
 msgid "Add option"
-msgstr ""
+msgstr "Ajouter un choix"
 
 #: lib/keila_web/templates/user_admin/index.html.heex:8
 #, elixir-autogen, elixir-format
@@ -2573,7 +2579,7 @@ msgstr "Créez des mises en page d’e-mail réactives entièrement personnalis�
 #: lib/keila_web/templates/form/edit_live.html.heex:198
 #, elixir-autogen, elixir-format
 msgid "Checkbox"
-msgstr ""
+msgstr "Case à cocher"
 
 #: lib/keila_web/controllers/user_admin_controller.ex:48
 #, elixir-autogen, elixir-format
@@ -2583,7 +2589,7 @@ msgstr ""
 #: lib/keila_web/templates/form/edit_live.html.heex:173
 #, elixir-autogen, elixir-format
 msgid "Custom field: data.%{key}"
-msgstr ""
+msgstr "Champ personnalisé: data.%{key}"
 
 #: lib/keila_web/templates/campaign/_mjml_editor.html.heex:58
 #, elixir-autogen, elixir-format
@@ -2593,17 +2599,17 @@ msgstr ""
 #: lib/keila_web/templates/form/edit_live.html.heex:421
 #, elixir-autogen, elixir-format
 msgid "Double Opt-in Info Message"
-msgstr ""
+msgstr "Message d’information pour le double opt-in"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:436
 #, elixir-autogen, elixir-format
 msgid "Double Opt-in Info Redirect URL"
-msgstr ""
+msgstr "URL de redirection pour double le opt-in"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:199
 #, elixir-autogen, elixir-format
 msgid "Dropdown"
-msgstr ""
+msgstr "Liste déroulante"
 
 #: lib/keila/mailings/builder/mjml.ex:37
 #, elixir-autogen, elixir-format
@@ -2654,12 +2660,12 @@ msgstr ""
 #: lib/keila_web/templates/form/edit_live.html.heex:197
 #, elixir-autogen, elixir-format
 msgid "Number"
-msgstr ""
+msgstr "Nombre"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:290
 #, elixir-autogen, elixir-format
 msgid "Remove field"
-msgstr ""
+msgstr "Supprimer le champ"
 
 #: lib/keila_web/templates/contact/_search.html.heex:19
 #, elixir-autogen, elixir-format
@@ -2669,17 +2675,87 @@ msgstr "Rechercher"
 #: lib/keila_web/templates/form/edit_live.html.heex:200
 #, elixir-autogen, elixir-format
 msgid "Tags"
-msgstr ""
+msgstr "Tags"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:195
 #, elixir-autogen, elixir-format
 msgid "Text"
-msgstr ""
+msgstr "Texte"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:478
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Body background"
+msgstr "Arrière plan"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:383
+#, elixir-autogen, elixir-format
+msgid "Custom email subject"
+msgstr "Sujet personnalisé de l’e-mail"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:395
+#, elixir-autogen, elixir-format
+msgid "Custom email text"
+msgstr "Texte personnalisé de l’e-mail"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:206
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Data Key"
+msgstr "Clé de la donnée"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:484
+#, elixir-autogen, elixir-format
+msgid "Form background"
+msgstr "Arrière plan du formulaire"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:490
+#, elixir-autogen, elixir-format
+msgid "Form text color"
+msgstr "Couleur de texte du formulaire"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:496
+#, elixir-autogen, elixir-format
+msgid "Input background"
+msgstr "Arrière plan du champ"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:508
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Input border color"
+msgstr "Couleur de bordure du champ"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:502
+#, elixir-autogen, elixir-format
+msgid "Input text color"
+msgstr "Couleur de texte du champ"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:224
+#, elixir-autogen, elixir-format
+msgid "Label"
+msgstr "Libellé"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:240
+#, elixir-autogen, elixir-format
+msgid "Options"
+msgstr "Choix"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:233
+#, elixir-autogen, elixir-format
+msgid "Placeholder"
+msgstr "Exemple"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:514
+#, elixir-autogen, elixir-format
+msgid "Submit button background"
+msgstr "Arrière plan du bouton d’envoi"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:520
+#, elixir-autogen, elixir-format
+msgid "Submit text color"
+msgstr "Couleur de texte du bouton d’envoi"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:123
 #, elixir-autogen, elixir-format
 msgid "Thank you redirect URL"
-msgstr ""
+msgstr "URL de redirection pour remerciements"
 
 #: lib/keila_web/controllers/user_admin_controller.ex:43
 #, elixir-autogen, elixir-format
@@ -2689,7 +2765,7 @@ msgstr ""
 #: lib/keila_web/templates/form/edit_live.html.heex:211
 #, elixir-autogen, elixir-format
 msgid "You can use data from this field as\n`{{ contact.data.%{key} }}` in your emails or segments.\n"
-msgstr ""
+msgstr "Vous pouvez utiliser la donnée associée à ce champ ainsi : \n`{{ contact.data.%{key} }}` dans vos e-mails ou segments.\n"
 
 #: lib/keila_web/templates/project/edit.html.heex:45
 #: lib/keila_web/templates/project/new.html.heex:23

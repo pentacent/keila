@@ -114,7 +114,7 @@ msgstr ""
 #: lib/keila_web/controllers/public_form_controller.ex:59
 #, elixir-autogen, elixir-format
 msgid "Please complete the captcha."
-msgstr ""
+msgstr "Veuillez compléter le captcha"
 
 #: lib/keila_web/templates/auth/activate_required.html.heex:15
 #, elixir-autogen, elixir-format
