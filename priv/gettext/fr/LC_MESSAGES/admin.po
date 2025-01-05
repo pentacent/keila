@@ -55,7 +55,7 @@ msgstr ""
 #: lib/keila_web/templates/shared_sender_admin/index.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Create a new Shared Sender"
-msgstr ""
+msgstr "Créer un nouvel expéditeur partagé"
 
 #: lib/keila_web/templates/user_admin/index.html.heex:28
 #, elixir-autogen, elixir-format
@@ -100,12 +100,12 @@ msgstr ""
 #: lib/keila_web/templates/shared_sender_admin/index.html.heex:4
 #, elixir-autogen, elixir-format
 msgid "Shared Senders"
-msgstr ""
+msgstr "Expéditeurs partagés"
 
 #: lib/keila_web/templates/shared_sender_admin/index.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "Shared Senders are available to all users on this instance of Keila."
-msgstr ""
+msgstr "Les expéditeurs partagés sont disponibles pour l’ensemble des utilisateurs de cette instance de Keila."
 
 #: lib/keila_web/templates/user_admin/index.html.heex:25
 #, elixir-autogen, elixir-format
