@@ -15,76 +15,77 @@ msgid "can't be blank"
 msgstr "ne peut pas être vide"
 
 msgid "has already been taken"
-msgstr ""
+msgstr "est déjà pris"
 
 msgid "is invalid"
-msgstr ""
+msgstr "est invalide"
 
 msgid "must be accepted"
-msgstr ""
+msgstr "doit être accepté(e)"
 
 msgid "has invalid format"
-msgstr ""
+msgstr "a un format invalide"
 
 msgid "has an invalid entry"
-msgstr ""
+msgstr "a une entrée invalide"
 
 msgid "is reserved"
-msgstr ""
+msgstr "est reservé"
 
 msgid "does not match confirmation"
-msgstr ""
+msgstr "ne correspond pas à la confirmation"
 
 msgid "is still associated with this entry"
-msgstr ""
+msgstr "est toujours associé à cette entrée"
 
 msgid "are still associated with this entry"
-msgstr ""
+msgstr "sont toujours associés à cette entrée"
 
 msgid "should be %{count} character(s)"
 msgid_plural "should be %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "devrait comporter %{count} caractère(s)"
+msgstr[1] "devrait comporter %{count} caractère(s)"
 
 msgid "should have %{count} item(s)"
 msgid_plural "should have %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "devrait comporter %{count} éléments(s)"
+msgstr[1] "devrait comporter %{count} éléments(s)"
 
 msgid "should be at least %{count} character(s)"
 msgid_plural "should be at least %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "devrait faire au moins %{count} caractère(s)"
+msgstr[1] "devrait faire au moins %{count} caractère(s)"
 
 msgid "should have at least %{count} item(s)"
 msgid_plural "should have at least %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "devrait comporter au moins %{count} éléments(s)"
+msgstr[1] "devrait comporter au moins %{count} éléments(s)"
 
 msgid "should be at most %{count} character(s)"
 msgid_plural "should be at most %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "devrait faire au plus %{count} caractère(s)"
+msgstr[1] "devrait faire au plus %{count} caractère(s)"
 
 msgid "should have at most %{count} item(s)"
 msgid_plural "should have at most %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "devrait comporter au plus %{count} éléments(s)"
+msgstr[1] "devrait comporter au plus %{count} éléments(s)"
 
 msgid "must be less than %{number}"
-msgstr ""
+msgstr "doit être inférieur à %{number}"
 
 msgid "must be greater than %{number}"
-msgstr ""
+msgstr "doit être supérieur à %{number}"
 
 msgid "must be less than or equal to %{number}"
-msgstr ""
+msgstr "doit être inférieur ou égal à %{number}"
 
 msgid "must be greater than or equal to %{number}"
-msgstr ""
+msgstr "doit être supérieur ou égal à %{number}"
+
 
 msgid "must be equal to %{number}"
-msgstr ""
+msgstr "doit être égal à %{number}"
 
 #: lib/keila/mailings/schemas/campaign.ex:107
 #, elixir-autogen, elixir-format
