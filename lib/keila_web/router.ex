@@ -64,6 +64,7 @@ defmodule KeilaWeb.Router do
     get "/account", AccountController, :edit
     put "/account", AccountController, :post_edit
     get "/account/await-subscription", AccountController, :await_subscription
+    delete "/account", AccountController, :delete
 
     get "/", ProjectController, :index
     get "/projects/new", ProjectController, :new
