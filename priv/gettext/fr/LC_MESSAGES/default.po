@@ -1063,12 +1063,12 @@ msgstr "Envoyer"
 #: lib/keila_web/templates/sender/verification_failure.html.heex:4
 #, elixir-autogen, elixir-format
 msgid "Sender verification not successful."
-msgstr ""
+msgstr "La vérification de l”expéditeur a échoué"
 
 #: lib/keila_web/templates/sender/verification_success.html.heex:4
 #, elixir-autogen, elixir-format
 msgid "Sender verified!"
-msgstr ""
+msgstr "Expéditeur vérifié!"
 
 #: lib/keila_web/templates/layout/_menu.html.heex:61
 #: lib/keila_web/templates/layout/_menu.html.heex:149
@@ -1225,7 +1225,7 @@ msgstr "Merci de vous être abonné à Keila!"
 #: lib/keila_web/templates/sender/verification_success.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Thank you for verifying your sender. You can now start sending emails with Keila."
-msgstr ""
+msgstr "Merci d’avoir vérifié votre expéditeur. Vous pouvez maintenant commencer à envoyer des e-mails avec Keila."
 
 #: lib/keila_web/templates/form/edit_live.html.heex:117
 #, elixir-autogen, elixir-format
@@ -1271,7 +1271,7 @@ msgstr "Une erreur est survenue lors de la planification de votre campagne:"
 #: lib/keila_web/templates/sender/verification_failure.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "There was an error when trying to verify your sender. Please try again or contact an administrator."
-msgstr ""
+msgstr "Il y a eu une erreur lors de la vérification de votre expéditeur. Veuillez réessayer ou contacter un administrateur."
 
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:41
 #, elixir-autogen, elixir-format
