@@ -51,7 +51,7 @@ msgstr "Coucou,\n\nveuillez confirmer votre nouvelle adresse e-mail en visitant 
 #: lib/keila/auth/emails.ex:95
 #, elixir-autogen, elixir-format
 msgid "Hey there,\n\nyou can login to Keila with the following link:\n\n%{url}\n\nIf you haven’t requested a login, simply ignore this message.\n"
-msgstr ""
+msgstr "Coucou,\n\nvous pouvez vous connecter à Keila avec le lien suivant:\n\n%{url}\n\nSi vous n’avez pas demandé de lien de connexion, ignorez simplement ce message.\n"
 
 #: lib/keila/auth/emails.ex:70
 #, elixir-autogen, elixir-format
