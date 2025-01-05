@@ -435,7 +435,7 @@ msgstr "Saisissez le nom de l’expéditeur pour confirmer sa suppression:"
 #: lib/keila_web/templates/template/delete.html.heex:3
 #, elixir-autogen, elixir-format
 msgid "Delete Templates?"
-msgstr ""
+msgstr "Supprimer les modèles?"
 
 #: lib/keila_web/templates/user_admin/delete.html.heex:3
 #, elixir-autogen, elixir-format
@@ -450,22 +450,22 @@ msgstr "Supprimer tous les contacts sélectionnés"
 #: lib/keila_web/templates/campaign/delete.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "Deleting a campaign cannot be undone."
-msgstr "Supprimer une campagne est définitif."
+msgstr "Supprimer une campagne est irréversible."
 
 #: lib/keila_web/templates/contact/delete.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "Deleting a contact cannot be undone."
-msgstr "Supprimer un contact est définitif."
+msgstr "Supprimer un contact est irréversible."
 
 #: lib/keila_web/templates/form/delete.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "Deleting a form cannot be undone."
-msgstr "Supprimer un formulaire est définitif."
+msgstr "Supprimer un formulaire est irréversible."
 
 #: lib/keila_web/templates/project/delete.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "Deleting a project cannot be undone."
-msgstr "Supprimer un projet est définitif."
+msgstr "Supprimer un projet est irréversible."
 
 #: lib/keila_web/templates/project/delete.html.heex:24
 #, elixir-autogen, elixir-format
@@ -475,12 +475,12 @@ msgstr "Saisissez le nom du projet pour confirmer sa suppression:"
 #: lib/keila_web/templates/sender/delete.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Deleting a sender cannot be undone."
-msgstr "Supprimer un expéditeur est irréversible"
+msgstr "Supprimer un expéditeur est irréversible."
 
 #: lib/keila_web/templates/template/delete.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Deleting a template cannot be undone."
-msgstr ""
+msgstr "Supprimer un modèle est irréversible."
 
 #: lib/keila_web/templates/user_admin/delete.html.heex:30
 #, elixir-autogen, elixir-format
@@ -505,7 +505,7 @@ msgstr "Voulez-vous réellement supprimer les formulaires suivants?"
 #: lib/keila_web/templates/template/delete.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Do you really want to delete the following templates?"
-msgstr ""
+msgstr "Voulez-vous réellement supprimer les modèles suivants?"
 
 #: lib/keila_web/templates/user_admin/delete.html.heex:10
 #, elixir-autogen, elixir-format
