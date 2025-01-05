@@ -2704,7 +2704,7 @@ msgstr "Mon choix personnalisé"
 #: lib/keila_web/templates/user_admin/new.html.heex:4
 #, elixir-autogen, elixir-format
 msgid "New User"
-msgstr ""
+msgstr "Nouvel utilisateur"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:197
 #, elixir-autogen, elixir-format
