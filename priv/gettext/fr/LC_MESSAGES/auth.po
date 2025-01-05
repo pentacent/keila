@@ -26,7 +26,7 @@ msgstr ""
 #: lib/keila_web/templates/auth/reset_success.html.heex:4
 #, elixir-autogen, elixir-format
 msgid "Check your inbox!"
-msgstr ""
+msgstr "Vérifiez votre boîte de réception!"
 
 #: lib/keila_web/templates/auth/login.html.heex:34
 #, elixir-autogen, elixir-format
@@ -56,17 +56,17 @@ msgstr ""
 #: lib/keila/auth/emails.ex:70
 #, elixir-autogen, elixir-format
 msgid "Hey there,\n\nyou have requested a password reset for your Keila account.\n\nYou can set a new password by visiting the following link:\n\n%{url}\n\nIf you weren’t trying to reset your password, simply ignore this message.\n"
-msgstr ""
+msgstr "Coucou\n\nvous avez demandé une réinitialisation de mot de passe pour votre compte Keila.\n\nVous pouvez définir un nouveau mot de passe en visitant le lien suivant:\n\n%{url}\n\nSi vous n’étiez pas en train d’essayer de réinitialiser votre mot de passe, ignorez simplement ce message.\n"
 
 #: lib/keila_web/templates/auth/reset_success.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "If you have an account, we’ve sent you a verification link to %{email}."
-msgstr ""
+msgstr "Si vous avez un compte, nous vous avons envoyé un lien de vérification à %{email}."
 
 #: lib/keila_web/templates/auth/404.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "It seems like your link has expired or is invalid."
-msgstr ""
+msgstr "Il semble que votre lien ait expiré ou soit invalide."
 
 #: lib/keila_web/controllers/account_controller.ex:46
 #, elixir-autogen, elixir-format
