@@ -1762,7 +1762,7 @@ msgstr "Tous les contacts"
 #: lib/keila_web/controllers/segment_controller.ex:69
 #, elixir-autogen, elixir-format
 msgid "Confirm Segment Deletion"
-msgstr ""
+msgstr "Confirmer la suppression du segment"
 
 #: lib/keila_web/templates/segment/edit_live.html.heex:163
 #, elixir-autogen, elixir-format
