@@ -48,7 +48,7 @@
     @change="setUnsavedReminder(true)"
   >
     <div class="flex flex-col">
-      <%= label(f, :name, "Shared Sender name") %>
+      <%= label(f, :name, dgettext("admin", "Shared Sender Name")) %>
       <%= with_validation(f, :name) do %>
         <%= text_input(f, :name,
           placeholder: dgettext("admin", "My Shared Sender"),
