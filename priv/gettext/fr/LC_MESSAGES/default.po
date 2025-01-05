@@ -980,7 +980,7 @@ msgstr "Prêt(e) à programmer votre campagne?"
 #: lib/keila_web/templates/auth/register.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "Register your Keila account now and start your newsletter project within minutes."
-msgstr ""
+msgstr "Enregistrez votre compte Keila dès maintenant et démarrez votre projet d’infolettre en quelques minutes."
 
 #: lib/keila_web/templates/auth/registration_disabled.html.heex:7
 #, elixir-autogen, elixir-format
@@ -1111,7 +1111,7 @@ msgstr "Paramètres"
 #: lib/keila_web/templates/auth/registration_disabled.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Sign in."
-msgstr ""
+msgstr "Connectez vous."
 
 #: lib/keila_web/templates/layout/_menu.html.heex:159
 #, elixir-autogen, elixir-format
@@ -1121,7 +1121,7 @@ msgstr "Se déconnecter"
 #: lib/keila_web/templates/auth/register.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Sign up now"
-msgstr ""
+msgstr "Inscrivez-vous maintenant"
 
 #: lib/keila_web/templates/auth/reset.html.heex:28
 #, elixir-autogen, elixir-format
@@ -1147,7 +1147,7 @@ msgstr "Démarrer l’import"
 #: lib/keila_web/templates/auth/register.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Start sending emails with Keila now"
-msgstr ""
+msgstr "Commencez à envoyer des e-mails avec Keila maintenant"
 
 #: lib/keila_web/templates/campaign/stats_live.html.heex:59
 #: lib/keila_web/templates/form/edit_live.html.heex:466

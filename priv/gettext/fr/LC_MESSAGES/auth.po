@@ -175,7 +175,7 @@ msgstr ""
 #: lib/keila/auth/emails.ex:22
 #, elixir-autogen, elixir-format
 msgid "Welcome to Keila,\n\nplease confirm your new account by visiting the following link:\n\n%{url}\n\nIf you weren’t trying to create an account, simply ignore this message.\n"
-msgstr ""
+msgstr "Bienvenue sur Keila,\n\nveuillez confirmer votre nouveau compte en visitant le lien suivant:\n\n%{url}\n\nSi vous n’étiez pas en train d’essayer de créer un compte, ignorez simplement ce message.\n"
 
 #: lib/keila_web/templates/auth/activate_resend_success.html.heex:7
 #, elixir-autogen, elixir-format
