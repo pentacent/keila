@@ -556,7 +556,7 @@ msgstr "Modifier la campagne"
 #: lib/keila_web/controllers/contact_controller.ex:218
 #, elixir-autogen, elixir-format
 msgid "Edit Contact"
-msgstr ""
+msgstr "Modifier le contact"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:6
 #, elixir-autogen, elixir-format
