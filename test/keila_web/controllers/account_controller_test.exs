@@ -1,6 +1,7 @@
 defmodule KeilaWeb.AccountControllerTest do
   use KeilaWeb.ConnCase
   alias Keila.Auth
+  alias Keila.Accounts
 
   describe "GET /account" do
     @tag :account_controller
@@ -26,6 +27,17 @@ defmodule KeilaWeb.AccountControllerTest do
 
       credentials = password_params |> Map.put("email", user.email)
       assert {:ok, %{id: ^user_id}} = Auth.find_user_by_credentials(credentials)
+    end
+  end
+
+  describe "DELETE /account" do
+    @tag :account_controller
+    test "deletes account", %{conn: conn} do
+      conn = with_login(conn)
+
+      conn = delete(conn, Routes.account_path(conn, :delete))
+      assert redirected_to(conn, 302) == Routes.auth_path(conn, :login)
+      assert nil == Accounts.get_user_account(conn.assigns.current_user.id)
     end
   end
 end
