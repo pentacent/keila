@@ -1046,7 +1046,7 @@ msgstr "Programmer"
 #: lib/keila_web/templates/campaign/index.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Scheduled for:"
-msgstr ""
+msgstr "Programmé pour:"
 
 #: lib/keila_web/templates/component/file_manager_live.html.heex:12
 #: lib/keila_web/templates/contact/import_live.html.heex:28
