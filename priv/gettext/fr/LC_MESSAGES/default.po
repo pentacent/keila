@@ -525,7 +525,7 @@ msgstr "Muche"
 #: lib/keila_web/templates/auth/reset.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Don’t have an account?"
-msgstr ""
+msgstr "Vous n’avez pas de compte?"
 
 #: lib/keila_web/templates/contact/import_live.html.heex:141
 #: lib/keila_web/templates/contact/import_live.html.heex:162
@@ -682,7 +682,7 @@ msgstr "Je suis humain"
 #: lib/keila_web/templates/auth/reset.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "If you’ve forgotten your password, you can request an email to reset it here."
-msgstr ""
+msgstr "Si vous avez oublié votre mot de passe, vous pouvez demander un e-mail pour le réinitialiser ici."
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:35
 #: lib/keila_web/templates/campaign/_markdown_editor.html.heex:12
@@ -990,12 +990,12 @@ msgstr ""
 #: lib/keila_web/templates/auth/reset.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Remember your password again?"
-msgstr ""
+msgstr "Vous vous souvenez de votre mot de passe?"
 
 #: lib/keila_web/templates/auth/reset.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "Request password reset"
-msgstr ""
+msgstr "Demander la réinitialisation du mot de passe"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:183
 #, elixir-autogen, elixir-format
@@ -1010,13 +1010,13 @@ msgstr "Nécessite un captcha"
 #: lib/keila_web/templates/auth/reset_change_password.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Reset password now"
-msgstr ""
+msgstr "Réinitialisez le mot de passe maintenant"
 
 #: lib/keila_web/templates/auth/reset.html.heex:9
 #: lib/keila_web/templates/auth/reset_change_password.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Reset your password."
-msgstr ""
+msgstr "Réinitialisez votre mot de passe."
 
 #: lib/keila_web/templates/api_key/new.html.heex:8
 #: lib/keila_web/templates/campaign/clone.html.heex:8
@@ -1092,7 +1092,7 @@ msgstr "Envoyé le:"
 #: lib/keila_web/templates/auth/reset_change_password.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "Set a new secure password to keep using Keila."
-msgstr ""
+msgstr "Définissez un nouveau mot de passe sécurisé pour continuer à utiliser Keila."
 
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:28
 #: lib/keila_web/templates/campaign/edit_live.html.heex:40
@@ -1126,7 +1126,7 @@ msgstr ""
 #: lib/keila_web/templates/auth/reset.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Sign up."
-msgstr ""
+msgstr "Inscrivez-vous."
 
 #: lib/keila/templates/default_template.ex:81
 #: lib/keila_web/templates/template/edit_live.html.heex:74
@@ -1323,7 +1323,7 @@ msgstr "Titre"
 #: lib/keila_web/templates/auth/reset.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Try signing in."
-msgstr ""
+msgstr "Essayez de vous connecter."
 
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:92
 #: lib/keila_web/templates/campaign/stats_live.html.heex:298
@@ -1653,7 +1653,7 @@ msgstr "Créer un nouveau contact manuellement"
 #: lib/keila_web/templates/auth/reset_change_password.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "Must have at least 10 characters."
-msgstr ""
+msgstr "Doit comporter au moins 10 caractères."
 
 #: lib/keila_web/templates/contact/import_live.html.heex:96
 #, elixir-autogen, elixir-format

@@ -88,12 +88,12 @@ msgstr ""
 #: lib/keila_web/controllers/auth_controller.ex:162
 #, elixir-autogen, elixir-format
 msgid "Password reset"
-msgstr ""
+msgstr "Réinitialisation du mot de passe"
 
 #: lib/keila_web/controllers/auth_controller.ex:149
 #, elixir-autogen, elixir-format
 msgid "Password reset successful"
-msgstr ""
+msgstr "Réinitialisation du mot de passe réussie"
 
 #: lib/keila/auth/emails.ex:19
 #, elixir-autogen, elixir-format
