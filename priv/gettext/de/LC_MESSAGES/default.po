@@ -1458,9 +1458,13 @@ msgid "italic"
 msgstr "kursiv"
 
 #: lib/keila_web/views/template_view.ex:96
-#: lib/keila_web/views/template_view.ex:142
-#, elixir-autogen, elixir-format
+#, elixir-format
 msgid "light"
+msgstr "leicht"
+
+#: lib/keila_web/views/template_view.ex:142
+#, elixir-format
+msgid "opacity-light"
 msgstr "leicht"
 
 #: lib/keila_web/templates/sender/_smtp_config.html.heex:5

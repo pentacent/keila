@@ -571,7 +571,7 @@ msgstr ""
 #: lib/keila_web/templates/template/edit_live.html.heex:6
 #, elixir-autogen, elixir-format
 msgid "Edit Template"
-msgstr ""
+msgstr "Modifier le modèle"
 
 #: lib/keila_web/templates/campaign/stats_live.html.heex:39
 #, elixir-autogen, elixir-format
@@ -623,17 +623,17 @@ msgstr "Prénom"
 #: lib/keila_web/views/template_view.ex:41
 #, elixir-autogen, elixir-format
 msgid "Font"
-msgstr ""
+msgstr "Police"
 
 #: lib/keila_web/views/template_view.ex:42
 #, elixir-autogen, elixir-format
 msgid "Font style"
-msgstr ""
+msgstr "Style de la police"
 
 #: lib/keila_web/views/template_view.ex:43
 #, elixir-autogen, elixir-format
 msgid "Font weight"
-msgstr ""
+msgstr "Épaisseur de la police"
 
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:105
 #, elixir-autogen, elixir-format
@@ -653,21 +653,21 @@ msgstr "Formulaires"
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Heading 1"
-msgstr ""
+msgstr "Titre 1"
 
 #: lib/keila/templates/default_template.ex:42
 #: lib/keila/templates/hybrid_template.ex:39
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "Heading 2"
-msgstr ""
+msgstr "Titre 2"
 
 #: lib/keila/templates/default_template.ex:50
 #: lib/keila/templates/hybrid_template.ex:47
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "Heading 3"
-msgstr ""
+msgstr "Titre 3"
 
 #: lib/keila_web/templates/account/edit.html.heex:191
 #, elixir-autogen, elixir-format
@@ -690,7 +690,7 @@ msgstr ""
 #: lib/keila_web/views/template_view.ex:40
 #, elixir-autogen, elixir-format
 msgid "Image"
-msgstr ""
+msgstr "Image"
 
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:103
 #, elixir-autogen, elixir-format
@@ -782,7 +782,7 @@ msgstr "Nom"
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Layout"
-msgstr ""
+msgstr "Général"
 
 #: lib/keila_web/templates/campaign/_markdown_editor.html.heex:5
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:67
@@ -1132,7 +1132,7 @@ msgstr ""
 #: lib/keila_web/templates/template/edit_live.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "Signature"
-msgstr ""
+msgstr "Signature"
 
 #: lib/keila/templates/default_template.ex:90
 #, elixir-autogen, elixir-format
@@ -1201,7 +1201,7 @@ msgstr "Modèles"
 #: lib/keila_web/views/template_view.ex:38
 #, elixir-autogen, elixir-format
 msgid "Text color"
-msgstr ""
+msgstr "Couleur du texte"
 
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:73
 #, elixir-autogen, elixir-format, fuzzy
@@ -1435,7 +1435,7 @@ msgstr ""
 #: lib/keila_web/views/template_view.ex:95
 #, elixir-autogen, elixir-format
 msgid "bold"
-msgstr ""
+msgstr "gras"
 
 #: lib/keila_web/templates/sender/edit.html.heex:79
 #, elixir-autogen, elixir-format
@@ -1445,13 +1445,17 @@ msgstr ""
 #: lib/keila_web/views/template_view.ex:111
 #, elixir-autogen, elixir-format
 msgid "italic"
-msgstr ""
+msgstr "italique"
 
 #: lib/keila_web/views/template_view.ex:96
-#: lib/keila_web/views/template_view.ex:142
-#, elixir-autogen, elixir-format
+#, elixir-format
 msgid "light"
-msgstr ""
+msgstr "fine"
+
+#: lib/keila_web/views/template_view.ex:142
+#, elixir-format
+msgid "opacity-light"
+msgstr "légère"
 
 #: lib/keila_web/templates/sender/_smtp_config.html.heex:5
 #, elixir-autogen, elixir-format
@@ -1466,13 +1470,13 @@ msgstr ""
 #: lib/keila_web/views/template_view.ex:125
 #, elixir-autogen, elixir-format
 msgid "none"
-msgstr ""
+msgstr "aucune"
 
 #: lib/keila_web/views/template_view.ex:94
 #: lib/keila_web/views/template_view.ex:110
 #, elixir-autogen, elixir-format
 msgid "normal"
-msgstr ""
+msgstr "normal"
 
 #: lib/keila_web/templates/contact/edit.html.heex:64
 #, elixir-autogen, elixir-format
@@ -1482,7 +1486,7 @@ msgstr "subscriber@example.com"
 #: lib/keila_web/views/template_view.ex:126
 #, elixir-autogen, elixir-format
 msgid "underlined"
-msgstr ""
+msgstr "souligné"
 
 #: lib/keila/contacts/import.ex:182
 #, elixir-autogen, elixir-format
@@ -2080,12 +2084,12 @@ msgstr ""
 #: lib/keila_web/views/template_view.ex:46
 #, elixir-autogen, elixir-format
 msgid "Border color"
-msgstr ""
+msgstr "Couleur de bordure"
 
 #: lib/keila_web/views/template_view.ex:45
 #, elixir-autogen, elixir-format
 msgid "Border style"
-msgstr ""
+msgstr "Style de bordure"
 
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:148
 #: lib/keila_web/templates/campaign/new.html.heex:192
@@ -2101,7 +2105,7 @@ msgstr ""
 #: lib/keila_web/views/template_view.ex:48
 #, elixir-autogen, elixir-format
 msgid "Margin"
-msgstr ""
+msgstr "Marge"
 
 #: lib/keila_web/templates/template/clone.html.heex:26
 #, elixir-autogen, elixir-format
@@ -2116,14 +2120,14 @@ msgstr ""
 #: lib/keila_web/views/template_view.ex:47
 #, elixir-autogen, elixir-format
 msgid "Opacity"
-msgstr ""
+msgstr "Opacité"
 
 #: lib/keila/templates/default_template.ex:74
 #: lib/keila/templates/hybrid_template.ex:76
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:88
 #, elixir-autogen, elixir-format
 msgid "Spacer"
-msgstr ""
+msgstr "Séparateur"
 
 #: lib/keila_web/templates/component/file_manager_live.html.heex:27
 #, elixir-autogen, elixir-format
@@ -2133,7 +2137,7 @@ msgstr "Démarrer l’envoi"
 #: lib/keila_web/views/template_view.ex:49
 #, elixir-autogen, elixir-format
 msgid "Text alignment"
-msgstr ""
+msgstr "Alignement du texte"
 
 #: lib/keila_web/templates/component/file_manager_live.html.heex:3
 #, elixir-autogen, elixir-format
@@ -2158,73 +2162,73 @@ msgstr ""
 #: lib/keila_web/views/template_view.ex:144
 #, elixir-autogen, elixir-format
 msgid "almost opaque"
-msgstr ""
+msgstr "preque opaque"
 
 #: lib/keila_web/views/template_view.ex:193
 #, elixir-autogen, elixir-format
 msgid "centered"
-msgstr ""
+msgstr "centré"
 
 #: lib/keila_web/views/template_view.ex:161
 #, elixir-autogen, elixir-format
 msgid "dashed"
-msgstr ""
+msgstr "tirets"
 
 #: lib/keila_web/views/template_view.ex:160
 #, elixir-autogen, elixir-format
 msgid "dotted"
-msgstr ""
+msgstr "pointillés"
 
 #: lib/keila_web/views/template_view.ex:191
 #, elixir-autogen, elixir-format
 msgid "flush left"
-msgstr ""
+msgstr "à gauche"
 
 #: lib/keila_web/views/template_view.ex:192
 #, elixir-autogen, elixir-format
 msgid "flush right"
-msgstr ""
+msgstr "à droite"
 
 #: lib/keila_web/views/template_view.ex:140
 #, elixir-autogen, elixir-format
 msgid "invisible"
-msgstr ""
+msgstr "invisible"
 
 #: lib/keila_web/views/template_view.ex:194
 #, elixir-autogen, elixir-format
 msgid "justified"
-msgstr ""
+msgstr "justifié"
 
 #: lib/keila_web/views/template_view.ex:177
 #, elixir-autogen, elixir-format
 msgid "large"
-msgstr ""
+msgstr "grande"
 
 #: lib/keila_web/views/template_view.ex:143
 #: lib/keila_web/views/template_view.ex:176
 #, elixir-autogen, elixir-format
 msgid "medium"
-msgstr ""
+msgstr "moyenne"
 
 #: lib/keila_web/views/template_view.ex:145
 #, elixir-autogen, elixir-format
 msgid "opaque"
-msgstr ""
+msgstr "opaque"
 
 #: lib/keila_web/views/template_view.ex:175
 #, elixir-autogen, elixir-format
 msgid "small"
-msgstr ""
+msgstr "petite"
 
 #: lib/keila_web/views/template_view.ex:159
 #, elixir-autogen, elixir-format
 msgid "solid"
-msgstr ""
+msgstr "pleine"
 
 #: lib/keila_web/views/template_view.ex:141
 #, elixir-autogen, elixir-format
 msgid "very light"
-msgstr ""
+msgstr "très légère"
 
 #: lib/keila_web/templates/campaign/stats_live.html.heex:281
 #, elixir-autogen, elixir-format
@@ -2259,7 +2263,7 @@ msgstr "Éditeur bloc"
 #: lib/keila/templates/hybrid_template.ex:60
 #, elixir-autogen, elixir-format
 msgid "Buttons"
-msgstr ""
+msgstr "Boutons"
 
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:124
 #: lib/keila_web/templates/campaign/new.html.heex:178
@@ -2296,12 +2300,12 @@ msgstr "Télécharger"
 #: lib/keila/templates/hybrid_template.ex:83
 #, elixir-autogen, elixir-format
 msgid "Footer"
-msgstr ""
+msgstr "Pied de page"
 
 #: lib/keila/templates/hybrid_template.ex:92
 #, elixir-autogen, elixir-format
 msgid "Footer links"
-msgstr ""
+msgstr "Liens de pied de page"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:17
 #, elixir-autogen, elixir-format
@@ -2342,17 +2346,17 @@ msgstr "Aperçu textuel"
 #: lib/keila/templates/hybrid_template.ex:74
 #, elixir-autogen, elixir-format
 msgid "Quote Attribution"
-msgstr ""
+msgstr "Attribution de citation"
 
 #: lib/keila/templates/hybrid_template.ex:73
 #, elixir-autogen, elixir-format
 msgid "Quote Text"
-msgstr ""
+msgstr "Texte de citation"
 
 #: lib/keila/templates/hybrid_template.ex:71
 #, elixir-autogen, elixir-format
 msgid "Quotes"
-msgstr ""
+msgstr "Citations"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:32
 #, elixir-autogen, elixir-format
@@ -2367,7 +2371,7 @@ msgstr ""
 #: lib/keila_web/views/template_view.ex:71
 #, elixir-autogen, elixir-format
 msgid "System"
-msgstr ""
+msgstr "Système"
 
 #: lib/keila_web/templates/campaign/new.html.heex:84
 #, elixir-autogen, elixir-format
@@ -2404,7 +2408,7 @@ msgstr "Vous avez désactivé le suivi pour cette campagne. Merci d’avoir resp
 #: lib/keila_web/templates/template/edit_live.html.heex:76
 #, elixir-autogen, elixir-format
 msgid "You may use Liquid and Markdown in the signature. Use `[Unsubscribe]({{ unsubscribe_link }})` to include the unsubscribe link."
-msgstr ""
+msgstr "Vous pouvez utiliser Liquid et Markdown dans la signature. Utilisez `[Se désinscrire]({{ unsubscribe_link }})` pour inclure le lien de désinscription."
 
 #: lib/keila_web/templates/campaign/stats_live.html.heex:251
 #, elixir-autogen, elixir-format
