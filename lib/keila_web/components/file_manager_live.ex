@@ -39,6 +39,21 @@ defmodule KeilaWeb.FileManagerLiveComponent do
     {:noreply, socket |> put_files()}
   end
 
+  def handle_event("delete_upload", %{"id" => file_uuid}, socket) do
+    case Keila.Files.delete_file(file_uuid) do
+      :ok ->
+        socket =
+          socket
+          |> push_event("remove_file", %{id: "file-container-#{file_uuid}"})
+          |> put_files()
+
+        {:noreply, socket}
+
+      {:error, _} ->
+        {:noreply, socket}
+    end
+  end
+
   def handle_event("change-page", %{"page" => page}, socket) do
     page = String.to_integer(page)
 

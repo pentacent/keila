@@ -139,11 +139,12 @@ defmodule Keila.Files do
   def delete_file(uuid) do
     with file = %File{} <- get_file(uuid),
          adapter <- get_adapter(file.adapter),
-         :ok <- adapter.delete(file) do
-      Repo.delete_all(from(f in File, where: f.uuid == ^uuid))
+         :ok <- adapter.delete(file),
+         {:ok, _file} <- Repo.delete(file) do
       :ok
     else
-      _ -> :ok
+      nil -> :ok
+      {:error, changeset} -> {:error, changeset}
     end
   end
 
