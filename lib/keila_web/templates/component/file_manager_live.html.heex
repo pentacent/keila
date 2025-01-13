@@ -48,14 +48,38 @@
       </div>
     </div>
   <% else %>
-    <div class="overflow-y-scroll max-h-96 grid grid-gap-4 grid-cols-2">
+    <div
+      id="file-container"
+      phx-hook="FileManager"
+      class="overflow-y-scroll max-h-96 grid grid-gap-4 grid-cols-2"
+    >
       <%= for {file, url} <- Enum.zip(@files.data, @file_urls) do %>
         <div
+          id={"file-container-#{file.uuid}"}
           class="max-w-[10rem]"
           phx-click={JS.dispatch("x-file-selected", detail: %{url: url, id: file.uuid})}
+          x-data="{ showDelete: false }"
         >
           <img id={"file-#{file.uuid}"} src={url} alt="" class="h-3/4 w-full object-cover" />
-          <p class="text-xs"><%= file.filename %></p>
+          <div class="flex justify-between text-xs">
+            <p class="mt-1"><%= file.filename %></p>
+            <button
+              x-show="!showDelete"
+              @click.stop="showDelete = true"
+              class="button button--text button--small"
+            >
+              <%= render_icon(:trash) %>
+            </button>
+            <button
+              x-show="showDelete"
+              phx-click="delete_upload"
+              phx-value-id={file.uuid}
+              phx-target={@myself}
+              class="button button--small bg-red-600 text-white"
+            >
+              <%= gettext("Click to delete") %>
+            </button>
+          </div>
         </div>
       <% end %>
     </div>
