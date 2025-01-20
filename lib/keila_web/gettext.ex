@@ -39,7 +39,7 @@ defmodule KeilaWeb.Gettext do
     [
       {"English", "en"},
       {"Deutsch", "de"},
-      {"French", "fr"}
+      {"Français", "fr"}
     ]
   end
 end
