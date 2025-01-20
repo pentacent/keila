@@ -40,17 +40,25 @@ defmodule KeilaWeb.FileManagerLiveComponent do
   end
 
   def handle_event("delete_upload", %{"id" => file_uuid}, socket) do
-    case Keila.Files.delete_file(file_uuid) do
-      :ok ->
-        socket =
-          socket
-          |> push_event("remove_file", %{id: "file-container-#{file_uuid}"})
-          |> put_files()
+    project_id = socket.assigns.current_project_id
 
+    case Keila.Files.get_project_file(project_id, file_uuid) do
+      nil ->
         {:noreply, socket}
 
-      {:error, _} ->
-        {:noreply, socket}
+      file ->
+        case Keila.Files.delete_file(file.uuid) do
+          :ok ->
+            socket =
+              socket
+              |> push_event("remove_file", %{id: "file-container-#{file_uuid}"})
+              |> put_files()
+
+            {:noreply, socket}
+
+          {:error, _} ->
+            {:noreply, socket}
+        end
     end
   end
 

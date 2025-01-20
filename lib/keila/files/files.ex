@@ -110,6 +110,24 @@ defmodule Keila.Files do
   end
 
   @doc """
+  Retrieves the file specified by its UUID from a given project.
+
+  Returns `nil` if file doesn’t exist.
+  """
+  @spec get_project_file(Project.id(), File.id()) :: File.t() | nil
+  def get_project_file(project_id, file_id)
+      when is_binary(project_id) or is_integer(project_id) do
+    query =
+      from(f in File,
+        where: f.project_id == ^project_id,
+        where: f.uuid == ^file_id,
+        preload: [:project]
+      )
+
+    Repo.one(query)
+  end
+
+  @doc """
   Returns all Files belonging to specified Project.
 
   This function accepts options for the`Keila.Contacts.Pagination` module:
