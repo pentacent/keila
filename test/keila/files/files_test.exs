@@ -48,6 +48,14 @@ defmodule Keila.FilesTest do
   end
 
   @tag :files
+  test "Get project file" do
+    project = insert!(:project)
+    file = insert!(:file, project: project)
+
+    assert Files.get_project_file(project.id, file.uuid) == file
+  end
+
+  @tag :files
   test "Media type and extension match check" do
     project = insert!(:project)
 
