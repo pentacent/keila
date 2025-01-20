@@ -68,7 +68,7 @@
         <% end %>
       </div>
       <div class="form-row">
-        <%= label(f, :first_name, gettext("Contact Name")) %>
+        <%= label(f, :first_name, gettext("First name")) %>
         <%= with_validation(f, :first_name) do %>
           <%= text_input(f, :first_name, placeholder: gettext("Jane"), class: "text-black") %>
         <% end %>
