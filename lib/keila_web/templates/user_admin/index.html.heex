@@ -51,7 +51,7 @@
             <%= if @user_credits do
               content_tag(:a,
                 href: Routes.user_admin_path(@conn, :show_credits, user.id),
-                title: dgettext("admin", "Add Credits"),
+                title: dgettext("admin", "Add credits"),
                 class: "button button--text"
               ) do
                 render_icon(:plus_circle)
