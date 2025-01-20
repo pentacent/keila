@@ -72,6 +72,7 @@
             </button>
             <button
               x-show="showDelete"
+              @click.away="showDelete = false"
               phx-click="delete_upload"
               phx-value-id={file.uuid}
               phx-target={@myself}
