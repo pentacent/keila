@@ -139,7 +139,7 @@ defmodule KeilaWeb.TemplateView do
       [
         {gettext("invisible"), "0"},
         {gettext("very light"), "0.1"},
-        {gettext("opacity-light"), "0.25"},
+        {gettext("light"), "0.25"},
         {gettext("medium"), "0.50"},
         {gettext("almost opaque"), "0.75"},
         {gettext("opaque"), "1.0"}
