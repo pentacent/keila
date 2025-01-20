@@ -95,7 +95,5 @@ msgstr "muss größer gleich %{number} sein"
 msgid "must be equal to %{number}"
 msgstr "muss %{number} sein"
 
-#: lib/keila/mailings/schemas/campaign.ex:107
-#, elixir-autogen, elixir-format
-msgid "must be at least %{number} seconds in the future"
+msgid "must be at least %{offset} seconds in the future"
 msgstr ""
