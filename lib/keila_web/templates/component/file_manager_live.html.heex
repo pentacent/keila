@@ -58,9 +58,10 @@
           id={"file-container-#{file.uuid}"}
           class="max-w-[10rem]"
           phx-click={JS.dispatch("x-file-selected", detail: %{url: url, id: file.uuid})}
-          x-data="{ showDelete: false }"
+          x-data="{ showDelete: false, showUsageWarning: false, campaigns: [] }"
+          @x-file-in-use.window="showUsageWarning = true; campaigns = $event.detail.campaigns"
         >
-          <img id={"file-#{file.uuid}"} src={url} alt="" class="h-3/4 w-full object-cover" />
+          > <img id={"file-#{file.uuid}"} src={url} alt="" class="h-3/4 w-full object-cover" />
           <div class="flex justify-between text-xs">
             <p class="mt-1"><%= file.filename %></p>
             <button
@@ -80,6 +81,38 @@
             >
               <%= gettext("Click to delete") %>
             </button>
+          </div>
+          <div
+            x-show="showUsageWarning"
+            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+            @click.away="showUsageWarning = false"
+          >
+            <div class="bg-gray-900 p-4 rounded-lg max-w-lg">
+              <h3 class="text-lg text-red-600 font-bold mb-4">
+                <%= gettext("Warning! Image in use in the following campaigns:") %>
+              </h3>
+              <template x-for="campaign in campaigns">
+                <div class="flex justify-between items-center mb-2">
+                  <span x-text="campaign.subject"></span>
+                  <span
+                    x-text="campaign.status"
+                    :class="{
+              'text-green-700': campaign.status === 'draft',
+              'text-red-600': campaign.status === 'sent'
+            }"
+                  >
+                  </span>
+                </div>
+              </template>
+              <div class="flex justify-end gap-2 mt-4">
+                <button
+                  @click="showUsageWarning = false; showDelete = false"
+                  class="button button--text"
+                >
+                  <%= gettext("Cancel") %>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       <% end %>

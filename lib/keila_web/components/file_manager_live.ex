@@ -47,17 +47,35 @@ defmodule KeilaWeb.FileManagerLiveComponent do
         {:noreply, socket}
 
       file ->
-        case Keila.Files.delete_file(file.uuid) do
-          :ok ->
-            socket =
-              socket
-              |> push_event("remove_file", %{id: "file-container-#{file_uuid}"})
-              |> put_files()
+        file_url = Keila.Files.get_file_url(file.uuid)
+        using_campaigns = Keila.Mailings.search_in_project_campaigns(project_id, file_url)
 
-            {:noreply, socket}
+        case using_campaigns do
+          [] ->
+            case Keila.Files.delete_file(file.uuid) do
+              :ok ->
+                socket =
+                  socket
+                  |> push_event("remove_file", %{id: "file-container-#{file_uuid}"})
+                  |> put_files()
 
-          {:error, _} ->
-            {:noreply, socket}
+                {:noreply, socket}
+
+              {:error, _} ->
+                {:noreply, socket}
+            end
+
+          campaigns ->
+            campaign_details =
+              Enum.map(campaigns, fn campaign ->
+                %{
+                  id: campaign.id,
+                  subject: campaign.subject,
+                  status: if(campaign.sent_at, do: "sent", else: "draft")
+                }
+              end)
+
+            {:noreply, push_event(socket, "file_in_use", %{campaigns: campaign_details})}
         end
     end
   end
