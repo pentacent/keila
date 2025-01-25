@@ -25,7 +25,7 @@ msgstr "Activation"
 #: lib/keila_web/templates/user_admin/show_credits.html.heex:26
 #: lib/keila_web/templates/user_admin/show_credits.html.heex:85
 #, elixir-autogen, elixir-format
-msgid "Add Credits"
+msgid "Add credits"
 msgstr "Ajouter des crédits"
 
 #: lib/keila_web/templates/user_admin/show_credits.html.heex:3
