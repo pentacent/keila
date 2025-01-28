@@ -180,11 +180,11 @@ msgstr ""
 #: lib/keila_web/templates/contact/edit.html.heex:23
 #: lib/keila_web/templates/form/delete.html.heex:34
 #: lib/keila_web/templates/form/edit_live.html.heex:14
-#: lib/keila_web/templates/project/delete.html.heex:37
+#: lib/keila_web/templates/project/delete.html.heex:41
 #: lib/keila_web/templates/project/edit.html.heex:14
 #: lib/keila_web/templates/segment/delete.html.heex:34
 #: lib/keila_web/templates/segment/edit_live.html.heex:14
-#: lib/keila_web/templates/sender/delete.html.heex:35
+#: lib/keila_web/templates/sender/delete.html.heex:39
 #: lib/keila_web/templates/sender/edit.html.heex:18
 #: lib/keila_web/templates/shared_sender_admin/delete.html.heex:40
 #: lib/keila_web/templates/shared_sender_admin/edit.html.heex:18
@@ -405,11 +405,11 @@ msgstr ""
 #: lib/keila_web/templates/contact/edit.html.heex:30
 #: lib/keila_web/templates/form/delete.html.heex:37
 #: lib/keila_web/templates/form/edit_live.html.heex:22
-#: lib/keila_web/templates/project/delete.html.heex:40
+#: lib/keila_web/templates/project/delete.html.heex:44
 #: lib/keila_web/templates/project/edit.html.heex:21
 #: lib/keila_web/templates/segment/delete.html.heex:37
 #: lib/keila_web/templates/segment/edit_live.html.heex:24
-#: lib/keila_web/templates/sender/delete.html.heex:38
+#: lib/keila_web/templates/sender/delete.html.heex:42
 #: lib/keila_web/templates/sender/edit.html.heex:26
 #: lib/keila_web/templates/shared_sender_admin/delete.html.heex:43
 #: lib/keila_web/templates/shared_sender_admin/edit.html.heex:26
@@ -451,7 +451,7 @@ msgstr ""
 msgid "Delete Sender %{sender}?"
 msgstr ""
 
-#: lib/keila_web/templates/sender/delete.html.heex:25
+#: lib/keila_web/templates/sender/delete.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Type in the sender name to confirm its deletion:"
 msgstr ""
@@ -491,7 +491,7 @@ msgstr ""
 msgid "Deleting a project cannot be undone."
 msgstr ""
 
-#: lib/keila_web/templates/project/delete.html.heex:24
+#: lib/keila_web/templates/project/delete.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "Type in the project name to confirm its deletion:"
 msgstr ""
@@ -534,11 +534,6 @@ msgstr ""
 #: lib/keila_web/templates/user_admin/delete.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Do you really want to delete the following users? This will also delete their projects and contacts."
-msgstr ""
-
-#: lib/keila_web/templates/contact/edit.html.heex:71
-#, elixir-autogen, elixir-format
-msgid "Contact Name"
 msgstr ""
 
 #: lib/keila_web/templates/contact/edit.html.heex:79
@@ -638,6 +633,7 @@ msgstr ""
 #: lib/keila_web/live/segment_edit_live.ex:9
 #: lib/keila_web/templates/contact/_list.html.heex:32
 #: lib/keila_web/templates/contact/delete.html.heex:25
+#: lib/keila_web/templates/contact/edit.html.heex:71
 #: lib/keila_web/templates/form/edit_live.html.heex:159
 #: lib/keila_web/templates/segment/edit_live.html.heex:180
 #, elixir-autogen, elixir-format
@@ -1455,11 +1451,6 @@ msgstr ""
 msgid "Your subscription is currently suspended. Please update your payment method to continue using Keila."
 msgstr ""
 
-#: lib/keila_web/views/template_view.ex:95
-#, elixir-autogen, elixir-format
-msgid "bold"
-msgstr ""
-
 #: lib/keila_web/templates/sender/edit.html.heex:79
 #, elixir-autogen, elixir-format
 msgid "hello@example.org"
@@ -1468,16 +1459,6 @@ msgstr ""
 #: lib/keila_web/views/template_view.ex:111
 #, elixir-autogen, elixir-format
 msgid "italic"
-msgstr ""
-
-#: lib/keila_web/views/template_view.ex:96
-#, elixir-autogen, elixir-format
-msgid "light"
-msgstr ""
-
-#: lib/keila_web/views/template_view.ex:142
-#, elixir-autogen, elixir-format
-msgid "opacity-light"
 msgstr ""
 
 #: lib/keila_web/templates/sender/_smtp_config.html.heex:5
@@ -1495,7 +1476,6 @@ msgstr ""
 msgid "none"
 msgstr ""
 
-#: lib/keila_web/views/template_view.ex:94
 #: lib/keila_web/views/template_view.ex:110
 #, elixir-autogen, elixir-format
 msgid "normal"
@@ -1566,7 +1546,7 @@ msgstr ""
 msgid "Before you can send any emails, you need to create a *sender*.\n\nIn the sender settings, you specify the email address\nand the name  from which you send your emails.\n"
 msgstr ""
 
-#: lib/keila_web/templates/layout/_footer.html.heex:28
+#: lib/keila_web/templates/layout/_footer.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Community"
 msgstr ""
@@ -1576,7 +1556,7 @@ msgstr ""
 msgid "Docs"
 msgstr ""
 
-#: lib/keila_web/templates/layout/_footer.html.heex:40
+#: lib/keila_web/templates/layout/_footer.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "Newsletter"
 msgstr ""
@@ -1586,12 +1566,12 @@ msgstr ""
 msgid "Open Source Newsletters"
 msgstr ""
 
-#: lib/keila_web/templates/layout/_footer.html.heex:18
+#: lib/keila_web/templates/layout/_footer.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "Usage"
 msgstr ""
 
-#: lib/keila_web/templates/layout/_footer.html.heex:22
+#: lib/keila_web/templates/layout/_footer.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Self-hosting"
 msgstr ""
@@ -1996,7 +1976,7 @@ msgstr ""
 msgid "Create your first API key"
 msgstr ""
 
-#: lib/keila_web/templates/api_key/index.html.heex:40
+#: lib/keila_web/templates/api_key/index.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Important: The private API Key is displayed only once and cannot be recovered."
 msgstr ""
@@ -2032,12 +2012,12 @@ msgstr ""
 msgid "Replace duplicates"
 msgstr ""
 
-#: lib/keila_web/templates/api_key/index.html.heex:96
+#: lib/keila_web/templates/api_key/index.html.heex:95
 #, elixir-autogen, elixir-format
 msgid "Revoke"
 msgstr ""
 
-#: lib/keila_web/templates/api_key/index.html.heex:37
+#: lib/keila_web/templates/api_key/index.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "The following is your private API Key. Use it to authorize API calls."
 msgstr ""
@@ -2203,11 +2183,6 @@ msgstr ""
 msgid "With API keys, you can use the Keila API to manage campaigns\nand contacts programmatically.\n"
 msgstr ""
 
-#: lib/keila_web/views/template_view.ex:144
-#, elixir-autogen, elixir-format
-msgid "almost opaque"
-msgstr ""
-
 #: lib/keila_web/views/template_view.ex:193
 #, elixir-autogen, elixir-format
 msgid "centered"
@@ -2233,11 +2208,6 @@ msgstr ""
 msgid "flush right"
 msgstr ""
 
-#: lib/keila_web/views/template_view.ex:140
-#, elixir-autogen, elixir-format
-msgid "invisible"
-msgstr ""
-
 #: lib/keila_web/views/template_view.ex:194
 #, elixir-autogen, elixir-format
 msgid "justified"
@@ -2248,15 +2218,9 @@ msgstr ""
 msgid "large"
 msgstr ""
 
-#: lib/keila_web/views/template_view.ex:143
 #: lib/keila_web/views/template_view.ex:176
 #, elixir-autogen, elixir-format
 msgid "medium"
-msgstr ""
-
-#: lib/keila_web/views/template_view.ex:145
-#, elixir-autogen, elixir-format
-msgid "opaque"
 msgstr ""
 
 #: lib/keila_web/views/template_view.ex:175
@@ -2269,17 +2233,12 @@ msgstr ""
 msgid "solid"
 msgstr ""
 
-#: lib/keila_web/views/template_view.ex:141
-#, elixir-autogen, elixir-format
-msgid "very light"
-msgstr ""
-
 #: lib/keila_web/templates/campaign/stats_live.html.heex:281
 #, elixir-autogen, elixir-format
 msgid "24-Hour Performance"
 msgstr ""
 
-#: lib/keila_web/templates/api_key/index.html.heex:65
+#: lib/keila_web/templates/api_key/index.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "API key copied to clipboard"
 msgstr ""
@@ -2325,7 +2284,7 @@ msgstr ""
 msgid "Click here to select an image."
 msgstr ""
 
-#: lib/keila_web/templates/api_key/index.html.heex:58
+#: lib/keila_web/templates/api_key/index.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "Copy to clipboard"
 msgstr ""
@@ -3020,4 +2979,58 @@ msgstr ""
 #: lib/keila_web/templates/account/edit.html.heex:145
 #, elixir-autogen, elixir-format
 msgid "Get started"
+msgstr ""
+
+#: lib/keila_web/views/template_view.ex:95
+#, elixir-autogen, elixir-format
+msgctxt "font"
+msgid "bold"
+msgstr ""
+
+#: lib/keila_web/views/template_view.ex:96
+#, elixir-autogen, elixir-format
+msgctxt "font"
+msgid "light"
+msgstr ""
+
+#: lib/keila_web/views/template_view.ex:94
+#, elixir-autogen, elixir-format
+msgctxt "font"
+msgid "normal"
+msgstr ""
+
+#: lib/keila_web/views/template_view.ex:144
+#, elixir-autogen, elixir-format
+msgctxt "opacity"
+msgid "almost opaque"
+msgstr ""
+
+#: lib/keila_web/views/template_view.ex:140
+#, elixir-autogen, elixir-format
+msgctxt "opacity"
+msgid "invisible"
+msgstr ""
+
+#: lib/keila_web/views/template_view.ex:142
+#, elixir-autogen, elixir-format
+msgctxt "opacity"
+msgid "light"
+msgstr ""
+
+#: lib/keila_web/views/template_view.ex:143
+#, elixir-autogen, elixir-format
+msgctxt "opacity"
+msgid "medium"
+msgstr ""
+
+#: lib/keila_web/views/template_view.ex:145
+#, elixir-autogen, elixir-format
+msgctxt "opacity"
+msgid "opaque"
+msgstr ""
+
+#: lib/keila_web/views/template_view.ex:141
+#, elixir-autogen, elixir-format
+msgctxt "opacity"
+msgid "very light"
 msgstr ""
