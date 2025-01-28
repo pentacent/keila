@@ -101,14 +101,14 @@
                   phx-click="add-field"
                   phx-value-group={group_index}
                 >
-                  <%= render_icon(:plus) %> Add AND condition
+                  <%= render_icon(:plus) %> <%= gettext("Add AND condition") %>
                 </a>
               </div>
             </div>
           <% end %>
           <div>
             <a href="#" class="button button--muted button--small mt-2" o phx-click="add-group">
-              <%= render_icon(:plus) %> Add OR condition
+              <%= render_icon(:plus) %> <%= gettext("Add OR condition") %>
             </a>
           </div>
         </div>
@@ -176,10 +176,10 @@
           </div>
           <table class="w-full text-sm">
             <tr class="text-left">
-              <th class="p-2 pl-0">Email</th>
-              <th class="p-2 hidden lg:table-cell">First name</th>
-              <th class="p-2 hidden lg:table-cell">Last name</th>
-              <th class="p-2 hidden lg:table-cell">Added</th>
+              <th class="p-2 pl-0"><%= gettext("Email") %></th>
+              <th class="p-2 hidden lg:table-cell"><%= gettext("First name") %></th>
+              <th class="p-2 hidden lg:table-cell"><%= gettext("Last name") %></th>
+              <th class="p-2 hidden lg:table-cell"><%= gettext("Added") %></th>
             </tr>
             <%= for contact <- @contacts.data do %>
               <tr>

@@ -1,5 +1,5 @@
 <div class="form-row">
-  <%= label(@form, :smtp_relay, "Server") %>
+  <%= label(@form, :smtp_relay, gettext("Server")) %>
   <%= with_validation(@form, :smtp_relay) do %>
     <%= text_input(@form, :smtp_relay,
       placeholder: gettext("mail.example.org"),
@@ -8,7 +8,7 @@
   <% end %>
 </div>
 <div class="form-row">
-  <%= label(@form, :smtp_relay, "Username") %>
+  <%= label(@form, :smtp_username, gettext("Username")) %>
   <%= with_validation(@form, :smtp_username) do %>
     <%= text_input(@form, :smtp_username, class: "text-black") %>
   <% end %>
@@ -44,7 +44,7 @@
 <% end %>
 
 <div class="form-row">
-  <%= label(@form, :smtp_password, "Connection security") %>
+  <%= label(@form, :smtp_tls_mode, gettext("Connection security")) %>
   <%= with_validation(@form, :smtp_tls_mode) do %>
     <%= label(@form, :smtp_tls_mode) do %>
       <%= select(
@@ -64,7 +64,7 @@
 </div>
 
 <div class="form-row">
-  <%= label(@form, :smtp_password, "Port") %>
+  <%= label(@form, :smtp_port, gettext("Port")) %>
   <%= with_validation(@form, :smtp_port) do %>
     <%= number_input(@form, :smtp_port, class: "text-black", "x-ref": "smtpPort") %>
   <% end %>
