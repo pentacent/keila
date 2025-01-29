@@ -43,3 +43,7 @@ npm-debug.log
 ops/k8s
 *.env
 .tool-versions
+
+# Jetbrains IDE
+.idea
+*.iml

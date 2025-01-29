@@ -203,7 +203,7 @@
               ) %>
             </div>
             <div class="flex flex-col" x-show="cast">
-              <%= label(fs, :key, "Data Key") %>
+              <%= label(fs, :key, gettext("Data Key")) %>
               <%= with_validation(fs, :key) do %>
                 <%= text_input(fs, :key, class: "text-black", required: true) %>
               <% end %>
@@ -221,7 +221,7 @@
           <% end %>
 
           <div class="flex flex-col" x-show="cast">
-            <%= label(fs, :label, "Label") %>
+            <%= label(fs, :label, gettext("Label")) %>
             <%= with_validation(fs, :label) do %>
               <%= text_input(fs, :label, class: "text-black") %>
             <% end %>
@@ -230,14 +230,14 @@
           <%= case Ecto.Changeset.get_field(fs.source, :type) do %>
             <% type when type in [:string, :email, nil] -> %>
               <div class="flex flex-col" x-show="cast">
-                <%= label(fs, :placeholder, "Placeholder") %>
+                <%= label(fs, :placeholder, gettext("Placeholder")) %>
                 <%= with_validation(fs, :placeholder) do %>
                   <%= text_input(fs, :placeholder, class: "text-black") %>
                 <% end %>
               </div>
             <% type when type in [:enum, :tags] -> %>
               <div class="flex flex-col mt-2" x-show="cast">
-                <%= label(fs, :allowed_values, "Options") %>
+                <%= label(fs, :allowed_values, gettext("Options")) %>
                 <table class="w-full">
                   <tr>
                     <th>Value</th>
@@ -380,7 +380,7 @@
 
             <template x-if="enable">
               <div class="form-row">
-                <%= label(fs, :double_opt_in_subject, "Custom email subject") %>
+                <%= label(fs, :double_opt_in_subject, gettext("Custom email subject")) %>
                 <%= with_validation(fs, :double_opt_in_subject) do %>
                   <%= text_input(fs, :double_opt_in_subject,
                     class: "text-black",
@@ -392,7 +392,7 @@
 
             <template x-if="enable">
               <div class="form-row">
-                <%= label(fs, :double_opt_in_markdown_body, "Custom email text") %>
+                <%= label(fs, :double_opt_in_markdown_body, gettext("Custom email text")) %>
                 <div class="text-xs">
                   <%= gettext_md("""
                     You may use Liquid and Markdown in the email body.
@@ -475,49 +475,49 @@
       </h2>
       <%= inputs_for(f, :settings, [skip_hidden: true], fn fs -> %>
         <div class="flex flex-col">
-          <%= label(fs, :body_bg_color, "Body background") %>
+          <%= label(fs, :body_bg_color, gettext("Body background")) %>
           <%= with_validation(fs, :body_bg_color) do %>
             <%= text_input(fs, :body_bg_color, class: "text-black", type: "color") %>
           <% end %>
         </div>
         <div class="flex flex-col">
-          <%= label(fs, :form_bg_color, "Form background") %>
+          <%= label(fs, :form_bg_color, gettext("Form background")) %>
           <%= with_validation(fs, :form_bg_color) do %>
             <%= text_input(fs, :form_bg_color, class: "text-black", type: "color") %>
           <% end %>
         </div>
         <div class="flex flex-col">
-          <%= label(fs, :text_color, "Form text color") %>
+          <%= label(fs, :text_color, gettext("Form text color")) %>
           <%= with_validation(fs, :text_color) do %>
             <%= text_input(fs, :text_color, class: "text-black", type: "color") %>
           <% end %>
         </div>
         <div class="flex flex-col">
-          <%= label(fs, :input_bg_color, "Input background") %>
+          <%= label(fs, :input_bg_color, gettext("Input background")) %>
           <%= with_validation(fs, :input_bg_color) do %>
             <%= text_input(fs, :input_bg_color, class: "text-black", type: "color") %>
           <% end %>
         </div>
         <div class="flex flex-col">
-          <%= label(fs, :input_text_color, "Input text color") %>
+          <%= label(fs, :input_text_color, gettext("Input text color")) %>
           <%= with_validation(fs, :input_text_color) do %>
             <%= text_input(fs, :input_text_color, class: "text-black", type: "color") %>
           <% end %>
         </div>
         <div class="flex flex-col">
-          <%= label(fs, :input_border_color, "Input border color") %>
+          <%= label(fs, :input_border_color, gettext("Input border color")) %>
           <%= with_validation(fs, :input_border_color) do %>
             <%= text_input(fs, :input_border_color, class: "text-black", type: "color") %>
           <% end %>
         </div>
         <div class="flex flex-col">
-          <%= label(fs, :submit_bg_color, "Submit button background") %>
+          <%= label(fs, :submit_bg_color, gettext("Submit button background")) %>
           <%= with_validation(fs, :submit_bg_color) do %>
             <%= text_input(fs, :submit_bg_color, class: "text-black", type: "color") %>
           <% end %>
         </div>
         <div class="flex flex-col">
-          <%= label(fs, :submit_text_color, "Submit text color") %>
+          <%= label(fs, :submit_text_color, gettext("Submit text color")) %>
           <%= with_validation(fs, :submit_text_color) do %>
             <%= text_input(fs, :submit_text_color, class: "text-black", type: "color") %>
           <% end %>
@@ -557,7 +557,7 @@
       </button>
     </div>
     <%= if @form_preview.settings.csrf_disabled do %>
-      <h2 class="mt-4">Form HTML</h2>
+      <h2 class="mt-4"><%= gettext("Form HTML") %></h2>
       <div class="flex items-start gap-4">
         <textarea class="w-full bg-gray-800 text-sm" rows="5" x-ref="form-html"><%= @embed %></textarea>
         <button

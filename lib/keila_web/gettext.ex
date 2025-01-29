@@ -38,7 +38,8 @@ defmodule KeilaWeb.Gettext do
   def available_locales() do
     [
       {"English", "en"},
-      {"Deutsch", "de"}
+      {"Deutsch", "de"},
+      {"Français", "fr"}
     ]
   end
 end
