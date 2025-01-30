@@ -68,6 +68,7 @@
         x-on:x-confirm="$dispatch('update-image', image)"
         x-on:x-cancel="$dispatch('update-image', { cancel: true} )"
         x-on:x-file-selected.stop="image.src = $event.detail.url; imageTab = 'url'"
+        x-on:x-file-removed.stop="if (image.src == $event.detail.src) image = {}"
         @keydown.enter.prevent="$dispatch('x-confirm')"
         @keydown.esc.prevent="$dispatch('x-cancel')"
         @click.away="$dispatch('x-cancel')"
@@ -94,8 +95,9 @@
           <div class="tab-content" data-tab="uploads" x-show="imageTab === 'uploads'">
             <.live_component
               module={KeilaWeb.FileManagerLiveComponent}
-              id="foo"
+              id="file-manager"
               current_project_id={@current_project.id}
+              current_campaign_id={@campaign.id}
             />
           </div>
           <div class="tab-content" data-tab="url" x-show="imageTab === 'url'">

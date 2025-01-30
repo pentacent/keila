@@ -67,7 +67,7 @@ html {
   }
 
   &.button--small {
-    @apply py-1 px-1 text-sm;
+    @apply py-1 px-1 text-sm min-h-7;
 
     svg {
       @apply w-4;

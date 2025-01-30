@@ -41,6 +41,7 @@ defmodule KeilaWeb.FileManagerLiveComponent do
 
   def handle_event("delete_upload", %{"id" => file_uuid}, socket) do
     project_id = socket.assigns.current_project_id
+    campaign_id = socket.assigns[:current_campaign_id]
 
     case Keila.Files.get_project_file(project_id, file_uuid) do
       nil ->
@@ -48,18 +49,19 @@ defmodule KeilaWeb.FileManagerLiveComponent do
 
       file ->
         file_url = Keila.Files.get_file_url(file.uuid)
-        using_campaigns = Keila.Mailings.search_in_project_campaigns(project_id, file_url)
 
-        case using_campaigns do
+        campaigns =
+          Keila.Mailings.search_in_project_campaigns(project_id, file_url)
+          |> Enum.filter(fn campaign -> is_nil(campaign_id) or campaign.id != campaign_id end)
+
+        case campaigns do
           [] ->
             case Keila.Files.delete_file(file.uuid) do
               :ok ->
-                socket =
-                  socket
-                  |> push_event("remove_file", %{id: "file-container-#{file_uuid}"})
-                  |> put_files()
-
-                {:noreply, socket}
+                {:noreply,
+                 socket
+                 |> push_event("remove_file", %{id: file_uuid, src: file_url})
+                 |> put_files()}
 
               {:error, _} ->
                 {:noreply, socket}
@@ -75,7 +77,8 @@ defmodule KeilaWeb.FileManagerLiveComponent do
                 }
               end)
 
-            {:noreply, push_event(socket, "file_in_use", %{campaigns: campaign_details})}
+            {:noreply,
+             push_event(socket, "file_in_use", %{campaigns: campaign_details, id: file_uuid})}
         end
     end
   end

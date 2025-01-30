@@ -51,68 +51,33 @@
     <div
       id="file-container"
       phx-hook="FileManager"
-      class="overflow-y-scroll max-h-96 grid grid-gap-4 grid-cols-2"
+      class="overflow-y-scroll overflow-x-visible max-h-96 grid gap-4 grid-cols-2"
     >
       <%= for {file, url} <- Enum.zip(@files.data, @file_urls) do %>
         <div
           id={"file-container-#{file.uuid}"}
-          class="max-w-[10rem]"
+          class="px-2"
           phx-click={JS.dispatch("x-file-selected", detail: %{url: url, id: file.uuid})}
           x-data="{ showDelete: false, showUsageWarning: false, campaigns: [] }"
-          @x-file-in-use.window="showUsageWarning = true; campaigns = $event.detail.campaigns"
         >
-          > <img id={"file-#{file.uuid}"} src={url} alt="" class="h-3/4 w-full object-cover" />
-          <div class="flex justify-between text-xs">
-            <p class="mt-1"><%= file.filename %></p>
-            <button
-              x-show="!showDelete"
-              @click.stop="showDelete = true"
-              class="button button--text button--small"
-            >
+          <img id={"file-#{file.uuid}"} src={url} alt="" class="h-32 w-full object-cover" />
+          <div class="flex items-center justify-between text-xs mt-1 relative">
+            <p><%= file.filename %></p>
+            <button @click.stop="showDelete = true" class="button button--text button--small">
               <%= render_icon(:trash) %>
+              <span class="sr-only">title={gettext("Delete")}</span>
             </button>
             <button
               x-show="showDelete"
-              @click.away="showDelete = false"
+              @click.away.prevent.stop="showDelete = false"
               phx-click="delete_upload"
               phx-value-id={file.uuid}
+              phx-value-campaign-id={}
               phx-target={@myself}
-              class="button button--small bg-red-600 text-white"
+              class="button button--small button--warn l-0 w-full absolute"
             >
               <%= gettext("Click to delete") %>
             </button>
-          </div>
-          <div
-            x-show="showUsageWarning"
-            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
-            @click.away="showUsageWarning = false"
-          >
-            <div class="bg-gray-900 p-4 rounded-lg max-w-lg">
-              <h3 class="text-lg text-red-600 font-bold mb-4">
-                <%= gettext("Warning! Image in use in the following campaigns:") %>
-              </h3>
-              <template x-for="campaign in campaigns">
-                <div class="flex justify-between items-center mb-2">
-                  <span x-text="campaign.subject"></span>
-                  <span
-                    x-text="campaign.status"
-                    :class="{
-              'text-green-700': campaign.status === 'draft',
-              'text-red-600': campaign.status === 'sent'
-            }"
-                  >
-                  </span>
-                </div>
-              </template>
-              <div class="flex justify-end gap-2 mt-4">
-                <button
-                  @click="showUsageWarning = false; showDelete = false"
-                  class="button button--text"
-                >
-                  <%= gettext("Cancel") %>
-                </button>
-              </div>
-            </div>
           </div>
         </div>
       <% end %>
@@ -122,4 +87,38 @@
       <%= pagination_nav(@files, phx_click: "change-page", phx_target: @myself) %>
     </div>
   <% end %>
+
+  <div
+    x-data="{show: false, id: null, campaigns: []}"
+    x-show="show"
+    class="fixed inset-0 bg-black/90 flex items-center justify-center"
+    @x-file-in-use.window="show = true; campaigns = $event.detail.campaigns"
+  >
+    <div class="bg-gray-900 p-4 rounded-lg max-w-lg" @click.away="show = false; id = null">
+      <div x-ref="i18n" data-draft={gettext("draft")} data-sent={gettext("sent")}></div>
+      <h3 class="text-lg font-bold mb-4">
+        <%= gettext(
+          "This file can’t be deleted because it’s already in use in the following campaigns:"
+        ) %>
+      </h3>
+      <template x-for="campaign in campaigns">
+        <div class="flex justify-between items-center mb-2">
+          <span x-text="campaign.subject"></span>
+          <span
+            x-text="$refs.i18n.dataset[campaign.status]"
+            :class="{
+              'text-green-700': campaign.status === 'draft',
+              'text-red-600': campaign.status === 'sent'
+              }"
+          >
+          </span>
+        </div>
+      </template>
+      <div class="flex justify-end gap-8 mt-4">
+        <button @click="id = null; show = false" class="button button--cta">
+          <%= gettext("Ok") %>
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
