@@ -219,7 +219,7 @@
         <br />
         <div>
           <h3 class="font-bold flex gap-2 flex-row">
-            How does this work?
+            <%= gettext("How does this work?") %>
           </h3>
 
           <div class="markdown">
@@ -230,14 +230,14 @@
           </div>
           <br />
           <div>
-            You can get started by trying one of these examples:
+            <%= gettext("You can get started by trying one of these examples:") %>
             <ul>
               <li>
                 <button
                   class="button button--text button-small"
                   @click.stop="liquid.text = '{{ contact.first_name }}'"
                 >
-                  <%= render_icon(:cursor_click) %> Contact first name
+                  <%= render_icon(:cursor_click) %> <%= gettext("Contact first name") %>
                 </button>
               </li>
               <li>
@@ -245,7 +245,7 @@
                   class="button button--text button-small"
                   @click.stop="liquid.text = '{{ contact.email }}'"
                 >
-                  <%= render_icon(:cursor_click) %> Contact email address
+                  <%= render_icon(:cursor_click) %> <%= gettext("Contact email address") %>
                 </button>
               </li>
               <li>
@@ -253,7 +253,7 @@
                   class="button button--text button-small"
                   @click.stop="liquid.text = 'Hello {{ contact.first_name | default: &quot;there&quot; }}!'"
                 >
-                  <%= render_icon(:cursor_click) %> Greeting with first name
+                  <%= render_icon(:cursor_click) %> <%= gettext("Greeting with first name") %>
                 </button>
               </li>
             </ul>

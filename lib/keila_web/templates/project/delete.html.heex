@@ -21,7 +21,11 @@
       class="mt-8 max-w-md flex flex-col gap-4"
     >
       <div class="form-row">
-        <%= label(f, :delete_confirmation, "Type in the project name to confirm its deletion:") %>
+        <%= label(
+          f,
+          :delete_confirmation,
+          gettext("Type in the project name to confirm its deletion:")
+        ) %>
         <%= with_validation(f, :delete_confirmation) do %>
           <%= text_input(f, :delete_confirmation,
             placeholder: @current_project.name,

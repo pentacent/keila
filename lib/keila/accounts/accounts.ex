@@ -59,6 +59,18 @@ defmodule Keila.Accounts do
   end
 
   @doc """
+  Sets the `parent_id` of the Account with the specified `account_id`
+  """
+  @spec set_parent_account(account_id :: Account.id(), parent_id :: Account.id()) ::
+          Account.t()
+  def set_parent_account(account_id, parent_id) do
+    account_id
+    |> get_account()
+    |> change(%{parent_id: parent_id})
+    |> Repo.update!()
+  end
+
+  @doc """
   Returns `Account` associated with the `Project` specified by `project_id`,
   or `nil` if no `Account` is associated with it.
   """
@@ -165,14 +177,24 @@ defmodule Keila.Accounts do
   """
   def get_available_credits(account_id) do
     if credits_enabled?() do
-      from(c in CreditTransaction)
-      |> where([c], c.account_id == ^account_id and c.expires_at >= fragment("NOW()"))
+      credits_for_account(account_id)
+      |> where([c], c.expires_at >= fragment("NOW()"))
       |> select([c], sum(c.amount))
       |> Repo.one()
       |> maybe_nil_to_zero()
     else
       0
     end
+  end
+
+  defp credits_for_account(account_id) do
+    from(c in CreditTransaction,
+      where:
+        c.account_id == ^account_id or
+          c.account_id in subquery(
+            from a in Account, where: a.id == ^account_id, select: a.parent_id
+          )
+    )
   end
 
   @doc """
@@ -189,8 +211,8 @@ defmodule Keila.Accounts do
   """
   def get_total_credits(account_id) do
     if credits_enabled?() do
-      from(c in CreditTransaction)
-      |> where([c], c.account_id == ^account_id and c.expires_at >= fragment("NOW()"))
+      credits_for_account(account_id)
+      |> where([c], c.expires_at >= fragment("NOW()"))
       |> where([c], c.amount > 0)
       |> select([c], sum(c.amount))
       |> Repo.one()
@@ -253,8 +275,8 @@ defmodule Keila.Accounts do
     if credits_enabled?() do
       now = now()
 
-      from(c in CreditTransaction)
-      |> where([c], c.account_id == ^account_id and c.expires_at >= ^now)
+      credits_for_account(account_id)
+      |> where([c], c.expires_at >= ^now)
       |> order_by([c], c.expires_at)
       |> group_by([c], c.expires_at)
       |> select([c], {sum(c.amount), c.expires_at})

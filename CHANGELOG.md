@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Added
+
+- French translation 
+
 ## Version 0.16.0
 
 🔄 Automatic Update Notifications

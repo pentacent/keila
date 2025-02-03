@@ -1,5 +1,5 @@
 <div class="form-row">
-  <%= label(@form, :ses_region, "Region") %>
+  <%= label(@form, :ses_region, gettext("Region")) %>
   <%= with_validation(@form, :ses_region) do %>
     <%= select(@form, :ses_region, %{
       gettext("US East (Ohio)") => "us-east-2",

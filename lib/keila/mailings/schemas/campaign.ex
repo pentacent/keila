@@ -102,8 +102,11 @@ defmodule Keila.Mailings.Campaign do
     {offset, threshold} = min_campaign_schedule_offset_and_threshold()
 
     case DateTime.compare(threshold, scheduled_for) do
-      :gt -> [scheduled_for: "must be at least #{offset} seconds in the future"]
-      _ -> []
+      :gt ->
+        [scheduled_for: {"must be at least %{offset} seconds in the future", [offset: offset]}]
+
+      _ ->
+        []
     end
   end
 
