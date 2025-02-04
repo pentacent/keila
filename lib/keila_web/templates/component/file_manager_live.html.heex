@@ -62,7 +62,7 @@
         >
           <img id={"file-#{file.uuid}"} src={url} alt="" class="h-32 w-full object-cover" />
           <div class="flex items-center justify-between text-xs mt-1 relative">
-            <p><%= file.filename %></p>
+            <p class="break-all"><%= file.filename %></p>
             <button @click.stop="showDelete = true" class="button button--text button--small">
               <%= render_icon(:trash) %>
               <span class="sr-only">title={gettext("Delete")}</span>
