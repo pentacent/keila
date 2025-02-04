@@ -2,9 +2,22 @@
 
 ## Unreleased
 
-### Added
 
-- French translation 
+## Version 0.16.1
+
+🇫🇷♻️ Bonjour File Deletions!
+
+## Added
+
+- French translation (thanks @marc-bouvier for the translation and improving the translatability of Keila for other languages)
+- Deletion of images in the upload interface (thanks @jrowah for implementing)
+
+## Fixed
+
+- The campaign update API endpoint now properly merges provided campaign settings with the existing settings
+- Non-markdown default signature for plain text campaigns
+- API Keys with no defined name no longer output the entire data structure upon creation (thanks @danilax86 for fixing)
+
 
 ## Version 0.16.0
 
