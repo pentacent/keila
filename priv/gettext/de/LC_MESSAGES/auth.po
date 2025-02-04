@@ -142,7 +142,7 @@ msgid "Please activate your account first."
 msgstr "Bitte aktiviere erst noch deinen Account"
 
 #: lib/keila_web/controllers/auth_controller.ex:42
-#: lib/keila_web/controllers/public_form_controller.ex:59
+#: lib/keila_web/controllers/public_form_controller.ex:73
 #, elixir-autogen, elixir-format
 msgid "Please complete the captcha."
 msgstr "Bitte löse das Captcha."
