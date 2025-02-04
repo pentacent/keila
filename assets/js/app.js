@@ -19,12 +19,14 @@ import { CampaignSettingsDialogHook } from "./hooks/campaign-settings-dialog"
 import CampaignStatsChartHook from "./hooks/campaign-stats-chart"
 import * as ContactsTable from "./hooks/contacts-table"
 import * as DateTimeHooks from "./hooks/date-time"
+import { FileManager } from "./hooks/file_manager"
 import { RememberUnsaved } from "./hooks/remember-unsaved"
 
 const Hooks = {
   ...DateTimeHooks,
   ...CampaignEditLiveHooks,
   ...ContactsTable,
+  FileManager,
   RememberUnsaved,
   CampaignSettingsDialogHook,
   CampaignStatsChartHook
