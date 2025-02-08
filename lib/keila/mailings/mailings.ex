@@ -386,6 +386,31 @@ defmodule Keila.Mailings do
     end
   end
 
+  @doc """
+  Searches for campaigns in a given project that contain the given search string.
+
+  Returns a list of campaigns that match the search string or an empty list if no campaigns match.
+
+  The search string is matched against the `text_body`, `html_body`, `mjml_body`, and `json_body` fields.
+  """
+  @spec search_in_project_campaigns(Project.id(), String.t()) :: [Campaign.t()]
+  def search_in_project_campaigns(project_id, search_string)
+      when is_binary(project_id) or is_integer(project_id) do
+    from(c in Campaign,
+      where: c.project_id == ^project_id,
+      where:
+        fragment(
+          "text_body LIKE ? OR html_body LIKE ? OR mjml_body LIKE ? OR json_body::text LIKE ?",
+          ^"%#{search_string}%",
+          ^"%#{search_string}%",
+          ^"%#{search_string}%",
+          ^"%#{search_string}%"
+        ),
+      order_by: [desc: :updated_at]
+    )
+    |> Repo.all()
+  end
+
   defp get_and_lock_campaign(id) when is_id(id) do
     from(c in Campaign, where: c.id == ^id, lock: "FOR NO KEY UPDATE", preload: :segment)
     |> Repo.one()

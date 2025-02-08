@@ -132,6 +132,17 @@ defmodule Keila.Factory do
     }
   end
 
+  defp do_build(:file) do
+    %Keila.Files.File{
+      uuid: Ecto.UUID.generate(),
+      filename: "test/keila/files/keila.jpg",
+      type: "image/jpeg",
+      size: 1234,
+      adapter: "local",
+      project_id: build(:project).id
+    }
+  end
+
   @doc """
   Builds a struct with optional attributes
   """

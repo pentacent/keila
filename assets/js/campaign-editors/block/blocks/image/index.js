@@ -106,13 +106,14 @@ export default class Image {
   }
 
   openDialog() {
-    document.querySelector("[data-dialog-for=image]").dispatchEvent(
-      new CustomEvent("x-show", { detail: this.data.image })
-    )
+    document
+      .querySelector("[data-dialog-for=image]")
+      .dispatchEvent(new CustomEvent("x-show", { detail: this.data.image }))
+
     window.addEventListener("update-image", e => {
       const { src, alt, title, id } = e.detail
       const image = { src, alt, title, id }
-      if (!e.detail.cancel && image.src) {
+      if (!e.detail.cancel) {
         this.data.image = image
         this.drawView()
       }
