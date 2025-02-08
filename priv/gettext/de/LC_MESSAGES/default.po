@@ -2853,34 +2853,34 @@ msgstr ""
 
 #: lib/keila_web/templates/project/edit.html.heex:45
 #: lib/keila_web/templates/project/new.html.heex:23
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Project name"
 msgstr "Projektname"
 
 #: lib/keila_web/templates/sender/edit.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Sender name"
-msgstr ""
+msgstr "Sender-Name"
 
 #: lib/keila_web/templates/sender/edit.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "From address"
-msgstr ""
+msgstr "Absender-Adresse"
 
 #: lib/keila_web/templates/sender/edit.html.heex:70
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "From name"
-msgstr "Vorname"
+msgstr "Absender-Name"
 
 #: lib/keila_web/templates/sender/edit.html.heex:76
 #, elixir-autogen, elixir-format
 msgid "Reply-to address"
-msgstr ""
+msgstr "Antwort-Adresse"
 
 #: lib/keila_web/templates/sender/edit.html.heex:85
 #, elixir-autogen, elixir-format
 msgid "Reply-to name"
-msgstr ""
+msgstr "Antwort-Name"
 
 #: lib/keila_web/templates/sender/_smtp_config.html.heex:2
 #, elixir-autogen, elixir-format
@@ -2918,9 +2918,9 @@ msgid "Rate limit per hour"
 msgstr ""
 
 #: lib/keila_web/templates/sender/_mailgun_config.html.heex:9
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Base URL"
-msgstr "Bild-URL"
+msgstr "Basis-URL"
 
 #: lib/keila_web/templates/sender/_mailgun_config.html.heex:2
 #, elixir-autogen, elixir-format
@@ -3056,7 +3056,7 @@ msgstr ""
 #: lib/keila_web/templates/account/edit.html.heex:145
 #, elixir-autogen, elixir-format
 msgid "Get started"
-msgstr ""
+msgstr "Los geht’s"
 
 #: lib/keila_web/views/template_view.ex:95
 #, elixir-autogen, elixir-format
