@@ -81,9 +81,10 @@ defmodule Keila.Mailings.SenderAdapters.Shared.SES do
     ExAws.SES.delete_custom_verification_email_template(template_name)
     |> ExAws.request(aws_config)
 
+    from_email = system_from_email()
     ExAws.SES.create_custom_verification_email_template(
       template_name,
-      "hello@keila.io",
+      from_email,
       subject,
       content,
       success_url,
@@ -149,5 +150,9 @@ defmodule Keila.Mailings.SenderAdapters.Shared.SES do
     |> ExAws.request!(aws_config)
 
     :ok
+  end
+
+  defp system_from_email() do
+    Application.get_env(:keila, Keila.Auth.Emails) |> Keyword.fetch!(:from_email)
   end
 end
