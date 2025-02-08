@@ -278,11 +278,11 @@ defmodule Keila.Accounts do
       credits_for_account(account_id)
       |> where([c], c.expires_at >= ^now)
       |> order_by([c], c.expires_at)
-      |> group_by([c], c.expires_at)
-      |> select([c], {sum(c.amount), c.expires_at})
+      |> group_by([c], [c.account_id, c.expires_at])
+      |> select([c], {c.account_id, sum(c.amount), c.expires_at})
       |> Repo.all()
       |> build_transactions(amount)
-      |> maybe_insert_transactions(account_id)
+      |> maybe_insert_transactions()
     else
       :ok
     end
@@ -294,36 +294,47 @@ defmodule Keila.Accounts do
     end)
   end
 
-  defp do_build_transactions({available_amount, _}, acc) when available_amount <= 0 do
+  defp do_build_transactions({_, available_amount, _}, acc) when available_amount == 0 do
     {:cont, acc}
   end
 
-  defp do_build_transactions({available_amount, expires_at}, {remaining_amount, transactions})
+  defp do_build_transactions(
+         {account_id, available_amount, expires_at},
+         {remaining_amount, transactions}
+       )
        when available_amount < remaining_amount do
-    transaction = %{expires_at: expires_at, amount: -available_amount, inserted_at: now()}
+    transaction = build_transaction(account_id, expires_at, -available_amount)
     {:cont, {remaining_amount - available_amount, [transaction | transactions]}}
   end
 
-  defp do_build_transactions({available_amount, expires_at}, {remaining_amount, transactions})
+  defp do_build_transactions(
+         {account_id, available_amount, expires_at},
+         {remaining_amount, transactions}
+       )
        when available_amount >= remaining_amount do
-    transaction = %{expires_at: expires_at, amount: -remaining_amount, inserted_at: now()}
+    transaction = build_transaction(account_id, expires_at, -remaining_amount)
     {:halt, {0, [transaction | transactions]}}
+  end
+
+  defp build_transaction(account_id, expires_at, amount) do
+    %{
+      account_id: account_id,
+      expires_at: expires_at,
+      amount: amount,
+      inserted_at: now()
+    }
   end
 
   defp now() do
     DateTime.utc_now() |> DateTime.truncate(:second)
   end
 
-  defp maybe_insert_transactions({0, transactions}, account_id) do
-    entries =
-      transactions
-      |> Enum.map(&Map.put(&1, :account_id, account_id))
-
-    Repo.insert_all(CreditTransaction, entries)
+  defp maybe_insert_transactions({0, transactions}) do
+    Repo.insert_all(CreditTransaction, transactions)
     :ok
   end
 
-  defp maybe_insert_transactions(_, _), do: :error
+  defp maybe_insert_transactions(_), do: :error
 
   defp maybe_nil_to_zero(nil), do: 0
   defp maybe_nil_to_zero(int), do: int

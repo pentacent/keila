@@ -65,7 +65,23 @@ defmodule Keila.AccountsTest.Credits do
     assert Accounts.get_available_credits(child_account.id) == 10
     assert :ok = Accounts.consume_credits(child_account.id, 10)
 
+    assert Accounts.get_available_credits(account.id) == 0
     assert Accounts.get_available_credits(child_account.id) == 0
+  end
+
+  @tag :accounts
+  test "additional credits for child account can exist independently of parent account", %{
+    account: account,
+    child_account: child_account
+  } do
+    Accounts.add_credits(account.id, 10, tomorrow())
+    Accounts.add_credits(child_account.id, 10, tomorrow())
+
+    assert Accounts.get_available_credits(account.id) == 10
+    assert Accounts.get_available_credits(child_account.id) == 20
+    assert :ok = Accounts.consume_credits(child_account.id, 20)
+
+    assert Accounts.get_available_credits(account.id) == 0
     assert Accounts.get_available_credits(child_account.id) == 0
   end
 
