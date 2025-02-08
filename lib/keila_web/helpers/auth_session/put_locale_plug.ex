@@ -15,11 +15,13 @@ defmodule KeilaWeb.PutLocalePlug do
   @spec call(Plug.Conn.t(), list()) :: Plug.Conn.t()
   def call(conn, _opts) do
     case conn.assigns[:current_user] do
-      %User{locale: locale} when is_binary(locale) -> put_locale(locale)
-      _other -> put_locale_from_headers(conn)
-    end
+      %User{locale: locale} when is_binary(locale) ->
+        put_locale(locale)
+        conn
 
-    conn
+      _other ->
+        put_locale_from_session(conn)
+    end
   end
 
   defp put_locale(locale) do
@@ -33,18 +35,23 @@ defmodule KeilaWeb.PutLocalePlug do
     end
   end
 
-  defp put_locale_from_headers(conn) do
-    accepted_locales = get_accepted_locales(conn)
+  defp put_locale_from_session(conn) do
+    param_locale = conn.query_params["lang"]
+    session_locale = Plug.Conn.get_session(conn, :locale)
+    header_locales = get_header_locales(conn)
 
-    # We’re not actually trying to find this value, but this is the easiest
-    # way to run the `put_locale` side effect until we’ve found a locale that
-    # is supported
-    Enum.find(accepted_locales, fn locale ->
-      put_locale(locale) == :ok
-    end)
+    locale =
+      [param_locale, session_locale | header_locales]
+      |> Enum.find(fn locale -> put_locale(locale) == :ok end)
+
+    if not is_nil(param_locale) and param_locale == locale do
+      Plug.Conn.put_session(conn, :locale, locale)
+    else
+      conn
+    end
   end
 
-  defp get_accepted_locales(conn) do
+  defp get_header_locales(conn) do
     conn
     |> Plug.Conn.get_req_header("accept-language")
     |> Enum.join(",")
