@@ -135,7 +135,11 @@ if config_env() == :prod do
   captcha_secret_key =
     System.get_env("CAPTCHA_SECRET_KEY") || System.get_env("HCAPTCHA_SECRET_KEY")
 
-  captcha_url = System.get_env("CAPTCHA_URL") || System.get_env("HCAPTCHA_URL")
+  captcha_verify_url =
+    System.get_env("CAPTCHA_VERIFY_URL") || System.get_env("CAPTCHA_URL") ||
+      System.get_env("HCAPTCHA_URL")
+
+  captcha_script_url = System.get_env("CAPTCHA_SCRIPT_URL")
 
   if captcha_site_key not in [nil, ""] and captcha_secret_key not in [nil, ""] do
     captcha_provider =
@@ -148,20 +152,14 @@ if config_env() == :prod do
 
     Logger.info("Using the #{captcha_provider} captcha provider")
 
-    default_captcha_url =
-      case captcha_provider do
-        :hcaptcha -> "https://hcaptcha.com/siteverify"
-        :friendly_captcha -> "https://api.friendlycaptcha.com/api/v1/siteverify"
-      end
-
     config =
       [
         secret_key: captcha_secret_key,
         site_key: captcha_site_key,
-        url: default_captcha_url,
         provider: captcha_provider
       ]
-      |> put_if_not_empty.(:url, captcha_url)
+      |> put_if_not_empty.(:verify_url, captcha_verify_url)
+      |> put_if_not_empty.(:script_url, captcha_script_url)
 
     config :keila, KeilaWeb.Captcha, config
   else
@@ -173,7 +171,8 @@ if config_env() == :prod do
 
     - CAPTCHA_SITE_KEY
     - CAPTCHA_SECRET_KEY
-    - CAPTCHA_URL (defaults to https://hcaptcha.com/siteverify or https://api.friendlycaptcha.com/api/v1/siteverify)
+    - CAPTCHA_VERIFY_URL (defaults to https://hcaptcha.com/siteverify or https://api.friendlycaptcha.com/api/v1/siteverify)
+    - CAPTCHA_SCRIPT_URL (defaults to https://hcaptcha.com/1/api.js for hCaptcha or https://unpkg.com/friendly-challenge@0.9.11/widget.module.min.js for Friendly Captcha)
     - CAPTCHA_PROVIDER (defaults to hCaptcha, unless set to 'friendly_captcha')
     """)
   end
