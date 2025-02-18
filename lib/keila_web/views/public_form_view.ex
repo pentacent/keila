@@ -263,7 +263,7 @@ defmodule KeilaWeb.PublicFormView do
                   checked: checked?,
                   class: "mr-1"
                 ),
-                label
+                label || ""
               ]
             end
           end
