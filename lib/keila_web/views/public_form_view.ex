@@ -210,7 +210,7 @@ defmodule KeilaWeb.PublicFormView do
         [
           checkbox(f, field, style: "mr-4", name: name, id: id),
           " ",
-          field_settings.label,
+          field_settings.label || "",
           if(field_settings.required, do: "", else: [" ", gettext("(optional)")])
         ]
       end
