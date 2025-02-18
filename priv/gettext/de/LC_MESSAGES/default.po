@@ -2769,72 +2769,72 @@ msgstr "Text"
 #: lib/keila_web/templates/form/edit_live.html.heex:478
 #, elixir-autogen, elixir-format
 msgid "Body background"
-msgstr ""
+msgstr "Seiten-Hintergrund"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:383
 #, elixir-autogen, elixir-format
 msgid "Custom email subject"
-msgstr ""
+msgstr "Eigener E-Mail-Betreff"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:395
 #, elixir-autogen, elixir-format
 msgid "Custom email text"
-msgstr ""
+msgstr "Eigener E-Mail-Test"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:206
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Data Key"
-msgstr "Datum"
+msgstr "Daten-Schlüssel"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:484
 #, elixir-autogen, elixir-format
 msgid "Form background"
-msgstr ""
+msgstr "Formular-Hintergrund"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:490
 #, elixir-autogen, elixir-format
 msgid "Form text color"
-msgstr ""
+msgstr "Formular-Text"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:496
 #, elixir-autogen, elixir-format
 msgid "Input background"
-msgstr ""
+msgstr "Eingabefeld-Hintergrund"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:508
 #, elixir-autogen, elixir-format
 msgid "Input border color"
-msgstr ""
+msgstr "Eingabefeld-Rahmen"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:502
 #, elixir-autogen, elixir-format
 msgid "Input text color"
-msgstr ""
+msgstr "Eingabefeld-Text"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:224
 #, elixir-autogen, elixir-format
 msgid "Label"
-msgstr ""
+msgstr "Beschriftung"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:240
 #, elixir-autogen, elixir-format
 msgid "Options"
-msgstr ""
+msgstr "Optionen"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:233
 #, elixir-autogen, elixir-format
 msgid "Placeholder"
-msgstr ""
+msgstr "Platzhalter"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:514
 #, elixir-autogen, elixir-format
 msgid "Submit button background"
-msgstr ""
+msgstr "Button-Hintergrund"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:520
 #, elixir-autogen, elixir-format
 msgid "Submit text color"
-msgstr ""
+msgstr "Button-Text"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:123
 #, elixir-autogen, elixir-format
@@ -2844,12 +2844,12 @@ msgstr ""
 #: lib/keila_web/controllers/user_admin_controller.ex:43
 #, elixir-autogen, elixir-format
 msgid "User created successfully"
-msgstr ""
+msgstr "Nutzer erfolgreich erstellt"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:211
 #, elixir-autogen, elixir-format
 msgid "You can use data from this field as\n`{{ contact.data.%{key} }}` in your emails or segments.\n"
-msgstr ""
+msgstr "Das Feld kann mit `{{ contact.data.%{key} }}` in E-Mails oder Segmenten referenziert werden.\n"
 
 #: lib/keila_web/templates/project/edit.html.heex:45
 #: lib/keila_web/templates/project/new.html.heex:23
@@ -2885,17 +2885,17 @@ msgstr "Antwort-Name"
 #: lib/keila_web/templates/sender/_smtp_config.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Server"
-msgstr ""
+msgstr "Server"
 
 #: lib/keila_web/templates/sender/_smtp_config.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "Username"
-msgstr ""
+msgstr "Benutzername"
 
 #: lib/keila_web/templates/sender/_smtp_config.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Connection security"
-msgstr ""
+msgstr "Verbindungssicherheit"
 
 #: lib/keila_web/templates/sender/_smtp_config.html.heex:67
 #, elixir-autogen, elixir-format
