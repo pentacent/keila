@@ -20,6 +20,9 @@ config :logger, level: :info
 
 config :keila, Keila.Repo, []
 
+# Use Lexbor HTML parser for better performance and quality
+config :floki, :html_parser, Floki.HTMLParser.FastHtml
+
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key
