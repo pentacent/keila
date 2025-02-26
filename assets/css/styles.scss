@@ -34,9 +34,9 @@ html {
         @apply w-6;
     }
 
-    &:not(.button--cta):not(&.button--warn):not(&.button--text):not(
-            &.button--muted
-        ) {
+    &:not(.button--cta):not(.button--warn):not(.button--text):not(
+            .button--muted
+        ):not(.button--white) {
         @apply ring-2 ring-emerald-500
             hover:ring-emerald-700;
         focus: ring-emerald-700;
@@ -53,6 +53,10 @@ html {
     &.button--muted {
         @apply ring-2 ring-gray-500
         hover:ring-gray-700;
+    }
+
+    &.button--white {
+        @apply bg-white text-emerald-600 ring-2 ring-emerald-600 hover:ring-emerald-800 focus:ring-emerald-600 active:bg-gray-200 active:text-emerald-600;
     }
 
     &.button--warn {
@@ -200,8 +204,9 @@ Block Editor Styles
     background: white;
     padding-bottom: 20px !important;
 
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-        Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial,
+    font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial,
         sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 
     .ce-block > * > *:last-child {
