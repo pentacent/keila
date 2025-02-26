@@ -176,6 +176,13 @@ defmodule KeilaWeb.CampaignEditLive do
     end
   end
 
+  def handle_event("dismiss-preview-error", _, socket) do
+    {:noreply,
+     socket
+     |> assign(:send_preview_error, nil)
+     |> assign(:subscription_required, false)}
+  end
+
   defp get_preview_contacts(socket, raw_emails) do
     project = socket.assigns.current_project
 
@@ -245,13 +252,6 @@ defmodule KeilaWeb.CampaignEditLive do
         Keila.Mailer.deliver_with_sender(email, sender)
       end)
     end
-  end
-
-  def handle_event("dismiss-preview-error", _, socket) do
-    {:noreply,
-     socket
-     |> assign(:send_preview_error, nil)
-     |> assign(:subscription_required, false)}
   end
 
   defp merged_changeset(socket, params) do
