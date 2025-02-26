@@ -30,7 +30,7 @@ jobs:
       DB_URL: postgres://postgres:postgres@postgres/keila
     steps:
       - name: install system packages
-        run: apk add build-base git tar curl
+        run: apk add build-base git tar curl lexbor
       - uses: actions/checkout@v3
       - uses: actions/cache@v3
         with:
@@ -56,7 +56,7 @@ jobs:
           export PATH="$PATH:$DPRINT_INSTALL/bin"
           dprint check
       - name: mix compile --warnings-as-errors
-        run: mix compile --warnings-as-errors
+        run: WITH_SYSTEM_LEXBOR=1 mix compile --warnings-as-errors
       - name: mix ecto.create && ecto.migrate
         run: |
           mix ecto.create
