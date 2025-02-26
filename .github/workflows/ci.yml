@@ -30,7 +30,7 @@ jobs:
       DB_URL: postgres://postgres:postgres@postgres/keila
     steps:
       - name: install system packages
-        run: apk add build-base git tar curl lexbor
+        run: apk add build-base git tar curl cmake
       - uses: actions/checkout@v3
       - uses: actions/cache@v3
         with:
@@ -45,9 +45,7 @@ jobs:
           mix local.hex --force
           mix deps.get
       - name: mix compile --warnings-as-errors
-        run: |
-          export WITH_SYSTEM_LEXBOR=1
-          mix compile --warnings-as-errors
+        run: mix compile --warnings-as-errors
       - name: mix format --check-formatted
         run: mix format --check-formatted
       - name: dprint check
