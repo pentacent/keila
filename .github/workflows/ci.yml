@@ -45,7 +45,9 @@ jobs:
           mix local.hex --force
           mix deps.get
       - name: mix compile --warnings-as-errors
-        run: WITH_SYSTEM_LEXBOR=1 mix compile --warnings-as-errors
+        run: |
+          export WITH_SYSTEM_LEXBOR=1
+          mix compile --warnings-as-errors
       - name: mix format --check-formatted
         run: mix format --check-formatted
       - name: dprint check
