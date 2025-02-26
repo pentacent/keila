@@ -3,8 +3,9 @@
   style="display: none"
   class="fixed z-10 inset-0 overflow-y-auto bg-black/90 flex items-center justify-center"
   x-on:x-confirm.stop="activeDialog = null"
-  x-show.transition="['send', 'schedule'].includes(activeDialog)"
+  x-show.transition="['send', 'schedule', 'preview'].includes(activeDialog)"
   x-on:x-cancel.stop="activeDialog = null"
+  x-on:phx:preview-sent.window="activeDialog = null"
   x-on:x-show.window="activeDialog = ($event.detail && $event.detail.dialog); if (activeDialog) { $nextTick(() => {const el = $el.querySelector(`[data-dialog-for=${activeDialog}] input, [data-dialog-for=${activeDialog}] button`); el.focus()}) }"
   @change.stop="false"
   @input.stop="false"
@@ -198,5 +199,95 @@
         </div>
       </div>
     <% end %>
+  </div>
+  <div
+    x-show="activeDialog == 'preview'"
+    class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
+    @keydown.esc.prevent="$dispatch('x-cancel')"
+    @click.away="$dispatch('x-cancel')"
+    data-dialog-for="schedule"
+  >
+    <form
+      id="preview-form"
+      class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full p-8"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-headline"
+      phx-submit="send-preview"
+    >
+      <h2 class="text-3xl"><%= raw(gettext("Campaign Preview")) %></h2>
+      <br />
+      <%= cond do %>
+        <% @subscription_required -> %>
+          <p>
+            <%= gettext(
+              "To prevent abuse by spammers, sending emails is only possible if you have an active subscription."
+            ) %>
+          </p>
+          <p class="mt-4"></p>
+          <br />
+          <div class="flex justify-end gap-4">
+            <button
+              class="button button--text button--large"
+              phx-click="dismiss-preview-error"
+              @click.prevent="$dispatch('x-cancel')"
+            >
+              <%= gettext("Cancel") %>
+            </button>
+            <a
+              href={Routes.account_path(@socket, :edit)}
+              class="button button--large button--cta"
+              phx-click="dismiss-preview-error"
+              @click="$dispatch('x-cancel')"
+              target="_blank"
+            >
+              <%= gettext("Start your subscription now") %>
+            </a>
+          </div>
+        <% not is_nil(@send_preview_error) -> %>
+          <p><%= gettext("There was an error sending the preview campaign.") %></p>
+          <p class="mt-4 font-bold"><%= @send_preview_error %></p>
+          <div class="flex justify-end gap-4">
+            <button
+              class="button button--text button--large"
+              phx-click="dismiss-preview-error"
+              @click.prevent="$dispatch('x-cancel')"
+            >
+              <%= gettext("Cancel") %>
+            </button>
+          </div>
+        <% true -> %>
+          <p>
+            <%= gettext(
+              "Enter up to five email addresses (separated with commas). If they exist in your contacts list, contact data will be used."
+            ) %>
+          </p>
+          <br />
+          <div class="form-row">
+            <label for="preview-emails"><%= gettext("Recipients") %></label>
+            <input
+              id="preview-emails"
+              type="text"
+              name="emails"
+              class="text-black"
+              placeholder="hello@keila.io, test@keila.io"
+              autofocus
+            />
+          </div>
+          <br /><br />
+          <div class="flex justify-end gap-4">
+            <button
+              class="button button--text button--large"
+              @click.prevent="$dispatch('x-cancel')"
+            >
+              <%= gettext("Cancel") %>
+            </button>
+
+            <button class="button button--cta button--large" type="submit">
+              <%= gettext("Send preview") %>
+            </button>
+          </div>
+      <% end %>
+    </form>
   </div>
 </div>

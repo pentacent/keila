@@ -1,5 +1,7 @@
 defmodule KeilaWeb.CampaignEditLive do
   use KeilaWeb, :live_view
+  alias Keila.Accounts
+  alias Keila.Billing
   alias Keila.Mailings
 
   @impl true
@@ -12,6 +14,7 @@ defmodule KeilaWeb.CampaignEditLive do
     templates = session["templates"] || []
     campaign = session["campaign"]
     changeset = Ecto.Changeset.change(campaign, %{})
+    account = session["account"]
 
     socket =
       socket
@@ -22,6 +25,9 @@ defmodule KeilaWeb.CampaignEditLive do
       |> assign(:templates, templates)
       |> assign(:changeset, changeset)
       |> assign(:settings_changeset, changeset)
+      |> assign(:account, account)
+      |> assign(:subscription_required, false)
+      |> assign(:send_preview_error, nil)
       |> put_recipient_count()
       |> put_campaign_preview()
 
@@ -151,6 +157,101 @@ defmodule KeilaWeb.CampaignEditLive do
 
   def handle_event("unschedule", _params, socket) do
     handle_event("schedule", %{}, socket)
+  end
+
+  @email_regex ~r/^[^\s@]+@[^\s@]+$/
+
+  # TODO: This should be re-implemented at the context module level once
+  # the campaign refactor is complete (see https://github.com/pentacent/keila/issues/355)
+  def handle_event("send-preview", %{"emails" => raw_emails}, socket) do
+    with {:ok, contacts} <- get_preview_contacts(socket, raw_emails),
+         {:ok, campaign} <- get_preview_campaign(socket),
+         {:ok, sender} <- get_preview_sender(socket, campaign.sender_id),
+         :ok <- maybe_consume_preview_credits(socket, contacts),
+         _ <- send_previews(socket, contacts, campaign, sender) do
+      {:noreply, socket |> push_event("preview-sent", %{})}
+    else
+      {:error, :subscription_required} -> {:noreply, assign(socket, :subscription_required, true)}
+      {:error, message} -> {:noreply, assign(socket, :send_preview_error, message)}
+    end
+  end
+
+  defp get_preview_contacts(socket, raw_emails) do
+    project = socket.assigns.current_project
+
+    contacts =
+      raw_emails
+      |> String.split(",")
+      |> Enum.map(&String.trim(&1))
+      |> Enum.filter(&Regex.match?(@email_regex, &1))
+      |> Enum.map(fn email ->
+        case Keila.Contacts.get_project_contact_by_email(project.id, email) do
+          nil -> %Keila.Contacts.Contact{id: "c_id", email: email}
+          contact -> contact
+        end
+      end)
+
+    case length(contacts) do
+      0 -> {:error, gettext("No valid email addresses entered.")}
+      n when n > 5 -> {:error, gettext("Please enter no more than five addresses.")}
+      _ -> {:ok, contacts}
+    end
+  end
+
+  defp get_preview_campaign(socket) do
+    case Ecto.Changeset.apply_action(socket.assigns.changeset, :update) do
+      {:ok, campaign} -> {:ok, campaign}
+      {:error, _} -> {:error, gettext("Invalid campaign settings.")}
+    end
+  end
+
+  defp get_preview_sender(socket, sender_id) do
+    case Enum.find(socket.assigns.senders, &(&1.id == sender_id)) do
+      nil -> {:error, gettext("You must select a sender first.")}
+      sender -> {:ok, sender}
+    end
+  end
+
+  defp maybe_consume_preview_credits(socket, contacts) do
+    account = socket.assigns.account
+    recipients_count = length(contacts)
+
+    cond do
+      not Accounts.credits_enabled?() ->
+        :ok
+
+      :ok == Accounts.consume_credits(account.id, recipients_count) ->
+        :ok
+
+      Keila.Billing.billing_enabled?() && is_nil(Billing.get_account_subscription(account.id)) ->
+        {:error, :subscription_required}
+
+      true ->
+        {:error, gettext("Insufficient credits.")}
+    end
+  end
+
+  defp send_previews(socket, contacts, campaign, sender) do
+    template = Enum.find(socket.assigns.templates, &(&1.id == campaign.template_id))
+
+    for contact <- contacts do
+      Task.async(fn ->
+        campaign = %Mailings.Campaign{campaign | sender: sender, template: template}
+        email = Mailings.Builder.build(campaign, contact, %{})
+
+        # TODO: Once campaign sending has been refactored, enqueue these messages to ensure
+        # rate limits are respected
+
+        Keila.Mailer.deliver_with_sender(email, sender)
+      end)
+    end
+  end
+
+  def handle_event("dismiss-preview-error", _, socket) do
+    {:noreply,
+     socket
+     |> assign(:send_preview_error, nil)
+     |> assign(:subscription_required, false)}
   end
 
   defp merged_changeset(socket, params) do

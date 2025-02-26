@@ -56,7 +56,7 @@ html {
     }
 
     &.button--white {
-        @apply bg-white text-emerald-600 ring-2 ring-emerald-600 hover:ring-emerald-800 focus:ring-emerald-600 active:bg-gray-200 active:text-emerald-600;
+        @apply bg-white text-emerald-600 ring-2 ring-emerald-600 hover:bg-gray-50 hover:ring-emerald-400 focus:ring-emerald-400 active:bg-gray-200 active:text-emerald-600;
     }
 
     &.button--warn {
