@@ -81,38 +81,38 @@ defmodule KeilaWeb.ApiContactController do
 
   operation(:show,
     summary: "Retrieve Contact",
-    parameters: [id: [in: :path, type: :string, description: "Contact ID"]],
+    parameters: Schemas.Contact.id_parameters(),
     responses: [
       ok: {"Contact response", "application/json", Schemas.Contact.Response}
     ]
   )
 
+  plug :fetch_contact when action == :show
+
   @spec show(Plug.Conn.t(), map()) :: Plug.Conn.t()
-  def show(conn, %{id: id}) do
-    case Contacts.get_project_contact(project_id(conn), id) do
-      contact = %Contacts.Contact{} -> render(conn, "contact.json", %{contact: contact})
-      nil -> Errors.send_404(conn)
-    end
+  def show(conn, _opts) do
+    contact = conn.assigns.contact
+    render(conn, "contact.json", %{contact: contact})
   end
 
   operation(:update,
     summary: "Update Contact",
-    parameters: [id: [in: :path, type: :string, description: "Contact ID"]],
+    parameters: Schemas.Contact.id_parameters(),
     request_body: {"Contact params", "application/json", Schemas.Contact.Params},
     responses: [
       ok: {"Contact response", "application/json", Schemas.Contact.Response}
     ]
   )
 
+  plug :fetch_contact when action == :update
+
   @spec update(Plug.Conn.t(), map()) :: Plug.Conn.t()
-  def update(conn, %{id: id}) do
-    if Contacts.get_project_contact(project_id(conn), id) do
-      case Contacts.update_contact(id, conn.body_params.data, update_status: true) do
-        {:ok, contact} -> render(conn, "contact.json", %{contact: contact})
-        {:error, changeset} -> Errors.send_changeset_error(conn, changeset)
-      end
-    else
-      Errors.send_404(conn)
+  def update(conn, _opts) do
+    contact = conn.assigns.contact
+
+    case Contacts.update_contact(contact.id, conn.body_params.data, update_status: true) do
+      {:ok, contact} -> render(conn, "contact.json", %{contact: contact})
+      {:error, changeset} -> Errors.send_changeset_error(conn, changeset)
     end
   end
 
@@ -120,56 +120,52 @@ defmodule KeilaWeb.ApiContactController do
     summary: "Update Contact data",
     description:
       "Update just the `data` field of a Contact. The existing JSON object is merged in a shallow merge with the provided data object.",
-    parameters: [id: [in: :path, type: :string, description: "Contact ID"]],
+    parameters: Schemas.Contact.id_parameters(),
     request_body: {"Contact data params", "application/json", Schemas.Contact.DataParams},
     responses: [
       ok: {"Contact response", "application/json", Schemas.Contact.Response}
     ]
   )
 
+  plug :fetch_contact when action == :update_data
+
   @spec update_data(Plug.Conn.t(), map()) :: Plug.Conn.t()
-  def update_data(conn, %{id: id}) do
-    contact = Contacts.get_project_contact(project_id(conn), id)
+  def update_data(conn, _opts) do
+    contact = conn.assigns.contact
+    params = %{data: Map.merge(contact.data || %{}, conn.body_params.data)}
 
-    if contact do
-      params = %{data: Map.merge(contact.data || %{}, conn.body_params.data)}
-
-      case Contacts.update_contact(id, params) do
-        {:ok, contact} -> render(conn, "contact.json", %{contact: contact})
-        {:error, changeset} -> Errors.send_changeset_error(conn, changeset)
-      end
-    else
-      Errors.send_404(conn)
+    case Contacts.update_contact(contact.id, params) do
+      {:ok, contact} -> render(conn, "contact.json", %{contact: contact})
+      {:error, changeset} -> Errors.send_changeset_error(conn, changeset)
     end
   end
 
   operation(:replace_data,
     summary: "Replace Contact data",
     description: "Replace just the `data` field of a Contact with the provided data object.",
-    parameters: [id: [in: :path, type: :string, description: "Contact ID"]],
+    parameters: Schemas.Contact.id_parameters(),
     request_body: {"Contact data params", "application/json", Schemas.Contact.DataParams},
     responses: [
       ok: {"Contact response", "application/json", Schemas.Contact.Response}
     ]
   )
 
-  @spec replace_data(Plug.Conn.t(), map()) :: Plug.Conn.t()
-  def replace_data(conn, %{id: id}) do
-    if Contacts.get_project_contact(project_id(conn), id) do
-      params = %{data: conn.body_params.data}
+  plug :fetch_contact when action == :replace_data
 
-      case Contacts.update_contact(id, params) do
-        {:ok, contact} -> render(conn, "contact.json", %{contact: contact})
-        {:error, changeset} -> Errors.send_changeset_error(conn, changeset)
-      end
-    else
-      Errors.send_404(conn)
+  @spec replace_data(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def replace_data(conn, _opts) do
+    contact = conn.assigns.contact
+    params = %{data: conn.body_params.data}
+
+    case Contacts.update_contact(contact.id, params) do
+      {:ok, contact} -> render(conn, "contact.json", %{contact: contact})
+      {:error, changeset} -> Errors.send_changeset_error(conn, changeset)
     end
   end
 
   operation(:delete,
     summary: "Delete Contact",
-    parameters: [id: [in: :path, type: :string, description: "Contact ID"]],
+    parameters: Schemas.Contact.id_parameters(),
     responses: %{
       204 => "Contact was deleted successfully or didn’t exist."
     }
@@ -184,4 +180,22 @@ defmodule KeilaWeb.ApiContactController do
   end
 
   defp project_id(conn), do: conn.assigns.current_project.id
+
+  defp fetch_contact(conn, _opts) do
+    project_id = project_id(conn)
+    id = conn.params[:id]
+    id_type = conn.params[:id_type] || :id
+
+    contact =
+      case id_type do
+        :id -> Contacts.get_project_contact(project_id, id)
+        :email -> Contacts.get_project_contact_by_email(project_id, id)
+        :external_id -> Contacts.get_project_contact_by_external_id(project_id, id)
+      end
+
+    case contact do
+      contact = %Contacts.Contact{} -> assign(conn, :contact, contact)
+      nil -> conn |> Errors.send_404() |> halt()
+    end
+  end
 end

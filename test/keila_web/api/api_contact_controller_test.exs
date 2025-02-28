@@ -172,6 +172,25 @@ defmodule KeilaWeb.ApiContactControllerTest do
       assert %{"data" => %{"first_name" => "Updated Name"}} = json_response(conn, 200)
     end
 
+    test "contact can be updated from email and external id", %{
+      authorized_conn: conn,
+      project: project
+    } do
+      contact = insert!(:contact, project_id: project.id)
+
+      body = %{"data" => %{"first_name" => "Updated Name"}}
+      params = %{"id_type" => "email"}
+      path = Routes.api_contact_path(conn, :update, contact.email, params)
+      conn = patch_json(conn, path, body)
+      assert %{"data" => %{"first_name" => "Updated Name"}} = json_response(conn, 200)
+
+      body = %{"data" => %{"first_name" => "Updated Name 2"}}
+      params = %{"id_type" => "external_id"}
+      path = Routes.api_contact_path(conn, :update, contact.external_id, params)
+      conn = patch_json(recycle(conn), path, body)
+      assert %{"data" => %{"first_name" => "Updated Name 2"}} = json_response(conn, 200)
+    end
+
     test "allows changing contact status", %{authorized_conn: conn, project: project} do
       contact = insert!(:contact, project_id: project.id)
       body = %{"data" => %{"status" => "unsubscribed"}}
