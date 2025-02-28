@@ -11,6 +11,7 @@ defmodule Keila.Contacts.Contact do
 
   schema "contacts" do
     field(:email, :string)
+    field(:external_id, :string)
     field(:first_name, :string)
     field(:last_name, :string)
     field(:status, Ecto.Enum, values: @statuses, default: :active)
@@ -24,10 +25,11 @@ defmodule Keila.Contacts.Contact do
           Ecto.Changeset.t(t())
   def creation_changeset(struct \\ %__MODULE__{}, params, project_id) do
     struct
-    |> cast(params, [:email, :first_name, :last_name, :project_id, :data])
+    |> cast(params, [:email, :external_id, :first_name, :last_name, :project_id, :data])
     |> put_change(:project_id, project_id)
     |> validate_email()
     |> validate_max_name_length()
+    |> validate_external_id()
     |> check_data_size_constraint()
   end
 
@@ -41,9 +43,10 @@ defmodule Keila.Contacts.Contact do
   @spec update_changeset(t(), Ecto.Changeset.data()) :: Ecto.Changeset.t(t())
   def update_changeset(struct \\ %__MODULE__{}, params) do
     struct
-    |> cast(params, [:email, :first_name, :last_name, :data])
+    |> cast(params, [:email, :external_id, :first_name, :last_name, :data])
     |> validate_email()
     |> validate_max_name_length()
+    |> validate_external_id()
     |> check_data_size_constraint()
     |> maybe_remove_double_opt_in_at()
   end
@@ -138,5 +141,11 @@ defmodule Keila.Contacts.Contact do
     changeset
     |> validate_length(:first_name, max: 50)
     |> validate_length(:last_name, max: 50)
+  end
+
+  defp validate_external_id(changeset) do
+    changeset
+    |> validate_length(:external_id, max: 40)
+    |> unique_constraint([:external_id, :project_id])
   end
 end

@@ -64,10 +64,7 @@ defmodule Keila.Contacts do
   """
   @spec get_project_contact(Project.id(), Contact.id()) :: Contact.t() | nil
   def get_project_contact(project_id, contact_id) do
-    case get_contact(contact_id) do
-      contact = %{project_id: ^project_id} -> contact
-      _other -> nil
-    end
+    Repo.get_by(Contact, project_id: project_id, id: contact_id)
   end
 
   @doc """
@@ -77,6 +74,16 @@ defmodule Keila.Contacts do
   @spec get_project_contact_by_email(Project.id(), String.t()) :: Contact.t() | nil
   def get_project_contact_by_email(project_id, email) do
     Repo.get_by(Contact, project_id: project_id, email: email)
+  end
+
+  @doc """
+  Gets specified Contact within Project context. Returns `nil` if Contact couldn‘t be found
+  or belongs to a different Project.
+  """
+  @spec get_project_contact_by_external_id(Project.id(), external_id :: String.t()) ::
+          Contact.t() | nil
+  def get_project_contact_by_external_id(project_id, external_id) do
+    Repo.get_by(Contact, project_id: project_id, external_id: external_id)
   end
 
   @doc """

@@ -98,6 +98,21 @@
           <% end %>
         <% end %>
       </div>
+      <div class="form-row">
+        <%= label(f, :email, gettext("External ID")) %>
+        <span class="block text-sm mb-2">
+          <%= gettext(
+            "The external ID allows updating the contact profile from an external source even if its email address changes."
+          ) %>
+        </span>
+        <%= with_validation(f, :external_id) do %>
+          <%= text_input(f, :external_id,
+            placeholder: gettext("920207"),
+            class: "text-black",
+            autofocus: true
+          ) %>
+        <% end %>
+      </div>
     </.form>
   </div>
 
