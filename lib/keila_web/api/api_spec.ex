@@ -13,7 +13,9 @@ defmodule KeilaWeb.ApiSpec do
       ],
       info: %Info{
         title: "Keila API",
-        version: "1.0"
+        version: "1.0",
+        description:
+          "The Keila API allows you to manage your contacts, create newsletter campaigns, manage and submit contact forms."
       },
       # Populate the paths from a phoenix router
       paths: Paths.from_router(Router),
