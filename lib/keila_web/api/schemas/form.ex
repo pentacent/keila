@@ -9,7 +9,6 @@ defmodule KeilaWeb.Api.Schemas.Form do
     },
     name: %{
       type: :string,
-      required: true,
       example: "My Form"
     },
     sender_id: %{
@@ -107,7 +106,15 @@ defmodule KeilaWeb.Api.Schemas.Form.DoubleOptInResponse do
   build_open_api_schema(%{double_opt_in_required: %{type: :boolean, enum: [true]}})
 end
 
-defmodule KeilaWeb.Api.Schemas.Form.Params do
+defmodule KeilaWeb.Api.Schemas.Form.CreateParams do
+  use KeilaWeb.Api.Schema
+
+  @properties KeilaWeb.Api.Schemas.Form.properties()
+  @allowed_properties [:name, :sender_id, :template_id, :settings, :fields]
+  build_open_api_schema(@properties, only: @allowed_properties, required: [:name])
+end
+
+defmodule KeilaWeb.Api.Schemas.Form.UpdateParams do
   use KeilaWeb.Api.Schema
 
   @properties KeilaWeb.Api.Schemas.Form.properties()

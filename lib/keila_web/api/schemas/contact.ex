@@ -10,7 +10,6 @@ defmodule KeilaWeb.Api.Schemas.Contact do
     email: %{
       type: :string,
       format: :email,
-      required: true,
       example: "jane.doe@example.com"
     },
     external_id: %{
@@ -79,7 +78,15 @@ defmodule KeilaWeb.Api.Schemas.Contact.IndexResponse do
   build_open_api_schema(@properties, list: true, with_pagination: true)
 end
 
-defmodule KeilaWeb.Api.Schemas.Contact.Params do
+defmodule KeilaWeb.Api.Schemas.Contact.CreateParams do
+  use KeilaWeb.Api.Schema
+
+  @properties KeilaWeb.Api.Schemas.Contact.properties()
+  @allowed_properties [:email, :external_id, :first_name, :last_name, :data, :status]
+  build_open_api_schema(@properties, only: @allowed_properties, required: [:email])
+end
+
+defmodule KeilaWeb.Api.Schemas.Contact.UpdateParams do
   use KeilaWeb.Api.Schema
 
   @properties KeilaWeb.Api.Schemas.Contact.properties()

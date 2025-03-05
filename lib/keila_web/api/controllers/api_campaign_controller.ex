@@ -35,7 +35,7 @@ defmodule KeilaWeb.ApiCampaignController do
   operation(:create,
     summary: "Create Campaign",
     parameters: [],
-    request_body: {"Campaign params", "application/json", Schemas.MailingsCampaign.Params},
+    request_body: {"Campaign params", "application/json", Schemas.MailingsCampaign.CreateParams},
     responses: [
       ok: {"Campaign response", "application/json", Schemas.MailingsCampaign.Response}
     ]
@@ -68,7 +68,7 @@ defmodule KeilaWeb.ApiCampaignController do
   operation(:update,
     summary: "Update Campaign",
     parameters: [id: [in: :path, type: :string, description: "Campaign ID"]],
-    request_body: {"Campaign params", "application/json", Schemas.MailingsCampaign.Params},
+    request_body: {"Campaign params", "application/json", Schemas.MailingsCampaign.UpdateParams},
     responses: [
       ok: {"Campaign response", "application/json", Schemas.MailingsCampaign.Response}
     ]
@@ -137,7 +137,7 @@ defmodule KeilaWeb.ApiCampaignController do
     summary: "Schedule Campaign",
     parameters: [id: [in: :path, type: :string, description: "Campaign ID"]],
     request_body:
-      {"Campaign params", "application/json", Schemas.MailingsCampaign.ScheduleParams},
+      {"Schedule params", "application/json", Schemas.MailingsCampaign.ScheduleParams},
     responses: %{
       ok: {"Campaign response", "application/json", Schemas.MailingsCampaign.Response}
     }

@@ -7,8 +7,7 @@ defmodule KeilaWeb.Api.Schemas.MailingsSender do
     },
     name: %{
       type: :string,
-      example: "Space Inc. SMTP",
-      required: true
+      example: "Space Inc. SMTP"
     },
     from_email: %{
       type: :string,

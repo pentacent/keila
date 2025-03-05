@@ -35,7 +35,7 @@ defmodule KeilaWeb.ApiFormController do
   operation(:create,
     summary: "Create Form",
     parameters: [],
-    request_body: {"Form params", "application/json", Schemas.Form.Params},
+    request_body: {"Form params", "application/json", Schemas.Form.CreateParams},
     responses: [
       ok: {"Form response", "application/json", Schemas.Form.Response}
     ]
@@ -72,7 +72,7 @@ defmodule KeilaWeb.ApiFormController do
   operation(:update,
     summary: "Update Form",
     parameters: [id: [in: :path, type: :string, description: "Form ID"]],
-    request_body: {"Form params", "application/json", Schemas.Form.Params},
+    request_body: {"Form params", "application/json", Schemas.Form.UpdateParams},
     responses: [
       ok: {"Form response", "application/json", Schemas.Form.Response}
     ]
@@ -145,7 +145,7 @@ defmodule KeilaWeb.ApiFormController do
     requires a CAPTCHA.
     """,
     parameters: [id: [in: :path, type: :string, description: "Campaign ID"]],
-    request_body: {"Contact params", "application/json", Schemas.Contact.Params},
+    request_body: {"Contact params", "application/json", Schemas.Contact.CreateParams},
     responses: %{
       200 => {"Contact response", "application/json", Schemas.Contact.Response},
       202 => {"Double-Opt-In response", "application/json", Schemas.Form.DoubleOptInResponse}

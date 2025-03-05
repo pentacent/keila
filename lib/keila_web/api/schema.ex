@@ -77,10 +77,12 @@ defmodule KeilaWeb.Api.Schema do
 
   def schema_build(properties, opts) when is_map(properties) do
     allowed_properties = Keyword.get(opts, :only, :all)
-    required_properties = required_properties(properties, allowed_properties)
+    properties = do_schema_build(properties, allowed_properties)
+
     list? = Keyword.get(opts, :list, false)
     meta = Keyword.get(opts, :meta, nil)
     with_pagination? = Keyword.get(opts, :with_pagination, false)
+    required = Keyword.get(opts, :required, nil)
 
     data_schema =
       if list? do
@@ -88,16 +90,14 @@ defmodule KeilaWeb.Api.Schema do
           type: :array,
           items: %OpenApiSpex.Schema{
             type: :object,
-            properties: do_schema_build(properties, allowed_properties),
-            required: required_properties,
+            properties: properties,
             additionalProperties: false
           }
         }
       else
         %OpenApiSpex.Schema{
           type: :object,
-          properties: do_schema_build(properties, allowed_properties),
-          required: required_properties,
+          properties: properties,
           additionalProperties: false
         }
       end
@@ -110,6 +110,7 @@ defmodule KeilaWeb.Api.Schema do
     }
     |> maybe_add_meta(meta)
     |> maybe_put_pagination(with_pagination?)
+    |> maybe_put_required(required)
   end
 
   defp do_schema_build(properties, allowed_properties \\ :all)
@@ -119,7 +120,6 @@ defmodule KeilaWeb.Api.Schema do
         allowed_properties == :all || key in allowed_properties,
         into: %{} do
       properties = do_schema_build(Map.get(property, :properties))
-      required_properties = required_properties(Map.get(property, :properties))
 
       items =
         case do_schema_build(Map.get(property, :items)) do
@@ -135,8 +135,7 @@ defmodule KeilaWeb.Api.Schema do
          enum: Map.get(property, :enum),
          example: Map.get(property, :example),
          properties: properties,
-         items: items,
-         required: required_properties
+         items: items
        }}
     end
   end
@@ -153,24 +152,22 @@ defmodule KeilaWeb.Api.Schema do
 
   defp maybe_put_pagination(schema, true), do: maybe_add_meta(schema, @meta)
 
-  defp required_properties(properties, allowed_properties \\ :all)
+  defp maybe_put_required(schema, nil), do: schema
 
-  defp required_properties(nil, _), do: nil
-  defp required_properties([], _), do: nil
+  defp maybe_put_required(schema, required_fields) do
+    Enum.reduce(required_fields, schema, fn
+      field, schema when is_atom(field) ->
+        update_in(schema, [:properties, :data, Access.key!(:required)], fn
+          nil -> [field]
+          required -> [field | required]
+        end)
 
-  defp required_properties(properties, allowed_properties) do
-    properties
-    |> Enum.filter(fn
-      {key, %{required: true}} ->
-        allowed_properties == :all || key in allowed_properties
-
-      _ ->
-        false
-    end)
-    |> Enum.map(fn {key, _} -> key end)
-    |> then(fn
-      [] -> nil
-      required_properties -> required_properties
+      {path, required_fields}, schema when is_list(path) ->
+        put_in(
+          schema,
+          [:properties, :data, Access.key!(:properties)] ++ path ++ [Access.key!(:required)],
+          required_fields
+        )
     end)
   end
 end

@@ -65,7 +65,7 @@ defmodule KeilaWeb.ApiContactController do
   operation(:create,
     summary: "Create Contact",
     parameters: [],
-    request_body: {"Contact params", "application/json", Schemas.Contact.Params},
+    request_body: {"Contact params", "application/json", Schemas.Contact.CreateParams},
     responses: [
       ok: {"Contact response", "application/json", Schemas.Contact.Response}
     ]
@@ -98,7 +98,7 @@ defmodule KeilaWeb.ApiContactController do
   operation(:update,
     summary: "Update Contact",
     parameters: Schemas.Contact.id_parameters(),
-    request_body: {"Contact params", "application/json", Schemas.Contact.Params},
+    request_body: {"Contact params", "application/json", Schemas.Contact.UpdateParams},
     responses: [
       ok: {"Contact response", "application/json", Schemas.Contact.Response}
     ]

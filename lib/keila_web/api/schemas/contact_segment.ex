@@ -48,7 +48,15 @@ defmodule KeilaWeb.Api.Schemas.ContactsSegment.IndexResponse do
   build_open_api_schema(@properties, list: true, with_pagination: true)
 end
 
-defmodule KeilaWeb.Api.Schemas.ContactsSegment.Params do
+defmodule KeilaWeb.Api.Schemas.ContactsSegment.CreateParams do
+  use KeilaWeb.Api.Schema
+
+  @properties KeilaWeb.Api.Schemas.ContactsSegment.properties()
+  @allowed_properties [:name, :filter]
+  build_open_api_schema(@properties, only: @allowed_properties, require: [:name, :filter])
+end
+
+defmodule KeilaWeb.Api.Schemas.ContactsSegment.UpdateParams do
   use KeilaWeb.Api.Schema
 
   @properties KeilaWeb.Api.Schemas.ContactsSegment.properties()
