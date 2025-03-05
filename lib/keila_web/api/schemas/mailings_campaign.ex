@@ -66,6 +66,10 @@ defmodule KeilaWeb.Api.Schemas.MailingsCampaign do
           required: true,
           enum: ["markdown", "text", "block", "mjml"],
           example: "markdown"
+        },
+        do_not_track: %{
+          type: :boolean,
+          required: false
         }
       }
     },
