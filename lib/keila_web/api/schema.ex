@@ -77,6 +77,7 @@ defmodule KeilaWeb.Api.Schema do
 
   def schema_build(properties, opts) when is_map(properties) do
     allowed_properties = Keyword.get(opts, :only, :all)
+    required_properties = required_properties(properties, allowed_properties)
     list? = Keyword.get(opts, :list, false)
     meta = Keyword.get(opts, :meta, nil)
     with_pagination? = Keyword.get(opts, :with_pagination, false)
@@ -88,6 +89,7 @@ defmodule KeilaWeb.Api.Schema do
           items: %OpenApiSpex.Schema{
             type: :object,
             properties: do_schema_build(properties, allowed_properties),
+            required: required_properties,
             additionalProperties: false
           }
         }
@@ -95,6 +97,7 @@ defmodule KeilaWeb.Api.Schema do
         %OpenApiSpex.Schema{
           type: :object,
           properties: do_schema_build(properties, allowed_properties),
+          required: required_properties,
           additionalProperties: false
         }
       end
@@ -116,6 +119,7 @@ defmodule KeilaWeb.Api.Schema do
         allowed_properties == :all || key in allowed_properties,
         into: %{} do
       properties = do_schema_build(Map.get(property, :properties))
+      required_properties = required_properties(Map.get(property, :properties))
 
       {key,
        %OpenApiSpex.Schema{
@@ -124,7 +128,7 @@ defmodule KeilaWeb.Api.Schema do
          description: Map.get(property, :description),
          example: Map.get(property, :example),
          properties: properties,
-         required: is_nil(properties) && Map.get(property, :required, false)
+         required: required_properties
        }}
     end
   end
@@ -140,4 +144,25 @@ defmodule KeilaWeb.Api.Schema do
   defp maybe_put_pagination(schema, false), do: schema
 
   defp maybe_put_pagination(schema, true), do: maybe_add_meta(schema, @meta)
+
+  defp required_properties(properties, allowed_properties \\ :all)
+
+  defp required_properties(nil, _), do: nil
+  defp required_properties([], _), do: nil
+
+  defp required_properties(properties, allowed_properties) do
+    properties
+    |> Enum.filter(fn
+      {key, %{required: true}} ->
+        allowed_properties == :all || key in allowed_properties
+
+      _ ->
+        false
+    end)
+    |> Enum.map(fn {key, _} -> key end)
+    |> then(fn
+      [] -> nil
+      required_properties -> required_properties
+    end)
+  end
 end
