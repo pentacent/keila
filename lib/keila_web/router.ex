@@ -25,7 +25,7 @@ defmodule KeilaWeb.Router do
   scope "/" do
     pipe_through :browser
 
-    get "/api", OpenApiSpex.Plug.SwaggerUI, path: "/api/v1/openapi"
+    get "/api", KeilaWeb.ApiDocsController, :show
   end
 
   # Unauthenticated Routes
