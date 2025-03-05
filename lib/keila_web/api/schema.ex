@@ -121,13 +121,21 @@ defmodule KeilaWeb.Api.Schema do
       properties = do_schema_build(Map.get(property, :properties))
       required_properties = required_properties(Map.get(property, :properties))
 
+      items =
+        case do_schema_build(Map.get(property, :items)) do
+          nil -> nil
+          item_properties -> %OpenApiSpex.Schema{type: :object, properties: item_properties}
+        end
+
       {key,
        %OpenApiSpex.Schema{
          type: schema_type(property.type),
          format: schema_format(property.type),
          description: Map.get(property, :description),
+         enum: Map.get(property, :enum),
          example: Map.get(property, :example),
          properties: properties,
+         items: items,
          required: required_properties
        }}
     end
