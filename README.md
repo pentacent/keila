@@ -4,9 +4,9 @@
 [![GitHub Sponsors](https://img.shields.io/github/sponsors/pentacent?color=ff69b4)](https://github.com/sponsors/pentacent)
 
 <a href="https://fosstodon.org/@keila" title="Folow Keila on Mastodon" rel="me"><img src="https://img.shields.io/mastodon/follow/109370923780670804?domain=https%3A%2F%2Ffosstodon.org&label=Follow&style=flat-square&logo=mastodon&color=blue&logoColor=white"></a>
-<a href="https://www.twitter.com/keila_io" title="Folow Keila on Twitter"><img src="https://img.shields.io/twitter/follow/keila_io?label=Follow&style=flat-square&logo=twitter&color=blue&logoColor=white"></a>
+<a href="https://bsky.app/profile/pentacent.bsky.social" title="Folow the development of Keila on Bluesky"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fpublic.api.bsky.app%2Fxrpc%2Fapp.bsky.actor.getProfile%2F%3Factor%3Dpentacent.bsky.social&query=%24.followersCount&style=flat-square&logo=bluesky&logoColor=white&label=Bluesky"></a>
 
-  
+
 # ![The Keila logo is a stylized elephant](.github/assets/logo.svg) Keila - An Open Source Newsletter Tool
 
 Keila is an Open Source alternative to newsletter tools like Mailchimp or
@@ -58,4 +58,3 @@ PARTICULAR PURPOSE.
 For more details, please [read the full license here](LICENSE.md).
 
 Please note that the Keila logo is not subject to the aforementioned license.
-
