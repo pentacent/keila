@@ -22,8 +22,8 @@ defmodule Keila.Templates.Html do
   Parses a HTML document and returns an HTML tree,
   """
   @spec parse_document!(String.t()) :: t()
-  def parse_document!(html) do
-    Floki.parse_document!(html)
+  def parse_document!(html, opts \\ []) do
+    Floki.parse_document!(html, opts)
   end
 
   @doc """

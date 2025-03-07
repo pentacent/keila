@@ -187,7 +187,7 @@ defmodule Keila.Mailings.Builder do
            ) do
       html_body =
         html_body
-        |> Html.parse_document!()
+        |> Html.parse_document!(html_parser: Floki.HTMLParser.Mochiweb)
         |> Html.apply_inline_styles(styles, ignore_inherit: true)
         |> Html.to_document()
 
@@ -365,9 +365,19 @@ defmodule Keila.Mailings.Builder do
   defp maybe_put_tracking(email, _campaign, %{id: @placeholder_recipient_id}), do: email
 
   defp maybe_put_tracking(email, campaign, recipient) do
+    # NOTE: This is necessary because Lexbor seems to be breaking the block template.
+    # So let's stick to Mochiweb except for MJML campaigns
+    html_parser =
+      if campaign.settings.type == :mjml and
+           function_exported?(Floki.HTMLParser.FastHtml, :__info__, 1) do
+        Floki.HTMLParser.FastHtml
+      else
+        Floki.HTMLParser.Mochiweb
+      end
+
     html =
       email.html_body
-      |> Floki.parse_document!()
+      |> Floki.parse_document!(html_parser: html_parser)
       |> put_click_tracking(campaign, recipient)
       |> put_open_tracking(campaign, recipient)
       |> put_tracking_pixel(campaign, recipient)
