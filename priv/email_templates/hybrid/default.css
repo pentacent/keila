@@ -151,11 +151,11 @@ body.keila--markdown-campaign .email-container {
     padding-top: 20px;
 }
 
-#content > .block:first-of-type > td {
+#content > tbody > .block:first-of-type > td {
     padding-top: 20px;
 }
 
-#content > .block:last-of-type > td {
+#content > tbody > .block:last-of-type > td {
     padding-bottom: 20px;
 }
 
@@ -182,7 +182,7 @@ body.keila--markdown-campaign .email-container {
     padding-right: 0;
 }
 
-#content > .block--image--flush:first-of-type > td {
+#content > tbody > .block--image--flush:first-of-type > td {
     padding-top: 0;
     padding-bottom: 0;
 }
