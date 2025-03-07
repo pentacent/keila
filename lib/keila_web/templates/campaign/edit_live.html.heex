@@ -121,7 +121,7 @@
       let={f}
       for={@changeset}
       id="campaign"
-      class="flex flex-col gap-4"
+      class="flex flex-col gap-4 w-full"
       phx-change="update"
       phx-submit="save"
       x-on:change="setUnsavedReminder(true)"
@@ -135,37 +135,36 @@
         <% end %>
       </div>
 
-      <div class="flex flex-col">
-        <div x-data="{previewMode: false}">
-          <% type = Ecto.Changeset.get_field(@changeset, :settings).type %>
-          <% enable_wysiwyg? = Ecto.Changeset.get_field(@changeset, :settings).enable_wysiwyg %>
-          <%= cond do %>
-            <% (type == :markdown && enable_wysiwyg?) -> %>
-              <%= textarea(f, :text_body, class: "hidden") %>
-              <div
-                id="wysiwyg-container"
-                phx-hook="MarkdownEditor"
-                class="flex-grow bg-white mt-4 min-h-10"
-              >
-                <%= render("_wysiwyg_editor.html", assigns) %>
-              </div>
-            <% (type == :block) -> %>
-              <%= render("_block_editor.html", assigns) %>
-            <% (type == :mjml) -> %>
-              <div id="mjml-container" phx-hook="MjmlEditor">
-                <%= render("_mjml_editor.html", assigns) %>
-              </div>
-            <% true -> %>
-              <div id="markdown-simple-container" phx-hook="MarkdownSimpleEditor">
-                <%= render("_markdown_editor.html", assigns) %>
-              </div>
-          <% end %>
-        </div>
+      <div class="flex flex-col w-full">
+        <% type = Ecto.Changeset.get_field(@changeset, :settings).type %>
+        <% enable_wysiwyg? = Ecto.Changeset.get_field(@changeset, :settings).enable_wysiwyg %>
+        <%= cond do %>
+          <% (type == :markdown && enable_wysiwyg?) -> %>
+            <%= textarea(f, :text_body, class: "hidden") %>
+            <div
+              id="wysiwyg-container"
+              phx-hook="MarkdownEditor"
+              class="flex-grow bg-white mt-4 min-h-10"
+            >
+              <%= render("_wysiwyg_editor.html", assigns) %>
+            </div>
+          <% (type == :block) -> %>
+            <%= render("_block_editor.html", assigns) %>
+          <% (type == :mjml) -> %>
+            <div id="mjml-container" phx-hook="MjmlEditor">
+              <%= render("_mjml_editor.html", assigns) %>
+            </div>
+          <% true -> %>
+            <div id="markdown-simple-container" phx-hook="MarkdownSimpleEditor">
+              <%= render("_markdown_editor.html", assigns) %>
+            </div>
+        <% end %>
       </div>
     </.form>
   </div>
   <%= render("_send_dialogs.html", assigns) %>
   <%= render("_settings_dialog.html", assigns) %>
+  <%= render("_preview_dialog.html", assigns) %>
 </div>
 
 <%= render("_wysiwyg_dialogs.html", assigns) %>
