@@ -31,7 +31,8 @@ defmodule KeilaWeb.Api.Schemas.Contact do
     },
     data: %{
       type: :map,
-      example: %{"tags" => ["rocket-scientist"]}
+      description: "Custom data fields",
+      example: %{"interests" => ["chess", "books"], "city" => "Munich"}
     },
     inserted_at: %{
       type: :string,
@@ -102,7 +103,8 @@ defmodule KeilaWeb.Api.Schemas.Contact.DataParams do
     properties: %{
       data: %OpenApiSpex.Schema{
         type: :object,
-        example: %{"tags" => ["rocket-scientist"]}
+        description: "Custom data fields",
+        example: %{"interests" => ["chess", "books"], "city" => "Munich"}
       }
     }
   }
