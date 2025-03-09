@@ -61,14 +61,22 @@ export default class Layout {
         }
       })
 
+      // NOTE: This variable keeps track of whether
+      // we've manually opened or closed the toolbar.
+      // This is necessary because the API doesn't expose
+      // the toolbar state
+      let maybeOpen = false
+
       editorPlace.addEventListener("mouseenter", () => {
-        editor.toolbar.open()
+        if (!maybeOpen) editor.toolbar.open()
+        maybeOpen = true
       })
 
       editorPlace.addEventListener("mouseleave", () => {
         editor.toolbar.close()
+        maybeOpen = false
       })
-      
+
       editorPlace.addEventListener("paste", e => {
         e.preventDefault()
         e.stopPropagation()

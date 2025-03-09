@@ -86,8 +86,20 @@ export default class BlockEditor {
       })
     })
 
+    // NOTE: This variable keeps track of whether
+    // we've manually opened or closed the toolbar.
+    // This is necessary because the API doesn't expose
+    // the toolbar state
+    let maybeOpen = false
+
     place.addEventListener("mouseleave", () => {
       editor.toolbar.close()
+      maybeOpen = false
+    })
+
+    place.addEventListener("mouseenter", () => {
+      if (!maybeOpen) editor.toolbar.open()
+      maybeOpen = true
     })
   }
 }
