@@ -68,6 +68,11 @@ export default class Layout {
       editorPlace.addEventListener("mouseleave", () => {
         editor.toolbar.close()
       })
+      
+      editorPlace.addEventListener("paste", e => {
+        e.preventDefault()
+        e.stopPropagation()
+      })
     }
 
     return this.wrapper
