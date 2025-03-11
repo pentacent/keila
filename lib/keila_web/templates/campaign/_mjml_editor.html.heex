@@ -27,28 +27,28 @@
   </div>
 </div>
 
-<div
-  id="mjml-editor-wrapper"
-  phx-update="ignore"
-  class="flex"
-  x-data="{editorExpanded: false}"
-  x-on:x-toggle-expand-editor.document="editorExpanded = !editorExpanded"
->
-  <%!--
+<div id="mjml-editor-wrapper" phx-update="ignore">
+  <div
+    class="flex"
+    x-data="{editorExpanded: false}"
+    x-on:x-toggle-expand-editor.document="editorExpanded = !editorExpanded"
+  >
+    <%!--
     NOTE: using width: 0 for the editor is a weird hack here because otherwise the editor kept
     causing the entire page to overflow.
     The width of the editor is controlled via the (inverse) width of the iframe instead.
    --%>
-  <div class="flex-grow transition-all" style="width: 0">
-    <div id="mjml-editor" class="editor"></div>
+    <div class="flex-grow transition-all" style="width: 0">
+      <div id="mjml-editor" class="editor"></div>
+    </div>
+    <iframe
+      id="html-inline-preview"
+      src="about:blank"
+      class="transition-all"
+      x-bind:class="editorExpanded ? 'w-0' : 'w-3/5'"
+    >
+    </iframe>
   </div>
-  <iframe
-    id="html-inline-preview"
-    src="about:blank"
-    class="transition-all"
-    x-bind:class="editorExpanded ? 'w-0' : 'w-3/5'"
-  >
-  </iframe>
 </div>
 
 <% f = form_for(@changeset, "#") %>
