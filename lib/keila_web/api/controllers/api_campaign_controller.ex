@@ -116,7 +116,9 @@ defmodule KeilaWeb.ApiCampaignController do
     summary: "Deliver Campaign",
     parameters: [id: [in: :path, type: :string, description: "Campaign ID"]],
     responses: %{
-      ok: {"Campaign response", "application/json", Schemas.MailingsCampaign.Response}
+      202 =>
+        {"Campaign delivery queued", "application/json",
+         Schemas.MailingsCampaign.DeliveryQueuedResponse}
     }
   )
 
@@ -127,7 +129,10 @@ defmodule KeilaWeb.ApiCampaignController do
 
     if campaign do
       Mailings.deliver_campaign_async(campaign.id)
-      put_status(conn, 204)
+
+      conn
+      |> put_status(202)
+      |> render("delivery_queued.json", %{campaign: campaign})
     else
       Errors.send_404(conn)
     end

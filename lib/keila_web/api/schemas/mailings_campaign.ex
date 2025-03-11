@@ -165,3 +165,25 @@ defmodule KeilaWeb.Api.Schemas.MailingsCampaign.ScheduleParams do
   @properties KeilaWeb.Api.Schemas.MailingsCampaign.properties()
   build_open_api_schema(@properties, only: [:scheduled_for])
 end
+
+defmodule KeilaWeb.Api.Schemas.MailingsCampaign.DeliveryQueuedResponse do
+  use KeilaWeb.Api.Schema
+
+  build_open_api_schema(%{
+    delivery_queued: %{
+      type: :boolean,
+      enum: [true],
+      description: """
+      This indicates that the delivery of the campaign will be processed asynchronously.
+
+      **Note**: If the campaign is invalid (e.g. missing a sender) or if your account has
+      insufficient credits, the campaign will not be delivered regardless of the response from the endpoint.
+      """
+    },
+    campaign_id: %{
+      type: :string,
+      description: "Campaign ID",
+      example: "mc_12345"
+    }
+  })
+end
