@@ -41,7 +41,7 @@ RUN apt-get update \
   fi \
   #
   # Install dependencies
-  && apt-get install -y build-essential cmake \
+  && apt-get install -y build-essential \
   #
   # Clean up
   && apt-get autoremove -y \
@@ -51,6 +51,10 @@ RUN apt-get update \
 RUN su ${USERNAME} -c "mix local.hex --force \
   && mix local.rebar --force \
   && mix archive.install --force hex phx_new ${PHOENIX_VERSION}"
+
+# Install dprint
+RUN curl -fsSL https://dprint.dev/install.sh | sh \
+  && mv ~/.dprint/bin/dprint /usr/local/bin
 
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update \
