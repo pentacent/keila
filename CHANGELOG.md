@@ -3,6 +3,35 @@
 ## Unreleased
 
 
+## Version 0.17.0
+
+👁️ Previews: Seeing is Believing
+
+### Breaking Changes
+- Keila now uses [Lexbor](https://github.com/lexbor/lexbor) instead of [Mochiweb](https://github.com/mochi/mochiweb) for parsing HTML.
+  Lexbor is faster and behaves much more like real-world browsers. Make sure to check your MJML templates to verify the change didn’t break anything.
+  The base template for Markdown and the Block Editor has been updated accordingly.
+
+## Added
+- Sending of campaign preview emails
+- Unified and improved preview dialogs for all campaign types, including a switch for mobile/desktop view
+- [Completely revamped API docs page](https://app.keila.io/api) and improved documentation
+- `external_id` property for contacts
+- `id_type` query param in contacts API to allow fetching/updating contacts by email address or external ID.
+- API endpoints for managing and submitting forms, allowing for the creation of new contacts with double opt-in
+
+## Changed
+- Expanding the MJML editor now makes it take up the entire width of the UI
+- Added forms, tracking, and unsubscribe links to robots.txt
+
+## Fixed
+- Fixed errors when custom form field labels were empty
+- Block Editor no longer duplicates content when using copy and paste
+- Deleting nested blocks in Block Editor works more reliably now
+- API for delivering campaigns no longer returns a server error. Fixes #307
+- Updated dev container dependencies to make sure they work with recent changes. Fixes #377 (thanks @henriqueberlesi)
+
+
 ## Version 0.16.1
 
 🇫🇷♻️ Bonjour File Deletions!
@@ -40,7 +69,7 @@
   admin page. You can disable this by setting `DISABLE_UPDATE_CHECKS=true`.
 - The log level can now be configured by setting `LOG_LEVEL` to `debug`, `info`, and `warning`.
   Implements #360 (thanks @kevinam99)
-- `mjml_body` an `html_body` are now included in the Campaign API responses
+- `mjml_body` and `html_body` are now included in the Campaign API responses
 
 ### Fixed
 - Segment queries with the `$not` operator (e.g. `{"$not": {"data.foo": "bar"}}`)
