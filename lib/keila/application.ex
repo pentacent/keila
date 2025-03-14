@@ -58,8 +58,9 @@ defmodule Keila.Application do
     end
   end
 
+  @env Mix.env()
   defp maybe_fetch_updates() do
-    unless Mix.env() == :test do
+    unless @env == :test do
       :ok = Application.ensure_started(:oban)
 
       Keila.Instance.UpdateCronWorker.new(%{})

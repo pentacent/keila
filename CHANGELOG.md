@@ -3,6 +3,12 @@
 ## Unreleased
 
 
+## Version 0.17.1
+
+### Fixed
+- Fixed error when launching the 0.17.0 release
+
+
 ## Version 0.17.0
 
 👁️ Previews: Seeing is Believing
