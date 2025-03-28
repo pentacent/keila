@@ -27,4 +27,11 @@
       </template>
     </div>
   <% end %>
+
+  <div class="form-row">
+    <%= label(@form, :postmark_message_stream, gettext("Message Stream")) %>
+    <%= with_validation(@form, :postmark_message_stream) do %>
+      <%= text_input(@form, :postmark_message_stream, class: "text-black") %>
+    <% end %>
+  </div>
 </div>
