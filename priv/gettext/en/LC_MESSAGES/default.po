@@ -189,7 +189,6 @@ msgstr ""
 #: lib/keila_web/templates/segment/delete.html.heex:34
 #: lib/keila_web/templates/segment/edit_live.html.heex:14
 #: lib/keila_web/templates/sender/delete.html.heex:39
-#: lib/keila_web/templates/sender/edit.cloud.html.heex:18
 #: lib/keila_web/templates/sender/edit.html.heex:18
 #: lib/keila_web/templates/shared_sender_admin/delete.html.heex:40
 #: lib/keila_web/templates/shared_sender_admin/edit.html.heex:18
@@ -412,7 +411,6 @@ msgstr ""
 #: lib/keila_web/templates/segment/delete.html.heex:37
 #: lib/keila_web/templates/segment/edit_live.html.heex:24
 #: lib/keila_web/templates/sender/delete.html.heex:42
-#: lib/keila_web/templates/sender/edit.cloud.html.heex:33
 #: lib/keila_web/templates/sender/edit.html.heex:26
 #: lib/keila_web/templates/shared_sender_admin/delete.html.heex:43
 #: lib/keila_web/templates/shared_sender_admin/edit.html.heex:26
@@ -923,7 +921,6 @@ msgstr ""
 msgid "New Project"
 msgstr ""
 
-#: lib/keila_web/templates/sender/edit.cloud.html.heex:9
 #: lib/keila_web/templates/sender/edit.html.heex:9
 #: lib/keila_web/views/sender_view.ex:10
 #, elixir-autogen, elixir-format
@@ -1047,7 +1044,6 @@ msgstr ""
 #: lib/keila_web/templates/project/new.html.heex:8
 #: lib/keila_web/templates/segment/edit_live.html.heex:32
 #: lib/keila_web/templates/segment/new.html.heex:8
-#: lib/keila_web/templates/sender/edit.cloud.html.heex:41
 #: lib/keila_web/templates/sender/edit.html.heex:34
 #: lib/keila_web/templates/shared_sender_admin/edit.html.heex:34
 #: lib/keila_web/templates/template/clone.html.heex:8
@@ -1529,7 +1525,6 @@ msgstr ""
 msgid "Administer Users"
 msgstr ""
 
-#: lib/keila_web/templates/error/404.html.heex:10
 #: lib/keila_web/templates/layout/_menu.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Back to projects overview"
@@ -1637,7 +1632,6 @@ msgstr ""
 msgid "Keila organizes contacts, forms, and campaigns in *projects*.\n\nYou can create multiple projects, e.g. if you want\nto separate your gardening business newsletter from\nyour chess club member list.\n"
 msgstr ""
 
-#: lib/keila_web/templates/onboarding/show.html.heex:8
 #: lib/keila_web/templates/project/_empty_state_senders.html.heex:6
 #, elixir-autogen, elixir-format
 msgid "Let’s get started!"
@@ -2137,7 +2131,6 @@ msgid "My template name"
 msgstr ""
 
 #: lib/keila_web/templates/sender/_shared_local_config.html.heex:6
-#: lib/keila_web/templates/sender/_shared_smtp_config.html.heex:6
 #, elixir-autogen, elixir-format
 msgid "No configuration is required for this sender."
 msgstr ""
@@ -2378,8 +2371,6 @@ msgid "System"
 msgstr ""
 
 #: lib/keila_web/templates/campaign/new.html.heex:84
-#: lib/keila_web/templates/onboarding/show.html.heex:76
-#: lib/keila_web/templates/sender/edit.cloud.html.heex:83
 #, elixir-autogen, elixir-format
 msgid "The simplest type of email. Text and nothing else. No images, no links, just text."
 msgstr ""
@@ -2396,7 +2387,6 @@ msgid "Untracked Campaign"
 msgstr ""
 
 #: lib/keila_web/templates/campaign/new.html.heex:100
-#: lib/keila_web/templates/sender/edit.cloud.html.heex:97
 #, elixir-autogen, elixir-format
 msgid "Use the Markdown editor to create beautiful single-column hybrid emails."
 msgstr ""
@@ -3039,46 +3029,9 @@ msgctxt "opacity"
 msgid "very light"
 msgstr ""
 
-#: lib/keila_web/templates/onboarding/show.html.heex:71
-#, elixir-autogen, elixir-format
-msgid "Bring your own server"
-msgstr ""
-
 #: lib/keila_web/templates/component/file_manager_live.html.heex:79
 #, elixir-autogen, elixir-format
 msgid "Click to delete"
-msgstr ""
-
-#: lib/keila_web/templates/onboarding/show.html.heex:24
-#, elixir-autogen, elixir-format
-msgid "How do you want to send your emails?"
-msgstr ""
-
-#: lib/keila_web/templates/onboarding/show.html.heex:109
-#: lib/keila_web/templates/onboarding/show.html.heex:158
-#, elixir-autogen, elixir-format
-msgid "Let’s get to know each other!"
-msgstr ""
-
-#: lib/keila_web/templates/error/404.html.heex:3
-#, elixir-autogen, elixir-format
-msgid "Not found."
-msgstr ""
-
-#: lib/keila_web/templates/onboarding/show.html.heex:34
-#: lib/keila_web/templates/sender/edit.cloud.html.heex:78
-#, elixir-autogen, elixir-format, fuzzy
-msgid "Send with Keila"
-msgstr ""
-
-#: lib/keila_web/templates/error/404.html.heex:14
-#, elixir-autogen, elixir-format, fuzzy
-msgid "Sign in"
-msgstr ""
-
-#: lib/keila_web/templates/error/404.html.heex:5
-#, elixir-autogen, elixir-format
-msgid "The page you’re looking for doesn’t exist or has been removed."
 msgstr ""
 
 #: lib/keila_web/templates/component/file_manager_live.html.heex:100
@@ -3086,29 +3039,9 @@ msgstr ""
 msgid "This file can’t be deleted because it’s already in use in the following campaigns:"
 msgstr ""
 
-#: lib/keila_web/templates/error/404.html.heex:18
-#, elixir-autogen, elixir-format
-msgid "Visit the docs"
-msgstr ""
-
-#: lib/keila_web/templates/onboarding/show.html.heex:39
-#, elixir-autogen, elixir-format
-msgid "We take care of sending. You need access to a custom domain and your DNS settings."
-msgstr ""
-
-#: lib/keila_web/templates/sender/edit.cloud.html.heex:92
-#, elixir-autogen, elixir-format
-msgid "Your Own Server"
-msgstr ""
-
 #: lib/keila_web/templates/component/file_manager_live.html.heex:98
 #, elixir-autogen, elixir-format
 msgid "draft"
-msgstr ""
-
-#: lib/keila_web/templates/sender/edit.cloud.html.heex:61
-#, elixir-autogen, elixir-format, fuzzy
-msgid "newsletter@example.com"
 msgstr ""
 
 #: lib/keila_web/templates/component/file_manager_live.html.heex:98
