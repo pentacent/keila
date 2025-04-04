@@ -8,7 +8,7 @@
   "dependencies": {
     "@codemirror/basic-setup": "^0.20.0",
     "@codemirror/lang-html": "^6.4.9",
-    "@editorjs/editorjs": "git+https://github.com/pentacent/editor.js.git#ff6e6ac3272f29e02229cd97ebffa5acf6c0e0fe",
+    "@editorjs/editorjs": "git+https://github.com/pentacent/editor.js.git#743eaa8fa295ef0c2539ea1d4361303bf8b72164",
     "@editorjs/header": "^2.7.0",
     "@editorjs/image": "^2.8.1",
     "@editorjs/link": "^2.5.0",
