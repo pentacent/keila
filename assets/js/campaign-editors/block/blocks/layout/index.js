@@ -78,7 +78,6 @@ export default class Layout {
       })
 
       editorPlace.addEventListener("paste", e => {
-        e.preventDefault()
         e.stopPropagation()
       })
     }
