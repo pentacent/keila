@@ -13,7 +13,6 @@ defmodule Keila.Mailings.Worker do
       keys: [:recipient_id]
     ]
 
-  alias Ecto.Multi
   alias Keila.Contacts.Contact
   alias Keila.Mailings.{Recipient, Builder, RateLimiter}
 
@@ -109,18 +108,15 @@ defmodule Keila.Mailings.Worker do
 
   # Email is invalid
   defp handle_result({:error, :invalid_email}, recipient) do
-    Multi.new()
-    |> Multi.update_all(
-      :update_recipient,
-      set_recipient_failed_query(recipient),
-      []
-    )
-    |> Multi.update_all(
-      :update_contact,
-      set_contact_unreachable_query(recipient),
-      []
-    )
-    |> Repo.transaction()
+    Repo.transaction(fn ->
+      recipient
+      |> set_recipient_failed_query()
+      |> Repo.update_all([])
+
+      recipient
+      |> set_contact_unreachable_query()
+      |> Repo.update_all([])
+    end)
 
     {:cancel, :invalid_email}
   end
