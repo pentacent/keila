@@ -13,7 +13,14 @@ defmodule Keila.MixProject do
       deps: deps(),
       name: "Keila",
       homepage_url: "https://keila.io",
-      docs: docs()
+      docs: docs(),
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ]
     ]
   end
 
@@ -83,7 +90,8 @@ defmodule Keila.MixProject do
       {:open_api_spex, "~> 3.21"},
       {:ex_rated, "~> 2.1"},
       {:tls_certificate_check, "~> 1.20"},
-      {:mjml, "~> 4.0"}
+      {:mjml, "~> 4.0"},
+      {:excoveralls, "~> 0.16", only: :test}
     ]
   end
 
