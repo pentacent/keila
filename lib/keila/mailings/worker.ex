@@ -2,6 +2,7 @@ defmodule Keila.Mailings.Worker do
   @moduledoc """
   This worker builds and delivers queued emails.
   """
+  use Keila.Repo
 
   use Oban.Worker,
     queue: :mailer,
@@ -12,8 +13,9 @@ defmodule Keila.Mailings.Worker do
       keys: [:recipient_id]
     ]
 
-  use Keila.Repo
+  alias Keila.Contacts.Contact
   alias Keila.Mailings.{Recipient, Builder, RateLimiter}
+
   require Logger
 
   @impl true
@@ -91,10 +93,8 @@ defmodule Keila.Mailings.Worker do
   defp handle_result({:ok, raw_receipt}, recipient) do
     receipt = get_receipt(raw_receipt)
 
-    from(r in Recipient,
-      where: r.id == ^recipient.id,
-      update: [set: [sent_at: fragment("NOW()"), receipt: ^receipt]]
-    )
+    recipient
+    |> set_recipient_sent_query(receipt)
     |> Repo.update_all([])
 
     :ok
@@ -106,19 +106,67 @@ defmodule Keila.Mailings.Worker do
   # Email was already sent
   defp handle_result({:error, :already_sent}, _), do: {:cancel, :already_sent}
 
+  # Email is invalid
+  defp handle_result({:error, :invalid_email}, recipient) do
+    Repo.transaction(fn ->
+      recipient
+      |> set_recipient_failed_query()
+      |> Repo.update_all([])
+
+      recipient
+      |> set_contact_unreachable_query()
+      |> Repo.update_all([])
+    end)
+
+    {:cancel, :invalid_email}
+  end
+
   # Another error occurred. Sending is not retried.
   defp handle_result({:error, reason}, recipient) do
     Logger.warning(
       "Failed sending email to #{recipient.contact.email} for campaign #{recipient.campaign.id}: #{inspect(reason)}"
     )
 
-    from(r in Recipient,
-      where: r.id == ^recipient.id,
-      update: [set: [failed_at: fragment("NOW()")]]
-    )
+    recipient
+    |> set_recipient_failed_query()
     |> Repo.update_all([])
 
     {:cancel, reason}
+  end
+
+  defp set_recipient_sent_query(recipient, receipt) do
+    from(r in Recipient,
+      where: r.id == ^recipient.id,
+      update: [
+        set: [
+          sent_at: fragment("NOW()"),
+          receipt: ^receipt
+        ]
+      ]
+    )
+  end
+
+  defp set_recipient_failed_query(recipient) do
+    from(r in Recipient,
+      where: r.id == ^recipient.id,
+      update: [
+        set: [
+          failed_at: fragment("NOW()")
+        ]
+      ]
+    )
+  end
+
+  defp set_contact_unreachable_query(recipient) do
+    from(c in Contact,
+      where: c.id == ^recipient.contact_id,
+      update: [
+        set: [
+          status: :unreachable,
+          updated_at: fragment("NOW()")
+        ]
+      ]
+    )
   end
 
   defp get_receipt(%{id: receipt}), do: receipt
