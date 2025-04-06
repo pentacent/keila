@@ -49,8 +49,8 @@ jobs:
         run: |
           mix ecto.create
           mix ecto.migrate
-      - name: mix test
-        run: mix test
+      - name: generate coveralls report (mix test)
+        run: mix coveralls.github
   build:
     name: Build and Release
     needs:
