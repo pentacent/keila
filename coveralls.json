@@ -1,11 +1,11 @@
 {
-    "coverage_options": {
-        "minimum_coverage": 73,
-        "skip_files": [
-            "deps"
-        ]
-    },
-    "terminal_options": {
-        "file_column_width": 120
-    }
+  "coverage_options": {
+    "minimum_coverage": 73,
+    "skip_files": [
+      "deps"
+    ]
+  },
+  "terminal_options": {
+    "file_column_width": 120
+  }
 }
