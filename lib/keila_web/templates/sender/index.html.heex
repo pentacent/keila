@@ -23,7 +23,7 @@
         <%= sender.name %>
       </h2>
       <p>
-        <%= sender.from_name %> &lt;<%= sender.from_email %>&gt;
+        <%= Keila.Mailings.sender_from_line(sender) %>
       </p>
       <br />
       <a

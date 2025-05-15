@@ -52,8 +52,8 @@ defmodule Keila.Mailings.Sender do
 
   defp lowercase_emails(changeset) do
     changeset
-    |> update_change(:from_email, &String.downcase/1)
-    |> update_change(:reply_to_email, &String.downcase/1)
+    |> update_change(:from_email, &downcase_change/1)
+    |> update_change(:reply_to_email, &downcase_change/1)
   end
 
   defp apply_constraints(changeset) do
@@ -61,4 +61,7 @@ defmodule Keila.Mailings.Sender do
     |> unique_constraint([:from_email])
     |> unique_constraint([:name, :project_id])
   end
+
+  defp downcase_change(string) when is_binary(string), do: String.downcase(string)
+  defp downcase_change(nil), do: nil
 end

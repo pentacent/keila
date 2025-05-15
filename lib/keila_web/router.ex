@@ -11,6 +11,7 @@ defmodule KeilaWeb.Router do
     plug KeilaWeb.Meta.Plug
     plug KeilaWeb.AuthSession.Plug
     plug KeilaWeb.PutLocalePlug
+    plug KeilaWeb.InstanceInfoPlug
   end
 
   # Non-authenticated Routes
@@ -24,7 +25,7 @@ defmodule KeilaWeb.Router do
   scope "/" do
     pipe_through :browser
 
-    get "/api", OpenApiSpex.Plug.SwaggerUI, path: "/api/v1/openapi"
+    get "/api", KeilaWeb.ApiDocsController, :show
   end
 
   # Unauthenticated Routes
@@ -78,6 +79,8 @@ defmodule KeilaWeb.Router do
 
     resources "/admin/shared-senders", SharedSenderAdminController
     get "/admin/shared-senders/:id/delete", SharedSenderAdminController, :delete_confirmation
+
+    get "/admin/instance", InstanceAdminController, :show
   end
 
   # Authenticated Routes within a Project context
@@ -203,6 +206,9 @@ defmodule KeilaWeb.Router do
 
     post "/campaigns/:id/actions/send", ApiCampaignController, :deliver
     post "/campaigns/:id/actions/schedule", ApiCampaignController, :schedule
+
+    resources "/forms", ApiFormController, only: [:index, :show, :create, :update, :delete]
+    post "/forms/:id/actions/submit", ApiFormController, :submit
 
     resources "/segments", ApiSegmentController, only: [:index, :show, :create, :update, :delete]
 

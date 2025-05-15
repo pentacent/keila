@@ -35,7 +35,7 @@ defmodule KeilaWeb.ApiCampaignController do
   operation(:create,
     summary: "Create Campaign",
     parameters: [],
-    request_body: {"Campaign params", "application/json", Schemas.MailingsCampaign.Params},
+    request_body: {"Campaign params", "application/json", Schemas.MailingsCampaign.CreateParams},
     responses: [
       ok: {"Campaign response", "application/json", Schemas.MailingsCampaign.Response}
     ]
@@ -68,7 +68,7 @@ defmodule KeilaWeb.ApiCampaignController do
   operation(:update,
     summary: "Update Campaign",
     parameters: [id: [in: :path, type: :string, description: "Campaign ID"]],
-    request_body: {"Campaign params", "application/json", Schemas.MailingsCampaign.Params},
+    request_body: {"Campaign params", "application/json", Schemas.MailingsCampaign.UpdateParams},
     responses: [
       ok: {"Campaign response", "application/json", Schemas.MailingsCampaign.Response}
     ]
@@ -79,8 +79,13 @@ defmodule KeilaWeb.ApiCampaignController do
     project_id = project_id(conn)
 
     with campaign = %Mailings.Campaign{} <- Mailings.get_project_campaign(project_id, id) do
-      settings_id = campaign.settings.id
-      params = put_in(conn.body_params.data, [:settings, :id], settings_id)
+      settings_params =
+        campaign.settings
+        |> Mailings.Campaign.Settings.changeset(conn.body_params.data[:settings] || %{})
+        |> Ecto.Changeset.apply_changes()
+        |> Map.from_struct()
+
+      params = Map.put(conn.body_params.data, :settings, settings_params)
 
       case Mailings.update_campaign(id, params) do
         {:ok, campaign} -> render(conn, "campaign.json", %{campaign: campaign})
@@ -111,7 +116,9 @@ defmodule KeilaWeb.ApiCampaignController do
     summary: "Deliver Campaign",
     parameters: [id: [in: :path, type: :string, description: "Campaign ID"]],
     responses: %{
-      ok: {"Campaign response", "application/json", Schemas.MailingsCampaign.Response}
+      202 =>
+        {"Campaign delivery queued", "application/json",
+         Schemas.MailingsCampaign.DeliveryQueuedResponse}
     }
   )
 
@@ -122,7 +129,10 @@ defmodule KeilaWeb.ApiCampaignController do
 
     if campaign do
       Mailings.deliver_campaign_async(campaign.id)
-      put_status(conn, 204)
+
+      conn
+      |> put_status(202)
+      |> render("delivery_queued.json", %{campaign: campaign})
     else
       Errors.send_404(conn)
     end
@@ -132,7 +142,7 @@ defmodule KeilaWeb.ApiCampaignController do
     summary: "Schedule Campaign",
     parameters: [id: [in: :path, type: :string, description: "Campaign ID"]],
     request_body:
-      {"Campaign params", "application/json", Schemas.MailingsCampaign.ScheduleParams},
+      {"Schedule params", "application/json", Schemas.MailingsCampaign.ScheduleParams},
     responses: %{
       ok: {"Campaign response", "application/json", Schemas.MailingsCampaign.Response}
     }

@@ -1,4 +1,4 @@
-defmodule PreluApi.Repo.Migrations.SubscriptionUpserts do
+defmodule Keila.Repo.Migrations.SubscriptionUpserts do
   use Ecto.Migration
 
   def up do

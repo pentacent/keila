@@ -34,7 +34,7 @@ defmodule KeilaWeb.ApiSegmentController do
   operation(:create,
     summary: "Create Segment",
     parameters: [],
-    request_body: {"Segment params", "application/json", Schemas.ContactsSegment.Params},
+    request_body: {"Segment params", "application/json", Schemas.ContactsSegment.CreateParams},
     responses: [
       ok: {"Segment response", "application/json", Schemas.ContactsSegment.Response}
     ]
@@ -67,7 +67,7 @@ defmodule KeilaWeb.ApiSegmentController do
   operation(:update,
     summary: "Update Segment",
     parameters: [id: [in: :path, type: :string, description: "Segment ID"]],
-    request_body: {"Segment params", "application/json", Schemas.ContactsSegment.Params},
+    request_body: {"Segment params", "application/json", Schemas.ContactsSegment.UpdateParams},
     responses: [
       ok: {"Segment response", "application/json", Schemas.ContactsSegment.Response}
     ]

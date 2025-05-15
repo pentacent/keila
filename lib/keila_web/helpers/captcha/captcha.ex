@@ -8,8 +8,16 @@ defmodule KeilaWeb.Captcha do
 
   use Phoenix.HTML
 
-  @script_url_hcaptcha "https://hcaptcha.com/1/api.js"
-  @script_url_friendlycaptcha "https://unpkg.com/friendly-challenge@0.9.11/widget.module.min.js"
+  @default_urls [
+    hcaptcha: [
+      verify: "https://hcaptcha.com/siteverify",
+      script: "https://hcaptcha.com/1/api.js"
+    ],
+    friendly_captcha: [
+      verify: "https://api.friendlycaptcha.com/api/v1/siteverify",
+      script: "https://unpkg.com/friendly-challenge@0.9.11/widget.module.min.js"
+    ]
+  ]
 
   def captcha_tag() do
     [
@@ -33,10 +41,9 @@ defmodule KeilaWeb.Captcha do
   def captcha_valid?(response) when response in [nil, ""], do: false
 
   def captcha_valid?(response) do
-    config = config()
     body = request_body(response)
 
-    with {:ok, response} <- HTTPoison.post(config[:url], body, [], recv_timeout: 5_000),
+    with {:ok, response} <- HTTPoison.post(verify_url(), body, [], recv_timeout: 5_000),
          {:ok, response_body} <- Jason.decode(response.body),
          %{"success" => true} <- response_body do
       true
@@ -57,10 +64,21 @@ defmodule KeilaWeb.Captcha do
     end
   end
 
+  defp verify_url() do
+    config = config()
+
+    case config[:verify_url] do
+      nil -> @default_urls[config[:provider]][:verify]
+      verify_url -> verify_url
+    end
+  end
+
   defp script_url() do
-    case config()[:provider] do
-      :hcaptcha -> @script_url_hcaptcha
-      :friendly_captcha -> @script_url_friendlycaptcha
+    config = config()
+
+    case config[:script_url] do
+      nil -> @default_urls[config[:provider]][:script]
+      verify_url -> verify_url
     end
   end
 

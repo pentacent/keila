@@ -92,3 +92,6 @@ msgstr ""
 
 msgid "must be equal to %{number}"
 msgstr ""
+
+msgid "must be at least %{offset} seconds in the future"
+msgstr ""

@@ -1,5 +1,5 @@
 defmodule Keila.Mailings.DeliverScheduledCampaignsWorker do
-  use Oban.Worker, queue: :periodic
+  use Oban.Worker, queue: :mailer_scheduler
   alias Keila.Mailings
 
   def perform(%Oban.Job{}) do

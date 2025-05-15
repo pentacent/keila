@@ -74,28 +74,11 @@
     <%= raw(@styles) %>
   </style>
 </div>
-
-<div x-data="{previewMode: false}" x-on:x-toggle-preview.document="previewMode = !previewMode">
-  <div id="preview-container" x-show="previewMode">
-    <iframe
-      id="block-html-preview"
-      data-source="html-preview-data"
-      class="bg-gray-100 fixed left-0 top-0 w-full h-screen inset-0 pb-10 z-40"
-    >
-    </iframe>
-    <button
-      @click.prevent="previewMode = !previewMode"
-      class="fixed h-10 bg-emerald-600 text-white w-full bottom-0 left-0 z-50"
-    >
-      <%= gettext("Close preview") %>
-    </button>
-  </div>
-  <div
-    id="block-html-preview-data"
-    phx-hook="HtmlPreview"
-    class="hidden"
-    data-iframe="block-html-preview"
-  >
-    <%= @preview %>
-  </div>
+<div
+  id="block-html-preview-data"
+  phx-hook="HtmlPreview"
+  class="hidden"
+  data-iframe="#html-preview"
+>
+  <%= @preview %>
 </div>

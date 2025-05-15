@@ -2,19 +2,101 @@
 
 ## Unreleased
 
-## Version 0.15.1
+
+## Version 0.17.1
+
+### Fixed
+- Fixed error when launching the 0.17.0 release
+
+
+## Version 0.17.0
+
+👁️ Previews: Seeing is Believing
+
+### Breaking Changes
+- Keila now uses [Lexbor](https://github.com/lexbor/lexbor) instead of [Mochiweb](https://github.com/mochi/mochiweb) for parsing HTML.
+  Lexbor is faster and behaves much more like real-world browsers. Make sure to check your MJML templates to verify the change didn’t break anything.
+  The base template for Markdown and the Block Editor has been updated accordingly.
 
 ## Added
+- Sending of campaign preview emails
+- Unified and improved preview dialogs for all campaign types, including a switch for mobile/desktop view
+- [Completely revamped API docs page](https://app.keila.io/api) and improved documentation
+- `external_id` property for contacts
+- `id_type` query param in contacts API to allow fetching/updating contacts by email address or external ID.
+- API endpoints for managing and submitting forms, allowing for the creation of new contacts with double opt-in
+
+## Changed
+- Expanding the MJML editor now makes it take up the entire width of the UI
+- Added forms, tracking, and unsubscribe links to robots.txt
+
+## Fixed
+- Fixed errors when custom form field labels were empty
+- Block Editor no longer duplicates content when using copy and paste
+- Deleting nested blocks in Block Editor works more reliably now
+- API for delivering campaigns no longer returns a server error. Fixes #307
+- Updated dev container dependencies to make sure they work with recent changes. Fixes #377 (thanks @henriqueberlesi)
+
+
+## Version 0.16.1
+
+🇫🇷♻️ Bonjour File Deletions!
+
+## Added
+
+- French translation (thanks @marc-bouvier for the translation and improving the translatability of Keila for other languages)
+- Deletion of images in the upload interface (thanks @jrowah for implementing)
+
+## Fixed
+
+- The campaign update API endpoint now properly merges provided campaign settings with the existing settings
+- Non-markdown default signature for plain text campaigns
+- API Keys with no defined name no longer output the entire data structure upon creation (thanks @danilax86 for fixing)
+
+
+## Version 0.16.0
+
+🔄 Automatic Update Notifications
+
+### Breaking Changes
+
+- `MAILER_SMTP_FROM_EMAIL` is now used as the default for `MAILER_SMTP_USER` when only
+  `MAILER_SMTP_FROM_EMAIL` is set.
+  Before, the inverse was true (only `MAILER_SMTP_USER` needed to be set and was used
+  as the default for `MAILER_SMTP_FROM_EMAIL`).
+  This change was made to address the fact that the SMTP username might be confidential
+  and shouldn’t be accidentally exposed by using it as the FROM address in system emails.
+  If you are already setting both environment variables, you don’t need to change anything but if
+  you were only setting `MAILER_SMTP_USER`, you need to update your configuration.
+  Fixes #356 (thanks @kevinam99 for implementing)
+
+### Added
+- Information about new releases is now automatically fetched and displayed on a new "System info"
+  admin page. You can disable this by setting `DISABLE_UPDATE_CHECKS=true`.
+- The log level can now be configured by setting `LOG_LEVEL` to `debug`, `info`, and `warning`.
+  Implements #360 (thanks @kevinam99)
+- `mjml_body` and `html_body` are now included in the Campaign API responses
+
+### Fixed
+- Segment queries with the `$not` operator (e.g. `{"$not": {"data.foo": "bar"}}`)
+  now also correctly include entries where the queried data keys don't exist at all.
+- Fixed possible exception when removing "Reply To" setting from sender settings.
+- Fixed Campaign API docs to include `json_body` as a map instead of a string.
+
+
+## Version 0.15.1
+
+### Added
 - Button for creating new users as admin (thanks @pmareke and @hellehata)
 - Contacts can now re-subscribe or update their data by submitting a form again
   (thanks @lislegaard for suggesting)
 - Honeypot fields to block bot subscriptions
 
-## Changed
+### Changed
 - Limited `first_name` and `last_name` fields to 50 characters.
   Implements #342 (thanks @lislegaard for suggesting)
 
-## Fixed
+### Fixed
 - Updated broken tzdata library. Fixes #336. (thanks @VincentSC for reporting)
 - Deletion of shared senders from the UI is now working.
   Fixes #326 (thanks @bpivk for reporting)
@@ -22,59 +104,62 @@
 
 ## Version 0.15.0
 
-## Added
+### Added
 - Support for MJML campaigns.
 - Forms can now be configured to redirect users after successful submission and when double opt-in
   is required.
 - Forms can now be configured with a custom message when double opt-in is required
 
-## Improved
+### Improved
 - New email scheduler and rate limiter with significantly improved performance. (thanks @dompie
   for supporting the development of this feature)
 
-## Fixed
+### Fixed
 - Show correct state while campaign is being prepared for sending on stats page
 - Marking custom checkboxes as *required* actually requires users to check them now.
   Fixes #328. (thanks @cyberwuulf for reporting)
 
 
 ## Version 0.14.11
-## Changed
+
+### Changed
 - Increased database timeout when inserting recipients to 60 seconds
 
 
 ## Version 0.14.10
-## Changed
+### Changed
 - The analytics UI now shows a maximum of 20 links to avoid performance issues
   with large campaigns and individualized links
 
 
 ## Version 0.14.9
-## Fixed
+
+### Fixed
 - Enabled translation of system strings on public forms.
 
 
 ## Version 0.14.8
-## Added
+### Added
 - Campaigns with type `block` and `json_body` can now be created via the API. Implements #300 (thanks @dompie for suggesting)
 
 
 ## Version 0.14.7
-## Added
+
+### Added
 - Image blocks now allow the use of Liquid in `src` and other attributes.
   Fixes #297 (thanks @dompie for reporting)
 
-## Fixed
+### Fixed
 - Separators are now rendered more faithfully in the block editor
 
 
 ## Version 0.14.6
 
-## Added
+### Added
 - Added PATCH and POST API endpoints for updating just the data field of a
   contact
 
-## Fixed
+### Fixed
 - Liquid tags are now correctly rendered in layout blocks in the Block Editor
   (thanks @dompie for reporting)
 - Fixed bug that caused "starts with" and "ends with" to be inverted in
@@ -83,7 +168,7 @@
 
 ## Version 0.14.5
 
-## Changed
+### Changed
 - Creating and updating contacts via the API now allows setting the `status`
   field.
 - Contacts list is now sorted in decending order by default
@@ -96,26 +181,26 @@
 
 ## Version 0.14.4
 
-## Fixed
+### Fixed
 - Avoid potential partial merging of system sender config with user-configured senders
 
 
 ## Version 0.14.3
 
-## Fixed
+### Fixed
 - Only support TLSv1.2 for STARTTLS SMTP Senders to avoid issues with
   non-compliant TLSv1.3 implementation in OTP
 
 ## Version 0.14.2
 
-## Improved
+### Improved
 - Added new Gmail user agent to avoid tracking invalid clicks/opens
 - Return to list of unsubscribed/unreachable contacts after delete action from
   one of those pages. Implements #193 (thanks @digitalfredy for reporting)
 - It's now possible to choose between the US and EU API endpoints for Mailgun senders (thanks @harryfear for reporting)
 - Improvements to German translation (thanks @dompie)
 
-## Fixed
+### Fixed
 - Clicking "Delete all" on the contacts list no longer causes a server error
   when no contacts have been selected. Fixes #260 (thanks @CSDUMMI for reporting)
 - Fixed connection errors when using SMTP senders with STARTTLS (thanks @beep and @CodeOfTim for reporting)
@@ -132,7 +217,7 @@ Custom signup form fields + contacts search 🔎
 - Added buttons for inserting images, links, and buttons to plain Markdown
   editor. Fixes #255 (thanks @lukaprincic for suggesting)
 
-## Improved
+### Improved
 - Errors in signup forms are displayed with a prominent red border and bold text
   now.
 
@@ -209,6 +294,7 @@ Double Opt-In ✅
 ### Fixed
 - Fixed crash when using data URLs in campaigns (#218 - thanks @katafrakt)
 
+
 ## Version 0.12.4
 
 ### Added
@@ -269,6 +355,7 @@ New Campaign Block Editor 📝
 ### Fixed
 - Legacy IDs are now decoded correctly
 
+
 ## Version 0.11.1
 
 Better Campaign Analytics 📈
@@ -293,6 +380,7 @@ Better Campaign Analytics 📈
 - Fixed error when no user content dir is set (#171)
 - Fixed error when CSRF is enabled for forms (#167)
 - **Breaking:** Hashids now use configurable salt. Read more on [keila.io](https://www.keila.io/updates/breaking-hashid-update)
+
 
 ## Version 0.10.0
 

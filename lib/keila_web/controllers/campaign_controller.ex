@@ -113,6 +113,7 @@ defmodule KeilaWeb.CampaignController do
       senders = Mailings.get_project_senders(project.id)
       templates = Templates.get_project_templates(project.id)
       segments = Contacts.get_project_segments(project.id)
+      account = Keila.Accounts.get_user_account(conn.assigns.current_user.id)
 
       live_render(conn, KeilaWeb.CampaignEditLive,
         session: %{
@@ -121,6 +122,7 @@ defmodule KeilaWeb.CampaignController do
           "senders" => senders,
           "templates" => templates,
           "segments" => segments,
+          "account" => account,
           "locale" => Gettext.get_locale()
         }
       )

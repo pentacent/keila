@@ -180,8 +180,8 @@ defmodule KeilaWeb.ContactControllerTest do
     assert disposition == "attachment; filename=\"contacts_#{project.id}.csv\""
 
     assert rows == [
-             "Email,First name,Last name,Data,Status",
-             "#{contact.email},#{contact.first_name},#{contact.last_name},\"{\"\"age\"\":42}\",active",
+             "Email,First name,Last name,Data,Status,External ID",
+             "#{contact.email},#{contact.first_name},#{contact.last_name},\"{\"\"age\"\":42}\",active,#{contact.external_id}",
              ""
            ]
   end

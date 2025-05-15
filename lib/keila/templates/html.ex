@@ -22,8 +22,8 @@ defmodule Keila.Templates.Html do
   Parses a HTML document and returns an HTML tree,
   """
   @spec parse_document!(String.t()) :: t()
-  def parse_document!(html) do
-    Floki.parse_document!(html)
+  def parse_document!(html, opts \\ []) do
+    Floki.parse_document!(html, opts)
   end
 
   @doc """
@@ -163,7 +163,7 @@ defmodule Keila.Templates.Html do
   Apply markup transforms for improved email client compatibility.
 
   ## Transforms:
-  - `h4 a` -> `div.keila-button a`
+  - `h4 a` -> `div.keila-button a` (this is implemented twice because mochihtml strips the leading "\n" while Lexbor retains it)
   """
   @spec apply_email_markup(t()) :: t()
   def apply_email_markup(html) do
@@ -171,6 +171,64 @@ defmodule Keila.Templates.Html do
   end
 
   defp do_apply_email_markup({"h4", _, [{"a", a_attrs, a_children}]}) do
+    build_button_markup(a_attrs, a_children)
+  end
+
+  defp do_apply_email_markup({"h4", _, ["\n", {"a", a_attrs, a_children}]}) do
+    build_button_markup(a_attrs, a_children)
+  end
+
+  defp do_apply_email_markup({"blockquote", _, content}) do
+    {"table", [{"style", "width: 100%"}],
+     [
+       {"tr", [{"class", "block--quote"}],
+        [
+          {"td", [],
+           [
+             {"figure", [],
+              [
+                {"blockquote", [], content}
+              ]}
+           ]}
+        ]}
+     ]}
+  end
+
+  defp do_apply_email_markup(
+         {"a", a_attrs, [{"table", _, [{"tr", _, [{"td", _, [{"img", img_attrs, _}]}]}]}]}
+       ) do
+    build_img_with_link(a_attrs, img_attrs)
+  end
+
+  defp do_apply_email_markup(
+         {"a", a_attrs,
+          [_, {"table", _, [{"tr", _, [{"td", _, [{"img", img_attrs, _}]}]}]}, "\n"]}
+       ) do
+    build_img_with_link(a_attrs, img_attrs)
+  end
+
+  defp do_apply_email_markup({"img", img_attrs, _}) do
+    {"table", [{"style", "width: 100%"}],
+     [
+       {"tr", [{"class", "block--image"}],
+        [
+          {"td", [],
+           [
+             {"img",
+              img_attrs ++
+                [
+                  {"width", "100%"},
+                  {"style", "display:block; max-width:100%!important; height: auto!important;"},
+                  {"class", "g-img"}
+                ], []}
+           ]}
+        ]}
+     ]}
+  end
+
+  defp do_apply_email_markup(other), do: other
+
+  defp build_button_markup(a_attrs, a_children) do
     a_attrs =
       case Enum.find_index(a_attrs, &(elem(&1, 0) == "class")) do
         nil ->
@@ -194,25 +252,7 @@ defmodule Keila.Templates.Html do
      ]}
   end
 
-  defp do_apply_email_markup({"blockquote", _, content}) do
-    {"table", [{"style", "width: 100%"}],
-     [
-       {"tr", [{"class", "block--quote"}],
-        [
-          {"td", [],
-           [
-             {"figure", [],
-              [
-                {"blockquote", [], content}
-              ]}
-           ]}
-        ]}
-     ]}
-  end
-
-  defp do_apply_email_markup(
-         {"a", a_attrs, [{"table", _, [{"tr", _, [{"td", _, [{"img", img_attrs, _}]}]}]}]}
-       ) do
+  defp build_img_with_link(a_attrs, img_attrs) do
     {"table", [{"style", "width: 100%"}],
      [
        {"tr", [{"class", "block--image"}],
@@ -227,25 +267,4 @@ defmodule Keila.Templates.Html do
         ]}
      ]}
   end
-
-  defp do_apply_email_markup({"img", img_attrs, _}) do
-    {"table", [{"style", "width: 100%"}],
-     [
-       {"tr", [{"class", "block--image"}],
-        [
-          {"td", [],
-           [
-             {"img",
-              img_attrs ++
-                [
-                  {"width", "100%"},
-                  {"style", "display:block; max-width:100%!important; height: auto!important;"},
-                  {"class", "g-img"}
-                ], []}
-           ]}
-        ]}
-     ]}
-  end
-
-  defp do_apply_email_markup(other), do: other
 end

@@ -1,7 +1,7 @@
 FROM elixir:1.15-alpine as build
 ENV MIX_ENV=prod
 
-RUN apk add git npm build-base
+RUN apk add git npm build-base cmake
 
 COPY mix.exs mix.lock ./
 COPY config .

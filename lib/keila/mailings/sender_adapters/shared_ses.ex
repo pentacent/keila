@@ -98,7 +98,7 @@ defmodule Keila.Mailings.SenderAdapters.Shared.SES do
   end
 
   defp template_name(sender, email),
-    do: sender.id <> "_" <> String.replace(email, ~r/[^a-zA-Z]/, "")
+    do: (sender.id <> "_" <> String.replace(email, ~r/[^a-zA-Z]/, "")) |> String.slice(0..63)
 
   defp aws_config(%{shared_sender: %{config: config}}) do
     [

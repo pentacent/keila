@@ -3,14 +3,16 @@
     "semiColons": "asi",
     "trailingCommas": "never"
   },
-  "json": {
-  },
+  "json": {},
   "includes": ["**/*.{ts,tsx,js,jsx,cjs,mjs,json}"],
   "excludes": [
     "**/node_modules",
     "**/*-lock.json",
     "**/dist",
-    "deps"
+    "deps",
+    "assets/static/vendor",
+    "priv/vendor",
+    "priv/static"
   ],
   "plugins": [
     "https://plugins.dprint.dev/typescript-0.80.2.wasm",

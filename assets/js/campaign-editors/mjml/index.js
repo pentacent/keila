@@ -29,7 +29,7 @@ export default class MjmlEditor {
       parent: place
     })
 
-    place.parentNode.parentNode.addEventListener("x-show-image-dialog", () => {
+    document.getElementById("mjml-editor-toolbar").addEventListener("x-show-image-dialog", () => {
       document
         .querySelector("[data-dialog-for=image]")
         .dispatchEvent(new CustomEvent("x-show", { detail: {} }))

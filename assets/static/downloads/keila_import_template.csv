@@ -1,3 +1,3 @@
-Email,First name,Last name,Data
-jane@example.com,Jane,Doe,"{""tags"":[""rocket-scientist""]}"
-john@example.com,John,Smith,"{""tags"":[""book-lover""]}"
+Email,First name,Last name,Data,External ID
+jane@example.com,Jane,Doe,"{""marketing_consent"": true, ""age"": 34, ""birthplace"": ""Paris"", ""tags"":[""rocket-scientist""]}",
+john@example.com,John,Smith,"{""birthplace"": ""Berlin"", ""tags"":[""book-enthusiast""]}",

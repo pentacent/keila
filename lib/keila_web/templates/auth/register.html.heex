@@ -37,6 +37,9 @@
         <%= captcha_tag() %>
       <% end %>
     </div>
+    <div class="hidden">
+      <%= hidden_input(f, :locale, value: Gettext.get_locale()) %>
+    </div>
     <div class="flex justify-end mt-8">
       <button class="button button--cta button--large">
         <%= render_icon(:key) %>

@@ -19,10 +19,21 @@ defmodule KeilaWeb.ApiCampaignView do
     }
   end
 
+  def render("delivery_queued.json", %{campaign: campaign}) do
+    %{
+      "data" => %{
+        "delivery_queued" => true,
+        "campaign_id" => campaign.id
+      }
+    }
+  end
+
   @properties [
     :id,
     :subject,
     :text_body,
+    :mjml_body,
+    :json_body,
     :data,
     :settings,
     :template_id,

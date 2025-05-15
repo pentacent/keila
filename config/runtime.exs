@@ -74,8 +74,8 @@ if config_env() == :prod do
       case mailer_type do
         "smtp" ->
           host = System.fetch_env!("MAILER_SMTP_HOST")
-          user = System.fetch_env!("MAILER_SMTP_USER")
-          from_email = System.get_env("MAILER_SMTP_FROM_EMAIL") || user
+          from_email = System.fetch_env!("MAILER_SMTP_FROM_EMAIL")
+          user = System.get_env("MAILER_SMTP_USER") || from_email
           password = System.fetch_env!("MAILER_SMTP_PASSWORD")
           port = System.get_env("MAILER_SMTP_PORT", "587") |> maybe_to_int.()
           ssl? = System.get_env("MAILER_ENABLE_SSL", "FALSE") in [1, "1", "true", "TRUE"]
@@ -135,7 +135,11 @@ if config_env() == :prod do
   captcha_secret_key =
     System.get_env("CAPTCHA_SECRET_KEY") || System.get_env("HCAPTCHA_SECRET_KEY")
 
-  captcha_url = System.get_env("CAPTCHA_URL") || System.get_env("HCAPTCHA_URL")
+  captcha_verify_url =
+    System.get_env("CAPTCHA_VERIFY_URL") || System.get_env("CAPTCHA_URL") ||
+      System.get_env("HCAPTCHA_URL")
+
+  captcha_script_url = System.get_env("CAPTCHA_SCRIPT_URL")
 
   if captcha_site_key not in [nil, ""] and captcha_secret_key not in [nil, ""] do
     captcha_provider =
@@ -148,20 +152,14 @@ if config_env() == :prod do
 
     Logger.info("Using the #{captcha_provider} captcha provider")
 
-    default_captcha_url =
-      case captcha_provider do
-        :hcaptcha -> "https://hcaptcha.com/siteverify"
-        :friendly_captcha -> "https://api.friendlycaptcha.com/api/v1/siteverify"
-      end
-
     config =
       [
         secret_key: captcha_secret_key,
         site_key: captcha_site_key,
-        url: default_captcha_url,
         provider: captcha_provider
       ]
-      |> put_if_not_empty.(:url, captcha_url)
+      |> put_if_not_empty.(:verify_url, captcha_verify_url)
+      |> put_if_not_empty.(:script_url, captcha_script_url)
 
     config :keila, KeilaWeb.Captcha, config
   else
@@ -173,7 +171,8 @@ if config_env() == :prod do
 
     - CAPTCHA_SITE_KEY
     - CAPTCHA_SECRET_KEY
-    - CAPTCHA_URL (defaults to https://hcaptcha.com/siteverify or https://api.friendlycaptcha.com/api/v1/siteverify)
+    - CAPTCHA_VERIFY_URL (defaults to https://hcaptcha.com/siteverify or https://api.friendlycaptcha.com/api/v1/siteverify)
+    - CAPTCHA_SCRIPT_URL (defaults to https://hcaptcha.com/1/api.js for hCaptcha or https://unpkg.com/friendly-challenge@0.9.11/widget.module.min.js for Friendly Captcha)
     - CAPTCHA_PROVIDER (defaults to hCaptcha, unless set to 'friendly_captcha')
     """)
   end
@@ -324,6 +323,11 @@ if config_env() == :prod do
   config :keila, Keila.Billing,
     enabled: System.get_env("ENABLE_BILLING") in [1, "1", "true", "TRUE"]
 
+  # Enable update check
+  config :keila,
+         :update_checks_enabled,
+         System.get_env("DISABLE_UPDATE_CHECKS") not in [nil, "", "0", "false", "FALSE"]
+
   paddle_vendor = System.get_env("PADDLE_VENDOR")
 
   if paddle_vendor not in [nil, ""],
@@ -337,6 +341,15 @@ if config_env() == :prod do
   # Precedence Bulk Header
   if System.get_env("DISABLE_PRECEDENCE_HEADER") in [1, "1", "true", "TRUE"] do
     config(:keila, Keila.Mailings, enable_precedence_header: false)
+  end
+
+  # Default to info messages in production
+  case System.get_env("LOG_LEVEL") do
+    level when level in ["info", "error", "debug"] ->
+      config :logger, level: String.to_existing_atom(level)
+
+    _ ->
+      config :logger, level: :info
   end
 end
 

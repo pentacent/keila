@@ -1,4 +1,4 @@
-<div id="mjml-editor-toolbar w-full" phx-update="ignore">
+<div id="mjml-editor-toolbar" class="w-full" phx-update="ignore">
   <div class="wysiwyg--menu bg-white relative shadow z-10 flex overflow-x-auto mt-4">
     <button
       title={gettext("Insert image")}
@@ -27,70 +27,41 @@
   </div>
 </div>
 
-<% f = form_for(@changeset, "#") %>
-<div class="flex" x-data="{previewMode: false, previewDevice: 'desktop', editorExpanded: false}">
-  <%= textarea(f, :mjml_body,
-    rows: 20,
-    class: "hidden",
-    phx_debounce: "1000"
-  ) %>
+<div id="mjml-editor-wrapper" phx-update="ignore">
   <div
-    id="mjml-editor-container"
-    class="editor flex-grow flex-shrink-0 transition-all"
-    :class="editorExpanded ? 'w-2/3' : 'w-2/5'"
-    phx-update="ignore"
+    class="flex"
+    x-data="{editorExpanded: false}"
     x-on:x-toggle-expand-editor.document="editorExpanded = !editorExpanded"
   >
-  </div>
-  <div
-    id="preview-container-mjml"
-    class="flex-grow flex-shrink w-1/3 flex flex-col"
-    phx-update="ignore"
-    x-on:x-toggle-preview.document="previewMode = !previewMode"
-    x-on:x-toggle-desktop-preview.document="previewDevice = 'desktop'"
-    x-on:x-toggle-mobile-preview.document="previewDevice = 'mobile'"
-    :class="previewMode ? 'fixed z-40 w-full min-h-full inset-0 bg-gray-900 items-center' : 'w-3/5 flex-grow'"
-  >
-    <div x-show="previewMode" style="display: none">
-      <div class="relative shadow z-10 flex overflow-x-auto my-4">
-        <div class="flex-grow"></div>
-        <button
-          title={gettext("Desktop preview")}
-          class="flex w-10 h-10 p-2 items-center justify-center bg-gray-800 hover:bg-gray-600 text-white"
-          :class="previewDevice == 'desktop' && 'bg-gray-700'"
-          @click.prevent="$dispatch('x-toggle-desktop-preview')"
-        >
-          <%= render_icon(:desktop_computer) %>
-        </button>
-        <button
-          title={gettext("Mobile preview")}
-          class="flex w-10 h-10 p-2 items-center justify-center bg-gray-800 hover:bg-gray-600 text-white"
-          :class="previewDevice == 'mobile' && 'bg-gray-700'"
-          @click.prevent="$dispatch('x-toggle-mobile-preview')"
-        >
-          <%= render_icon(:device_mobile) %>
-        </button>
-        <div class="w-4"></div>
-        <button
-          x-show="previewMode"
-          @click.prevent="previewMode = !previewMode"
-          class="h-10 p-2 items-center justify-center bg-gray-800 hover:bg-gray-600 text-white"
-        >
-          <%= gettext("Close preview") %>
-        </button>
-      </div>
+    <%!--
+    NOTE: using width: 0 for the editor is a weird hack here because otherwise the editor kept
+    causing the entire page to overflow.
+    The width of the editor is controlled via the (inverse) width of the iframe instead.
+   --%>
+    <div class="flex-grow transition-all" style="width: 0">
+      <div id="mjml-editor" class="editor"></div>
     </div>
     <iframe
-      id="html-preview"
+      id="html-inline-preview"
       src="about:blank"
-      data-source="html-preview-data"
-      class="bg-gray-100 flex-grow transition-all"
-      :class="previewMode ? 'w-20 flex-grow-0 h-full' : ''"
-      :style="previewMode ? previewDevice == 'desktop' ? 'width: 100%' : 'width: 360px' : ''"
+      class="transition-all"
+      x-bind:class="editorExpanded ? 'w-0' : 'w-3/5'"
     >
     </iframe>
   </div>
-  <div id="html-preview-data" phx-hook="HtmlPreview" class="hidden" data-iframe="html-preview">
-    <%= @preview %>
-  </div>
+</div>
+
+<% f = form_for(@changeset, "#") %>
+<%= textarea(f, :mjml_body,
+  rows: 20,
+  class: "hidden",
+  phx_debounce: "1000"
+) %>
+<div
+  id="html-preview-data"
+  phx-hook="HtmlPreview"
+  class="hidden"
+  data-iframe="#html-inline-preview, #html-preview"
+>
+  <%= @preview %>
 </div>

@@ -30,7 +30,7 @@ Start by cloning the repository: `git clone https://github.com/pentacent/keila.g
 an an instance of [PostgreSQL](https://www.postgresql.org/).
 
 #### Run Keila
-  
+
 * Install dependencies with `mix deps.get`
 * Install dependencies and set up the database with `mix setup`
 * Start Keila server with `mix phx.server`
@@ -46,6 +46,13 @@ If you don’t know where to start, take a look at these [Good First Issues](htt
 Before you commit code to Keila, make sure to run `mix format` to ensure
 consistent formatting.
 
+### Contributor License Agreement (CLA)
+Before we can accept your contribution, please sign the Contributor License Agreement (CLA).
+
+Sign the CLA by running `./.cla/sign.sh` and following the instructions in the terminal.
+
+Read here about how the CLA works: [CLA Readme](.cla/README.md)
+
 
 ## Translating Keila
 Keila uses the [Gettext format](https://en.wikipedia.org/wiki/Gettext) for
@@ -56,7 +63,7 @@ Translation files are located in `priv/gettext`.
 ### Getting Started
 
 Before you create a new translation or modify an existing translation, you need
-to extract and update all strings from the code:  
+to extract and update all strings from the code:
 `mix gettext.extract --merge`
 
 ### Modify existing translations

@@ -1,0 +1,45 @@
+<div id="preview-container" phx-update="ignore">
+  <div
+    style="display: none"
+    class="fixed z-40 w-full h-full inset-0 bg-gray-900 flex flex-col items-center"
+    x-data="{previewMode: false, previewDevice: 'desktop'}"
+    x-show.transition="previewMode"
+    x-on:x-toggle-desktop-preview.document="previewDevice = 'desktop'"
+    x-on:x-toggle-mobile-preview.document="previewDevice = 'mobile'"
+    x-on:x-toggle-preview.document="previewMode = !previewMode; sos = 'saas'"
+  >
+    <div class="relative shadow z-10 flex overflow-x-auto my-4">
+      <div class="flex-grow"></div>
+      <button
+        title={gettext("Desktop preview")}
+        class="flex w-10 h-10 p-2 items-center justify-center bg-gray-800 hover:bg-gray-600 text-white"
+        x-bind:class="previewDevice == 'desktop' && 'bg-gray-700'"
+        x-on:click.prevent="$dispatch('x-toggle-desktop-preview')"
+      >
+        <%= render_icon(:desktop_computer) %>
+      </button>
+      <button
+        title={gettext("Mobile preview")}
+        class="flex w-10 h-10 p-2 items-center justify-center bg-gray-800 hover:bg-gray-600 text-white"
+        x-bind:class="previewDevice == 'mobile' && 'bg-gray-700'"
+        x-on:click.prevent="$dispatch('x-toggle-mobile-preview')"
+      >
+        <%= render_icon(:device_mobile) %>
+      </button>
+      <div class="w-4"></div>
+      <button
+        x-on:click.prevent="previewMode = !previewMode"
+        class="h-10 p-2 items-center justify-center bg-gray-800 hover:bg-gray-600 text-white"
+      >
+        <%= gettext("Close preview") %>
+      </button>
+    </div>
+    <iframe
+      id="html-preview"
+      src="about:blank"
+      class="bg-gray-100 flex-grow transition-all"
+      x-bind:style="previewDevice == 'desktop' ? 'width: 100%' : 'width: 360px'"
+    >
+    </iframe>
+  </div>
+</div>

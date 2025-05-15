@@ -7,7 +7,7 @@ defmodule Keila.Mailings.ScheduleWorker do
   """
 
   use Oban.Worker,
-    queue: :periodic,
+    queue: :mailer_scheduler,
     unique: [
       period: :infinity,
       states: [:available, :scheduled, :executing]

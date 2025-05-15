@@ -59,15 +59,13 @@ defmodule Keila.Contacts.Import do
     lines = read_file_line_count!(filename)
     send(notify_pid, {:contacts_import_progress, 0, lines})
 
-    insert_opts = insert_opts(on_conflict)
-
     File.stream!(filename)
     |> parser.parse_stream()
     |> Stream.map(row_function)
     |> Stream.reject(&is_nil/1)
     |> Stream.with_index()
     |> Stream.map(fn {changeset, n} ->
-      case Repo.insert(changeset, insert_opts) do
+      case insert(changeset, n, project_id, on_conflict) do
         {:ok, %{id: id}} ->
           Keila.Tracking.log_event("import", id, %{})
           n
@@ -107,6 +105,7 @@ defmodule Keila.Contacts.Import do
     columns =
       [
         email: find_header_column(headers, ~r{email.?(address)?}i),
+        external_id: find_header_column(headers, ~r{external.?id}i),
         first_name: find_header_column(headers, ~r{first.?name}i),
         last_name: find_header_column(headers, ~r{last.?name}i),
         data: find_header_column(headers, ~r{data}i),
@@ -162,20 +161,65 @@ defmodule Keila.Contacts.Import do
     |> then(fn lines -> max(lines - 1, 0) end)
   end
 
-  defp insert_opts(on_conflict) do
-    conflict_opts =
-      case on_conflict do
-        :replace -> [on_conflict: {:replace_all_except, [:id, :email, :project_id]}]
-        :ignore -> [on_conflict: :nothing]
-      end
-
-    [returning: false, conflict_target: [:email, :project_id]] ++ conflict_opts
+  defp insert(changeset, _n, _project_id, :ignore) do
+    Repo.insert(changeset, on_conflict: :nothing)
   end
 
-  defp raise_import_error!(changeset, line) do
+  defp insert(changeset, n, project_id, :replace) do
+    external_id = get_change(changeset, :external_id)
+
+    if not is_nil(external_id) do
+      maybe_pre_set_external_id(changeset, project_id, external_id)
+    end
+
+    insert_opts = replace_insert_opts(changeset, external_id)
+    Repo.insert(changeset, insert_opts)
+  rescue
+    e in Postgrex.Error ->
+      raise_import_error!(changeset, e, n + 1)
+  end
+
+  @replace_fields [:email, :external_id, :first_name, :last_name, :data, :updated_at, :status]
+  defp replace_insert_opts(changeset, external_id) do
+    external_id? = not is_nil(external_id)
+
+    replace_fields =
+      @replace_fields
+      |> Enum.filter(&(not is_nil(get_change(changeset, &1))))
+
+    conflict_target =
+      if external_id?, do: [:external_id, :project_id], else: [:email, :project_id]
+
+    [
+      conflict_target: conflict_target,
+      on_conflict: {:replace, replace_fields},
+      returning: false
+    ]
+  end
+
+  # This is necessary because Postgres doesn't allow using both email and
+  # external_id as conflict targets. Because of this and to allow updating
+  # existing Contacts that don't have an external ID yet, this function
+  # sets the external ID for such contacts before they are updated.
+  defp maybe_pre_set_external_id(changeset, project_id, external_id) do
+    email = get_change(changeset, :email)
+
+    if not is_nil(email) do
+      from(c in Contact,
+        where: c.project_id == ^project_id and c.email == ^email and is_nil(c.external_id),
+        update: [set: [external_id: ^external_id]]
+      )
+      |> Repo.update_all([])
+    end
+  end
+
+  defp raise_import_error!(changeset, exception \\ nil, line) do
     message =
-      case changeset.errors do
-        [{field, {message, _}} | _] ->
+      case {changeset, exception} do
+        {_, %Postgrex.Error{postgres: %{code: :unique_violation}}} ->
+          gettext("duplicate entry")
+
+        {%{errors: [{field, {message, _}} | _]}, _} ->
           gettext("Field %{field}: %{message}", field: field, message: message)
 
         _other ->

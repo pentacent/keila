@@ -299,7 +299,7 @@ defmodule KeilaWeb.CampaignControllerTest do
       {:ok, lv, html} = live(conn)
       assert html =~ "This campaign is currently being sent out."
 
-      Oban.drain_queue(queue: :periodic)
+      Oban.drain_queue(queue: :mailer_scheduler)
       Oban.drain_queue(queue: :mailer, with_scheduled: true)
       :timer.sleep(1500)
 

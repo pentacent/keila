@@ -37,7 +37,7 @@ defmodule KeilaWeb.AuthController do
       end
     else
       {:error, changeset} =
-        params
+        user_params
         |> Auth.User.creation_changeset()
         |> Ecto.Changeset.add_error(:captcha, dgettext("auth", "Please complete the captcha."))
         |> Ecto.Changeset.apply_action(:insert)

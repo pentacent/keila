@@ -115,10 +115,11 @@ defmodule KeilaWeb.SegmentControllerTest do
              "attachment; filename=\"contacts_#{project.id}_segment_#{segment.id}.csv\""
 
     assert [
-             "Email,First name,Last name,Data,Status",
+             "Email,First name,Last name,Data,Status,External ID",
              contact_row | _
            ] = rows
 
-    assert contact_row == "test1@keila.io,#{contact.first_name},#{contact.last_name},,unreachable"
+    assert contact_row ==
+             "test1@keila.io,#{contact.first_name},#{contact.last_name},,unreachable,#{contact.external_id}"
   end
 end

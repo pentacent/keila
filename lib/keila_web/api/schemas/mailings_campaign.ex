@@ -7,8 +7,7 @@ defmodule KeilaWeb.Api.Schemas.MailingsCampaign do
     },
     subject: %{
       type: :string,
-      example: "🚀 Our Space Book is Now Available!",
-      required: true
+      example: "🚀 Our Space Book is Now Available!"
     },
     text_body: %{
       type: :string,
@@ -25,15 +24,15 @@ defmodule KeilaWeb.Api.Schemas.MailingsCampaign do
     },
     json_body: %{
       type: :map,
-      example: """
-      {
-        "blocks": [{
-          "id":"ff0011",
-          "type":"paragraph",
-          "data": {"text": "Hello, I am a block campaign!"}
-        }]
+      example: %{
+        "blocks" => [
+          %{
+            "id" => "ff0011",
+            "type" => "paragraph",
+            "data" => %{"text" => "Hello, I am a block campaign!"}
+          }
+        ]
       }
-      """
     },
     mjml_body: %{
       type: :string,
@@ -63,9 +62,11 @@ defmodule KeilaWeb.Api.Schemas.MailingsCampaign do
       properties: %{
         type: %{
           type: :string,
-          required: true,
           enum: ["markdown", "text", "block", "mjml"],
           example: "markdown"
+        },
+        do_not_track: %{
+          type: :boolean
         }
       }
     },
@@ -74,7 +75,6 @@ defmodule KeilaWeb.Api.Schemas.MailingsCampaign do
     },
     sender_id: %{
       type: :string,
-      required: true,
       example: "ms_12345"
     },
     segment_id: %{
@@ -120,7 +120,28 @@ defmodule KeilaWeb.Api.Schemas.MailingsCampaign.IndexResponse do
   build_open_api_schema(@properties, list: true, with_pagination: true)
 end
 
-defmodule KeilaWeb.Api.Schemas.MailingsCampaign.Params do
+defmodule KeilaWeb.Api.Schemas.MailingsCampaign.CreateParams do
+  use KeilaWeb.Api.Schema
+
+  @properties KeilaWeb.Api.Schemas.MailingsCampaign.properties()
+  @allowed_properties [
+    :subject,
+    :text_body,
+    :json_body,
+    :mjml_body,
+    :settings,
+    :template_id,
+    :sender_id,
+    :segment_id,
+    :data
+  ]
+  build_open_api_schema(@properties,
+    only: @allowed_properties,
+    required: [:subject, :settings, {[:settings], [:type]}]
+  )
+end
+
+defmodule KeilaWeb.Api.Schemas.MailingsCampaign.UpdateParams do
   use KeilaWeb.Api.Schema
 
   @properties KeilaWeb.Api.Schemas.MailingsCampaign.properties()
@@ -143,4 +164,26 @@ defmodule KeilaWeb.Api.Schemas.MailingsCampaign.ScheduleParams do
 
   @properties KeilaWeb.Api.Schemas.MailingsCampaign.properties()
   build_open_api_schema(@properties, only: [:scheduled_for])
+end
+
+defmodule KeilaWeb.Api.Schemas.MailingsCampaign.DeliveryQueuedResponse do
+  use KeilaWeb.Api.Schema
+
+  build_open_api_schema(%{
+    delivery_queued: %{
+      type: :boolean,
+      enum: [true],
+      description: """
+      This indicates that the delivery of the campaign will be processed asynchronously.
+
+      **Note**: If the campaign is invalid (e.g. missing a sender) or if your account has
+      insufficient credits, the campaign will not be delivered regardless of the response from the endpoint.
+      """
+    },
+    campaign_id: %{
+      type: :string,
+      description: "Campaign ID",
+      example: "mc_12345"
+    }
+  })
 end

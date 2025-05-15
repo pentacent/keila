@@ -161,8 +161,11 @@ defmodule Keila.Contacts.Query do
   defp build_data_condition(path, %{"$in" => value}) when is_list(value),
     do: dynamic([c], fragment("?#>?", c.data, ^path) in ^value)
 
-  defp build_data_condition(path, %{"$like" => value}),
-    do: dynamic([c], ilike(fragment("?#>>?", c.data, ^path), ^value))
+  defp build_data_condition(path, %{"$like" => value}) do
+    ilike = dynamic([c], ilike(fragment("?#>>?", c.data, ^path), ^value))
+
+    dynamic([c], fragment("coalesce(?, FALSE)", ^ilike))
+  end
 
   defp build_data_condition(path, value) when is_binary(value) or is_number(value) do
     value_in_array = [value]
@@ -170,7 +173,7 @@ defmodule Keila.Contacts.Query do
 
     equals_string = dynamic([c], fragment("?#>>?", c.data, ^path) == ^string_value)
     array_contains = dynamic([c], fragment("?#>? @> ?", c.data, ^path, ^value_in_array))
-    dynamic([c], ^equals_string or ^array_contains)
+    dynamic([c], fragment("coalesce(?, FALSE)", ^equals_string or ^array_contains))
   end
 
   defp build_data_condition(path, value) when is_map(value) or is_list(value) do

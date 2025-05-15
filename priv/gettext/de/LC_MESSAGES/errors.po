@@ -94,3 +94,6 @@ msgstr "muss größer gleich %{number} sein"
 
 msgid "must be equal to %{number}"
 msgstr "muss %{number} sein"
+
+msgid "must be at least %{offset} seconds in the future"
+msgstr ""

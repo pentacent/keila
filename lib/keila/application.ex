@@ -34,7 +34,11 @@ defmodule Keila.Application do
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Keila.Supervisor]
+
     Supervisor.start_link(children, opts)
+    |> tap(fn _ ->
+      maybe_fetch_updates()
+    end)
   end
 
   # Tell Phoenix to update the endpoint configuration
@@ -51,6 +55,16 @@ defmodule Keila.Application do
   defp maybe_run_migrations() do
     unless Application.get_env(:keila, :skip_migrations) do
       Keila.ReleaseTasks.init()
+    end
+  end
+
+  @env Mix.env()
+  defp maybe_fetch_updates() do
+    unless @env == :test do
+      :ok = Application.ensure_started(:oban)
+
+      Keila.Instance.UpdateCronWorker.new(%{})
+      |> Oban.insert()
     end
   end
 end

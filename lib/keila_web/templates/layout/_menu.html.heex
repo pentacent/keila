@@ -149,6 +149,12 @@
           <%= menu_link(@conn, Routes.shared_sender_admin_path(@conn, :index), gettext("Senders"),
             icon: :speakerphone
           ) %>
+          <%= menu_link(
+            @conn,
+            Routes.instance_admin_path(@conn, :show),
+            dgettext("admin", "System Info"),
+            icon: :information_circle
+          ) %>
         <% end %>
         <%= menu_link(@conn, Routes.auth_path(@conn, :logout), gettext("Sign out"), icon: :logout) %>
       </nav>

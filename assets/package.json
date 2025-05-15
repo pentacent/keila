@@ -8,7 +8,7 @@
   "dependencies": {
     "@codemirror/basic-setup": "^0.20.0",
     "@codemirror/lang-html": "^6.4.9",
-    "@editorjs/editorjs": "git+https://github.com/pentacent/editor.js.git#ff6e6ac3272f29e02229cd97ebffa5acf6c0e0fe",
+    "@editorjs/editorjs": "git+https://github.com/pentacent/editor.js.git#743eaa8fa295ef0c2539ea1d4361303bf8b72164",
     "@editorjs/header": "^2.7.0",
     "@editorjs/image": "^2.8.1",
     "@editorjs/link": "^2.5.0",
@@ -34,6 +34,7 @@
   "devDependencies": {
     "@editorjs/delimiter": "^1.3.0",
     "@tailwindcss/forms": "^0.5.3",
+    "@tailwindcss/typography": "^0.5.15",
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.20",
     "postcss-cli": "^9.0.1",
@@ -41,6 +42,6 @@
     "postcss-loader": "^4.1.0",
     "postcss-nested": "^5.0.6",
     "postcss-scss": "^4.0.2",
-    "tailwindcss": "^3.2.4"
+    "tailwindcss": "^3.4.10"
   }
 }

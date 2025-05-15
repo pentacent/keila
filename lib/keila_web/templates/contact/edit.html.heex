@@ -58,7 +58,7 @@
       @change="setUnsavedReminder(true)"
     >
       <div class="form-row">
-        <%= label(f, :email, "Email") %>
+        <%= label(f, :email, gettext("Email")) %>
         <%= with_validation(f, :email) do %>
           <%= text_input(f, :email,
             placeholder: gettext("subscriber@example.com"),
@@ -68,19 +68,19 @@
         <% end %>
       </div>
       <div class="form-row">
-        <%= label(f, :first_name, "Contact name") %>
+        <%= label(f, :first_name, gettext("First name")) %>
         <%= with_validation(f, :first_name) do %>
           <%= text_input(f, :first_name, placeholder: gettext("Jane"), class: "text-black") %>
         <% end %>
       </div>
       <div class="form-row">
-        <%= label(f, :last_name, "Last name") %>
+        <%= label(f, :last_name, gettext("Last name")) %>
         <%= with_validation(f, :last_name) do %>
           <%= text_input(f, :last_name, placeholder: gettext("Doe"), class: "text-black") %>
         <% end %>
       </div>
       <div class="form-row">
-        <%= label(f, :data, "Data") %>
+        <%= label(f, :data, gettext("Data")) %>
         <span class="block text-sm mb-2">
           <%= gettext("You can add any JSON object as custom data to your contacts.") %>
         </span>
@@ -98,12 +98,27 @@
           <% end %>
         <% end %>
       </div>
+      <div class="form-row">
+        <%= label(f, :email, gettext("External ID")) %>
+        <span class="block text-sm mb-2">
+          <%= gettext(
+            "The external ID allows updating the contact profile from an external source even if its email address changes."
+          ) %>
+        </span>
+        <%= with_validation(f, :external_id) do %>
+          <%= text_input(f, :external_id,
+            placeholder: gettext("920207"),
+            class: "text-black",
+            autofocus: true
+          ) %>
+        <% end %>
+      </div>
     </.form>
   </div>
 
   <%= if assigns[:events] && not Enum.empty?(@events) do %>
     <div class="flex flex-col">
-      <h2 class="text-xl font-bold mb-4">Contact Activities</h2>
+      <h2 class="text-xl font-bold mb-4"><%= gettext("Contact Activities") %></h2>
       <div class="grid grid-cols-1 gap-4">
         <%= for event <- @events do %>
           <div class="flex gap-4">

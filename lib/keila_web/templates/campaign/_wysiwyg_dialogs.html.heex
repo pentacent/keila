@@ -68,6 +68,7 @@
         x-on:x-confirm="$dispatch('update-image', image)"
         x-on:x-cancel="$dispatch('update-image', { cancel: true} )"
         x-on:x-file-selected.stop="image.src = $event.detail.url; imageTab = 'url'"
+        x-on:x-file-removed.stop="if (image.src == $event.detail.src) image = {}"
         @keydown.enter.prevent="$dispatch('x-confirm')"
         @keydown.esc.prevent="$dispatch('x-cancel')"
         @click.away="$dispatch('x-cancel')"
@@ -94,8 +95,9 @@
           <div class="tab-content" data-tab="uploads" x-show="imageTab === 'uploads'">
             <.live_component
               module={KeilaWeb.FileManagerLiveComponent}
-              id="foo"
+              id="file-manager"
               current_project_id={@current_project.id}
+              current_campaign_id={@campaign.id}
             />
           </div>
           <div class="tab-content" data-tab="url" x-show="imageTab === 'url'">
@@ -217,7 +219,7 @@
         <br />
         <div>
           <h3 class="font-bold flex gap-2 flex-row">
-            How does this work?
+            <%= gettext("How does this work?") %>
           </h3>
 
           <div class="markdown">
@@ -228,14 +230,14 @@
           </div>
           <br />
           <div>
-            You can get started by trying one of these examples:
+            <%= gettext("You can get started by trying one of these examples:") %>
             <ul>
               <li>
                 <button
                   class="button button--text button-small"
                   @click.stop="liquid.text = '{{ contact.first_name }}'"
                 >
-                  <%= render_icon(:cursor_click) %> Contact first name
+                  <%= render_icon(:cursor_click) %> <%= gettext("Contact first name") %>
                 </button>
               </li>
               <li>
@@ -243,7 +245,7 @@
                   class="button button--text button-small"
                   @click.stop="liquid.text = '{{ contact.email }}'"
                 >
-                  <%= render_icon(:cursor_click) %> Contact email address
+                  <%= render_icon(:cursor_click) %> <%= gettext("Contact email address") %>
                 </button>
               </li>
               <li>
@@ -251,7 +253,7 @@
                   class="button button--text button-small"
                   @click.stop="liquid.text = 'Hello {{ contact.first_name | default: &quot;there&quot; }}!'"
                 >
-                  <%= render_icon(:cursor_click) %> Greeting with first name
+                  <%= render_icon(:cursor_click) %> <%= gettext("Greeting with first name") %>
                 </button>
               </li>
             </ul>

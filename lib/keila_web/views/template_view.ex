@@ -91,9 +91,9 @@ defmodule KeilaWeb.TemplateView do
       form,
       field,
       [
-        {gettext("normal"), "normal"},
-        {gettext("bold"), "bold"},
-        {gettext("light"), "300"}
+        {pgettext("font", "normal"), "normal"},
+        {pgettext("font", "bold"), "bold"},
+        {pgettext("font", "light"), "300"}
       ],
       name: input_name(form, field, group_label, row),
       phx_debounce: 250,
@@ -137,12 +137,12 @@ defmodule KeilaWeb.TemplateView do
       form,
       field,
       [
-        {gettext("invisible"), "0"},
-        {gettext("very light"), "0.1"},
-        {gettext("light"), "0.25"},
-        {gettext("medium"), "0.50"},
-        {gettext("almost opaque"), "0.75"},
-        {gettext("opaque"), "1.0"}
+        {pgettext("opacity", "invisible"), "0"},
+        {pgettext("opacity", "very light"), "0.1"},
+        {pgettext("opacity", "light"), "0.25"},
+        {pgettext("opacity", "medium"), "0.50"},
+        {pgettext("opacity", "almost opaque"), "0.75"},
+        {pgettext("opacity", "opaque"), "1.0"}
       ],
       name: input_name(form, field, group_label, row),
       phx_debounce: 250,

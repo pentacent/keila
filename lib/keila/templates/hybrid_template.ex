@@ -102,6 +102,13 @@ defmodule Keila.Templates.HybridTemplate do
   Powered by [Keila - OpenSource Newsletters](https://www.keila.io/)
   """
 
+  @text_signature """
+  Unsubscribe:
+  {{ unsubscribe_link }}
+
+  This newsletter is powered by Keila: https://www.keila.io
+  """
+
   @spec styles() :: Keila.Templates.Css.t()
   def styles() do
     @styles
@@ -129,5 +136,9 @@ defmodule Keila.Templates.HybridTemplate do
   @spec signature() :: String.t()
   def signature() do
     @signature
+  end
+
+  def text_signature() do
+    @text_signature
   end
 end

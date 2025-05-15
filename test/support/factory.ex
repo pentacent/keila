@@ -103,7 +103,8 @@ defmodule Keila.Factory do
     %Keila.Contacts.Contact{
       email: "contact-#{get_counter_value()}@example.org",
       first_name: "First-#{get_counter_value()}",
-      last_name: "Last-#{get_counter_value()}"
+      last_name: "Last-#{get_counter_value()}",
+      external_id: Ecto.UUID.generate()
     }
   end
 
@@ -129,6 +130,17 @@ defmodule Keila.Factory do
   defp do_build(:account) do
     %Keila.Accounts.Account{
       group: build(:group)
+    }
+  end
+
+  defp do_build(:file) do
+    %Keila.Files.File{
+      uuid: Ecto.UUID.generate(),
+      filename: "test/keila/files/keila.jpg",
+      type: "image/jpeg",
+      size: 1234,
+      adapter: "local",
+      project_id: build(:project).id
     }
   end
 

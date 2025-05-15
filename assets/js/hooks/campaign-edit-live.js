@@ -7,16 +7,19 @@ const putHtmlPreview = (el) => {
   const content = el.innerText
   if (!content) return
 
-  const iframe = document.getElementById(el.dataset.iframe)
-  if (!iframe) return
+  const iframes = document.querySelectorAll(el.dataset.iframe)
+  if (!iframes.length) return
 
-  const scrollX = iframe.contentWindow.scrollX
-  const scrollY = iframe.contentWindow.scrollY
-  const doc = iframe.contentDocument
-  doc.open()
-  doc.write(content)
-  doc.close()
-  iframe.contentWindow.scrollTo(scrollX, scrollY)
+  for (let i = 0; i < iframes.length; i++) {
+    const iframe = iframes[i]
+    const scrollX = iframe.contentWindow.scrollX
+    const scrollY = iframe.contentWindow.scrollY
+    const doc = iframe.contentDocument
+    doc.open()
+    doc.write(content)
+    doc.close()
+    iframe.contentWindow.scrollTo(scrollX, scrollY)
+  }
 }
 
 const MarkdownSimpleEditorHook = {

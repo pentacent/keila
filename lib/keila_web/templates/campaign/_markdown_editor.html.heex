@@ -26,7 +26,7 @@
   <button
     title={gettext("Preview")}
     class="flex w-10 h-10 p-2 items-center justify-center bg-gray-800 hover:bg-gray-600 text-white"
-    @click.prevent="previewMode = !previewMode"
+    x-on:click.prevent="$dispatch('x-toggle-preview')"
   >
     <%= render_icon(:eye) %>
   </button>
@@ -42,22 +42,19 @@
     phx-update="ignore"
   >
     <iframe
-      id="html-preview"
+      id="html-inline-preview"
       src="about:blank"
       data-source="html-preview-data"
       class="bg-gray-100 flex-grow"
-      :class="previewMode ? 'fixed w-full h-full inset-0 pb-10 z-40' : ''"
     >
     </iframe>
-    <button
-      x-show="previewMode"
-      @click.prevent="previewMode = !previewMode"
-      class="fixed h-10 bg-emerald-600 text-white w-full bottom-0 left-0 z-50"
-    >
-      <%= gettext("Close preview") %>
-    </button>
   </div>
-  <div id="html-preview-data" phx-hook="HtmlPreview" class="hidden" data-iframe="html-preview">
+  <div
+    id="html-preview-data"
+    phx-hook="HtmlPreview"
+    class="hidden"
+    data-iframe="#html-preview, #html-inline-preview"
+  >
     <%= @preview %>
   </div>
 </div>

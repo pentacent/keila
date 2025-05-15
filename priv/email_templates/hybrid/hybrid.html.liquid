@@ -271,6 +271,7 @@
   <center role="article" aria-roledescription="email" lang="en" style="width: 100%;" class="email-bg">
     <!--[if mso | IE]>
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" class="email-bg">
+    <tbody>
     <tr>
     <td>
     <![endif]-->
@@ -297,36 +298,41 @@
         <div style="margin: 0 auto;" class="email-container">
             <!--[if mso]>
             <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="680">
+            <tbody>
             <tr>
             <td>
             <![endif]-->
 
 	        <!-- Email Body : BEGIN -->
 	        <table id="content" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-
-                {% render "content", blocks: body_blocks %}
-
+                <tbody>
+                    {% render "content", blocks: body_blocks %}
+                </tbody>
             </table><!-- Email Body : END -->
 
             <!-- Email Footer : BEGIN -->
             <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="max-width: 680px;" id="footer">
-                <tr>
-                    <td style="padding: 20px; font-family: sans-serif; font-size: 12px; line-height: 15px; text-align: center; color: #ffffff;">
-                        {{ signature_html }}
-                    </td>
-                </tr>
+                <tbody>
+                    <tr>
+                        <td style="padding: 20px; font-family: sans-serif; font-size: 12px; line-height: 15px; text-align: center; color: #ffffff;">
+                            {{ signature_html }}
+                        </td>
+                    </tr>
+                </tbody>
             </table>
             <!-- Email Footer : END -->
 
             <!--[if mso]>
             </td>
             </tr>
+            </tbody>
             </table>
             <![endif]-->
         </div>
     <!--[if mso | IE]>
     </td>
     </tr>
+    </tbody>
     </table>
     <![endif]-->
     </center>

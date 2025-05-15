@@ -1,4 +1,4 @@
-defmodule PreluApi.Repo.Migrations.Auth do
+defmodule Keila.Repo.Migrations.Auth do
   use Ecto.Migration
 
   def change do

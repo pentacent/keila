@@ -41,5 +41,13 @@ npm-debug.log
 
 # Local development environment
 ops/k8s
+ops/kamal
+ops/kamal2
+ops/dkim
 *.env
 .tool-versions
+<<<<<<< Updated upstream
+
+# Jetbrains IDE
+.idea
+*.iml
