@@ -1,9 +1,14 @@
 name: Release
 
+#on:
+#  push:
+#    tags:
+#      - 'v*'
+
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - '**'  # all branches
 
 jobs:
   test:
