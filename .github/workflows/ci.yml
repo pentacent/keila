@@ -7,67 +7,30 @@ on:
       - main
 
 jobs:
-  test:
-    name: Test Elixir ${{ matrix.version }}
-    runs-on: ubuntu-latest
-    container: elixir:${{ matrix.version }}-alpine
-    strategy:
-      matrix:
-        include:
-          - version: "1.15"
-    services:
-      postgres:
-        image: postgres:13-alpine
-        env:
-          POSTGRES_PASSWORD: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-    env:
-      MIX_ENV: test
-      DB_URL: postgres://postgres:postgres@postgres/keila
-    steps:
-      - name: install system packages
-        run: apk add build-base git tar curl cmake
-      - uses: actions/checkout@v4
-      - uses: actions/cache@v4
-        with:
-          path: |
-            _build
-            deps
-            assets/node_modules
-          key: keila-${{ runner.os }}-elixir-${{ matrix.version }}-${{ hashFiles('mix.lock') }}
-      - name: mix deps.get
-        run: |
-          mix local.rebar --force
-          mix local.hex --force
-          mix deps.get
-      - name: mix compile --warnings-as-errors
-        run: mix compile --warnings-as-errors
-      - name: mix format --check-formatted
-        run: mix format --check-formatted
-      - name: dprint check
-        run: |
-          export DPRINT_INSTALL="$HOME/.dprint"
-          mkdir -p "$DPRINT_INSTALL/bin"
-          curl -fsSL https://github.com/dprint/dprint/releases/download/0.36.0/dprint-x86_64-unknown-linux-musl.zip -o "$DPRINT_INSTALL/bin/dprint.zip"
-          unzip "$DPRINT_INSTALL/bin/dprint.zip" -d "$DPRINT_INSTALL/bin/"
-          chmod +x "$DPRINT_INSTALL/bin/dprint"
-          export PATH="$PATH:$DPRINT_INSTALL/bin"
-          dprint check
-      - name: mix ecto.create && ecto.migrate
-        run: |
-          mix ecto.create
-          mix ecto.migrate
-      - name: mix test
-        run: mix test
+  test-agplv3:
+    name: Test with only AGPLv3 code
+    uses: ./.github/workflows/test.yml
+
+  test-with-extra:
+    name: Test with non-AGPLv3 code
+    uses: ./.github/workflows/test.yml
+    with:
+      with_extra: "1"
+
+  test-cloud:
+    name: Test Cloud (WITH_EXTRA=1, IS_CLOUD=1)
+    uses: ./.github/workflows/test.yml
+    with:
+      with_extra: "1"
+      is_cloud: "1"
+
   build:
     name: Build and push Docker image
     if: github.ref == 'refs/heads/main'
     needs:
-      - test
+      - test-agplv3
+      - test-with-extra
+      - test-cloud
     runs-on: ubuntu-latest
     environment: build
     steps:
@@ -88,18 +51,12 @@ jobs:
         with:
           context: .
           file: ./ops/Dockerfile
+          build-args: |
+            WITH_EXTRA=1
+            IS_CLOUD=1
           tags: |
-            ghcr.io/pentacent/keila:latest
-          push: true
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,mode=max,dest=/tmp/.buildx-cache
-      - uses: docker/build-push-action@v3
-        with:
-          context: .
-          file: ./ops/Dockerfile
-          tags: |
-            ghcr.io/pentacent/keila:with-tag-latest
-            ghcr.io/pentacent/keila:with-tag-${{ github.sha }}
+            ghcr.io/pentacent/keila:cloud:latest
+            ghcr.io/pentacent/keila:cloud:sha-${{ github.sha }}
           labels: |
             service=keila
           push: true

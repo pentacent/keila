@@ -55,6 +55,8 @@ Keila is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 PARTICULAR PURPOSE.
 
-For more details, please [read the full license here](LICENSE.md).
+For more details about the AGPL, please [read the full license here](LICENSE.md).
 
-Please note that the Keila logo is not subject to the aforementioned license.
+Please note that the Keila logo and all files included in the `extra` directory are not subject to the license.
+
+For more details about the files in the `extra` directory, please refer to the [extra README](extra/README.md).
