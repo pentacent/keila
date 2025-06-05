@@ -8,17 +8,14 @@ on:
 
 jobs:
   test-agplv3:
-    name: Test with only AGPLv3 code
     uses: ./.github/workflows/test.yml
 
   test-with-extra:
-    name: Test with non-AGPLv3 code
     uses: ./.github/workflows/test.yml
     with:
       with_extra: "1"
 
   test-cloud:
-    name: Test Cloud (WITH_EXTRA=1, IS_CLOUD=1)
     uses: ./.github/workflows/test.yml
     with:
       with_extra: "1"
