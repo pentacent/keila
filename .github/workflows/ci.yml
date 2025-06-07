@@ -52,8 +52,8 @@ jobs:
             WITH_EXTRA=1
             IS_CLOUD=1
           tags: |
-            ghcr.io/pentacent/keila:cloud:latest
-            ghcr.io/pentacent/keila:cloud:sha-${{ github.sha }}
+            ghcr.io/pentacent/keila:cloud-latest
+            ghcr.io/pentacent/keila:cloud-sha-${{ github.sha }}
           labels: |
             service=keila
           push: true
