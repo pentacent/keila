@@ -1,4 +1,11 @@
 FROM elixir:1.15-alpine as build
+
+ARG WITH_EXTRA=0
+ENV WITH_EXTRA=${WITH_EXTRA}
+
+ARG IS_CLOUD=0
+ENV IS_CLOUD=${IS_CLOUD}
+
 ENV MIX_ENV=prod
 
 RUN apk add git npm build-base cmake
@@ -12,7 +19,7 @@ RUN mix local.hex --force && \
 
 COPY assets/package.json assets/package-lock.json ./assets/
 RUN npm ci --prefix ./assets
-    
+
 COPY . .
 RUN mix deps.clean mime --build && \
     mix assets.deploy && \
