@@ -1,0 +1,54 @@
+<.form
+  for={@onboarding_review_data_changeset}
+  let={f}
+  phx-change="update_onboarding_review_data"
+  phx-submit="submit_onboarding_review_data"
+  class="flex flex-col gap-2"
+>
+  <h2 class="text-3xl mb-2">Almost done!</h2>
+
+  <div class="form-row">
+    <%= label(f, :sending_purpose) do %>
+      <%= dgettext(
+        "cloud",
+        "Please describe the type of content and the purpose of the emails you are planning to send with Keila."
+      ) %>
+    <% end %>
+    <%= with_validation(f, :sending_purpose) do %>
+      <%= textarea(f, :sending_purpose, class: "text-black") %>
+    <% end %>
+  </div>
+
+  <div class="form-row">
+    <%= label(f, :is_import_planned_true, class: "flex flex-row gap-2 items-center") do %>
+      <%= radio_button(f, :is_import_planned, "true") %>
+      <%= dgettext("cloud", "I have an existing contact list that I want to import into Keila.") %>
+    <% end %>
+    <%= label(f, :is_import_planned_false, class: "flex flex-row gap-2 items-center") do %>
+      <%= radio_button(f, :is_import_planned, "false") %>
+      <%= dgettext("cloud", "I don’t have an existing contact list yet.") %>
+    <% end %>
+  </div>
+  <%= if Ecto.Changeset.get_field(@onboarding_review_data_changeset, :is_import_planned) do %>
+    <div class="form-row">
+      <%= label(
+        f,
+        :given_name,
+        dgettext(
+          "cloud",
+          "Please describe the origin of your contact list and how you've obtained consent from your existing contacts."
+        )
+      ) %>
+      <%= with_validation(f, :import_origin) do %>
+        <%= textarea(f, :import_origin, class: "text-black") %>
+      <% end %>
+    </div>
+  <% end %>
+  <%= if @onboarding_review_data_changeset.valid? do %>
+    <div class="mt-4">
+      <button class="button button--cta button--large">
+        <%= gettext("Continue") %>
+      </button>
+    </div>
+  <% end %>
+</.form>

@@ -57,6 +57,20 @@
                 render_icon(:plus_circle)
               end
             end %>
+
+            <%= Keila.if_cloud do
+              content_tag(:a,
+                href: Routes.cloud_admin_path(@conn, :show_user_account_status, user.id),
+                title: dgettext("cloud", "Account status"),
+                class: "button button--text"
+              ) do
+                if @user_accounts[user.id].status == :active do
+                  render_icon(:shield_check)
+                else
+                  render_icon(:shield_exclamation)
+                end
+              end
+            end %>
             <%= if user.id != @current_user.id do
               [
                 content_tag(:a,

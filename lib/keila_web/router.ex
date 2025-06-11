@@ -1,4 +1,5 @@
 defmodule KeilaWeb.Router do
+  require Keila
   use KeilaWeb, :router
 
   pipeline :browser do
@@ -65,6 +66,10 @@ defmodule KeilaWeb.Router do
     put "/account", AccountController, :post_edit
     get "/account/await-subscription", AccountController, :await_subscription
 
+    Keila.if_cloud do
+      get "/account/onboarding", CloudAccountController, :onboarding
+    end
+
     get "/", ProjectController, :index
     get "/projects/new", ProjectController, :new
     post "/projects/new", ProjectController, :post_new
@@ -76,6 +81,11 @@ defmodule KeilaWeb.Router do
     get "/admin/users/:id/impersonate", UserAdminController, :impersonate
     get "/admin/users/:id/credits", UserAdminController, :show_credits
     post "/admin/users/:id/credits", UserAdminController, :create_credits
+
+    Keila.if_cloud do
+      get "/admin/users/:id/status", CloudAdminController, :show_user_account_status
+      post "/admin/users/:id/status", CloudAdminController, :update_user_account_status
+    end
 
     resources "/admin/shared-senders", SharedSenderAdminController
     get "/admin/shared-senders/:id/delete", SharedSenderAdminController, :delete_confirmation

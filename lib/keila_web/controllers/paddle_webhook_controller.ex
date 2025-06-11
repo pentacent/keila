@@ -1,4 +1,5 @@
 defmodule KeilaWeb.PaddleWebhookController do
+  require Keila
   use KeilaWeb, :controller
 
   alias Keila.Billing
@@ -10,9 +11,18 @@ defmodule KeilaWeb.PaddleWebhookController do
   def webhook(conn, params = %{"alert_name" => "subscription_created"}) do
     params = parse_params(params)
 
-    case Billing.create_or_update_subscription(account_id(conn), params, false) do
-      {:ok, _} -> conn |> send_resp(200, "") |> halt()
-      _other -> conn |> send_resp(400, "") |> halt()
+    account_id = account_id(conn)
+
+    case Billing.create_or_update_subscription(account_id, params, false) do
+      {:ok, _} ->
+        Keila.if_cloud do
+          KeilaCloud.Accounts.handle_subscription_created(account_id)
+        end
+
+        conn |> send_resp(200, "") |> halt()
+
+      _other ->
+        conn |> send_resp(400, "") |> halt()
     end
   end
 

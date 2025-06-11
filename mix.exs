@@ -34,7 +34,7 @@ defmodule Keila.MixProject do
 
   defp elixirc_paths(_env) do
     if System.get_env("WITH_EXTRA") in ["1", "true", "TRUE"] do
-      ["lib", "extra"]
+      ["extra", "lib"]
     else
       ["lib"]
     end

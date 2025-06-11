@@ -10,7 +10,7 @@
       >
         <%= gettext("Back") %>
       </a>
-      <%= if @stats.status in [:insufficient_credits, :sent] do %>
+      <%= if @stats.status in [:insufficient_credits, :account_not_active, :sent] do %>
         <%= delete_form_tag(
           @campaign,
           Routes.campaign_path(@socket, :delete, @current_project.id),
@@ -162,6 +162,39 @@
             </div>
           </div>
         </div>
+      <% :account_not_active -> %>
+        <%= Keila.if_cloud do %>
+          <div class="flex gap-4">
+            <span class="inline-flex h-20 w-20">
+              <%= render_icon(:clipboard_list) %>
+            </span>
+            <div>
+              <p class="text-2xl">
+                <%= dgettext("cloud", "Account not activated") %>
+              </p>
+              <div class="prose prose-invert">
+                <%= dgettext_md(
+                  "cloud",
+                  """
+                  Once you have provided the necessary details, we will perform a manual review of your account. This usually takes less than one working day.
+
+                  If you have any questions, please reach out to our support at [%{support_email}](mailto:%{support_email}).
+                  """,
+                  support_email: "hello@keila.io"
+                ) %>
+              </div>
+              <p class="mt-4">
+                <a
+                  href={Routes.cloud_account_path(@socket, :onboarding)}
+                  }
+                  class="button button--large button--cta"
+                >
+                  <%= gettext("Update account information") %>
+                </a>
+              </p>
+            </div>
+          </div>
+        <% end %>
     <% end %>
   </div>
 <% end %>
