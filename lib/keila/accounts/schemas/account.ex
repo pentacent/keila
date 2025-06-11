@@ -1,5 +1,4 @@
 defmodule Keila.Accounts.Account do
-  require Keila
   use Keila.Schema, prefix: "acc"
 
   schema "accounts" do
