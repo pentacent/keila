@@ -12,7 +12,7 @@ defmodule KeilaCloud do
   end
 
   if @cloud do
-    license = System.get_env("KEILA_LICENSE", "")
+    license = System.get_env("KEILA_CLOUD_LICENSE", "")
 
     if !match?({:ok, %{type: "Keila Cloud"}}, Keila.License.validate(license)) do
       Logger.error("Valid license required for compiling Keila Cloud.")
