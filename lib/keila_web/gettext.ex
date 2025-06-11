@@ -35,6 +35,19 @@ defmodule KeilaWeb.Gettext do
     end
   end
 
+  @doc """
+  Convenience macro for translating Markdown strings while specifying a domain.
+
+  Returns `{:safe, html}`.
+  """
+  defmacro dgettext_md(domain, msgid, bindings \\ Macro.escape(%{})) do
+    quote do
+      unquote(__MODULE__).dpgettext(unquote(domain), nil, unquote(msgid), unquote(bindings))
+      |> Earmark.as_html!()
+      |> then(fn html -> {:safe, html} end)
+    end
+  end
+
   def available_locales() do
     [
       {"English", "en"},
