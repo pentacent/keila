@@ -3,11 +3,12 @@ defmodule Keila.Schema do
   Convenience module for use in all schemas.
 
   `use Keila.Schema` inserts the following code:
-      alias Ecto.Repo
+      require Keila
       require Ecto.Query
       import Ecto.Query
       import Ecto.Changeset
       use Ecto.Schema
+      alias Ecto.Repo
       use Keila.Id, unquote(opts)
 
       @type t :: %__MODULE__{}
@@ -21,11 +22,12 @@ defmodule Keila.Schema do
   """
   defmacro __using__(opts) do
     quote do
-      alias Ecto.Repo
+      require Keila
       require Ecto.Query
       import Ecto.Query
       import Ecto.Changeset
       use Ecto.Schema
+      alias Ecto.Repo
 
       if Keyword.get(unquote(opts), :uuid) == true do
         @primary_key {:uuid, :binary_id, autogenerate: false}
