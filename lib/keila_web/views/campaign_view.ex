@@ -1,5 +1,6 @@
 defmodule KeilaWeb.CampaignView do
   use KeilaWeb, :view
+  require Keila
   import Ecto.Changeset, only: [get_field: 2]
 
   def plain_text_preview(text) do
