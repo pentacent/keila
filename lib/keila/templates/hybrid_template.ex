@@ -7,6 +7,9 @@ defmodule Keila.Templates.HybridTemplate do
   alias Keila.Templates.Css
   import KeilaWeb.Gettext
 
+  @external_resource "priv/email_templates/hybrid/hybrid.html.liquid"
+  @external_resource "priv/email_templates/hybrid/default.css"
+
   @html_body File.read!("priv/email_templates/hybrid/hybrid.html.liquid") |> Solid.parse!()
   @styles File.read!("priv/email_templates/hybrid/default.css") |> Css.parse!()
 
