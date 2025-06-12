@@ -3,7 +3,6 @@ require Keila
 Keila.if_cloud do
   defmodule KeilaWeb.CloudAdminController do
     use KeilaWeb, :controller
-    import Phoenix.LiveView.Controller
 
     plug :authorize
 

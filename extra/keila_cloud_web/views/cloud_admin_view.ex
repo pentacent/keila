@@ -7,11 +7,9 @@ Keila.if_cloud do
       namespace: KeilaWeb
 
     use Phoenix.HTML
-    import Phoenix.View
     import Phoenix.LiveView.Helpers
 
     import KeilaWeb.Gettext
-    import KeilaWeb.ErrorHelpers
     alias KeilaWeb.Router.Helpers, as: Routes
   end
 end

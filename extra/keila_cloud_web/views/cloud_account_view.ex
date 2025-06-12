@@ -7,7 +7,6 @@ Keila.if_cloud do
       namespace: KeilaWeb
 
     use Phoenix.HTML
-    import Phoenix.View
     import Phoenix.LiveView.Helpers
     import KeilaWeb.Gettext
     import KeilaWeb.ErrorHelpers
@@ -46,7 +45,7 @@ Keila.if_cloud do
 
     defp format_to_field_groups(format, field_groups \\ [[]])
 
-    @known_fields ~w[given_name additional_name family_name organization_name postal_code sorting_code dependent_locality locality administrative_area country address_line_1 sorting_code address_line_2 address_line_3]
+    @known_fields ~w[given_name additional_name family_name organization_name postal_code sorting_code dependent_locality locality administrative_area country address_line_1 address_line_2 address_line_3]
 
     for field <- @known_fields do
       @field field

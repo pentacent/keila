@@ -3,7 +3,6 @@ require Keila
 Keila.if_cloud do
   defmodule KeilaWeb.CloudAccountOnboardingLive do
     use KeilaWeb, :live_view
-    import Ecto.Changeset
 
     alias KeilaCloud.Accounts.Account.ContactData
     alias KeilaCloud.Accounts.Account.OnboardingReviewData
@@ -18,8 +17,8 @@ Keila.if_cloud do
 
       {:ok,
        socket
-       |> assign(:current_user, session["current_user"])
-       |> assign(:current_account, session["current_account"])
+       |> assign(:current_user, current_user)
+       |> assign(:current_account, current_account)
        |> assign(:countries, countries)
        |> assign(:step, :user_name)
        |> put_user_changeset()
@@ -53,8 +52,7 @@ Keila.if_cloud do
 
     defp put_onboarding_review_data_changeset(socket, params \\ %{}) do
       onboarding_review_data =
-        socket.assigns.current_account.onboarding_review_data ||
-          %KeilaCloud.Accounts.Account.OnboardingReviewData{}
+        socket.assigns.current_account.onboarding_review_data || %OnboardingReviewData{}
 
       assign(
         socket,
