@@ -1,0 +1,85 @@
+<div class="container flex py-8 sm:py-11 sm:mb-2">
+  <div class="flex-grow gap-4 flex flex-col-reverse sm:flex-row sm:items-center">
+    <h1 class="text-2xl md:text-3xl text-gray-100">
+      <%= @campaign.subject %>
+    </h1>
+    <div class="flex-grow flex flex-row justify-end gap-4 sm:flex-row">
+      <a
+        class="button button--text button--large"
+        href={Routes.campaign_path(@conn, :index, @current_project.id)}
+      >
+        <%= gettext("Back") %>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="tabs -mt-8 content-center">
+    <a
+      href={Routes.campaign_path(@conn, :stats, @current_project.id, @campaign.id)}
+      class="tab-label"
+    >
+      <%= gettext("Statistics") %>
+    </a>
+    <a
+      href={Routes.campaign_path(@conn, :view, @current_project.id, @campaign.id)}
+      class="tab-label"
+    >
+      <%= gettext("View") %>
+    </a>
+    <a class="tab-label active">
+      <%= gettext("Share") %>
+    </a>
+  </div>
+</div>
+<div class="container">
+  <form method="post" class="bg-gray-800 p-4 pb-8" x-data="{showClipboardMessage: false}">
+    <div class="prose prose-invert">
+      <input type="hidden" name="_csrf_token" value={Phoenix.Controller.get_csrf_token()} />
+      <%= if @campaign.public_link_enabled do %>
+        <p><%= gettext("Use the following link to share your campaign with other people:") %></p>
+        <div class="flex flex-row">
+          <input
+            type="text"
+            class="w-full bg-gray-800"
+            readonly
+            x-ref="campaign-link"
+            value={Routes.public_campaign_url(@conn, :show, @campaign.id)}
+          />
+          <button
+            class="button"
+            @click.prevent="$refs['campaign-link'].select(); document.execCommand('copy'); showClipboardMessage = true; setTimeout(() => showClipboardMessage = false, 3000)"
+          >
+            <%= gettext("Copy") %>
+          </button>
+        </div>
+
+        <br />
+
+        <button type="submit" name="enable" value="false" class="button">
+          <%= gettext("Disable public link") %>
+        </button>
+      <% else %>
+        <%= gettext_md("""
+        You can enable a public link to share your campaign with others. Your campaign will be accessible to anyone who has the link.
+
+        You can disable the public link later if you want.
+        """) %>
+        <button type="submit" name="enable" value="true" class="button button--cta">
+          <%= gettext("Enable public link") %>
+        </button>
+      <% end %>
+
+      <div
+        id="copy-success"
+        x-ref="copy-success"
+        style="display: none;"
+        class="fixed bg-gray-50 text-gray-900 shadow text-sm p-4 bottom-4 right-4"
+        x-show.transition="showClipboardMessage"
+      >
+        <%= gettext("Address copied to clipboard.") %>
+      </div>
+    </div>
+  </form>
+</div>

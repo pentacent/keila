@@ -1,0 +1,81 @@
+<div class="container flex py-8 sm:py-11 sm:mb-2">
+  <div class="flex-grow gap-4 flex flex-col-reverse sm:flex-row sm:items-center">
+    <h1 class="text-2xl md:text-3xl text-gray-100">
+      <%= @campaign.subject %>
+    </h1>
+    <div class="flex-grow flex flex-row justify-end gap-4 sm:flex-row">
+      <a
+        class="button button--text button--large"
+        href={Routes.campaign_path(@conn, :index, @current_project.id)}
+      >
+        <%= gettext("Back") %>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="tabs -mt-8">
+    <a
+      href={Routes.campaign_path(@conn, :stats, @current_project.id, @campaign.id)}
+      class="tab-label"
+    >
+      <%= gettext("Statistics") %>
+    </a>
+    <a class="tab-label active">
+      <%= gettext("View") %>
+    </a>
+    <a
+      href={Routes.campaign_path(@conn, :share, @current_project.id, @campaign.id)}
+      class="tab-label"
+    >
+      <%= gettext("Share") %>
+    </a>
+  </div>
+</div>
+<div class="container">
+  <div
+    class="w-full h-full inset-0 bg-gray-800 flex flex-col items-center"
+    x-data="{previewDevice: 'desktop'}"
+    x-on:x-toggle-desktop-preview.document="previewDevice = 'desktop'"
+    x-on:x-toggle-mobile-preview.document="previewDevice = 'mobile'"
+    x-on:x-toggle-preview.document="previewMode = !previewMode; sos = 'saas'"
+  >
+    <div class="relative shadow z-10 flex overflow-x-auto my">
+      <div class="flex-grow"></div>
+      <button
+        title={gettext("Desktop preview")}
+        class="flex w-10 h-10 p-2 items-center justify-center hover:bg-gray-600 text-white"
+        x-bind:class="previewDevice == 'desktop' ? 'bg-gray-700' : 'bg-gray-800'"
+        x-on:click.prevent="$dispatch('x-toggle-desktop-preview')"
+      >
+        <%= render_icon(:desktop_computer) %>
+      </button>
+      <button
+        title={gettext("Mobile preview")}
+        class="flex w-10 h-10 p-2 items-center justify-center hover:bg-gray-600 text-white"
+        x-bind:class="previewDevice == 'mobile' ? 'bg-gray-700' : 'bg-gray-800'"
+        x-on:click.prevent="$dispatch('x-toggle-mobile-preview')"
+      >
+        <%= render_icon(:device_mobile) %>
+      </button>
+    </div>
+    <iframe
+      id="html-preview"
+      src="about:blank"
+      class="bg-gray-100 h-[calc(100vh-12rem)] flex-grow transition-all"
+      x-bind:style="previewDevice == 'desktop' ? 'width: 100%' : 'width: 360px'"
+    >
+    </iframe>
+  </div>
+</div>
+
+<div
+  id="block-html-preview-data"
+  x-data="{}"
+  x-init="Hooks.HtmlPreview.mounted.call({el: $el})"
+  class="hidden"
+  data-iframe="#html-preview"
+>
+  <%= @preview %>
+</div>

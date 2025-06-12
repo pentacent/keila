@@ -144,6 +144,9 @@ defmodule KeilaWeb.Router do
     post "/projects/:project_id/campaigns/new", CampaignController, :post_new
     get "/projects/:project_id/campaigns/:id", CampaignController, :edit
     get "/projects/:project_id/campaigns/:id/stats", CampaignController, :stats
+    get "/projects/:project_id/campaigns/:id/view", CampaignController, :view
+    get "/projects/:project_id/campaigns/:id/share", CampaignController, :share
+    post "/projects/:project_id/campaigns/:id/share", CampaignController, :post_share
     get "/projects/:project_id/campaigns/:id/clone", CampaignController, :clone
     post "/projects/:project_id/campaigns/:id/clone", CampaignController, :post_clone
     delete "/projects/:project_id/campaigns", CampaignController, :delete
