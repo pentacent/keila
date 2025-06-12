@@ -12,7 +12,9 @@
     "deps",
     "assets/static/vendor",
     "priv/vendor",
-    "priv/static"
+    "priv/static",
+    "**/priv/cldr",
+    "**/.elixir_ls"
   ],
   "plugins": [
     "https://plugins.dprint.dev/typescript-0.80.2.wasm",

@@ -51,6 +51,7 @@ jobs:
           build-args: |
             WITH_EXTRA=1
             IS_CLOUD=1
+            KEILA_CLOUD_LICENSE=${{ secrets.KEILA_CLOUD_LICENSE }}
           tags: |
             ghcr.io/pentacent/keila:cloud-latest
             ghcr.io/pentacent/keila:cloud-sha-${{ github.sha }}

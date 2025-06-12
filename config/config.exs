@@ -111,6 +111,9 @@ config :keila, KeilaWeb.Gettext,
   default_locale: "en",
   locales: ["de", "en", "fr"]
 
+config :ex_cldr,
+  default_backend: Keila.Cldr
+
 config(:keila, Keila.Auth.Emails, from_email: "keila@localhost")
 
 # Import environment specific config. This must remain at the bottom

@@ -39,6 +39,8 @@ jobs:
       DB_URL: postgres://postgres:postgres@postgres/keila
       WITH_EXTRA: ${{ inputs.with_extra }}
       IS_CLOUD: ${{ inputs.is_cloud }}
+      KEILA_CLOUD_LICENSE: ${{ secrets.KEILA_CLOUD_LICENSE }}
+
     steps:
       - name: install system packages
         run: apk add build-base git tar curl cmake

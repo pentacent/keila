@@ -1,0 +1,32 @@
+<div
+  class="min-h-screen flex flex-col lg:flex-row-reverse"
+  x-data="{}"
+  x-init="Hooks.RememberUnsaved.mounted.call({el: $el})"
+  x-on:change="window.setUnsavedReminder(true)"
+>
+  <div class="bg-gradient-to-r from-emerald-800 to-teal-800 p-12 text-white lg:basis-96">
+    <div class="mx-auto">
+      <h1 class="text-3xl">
+        <%= dgettext("cloud", "Account Verification") %>
+      </h1>
+      <div class="mt-4 lg:text-lg">
+        <%= dgettext_md("cloud", """
+          Every new account has to undergo a quick manual review.
+          Please share some information about you to help with this process.
+        """) %>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-12 grow">
+    <div class="max-w-lg mx-auto">
+      <%= case @step do
+        :user_name -> render("_user_name.html", assigns)
+        :org_name -> render("_org_name.html", assigns)
+        :address -> render("_address.html", assigns)
+        :onboarding_review_data -> render("_onboarding_review_data.html", assigns)
+        :completed -> render("_completed.html", assigns)
+      end %>
+    </div>
+  </div>
+</div>

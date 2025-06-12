@@ -84,6 +84,8 @@ jobs:
         with:
           context: .
           file: ./ops/Dockerfile
+          build-args: |
+            WITH_EXTRA=1
           tags: |
             pentacent/keila:latest
             pentacent/keila:${{ steps.meta.outputs.version }}
