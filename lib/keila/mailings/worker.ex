@@ -121,6 +121,15 @@ defmodule Keila.Mailings.Worker do
     {:cancel, :invalid_email}
   end
 
+  # Invalid contact (e.g. unsubscribed or deleted)
+  defp handle_result({:error, :invalid_contact}, recipient) do
+    recipient
+    |> set_contact_unreachable_query()
+    |> Repo.update_all([])
+
+    {:cancel, :invalid_contact}
+  end
+
   # Another error occurred. Sending is not retried.
   defp handle_result({:error, reason}, recipient) do
     Logger.warning(
