@@ -6,6 +6,7 @@
     Copyright (c) Ted Goas
     License: https://github.com/TedGoas/Cerberus/blob/fcd0f8d42e98a4f48b484bd972f39ddd2d2faa0b/LICENSE
     -->
+    <title>{{ campaign.subject | escape }}</title> <!--   The title tag shows in email notifications, like Android 4.4. -->
     <meta charset="utf-8"> <!-- utf-8 works for most cases -->
     <meta name="viewport" content="width=device-width"> <!-- Forcing initial-scale shouldn't be necessary -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Use the latest (edge) version of IE rendering engine -->
@@ -13,7 +14,10 @@
     <meta name="format-detection" content="telephone=no,address=no,email=no,date=no,url=no"> <!-- Tell iOS not to automatically link certain text strings. -->
     <meta name="color-scheme" content="light">
     <meta name="supported-color-schemes" content="light">
-    <title></title> <!-- The title tag shows in email notifications, like Android 4.4. -->
+    <meta name="robots" content="noindex, nofollow">
+    {% if campaign.preview_text %}
+        <meta name="description" content="{{ campaign.preview_text | escape }}">
+    {% endif %}
 
     <!-- What it does: Makes background images in 72ppi Outlook render at correct size. -->
     <!--[if gte mso 9]>
