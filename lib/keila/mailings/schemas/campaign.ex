@@ -20,20 +20,25 @@ defmodule Keila.Mailings.Campaign do
   @creation_fields [:project_id | @update_fields]
 
   schema "mailings_campaigns" do
-    field(:subject, :string)
-    field(:text_body, :string)
-    field(:html_body, :string)
-    field(:json_body, :map)
-    field(:mjml_body, :string)
-    field(:preview_text, :string)
-    field(:data, Keila.Repo.JsonField)
-    field(:sent_at, :utc_datetime)
-    field(:scheduled_for, :utc_datetime)
-    embeds_one(:settings, __MODULE__.Settings)
-    belongs_to(:template, Template, type: Template.Id)
-    belongs_to(:sender, Sender, type: Sender.Id)
-    belongs_to(:project, Project, type: Project.Id)
-    belongs_to(:segment, Segment, type: Segment.Id)
+    field :subject, :string
+    field :text_body, :string
+    field :html_body, :string
+    field :json_body, :map
+    field :mjml_body, :string
+    field :preview_text, :string
+    field :data, Keila.Repo.JsonField
+
+    field :public_link_enabled, :boolean
+
+    field :sent_at, :utc_datetime
+    field :scheduled_for, :utc_datetime
+
+    embeds_one :settings, __MODULE__.Settings
+    belongs_to :template, Template, type: Template.Id
+    belongs_to :sender, Sender, type: Sender.Id
+    belongs_to :project, Project, type: Project.Id
+    belongs_to :segment, Segment, type: Segment.Id
+
     timestamps()
   end
 

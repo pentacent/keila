@@ -709,4 +709,30 @@ defmodule Keila.Mailings do
   def handle_recipient_hard_bounce(recipient_id, data) do
     RecipientActions.HardBounce.handle(recipient_id, data)
   end
+
+  @doc """
+  Enables or disables the public link for a campaign.
+
+  Returns the updated campaign.
+  """
+  @spec enable_public_link!(campaign_id :: Campaign.id(), enable? :: boolean()) :: Campaign.t()
+  def enable_public_link!(campaign_id, enable? \\ true) do
+    campaign_id
+    |> get_campaign()
+    |> Ecto.Changeset.change(%{public_link_enabled: enable?})
+    |> Repo.update!()
+  end
+
+  @doc """
+  Retrieves a public campaign by its ID.
+
+  Returns the campaign if it exists, has `public_link_enabled` set to true, and been sent. Otherwise returns `nil`.
+  """
+  @spec get_public_campaign(campaign_id :: Campaign.id()) :: Campaign.t() | nil
+  def get_public_campaign(campaign_id) do
+    from(c in Campaign,
+      where: c.id == ^campaign_id and c.public_link_enabled == true and not is_nil(c.sent_at)
+    )
+    |> Repo.one()
+  end
 end
