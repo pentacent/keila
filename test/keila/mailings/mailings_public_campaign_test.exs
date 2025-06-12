@@ -13,7 +13,7 @@ defmodule Keila.MailingsPublicCampaignTest do
 
   @tag :mailings_campaign
   test "enable_public_link!/2 updates public_link_enabled field", %{project: project} do
-    campaign = insert!(:mailings_campaign, project_id: project.id) |> Repo.reload!()
+    campaign = insert!(:mailings_campaign, project_id: project.id)
 
     assert campaign.public_link_enabled == false
     assert %{public_link_enabled: true} = Mailings.enable_public_link!(campaign.id)

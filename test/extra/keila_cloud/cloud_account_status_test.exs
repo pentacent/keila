@@ -7,7 +7,7 @@ Keila.if_cloud do
 
     setup do
       root_group = insert!(:group)
-      account = insert!(:account, group: root_group) |> Repo.reload!()
+      account = insert!(:account, group: root_group)
       user = insert!(:user)
       Accounts.set_user_account(user.id, account.id)
 
