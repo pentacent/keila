@@ -17,9 +17,10 @@ jobs:
 
   test-cloud:
     uses: ./.github/workflows/test.yml
+    secrets: inherit
     with:
       with_extra: "1"
-      is_cloud: "1"
+      keila_cloud: "1"
 
   build:
     name: Build and push Docker image
@@ -50,7 +51,7 @@ jobs:
           file: ./ops/Dockerfile
           build-args: |
             WITH_EXTRA=1
-            IS_CLOUD=1
+            KEILA_CLOUD=1
             KEILA_CLOUD_LICENSE=${{ secrets.KEILA_CLOUD_LICENSE }}
           tags: |
             ghcr.io/pentacent/keila:cloud-latest

@@ -8,7 +8,7 @@ on:
         required: false
         type: string
         default: "0"
-      is_cloud:
+      keila_cloud:
         description: "Run tests specific to Keila Cloud"
         required: false
         type: string
@@ -21,7 +21,7 @@ on:
 
 jobs:
   test:
-    name: Test (WITH_EXTRA=${{ inputs.with_extra }}, IS_CLOUD=${{ inputs.is_cloud }})
+    name: Test (WITH_EXTRA=${{ inputs.with_extra }}, KEILA_CLOUD=${{ inputs.keila_cloud }})
     runs-on: ubuntu-latest
     container: elixir:${{ inputs.elixir_version }}-alpine
     services:
@@ -38,10 +38,13 @@ jobs:
       MIX_ENV: test
       DB_URL: postgres://postgres:postgres@postgres/keila
       WITH_EXTRA: ${{ inputs.with_extra }}
-      IS_CLOUD: ${{ inputs.is_cloud }}
+      KEILA_CLOUD: ${{ inputs.keila_cloud }}
       KEILA_CLOUD_LICENSE: ${{ secrets.KEILA_CLOUD_LICENSE }}
 
     steps:
+      - name: check license
+        run: |
+          echo "$KEILA_CLOUD_LICENSE" | sha256sum
       - name: install system packages
         run: apk add build-base git tar curl cmake
       - uses: actions/checkout@v4
@@ -51,7 +54,7 @@ jobs:
             _build
             deps
             assets/node_modules
-          key: keila-${{ runner.os }}-elixir-${{ inputs.elixir_version }}-${{ inputs.with_extra }}-${{ inputs.is_cloud }}-${{ hashFiles('mix.lock') }}
+          key: keila-${{ runner.os }}-elixir-${{ inputs.elixir_version }}-${{ inputs.with_extra }}-${{ inputs.keila_cloud }}-${{ hashFiles('mix.lock') }}
       - name: mix deps.get
         run: |
           mix local.rebar --force
