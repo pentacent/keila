@@ -1,6 +1,7 @@
 defmodule Keila.AccountsTest.Credits do
   use Keila.DataCase, async: false
   alias Keila.Accounts
+  require Keila
 
   setup do
     root_group = insert!(:group)
@@ -94,6 +95,10 @@ defmodule Keila.AccountsTest.Credits do
     sender = insert!(:mailings_sender, project_id: project.id)
     campaign = insert!(:mailings_campaign, project_id: project.id, sender_id: sender.id)
 
+    Keila.if_cloud do
+      KeilaCloud.Accounts.update_account_status(account.id, :active)
+    end
+
     assert {:error, :insufficient_credits} = Keila.Mailings.deliver_campaign(campaign.id)
 
     n = Repo.aggregate(Keila.Contacts.Contact, :count, :id)
@@ -107,7 +112,8 @@ defmodule Keila.AccountsTest.Credits do
   @tag :mailings
   @tag :contacts
   test "A campaign that failed to deliver with insufficient credits is un-scheduled", %{
-    user: user
+    user: user,
+    account: account
   } do
     {:ok, project} = Keila.Projects.create_project(user.id, params(:project))
     :ok = Keila.Contacts.import_csv(project.id, "test/keila/contacts/import_rfc_4180.csv")
@@ -120,6 +126,10 @@ defmodule Keila.AccountsTest.Credits do
         sender_id: sender.id,
         scheduled_for: now
       )
+
+    Keila.if_cloud do
+      KeilaCloud.Accounts.update_account_status(account.id, :active)
+    end
 
     assert {:error, :insufficient_credits} = Keila.Mailings.deliver_campaign(campaign.id)
     assert %{scheduled_for: nil} = Keila.Mailings.get_campaign(campaign.id)
