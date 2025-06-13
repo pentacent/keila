@@ -98,6 +98,10 @@ defmodule KeilaWeb.Api.Schemas.MailingsCampaign do
       type: :string,
       format: :utc_datetime,
       example: DateTime.utc_now() |> DateTime.to_iso8601()
+    },
+    preview_text: %{
+      type: :string,
+      example: "Hello, I am a preview campaign!"
     }
   }
 
@@ -133,7 +137,8 @@ defmodule KeilaWeb.Api.Schemas.MailingsCampaign.CreateParams do
     :template_id,
     :sender_id,
     :segment_id,
-    :data
+    :data,
+    :preview_text
   ]
   build_open_api_schema(@properties,
     only: @allowed_properties,
@@ -154,7 +159,8 @@ defmodule KeilaWeb.Api.Schemas.MailingsCampaign.UpdateParams do
     :template_id,
     :sender_id,
     :segment_id,
-    :data
+    :data,
+    :preview_text
   ]
   build_open_api_schema(@properties, only: @allowed_properties)
 end
