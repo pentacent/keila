@@ -123,9 +123,15 @@ defmodule Keila.Mailings.Worker do
 
   # Invalid contact (e.g. unsubscribed or deleted)
   defp handle_result({:error, :invalid_contact}, recipient) do
-    recipient
-    |> set_contact_unreachable_query()
-    |> Repo.update_all([])
+    Repo.transaction(fn ->
+      recipient
+      |> set_recipient_failed_query()
+      |> Repo.update_all([])
+
+      recipient
+      |> set_contact_unreachable_query()
+      |> Repo.update_all([])
+    end)
 
     {:cancel, :invalid_contact}
   end
