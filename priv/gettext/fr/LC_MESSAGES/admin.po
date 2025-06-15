@@ -33,7 +33,7 @@ msgstr "Ajouter des crédits"
 msgid "Administer Credits for %{email}"
 msgstr "Administrer les crédits pour %{email}"
 
-#: lib/keila_web/controllers/user_admin_controller.ex:15
+#: lib/keila_web/controllers/user_admin_controller.ex:16
 #, elixir-autogen, elixir-format
 msgid "Administrate Users"
 msgstr "Administrer les utilisateurs"
@@ -118,7 +118,7 @@ msgstr "Inscription"
 msgid "Type in the shared sender name to confirm its deletion:"
 msgstr "Saisissez le nom de l’expéditeur partagé pour confirmer sa suppression:"
 
-#: lib/keila_web/templates/user_admin/index.html.heex:64
+#: lib/keila_web/templates/user_admin/index.html.heex:78
 #, elixir-autogen, elixir-format
 msgid "Login as"
 msgstr "Se connecter en tant que"
@@ -157,3 +157,13 @@ msgstr "La vérification des mises à jours est désactivée."
 #, elixir-autogen, elixir-format
 msgid "You seem to be running the most recent version of Keila!"
 msgstr "Vous semblez utiliser la version la plus récente de Keila!"
+
+#: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr ""
+
+#: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "Update status"
+msgstr ""

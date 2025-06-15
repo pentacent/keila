@@ -44,9 +44,9 @@ msgstr "%{remaining} / %{total} E-Mails verbleibend"
 msgid "(%{price} incl. tax)"
 msgstr "(%{price} inkl. MwSt)"
 
-#: lib/keila_web/views/public_form_view.ex:170
-#: lib/keila_web/views/public_form_view.ex:214
-#: lib/keila_web/views/public_form_view.ex:232
+#: lib/keila_web/views/public_form_view.ex:198
+#: lib/keila_web/views/public_form_view.ex:242
+#: lib/keila_web/views/public_form_view.ex:260
 #, elixir-autogen, elixir-format
 msgid "(optional)"
 msgstr "(optional)"
@@ -238,13 +238,13 @@ msgstr "Sende-Kontingent überprüfen"
 msgid "Check your subscription now"
 msgstr "Abo überprüfen"
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:304
+#: lib/keila_web/templates/campaign/stats_live.html.heex:352
 #, elixir-autogen, elixir-format
 msgid "Click rate"
 msgstr "Klickrate"
 
 #: lib/keila_web/live/campaign_stats_live.ex:72
-#: lib/keila_web/templates/campaign/stats_live.html.heex:301
+#: lib/keila_web/templates/campaign/stats_live.html.heex:349
 #, elixir-autogen, elixir-format
 msgid "Clicks"
 msgstr "Klicks"
@@ -297,12 +297,12 @@ msgstr "Löschung von Formularen bestätigen"
 msgid "Confirm Template Deletion"
 msgstr "Löschung von Templates bestätigen"
 
-#: lib/keila_web/controllers/user_admin_controller.ex:78
+#: lib/keila_web/controllers/user_admin_controller.ex:88
 #, elixir-autogen, elixir-format
 msgid "Confirm User Deletion"
 msgstr "Löschung des Nutzers bestätigen"
 
-#: lib/keila_web/controllers/campaign_controller.ex:175
+#: lib/keila_web/controllers/campaign_controller.ex:211
 #, elixir-autogen, elixir-format
 msgid "Confirm campaign Deletion"
 msgstr "Löschung von Kampagnen bestätigen"
@@ -316,11 +316,12 @@ msgid "Contacts"
 msgstr "Kontakte"
 
 #: lib/keila/templates/default_template.ex:28
-#: lib/keila/templates/hybrid_template.ex:25
+#: lib/keila/templates/hybrid_template.ex:28
 #, elixir-autogen, elixir-format
 msgid "Content"
 msgstr "Inhalt"
 
+#: lib/keila_web/templates/campaign/share.html.heex:54
 #: lib/keila_web/templates/form/edit_live.html.heex:556
 #: lib/keila_web/templates/form/edit_live.html.heex:567
 #, elixir-autogen, elixir-format
@@ -640,6 +641,7 @@ msgstr "Felder"
 msgid "Fine print"
 msgstr "Kleingedrucktes"
 
+#: extra/keila_cloud_web/templates/cloud_account/_user_name.html.heex:24
 #: lib/keila/contacts/contacts.ex:276
 #: lib/keila_web/live/segment_edit_live.ex:9
 #: lib/keila_web/templates/contact/_list.html.heex:32
@@ -680,21 +682,21 @@ msgid "Forms"
 msgstr "Formulare"
 
 #: lib/keila/templates/default_template.ex:34
-#: lib/keila/templates/hybrid_template.ex:31
+#: lib/keila/templates/hybrid_template.ex:34
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Heading 1"
 msgstr "Überschrift 1"
 
 #: lib/keila/templates/default_template.ex:42
-#: lib/keila/templates/hybrid_template.ex:39
+#: lib/keila/templates/hybrid_template.ex:42
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "Heading 2"
 msgstr "Überschrift 2"
 
 #: lib/keila/templates/default_template.ex:50
-#: lib/keila/templates/hybrid_template.ex:47
+#: lib/keila/templates/hybrid_template.ex:50
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "Heading 3"
@@ -705,7 +707,7 @@ msgstr "Überschrift 3"
 msgid "Here you can update your Keila password."
 msgstr "Hier kannst du dein Keila-Passwort ändern."
 
-#: lib/keila_web/views/public_form_view.ex:98
+#: lib/keila_web/views/public_form_view.ex:126
 #, elixir-autogen, elixir-format
 msgid "I am human."
 msgstr "Ich bin ein Mensch."
@@ -797,6 +799,7 @@ msgstr "Kursiv"
 msgid "Jane"
 msgstr "Erika"
 
+#: extra/keila_cloud_web/templates/cloud_account/_user_name.html.heex:30
 #: lib/keila/contacts/contacts.ex:284
 #: lib/keila_web/live/segment_edit_live.ex:10
 #: lib/keila_web/templates/contact/_list.html.heex:42
@@ -809,7 +812,7 @@ msgid "Last name"
 msgstr "Nachname"
 
 #: lib/keila/templates/default_template.ex:23
-#: lib/keila/templates/hybrid_template.ex:21
+#: lib/keila/templates/hybrid_template.ex:24
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Layout"
@@ -837,8 +840,8 @@ msgid "Link to this form"
 msgstr "Link zu diesem Formular"
 
 #: lib/keila/templates/default_template.ex:58
-#: lib/keila/templates/hybrid_template.ex:55
-#: lib/keila_web/templates/campaign/stats_live.html.heex:294
+#: lib/keila/templates/hybrid_template.ex:58
+#: lib/keila_web/templates/campaign/stats_live.html.heex:342
 #, elixir-autogen, elixir-format
 msgid "Links"
 msgstr "Links"
@@ -1198,7 +1201,7 @@ msgstr "Style"
 msgid "Subject"
 msgstr "Betreff"
 
-#: lib/keila_web/views/public_form_view.ex:118
+#: lib/keila_web/views/public_form_view.ex:146
 #, elixir-autogen, elixir-format
 msgid "Submit"
 msgstr "Absenden"
@@ -1256,7 +1259,7 @@ msgstr "Danke für das Bestätigen deines Senders. Du kannst nun E-Mails mit Kei
 msgid "Thank you message"
 msgstr "Danke für deine Nachricht"
 
-#: lib/keila_web/views/public_form_view.ex:296
+#: lib/keila_web/views/public_form_view.ex:324
 #, elixir-autogen, elixir-format
 msgid "Thank you!"
 msgstr "Danke!"
@@ -1350,7 +1353,7 @@ msgid "Try signing in."
 msgstr "Versuch es noch einmal."
 
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:93
-#: lib/keila_web/templates/campaign/stats_live.html.heex:298
+#: lib/keila_web/templates/campaign/stats_live.html.heex:346
 #, elixir-autogen, elixir-format
 msgid "URL"
 msgstr "URL"
@@ -1409,7 +1412,7 @@ msgstr "Wir verarbeiten gerade dein Abo. Dieser Vorgang sollte nicht länger als
 msgid "You currently have an active subscription. Thanks for supporting Keila!"
 msgstr "Du hast ein aktives Abo. Danke dass du Keila unterstützt!"
 
-#: lib/keila_web/views/public_form_view.ex:323
+#: lib/keila_web/views/public_form_view.ex:351
 #, elixir-autogen, elixir-format
 msgid "You have been unsubscribed from this list."
 msgstr "Du hast dich von dieser Liste abgemeldet."
@@ -2207,7 +2210,7 @@ msgid "Opacity"
 msgstr "Transparenz"
 
 #: lib/keila/templates/default_template.ex:74
-#: lib/keila/templates/hybrid_template.ex:76
+#: lib/keila/templates/hybrid_template.ex:79
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:88
 #, elixir-autogen, elixir-format
 msgid "Spacer"
@@ -2295,7 +2298,7 @@ msgstr "klein"
 msgid "solid"
 msgstr "durchgezogen"
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:281
+#: lib/keila_web/templates/campaign/stats_live.html.heex:329
 #, elixir-autogen, elixir-format
 msgid "24-Hour Performance"
 msgstr "24-Stunden-Performance"
@@ -2310,7 +2313,9 @@ msgstr "API-Schlüssel in die Zwischenablage kopiert"
 msgid "Add content to this column here …"
 msgstr "Inhalt zu dieser Spalte hinzufügen …"
 
+#: lib/keila_web/templates/campaign/share.html.heex:11
 #: lib/keila_web/templates/campaign/stats_live.html.heex:11
+#: lib/keila_web/templates/campaign/view.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "Back"
 msgstr "Zurück"
@@ -2325,7 +2330,7 @@ msgstr "Block"
 msgid "Block Editor"
 msgstr "Block-Editor"
 
-#: lib/keila/templates/hybrid_template.ex:60
+#: lib/keila/templates/hybrid_template.ex:63
 #, elixir-autogen, elixir-format
 msgid "Buttons"
 msgstr "Buttons"
@@ -2362,12 +2367,12 @@ msgstr "Erstelle beeindruckende E-Mails mit mehrspaltigen Layouts mit dem Block-
 msgid "Download"
 msgstr "Herunterladen"
 
-#: lib/keila/templates/hybrid_template.ex:83
+#: lib/keila/templates/hybrid_template.ex:86
 #, elixir-autogen, elixir-format
 msgid "Footer"
 msgstr "Fußzeile"
 
-#: lib/keila/templates/hybrid_template.ex:92
+#: lib/keila/templates/hybrid_template.ex:95
 #, elixir-autogen, elixir-format
 msgid "Footer links"
 msgstr "Fußzeilen-Links"
@@ -2408,17 +2413,17 @@ msgstr "Nur Text"
 msgid "Preview Text"
 msgstr "Vorschautext"
 
-#: lib/keila/templates/hybrid_template.ex:74
+#: lib/keila/templates/hybrid_template.ex:77
 #, elixir-autogen, elixir-format
 msgid "Quote Attribution"
 msgstr "Zitat-Quelle"
 
-#: lib/keila/templates/hybrid_template.ex:73
+#: lib/keila/templates/hybrid_template.ex:76
 #, elixir-autogen, elixir-format
 msgid "Quote Text"
 msgstr "Zitat"
 
-#: lib/keila/templates/hybrid_template.ex:71
+#: lib/keila/templates/hybrid_template.ex:74
 #, elixir-autogen, elixir-format
 msgid "Quotes"
 msgstr "Zitate"
@@ -2449,7 +2454,7 @@ msgstr "Die einfachste Art, eine E-Mail zu versenden. Text und sonst nichts. Kei
 msgid "Unsubscribed Contacts"
 msgstr "Abgemeldete Kontakte"
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:220
+#: lib/keila_web/templates/campaign/stats_live.html.heex:268
 #, elixir-autogen, elixir-format
 msgid "Untracked Campaign"
 msgstr "Kampagne ohne Tracking"
@@ -2465,7 +2470,7 @@ msgstr "Mit dem Markdown-Editor kannst du stylishe einspaltige E-Mails erstellen
 msgid "Users see this preview before they open your email. Use up to 50 characters."
 msgstr "Dieser Text wird von E-Mail-Programmen als Vorschau angezeigt. Verwende bis zu 50 Zeichen."
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:222
+#: lib/keila_web/templates/campaign/stats_live.html.heex:270
 #, elixir-autogen, elixir-format
 msgid "You have disabled tracking for this campaign. Thanks for respecting the privacy of your recipients!"
 msgstr "Du hast Tracking für diese Kampagne deaktiviert. Danke dass du die Privatsphäre deiner Empfänger respektierst!"
@@ -2475,12 +2480,12 @@ msgstr "Du hast Tracking für diese Kampagne deaktiviert. Danke dass du die Priv
 msgid "You may use Liquid and Markdown in the signature. Use `[Unsubscribe]({{ unsubscribe_link }})` to include the unsubscribe link."
 msgstr "Du kannst Liquid und Markdown in der Signatur verwenden. Verwende `[Abmelden]({{ unsubscribe_link }})`, um den Abmelde-Link einzufügen."
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:251
+#: lib/keila_web/templates/campaign/stats_live.html.heex:299
 #, elixir-autogen, elixir-format
 msgid "bounces"
 msgstr "Bounces"
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:267
+#: lib/keila_web/templates/campaign/stats_live.html.heex:315
 #, elixir-autogen, elixir-format
 msgid "complaints"
 msgstr "Beschwerden"
@@ -2490,17 +2495,17 @@ msgstr "Beschwerden"
 msgid "email bounced"
 msgstr "Email zurückgewiesen"
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:203
+#: lib/keila_web/templates/campaign/stats_live.html.heex:251
 #, elixir-autogen, elixir-format
 msgid "emails clicked"
 msgstr "Emails geklickt"
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:187
+#: lib/keila_web/templates/campaign/stats_live.html.heex:235
 #, elixir-autogen, elixir-format
 msgid "emails opened"
 msgstr "Emails geöffnet"
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:177
+#: lib/keila_web/templates/campaign/stats_live.html.heex:225
 #, elixir-autogen, elixir-format
 msgid "emails sent"
 msgstr "Emails versendet"
@@ -2520,7 +2525,7 @@ msgstr "von Kampagne"
 msgid "permanently unreachable"
 msgstr "dauerhaft nicht erreichbar"
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:235
+#: lib/keila_web/templates/campaign/stats_live.html.heex:283
 #, elixir-autogen, elixir-format
 msgid "unsubscribes"
 msgstr "Abmeldungen"
@@ -2565,7 +2570,7 @@ msgstr ""
 "\n"
 "### [Anmeldung bestätigen]({{ double_opt_in_link }})\n"
 
-#: lib/keila_web/views/public_form_view.ex:307
+#: lib/keila_web/views/public_form_view.ex:335
 #, elixir-autogen, elixir-format
 msgid "Please confirm your email"
 msgstr "E-Mail-Bestätigung"
@@ -2587,7 +2592,7 @@ msgid "To prevent abuse by spammers, the double opt-in feature is currently only
 msgstr ""
 "Um den Missbrauch durch Spammer zu verhindern, ist die Double-Opt-In-Funktion momentan nur für Abonnenten verfügbar. Wir bitten um Verständnis."
 
-#: lib/keila_web/views/public_form_view.ex:310
+#: lib/keila_web/views/public_form_view.ex:338
 #, elixir-autogen, elixir-format
 msgid "We’ve just sent an email to %{email}. Please click the link in that email to confirm your subscription."
 msgstr "Wir haben eine E-Mail an %{email} gesendet. Bitte folge dem Link in der Nachricht, um deine Anmeldung zu bestätigen."
@@ -2657,7 +2662,7 @@ msgstr "Mit MJML können responsive E-Mail-Layouts erstellt werden und vollstän
 msgid "Checkbox"
 msgstr "Checkbox"
 
-#: lib/keila_web/controllers/user_admin_controller.ex:48
+#: lib/keila_web/controllers/user_admin_controller.ex:58
 #, elixir-autogen, elixir-format
 msgid "Could not create user"
 msgstr "Nutzer konnte nicht erstellt werden"
@@ -2668,6 +2673,7 @@ msgid "Custom field: data.%{key}"
 msgstr "Eigenes Feld: data.%{key}"
 
 #: lib/keila_web/templates/campaign/_preview_dialog.html.heex:14
+#: lib/keila_web/templates/campaign/view.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Desktop preview"
 msgstr "Desktop-Vorschau"
@@ -2714,6 +2720,7 @@ msgid "MJML"
 msgstr "MJML"
 
 #: lib/keila_web/templates/campaign/_preview_dialog.html.heex:22
+#: lib/keila_web/templates/campaign/view.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Mobile preview"
 msgstr "Mobile Vorschau"
@@ -2833,7 +2840,7 @@ msgstr "Button-Text"
 msgid "Thank you redirect URL"
 msgstr ""
 
-#: lib/keila_web/controllers/user_admin_controller.ex:43
+#: lib/keila_web/controllers/user_admin_controller.ex:53
 #, elixir-autogen, elixir-format
 msgid "User created successfully"
 msgstr "Nutzer erfolgreich erstellt"
@@ -3146,22 +3153,22 @@ msgstr ""
 msgid "External ID"
 msgstr "Externe ID"
 
-#: lib/keila_web/live/campaign_edit_live.ex:237
+#: lib/keila_web/live/campaign_edit_live.ex:231
 #, elixir-autogen, elixir-format
 msgid "Insufficient credits."
 msgstr "Unzureichendes E-Mail-Kontingent."
 
-#: lib/keila_web/live/campaign_edit_live.ex:211
+#: lib/keila_web/live/campaign_edit_live.ex:205
 #, elixir-autogen, elixir-format
 msgid "Invalid campaign settings."
 msgstr "Fehlerhafte Kampagnen-Einstellungen"
 
-#: lib/keila_web/live/campaign_edit_live.ex:202
+#: lib/keila_web/live/campaign_edit_live.ex:196
 #, elixir-autogen, elixir-format
 msgid "No valid email addresses entered."
 msgstr "Keine valide E-Mail-Adressen."
 
-#: lib/keila_web/live/campaign_edit_live.ex:203
+#: lib/keila_web/live/campaign_edit_live.ex:197
 #, elixir-autogen, elixir-format
 msgid "Please enter no more than five addresses."
 msgstr "Höchstanzahl von fünf Adressen überschritten."
@@ -3207,7 +3214,7 @@ msgstr "Beim Senden der Kampagnen-Vorschau ist ein Fehler aufgetreten."
 msgid "To prevent abuse by spammers, sending emails is only possible if you have an active subscription."
 msgstr "Um dem Missbrauch durch Spammer vorzubeugen, können E-Mails nur mit einem aktiven Keila-Abo versendet werden."
 
-#: lib/keila_web/live/campaign_edit_live.ex:217
+#: lib/keila_web/live/campaign_edit_live.ex:211
 #, elixir-autogen, elixir-format
 msgid "You must select a sender first."
 msgstr "Erst muss ein Sender ausgewählt werden."
@@ -3215,4 +3222,72 @@ msgstr "Erst muss ein Sender ausgewählt werden."
 #: lib/keila/contacts/import.ex:220
 #, elixir-autogen, elixir-format
 msgid "duplicate entry"
+msgstr ""
+
+#: lib/keila_web/templates/campaign/share.html.heex:81
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Address copied to clipboard."
+msgstr "Der Code wurde in die Zwischenablage kopiert."
+
+#: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:50
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:56
+#: extra/keila_cloud_web/templates/cloud_account/_user_name.html.heex:38
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Continue"
+msgstr "Inhalt"
+
+#: lib/keila_web/templates/campaign/share.html.heex:61
+#, elixir-autogen, elixir-format
+msgid "Disable public link"
+msgstr ""
+
+#: lib/keila_web/templates/campaign/share.html.heex:70
+#, elixir-autogen, elixir-format
+msgid "Enable public link"
+msgstr ""
+
+#: lib/keila_web/templates/sender/_postmark_config.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Message Stream"
+msgstr ""
+
+#: lib/keila_web/templates/campaign/share.html.heex:32
+#: lib/keila_web/templates/campaign/stats_live.html.heex:216
+#: lib/keila_web/templates/campaign/view.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Share"
+msgstr ""
+
+#: lib/keila_web/templates/campaign/share.html.heex:23
+#: lib/keila_web/templates/campaign/stats_live.html.heex:205
+#: lib/keila_web/templates/campaign/view.html.heex:23
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Statistics"
+msgstr "Statistiken"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:192
+#, elixir-autogen, elixir-format
+msgid "Update account information"
+msgstr ""
+
+#: lib/keila_web/templates/campaign/share.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Use the following link to share your campaign with other people:"
+msgstr ""
+
+#: lib/keila_web/templates/campaign/share.html.heex:29
+#: lib/keila_web/templates/campaign/stats_live.html.heex:210
+#: lib/keila_web/templates/campaign/view.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "View"
+msgstr ""
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "Website"
+msgstr ""
+
+#: lib/keila_web/templates/campaign/share.html.heex:64
+#, elixir-autogen, elixir-format
+msgid "You can enable a public link to share your campaign with others. Your campaign will be accessible to anyone who has the link.\n\nYou can disable the public link later if you want.\n"
 msgstr ""
