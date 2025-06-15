@@ -13,7 +13,7 @@
 >
   <div
     x-show="activeDialog == 'send'"
-    class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
+    class="flex items-end justify-center h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
     @keydown.escape.prevent="$dispatch('x-cancel')"
     @click.away="$dispatch('x-cancel')"
     data-dialog-for="send"
@@ -84,7 +84,7 @@
 
   <div
     x-show="activeDialog == 'schedule'"
-    class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
+    class="flex items-end justify-center h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
     @keydown.esc.prevent="$dispatch('x-cancel')"
     @click.away="$dispatch('x-cancel')"
     data-dialog-for="schedule"
@@ -202,7 +202,7 @@
   </div>
   <div
     x-show="activeDialog == 'preview'"
-    class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
+    class="flex items-end justify-center h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
     @keydown.esc.prevent="$dispatch('x-cancel')"
     @click.away="$dispatch('x-cancel')"
     data-dialog-for="preview"
