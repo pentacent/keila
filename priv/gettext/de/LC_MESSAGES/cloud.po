@@ -242,6 +242,7 @@ msgstr ""
 "\n"
 "Danke dass du uns dabei unterstützt, Spam zu bekämpfen!\n"
 
+#: lib/keila_web/templates/campaign/stats_live.html.heex:192
 #: lib/keila_web/templates/layout/app.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Update account information"
@@ -286,3 +287,8 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "To comply with anti-spam regulations, we need to know your address."
 msgstr "Aufgrund von Anti-Spam-Regulierungen benötigen wir deine Anschrift."
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "Website"
+msgstr "Website"

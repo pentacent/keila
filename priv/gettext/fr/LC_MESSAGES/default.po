@@ -3262,11 +3262,6 @@ msgstr ""
 msgid "Statistics"
 msgstr "Statistiques"
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:192
-#, elixir-autogen, elixir-format
-msgid "Update account information"
-msgstr ""
-
 #: lib/keila_web/templates/campaign/share.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Use the following link to share your campaign with other people:"
@@ -3277,11 +3272,6 @@ msgstr ""
 #: lib/keila_web/templates/campaign/view.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "View"
-msgstr ""
-
-#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:37
-#, elixir-autogen, elixir-format
-msgid "Website"
 msgstr ""
 
 #: lib/keila_web/templates/campaign/share.html.heex:64

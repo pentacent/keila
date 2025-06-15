@@ -227,6 +227,7 @@ msgstr ""
 msgid "To make sure Keila is only used to send legitimate emails, we need to review every new account.\n\nThank you for helping us fight spam!\n"
 msgstr ""
 
+#: lib/keila_web/templates/campaign/stats_live.html.heex:192
 #: lib/keila_web/templates/layout/app.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Update account information"
@@ -265,4 +266,9 @@ msgstr ""
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:9
 #, elixir-autogen, elixir-format, fuzzy
 msgid "To comply with anti-spam regulations, we need to know your address."
+msgstr ""
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "Website"
 msgstr ""

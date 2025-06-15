@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.6\n"
 
 #: lib/keila_web/templates/account/edit.html.heex:75
 #: lib/keila_web/templates/account/edit.html.heex:128
@@ -3225,26 +3225,26 @@ msgid "duplicate entry"
 msgstr ""
 
 #: lib/keila_web/templates/campaign/share.html.heex:81
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Address copied to clipboard."
-msgstr "Der Code wurde in die Zwischenablage kopiert."
+msgstr "Die Adresse wurde in die Zwischenablage kopiert."
 
 #: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:50
 #: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:56
 #: extra/keila_cloud_web/templates/cloud_account/_user_name.html.heex:38
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Continue"
-msgstr "Inhalt"
+msgstr "Weiter"
 
 #: lib/keila_web/templates/campaign/share.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "Disable public link"
-msgstr ""
+msgstr "Öffentlichen Link deaktivieren"
 
 #: lib/keila_web/templates/campaign/share.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "Enable public link"
-msgstr ""
+msgstr "Öffentlichen Link aktivieren"
 
 #: lib/keila_web/templates/sender/_postmark_config.html.heex:32
 #, elixir-autogen, elixir-format
@@ -3256,38 +3256,31 @@ msgstr ""
 #: lib/keila_web/templates/campaign/view.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Share"
-msgstr ""
+msgstr "Teilen"
 
 #: lib/keila_web/templates/campaign/share.html.heex:23
 #: lib/keila_web/templates/campaign/stats_live.html.heex:205
 #: lib/keila_web/templates/campaign/view.html.heex:23
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Statistics"
 msgstr "Statistiken"
-
-#: lib/keila_web/templates/campaign/stats_live.html.heex:192
-#, elixir-autogen, elixir-format
-msgid "Update account information"
-msgstr ""
 
 #: lib/keila_web/templates/campaign/share.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Use the following link to share your campaign with other people:"
-msgstr ""
+msgstr "Die Kampagne kann über folgenden Link abgerufen werden:"
 
 #: lib/keila_web/templates/campaign/share.html.heex:29
 #: lib/keila_web/templates/campaign/stats_live.html.heex:210
 #: lib/keila_web/templates/campaign/view.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "View"
-msgstr ""
-
-#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:37
-#, elixir-autogen, elixir-format
-msgid "Website"
-msgstr ""
+msgstr "Ansehen"
 
 #: lib/keila_web/templates/campaign/share.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "You can enable a public link to share your campaign with others. Your campaign will be accessible to anyone who has the link.\n\nYou can disable the public link later if you want.\n"
 msgstr ""
+"Um die Kampagne mit anderen zu teilen, kann ein öffentlicher Link erstellt werden. Über den Link ist die Kampagne dann für jeden verfügbar.\n"
+"\n"
+"Der Link kann später auch wieder deaktiviert werden.\n"
