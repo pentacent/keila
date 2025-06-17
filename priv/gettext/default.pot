@@ -1773,6 +1773,31 @@ msgstr ""
 msgid "with captcha"
 msgstr ""
 
+#: lib/keila_web/templates/contact/edit.html.heex:79
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr ""
+
+#: lib/keila_web/templates/contact/edit.html.heex:81
+#, elixir-autogen, elixir-format
+msgid "The subscription status of this contact."
+msgstr ""
+
+#: lib/keila_web/templates/contact/edit.html.heex:85
+#, elixir-autogen, elixir-format
+msgid "Active"
+msgstr ""
+
+#: lib/keila_web/templates/contact/edit.html.heex:86
+#, elixir-autogen, elixir-format
+msgid "Unsubscribed"
+msgstr ""
+
+#: lib/keila_web/templates/contact/edit.html.heex:87
+#, elixir-autogen, elixir-format
+msgid "Unreachable"
+msgstr ""
+
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:139
 #: lib/keila_web/templates/campaign/new.html.heex:50
 #, elixir-autogen, elixir-format

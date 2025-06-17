@@ -402,4 +402,58 @@ defmodule Keila.ContactsTest do
     assert {:error, changeset} = Contacts.create_contact(project.id, invalid_params)
     assert %{errors: [data: {"max 8 KB data allowed", _}]} = changeset
   end
+
+  @tag :contacts
+  test "Update contact with status when update_status option is true", %{project: project} do
+    contact = insert!(:contact, %{project_id: project.id, status: :active})
+    params = %{"status" => "unsubscribed", "first_name" => "Updated"}
+    
+    assert {:ok, updated_contact} = Contacts.update_contact(contact.id, params, update_status: true)
+    assert updated_contact.status == :unsubscribed
+    assert updated_contact.first_name == "Updated"
+  end
+
+  @tag :contacts
+  test "Update contact ignores status when update_status option is false", %{project: project} do
+    contact = insert!(:contact, %{project_id: project.id, status: :active})
+    params = %{"status" => "unsubscribed", "first_name" => "Updated"}
+    
+    assert {:ok, updated_contact} = Contacts.update_contact(contact.id, params, update_status: false)
+    assert updated_contact.status == :active  # Status should remain unchanged
+    assert updated_contact.first_name == "Updated"
+  end
+
+  @tag :contacts
+  test "Update contact ignores status when update_status option is not provided", %{project: project} do
+    contact = insert!(:contact, %{project_id: project.id, status: :active})
+    params = %{"status" => "unsubscribed", "first_name" => "Updated"}
+    
+    assert {:ok, updated_contact} = Contacts.update_contact(contact.id, params)
+    assert updated_contact.status == :active  # Status should remain unchanged
+    assert updated_contact.first_name == "Updated"
+  end
+
+  @tag :contacts
+  test "Create contact with status when set_status option is true", %{project: project} do
+    params = params(:contact) |> Map.put("status", "unsubscribed")
+    
+    assert {:ok, contact} = Contacts.create_contact(project.id, params, set_status: true)
+    assert contact.status == :unsubscribed
+  end
+
+  @tag :contacts
+  test "Create contact ignores status when set_status option is false", %{project: project} do
+    params = params(:contact) |> Map.put("status", "unsubscribed")
+    
+    assert {:ok, contact} = Contacts.create_contact(project.id, params, set_status: false)
+    assert contact.status == :active  # Should default to active
+  end
+
+  @tag :contacts
+  test "Create contact ignores status when set_status option is not provided", %{project: project} do
+    params = params(:contact) |> Map.put("status", "unsubscribed")
+    
+    assert {:ok, contact} = Contacts.create_contact(project.id, params)
+    assert contact.status == :active  # Should default to active
+  end
 end

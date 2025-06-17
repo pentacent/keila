@@ -1832,6 +1832,31 @@ msgstr "contacts désabonnés"
 msgid "with captcha"
 msgstr "avec captcha"
 
+#: lib/keila_web/templates/contact/edit.html.heex:79
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "Statut"
+
+#: lib/keila_web/templates/contact/edit.html.heex:81
+#, elixir-autogen, elixir-format
+msgid "The subscription status of this contact."
+msgstr "Le statut d'abonnement de ce contact."
+
+#: lib/keila_web/templates/contact/edit.html.heex:85
+#, elixir-autogen, elixir-format
+msgid "Active"
+msgstr "Actif"
+
+#: lib/keila_web/templates/contact/edit.html.heex:86
+#, elixir-autogen, elixir-format
+msgid "Unsubscribed"
+msgstr "Désabonné"
+
+#: lib/keila_web/templates/contact/edit.html.heex:87
+#, elixir-autogen, elixir-format
+msgid "Unreachable"
+msgstr "Inaccessible"
+
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:139
 #: lib/keila_web/templates/campaign/new.html.heex:50
 #, elixir-autogen, elixir-format
