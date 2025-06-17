@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+### Enhanced
+- Introduced new status management for contacts, allowing updates to their subscription status (active, unsubscribed, unreachable).
+- CSV import now supports importing contacts with all status types (active, unsubscribed, unreachable)
+- Updated CSV import template to include Status column
+- Contact status is now properly preserved during CSV import operations
+
 
 ## Version 0.17.1
 

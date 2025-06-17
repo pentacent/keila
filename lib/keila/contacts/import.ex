@@ -116,14 +116,18 @@ defmodule Keila.Contacts.Import do
       |> Enum.map(fn {key, _} -> key end)
 
     fn row ->
-      Enum.zip(columns, row)
+      params = Enum.zip(columns, row)
       |> Enum.into(%{})
       |> Map.update(:data, nil, &update_data_param/1)
-      |> then(fn row ->
-        unless contact_not_active?(row) do
-          Contact.creation_changeset(row, project_id)
-        end
-      end)
+
+      changeset = Contact.creation_changeset(%Contact{}, params, project_id, [])
+      
+      # If there's a status in the row data, apply status processing
+      if Map.has_key?(params, :status) do
+        Contact.update_status_changeset(changeset, params)
+      else
+        changeset
+      end
     end
   end
 
@@ -140,21 +144,7 @@ defmodule Keila.Contacts.Import do
 
   defp update_data_param(_), do: nil
 
-  # If the :status column is present, it must be "active"
-  defp contact_not_active?(row)
-
-  defp contact_not_active?(%{status: status}) when is_binary(status) do
-    if status =~ ~r{active}i do
-      false
-    else
-      true
-    end
-  end
-
-  defp contact_not_active?(%{status: _}), do: false
-
-  defp contact_not_active?(_), do: false
-
+  # If the :status column is present, validate it's a valid status
   defp read_file_line_count!(filename) do
     File.stream!(filename)
     |> Enum.count()
@@ -162,18 +152,26 @@ defmodule Keila.Contacts.Import do
   end
 
   defp insert(changeset, _n, _project_id, :ignore) do
-    Repo.insert(changeset, on_conflict: :nothing)
+    if changeset.valid? do
+      Repo.insert(changeset, on_conflict: :nothing)
+    else
+      {:error, changeset}
+    end
   end
 
   defp insert(changeset, n, project_id, :replace) do
-    external_id = get_change(changeset, :external_id)
+    if not changeset.valid? do
+      {:error, changeset}
+    else
+      external_id = get_change(changeset, :external_id)
 
-    if not is_nil(external_id) do
-      maybe_pre_set_external_id(changeset, project_id, external_id)
+      if not is_nil(external_id) do
+        maybe_pre_set_external_id(changeset, project_id, external_id)
+      end
+
+      insert_opts = replace_insert_opts(changeset, external_id)
+      Repo.insert(changeset, insert_opts)
     end
-
-    insert_opts = replace_insert_opts(changeset, external_id)
-    Repo.insert(changeset, insert_opts)
   rescue
     e in Postgrex.Error ->
       raise_import_error!(changeset, e, n + 1)
@@ -185,7 +183,10 @@ defmodule Keila.Contacts.Import do
 
     replace_fields =
       @replace_fields
-      |> Enum.filter(&(not is_nil(get_change(changeset, &1))))
+      |> Enum.filter(fn field ->
+        # Include the field if there's a change for it
+        not is_nil(get_change(changeset, field))
+      end)
 
     conflict_target =
       if external_id?, do: [:external_id, :project_id], else: [:email, :project_id]

@@ -273,12 +273,25 @@ defmodule Keila.ContactsTest do
                "test/keila/contacts/import_rfc_4180_with_status.csv"
              )
 
-    assert_received {:contacts_import_progress, 1, 4}
+    assert_received {:contacts_import_progress, 4, 4}
 
-    assert Repo.get_by(Contacts.Contact, email: "active@example.com")
-    refute Repo.get_by(Contacts.Contact, email: "unsubscribed@example.com")
-    refute Repo.get_by(Contacts.Contact, email: "unreachable@example.com")
-    refute Repo.get_by(Contacts.Contact, email: "empty@example.com")
+    # Check that all contacts are imported with correct statuses
+    active_contact = Repo.get_by(Contacts.Contact, email: "active@example.com")
+    assert active_contact
+    assert active_contact.status == :active
+
+    unsubscribed_contact = Repo.get_by(Contacts.Contact, email: "unsubscribed@example.com")
+    assert unsubscribed_contact
+    assert unsubscribed_contact.status == :unsubscribed
+
+    unreachable_contact = Repo.get_by(Contacts.Contact, email: "unreachable@example.com")
+    assert unreachable_contact
+    assert unreachable_contact.status == :unreachable
+
+    # Contact with empty status should default to active
+    empty_status_contact = Repo.get_by(Contacts.Contact, email: "empty@example.com")
+    assert empty_status_contact
+    assert empty_status_contact.status == :active
   end
 
   @tag :contacts
@@ -407,7 +420,7 @@ defmodule Keila.ContactsTest do
   test "Update contact with status when update_status option is true", %{project: project} do
     contact = insert!(:contact, %{project_id: project.id, status: :active})
     params = %{"status" => "unsubscribed", "first_name" => "Updated"}
-    
+
     assert {:ok, updated_contact} = Contacts.update_contact(contact.id, params, update_status: true)
     assert updated_contact.status == :unsubscribed
     assert updated_contact.first_name == "Updated"
@@ -417,7 +430,7 @@ defmodule Keila.ContactsTest do
   test "Update contact ignores status when update_status option is false", %{project: project} do
     contact = insert!(:contact, %{project_id: project.id, status: :active})
     params = %{"status" => "unsubscribed", "first_name" => "Updated"}
-    
+
     assert {:ok, updated_contact} = Contacts.update_contact(contact.id, params, update_status: false)
     assert updated_contact.status == :active  # Status should remain unchanged
     assert updated_contact.first_name == "Updated"
@@ -427,7 +440,7 @@ defmodule Keila.ContactsTest do
   test "Update contact ignores status when update_status option is not provided", %{project: project} do
     contact = insert!(:contact, %{project_id: project.id, status: :active})
     params = %{"status" => "unsubscribed", "first_name" => "Updated"}
-    
+
     assert {:ok, updated_contact} = Contacts.update_contact(contact.id, params)
     assert updated_contact.status == :active  # Status should remain unchanged
     assert updated_contact.first_name == "Updated"
@@ -436,7 +449,7 @@ defmodule Keila.ContactsTest do
   @tag :contacts
   test "Create contact with status when set_status option is true", %{project: project} do
     params = params(:contact) |> Map.put("status", "unsubscribed")
-    
+
     assert {:ok, contact} = Contacts.create_contact(project.id, params, set_status: true)
     assert contact.status == :unsubscribed
   end
@@ -444,7 +457,7 @@ defmodule Keila.ContactsTest do
   @tag :contacts
   test "Create contact ignores status when set_status option is false", %{project: project} do
     params = params(:contact) |> Map.put("status", "unsubscribed")
-    
+
     assert {:ok, contact} = Contacts.create_contact(project.id, params, set_status: false)
     assert contact.status == :active  # Should default to active
   end
@@ -452,8 +465,98 @@ defmodule Keila.ContactsTest do
   @tag :contacts
   test "Create contact ignores status when set_status option is not provided", %{project: project} do
     params = params(:contact) |> Map.put("status", "unsubscribed")
-    
+
     assert {:ok, contact} = Contacts.create_contact(project.id, params)
     assert contact.status == :active  # Should default to active
   end
+
+  @tag :contacts
+  test "Import CSV with status update on replace", %{project: project} do
+    # First import a contact with 'active' status
+    contact = insert!(:contact, %{project_id: project.id, email: "test@example.com", status: :active})
+
+    # Import same contact with different status using our test file
+    assert :ok ==
+      Contacts.import_csv(
+        project.id,
+        "test/keila/contacts/test_status_update2.csv",
+        on_conflict: :replace
+      )
+
+    # Verify status was updated
+    updated_contact = Contacts.get_contact(contact.id)
+    assert updated_contact.status == :unsubscribed
+    assert updated_contact.email == "test@example.com"
+  end
+
+  @tag :contacts
+  test "Import CSV prevents reactivating unsubscribed contacts with empty status", %{project: project} do
+    # Create an unsubscribed contact
+    contact = insert!(:contact, %{project_id: project.id, email: "test@example.com", status: :unsubscribed})
+
+    # Create CSV with empty status (should not reactivate)
+    csv_content = "Email,First name,Last name,Status\ntest@example.com,Test,User,"
+    csv_file = "/tmp/test_empty_status.csv"
+    File.write!(csv_file, csv_content)
+
+    # Import with replace option
+    assert :ok == Contacts.import_csv(project.id, csv_file, on_conflict: :replace)
+
+    # Verify status was NOT changed (still unsubscribed)
+    updated_contact = Contacts.get_contact(contact.id)
+    assert updated_contact.status == :unsubscribed
+
+    # Clean up
+    File.rm!(csv_file)
+  end
+
+  @tag :contacts
+  test "Import CSV allows explicit reactivation of unsubscribed contacts", %{project: project} do
+    # Create an unsubscribed contact
+    contact = insert!(:contact, %{project_id: project.id, email: "test@example.com", status: :unsubscribed})
+
+    # Create CSV with explicit "active" status (should reactivate)
+    csv_content = "Email,First name,Last name,Status\ntest@example.com,Test,User,active"
+    csv_file = "/tmp/test_explicit_active.csv"
+    File.write!(csv_file, csv_content)
+
+    # Import with replace option
+    assert :ok == Contacts.import_csv(project.id, csv_file, on_conflict: :replace)
+
+    # Verify status was changed to active
+    updated_contact = Contacts.get_contact(contact.id)
+    assert updated_contact.status == :active
+
+    # Clean up
+    File.rm!(csv_file)
+  end
+
+  @tag :contacts
+  test "Import CSV with invalid status values shows proper error", %{project: project} do
+    # This should fail with a proper error message for invalid status
+    result = Contacts.import_csv(project.id, "test/keila/contacts/test_invalid_status.csv")
+
+    assert {:error, error_message} = result
+    assert error_message =~ "must be one of: active, unsubscribed, unreachable"
+  end
+
+  @tag :contacts
+  test "Import CSV with 'inactive' status shows helpful error", %{project: project} do
+    result = Contacts.import_csv(project.id, "test/keila/contacts/test_inactive_status.csv")
+
+    assert {:error, error_message} = result
+    assert error_message =~ "must be one of: active, unsubscribed, unreachable"
+  end
+
+  @tag :contacts
+  test "Import CSV with invalid status shows clear error message", %{project: project} do
+    # Test that invalid status values result in clear error messages
+    result = Contacts.import_csv(project.id, "test/keila/contacts/test_invalid_status.csv", on_conflict: :replace)
+
+    assert {:error, error_message} = result
+    assert error_message =~ "Error importing contact in line 1"
+    assert error_message =~ "invalid_status@example.com"
+    assert error_message =~ "must be one of: active, unsubscribed, unreachable"
+  end
+
 end
