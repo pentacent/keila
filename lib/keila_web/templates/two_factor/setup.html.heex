@@ -1,0 +1,37 @@
+<div class="container mt-8">
+  <div class="rounded shadow p-8 mt-8 max-w-xl mx-auto flex flex-col gap-4 bg-gray-900 text-gray-50">
+    <h1 class="text-5xl font-bold">
+      <%= dgettext("auth", "Two-Factor Authentication") %>
+    </h1>
+    
+    <%= if @user.two_factor_enabled do %>
+      <p class="text-lg text-gray-200">
+        <%= dgettext("auth", "Two-factor authentication is currently enabled for your account.") %>
+      </p>
+      
+      <div class="flex gap-4 mt-8">
+        <.form let={_f} for={@changeset} action={Routes.two_factor_path(@conn, :disable)} method="post">
+          <button type="submit" class="button button--warn button--large">
+            <%= dgettext("auth", "Disable Two-Factor Authentication") %>
+          </button>
+        </.form>
+      </div>
+    <% else %>
+      <p class="text-lg text-gray-200">
+        <%= dgettext("auth", "Add an extra layer of security to your account by enabling two-factor authentication.") %>
+      </p>
+      
+      <p class="text-gray-300">
+        <%= dgettext("auth", "When enabled, you'll receive a verification code via email each time you sign in.") %>
+      </p>
+      
+      <div class="flex justify-end mt-8">
+        <.form let={_f} for={@changeset} action={Routes.two_factor_path(@conn, :enable)} method="post">
+          <button type="submit" class="button button--cta button--large">
+            <%= dgettext("auth", "Enable Two-Factor Authentication") %>
+          </button>
+        </.form>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -42,6 +42,11 @@ defmodule KeilaWeb.Router do
     post "/auth/reset", AuthController, :post_reset
     get "/auth/reset/:token", AuthController, :reset_change_password
     post "/auth/reset/:token", AuthController, :post_reset_change_password
+    
+    # Two-factor authentication challenge for unauthenticated users
+    get "/auth/2fa/challenge", TwoFactorController, :challenge
+    post "/auth/2fa/verify", TwoFactorController, :verify
+    post "/auth/2fa/resend", TwoFactorController, :resend_code
   end
 
   # Authenticated Routes without activation requirement
@@ -65,6 +70,11 @@ defmodule KeilaWeb.Router do
     get "/account", AccountController, :edit
     put "/account", AccountController, :post_edit
     get "/account/await-subscription", AccountController, :await_subscription
+
+    # Two-factor authentication management
+    get "/auth/2fa/setup", TwoFactorController, :setup
+    post "/auth/2fa/enable", TwoFactorController, :enable
+    post "/auth/2fa/disable", TwoFactorController, :disable
 
     Keila.if_cloud do
       get "/account/onboarding", CloudAccountController, :onboarding

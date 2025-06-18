@@ -1,0 +1,44 @@
+<div class="container mt-8">
+  <.form
+    let={f}
+    for={@changeset}
+    action={Routes.two_factor_path(@conn, :verify)}
+    class="rounded shadow p-8 mt-8 max-w-xl mx-auto flex flex-col gap-4 bg-gray-900 text-gray-50"
+  >
+    <h1 class="text-5xl font-bold">
+      <%= dgettext("auth", "Two-Factor Authentication") %>
+    </h1>
+    
+    <p class="text-lg text-gray-200">
+      <%= dgettext("auth", "Enter the verification code sent to your email address.") %>
+    </p>
+    
+    <div class="flex flex-col">
+      <%= label(f, :code, dgettext("auth", "Verification Code")) %>
+      <%= with_validation(f, :code) do %>
+        <%= text_input(f, :code, 
+          placeholder: dgettext("auth", "000000"), 
+          class: "text-black text-center font-mono text-2xl tracking-widest",
+          maxlength: 8,
+          autofocus: true
+        ) %>
+      <% end %>
+    </div>
+    
+    <div class="flex justify-between items-center mt-8">
+      <.form let={_f} for={@conn} action={Routes.two_factor_path(@conn, :resend_code)} method="post">
+        <button type="submit" class="button button--text">
+          <%= dgettext("auth", "Resend code") %>
+        </button>
+      </.form>
+      
+      <button type="submit" class="button button--cta button--large">
+        <%= dgettext("auth", "Verify") %>
+      </button>
+    </div>
+    
+    <p class="text-sm text-gray-400 text-center">
+      <%= dgettext("auth", "You can also use one of your backup codes instead.") %>
+    </p>
+  </.form>
+</div>

@@ -11,6 +11,8 @@ defmodule Keila.Auth.User do
     field(:locale, :string)
 
     field(:activated_at, :utc_datetime)
+    field(:two_factor_enabled, :boolean, default: false)
+    field(:two_factor_backup_codes, {:array, :string}, default: [])
 
     has_many(:user_groups, Keila.Auth.UserGroup)
     has_many(:group_roles, through: [:user_groups, :user_group_roles])
@@ -57,6 +59,12 @@ defmodule Keila.Auth.User do
     |> cast(params, [:password])
     |> validate_email()
     |> validate_password()
+  end
+
+  @spec update_two_factor_changeset(t() | Ecto.Changeset.data()) :: Ecto.Changeset.t(t)
+  def update_two_factor_changeset(struct \\ %__MODULE__{}, params) do
+    struct
+    |> cast(params, [:two_factor_enabled, :two_factor_backup_codes])
   end
 
   @email_regex ~r/^[^\s@]+@[^\s@]+$/

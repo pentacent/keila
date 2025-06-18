@@ -101,9 +101,30 @@ defmodule Keila.Auth.Emails do
 
         %{url}
 
-        If you haven’t requested a login, simply ignore this message.
+        If you haven't requested a login, simply ignore this message.
         """,
         url: url
+      )
+    )
+  end
+
+  @spec build(:two_factor_code, %{code: String.t(), user: Keila.Auth.User.t()}) :: term() | no_return()
+  def build(:two_factor_code, %{user: user, code: code}) do
+    new()
+    |> subject(dgettext("auth", "Your Two-Factor Authentication Code"))
+    |> to(user.email)
+    |> from({"Keila", system_from_email()})
+    |> text_body(
+      dgettext(
+        "auth",
+        """
+        Your two-factor authentication code is:
+
+        %{code}
+
+        This code will expire in 10 minutes. If you didn't request this code, please ignore this message.
+        """,
+        code: code
       )
     )
   end

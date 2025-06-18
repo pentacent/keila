@@ -212,6 +212,35 @@
       </button>
     </div>
   </.form>
+
+  <!-- Two-Factor Authentication Section -->
+  <div class="rounded shadow p-8 mt-8 max-w-5xl mx-auto flex flex-col gap-4 bg-gray-900 text-gray-50">
+    <h2 class="text-3xl font-bold">
+      <%= gettext("Two-Factor Authentication") %>
+    </h2>
+    <p class="text-lg text-gray-200">
+      <%= gettext("Add an extra layer of security to your account.") %>
+    </p>
+    
+    <%= if @current_user.two_factor_enabled do %>
+      <div class="flex gap-2 items-center text-emerald-400">
+        <%= render_icon(:shield_check) %>
+        <span><%= gettext("Two-factor authentication is enabled") %></span>
+      </div>
+    <% else %>
+      <div class="flex gap-2 items-center text-yellow-400">
+        <%= render_icon(:shield_exclamation) %>
+        <span><%= gettext("Two-factor authentication is disabled") %></span>
+      </div>
+    <% end %>
+    
+    <div class="flex justify-end mt-8">
+      <a href={Routes.two_factor_path(@conn, :setup)} class="button button--large">
+        <%= gettext("Manage Two-Factor Authentication") %>
+      </a>
+    </div>
+  </div>
+  
   <.form
     let={f}
     for={@changeset}

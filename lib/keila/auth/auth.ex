@@ -656,4 +656,112 @@ defmodule Keila.Auth do
     Emails.send!(:login_link, %{user: user, url: url_fn.(token.key)})
     :ok
   end
+
+  @doc """
+  Enables two-factor authentication for a user.
+  """
+  @spec enable_two_factor_auth(User.id()) :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}
+  def enable_two_factor_auth(user_id) do
+    user = Repo.get(User, user_id)
+    
+    # Generate backup codes
+    backup_codes = for _ <- 1..10, do: generate_backup_code()
+    
+    user
+    |> User.update_two_factor_changeset(%{two_factor_enabled: true, two_factor_backup_codes: backup_codes})
+    |> Repo.update()
+  end
+
+  @doc """
+  Disables two-factor authentication for a user.
+  """
+  @spec disable_two_factor_auth(User.id()) :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}
+  def disable_two_factor_auth(user_id) do
+    user = Repo.get(User, user_id)
+    
+    user
+    |> User.update_two_factor_changeset(%{two_factor_enabled: false, two_factor_backup_codes: []})
+    |> Repo.update()
+  end
+
+  @doc """
+  Generates and sends a two-factor authentication code to the user's email.
+  Returns the generated code for verification.
+  """
+  @spec send_two_factor_code(User.id()) :: {:ok, String.t()} | :error
+  def send_two_factor_code(user_id) do
+    user = Repo.get(User, user_id)
+    
+    if user && user.two_factor_enabled do
+      code = generate_two_factor_code()
+      expires_at = DateTime.utc_now() |> DateTime.add(10, :minute) |> DateTime.truncate(:second)
+      
+      {:ok, _token} = create_token(%{
+        scope: "auth.two_factor",
+        user_id: user.id,
+        data: %{code: code},
+        expires_at: expires_at
+      })
+      
+      Emails.send!(:two_factor_code, %{user: user, code: code})
+      {:ok, code}
+    else
+      :error
+    end
+  end
+
+  @doc """
+  Verifies a two-factor authentication code.
+  """
+  @spec verify_two_factor_code(User.id(), String.t()) :: {:ok, User.t()} | :error
+  def verify_two_factor_code(user_id, code) do
+    user = Repo.get(User, user_id)
+    
+    if user && user.two_factor_enabled do
+      # Check if it's a backup code
+      if code in user.two_factor_backup_codes do
+        # Remove used backup code
+        remaining_codes = List.delete(user.two_factor_backup_codes, code)
+        case user
+        |> User.update_two_factor_changeset(%{two_factor_backup_codes: remaining_codes})
+        |> Repo.update() do
+          {:ok, updated_user} -> {:ok, updated_user}
+          {:error, _changeset} -> :error
+        end
+      else
+        # Check if it's a valid 2FA code
+        case find_and_delete_token_by_user_and_data(user_id, "auth.two_factor", %{code: code}) do
+          %Token{} -> {:ok, user}
+          _ -> :error
+        end
+      end
+    else
+      :error
+    end
+  end
+
+  defp generate_two_factor_code do
+    :rand.uniform(999999)
+    |> Integer.to_string()
+    |> String.pad_leading(6, "0")
+  end
+
+  defp generate_backup_code do
+    :crypto.strong_rand_bytes(4)
+    |> Base.encode16(case: :lower)
+    |> String.slice(0, 8)
+  end
+
+  defp find_and_delete_token_by_user_and_data(user_id, scope, data) do
+    from(t in Token,
+      where: t.user_id == ^user_id and t.scope == ^scope and t.data == ^data and t.expires_at > ^DateTime.utc_now()
+    )
+    |> Repo.one()
+    |> case do
+      nil -> nil
+      token ->
+        Repo.delete(token)
+        token
+    end
+  end
 end

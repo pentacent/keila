@@ -171,7 +171,14 @@ defmodule KeilaWeb.AuthController do
   @spec post_login(Plug.Conn.t(), any) :: Plug.Conn.t()
   def post_login(conn, %{"user" => params}) do
     case Auth.find_user_by_credentials(params) do
-      {:ok, user} -> do_login(conn, user)
+      {:ok, user} -> 
+        if user.two_factor_enabled do
+          conn
+          |> put_session(:pending_2fa_user_id, user.id)
+          |> redirect(to: Routes.two_factor_path(conn, :challenge))
+        else
+          do_login(conn, user)
+        end
       {:error, changeset} -> render_login(conn, 400, changeset)
     end
   end

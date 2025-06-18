@@ -1,0 +1,30 @@
+<div class="container mt-8">
+  <div class="rounded shadow p-8 mt-8 max-w-xl mx-auto flex flex-col gap-4 bg-gray-900 text-gray-50">
+    <h1 class="text-5xl font-bold">
+      <%= dgettext("auth", "Backup Codes") %>
+    </h1>
+    
+    <p class="text-lg text-gray-200">
+      <%= dgettext("auth", "Save these backup codes somewhere safe. You can use each code once to sign in if you can't access your email.") %>
+    </p>
+    
+    <div class="bg-gray-800 p-4 rounded font-mono text-center">
+      <%= for code <- @backup_codes do %>
+        <div class="py-1 text-green-400"><%= code %></div>
+      <% end %>
+    </div>
+    
+    <div class="bg-yellow-900 border border-yellow-600 p-4 rounded">
+      <p class="text-yellow-200 text-sm">
+        <strong><%= dgettext("auth", "Important:") %></strong>
+        <%= dgettext("auth", "These codes will only be shown once. Make sure to save them in a secure location before continuing.") %>
+      </p>
+    </div>
+    
+    <div class="flex justify-end mt-8">
+      <a href={Routes.account_path(@conn, :edit)} class="button button--cta button--large">
+        <%= dgettext("auth", "Continue") %>
+      </a>
+    </div>
+  </div>
+</div>
