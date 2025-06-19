@@ -793,4 +793,373 @@ defmodule Keila.Auth do
         token
     end
   end
+
+  @doc """
+  Starts WebAuthn registration process for a user.
+  Returns challenge and user information needed for the client.
+  """
+  @spec start_webauthn_registration(User.id()) :: {:ok, map()} | {:error, String.t()}
+  def start_webauthn_registration(user_id) do
+    user = Repo.get(User, user_id)
+    
+    if user do
+      # Clean up any existing registration tokens for this user
+      from(t in Token,
+        where: t.user_id == ^user.id and t.scope == "auth.webauthn_registration"
+      )
+      |> Repo.delete_all()
+      
+      challenge = Wax.new_registration_challenge(
+        origin: get_origin(),
+        rp_id: get_rp_id()
+      )
+      
+      expires_at = DateTime.utc_now() |> DateTime.add(5, :minute) |> DateTime.truncate(:second)
+      
+      # Store only serializable challenge data in token for verification
+      {:ok, _token} = create_token(%{
+        scope: "auth.webauthn_registration",
+        user_id: user.id,
+        data: %{
+          challenge_bytes: Base.encode64(challenge.bytes),
+          origin: challenge.origin,
+          rp_id: challenge.rp_id
+        },
+        expires_at: expires_at
+      })
+      
+      rp = %{
+        id: get_rp_id(),
+        name: "Keila"
+      }
+      
+      user_info = %{
+        id: user.id,
+        name: user.email,
+        displayName: "#{user.given_name} #{user.family_name}" |> String.trim()
+      }
+      
+      {:ok, %{
+        challenge: Base.url_encode64(challenge.bytes, padding: false),
+        rp: rp,
+        user: user_info,
+        pubKeyCredParams: [%{type: "public-key", alg: -7}], # ES256
+        authenticatorSelection: %{
+          authenticatorAttachment: "platform",
+          userVerification: "preferred"
+        }
+      }}
+    else
+      {:error, "User not found"}
+    end
+  end
+
+  @doc """
+  Completes WebAuthn registration process.
+  """
+  @spec complete_webauthn_registration(User.id(), map()) :: {:ok, User.t()} | {:error, String.t()}
+  def complete_webauthn_registration(user_id, attestation_response) do
+    user = Repo.get(User, user_id)
+    
+    # Find the most recent challenge token
+    challenge_token = from(t in Token,
+      where: t.user_id == ^user_id and t.scope == "auth.webauthn_registration" and t.expires_at > ^DateTime.utc_now(),
+      order_by: [desc: t.inserted_at],
+      limit: 1
+    )
+    |> Repo.one()
+    
+    if user && challenge_token do
+      # Reconstruct the challenge from stored data
+      challenge_data = challenge_token.data
+      challenge = %Wax.Challenge{
+        type: :attestation,
+        bytes: Base.decode64!(challenge_data["challenge_bytes"]),
+        origin: challenge_data["origin"],
+        rp_id: challenge_data["rp_id"],
+        token_binding_status: nil,
+        issued_at: System.system_time(:second),
+        origin_verify_fun: {Wax, :origins_match?, []},
+        acceptable_authenticator_statuses: ["FIDO_CERTIFIED", "FIDO_CERTIFIED_L1", "FIDO_CERTIFIED_L1plus", "FIDO_CERTIFIED_L2", "FIDO_CERTIFIED_L2plus", "FIDO_CERTIFIED_L3", "FIDO_CERTIFIED_L3plus"],
+        android_key_allow_software_enforcement: false,
+        allow_credentials: [],
+        attestation: "none",
+        silent_authentication_enabled: false,
+        timeout: 1200,
+        trusted_attestation_types: [:none, :self, :basic, :uncertain, :attca, :anonca],
+        user_verification: "preferred",
+        verify_trust_root: true
+      }
+      
+      # Convert the attestation response from arrays back to binaries
+      attestation_object = attestation_response["response"]["attestationObject"] |> Enum.into(<<>>, &<<&1>>)
+      client_data_json = attestation_response["response"]["clientDataJSON"] |> Enum.into(<<>>, &<<&1>>)
+      
+      # Verify the attestation using Wax
+      case Wax.register(attestation_object, client_data_json, challenge) do
+        {:ok, {authenticator_data, _attestation_result}} ->
+          # Extract credential info
+          credential_id = attestation_response["id"]
+          credential_public_key = authenticator_data.attested_credential_data.credential_public_key
+          
+          # Create credential record
+          credential = %{
+            id: credential_id,
+            public_key: Base.encode64(:erlang.term_to_binary(credential_public_key)),
+            created_at: DateTime.utc_now(),
+            last_used_at: nil,
+            name: "Security Key"
+          }
+          
+          # Add credential to user
+          updated_credentials = [credential | user.webauthn_credentials]
+          
+          changeset = user
+          |> User.update_webauthn_changeset(%{webauthn_credentials: updated_credentials})
+          
+          case Repo.update(changeset) do
+            {:ok, updated_user} ->
+              # Delete all registration tokens for this user
+              from(t in Token,
+                where: t.user_id == ^user.id and t.scope == "auth.webauthn_registration"
+              )
+              |> Repo.delete_all()
+              {:ok, updated_user}
+            {:error, _changeset} ->
+              {:error, "Failed to save credential"}
+          end
+          
+        {:error, reason} ->
+          {:error, "WebAuthn verification failed: #{inspect(reason)}"}
+      end
+    else
+      {:error, "Invalid registration session"}
+    end
+  end
+
+  @doc """
+  Starts WebAuthn authentication process.
+  Returns challenge and allowed credentials.
+  """
+  @spec start_webauthn_authentication(User.id()) :: {:ok, map()} | {:error, String.t()}
+  def start_webauthn_authentication(user_id) do
+    user = Repo.get(User, user_id)
+    
+    if user && length(user.webauthn_credentials) > 0 do
+      # Clean up any existing authentication tokens for this user
+      from(t in Token,
+        where: t.user_id == ^user.id and t.scope == "auth.webauthn_authentication"
+      )
+      |> Repo.delete_all()
+      
+      # Prepare credentials for Wax
+      cred_ids_and_keys = Enum.map(user.webauthn_credentials, fn cred ->
+        {cred["id"], :erlang.binary_to_term(Base.decode64!(cred["public_key"]))}
+      end)
+      
+      challenge = Wax.new_authentication_challenge(
+        allow_credentials: cred_ids_and_keys,
+        origin: get_origin(),
+        rp_id: get_rp_id()
+      )
+      
+      expires_at = DateTime.utc_now() |> DateTime.add(5, :minute) |> DateTime.truncate(:second)
+      
+      # Store only serializable challenge data in token for verification
+      {:ok, _token} = create_token(%{
+        scope: "auth.webauthn_authentication",
+        user_id: user.id,
+        data: %{
+          challenge_bytes: Base.encode64(challenge.bytes),
+          origin: challenge.origin,
+          rp_id: challenge.rp_id
+        },
+        expires_at: expires_at
+      })
+      
+      allowed_credentials = Enum.map(user.webauthn_credentials, fn cred ->
+        %{
+          type: "public-key",
+          id: cred["id"]
+        }
+      end)
+      
+      {:ok, %{
+        challenge: Base.url_encode64(challenge.bytes, padding: false),
+        allowCredentials: allowed_credentials,
+        userVerification: "preferred"
+      }}
+    else
+      {:error, "No WebAuthn credentials found"}
+    end
+  end
+
+  @doc """
+  Completes WebAuthn authentication process.
+  """
+  @spec complete_webauthn_authentication(User.id(), map()) :: {:ok, User.t()} | {:error, String.t()}
+  def complete_webauthn_authentication(user_id, assertion_response) do
+    user = Repo.get(User, user_id)
+    
+    # Find the most recent challenge token
+    challenge_token = from(t in Token,
+      where: t.user_id == ^user_id and t.scope == "auth.webauthn_authentication" and t.expires_at > ^DateTime.utc_now(),
+      order_by: [desc: t.inserted_at],
+      limit: 1
+    )
+    |> Repo.one()
+    
+    if user && challenge_token do
+      # Rebuild credentials from user record
+      # Note: credential IDs are stored as base64url strings but Wax expects binary
+      cred_ids_and_keys = Enum.map(user.webauthn_credentials, fn cred ->
+        {Base.url_decode64!(cred["id"], padding: false), :erlang.binary_to_term(Base.decode64!(cred["public_key"]))}
+      end)
+      
+      # Reconstruct the challenge from stored data
+      challenge_data = challenge_token.data
+      challenge = %Wax.Challenge{
+        type: :assertion,
+        bytes: Base.decode64!(challenge_data["challenge_bytes"]),
+        origin: challenge_data["origin"],
+        rp_id: challenge_data["rp_id"],
+        token_binding_status: nil,
+        issued_at: System.system_time(:second),
+        origin_verify_fun: {Wax, :origins_match?, []},
+        acceptable_authenticator_statuses: ["FIDO_CERTIFIED", "FIDO_CERTIFIED_L1", "FIDO_CERTIFIED_L1plus", "FIDO_CERTIFIED_L2", "FIDO_CERTIFIED_L2plus", "FIDO_CERTIFIED_L3", "FIDO_CERTIFIED_L3plus"],
+        android_key_allow_software_enforcement: false,
+        allow_credentials: cred_ids_and_keys,
+        attestation: "none",
+        silent_authentication_enabled: false,
+        timeout: 1200,
+        trusted_attestation_types: [:none, :self, :basic, :uncertain, :attca, :anonca],
+        user_verification: "preferred",
+        verify_trust_root: true
+      }
+      
+      credential_id = assertion_response["id"]
+      
+      # Debug logging for credential lookup
+      require Logger
+      Logger.info("Frontend credential_id: #{inspect(credential_id)}")
+      Logger.info("Frontend credential_id type: #{credential_id |> to_string() |> String.length()}")
+      Logger.info("Available credentials:")
+      Enum.each(user.webauthn_credentials, fn cred ->
+        stored_id = cred["id"]
+        Logger.info("  - Stored: #{inspect(stored_id)} (type: #{stored_id |> to_string() |> String.length()})")
+        Logger.info("  - Match: #{stored_id == credential_id}")
+      end)
+      
+      # Find the credential
+      credential = Enum.find(user.webauthn_credentials, fn cred ->
+        cred["id"] == credential_id
+      end)
+      
+      if credential do
+        # Convert assertion response from arrays back to binaries  
+        raw_id = Base.url_decode64!(credential_id, padding: false)
+        authenticator_data = assertion_response["response"]["authenticatorData"] |> Enum.into(<<>>, &<<&1>>)
+        signature = assertion_response["response"]["signature"] |> Enum.into(<<>>, &<<&1>>)
+        client_data_json = assertion_response["response"]["clientDataJSON"] |> Enum.into(<<>>, &<<&1>>)
+        
+        # Debug logging
+        require Logger
+        Logger.info("WebAuthn authentication attempt for credential_id: #{credential_id}")
+        
+        # Verify the assertion using Wax
+        case Wax.authenticate(raw_id, authenticator_data, signature, client_data_json, challenge) do
+          {:ok, _authenticator_data} ->
+            # Update last used timestamp
+            updated_credential = Map.put(credential, "last_used_at", DateTime.utc_now())
+            updated_credentials = Enum.map(user.webauthn_credentials, fn cred ->
+              if cred["id"] == credential_id, do: updated_credential, else: cred
+            end)
+            
+            changeset = user
+            |> User.update_webauthn_changeset(%{webauthn_credentials: updated_credentials})
+            
+            case Repo.update(changeset) do
+              {:ok, updated_user} ->
+                # Delete all authentication tokens for this user
+                from(t in Token,
+                  where: t.user_id == ^user.id and t.scope == "auth.webauthn_authentication"
+                )
+                |> Repo.delete_all()
+                {:ok, updated_user}
+              {:error, _changeset} ->
+                {:ok, user} # Still allow authentication even if timestamp update fails
+            end
+            
+          {:error, reason} ->
+            {:error, "WebAuthn authentication failed: #{inspect(reason)}"}
+        end
+      else
+        {:error, "Credential not found"}
+      end
+    else
+      {:error, "Invalid authentication session"}
+    end
+  end
+
+  @doc """
+  Removes a WebAuthn credential from a user.
+  """
+  @spec remove_webauthn_credential(User.id(), String.t()) :: {:ok, User.t()} | {:error, String.t()}
+  def remove_webauthn_credential(user_id, credential_id) do
+    user = Repo.get(User, user_id)
+    
+    if user do
+      updated_credentials = Enum.reject(user.webauthn_credentials, fn cred ->
+        cred["id"] == credential_id
+      end)
+      
+      changeset = user
+      |> User.update_webauthn_changeset(%{webauthn_credentials: updated_credentials})
+      
+      case Repo.update(changeset) do
+        {:ok, updated_user} ->
+          {:ok, updated_user}
+        {:error, changeset} ->
+          {:error, changeset}
+      end
+    else
+      {:error, "User not found"}
+    end
+  end
+
+  @spec remove_all_webauthn_credentials(user_id :: String.t()) :: 
+    {:ok, User.t()} | {:error, Ecto.Changeset.t()}
+  def remove_all_webauthn_credentials(user_id) do
+    user = Repo.get(User, user_id)
+    
+    if user do
+      user
+      |> User.update_webauthn_changeset(%{webauthn_credentials: []})
+      |> Repo.update()
+    else
+      {:error, "User not found"}
+    end
+  end
+
+  # Private helper functions for WebAuthn
+  
+  defp get_origin do
+    endpoint_config = Application.get_env(:keila, KeilaWeb.Endpoint, [])
+    url_config = Keyword.get(endpoint_config, :url, [])
+    scheme = if Keyword.get(url_config, :scheme) == "https", do: "https", else: "http"
+    host = Keyword.get(url_config, :host, "localhost")
+    port = Keyword.get(url_config, :port, 4000)
+    
+    if (scheme == "https" && port == 443) || (scheme == "http" && port == 80) do
+      "#{scheme}://#{host}"
+    else
+      "#{scheme}://#{host}:#{port}"
+    end
+  end
+  
+  defp get_rp_id do
+    endpoint_config = Application.get_env(:keila, KeilaWeb.Endpoint, [])
+    url_config = Keyword.get(endpoint_config, :url, [])
+    Keyword.get(url_config, :host, "localhost")
+  end
 end

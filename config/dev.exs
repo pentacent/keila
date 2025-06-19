@@ -104,3 +104,10 @@ config :keila, Keila.Mailer, adapter: Swoosh.Adapters.Local
 
 # Enable sending quotas in dev
 config :keila, Keila.Accounts, credits_enabled: true
+
+# Configure Wax for WebAuthn in development
+config :wax_,
+  origin: "http://localhost:4000",
+  rp_id: :auto,
+  user_verification: "preferred",
+  timeout: 20 * 60

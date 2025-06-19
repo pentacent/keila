@@ -5,41 +5,153 @@
     as={:two_factor}
     action={Routes.two_factor_path(@conn, :verify)}
     class="rounded shadow p-8 mt-8 max-w-xl mx-auto flex flex-col gap-4 bg-gray-900 text-gray-50"
+    onsubmit={unless @user.two_factor_enabled, do: "return false;"}
   >
     <h1 class="text-5xl font-bold">
       <%= dgettext("auth", "Two-Factor Authentication") %>
     </h1>
     
     <p class="text-lg text-gray-200">
-      <%= dgettext("auth", "Enter the verification code sent to your email address.") %>
+      <%= if @user.two_factor_enabled do %>
+        <%= dgettext("auth", "Enter the verification code sent to your email address.") %>
+      <% else %>
+        <%= dgettext("auth", "Please use your security key to authenticate.") %>
+      <% end %>
     </p>
     
-    <div class="flex flex-col">
-      <%= label(f, :code, dgettext("auth", "Verification Code")) %>
-      <%= with_validation(f, :code) do %>
-        <%= text_input(f, :code, 
-          placeholder: dgettext("auth", "000000"), 
-          class: "text-black text-center font-mono text-2xl tracking-widest",
-          maxlength: 8,
-          autofocus: true
-        ) %>
+    <%= if @user.two_factor_enabled do %>
+      <div class="flex flex-col">
+        <%= label(f, :code, dgettext("auth", "Verification Code")) %>
+        <%= with_validation(f, :code) do %>
+          <%= text_input(f, :code, 
+            placeholder: dgettext("auth", "000000"), 
+            class: "text-black text-center font-mono text-2xl tracking-widest",
+            maxlength: 8,
+            autofocus: true
+          ) %>
+        <% end %>
+      </div>
+    <% end %>
+    
+    <div class="flex justify-between items-center mt-8">
+      <div class="flex gap-4">
+        <%= if @user.two_factor_enabled do %>
+          <.form let={_f} for={@conn} action={Routes.two_factor_path(@conn, :resend_code)} method="post">
+            <button type="submit" class="button button--text">
+              <%= dgettext("auth", "Resend code") %>
+            </button>
+          </.form>
+        <% end %>
+        
+        <%= if length(@user.webauthn_credentials) > 0 do %>
+          <button onclick="tryWebAuthn()" class="button button--text" type="button">
+            <%= dgettext("auth", "Use Security Key") %>
+          </button>
+        <% end %>
+      </div>
+      
+      <%= if @user.two_factor_enabled do %>
+        <button type="submit" class="button button--cta button--large">
+          <%= dgettext("auth", "Verify") %>
+        </button>
       <% end %>
     </div>
     
-    <div class="flex justify-between items-center mt-8">
-      <.form let={_f} for={@conn} action={Routes.two_factor_path(@conn, :resend_code)} method="post">
-        <button type="submit" class="button button--text">
-          <%= dgettext("auth", "Resend code") %>
-        </button>
-      </.form>
-      
-      <button type="submit" class="button button--cta button--large">
-        <%= dgettext("auth", "Verify") %>
-      </button>
-    </div>
-    
     <p class="text-sm text-gray-400 text-center">
-      <%= dgettext("auth", "You can also use one of your backup codes instead.") %>
+      <%= cond do %>
+        <% @user.two_factor_enabled && length(@user.webauthn_credentials) > 0 -> %>
+          <%= dgettext("auth", "You can use your security key, email verification code, or one of your backup codes.") %>
+        <% @user.two_factor_enabled -> %>
+          <%= dgettext("auth", "You can also use one of your backup codes instead.") %>
+        <% length(@user.webauthn_credentials) > 0 -> %>
+          <%= dgettext("auth", "Please use your security key or one of your backup codes.") %>
+        <% true -> %>
+          <%= dgettext("auth", "Please contact support for assistance.") %>
+      <% end %>
     </p>
   </.form>
 </div>
+
+<script>
+async function tryWebAuthn() {
+  try {
+    // Check if WebAuthn is supported
+    if (!window.PublicKeyCredential) {
+      alert('<%= dgettext("auth", "WebAuthn is not supported by your browser") %>');
+      return;
+    }
+
+    const userId = '<%= @user_id %>';
+    if (!userId) {
+      alert('<%= dgettext("auth", "Invalid authentication session") %>');
+      return;
+    }
+
+    // Start authentication
+    const response = await fetch('/auth/webauthn/authenticate/begin', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+      },
+      body: JSON.stringify({ user_id: userId })
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Failed to start authentication');
+    }
+
+    const options = await response.json();
+    
+    // Convert challenge from base64url
+    options.challenge = Uint8Array.from(atob(options.challenge.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0));
+    
+    // Convert credential IDs
+    options.allowCredentials = options.allowCredentials.map(cred => ({
+      ...cred,
+      id: Uint8Array.from(atob(cred.id.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0))
+    }));
+    
+    // Get assertion
+    const credential = await navigator.credentials.get({
+      publicKey: options
+    });
+
+    // Complete authentication
+    const assertionResponse = {
+      id: credential.id,
+      rawId: Array.from(new Uint8Array(credential.rawId)),
+      response: {
+        authenticatorData: Array.from(new Uint8Array(credential.response.authenticatorData)),
+        clientDataJSON: Array.from(new Uint8Array(credential.response.clientDataJSON)),
+        signature: Array.from(new Uint8Array(credential.response.signature))
+      },
+      type: credential.type
+    };
+
+    const completeResponse = await fetch('/auth/webauthn/authenticate/complete', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+      },
+      body: JSON.stringify({ 
+        user_id: userId,
+        assertion: assertionResponse 
+      })
+    });
+
+    if (completeResponse.ok) {
+      window.location.href = '/';
+    } else {
+      const error = await completeResponse.json();
+      throw new Error(error.error || 'Authentication failed');
+    }
+  } catch (error) {
+    console.error('WebAuthn authentication failed:', error);
+    console.error('Error details:', error.message);
+    alert('<%= dgettext("auth", "Authentication failed. Please try again or use email verification.") %>' + ' Error: ' + error.message);
+  }
+}
+</script>

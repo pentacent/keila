@@ -184,27 +184,95 @@
       <%= dgettext("admin", "Two-Factor Authentication") %>
     </h2>
     
-    <div class="flex items-center gap-4 mb-4">
-      <span class="text-sm text-gray-400">
-        <%= dgettext("admin", "Current status:") %>
-      </span>
-      <%= if @user.two_factor_enabled do %>
-        <span class="inline-flex items-center gap-1 text-green-400">
-          <span class="w-4 h-4"><%= render_icon(:shield_check) %></span>
-          <%= dgettext("admin", "2FA Enabled") %>
+    <div class="space-y-4 mb-6">
+      <!-- Email 2FA Status -->
+      <div class="flex items-center gap-4">
+        <span class="text-sm text-gray-400 min-w-[120px]">
+          <%= dgettext("admin", "Email 2FA:") %>
         </span>
-      <% else %>
-        <span class="inline-flex items-center gap-1 text-gray-400">
-          <span class="w-4 h-4"><%= render_icon(:shield_exclamation) %></span>
-          <%= dgettext("admin", "2FA Disabled") %>
+        <%= if @user.two_factor_enabled do %>
+          <span class="inline-flex items-center gap-1 text-green-400">
+            <span class="w-4 h-4"><%= render_icon(:shield_check) %></span>
+            <%= dgettext("admin", "Enabled") %>
+          </span>
+          <%= if length(@user.two_factor_backup_codes) > 0 do %>
+            <span class="text-xs text-gray-400">
+              (<%= dgettext("admin", "%{count} backup codes", count: length(@user.two_factor_backup_codes)) %>)
+            </span>
+          <% end %>
+        <% else %>
+          <span class="inline-flex items-center gap-1 text-gray-400">
+            <span class="w-4 h-4"><%= render_icon(:shield_exclamation) %></span>
+            <%= dgettext("admin", "Disabled") %>
+          </span>
+        <% end %>
+      </div>
+
+      <!-- WebAuthn Status -->
+      <div class="flex items-center gap-4">
+        <span class="text-sm text-gray-400 min-w-[120px]">
+          <%= dgettext("admin", "Security Keys:") %>
         </span>
-      <% end %>
+        <%= if length(@user.webauthn_credentials) > 0 do %>
+          <span class="inline-flex items-center gap-1 text-green-400">
+            <span class="w-4 h-4"><%= render_icon(:key) %></span>
+            <%= ngettext("1 key registered", "%{count} keys registered", length(@user.webauthn_credentials), count: length(@user.webauthn_credentials)) %>
+          </span>
+        <% else %>
+          <span class="inline-flex items-center gap-1 text-gray-400">
+            <span class="w-4 h-4"><%= render_icon(:key) %></span>
+            <%= dgettext("admin", "No keys registered") %>
+          </span>
+        <% end %>
+      </div>
     </div>
 
+    <!-- WebAuthn Keys List -->
+    <%= if length(@user.webauthn_credentials) > 0 do %>
+      <div class="bg-gray-700 rounded p-4 mb-6">
+        <h3 class="text-sm font-medium text-gray-300 mb-3">
+          <%= dgettext("admin", "Registered Security Keys") %>
+        </h3>
+        <div class="space-y-2">
+          <%= for credential <- @user.webauthn_credentials do %>
+            <div class="flex items-center justify-between bg-gray-600 p-3 rounded">
+              <div>
+                <div class="font-medium text-gray-200"><%= credential["name"] || "Security Key" %></div>
+                <div class="text-sm text-gray-400">
+                  <%= dgettext("admin", "Added") %> <%= 
+                    case DateTime.from_iso8601(credential["created_at"]) do
+                      {:ok, datetime, _} -> Calendar.strftime(datetime, "%b %d, %Y")
+                      _ -> credential["created_at"]
+                    end
+                  %>
+                  <%= if credential["last_used_at"] do %>
+                    · <%= dgettext("admin", "Last used") %> <%= 
+                      case DateTime.from_iso8601(credential["last_used_at"]) do
+                        {:ok, datetime, _} -> Calendar.strftime(datetime, "%b %d, %Y")
+                        _ -> credential["last_used_at"]
+                      end
+                    %>
+                  <% end %>
+                </div>
+              </div>
+              <%= form_for @conn, Routes.user_admin_path(@conn, :remove_webauthn_key, @user.id), [method: :delete, style: "display: inline;"], fn f -> %>
+                <%= hidden_input(f, :credential_id, value: credential["id"]) %>
+                <%= submit(dgettext("admin", "Remove"), 
+                  class: "button button--text text-red-400 hover:text-red-300 text-sm",
+                  onclick: "return confirm('" <> dgettext("admin", "Are you sure you want to remove this security key?") <> "')"
+                ) %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Email 2FA Controls -->
     <%= if @user.two_factor_enabled do %>
       <div class="bg-yellow-900 border border-yellow-600 rounded p-4 mb-4">
         <p class="text-sm text-yellow-100 mb-2">
-          <%= dgettext("admin", "This user has two-factor authentication enabled. Disabling 2FA will remove all backup codes.") %>
+          <%= dgettext("admin", "This user has email-based two-factor authentication enabled. Disabling 2FA will remove all backup codes.") %>
         </p>
         <%= if length(@user.two_factor_backup_codes) > 0 do %>
           <p class="text-xs text-yellow-200">
@@ -215,7 +283,7 @@
     <% else %>
       <div class="bg-blue-900 border border-blue-600 rounded p-4 mb-4">
         <p class="text-sm text-blue-100">
-          <%= dgettext("admin", "Two-factor authentication is not enabled for this user. You can enable it to improve account security.") %>
+          <%= dgettext("admin", "Email-based two-factor authentication is not enabled for this user. You can enable it to improve account security.") %>
         </p>
       </div>
     <% end %>
@@ -223,15 +291,24 @@
     <div class="flex flex-wrap gap-4">
       <%= if @user.two_factor_enabled do %>
         <%= form_for @conn, Routes.user_admin_path(@conn, :disable_2fa, @user.id), [method: :post, style: "display: inline;"], fn _f -> %>
-          <%= submit(dgettext("admin", "Disable 2FA"), 
+          <%= submit(dgettext("admin", "Disable Email 2FA"), 
             class: "button bg-orange-600 hover:bg-orange-700 text-white",
-            onclick: "return confirm('" <> dgettext("admin", "Are you sure you want to disable 2FA for this user? This will remove all backup codes.") <> "')"
+            onclick: "return confirm('" <> dgettext("admin", "Are you sure you want to disable email 2FA for this user? This will remove all backup codes.") <> "')"
           ) %>
         <% end %>
       <% else %>
         <%= form_for @conn, Routes.user_admin_path(@conn, :enable_2fa, @user.id), [method: :post, style: "display: inline;"], fn _f -> %>
-          <%= submit(dgettext("admin", "Enable 2FA"), 
+          <%= submit(dgettext("admin", "Enable Email 2FA"), 
             class: "button bg-blue-600 hover:bg-blue-700 text-white"
+          ) %>
+        <% end %>
+      <% end %>
+      
+      <%= if length(@user.webauthn_credentials) > 0 do %>
+        <%= form_for @conn, Routes.user_admin_path(@conn, :disable_all_webauthn, @user.id), [method: :post, style: "display: inline;"], fn _f -> %>
+          <%= submit(dgettext("admin", "Remove All Security Keys"), 
+            class: "button bg-red-600 hover:bg-red-700 text-white",
+            onclick: "return confirm('" <> dgettext("admin", "Are you sure you want to remove all security keys for this user?") <> "')"
           ) %>
         <% end %>
       <% end %>

@@ -249,6 +249,18 @@ msgid "A new verification code has been sent to your email."
 msgstr ""
 
 #, elixir-autogen, elixir-format
+msgid "Please use your security key to authenticate."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Please use your security key or one of your backup codes."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Please contact support for assistance."
+msgstr ""
+
+#, elixir-autogen, elixir-format
 msgid "Failed to send verification code."
 msgstr ""
 
@@ -334,4 +346,93 @@ msgstr ""
 
 #, elixir-autogen, elixir-format
 msgid "Manage Two-Factor Authentication"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Email Verification"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Security Keys"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Use hardware security keys, fingerprint readers, or face recognition for secure authentication."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Registered Security Keys"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Add Security Key"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Use Security Key"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "WebAuthn is not supported by your browser"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Failed to register security key. Please try again."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Are you sure you want to remove this security key?"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Failed to remove security key. Please try again."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Authentication failed. Please try again or use email verification."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Invalid authentication session"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Email-based two-factor authentication is currently active. You'll receive verification codes via email when signing in."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Disable Email 2FA"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Receive verification codes via email each time you sign in."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Enable Email 2FA"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Back to Account Settings"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Security key has been registered successfully"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Failed to register security key: %{reason}"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Security key has been removed"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Failed to remove security key: %{reason}"
+msgstr ""
+
+#: lib/keila_web/templates/two_factor/challenge.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "You can use your security key, email verification code, or one of your backup codes."
 msgstr ""

@@ -1,37 +1,196 @@
 <div class="container mt-8">
-  <div class="rounded shadow p-8 mt-8 max-w-xl mx-auto flex flex-col gap-4 bg-gray-900 text-gray-50">
+  <div class="rounded shadow p-8 mt-8 max-w-4xl mx-auto flex flex-col gap-6 bg-gray-900 text-gray-50">
     <h1 class="text-5xl font-bold">
       <%= dgettext("auth", "Two-Factor Authentication") %>
     </h1>
     
-    <%= if @user.two_factor_enabled do %>
-      <p class="text-lg text-gray-200">
-        <%= dgettext("auth", "Two-factor authentication is currently enabled for your account.") %>
-      </p>
+    <p class="text-lg text-gray-200">
+      <%= dgettext("auth", "Add an extra layer of security to your account with two-factor authentication.") %>
+    </p>
+
+    <!-- Email-based 2FA Section -->
+    <div class="border border-gray-700 rounded-lg p-6">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="w-6 h-6 text-blue-400"><%= render_icon(:mail) %></span>
+        <h2 class="text-2xl font-semibold">
+          <%= dgettext("auth", "Email Verification") %>
+        </h2>
+        <%= if @user.two_factor_enabled do %>
+          <span class="inline-flex items-center gap-1 px-2 py-1 text-xs bg-green-800 text-green-200 rounded">
+            <span class="w-3 h-3"><%= render_icon(:check_circle) %></span>
+            <%= dgettext("auth", "Enabled") %>
+          </span>
+        <% end %>
+      </div>
       
-      <div class="flex gap-4 mt-8">
+      <%= if @user.two_factor_enabled do %>
+        <p class="text-gray-300 mb-4">
+          <%= dgettext("auth", "Email-based two-factor authentication is currently active. You'll receive verification codes via email when signing in.") %>
+        </p>
+        
         <.form let={_f} for={@changeset} action={Routes.two_factor_path(@conn, :disable)} method="post">
-          <button type="submit" class="button button--warn button--large">
-            <%= dgettext("auth", "Disable Two-Factor Authentication") %>
+          <button type="submit" class="button button--warn">
+            <%= dgettext("auth", "Disable Email 2FA") %>
           </button>
         </.form>
-      </div>
-    <% else %>
-      <p class="text-lg text-gray-200">
-        <%= dgettext("auth", "Add an extra layer of security to your account by enabling two-factor authentication.") %>
-      </p>
-      
-      <p class="text-gray-300">
-        <%= dgettext("auth", "When enabled, you'll receive a verification code via email each time you sign in.") %>
-      </p>
-      
-      <div class="flex justify-end mt-8">
+      <% else %>
+        <p class="text-gray-300 mb-4">
+          <%= dgettext("auth", "Receive verification codes via email each time you sign in.") %>
+        </p>
+        
         <.form let={_f} for={@changeset} action={Routes.two_factor_path(@conn, :enable)} method="post">
-          <button type="submit" class="button button--cta button--large">
-            <%= dgettext("auth", "Enable Two-Factor Authentication") %>
+          <button type="submit" class="button button--cta">
+            <%= dgettext("auth", "Enable Email 2FA") %>
           </button>
         </.form>
+      <% end %>
+    </div>
+
+    <!-- WebAuthn Section -->
+    <div class="border border-gray-700 rounded-lg p-6">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="w-6 h-6 text-green-400"><%= render_icon(:shield_check) %></span>
+        <h2 class="text-2xl font-semibold">
+          <%= dgettext("auth", "Security Keys") %>
+        </h2>
+        <%= if length(@user.webauthn_credentials) > 0 do %>
+          <span class="inline-flex items-center gap-1 px-2 py-1 text-xs bg-green-800 text-green-200 rounded">
+            <span class="w-3 h-3"><%= render_icon(:check_circle) %></span>
+            <%= ngettext("1 key", "%{count} keys", length(@user.webauthn_credentials), count: length(@user.webauthn_credentials)) %>
+          </span>
+        <% end %>
       </div>
-    <% end %>
+      
+      <p class="text-gray-300 mb-4">
+        <%= dgettext("auth", "Use hardware security keys, fingerprint readers, or face recognition for secure authentication.") %>
+      </p>
+      
+      <%= if length(@user.webauthn_credentials) > 0 do %>
+        <div class="space-y-3 mb-4">
+          <h3 class="text-sm font-medium text-gray-300">
+            <%= dgettext("auth", "Registered Security Keys") %>
+          </h3>
+          <%= for credential <- @user.webauthn_credentials do %>
+            <div class="flex items-center justify-between bg-gray-800 p-3 rounded">
+              <div>
+                <div class="font-medium"><%= credential["name"] || "Security Key" %></div>
+                <div class="text-sm text-gray-400">
+                  <%= dgettext("auth", "Added") %> <%= 
+                    case DateTime.from_iso8601(credential["created_at"]) do
+                      {:ok, datetime, _} -> Calendar.strftime(datetime, "%b %d, %Y")
+                      _ -> credential["created_at"]
+                    end
+                  %>
+                  <%= if credential["last_used_at"] do %>
+                    · <%= dgettext("auth", "Last used") %> <%= 
+                      case DateTime.from_iso8601(credential["last_used_at"]) do
+                        {:ok, datetime, _} -> Calendar.strftime(datetime, "%b %d, %Y")
+                        _ -> credential["last_used_at"]
+                      end
+                    %>
+                  <% end %>
+                </div>
+              </div>
+              <button 
+                type="button"
+                onclick={"if(confirm('#{dgettext("auth", "Are you sure you want to remove this security key?")}')) { document.getElementById('delete-webauthn-#{credential["id"]}').submit(); }"}
+                class="button button--text text-red-400 hover:text-red-300"
+              >
+                <%= dgettext("auth", "Remove") %>
+              </button>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+      
+      <!-- Hidden forms for deleting WebAuthn credentials -->
+      <%= for credential <- @user.webauthn_credentials do %>
+        <form 
+          id={"delete-webauthn-#{credential["id"]}"}
+          action={Routes.webauthn_path(@conn, :remove_credential, credential["id"])}
+          method="post"
+          class="hidden"
+        >
+          <input type="hidden" name="_method" value="delete">
+          <input type="hidden" name="_csrf_token" value={Phoenix.Controller.get_csrf_token()}>
+        </form>
+      <% end %>
+      
+      <button onclick="registerWebAuthn()" class="button button--cta">
+        <%= dgettext("auth", "Add Security Key") %>
+      </button>
+    </div>
+
+    <!-- Back Navigation -->
+    <div class="flex justify-center mt-6">
+      <a href={Routes.account_path(@conn, :edit)} class="button button--text">
+        <%= dgettext("auth", "Back to Account Settings") %>
+      </a>
+    </div>
   </div>
 </div>
+
+<script>
+async function registerWebAuthn() {
+  try {
+    // Check if WebAuthn is supported
+    if (!window.PublicKeyCredential) {
+      alert('<%= dgettext("auth", "WebAuthn is not supported by your browser") %>');
+      return;
+    }
+
+    // Start registration
+    const response = await fetch('/auth/webauthn/register/begin', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to start registration');
+    }
+
+    const options = await response.json();
+    
+    // Convert challenge and user ID from base64url
+    options.challenge = Uint8Array.from(atob(options.challenge.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0));
+    options.user.id = Uint8Array.from(options.user.id, c => c.charCodeAt(0));
+    
+    // Create credential
+    const credential = await navigator.credentials.create({
+      publicKey: options
+    });
+
+    // Complete registration
+    const attestationResponse = {
+      id: credential.id,
+      rawId: Array.from(new Uint8Array(credential.rawId)),
+      response: {
+        attestationObject: Array.from(new Uint8Array(credential.response.attestationObject)),
+        clientDataJSON: Array.from(new Uint8Array(credential.response.clientDataJSON))
+      },
+      type: credential.type
+    };
+
+    const completeResponse = await fetch('/auth/webauthn/register/complete', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+      },
+      body: JSON.stringify({ attestation: attestationResponse })
+    });
+
+    if (completeResponse.ok) {
+      window.location.reload();
+    } else {
+      throw new Error('Failed to complete registration');
+    }
+  } catch (error) {
+    console.error('WebAuthn registration failed:', error);
+    alert('<%= dgettext("auth", "Failed to register security key. Please try again.") %>');
+  }
+}
+</script>

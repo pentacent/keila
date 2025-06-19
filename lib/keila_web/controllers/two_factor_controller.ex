@@ -58,12 +58,20 @@ defmodule KeilaWeb.TwoFactorController do
     
     if user_id do
       user = Auth.get_user(user_id)
-      {:ok, _code} = Auth.send_two_factor_code(user_id)
+      
+      # Only send email code if user has email-based 2FA enabled
+      flash_message = if user.two_factor_enabled do
+        {:ok, _code} = Auth.send_two_factor_code(user_id)
+        dgettext("auth", "A verification code has been sent to your email.")
+      else
+        dgettext("auth", "Please use your security key to authenticate.")
+      end
       
       conn
-      |> put_flash(:info, dgettext("auth", "A verification code has been sent to your email."))
+      |> put_flash(:info, flash_message)
       |> put_meta(:title, dgettext("auth", "Two-Factor Authentication"))
       |> assign(:user, user)
+      |> assign(:user_id, user_id)
       |> assign(:changeset, %Ecto.Changeset{data: %{code: nil}})
       |> render("challenge.html")
     else
@@ -77,25 +85,35 @@ defmodule KeilaWeb.TwoFactorController do
     user_id = get_session(conn, :pending_2fa_user_id)
     
     if user_id do
-      case Auth.verify_two_factor_code(user_id, code) do
-        {:ok, user} ->
-          conn
-          |> delete_session(:pending_2fa_user_id)
-          |> start_auth_session(user.id)
-          |> redirect(to: "/")
-        
-        :error ->
-          user = Auth.get_user(user_id)
-          changeset = 
-            %Ecto.Changeset{data: %{code: code}}
-            |> Ecto.Changeset.add_error(:code, dgettext("auth", "Invalid verification code"))
+      user = Auth.get_user(user_id)
+      
+      # Only allow code verification if user has email-based 2FA enabled
+      if user.two_factor_enabled do
+        case Auth.verify_two_factor_code(user_id, code) do
+          {:ok, user} ->
+            conn
+            |> delete_session(:pending_2fa_user_id)
+            |> start_auth_session(user.id)
+            |> redirect(to: "/")
           
-          conn
-          |> put_status(400)
-          |> put_meta(:title, dgettext("auth", "Two-Factor Authentication"))
-          |> assign(:user, user)
-          |> assign(:changeset, changeset)
-          |> render("challenge.html")
+          :error ->
+            changeset = 
+              %Ecto.Changeset{data: %{code: code}}
+              |> Ecto.Changeset.add_error(:code, dgettext("auth", "Invalid verification code"))
+            
+            conn
+            |> put_status(400)
+            |> put_meta(:title, dgettext("auth", "Two-Factor Authentication"))
+            |> assign(:user, user)
+            |> assign(:user_id, user_id)
+            |> assign(:changeset, changeset)
+            |> render("challenge.html")
+        end
+      else
+        # User doesn't have email-based 2FA, redirect back to challenge
+        conn
+        |> put_flash(:error, dgettext("auth", "Please use your security key to authenticate."))
+        |> redirect(to: Routes.two_factor_path(conn, :challenge))
       end
     else
       conn
@@ -104,7 +122,10 @@ defmodule KeilaWeb.TwoFactorController do
   end
 
   def verify(conn, _params) do
-    verify(conn, %{"two_factor" => %{"code" => ""}})
+    # If form submitted without proper parameters, redirect back to challenge
+    conn
+    |> put_flash(:error, dgettext("auth", "Please use your security key to authenticate."))
+    |> redirect(to: Routes.two_factor_path(conn, :challenge))
   end
 
   @spec resend_code(Plug.Conn.t(), map()) :: Plug.Conn.t()

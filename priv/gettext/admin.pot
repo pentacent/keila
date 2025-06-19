@@ -355,3 +355,105 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "User not found"
 msgstr ""
+
+#: lib/keila_web/templates/user_admin/edit.html.heex:191
+#, elixir-autogen, elixir-format
+msgid "Security Keys:"
+msgstr ""
+
+#: lib/keila_web/templates/user_admin/edit.html.heex:201
+#, elixir-autogen, elixir-format
+msgid "No keys registered"
+msgstr ""
+
+#: lib/keila_web/templates/user_admin/edit.html.heex:193
+#, elixir-autogen, elixir-format
+msgid "1 key registered"
+msgid_plural "%{count} keys registered"
+msgstr[0] ""
+msgstr[1] ""
+
+#: lib/keila_web/templates/user_admin/edit.html.heex:208
+#, elixir-autogen, elixir-format
+msgid "Registered Security Keys"
+msgstr ""
+
+#: lib/keila_web/templates/user_admin/edit.html.heex:214
+#, elixir-autogen, elixir-format
+msgid "Added"
+msgstr ""
+
+#: lib/keila_web/templates/user_admin/edit.html.heex:216
+#, elixir-autogen, elixir-format
+msgid "Last used"
+msgstr ""
+
+#: lib/keila_web/templates/user_admin/edit.html.heex:222
+#, elixir-autogen, elixir-format
+msgid "Remove"
+msgstr ""
+
+#: lib/keila_web/templates/user_admin/edit.html.heex:223
+#, elixir-autogen, elixir-format
+msgid "Are you sure you want to remove this security key?"
+msgstr ""
+
+#: lib/keila_web/templates/user_admin/edit.html.heex:234
+#, elixir-autogen, elixir-format
+msgid "This user has email-based two-factor authentication enabled. Disabling 2FA will remove all backup codes."
+msgstr ""
+
+#: lib/keila_web/templates/user_admin/edit.html.heex:241
+#, elixir-autogen, elixir-format
+msgid "Email-based two-factor authentication is not enabled for this user. You can enable it to improve account security."
+msgstr ""
+
+#: lib/keila_web/templates/user_admin/edit.html.heex:188
+#, elixir-autogen, elixir-format
+msgid "%{count} backup codes"
+msgstr ""
+
+#: lib/keila_web/templates/user_admin/edit.html.heex:247
+#, elixir-autogen, elixir-format
+msgid "Disable Email 2FA"
+msgstr ""
+
+#: lib/keila_web/templates/user_admin/edit.html.heex:248
+#, elixir-autogen, elixir-format
+msgid "Are you sure you want to disable email 2FA for this user? This will remove all backup codes."
+msgstr ""
+
+#: lib/keila_web/templates/user_admin/edit.html.heex:253
+#, elixir-autogen, elixir-format
+msgid "Enable Email 2FA"
+msgstr ""
+
+#: lib/keila_web/templates/user_admin/edit.html.heex:259
+#, elixir-autogen, elixir-format
+msgid "Remove All Security Keys"
+msgstr ""
+
+#: lib/keila_web/templates/user_admin/edit.html.heex:260
+#, elixir-autogen, elixir-format
+msgid "Are you sure you want to remove all security keys for this user?"
+msgstr ""
+
+#: lib/keila_web/controllers/user_admin_controller.ex:161
+#, elixir-autogen, elixir-format
+msgid "Security key removed successfully."
+msgstr ""
+
+#: lib/keila_web/controllers/user_admin_controller.ex:164
+#, elixir-autogen, elixir-format
+msgid "Failed to remove security key."
+msgstr ""
+
+#: lib/keila_web/controllers/user_admin_controller.ex:172
+#, elixir-autogen, elixir-format
+msgid "All security keys removed successfully."
+msgstr ""
+
+#: lib/keila_web/controllers/user_admin_controller.ex:175
+#, elixir-autogen, elixir-format
+msgid "Failed to remove security keys."
+msgstr ""

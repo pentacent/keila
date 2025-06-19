@@ -172,7 +172,7 @@ defmodule KeilaWeb.AuthController do
   def post_login(conn, %{"user" => params}) do
     case Auth.find_user_by_credentials(params) do
       {:ok, user} -> 
-        if user.two_factor_enabled do
+        if user.two_factor_enabled || length(user.webauthn_credentials) > 0 do
           conn
           |> put_session(:pending_2fa_user_id, user.id)
           |> redirect(to: Routes.two_factor_path(conn, :challenge))

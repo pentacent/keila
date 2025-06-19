@@ -269,6 +269,36 @@ defmodule KeilaWeb.UserAdminController do
     end
   end
 
+  @spec remove_webauthn_key(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def remove_webauthn_key(conn, %{"id" => user_id, "credential_id" => credential_id}) do
+    case Auth.remove_webauthn_credential(user_id, credential_id) do
+      {:ok, _user} ->
+        conn
+        |> put_flash(:info, dgettext("admin", "Security key removed successfully."))
+        |> redirect(to: Routes.user_admin_path(conn, :edit, user_id))
+      
+      {:error, _changeset} ->
+        conn
+        |> put_flash(:error, dgettext("admin", "Failed to remove security key."))
+        |> redirect(to: Routes.user_admin_path(conn, :edit, user_id))
+    end
+  end
+
+  @spec disable_all_webauthn(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def disable_all_webauthn(conn, %{"id" => user_id}) do
+    case Auth.remove_all_webauthn_credentials(user_id) do
+      {:ok, _user} ->
+        conn
+        |> put_flash(:info, dgettext("admin", "All security keys removed successfully."))
+        |> redirect(to: Routes.user_admin_path(conn, :edit, user_id))
+      
+      {:error, _changeset} ->
+        conn
+        |> put_flash(:error, dgettext("admin", "Failed to remove security keys."))
+        |> redirect(to: Routes.user_admin_path(conn, :edit, user_id))
+    end
+  end
+
   defp authorize(conn, _) do
     case conn.assigns.is_admin? do
       true -> conn

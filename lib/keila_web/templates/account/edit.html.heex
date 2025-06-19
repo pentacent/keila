@@ -1,7 +1,7 @@
 <div class="container mt-8" x-data x-init="Hooks.RememberUnsaved.mounted.call({el: $el})">
   <%= if Keila.Billing.billing_enabled?() do %>
-    <div class="rounded shadow p-8 mt-8 max-w-5xl mx-auto flex flex-col gap-4 bg-gray-900 text-gray-50">
-      <h2 class="text-3xl font-bold">
+    <div class="rounded shadow p-8 mt-8 max-w-5xl mx-auto flex flex-col gap-4 bg-gray-900">
+      <h2 class="text-3xl font-bold text-gray-50">
         <%= gettext("Subscription") %>
       </h2>
 
@@ -152,8 +152,8 @@
   <% end %>
 
   <%= if Keila.Accounts.credits_enabled?() do %>
-    <div class="rounded shadow p-8 mt-8 max-w-5xl mx-auto flex flex-col gap-4 bg-gray-900 text-gray-50">
-      <h2 class="text-3xl font-bold">
+    <div class="rounded shadow p-8 mt-8 max-w-5xl mx-auto flex flex-col gap-4 bg-gray-900">
+      <h2 class="text-3xl font-bold text-gray-50">
         <%= gettext("Sending Quota") %>
       </h2>
 
@@ -181,17 +181,17 @@
     let={f}
     for={@changeset}
     action={Routes.account_path(@conn, :post_edit)}
-    class="rounded shadow p-8 mt-8 max-w-5xl mx-auto flex flex-col gap-4 bg-gray-900 text-gray-50"
+    class="rounded shadow p-8 mt-8 max-w-5xl mx-auto flex flex-col gap-4 bg-gray-900"
     @change="setUnsavedReminder(true)"
   >
-    <h2 class="text-3xl font-bold">
+    <h2 class="text-3xl font-bold text-gray-50">
       <%= gettext("Change Password") %>
     </h2>
     <p class="text-lg text-gray-200">
       <%= gettext("Here you can update your Keila password.") %>
     </p>
     <div class="flex flex-col">
-      <%= label(f, :email, gettext("Email")) %>
+      <%= label(f, :email, gettext("Email"), class: "text-gray-50") %>
       <%= with_validation(f, :email) do %>
         <%= text_input(f, :email,
           placeholder: gettext("you@keila.io"),
@@ -201,7 +201,7 @@
       <% end %>
     </div>
     <div class="flex flex-col">
-      <%= label(f, :password, gettext("New Password")) %>
+      <%= label(f, :password, gettext("New Password"), class: "text-gray-50") %>
       <%= with_validation(f, :password) do %>
         <%= password_input(f, :password, class: "text-black") %>
       <% end %>
@@ -214,15 +214,15 @@
   </.form>
 
   <!-- Two-Factor Authentication Section -->
-  <div class="rounded shadow p-8 mt-8 max-w-5xl mx-auto flex flex-col gap-4 bg-gray-900 text-gray-50">
-    <h2 class="text-3xl font-bold">
+  <div class="rounded shadow p-8 mt-8 max-w-5xl mx-auto flex flex-col gap-4 bg-gray-900">
+    <h2 class="text-3xl font-bold text-gray-50">
       <%= gettext("Two-Factor Authentication") %>
     </h2>
     <p class="text-lg text-gray-200">
       <%= gettext("Add an extra layer of security to your account.") %>
     </p>
     
-    <%= if @current_user.two_factor_enabled do %>
+    <%= if @current_user.two_factor_enabled || length(@current_user.webauthn_credentials) > 0 do %>
       <div class="flex gap-2 items-center text-emerald-400">
         <span class="w-5 h-5"><%= render_icon(:shield_check) %></span>
         <span><%= gettext("Two-factor authentication is enabled") %></span>
@@ -245,17 +245,17 @@
     let={f}
     for={@changeset}
     action={Routes.account_path(@conn, :post_edit)}
-    class="rounded shadow p-8 mt-8 max-w-5xl mx-auto flex flex-col gap-4 bg-gray-900 text-gray-50"
+    class="rounded shadow p-8 mt-8 max-w-5xl mx-auto flex flex-col gap-4 bg-gray-900"
     @change="setUnsavedReminder(true)"
   >
-    <h2 class="text-3xl font-bold">
+    <h2 class="text-3xl font-bold text-gray-50">
       <%= gettext("Change Language") %>
     </h2>
     <p class="text-lg text-gray-200">
       <%= gettext("Here you can change the language for the Keila interface.") %>
     </p>
     <div class="flex flex-col">
-      <%= label(f, :locale, gettext("Language")) %>
+      <%= label(f, :locale, gettext("Language"), class: "text-gray-50") %>
       <%= with_validation(f, :locale) do %>
         <%= select(f, :locale, KeilaWeb.Gettext.available_locales(), class: "text-black") %>
       <% end %>

@@ -260,6 +260,32 @@ if config_env() == :prod do
     """)
   end
 
+  # WebAuthn Configuration
+  # Build WebAuthn origin from the same URL components used for the main endpoint
+  webauthn_origin = 
+    if url_host not in [nil, ""] do
+      port_suffix = 
+        case {url_schema, url_port} do
+          {"https", 443} -> ""
+          {"http", 80} -> ""
+          {_, port} when port not in [nil, ""] -> ":#{port}"
+          _ -> ""
+        end
+      "#{url_schema}://#{url_host}#{port_suffix}"
+    else
+      System.get_env("WEBAUTHN_ORIGIN") || "http://localhost:4000"
+    end
+
+  webauthn_rp_id = 
+    System.get_env("WEBAUTHN_RP_ID") || 
+    (if url_host not in [nil, ""], do: url_host, else: :auto)
+
+  config :wax_,
+    origin: webauthn_origin,
+    rp_id: webauthn_rp_id,
+    user_verification: System.get_env("WEBAUTHN_USER_VERIFICATION") || "preferred",
+    timeout: (System.get_env("WEBAUTHN_TIMEOUT") |> maybe_to_int.()) || (20 * 60)
+
   # File Storage
   user_content_dir = System.get_env("USER_CONTENT_DIR")
 
