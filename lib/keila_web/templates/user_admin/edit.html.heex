@@ -1,0 +1,240 @@
+<div class="container flex py-8 sm:py-11 mb-4">
+  <div class="flex-grow gap-4 flex flex-col sm:flex-row sm:items-center">
+    <h1 class="text-2xl sm:text-3xl text-gray-100">
+      <%= dgettext("admin", "Edit User") %>
+    </h1>
+    <div class="flex-grow flex flex-row-reverse justify-end gap-4 sm:flex-row">
+      <a href={Routes.user_admin_path(@conn, :index)} class="button button--text">
+        <%= render_icon(:arrow_left) %> <%= gettext("Back") %>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="container mb-4">
+  <p>
+    <%= dgettext("admin", "Edit user profile and verification status.") %>
+  </p>
+</div>
+
+<div class="container">
+  <!-- User Information Section -->
+  <div class="bg-gray-800 p-8 rounded mb-6">
+    <%= form_for @changeset, Routes.user_admin_path(@conn, :update, @user.id), [method: :put], fn f -> %>
+      <div class="flex flex-col gap-4">
+        <h2 class="text-lg text-gray-100 mb-4">
+          <%= dgettext("admin", "User Information") %>
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 form-grid">
+          <div class="form-row">
+            <%= label(f, :email, dgettext("auth", "Email"), class: "label") %>
+            <%= with_validation f, :email do %>
+              <%= email_input(f, :email, 
+                placeholder: dgettext("auth", "you@keila.io"),
+                class: "text-input"
+              ) %>
+            <% end %>
+          </div>
+
+          <div class="form-row">
+            <%= label(f, :locale, dgettext("auth", "Language"), class: "label") %>
+            <%= with_validation f, :locale do %>
+              <%= select(f, :locale, 
+                [
+                  {"English", "en"},
+                  {"Deutsch", "de"}, 
+                  {"Français", "fr"}
+                ],
+                prompt: dgettext("auth", "Choose language"),
+                class: "text-input"
+              ) %>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 form-grid">
+          <div class="form-row">
+            <%= label(f, :given_name, dgettext("auth", "First name"), class: "label") %>
+            <%= with_validation f, :given_name do %>
+              <%= text_input(f, :given_name, 
+                placeholder: dgettext("auth", "Jane"),
+                class: "text-input"
+              ) %>
+            <% end %>
+          </div>
+
+          <div class="form-row">
+            <%= label(f, :family_name, dgettext("auth", "Last name"), class: "label") %>
+            <%= with_validation f, :family_name do %>
+              <%= text_input(f, :family_name, 
+                placeholder: dgettext("auth", "Doe"),
+                class: "text-input"
+              ) %>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Account Status Section -->
+        <div class="border-t border-gray-700 pt-6 mt-6">
+          <h3 class="text-md text-gray-100 mb-4">
+            <%= dgettext("admin", "Account Status") %>
+          </h3>
+
+          <div class="flex items-center gap-4 mb-4">
+            <span class="text-sm text-gray-400">
+              <%= dgettext("admin", "Current status:") %>
+            </span>
+            <%= if @user.activated_at do %>
+              <span class="inline-flex items-center gap-1 text-green-400">
+                <span class="w-4 h-4"><%= render_icon(:check_circle) %></span>
+                <%= dgettext("admin", "Activated") %>
+                <span class="text-xs text-gray-400">
+                  (<%= Calendar.strftime(@user.activated_at, "%c") %>)
+                </span>
+              </span>
+            <% else %>
+              <span class="inline-flex items-center gap-1 text-yellow-400">
+                <span class="w-4 h-4"><%= render_icon(:exclamation_circle) %></span>
+                <%= dgettext("admin", "Not activated") %>
+              </span>
+            <% end %>
+          </div>
+
+          <div class="form-row">
+            <%= label(f, :activated_at, dgettext("admin", "Activation Status"), class: "label") %>
+            <%= select(f, :activated_at, [
+              {dgettext("admin", "Activated"), DateTime.utc_now() |> DateTime.to_iso8601()},
+              {dgettext("admin", "Not activated"), ""}
+            ], 
+            value: if(@user.activated_at, do: @user.activated_at |> DateTime.to_iso8601(), else: ""),
+            class: "text-input") %>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap gap-4 pt-4">
+          <%= submit(dgettext("admin", "Update User"), class: "button button--cta") %>
+          
+          <a href={Routes.user_admin_path(@conn, :index)} class="button">
+            <%= gettext("Cancel") %>
+          </a>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Password Management Section -->
+  <div class="bg-gray-800 p-8 rounded mb-6">
+    <h2 class="text-lg text-gray-100 mb-4">
+      <%= dgettext("admin", "Password Management") %>
+    </h2>
+    
+    <p class="text-sm text-gray-400 mb-6">
+      <%= dgettext("admin", "Manage the user's password or send them a password reset email.") %>
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Update Password Card -->
+      <div class="bg-gray-700 p-6 rounded-lg">
+        <h3 class="text-md font-medium text-gray-200 mb-3">
+          <%= dgettext("admin", "Set New Password") %>
+        </h3>
+        <p class="text-sm text-gray-400 mb-4">
+          <%= dgettext("admin", "Directly update the user's password.") %>
+        </p>
+        
+        <%= form_for @conn, Routes.user_admin_path(@conn, :update_password, @user.id), [method: :post], fn f -> %>
+          <div class="form-row mb-4">
+            <%= label(f, :password, dgettext("admin", "New Password"), class: "label") %>
+            <%= password_input(f, :password, 
+              placeholder: dgettext("admin", "Enter new password"),
+              class: "text-input",
+              required: true,
+              minlength: 8
+            ) %>
+          </div>
+          <%= submit(dgettext("admin", "Update Password"), 
+            class: "button button--cta w-full",
+            onclick: "return confirm('" <> dgettext("admin", "Are you sure you want to update this user's password?") <> "')"
+          ) %>
+        <% end %>
+      </div>
+
+      <!-- Send Password Reset Card -->
+      <div class="bg-gray-700 p-6 rounded-lg">
+        <h3 class="text-md font-medium text-gray-200 mb-3">
+          <%= dgettext("admin", "Send Password Reset") %>
+        </h3>
+        <p class="text-sm text-gray-400 mb-4">
+          <%= dgettext("admin", "Send a password reset email to %{email}. The user can then set their own password.", email: @user.email) %>
+        </p>
+        
+        <%= form_for @conn, Routes.user_admin_path(@conn, :send_password_reset, @user.id), [method: :post], fn _f -> %>
+          <%= submit(dgettext("admin", "Send Reset Email"), 
+            class: "button bg-green-600 hover:bg-green-700 text-white w-full"
+          ) %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Two-Factor Authentication Section -->
+  <div class="bg-gray-800 p-8 rounded">
+    <h2 class="text-lg text-gray-100 mb-4">
+      <%= dgettext("admin", "Two-Factor Authentication") %>
+    </h2>
+    
+    <div class="flex items-center gap-4 mb-4">
+      <span class="text-sm text-gray-400">
+        <%= dgettext("admin", "Current status:") %>
+      </span>
+      <%= if @user.two_factor_enabled do %>
+        <span class="inline-flex items-center gap-1 text-green-400">
+          <span class="w-4 h-4"><%= render_icon(:shield_check) %></span>
+          <%= dgettext("admin", "2FA Enabled") %>
+        </span>
+      <% else %>
+        <span class="inline-flex items-center gap-1 text-gray-400">
+          <span class="w-4 h-4"><%= render_icon(:shield_exclamation) %></span>
+          <%= dgettext("admin", "2FA Disabled") %>
+        </span>
+      <% end %>
+    </div>
+
+    <%= if @user.two_factor_enabled do %>
+      <div class="bg-yellow-900 border border-yellow-600 rounded p-4 mb-4">
+        <p class="text-sm text-yellow-100 mb-2">
+          <%= dgettext("admin", "This user has two-factor authentication enabled. Disabling 2FA will remove all backup codes.") %>
+        </p>
+        <%= if length(@user.two_factor_backup_codes) > 0 do %>
+          <p class="text-xs text-yellow-200">
+            <%= dgettext("admin", "Backup codes remaining:") %> <%= length(@user.two_factor_backup_codes) %>
+          </p>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="bg-blue-900 border border-blue-600 rounded p-4 mb-4">
+        <p class="text-sm text-blue-100">
+          <%= dgettext("admin", "Two-factor authentication is not enabled for this user. You can enable it to improve account security.") %>
+        </p>
+      </div>
+    <% end %>
+
+    <div class="flex flex-wrap gap-4">
+      <%= if @user.two_factor_enabled do %>
+        <%= form_for @conn, Routes.user_admin_path(@conn, :disable_2fa, @user.id), [method: :post, style: "display: inline;"], fn _f -> %>
+          <%= submit(dgettext("admin", "Disable 2FA"), 
+            class: "button bg-orange-600 hover:bg-orange-700 text-white",
+            onclick: "return confirm('" <> dgettext("admin", "Are you sure you want to disable 2FA for this user? This will remove all backup codes.") <> "')"
+          ) %>
+        <% end %>
+      <% else %>
+        <%= form_for @conn, Routes.user_admin_path(@conn, :enable_2fa, @user.id), [method: :post, style: "display: inline;"], fn _f -> %>
+          <%= submit(dgettext("admin", "Enable 2FA"), 
+            class: "button bg-blue-600 hover:bg-blue-700 text-white"
+          ) %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

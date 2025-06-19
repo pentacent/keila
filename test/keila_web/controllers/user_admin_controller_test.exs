@@ -50,6 +50,76 @@ defmodule KeilaWeb.UserAdminControllerTest do
     end
   end
 
+  describe "GET /admin/users/:id/edit" do
+    @tag :admin_controller
+    test "shows edit form for admin", %{conn: conn} do
+      {root, user} = with_seed()
+      conn = with_login(conn, user: root)
+      conn = get(conn, Routes.user_admin_path(conn, :edit, user.id))
+
+      assert html_response(conn, 200) =~ ~r{Edit User\s*</h1>}
+      assert html_response(conn, 200) =~ user.email
+    end
+
+    @tag :admin_controller
+    test "is only accessible to users with admin permissions", %{conn: conn} do
+      {_root, user} = with_seed()
+      conn = with_login(conn, user: user)
+      conn = get(conn, Routes.user_admin_path(conn, :edit, user.id))
+
+      assert conn.status == 404
+    end
+  end
+
+  describe "PUT /admin/users/:id" do
+    @tag :admin_controller
+    test "updates user as admin", %{conn: conn} do
+      {root, user} = with_seed()
+      conn = with_login(conn, user: root)
+
+      params = %{"email" => "updated@example.com", "given_name" => "Updated"}
+      conn = put(conn, Routes.user_admin_path(conn, :update, user.id, user: params))
+
+      assert redirected_to(conn, 302) == Routes.user_admin_path(conn, :index)
+      
+      updated_user = Keila.Auth.get_user(user.id)
+      assert updated_user.email == "updated@example.com"
+      assert updated_user.given_name == "Updated"
+    end
+  end
+
+  describe "POST /admin/users/:id/activate" do
+    @tag :admin_controller
+    test "activates user", %{conn: conn} do
+      {root, user} = with_seed()
+      # Deactivate user first
+      {:ok, _} = Keila.Auth.deactivate_user(user.id)
+      
+      conn = with_login(conn, user: root)
+      conn = post(conn, Routes.user_admin_path(conn, :activate, user.id))
+
+      assert redirected_to(conn, 302) == Routes.user_admin_path(conn, :index)
+      
+      updated_user = Keila.Auth.get_user(user.id)
+      assert updated_user.activated_at != nil
+    end
+  end
+
+  describe "POST /admin/users/:id/deactivate" do
+    @tag :admin_controller
+    test "deactivates user", %{conn: conn} do
+      {root, user} = with_seed()
+      
+      conn = with_login(conn, user: root)
+      conn = post(conn, Routes.user_admin_path(conn, :deactivate, user.id))
+
+      assert redirected_to(conn, 302) == Routes.user_admin_path(conn, :index)
+      
+      updated_user = Keila.Auth.get_user(user.id)
+      assert updated_user.activated_at == nil
+    end
+  end
+
   describe "DELETE /admin/users" do
     @tag :admin_controller
     test "shows deletion confirmation", %{conn: conn} do

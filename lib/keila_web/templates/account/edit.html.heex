@@ -224,12 +224,12 @@
     
     <%= if @current_user.two_factor_enabled do %>
       <div class="flex gap-2 items-center text-emerald-400">
-        <%= render_icon(:shield_check) %>
+        <span class="w-5 h-5"><%= render_icon(:shield_check) %></span>
         <span><%= gettext("Two-factor authentication is enabled") %></span>
       </div>
     <% else %>
       <div class="flex gap-2 items-center text-yellow-400">
-        <%= render_icon(:shield_exclamation) %>
+        <span class="w-5 h-5"><%= render_icon(:shield_exclamation) %></span>
         <span><%= gettext("Two-factor authentication is disabled") %></span>
       </div>
     <% end %>

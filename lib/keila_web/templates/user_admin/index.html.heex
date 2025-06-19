@@ -23,7 +23,6 @@
       <tr class="text-left">
         <th class="p-2"><%= dgettext("admin", "Email") %></th>
         <th class="p-2"><%= dgettext("admin", "Sign-up") %></th>
-        <th class="p-2"><%= dgettext("admin", "Activation") %></th>
         <%= if @user_credits do %>
           <th class="p-2"><%= dgettext("admin", "Credits") %></th>
         <% end %>
@@ -32,15 +31,17 @@
       <%= for user <- @users.data do %>
         <tr>
           <td class="p-2">
-            <%= user.email %>
+            <div class="flex flex-col">
+              <span><%= user.email %></span>
+              <%= unless user.activated_at do %>
+                <span class="text-xs text-yellow-400">
+                  <%= dgettext("admin", "Not activated") %>
+                </span>
+              <% end %>
+            </div>
           </td>
           <td class="p-2">
             <%= Calendar.strftime(user.inserted_at, "%c") %>
-          </td>
-          <td class="p-2 flex gap-2">
-            <%= if user.activated_at do %>
-              <%= Calendar.strftime(user.activated_at, "%c") %>
-            <% end %>
           </td>
           <%= if @user_credits do %>
             <td>
@@ -48,6 +49,14 @@
             </td>
           <% end %>
           <td>
+            <%= content_tag(:a,
+              href: Routes.user_admin_path(@conn, :edit, user.id),
+              title: dgettext("admin", "Edit user"),
+              class: "button button--text"
+            ) do
+              render_icon(:pencil)
+            end %>
+
             <%= if @user_credits do
               content_tag(:a,
                 href: Routes.user_admin_path(@conn, :show_credits, user.id),

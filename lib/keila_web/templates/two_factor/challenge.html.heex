@@ -2,6 +2,7 @@
   <.form
     let={f}
     for={@changeset}
+    as={:two_factor}
     action={Routes.two_factor_path(@conn, :verify)}
     class="rounded shadow p-8 mt-8 max-w-xl mx-auto flex flex-col gap-4 bg-gray-900 text-gray-50"
   >

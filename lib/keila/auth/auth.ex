@@ -395,6 +395,35 @@ defmodule Keila.Auth do
   end
 
   @doc """
+  Deactivates user with given ID by setting activated_at to nil.
+  """
+  @spec deactivate_user(User.id()) :: {:ok, User.t()} | :error
+  def deactivate_user(id) do
+    case Repo.get(User, id) do
+      user = %User{} ->
+        case user |> change(%{activated_at: nil}) |> Repo.update() do
+          {:ok, user} -> {:ok, user}
+          _ -> :error
+        end
+      _ -> :error
+    end
+  end
+
+  @doc """
+  Updates user profile and verification status for admin use.
+  """
+  @spec admin_update_user(User.id(), map()) :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}
+  def admin_update_user(id, params) do
+    case Repo.get(User, id) do
+      user = %User{} ->
+        user
+        |> User.admin_update_changeset(params)
+        |> Repo.update()
+      _ -> {:error, %Ecto.Changeset{}}
+    end
+  end
+
+  @doc """
   Updates user password from params.
 
   ## Example

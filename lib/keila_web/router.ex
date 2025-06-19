@@ -88,6 +88,14 @@ defmodule KeilaWeb.Router do
     get "/admin/users/new", UserAdminController, :new
     post "/admin/users", UserAdminController, :create
     delete "/admin/users", UserAdminController, :delete
+    get "/admin/users/:id/edit", UserAdminController, :edit
+    put "/admin/users/:id", UserAdminController, :update
+    post "/admin/users/:id/activate", UserAdminController, :activate
+    post "/admin/users/:id/deactivate", UserAdminController, :deactivate
+    post "/admin/users/:id/enable_2fa", UserAdminController, :enable_2fa
+    post "/admin/users/:id/disable_2fa", UserAdminController, :disable_2fa
+    post "/admin/users/:id/update_password", UserAdminController, :update_password
+    post "/admin/users/:id/send_password_reset", UserAdminController, :send_password_reset
     get "/admin/users/:id/impersonate", UserAdminController, :impersonate
     get "/admin/users/:id/credits", UserAdminController, :show_credits
     post "/admin/users/:id/credits", UserAdminController, :create_credits

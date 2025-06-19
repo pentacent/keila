@@ -130,6 +130,145 @@ defmodule KeilaWeb.UserAdminController do
     |> redirect(to: "/")
   end
 
+  @spec edit(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def edit(conn, %{"id" => user_id}) do
+    user = Auth.get_user(user_id)
+    changeset = Auth.User.admin_update_changeset(user, %{})
+
+    conn
+    |> put_meta(:title, dgettext("admin", "Edit User"))
+    |> assign(:user, user)
+    |> assign(:changeset, changeset)
+    |> render("edit.html")
+  end
+
+  @spec update(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def update(conn, %{"id" => user_id, "user" => user_params}) do
+    # Convert activation status string to proper DateTime value
+    processed_params = process_activation_status(user_params)
+    
+    case Auth.admin_update_user(user_id, processed_params) do
+      {:ok, _user} ->
+        conn
+        |> put_flash(:info, dgettext("admin", "User updated successfully"))
+        |> redirect(to: Routes.user_admin_path(conn, :index))
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        user = Auth.get_user(user_id)
+        
+        conn
+        |> put_flash(:error, dgettext("admin", "Could not update user"))
+        |> put_meta(:title, dgettext("admin", "Edit User"))
+        |> assign(:user, user)
+        |> assign(:changeset, changeset)
+        |> render("edit.html")
+    end
+  end
+
+  defp process_activation_status(user_params) do
+    case Map.get(user_params, "activated_at") do
+      "activated" ->
+        Map.put(user_params, "activated_at", DateTime.utc_now() |> DateTime.truncate(:second))
+      "not_activated" ->
+        Map.put(user_params, "activated_at", nil)
+      _ ->
+        user_params
+    end
+  end
+
+  @spec activate(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def activate(conn, %{"id" => user_id}) do
+    case Auth.activate_user(user_id) do
+      {:ok, _user} ->
+        conn
+        |> put_flash(:info, dgettext("admin", "User account has been activated"))
+        |> redirect(to: Routes.user_admin_path(conn, :index))
+
+      :error ->
+        conn
+        |> put_flash(:error, dgettext("admin", "Could not activate user account"))
+        |> redirect(to: Routes.user_admin_path(conn, :index))
+    end
+  end
+
+  @spec deactivate(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def deactivate(conn, %{"id" => user_id}) do
+    case Auth.deactivate_user(user_id) do
+      {:ok, _user} ->
+        conn
+        |> put_flash(:info, dgettext("admin", "User account has been deactivated"))
+        |> redirect(to: Routes.user_admin_path(conn, :index))
+
+      :error ->
+        conn
+        |> put_flash(:error, dgettext("admin", "Could not deactivate user account"))
+        |> redirect(to: Routes.user_admin_path(conn, :index))
+    end
+  end
+
+  @spec enable_2fa(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def enable_2fa(conn, %{"id" => user_id}) do
+    case Auth.enable_two_factor_auth(user_id) do
+      {:ok, updated_user} ->
+        conn
+        |> put_flash(:info, dgettext("admin", "Two-factor authentication has been enabled for this user"))
+        |> assign(:user, updated_user)
+        |> assign(:backup_codes, updated_user.two_factor_backup_codes)
+        |> put_meta(:title, dgettext("admin", "Two-Factor Authentication Enabled"))
+        |> render("backup_codes.html")
+
+      {:error, _changeset} ->
+        conn
+        |> put_flash(:error, dgettext("admin", "Could not enable two-factor authentication"))
+        |> redirect(to: Routes.user_admin_path(conn, :edit, user_id))
+    end
+  end
+
+  @spec disable_2fa(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def disable_2fa(conn, %{"id" => user_id}) do
+    case Auth.disable_two_factor_auth(user_id) do
+      {:ok, _user} ->
+        conn
+        |> put_flash(:info, dgettext("admin", "Two-factor authentication has been disabled for this user"))
+        |> redirect(to: Routes.user_admin_path(conn, :edit, user_id))
+
+      {:error, _changeset} ->
+        conn
+        |> put_flash(:error, dgettext("admin", "Could not disable two-factor authentication"))
+        |> redirect(to: Routes.user_admin_path(conn, :edit, user_id))
+    end
+  end
+
+  @spec update_password(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def update_password(conn, %{"id" => user_id, "password" => password}) do
+    case Auth.update_user_password(user_id, %{password: password}) do
+      {:ok, _user} ->
+        conn
+        |> put_flash(:info, dgettext("admin", "Password has been updated successfully"))
+        |> redirect(to: Routes.user_admin_path(conn, :edit, user_id))
+
+      {:error, _changeset} ->
+        conn
+        |> put_flash(:error, dgettext("admin", "Could not update password"))
+        |> redirect(to: Routes.user_admin_path(conn, :edit, user_id))
+    end
+  end
+
+  @spec send_password_reset(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def send_password_reset(conn, %{"id" => user_id}) do
+    user = Auth.get_user(user_id)
+    if user do
+      :ok = Auth.send_password_reset_link(user_id, &Routes.auth_url(conn, :reset_change_password, &1))
+      conn
+      |> put_flash(:info, dgettext("admin", "Password reset email has been sent to %{email}", email: user.email))
+      |> redirect(to: Routes.user_admin_path(conn, :edit, user_id))
+    else
+      conn
+      |> put_flash(:error, dgettext("admin", "User not found"))
+      |> redirect(to: Routes.user_admin_path(conn, :edit, user_id))
+    end
+  end
+
   defp authorize(conn, _) do
     case conn.assigns.is_admin? do
       true -> conn

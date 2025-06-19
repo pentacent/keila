@@ -67,6 +67,16 @@ defmodule Keila.Auth.User do
     |> cast(params, [:two_factor_enabled, :two_factor_backup_codes])
   end
 
+  @doc """
+  Changeset for admin user updates. Allows updating user profile and verification status.
+  """
+  @spec admin_update_changeset(t() | Ecto.Changeset.data()) :: Ecto.Changeset.t(t)
+  def admin_update_changeset(struct \\ %__MODULE__{}, params) do
+    struct
+    |> cast(params, [:email, :given_name, :family_name, :locale, :activated_at])
+    |> validate_email()
+  end
+
   @email_regex ~r/^[^\s@]+@[^\s@]+$/
   defp validate_email(changeset) do
     changeset

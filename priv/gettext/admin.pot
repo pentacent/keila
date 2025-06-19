@@ -10,6 +10,87 @@
 msgid ""
 msgstr ""
 
+# User management translations
+#, elixir-autogen, elixir-format
+msgid "Edit User"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Edit user profile and verification status."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "User Information"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Account Status"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Current status:"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Activated"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Not activated"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Activation status"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Change the activation status of this user account."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Update User"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Edit user"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Activate user"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Deactivate user"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Are you sure you want to deactivate this user?"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "User updated successfully"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Could not update user"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "User account has been activated"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Could not activate user account"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "User account has been deactivated"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Could not deactivate user account"
+msgstr ""
+
 #: lib/keila_web/templates/user_admin/show_credits.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "%{remaining} / %{total} credits"
@@ -165,4 +246,112 @@ msgstr ""
 #: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Update status"
+msgstr ""
+
+#: lib/keila_web/templates/user_admin/edit.html.heex:174
+msgid "Disable 2FA"
+msgstr ""
+
+#: lib/keila_web/templates/user_admin/edit.html.heex:181
+msgid "Enable 2FA"
+msgstr ""
+
+#: lib/keila_web/controllers/user_admin_controller.ex:208
+msgid "Two-factor authentication has been enabled for this user"
+msgstr ""
+
+#: lib/keila_web/controllers/user_admin_controller.ex:211
+msgid "Could not enable two-factor authentication"
+msgstr ""
+
+#: lib/keila_web/controllers/user_admin_controller.ex:221
+msgid "Two-factor authentication has been disabled for this user"
+msgstr ""
+
+#: lib/keila_web/controllers/user_admin_controller.ex:224
+msgid "Could not disable two-factor authentication"
+msgstr ""
+
+#: lib/keila_web/templates/user_admin/edit.html.heex:175
+msgid "Are you sure you want to disable 2FA for this user? This will remove all backup codes."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Two-Factor Authentication Enabled"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Two-factor authentication has been enabled for %{email}. Please provide these backup codes to the user."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "The user can use each code once to sign in if they can't access their email."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "These codes will only be shown once. Make sure the user saves them in a secure location."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Back to User"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Continue"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Password Management"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Update the user's password or send them a password reset email."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Set New Password"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Directly update the user's password."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Send a password reset email to %{email}. The user can then set their own password."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Update Password"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Are you sure you want to update this user's password?"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Send Password Reset"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Send a password reset email to %{email}"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Send Reset Email"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Password has been updated successfully"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Could not update password"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Password reset email has been sent to %{email}"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "User not found"
 msgstr ""
