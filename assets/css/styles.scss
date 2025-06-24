@@ -115,7 +115,7 @@ input[disabled] {
 
 .tabs {
     .tab-label {
-        @apply inline-block bg-gray-600 px-2 py-2 rounded-t;
+        @apply inline-block bg-gray-600 hover:bg-gray-500 px-2 py-2 rounded-t;
 
         &.active {
             @apply bg-gray-50 text-gray-900;

@@ -147,6 +147,42 @@ defmodule KeilaWeb.CampaignController do
     )
   end
 
+  def view(conn, _params) do
+    project = current_project(conn)
+    campaign = conn.assigns.campaign
+    email = Keila.Mailings.Builder.build_preview(campaign)
+    preview = email.html_body || KeilaWeb.CampaignView.plain_text_preview(email.text_body)
+
+    render(conn, "view.html", %{
+      current_project: project,
+      campaign: campaign,
+      preview: preview
+    })
+  end
+
+  def share(conn, _params) do
+    project = current_project(conn)
+    campaign = conn.assigns.campaign
+
+    render(conn, "share.html", %{
+      current_project: project,
+      campaign: campaign
+    })
+  end
+
+  def post_share(conn, %{"enable" => raw_enable?}) do
+    project = current_project(conn)
+
+    enable? = String.to_existing_atom(raw_enable?)
+    campaign_id = conn.assigns.campaign.id
+    campaign = Mailings.enable_public_link!(campaign_id, enable?)
+
+    render(conn, "share.html", %{
+      current_project: project,
+      campaign: campaign
+    })
+  end
+
   @spec delete(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def delete(conn, params) do
     ids =

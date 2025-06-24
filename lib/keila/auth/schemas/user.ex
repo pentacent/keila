@@ -5,6 +5,8 @@ defmodule Keila.Auth.User do
     field(:email, :string)
     field(:password, :string, virtual: true)
     field(:password_hash, :string)
+    field(:given_name, :string)
+    field(:family_name, :string)
 
     field(:locale, :string)
 
@@ -21,7 +23,7 @@ defmodule Keila.Auth.User do
   @spec creation_changeset(t() | Ecto.Changeset.data()) :: Ecto.Changeset.t(t)
   def creation_changeset(struct \\ %__MODULE__{}, params) do
     struct
-    |> cast(params, [:email, :password, :locale])
+    |> cast(params, [:email, :password, :locale, :given_name, :family_name])
     |> validate_email()
     |> validate_password()
   end
@@ -40,6 +42,13 @@ defmodule Keila.Auth.User do
   def update_locale_changeset(struct \\ %__MODULE__{}, params) do
     struct
     |> cast(params, [:locale])
+  end
+
+  @spec update_name_changeset(t() | Ecto.Changeset.data()) :: Ecto.Changeset.t(t)
+  def update_name_changeset(struct \\ %__MODULE__{}, params) do
+    struct
+    |> cast(params, [:given_name, :family_name])
+    |> validate_required([:given_name, :family_name])
   end
 
   @spec update_password_changeset(t() | Ecto.Changeset.data()) :: Ecto.Changeset.t(t)

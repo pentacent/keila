@@ -66,6 +66,28 @@ defmodule Keila.Mailings.Builder do
     |> maybe_put_tracking(campaign, recipient)
   end
 
+  @default_contact %Keila.Contacts.Contact{
+    id: "c_id",
+    email: "keila@example.com",
+    data: %{}
+  }
+
+  @default_sender %Keila.Mailings.Sender{
+    from_name: "",
+    from_email: "keila@example.com"
+  }
+
+  @doc """
+  Builds a preview email for the given campaign and contact.
+
+  Injects a default sender and contact. The contact can be overridden by passing it as the second argument.
+  """
+  @spec build_preview(campaign :: Campaign.t(), contact :: Contact.t()) :: Email.t()
+  def build_preview(campaign, contact \\ @default_contact) do
+    %{campaign | sender: @default_sender}
+    |> build(contact)
+  end
+
   defp put_template_assigns(assigns, %Template{assigns: template_assigns = %{}}),
     do: Map.merge(template_assigns, assigns)
 

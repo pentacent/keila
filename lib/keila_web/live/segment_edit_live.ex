@@ -296,13 +296,13 @@ defmodule KeilaWeb.SegmentEditLive do
   defp filter_condition_to_form_data("string", _field, %{"$like" => value}) do
     cond do
       String.starts_with?(value, "%") && String.ends_with?(value, "%") ->
-        %{"value" => String.slice(value, 1..-2), "widget" => "includes"}
+        %{"value" => String.slice(value, 1..-2//-1), "widget" => "includes"}
 
       String.starts_with?(value, "%") ->
-        %{"value" => String.slice(value, 1..-1), "widget" => "ends_with"}
+        %{"value" => String.slice(value, 1..-1//-1), "widget" => "ends_with"}
 
       String.ends_with?(value, "%") ->
-        %{"value" => String.slice(value, 0..-2), "widget" => "starts_with"}
+        %{"value" => String.slice(value, 0..-2//-1), "widget" => "starts_with"}
     end
   end
 

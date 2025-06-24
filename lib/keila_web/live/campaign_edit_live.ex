@@ -38,13 +38,7 @@ defmodule KeilaWeb.CampaignEditLive do
     campaign = Ecto.Changeset.apply_changes(socket.assigns.changeset)
     template = Enum.find(socket.assigns.templates, &(&1.id == campaign.template_id))
 
-    # TODO
-    sender =
-      Enum.find(socket.assigns.senders, &(&1.id == campaign.sender_id)) ||
-        %Mailings.Sender{from_email: "foo@example.com"}
-
-    campaign = %Mailings.Campaign{campaign | sender: sender, template: template}
-    email = Mailings.Builder.build(campaign, %{})
+    email = Mailings.Builder.build_preview(campaign)
     preview = email.html_body || KeilaWeb.CampaignView.plain_text_preview(email.text_body)
 
     json_body = if campaign.json_body, do: Jason.encode!(campaign.json_body), else: "{}"

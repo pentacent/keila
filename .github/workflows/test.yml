@@ -1,0 +1,81 @@
+name: Test
+
+on:
+  workflow_call:
+    inputs:
+      with_extra:
+        description: "Compile with non-AGPLv3 code"
+        required: false
+        type: string
+        default: "0"
+      keila_cloud:
+        description: "Run tests specific to Keila Cloud"
+        required: false
+        type: string
+        default: "0"
+      elixir_version:
+        description: "Elixir version"
+        required: false
+        type: string
+        default: "1.18"
+
+jobs:
+  test:
+    name: Test (WITH_EXTRA=${{ inputs.with_extra }}, KEILA_CLOUD=${{ inputs.keila_cloud }})
+    runs-on: ubuntu-latest
+    container: elixir:${{ inputs.elixir_version }}-alpine
+    services:
+      postgres:
+        image: postgres:13-alpine
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      MIX_ENV: test
+      DB_URL: postgres://postgres:postgres@postgres/keila
+      WITH_EXTRA: ${{ inputs.with_extra }}
+      KEILA_CLOUD: ${{ inputs.keila_cloud }}
+      KEILA_CLOUD_LICENSE: ${{ secrets.KEILA_CLOUD_LICENSE }}
+
+    steps:
+      - name: check license
+        run: |
+          echo "$KEILA_CLOUD_LICENSE" | sha256sum
+      - name: install system packages
+        run: apk add build-base git tar curl cmake
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: |
+            _build
+            deps
+            assets/node_modules
+          key: keila-${{ runner.os }}-elixir-${{ inputs.elixir_version }}-${{ inputs.with_extra }}-${{ inputs.keila_cloud }}-${{ hashFiles('mix.lock') }}
+      - name: mix deps.get
+        run: |
+          mix local.rebar --force
+          mix local.hex --force
+          mix deps.get
+      - name: mix compile --warnings-as-errors
+        run: mix compile --warnings-as-errors
+      - name: mix format --check-formatted
+        run: mix format --check-formatted
+      - name: dprint check
+        run: |
+          export DPRINT_INSTALL="$HOME/.dprint"
+          mkdir -p "$DPRINT_INSTALL/bin"
+          curl -fsSL https://github.com/dprint/dprint/releases/download/0.36.0/dprint-x86_64-unknown-linux-musl.zip -o "$DPRINT_INSTALL/bin/dprint.zip"
+          unzip "$DPRINT_INSTALL/bin/dprint.zip" -d "$DPRINT_INSTALL/bin/"
+          chmod +x "$DPRINT_INSTALL/bin/dprint"
+          export PATH="$PATH:$DPRINT_INSTALL/bin"
+          dprint check
+      - name: mix ecto.create && ecto.migrate
+        run: |
+          mix ecto.create
+          mix ecto.migrate
+      - name: mix test
+        run: mix test

@@ -1,0 +1,123 @@
+<.form
+  for={@contact_data_changeset}
+  let={f}
+  phx-change="update_address"
+  phx-submit="submit_address"
+>
+  <h2 class="text-3xl mb-2">Nice to meet you, <%= @current_user.given_name %>!</h2>
+  <p class="mb-2">
+    <%= dgettext(
+      "cloud",
+      "To comply with anti-spam regulations, we need to know your address."
+    ) %>
+  </p>
+
+  <% country = country(@contact_data_changeset)
+  address_format = address_format(@contact_data_changeset)
+  required_fields = required_fields(@contact_data_changeset)
+  field_groups = field_groups(@contact_data_changeset) %>
+  <%= if not is_nil(country) do %>
+    <%= for field_group <- field_groups do %>
+      <div class="flex flex-row flex-wrap gap-2 py-4">
+        <%= for field <- field_group do %>
+          <div class={
+            "flex flex-col gap-2 #{if field == "postal_code", do: "w-32", else: "grow"}  #{if field == "address_line_2", do: "-my-4"}"
+          }>
+            <label>
+              <%= case field do
+                "organization_name" ->
+                  dgettext("cloud", "Business/organization name")
+
+                "given_name" ->
+                  dgettext("cloud", "First name")
+
+                "family_name" ->
+                  dgettext("cloud", "Last name")
+
+                "address_line_1" ->
+                  dgettext("cloud", "Adress line 1")
+
+                "address_line_2" ->
+                  dgettext("cloud", "Adress line 2")
+
+                "address_line_3" ->
+                  dgettext("cloud", "Adress line 3")
+
+                "postal_code" ->
+                  case address_format["postal_code_type"] do
+                    "zip" -> "ZIP"
+                    _other -> dgettext("cloud", "Postal code")
+                  end
+
+                "administrative_area" ->
+                  case address_format["administrative_area_type"] do
+                    "emirate" -> dgettext("cloud", "Emirate")
+                    "island" -> dgettext("cloud", "Island")
+                    "state" -> dgettext("cloud", "State")
+                    "province" -> dgettext("cloud", "Province")
+                    "parish" -> dgettext("cloud", "Parish")
+                    "region" -> dgettext("cloud", "Region")
+                    "department" -> dgettext("cloud", "Department")
+                    "country" -> dgettext("cloud", "Country")
+                    "county" -> dgettext("cloud", "County")
+                    "prefecture" -> dgettext("cloud", "Prefecture")
+                    "district" -> dgettext("cloud", "District")
+                    _ -> dgettext("cloud", "State/Province")
+                  end
+
+                "locality" ->
+                  dgettext("cloud", "City")
+
+                other ->
+                  other
+              end %>
+              <%= if field in required_fields do %>
+                <span class="text-red-600">*</span>
+              <% end %>
+            </label>
+            <%= case field do
+              "administrative_area" ->
+                select(f, :administrative_area, administrative_areas(@contact_data_changeset))
+
+              "address_line_1" <> _ ->
+                text_input(f, String.to_existing_atom(field),
+                  class: "w-full text-black",
+                  placeholder: dgettext("cloud", "Main Street 1")
+                )
+
+              "address_line_2" <> _ ->
+                text_input(f, String.to_existing_atom(field),
+                  class: "w-full text-black",
+                  placeholder: dgettext("cloud", "Apt 1")
+                )
+
+              "address_line_" <> _ ->
+                text_input(f, String.to_existing_atom(field), class: "w-full text-black")
+
+              _other ->
+                text_input(f, String.to_existing_atom(field), class: "max-w-64 text-black")
+            end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+  <div class="flex flex-row gap-5 py-4">
+    <div class="flex flex-col gap-2">
+      <%= if not is_nil(country) do %>
+        <label>
+          <%= dgettext("cloud", "Country") %>
+        </label>
+      <% end %>
+      <%= select(f, :country, [{dgettext("cloud", "Please select a country"), nil} | @countries]) %>
+    </div>
+  </div>
+
+  <%= if @contact_data_changeset.valid? do %>
+    <div class="mt-4">
+      <button class="button button--cta button--large">
+        Continue
+      </button>
+    </div>
+  <% end %>
+</.form>

@@ -9,22 +9,32 @@ defmodule KeilaWeb.UserAdminController do
   def index(conn, params) do
     page = String.to_integer(Map.get(params, "page", "1")) - 1
     users = Auth.list_users(paginate: [page: page, page_size: 20])
-    user_credits = maybe_get_user_credits(users.data)
+    user_accounts = get_user_accounts(users.data)
+    user_credits = maybe_get_user_credits(user_accounts)
 
     conn
     |> put_meta(:title, dgettext("admin", "Administrate Users"))
     |> assign(:users, users)
     |> assign(:user_credits, user_credits)
+    |> assign(:user_accounts, user_accounts)
     |> render("index.html")
   end
 
-  defp maybe_get_user_credits(users) do
+  defp get_user_accounts(users) do
+    users
+    |> Enum.map(fn user ->
+      account = Accounts.get_user_account(user.id)
+      {user.id, account}
+    end)
+    |> Enum.into(%{})
+  end
+
+  defp maybe_get_user_credits(user_accounts) do
     if Accounts.credits_enabled?() do
-      users
-      |> Enum.map(fn user ->
-        account = Accounts.get_user_account(user.id)
+      user_accounts
+      |> Enum.map(fn {user_id, account} ->
         credits = Accounts.get_credits(account.id)
-        {user.id, credits}
+        {user_id, credits}
       end)
       |> Enum.into(%{})
     end

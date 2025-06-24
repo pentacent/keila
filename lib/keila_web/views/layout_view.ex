@@ -1,6 +1,7 @@
 defmodule KeilaWeb.LayoutView do
   use KeilaWeb, :view
   use Phoenix.HTML
+  require Keila
   import KeilaWeb.IconHelper
 
   def menu_link(conn, controller, action, route_params, label, opts \\ []) do

@@ -162,7 +162,7 @@ defmodule Keila.Factory do
   Build and persists a struct with optional attributes
   """
   def insert!(name, attributes \\ []) do
-    name |> build(attributes) |> Repo.insert!()
+    name |> build(attributes) |> Repo.insert!(returning: true)
   end
 
   def insert_n!(name, n, attribute_fn \\ fn _n -> [] end) do

@@ -33,7 +33,7 @@ msgstr ""
 msgid "Administer Credits for %{email}"
 msgstr ""
 
-#: lib/keila_web/controllers/user_admin_controller.ex:15
+#: lib/keila_web/controllers/user_admin_controller.ex:16
 #, elixir-autogen, elixir-format
 msgid "Administrate Users"
 msgstr ""
@@ -118,7 +118,7 @@ msgstr ""
 msgid "Type in the shared sender name to confirm its deletion:"
 msgstr ""
 
-#: lib/keila_web/templates/user_admin/index.html.heex:64
+#: lib/keila_web/templates/user_admin/index.html.heex:78
 #, elixir-autogen, elixir-format
 msgid "Login as"
 msgstr ""
@@ -156,4 +156,14 @@ msgstr ""
 #: lib/keila_web/templates/instance_admin/show.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "You seem to be running the most recent version of Keila!"
+msgstr ""
+
+#: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr ""
+
+#: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "Update status"
 msgstr ""

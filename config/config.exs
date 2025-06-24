@@ -75,7 +75,7 @@ config :keila, KeilaWeb.Captcha,
 
 # Configures Elixir's Logger
 config :logger, :console,
-  format: "$time $metadata[$level] $message\n",
+  format: "$dateT$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
 # Use Jason for JSON parsing in Phoenix
@@ -110,6 +110,9 @@ config :mime, :types, %{
 config :keila, KeilaWeb.Gettext,
   default_locale: "en",
   locales: ["de", "en", "fr"]
+
+config :ex_cldr,
+  default_backend: Keila.Cldr
 
 config(:keila, Keila.Auth.Emails, from_email: "keila@localhost")
 

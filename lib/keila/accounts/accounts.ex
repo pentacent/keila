@@ -23,7 +23,7 @@ defmodule Keila.Accounts do
   def create_account() do
     Repo.transaction(fn ->
       {:ok, group} = Auth.create_group(%{parent_id: Auth.root_group().id})
-      Repo.insert!(%Account{group_id: group.id})
+      Repo.insert!(%Account{group_id: group.id}, returning: true)
     end)
   end
 

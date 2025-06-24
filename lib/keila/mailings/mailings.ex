@@ -1,4 +1,5 @@
 defmodule Keila.Mailings do
+  require Keila
   use Keila.Repo
   alias Keila.Project
   alias __MODULE__.{Sender, SenderAdapters, SharedSender, Campaign, Recipient, RecipientActions}
@@ -466,6 +467,12 @@ defmodule Keila.Mailings do
     if Keila.Accounts.credits_enabled?() do
       account = Keila.Accounts.get_project_account(project_id)
 
+      Keila.if_cloud do
+        if account.status != :active do
+          Repo.rollback(:account_not_active)
+        end
+      end
+
       if Keila.Accounts.consume_credits(account.id, recipients_count) == :error do
         Repo.rollback(:insufficient_credits)
       end
@@ -493,7 +500,8 @@ defmodule Keila.Mailings do
   Returns map with stats about a campaign.
   """
   @spec get_campaign_stats(Campaign.id()) :: %{
-          status: :insufficient_credits | :unsent | :preparing | :sending | :sent,
+          status:
+            :insufficient_credits | :account_not_active | :unsent | :preparing | :sending | :sent,
           recipients_count: non_neg_integer(),
           sent_count: non_neg_integer(),
           open_count: non_neg_integer(),
@@ -508,6 +516,7 @@ defmodule Keila.Mailings do
   def get_campaign_stats(campaign_id) when is_id(campaign_id) do
     campaign = get_campaign(campaign_id)
     recipient_stats = recipient_stats(campaign.id)
+    account = Keila.Accounts.get_project_account(campaign.project_id)
 
     time_series_end = if campaign.sent_at, do: campaign.sent_at |> DateTime.add(24, :hour)
 
@@ -519,8 +528,6 @@ defmodule Keila.Mailings do
 
     insufficient_credits? =
       if Keila.Accounts.credits_enabled?() do
-        account = Keila.Accounts.get_project_account(campaign.project_id)
-
         contacts_count =
           Keila.Contacts.get_project_contacts_count(campaign.project_id,
             filter: %{"status" => "active"}
@@ -544,6 +551,13 @@ defmodule Keila.Mailings do
         recipient_stats[:sent_count] != recipients_count -> :sending
         recipient_stats[:sent_count] == recipients_count -> :sent
       end
+
+    Keila.if_cloud do
+      status =
+        if is_nil(campaign.sent_at) and account.status != :active,
+          do: :account_not_active,
+          else: status
+    end
 
     recipient_stats
     |> Map.put(:status, status)
@@ -615,6 +629,8 @@ defmodule Keila.Mailings do
   Returns a signed unsubscribe link for the given project id and recipient.
   """
   @spec get_unsubscribe_link(Project.id(), Recipient.id()) :: String.t()
+  def get_unsubscribe_link(_project_id, "00000000-0000-4000-0000-000000000000"), do: "#"
+
   def get_unsubscribe_link(project_id, recipient_id) do
     hmac = unsubscribe_hmac(project_id, recipient_id)
 
@@ -694,5 +710,31 @@ defmodule Keila.Mailings do
   @spec handle_recipient_hard_bounce(Recipient.id(), map()) :: :ok
   def handle_recipient_hard_bounce(recipient_id, data) do
     RecipientActions.HardBounce.handle(recipient_id, data)
+  end
+
+  @doc """
+  Enables or disables the public link for a campaign.
+
+  Returns the updated campaign.
+  """
+  @spec enable_public_link!(campaign_id :: Campaign.id(), enable? :: boolean()) :: Campaign.t()
+  def enable_public_link!(campaign_id, enable? \\ true) do
+    campaign_id
+    |> get_campaign()
+    |> Ecto.Changeset.change(%{public_link_enabled: enable?})
+    |> Repo.update!()
+  end
+
+  @doc """
+  Retrieves a public campaign by its ID.
+
+  Returns the campaign if it exists, has `public_link_enabled` set to true, and been sent. Otherwise returns `nil`.
+  """
+  @spec get_public_campaign(campaign_id :: Campaign.id()) :: Campaign.t() | nil
+  def get_public_campaign(campaign_id) do
+    from(c in Campaign,
+      where: c.id == ^campaign_id and c.public_link_enabled == true and not is_nil(c.sent_at)
+    )
+    |> Repo.one()
   end
 end

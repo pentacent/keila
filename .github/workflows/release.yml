@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
 jobs:
   test:
@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - version: "1.15"
+          - version: "1.18"
     services:
       postgres:
         image: postgres:13-alpine
@@ -84,6 +84,8 @@ jobs:
         with:
           context: .
           file: ./ops/Dockerfile
+          build-args: |
+            WITH_EXTRA=1
           tags: |
             pentacent/keila:latest
             pentacent/keila:${{ steps.meta.outputs.version }}

@@ -1,0 +1,294 @@
+# # "msgid"s in this file come from POT (.pot) files.
+# #
+# # Do not add, change, or remove "msgid"s manually here as
+# # they're tied to the ones in the corresponding POT file
+# # (with the same domain).
+# #
+# # Use "mix gettext.extract --merge" or "mix gettext.merge"
+# # to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2;\n"
+"X-Generator: Poedit 3.6\n"
+
+#: extra/keila_cloud_web/templates/cloud_account/onboarding.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Account Verification"
+msgstr "Account-Überprüfung"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:173
+#, elixir-autogen, elixir-format
+msgid "Account not activated"
+msgstr "Account nicht aktiviert"
+
+#: lib/keila_web/templates/user_admin/index.html.heex:64
+#, elixir-autogen, elixir-format
+msgid "Account status"
+msgstr "Account-Status"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "Adress line 1"
+msgstr "Adresszeile 1"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Adress line 2"
+msgstr "Adresszeile 2"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "Adress line 3"
+msgstr "Adresszeile 3"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:91
+#, elixir-autogen, elixir-format
+msgid "Apt 1"
+msgstr "Gebäude A, Aufgang B"
+
+#: extra/keila_cloud_web/templates/cloud_account/_completed.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Back to project list"
+msgstr "Zurück zur Projektliste"
+
+#: lib/keila_web/templates/layout/app.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Before you can start sending emails, we need some more information about your account."
+msgstr "Bevor du E-Mails versenden kannst, benötigen wir noch zusätzliche Informationen über deinen Account."
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Business/organization name"
+msgstr "Firma/Organisation"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:69
+#, elixir-autogen, elixir-format
+msgid "City"
+msgstr "Ort"
+
+#: lib/keila_web/templates/layout/app.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Complete information"
+msgstr "Information vervollständigen"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:61
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:109
+#, elixir-autogen, elixir-format
+msgid "Country"
+msgstr "Land"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:62
+#, elixir-autogen, elixir-format
+msgid "County"
+msgstr "County"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:60
+#, elixir-autogen, elixir-format
+msgid "Department"
+msgstr "Departement"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:64
+#, elixir-autogen, elixir-format
+msgid "District"
+msgstr "Distrikt"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "Emirate"
+msgstr "Emirat"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "First name"
+msgstr "Vorname"
+
+#: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "I don’t have an existing contact list yet."
+msgstr "Ich habe keine existierende Kontaktliste."
+
+#: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "I have an existing contact list that I want to import into Keila."
+msgstr "Ich habe bereits eine Kontaktliste, die ich in Keila importieren möchte."
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "If you don’t have a website yet, you can also enter the link to a social media profile or some other public online presence."
+msgstr "Wenn du noch keine eigene Website hast, kannst du hier auch ein Social-Media-Profil angeben."
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:55
+#, elixir-autogen, elixir-format
+msgid "Island"
+msgstr "Insel"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Last name"
+msgstr "Nachname"
+
+#: extra/keila_cloud_web/templates/cloud_account/_user_name.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Let’s get to know each other!"
+msgstr "Schön, dich kennen zu lernen!"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:85
+#, elixir-autogen, elixir-format
+msgid "Main Street 1"
+msgstr "Hauptstraße 1"
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Nice to meet you, %{given_name}!"
+msgstr "Herzlich willkommen, %{given_name}!"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:176
+#, elixir-autogen, elixir-format
+msgid "Once you have provided the necessary details, we will perform a manual review of your account. This usually takes less than one working day.\n\nIf you have any questions, please reach out to our support at [%{support_email}](mailto:%{support_email}).\n"
+msgstr ""
+"Sobald du die notwendigen Informationen angegeben hast, werden wir deinen Account manuell überprüfen. Das dauert normalerweise weniger als einen Werktag.\n"
+"\n"
+"Bei Fragen hilft unser Support unter  [%{support_email}](mailto:%{support_email}) gerne weiter\n"
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Organization/business name"
+msgstr "Firma/Organisation"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "Parish"
+msgstr "Parish"
+
+#: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "Please describe the origin of your contact list and how you've obtained consent from your existing contacts."
+msgstr "Bitte beschreibe hier den Ursprung der Kontaktliste und wie die Einverständnis der Kontakte eingeholt wurde."
+
+#: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "Please describe the type of content and the purpose of the emails you are planning to send with Keila."
+msgstr "Bitte beschreibe hier den Inhalt und Zweck der E-Mails, die du mit Keila senden möchtest."
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:112
+#, elixir-autogen, elixir-format
+msgid "Please select a country"
+msgstr "Bitte wähle ein Land"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "Postal code"
+msgstr "Postleitzahl"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:63
+#, elixir-autogen, elixir-format
+msgid "Prefecture"
+msgstr "Präfektur"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "Province"
+msgstr "Provinz"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:59
+#, elixir-autogen, elixir-format
+msgid "Region"
+msgstr "Region"
+
+#: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:3
+#, elixir-autogen, elixir-format
+msgid "Review account for %{email}"
+msgstr "Account für %{email} überprüfen"
+
+#: lib/keila_web/templates/layout/app.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "Select plan"
+msgstr "Abo auswählen"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:56
+#, elixir-autogen, elixir-format
+msgid "State"
+msgstr "Staat"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:65
+#, elixir-autogen, elixir-format
+msgid "State/Province"
+msgstr "Staat/Provinz"
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "This account is for a business/organization"
+msgstr "Dieser Account ist für ein Unternehmen/eine Organisation"
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "This is a private account"
+msgstr "Dies ist ein privat genutzter Account"
+
+#: extra/keila_cloud_web/templates/cloud_account/_user_name.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "To make sure Keila is only used to send legitimate emails, we need to review every new account.\n\nThank you for helping us fight spam!\n"
+msgstr ""
+"Damit Keila nur zum Versenden von erwünschten E-Mails benutzt wird, müssen wir jeden neuen Account manuell freigeben.\n"
+"\n"
+"Danke dass du uns dabei unterstützt, Spam zu bekämpfen!\n"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:192
+#: lib/keila_web/templates/layout/app.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "Update account information"
+msgstr "Account-Informationen aktualisieren"
+
+#: extra/keila_cloud_web/templates/cloud_account/_completed.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "We will now perform a manual review of your data. This usually doesn't take longer than one working day.\n\nIn the meantime, you can continue to use Keila. Sending emails will be enabled for your account\nonce the review has been completed.\n"
+msgstr ""
+"Wir werden deinen Account nun manuell überprüfen. Das geschieht üblicherweise innerhalb eines Werktags.\n"
+"\n"
+"In der Zwischenzeit kannst du Keila weiter nutzen. Das Versenden von E-Mails wird für deinen Account aktiviert sobald die Überprüfung abgeschlossen ist.\n"
+
+#: lib/keila_web/templates/layout/app.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Welcome to Keila, have a look around! To start sending emails, please choose a subscription."
+msgstr "Willkommen bei Keila, schau dich gerne um! Um E-Mails zu versenden, wähle bitte ein Abo."
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Your Company, Inc."
+msgstr "Deine Firma GmbH"
+
+#: lib/keila_web/templates/layout/app.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "Your account is currently under review. Sending emails will be enabled once the review has been completed."
+msgstr "Dein Account wird derzeit überprüft. Das Versenden von E-Mails wird aktiviert sobald die Überprüfung abgeschlossen ist."
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "https://example.com"
+msgstr "https://example.com"
+
+#: extra/keila_cloud_web/templates/cloud_account/onboarding.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Every new account has to undergo a quick manual review.\nPlease share some information about you to help with this process.\n"
+msgstr ""
+"Jedes neue Konto muss eine kurze manuelle Überprüfung durchlaufen.\n"
+"Bitte teilen Sie uns einige Informationen über Sie mit, um uns bei diesem Prozess zu helfen.\n"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "To comply with anti-spam regulations, we need to know your address."
+msgstr "Aufgrund von Anti-Spam-Regulierungen benötigen wir deine Anschrift."
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "Website"
+msgstr "Website"

@@ -28,8 +28,17 @@ defmodule Keila.MixProject do
   end
 
   # Specifies which paths to compile per environment.
-  defp elixirc_paths(:test), do: ["lib", "test/support"]
-  defp elixirc_paths(_), do: ["lib"]
+  defp elixirc_paths(env \\ nil)
+
+  defp elixirc_paths(:test), do: ["test/support" | elixirc_paths()]
+
+  defp elixirc_paths(_env) do
+    if System.get_env("WITH_EXTRA") in ["1", "true", "TRUE"] do
+      ["extra", "lib"]
+    else
+      ["lib"]
+    end
+  end
 
   # Specifies settings for ex_doc
   defp docs do
@@ -83,7 +92,9 @@ defmodule Keila.MixProject do
       {:open_api_spex, "~> 3.21"},
       {:ex_rated, "~> 2.1"},
       {:tls_certificate_check, "~> 1.20"},
-      {:mjml, "~> 4.0"}
+      {:mjml, "~> 4.0"},
+      {:ex_cldr, "~> 2.42"},
+      {:ex_cldr_territories, "~> 2.9"}
     ]
   end
 

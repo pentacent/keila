@@ -42,13 +42,17 @@ defmodule Keila.Mailings.RateLimiterTest do
 
       assert third_pass == second_pass
 
-      additional_entries = for n <- 121..10, do: new_entry(n)
+      additional_entries = for n <- 1..120, do: new_entry(n)
       additional_entries = additional_entries |> Enum.map(&process_entry(&1, sender))
       last_original_entry = Enum.at(third_pass, -1)
 
+      # Some entries might be accepted depending on the timing, but most will be scheduled.
+      assert additional_entries |> Enum.count(& &1.accepted_at) < 20
+
       assert additional_entries
              |> Enum.all?(fn entry ->
-               DateTime.after?(entry.schedule_at, last_original_entry.schedule_at)
+               entry.accepted_at ||
+                 DateTime.after?(entry.schedule_at, last_original_entry.schedule_at)
              end)
     end
   end

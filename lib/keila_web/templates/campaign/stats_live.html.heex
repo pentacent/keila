@@ -10,7 +10,7 @@
       >
         <%= gettext("Back") %>
       </a>
-      <%= if @stats.status in [:insufficient_credits, :sent] do %>
+      <%= if @stats.status in [:insufficient_credits, :account_not_active, :sent] do %>
         <%= delete_form_tag(
           @campaign,
           Routes.campaign_path(@socket, :delete, @current_project.id),
@@ -162,12 +162,60 @@
             </div>
           </div>
         </div>
+      <% :account_not_active -> %>
+        <%= Keila.if_cloud do %>
+          <div class="flex gap-4">
+            <span class="inline-flex h-20 w-20">
+              <%= render_icon(:clipboard_list) %>
+            </span>
+            <div>
+              <p class="text-2xl">
+                <%= dgettext("cloud", "Account not activated") %>
+              </p>
+              <div class="prose prose-invert">
+                <%= dgettext_md(
+                  "cloud",
+                  """
+                  Once you have provided the necessary details, we will perform a manual review of your account. This usually takes less than one working day.
+
+                  If you have any questions, please reach out to our support at [%{support_email}](mailto:%{support_email}).
+                  """,
+                  support_email: "hello@keila.io"
+                ) %>
+              </div>
+              <p class="mt-4">
+                <a
+                  href={Routes.cloud_account_path(@socket, :onboarding)}
+                  }
+                  class="button button--large button--cta"
+                >
+                  <%= dgettext("cloud", "Update account information") %>
+                </a>
+              </p>
+            </div>
+          </div>
+        <% end %>
     <% end %>
   </div>
 <% end %>
 
 <%= if @stats.sent_count > 0 || @stats.failed_count > 0 do %>
   <div class="container">
+    <div class="tabs -mt-8">
+      <a class="tab-label active"><%= gettext("Statistics") %></a>
+      <a
+        href={Routes.campaign_path(@socket, :view, @current_project.id, @campaign.id)}
+        class="tab-label"
+      >
+        <%= gettext("View") %>
+      </a>
+      <a
+        href={Routes.campaign_path(@socket, :share, @current_project.id, @campaign.id)}
+        class="tab-label"
+      >
+        <%= gettext("Share") %>
+      </a>
+    </div>
     <div class="bg-gray-800 p-4 grid lg:grid-cols-2 gap-8 items-center xl:p-4 xl:grid-cols-3 xl:gap-4 whitespace-nowrap">
       <div class="flex flex-row gap-4 xl:p-4">
         <div class="flex h-14 w-14 p-4 bg-emerald-800 rounded-full text-white">

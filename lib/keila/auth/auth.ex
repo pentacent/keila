@@ -496,6 +496,17 @@ defmodule Keila.Auth do
     end
   end
 
+  @doc """
+  Updates the `given_name` and `family_name` properites of a given `User`.
+  """
+  @spec update_user_name(User.id(), map()) :: {:ok, User.t()} | {:error, Changeset.t(User.t())}
+  def update_user_name(id, params) do
+    id
+    |> get_user()
+    |> User.update_name_changeset(params)
+    |> Repo.update()
+  end
+
   @spec set_user_locale(User.id(), String.t()) ::
           {:ok, User.t()} | {:error, Changeset.t(User.t())}
   def set_user_locale(id, locale) do

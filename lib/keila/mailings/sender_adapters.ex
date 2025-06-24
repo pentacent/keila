@@ -26,7 +26,7 @@ defmodule Keila.Mailings.SenderAdapters do
   """
   @spec adapter_names() :: list(String.t())
   def adapter_names do
-    Enum.map(adapters(), fn a -> a.name end)
+    Enum.map(adapters(), fn adapter -> adapter.name() end)
   end
 
   @doc """
@@ -34,7 +34,7 @@ defmodule Keila.Mailings.SenderAdapters do
   """
   @spec shared_adapter_names() :: list(String.t())
   def shared_adapter_names do
-    Enum.map(shared_adapters(), fn a -> a.name end)
+    Enum.map(shared_adapters(), fn adapter -> adapter.name() end)
   end
 
   @doc """
@@ -42,7 +42,7 @@ defmodule Keila.Mailings.SenderAdapters do
   """
   @spec get_adapter(String.t()) :: Keila.Mailings.SenderAdapters.Adapter.t()
   def get_adapter(name) do
-    Enum.find(adapters() ++ shared_adapters(), fn a -> a.name == name end)
+    Enum.find(adapters() ++ shared_adapters(), fn adapter -> adapter.name() == name end)
   end
 
   @doc """

@@ -8,7 +8,30 @@ project.
 Before you get started with developing Keila, you need to set up your development
 environment.
 
-### Setup with VS Code and [DevContainer](https://code.visualstudio.com/docs/remote/containers)
+#### Option 1: Locally installed dependencies
+Start by cloning the Keila Git repository:
+
+```sh
+git clone https://github.com/pentacent/keila.git
+```
+
+Keila requires the following tools to compile and run:
+- [Elixir](https://elixir-lang.org/install.html) (1.18+) and Erlang/OTP (27+)
+- [Node.js](https://nodejs.org/en/download/) (20+)
+- [Cmake](https://cmake.org/download/) (to compile `lexbor`/`fast_html`)
+
+If you want to work on the frontend JavaScript code, it's also recommended you install `dprint` for formatting.
+
+You use the [asdf version manager](https://asdf-vm.com/) (`asdf install`) to install these dependencies. Cmake can be installed with your system's package manager (e.g. `apt install cmake` or `brew install cmake`).
+
+In addition, you need to have an instance of [PostgreSQL](https://www.postgresql.org/) to run Keila.
+
+
+### Option 2: Setup with VS Code and [DevContainer](https://code.visualstudio.com/docs/remote/containers)
+
+> [!WARNING]
+> This method is not currently maintained. If you prefer working with Dev Containers, you might need to adjust the configuration.
+
 * Clone the repository:
   `git clone https://github.com/pentacent/keila.git`
 * Install the [Remote Container](https://github.com/microsoft/vscode-dev-containers)
@@ -22,14 +45,8 @@ environment.
 * Open a terminal from VS Code and proceed with the instructions from the
   [Run Keila](#run-keila) section
 
-### Setup with other editors
-Start by cloning the repository: `git clone https://github.com/pentacent/keila.git`
 
-#### Install Dependencies
-[Install Elixir](https://elixir-lang.org/install.html) on your machine and launch
-an an instance of [PostgreSQL](https://www.postgresql.org/).
-
-#### Run Keila
+#### Compile & Run Keila
 
 * Install dependencies with `mix deps.get`
 * Install dependencies and set up the database with `mix setup`
@@ -37,14 +54,19 @@ an an instance of [PostgreSQL](https://www.postgresql.org/).
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
+
 ## Contributing Code
 Code contributions to Keila are welcome!
 
 If you don’t know where to start, take a look at these [Good First Issues](https://github.com/pentacent/keila/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22).
 
+
 ### Contribution Guidelines
 Before you commit code to Keila, make sure to run `mix format` to ensure
 consistent formatting.
+
+If you're contributing JavaScript code, please run `dprint fmt`.
+
 
 ### Contributor License Agreement (CLA)
 Before we can accept your contribution, please sign the Contributor License Agreement (CLA).

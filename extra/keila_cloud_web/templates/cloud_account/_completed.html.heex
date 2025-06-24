@@ -1,0 +1,17 @@
+<h2 class="text-3xl mb-4">Thank you!</h2>
+<%= dgettext_md("cloud", """
+We will now perform a manual review of your data. This usually doesn't take longer than one working day.
+
+In the meantime, you can continue to use Keila. Sending emails will be enabled for your account
+once the review has been completed.
+""") %>
+
+<div class="mt-4">
+  <a
+    href="/"
+    class="button button--cta button--large"
+    x-on:click="window.window.setUnsavedReminder(false)"
+  >
+    <%= dgettext("cloud", "Back to project list") %>
+  </a>
+</div>
