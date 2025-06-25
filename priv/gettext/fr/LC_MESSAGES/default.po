@@ -640,7 +640,6 @@ msgstr "Champs"
 msgid "Fine print"
 msgstr "Texte en petits caractères"
 
-#: extra/keila_cloud_web/templates/cloud_account/_user_name.html.heex:24
 #: lib/keila/contacts/contacts.ex:276
 #: lib/keila_web/live/segment_edit_live.ex:9
 #: lib/keila_web/templates/contact/_list.html.heex:32
@@ -798,7 +797,6 @@ msgstr "Italique"
 msgid "Jane"
 msgstr "Truc"
 
-#: extra/keila_cloud_web/templates/cloud_account/_user_name.html.heex:30
 #: lib/keila/contacts/contacts.ex:284
 #: lib/keila_web/live/segment_edit_live.ex:10
 #: lib/keila_web/templates/contact/_list.html.heex:42
@@ -1367,8 +1365,12 @@ msgstr "Liste"
 msgid "Unschedule"
 msgstr "Déprogrammer"
 
-#: lib/keila_web/controllers/public_form_controller.ex:140
-#: lib/keila_web/controllers/public_form_controller.ex:160
+#: lib/keila_web/controllers/public_form_controller.ex:138
+#: lib/keila_web/controllers/public_form_controller.ex:164
+#: lib/keila_web/controllers/public_form_controller.ex:182
+#: lib/keila_web/controllers/public_form_controller.ex:206
+#: lib/keila_web/views/public_form_view.ex:365
+#: lib/keila_web/views/public_form_view.ex:392
 #, elixir-autogen, elixir-format
 msgid "Unsubscribe"
 msgstr "Se désabonner"
@@ -1411,7 +1413,7 @@ msgstr "Nous traitons actuellement votre abonnement. Cela devrait prendre moins 
 msgid "You currently have an active subscription. Thanks for supporting Keila!"
 msgstr "Vous avez actuellement un abonnement actif. Merci de soutenir Keila!"
 
-#: lib/keila_web/views/public_form_view.ex:351
+#: lib/keila_web/views/public_form_view.ex:359
 #, elixir-autogen, elixir-format
 msgid "You have been unsubscribed from this list."
 msgstr "Vous avez été désabonné de cette liste."
@@ -3226,13 +3228,6 @@ msgstr ""
 msgid "Address copied to clipboard."
 msgstr "Code copié dans le presse-papier."
 
-#: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:50
-#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:56
-#: extra/keila_cloud_web/templates/cloud_account/_user_name.html.heex:38
-#, elixir-autogen, elixir-format, fuzzy
-msgid "Continue"
-msgstr "Contenu"
-
 #: lib/keila_web/templates/campaign/share.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "Disable public link"
@@ -3278,3 +3273,28 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "You can enable a public link to share your campaign with others. Your campaign will be accessible to anyone who has the link.\n\nYou can disable the public link later if you want.\n"
 msgstr ""
+
+#: lib/keila_web/views/public_form_view.ex:366
+#, elixir-autogen, elixir-format
+msgid "Are you sure you want to unsubscribe from this list?"
+msgstr ""
+
+#: lib/keila_web/views/public_form_view.ex:414
+#, elixir-autogen, elixir-format
+msgid "Are you sure you want to unsubscribe?"
+msgstr ""
+
+#: lib/keila_web/views/public_form_view.ex:386
+#, elixir-autogen, elixir-format
+msgid "JavaScript is required to unsubscribe. Please enable JavaScript and try again."
+msgstr ""
+
+#: lib/keila_web/views/public_form_view.ex:358
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Unsubscribed"
+msgstr "Se désabonner"
+
+#: lib/keila_web/views/public_form_view.ex:417
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Unsubscribing..."
+msgstr "Se désabonner"

@@ -141,7 +141,6 @@ defmodule KeilaWeb.PublicFormController do
       |> assign(:recipient_id, recipient_id)
       |> assign(:hmac, hmac)
       |> assign(:mode, :full)
-      |> assign(:unsubscribed, false)
       |> render("unsubscribe.html")
     else
       conn |> put_status(404) |> halt()
@@ -155,65 +154,39 @@ defmodule KeilaWeb.PublicFormController do
       }) do
     # Validate HMAC and confirm parameter for security
     if Mailings.valid_unsubscribe_hmac?(project_id, recipient_id, hmac) and
-       conn.params["confirm_unsubscribe"] == "true" do
+       conn.params["confirm"] == "true" do
       Keila.Mailings.unsubscribe_recipient(recipient_id)
 
       form = Contacts.get_project_forms(project_id) |> List.first() || @default_unsubscribe_form
 
       conn
-      |> put_meta(:title, gettext("Unsubscribe"))
+      |> put_meta(:title, gettext("Unsubscribed"))
       |> assign(:form, form)
       |> assign(:project_id, project_id)
       |> assign(:recipient_id, recipient_id)
       |> assign(:hmac, hmac)
       |> assign(:mode, :full)
-      |> assign(:unsubscribed, true)
-      |> render("unsubscribe.html")
+      |> render("unsubscribe_success.html")
     else
       conn |> put_status(404) |> halt()
     end
   end
 
   # DEPRECATED: This implementation is deprecated and will be removed in a future version
-  def unsubscribe(conn = %{method: "GET"}, %{"project_id" => project_id, "contact_id" => contact_id}) do
+  def unsubscribe(conn, %{"project_id" => project_id, "contact_id" => contact_id}) do
     form = Contacts.get_project_forms(project_id) |> List.first() || @default_unsubscribe_form
+    contact = Contacts.get_project_contact(project_id, contact_id)
+
+    if contact && contact.status != :unsubscribed do
+      Keila.Contacts.update_contact_status(contact_id, :unsubscribed)
+      Keila.Tracking.log_event("unsubscribe", contact_id, %{})
+    end
 
     conn
     |> put_meta(:title, gettext("Unsubscribe"))
     |> assign(:form, form)
-    |> assign(:project_id, project_id)
-    |> assign(:contact_id, contact_id)
     |> assign(:mode, :full)
-    |> assign(:unsubscribed, false)
-    |> assign(:deprecated_route, true)
-    |> render("unsubscribe.html")
-  end
-
-  # DEPRECATED: This implementation is deprecated and will be removed in a future version
-  def unsubscribe(conn = %{method: "POST"}, %{"project_id" => project_id, "contact_id" => contact_id}) do
-    contact = Contacts.get_project_contact(project_id, contact_id)
-
-    # Validate confirm parameter for security
-    if contact && conn.params["confirm_unsubscribe"] == "true" do
-      if contact.status != :unsubscribed do
-        Keila.Contacts.update_contact_status(contact_id, :unsubscribed)
-        Keila.Tracking.log_event("unsubscribe", contact_id, %{})
-      end
-
-      form = Contacts.get_project_forms(project_id) |> List.first() || @default_unsubscribe_form
-
-      conn
-      |> put_meta(:title, gettext("Unsubscribe"))
-      |> assign(:form, form)
-      |> assign(:project_id, project_id)
-      |> assign(:contact_id, contact_id)
-      |> assign(:mode, :full)
-      |> assign(:unsubscribed, true)
-      |> assign(:deprecated_route, true)
-      |> render("unsubscribe.html")
-    else
-      conn |> put_status(404) |> halt()
-    end
+    |> render("unsubscribe_deprecated.html")
   end
 
   defp fetch(conn, _) do

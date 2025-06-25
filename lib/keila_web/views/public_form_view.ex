@@ -83,7 +83,7 @@ defmodule KeilaWeb.PublicFormView do
     end
   end
 
-  defp build_form_styles(form) do
+  def build_form_styles(form) do
     build_styles(%{
       "background-color" => form.settings.form_bg_color,
       "color" => form.settings.text_color
@@ -344,90 +344,32 @@ defmodule KeilaWeb.PublicFormView do
     end
   end
 
-  def render_unsubscribe_form(form) do
-    render_unsubscribe_form(form, false, %{})
-  end
-
-  def render_unsubscribe_form(form, unsubscribed, assigns) do
+  def render_unsubscribe_deprecated(form) do
     form_styles = build_form_styles(form)
 
     content_tag(:div, class: @form_classes, style: form_styles) do
-      if unsubscribed do
-        content_tag(:div, class: "text-center") do
-          [
-            content_tag(:h1, gettext("Unsubscribed"), class: "text-2xl font-bold mb-4"),
-            content_tag(:p, gettext("You have been unsubscribed from this list."), class: "text-lg")
-          ]
-        end
-      else
-        content_tag(:div, class: "text-center") do
-          [
-            content_tag(:h1, gettext("Unsubscribe"), class: "text-2xl font-bold mb-4"),
-            content_tag(:p, gettext("Are you sure you want to unsubscribe from this list?"), class: "text-lg mb-6"),
-            render_unsubscribe_button_form(assigns)
-          ]
-        end
-      end
+      gettext("You have been unsubscribed from this list.")
     end
   end
 
-  defp render_unsubscribe_button_form(assigns) do
-    action_url = 
-      if Map.get(assigns, :deprecated_route) do
+  # Helper functions to handle different route types
+  def get_unsubscribe_action_url(assigns) do
+    cond do
+      Map.get(assigns, :deprecated_route) ->
         Routes.public_form_url(KeilaWeb.Endpoint, :unsubscribe, assigns.project_id, assigns.contact_id)
-      else
+      Map.has_key?(assigns, :hmac) ->
         Routes.public_form_url(KeilaWeb.Endpoint, :unsubscribe, assigns.project_id, assigns.recipient_id, assigns.hmac)
-      end
-
-    form_tag(action_url, [method: :post, id: "unsubscribe-form", "data-requires-js": "true"]) do
-      [
-        content_tag(:div, "", [id: "js-check", style: "display: none;"]),
-        content_tag(:noscript) do
-          content_tag(:p, gettext("JavaScript is required to unsubscribe. Please enable JavaScript and try again."), 
-            class: "text-red-600 mb-4")
-        end,
-        hidden_input(:form, "confirm_unsubscribe", value: "true"),
-        content_tag(:div, class: "space-y-4") do
-          [
-            content_tag(:button, gettext("Unsubscribe"),
-              [
-                type: "button",
-                id: "unsubscribe-btn",
-                class: "bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
-                onclick: "handleUnsubscribe()"
-              ]
-            ),
-            content_tag(:script, raw(unsubscribe_javascript()), type: "text/javascript")
-          ]
-        end
-      ]
+      true ->
+        "" # Current page (relative post)
     end
   end
 
-  defp unsubscribe_javascript do
-    """
-    function handleUnsubscribe() {
-      // Check if JavaScript is enabled
-      document.getElementById('js-check').style.display = 'block';
-      
-      // Show confirmation dialog
-      if (confirm('#{String.replace(gettext("Are you sure you want to unsubscribe?"), "'", "\\'")}')) {
-        var btn = document.getElementById('unsubscribe-btn');
-        btn.disabled = true;
-        btn.textContent = '#{String.replace(gettext("Unsubscribing..."), "'", "\\'")}';
-        
-        // Add a small delay to prevent immediate automated requests
-        setTimeout(function() {
-          document.getElementById('unsubscribe-form').submit();
-        }, 500);
-      }
-    }
-    
-    // Check JavaScript capability on page load
-    document.addEventListener('DOMContentLoaded', function() {
-      document.getElementById('js-check').style.display = 'block';
-    });
-    """
+  def get_confirm_param_name(assigns) do
+    if Map.get(assigns, :deprecated_route) do
+      "confirm_unsubscribe"
+    else
+      "confirm"
+    end
   end
 
   defp data_field_mapping(form) do

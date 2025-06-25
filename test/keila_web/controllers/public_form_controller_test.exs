@@ -91,19 +91,12 @@ defmodule KeilaWeb.PublicFormControllerTest do
 
   describe "GET /unsubscribe/:p_id/:c_id" do
     @describetag :public_form_controller
-    test "shows unsubscribe page with button (does not auto-unsubscribe)", %{conn: conn} do
+    test "unsubscribes contact", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
-      contact = insert!(:contact, project_id: project.id, status: :active)
+      contact = insert!(:contact, project_id: project.id)
       conn = get(conn, Routes.public_form_path(conn, :unsubscribe, project.id, contact.id))
-      
-      response = html_response(conn, 200)
-      assert response =~ "Unsubscribe"
-      assert response =~ "Are you sure you want to unsubscribe"
-      assert response =~ "handleUnsubscribe()"
-      assert response =~ "JavaScript is required to unsubscribe"
-      
-      # Contact should still be active (not auto-unsubscribed)
-      assert %{status: :active} = Contacts.get_contact(contact.id)
+      assert html_response(conn, 200) =~ "You have been unsubscribed"
+      assert %{status: :unsubscribed} = Contacts.get_contact(contact.id)
     end
 
     test "shows no error for non-existent contacts", %{conn: conn} do
@@ -122,31 +115,6 @@ defmodule KeilaWeb.PublicFormControllerTest do
 
       response = html_response(conn, 200)
       assert response =~ "Unsubscribe"
-    end
-  end
-
-  describe "POST /unsubscribe/:p_id/:c_id" do
-    @describetag :public_form_controller
-    test "unsubscribes contact when confirm parameter is present", %{conn: conn} do
-      {conn, project} = with_login_and_project(conn)
-      contact = insert!(:contact, project_id: project.id, status: :active)
-      
-      conn = post(conn, Routes.public_form_path(conn, :unsubscribe, project.id, contact.id), 
-                  %{"confirm_unsubscribe" => "true"})
-      
-      response = html_response(conn, 200)
-      assert response =~ "You have been unsubscribed"
-      assert %{status: :unsubscribed} = Contacts.get_contact(contact.id)
-    end
-
-    test "does not unsubscribe without confirm parameter", %{conn: conn} do
-      {conn, project} = with_login_and_project(conn)
-      contact = insert!(:contact, project_id: project.id, status: :active)
-      
-      conn = post(conn, Routes.public_form_path(conn, :unsubscribe, project.id, contact.id), %{})
-      
-      assert conn.status == 404
-      assert %{status: :active} = Contacts.get_contact(contact.id)
     end
   end
 
@@ -191,7 +159,7 @@ defmodule KeilaWeb.PublicFormControllerTest do
       hmac = generate_test_hmac(project.id, recipient.id)
       
       conn = post(conn, Routes.public_form_path(conn, :unsubscribe, project.id, recipient.id, hmac), 
-                  %{"confirm_unsubscribe" => "true"})
+                  %{"confirm" => "true"})
       
       response = html_response(conn, 200)
       assert response =~ "You have been unsubscribed"
