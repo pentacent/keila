@@ -364,13 +364,6 @@ defmodule KeilaWeb.PublicFormView do
     end
   end
 
-  def get_confirm_param_name(assigns) do
-    if Map.get(assigns, :deprecated_route) do
-      "confirm_unsubscribe"
-    else
-      "confirm"
-    end
-  end
 
   defp data_field_mapping(form) do
     form.field_settings

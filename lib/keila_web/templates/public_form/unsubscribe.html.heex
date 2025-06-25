@@ -3,35 +3,14 @@
     <h1 class="text-2xl font-bold mb-4"><%= gettext("Unsubscribe") %></h1>
     <p class="text-lg mb-6"><%= gettext("Are you sure you want to unsubscribe from this list?") %></p>
     
-    <form method="post" id="unsubscribe-form" action={get_unsubscribe_action_url(assigns)}>
-      <input type="hidden" name={get_confirm_param_name(assigns)} value="true" />
-      <input type="hidden" name="_csrf_token" value={Phoenix.Controller.get_csrf_token()} />
-      
-      <noscript>
-        <p class="text-red-600 mb-4">
-          <%= gettext("JavaScript is required to unsubscribe. Please enable JavaScript and try again.") %>
-        </p>
-      </noscript>
-      
+    <form method="post" action={get_unsubscribe_action_url(assigns)}>
       <div class="space-y-4">
         <button 
-          type="button" 
-          id="unsubscribe-btn"
-          class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-          onclick="handleUnsubscribe()">
+          type="submit"
+          class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded cursor-pointer">
           <%= gettext("Unsubscribe") %>
         </button>
       </div>
     </form>
-
-    <script>
-      function handleUnsubscribe() {
-        var btn = document.getElementById('unsubscribe-btn');
-        btn.disabled = true;
-        btn.textContent = '<%= gettext("Unsubscribing...") %>';
-        
-        document.getElementById('unsubscribe-form').submit();
-      }
-    </script>
   </div>
 </div>

@@ -152,9 +152,8 @@ defmodule KeilaWeb.PublicFormController do
         "recipient_id" => recipient_id,
         "hmac" => hmac
       }) do
-    # Validate HMAC and confirm parameter for security
-    if Mailings.valid_unsubscribe_hmac?(project_id, recipient_id, hmac) and
-       conn.params["confirm"] == "true" do
+    # Validate HMAC and unsubscribe on any POST
+    if Mailings.valid_unsubscribe_hmac?(project_id, recipient_id, hmac) do
       Keila.Mailings.unsubscribe_recipient(recipient_id)
 
       form = Contacts.get_project_forms(project_id) |> List.first() || @default_unsubscribe_form

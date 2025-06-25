@@ -149,27 +149,7 @@ defmodule KeilaWeb.PublicFormControllerTest do
       assert %{status: :active} = Contacts.get_contact(contact.id)
     end
     
-    test "POST /unsubscribe/:p_id/:r_id/:hmac processes unsubscribe with confirm", %{conn: conn} do
-      {conn, project} = with_login_and_project(conn)
-      contact = insert!(:contact, project_id: project.id, status: :active)
-      campaign = insert!(:mailings_campaign, project_id: project.id)
-      recipient = insert!(:mailings_recipient, campaign: campaign, contact: contact)
-      
-      # Create a valid HMAC for testing
-      hmac = generate_test_hmac(project.id, recipient.id)
-      
-      conn = post(conn, Routes.public_form_path(conn, :unsubscribe, project.id, recipient.id, hmac), 
-                  %{"confirm" => "true"})
-      
-      response = html_response(conn, 200)
-      assert response =~ "You have been unsubscribed"
-      
-      # Check that recipient was unsubscribed
-      updated_recipient = Keila.Repo.get(Keila.Mailings.Recipient, recipient.id)
-      assert not is_nil(updated_recipient.unsubscribed_at)
-    end
-    
-    test "POST /unsubscribe/:p_id/:r_id/:hmac rejects without confirm", %{conn: conn} do
+    test "POST /unsubscribe/:p_id/:r_id/:hmac processes unsubscribe", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
       contact = insert!(:contact, project_id: project.id, status: :active)
       campaign = insert!(:mailings_campaign, project_id: project.id)
@@ -180,11 +160,12 @@ defmodule KeilaWeb.PublicFormControllerTest do
       
       conn = post(conn, Routes.public_form_path(conn, :unsubscribe, project.id, recipient.id, hmac), %{})
       
-      assert conn.status == 404
+      response = html_response(conn, 200)
+      assert response =~ "You have been unsubscribed"
       
-      # Check that recipient was NOT unsubscribed
+      # Check that recipient was unsubscribed
       updated_recipient = Keila.Repo.get(Keila.Mailings.Recipient, recipient.id)
-      assert is_nil(updated_recipient.unsubscribed_at)
+      assert not is_nil(updated_recipient.unsubscribed_at)
     end
     
     test "GET /unsubscribe/:p_id/:r_id/:hmac rejects invalid HMAC", %{conn: conn} do
@@ -200,6 +181,27 @@ defmodule KeilaWeb.PublicFormControllerTest do
       
       assert conn.status == 404
       assert %{status: :active} = Contacts.get_contact(contact.id)
+    end
+
+    test "POST /unsubscribe/:p_id/:r_id/:hmac supports List-Unsubscribe-Post", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+      contact = insert!(:contact, project_id: project.id, status: :active)
+      campaign = insert!(:mailings_campaign, project_id: project.id)
+      recipient = insert!(:mailings_recipient, campaign: campaign, contact: contact)
+      
+      # Create a valid HMAC for testing
+      hmac = generate_test_hmac(project.id, recipient.id)
+      
+      # Test with List-Unsubscribe=One-Click parameter (used by email clients)
+      conn = post(conn, Routes.public_form_path(conn, :unsubscribe, project.id, recipient.id, hmac), 
+                  %{"List-Unsubscribe" => "One-Click"})
+      
+      response = html_response(conn, 200)
+      assert response =~ "You have been unsubscribed"
+      
+      # Check that recipient was unsubscribed
+      updated_recipient = Keila.Repo.get(Keila.Mailings.Recipient, recipient.id)
+      assert not is_nil(updated_recipient.unsubscribed_at)
     end
   end
 end
