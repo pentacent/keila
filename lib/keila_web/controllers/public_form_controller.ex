@@ -126,21 +126,46 @@ defmodule KeilaWeb.PublicFormController do
 
   @default_unsubscribe_form %Contacts.Form{settings: %Contacts.Form.Settings{}}
   @spec unsubscribe(Plug.Conn.t(), map()) :: Plug.Conn.t()
-  def unsubscribe(conn, %{
+  def unsubscribe(conn = %{method: "GET"}, %{
         "project_id" => project_id,
         "recipient_id" => recipient_id,
         "hmac" => hmac
       }) do
+    if Mailings.valid_unsubscribe_hmac?(project_id, recipient_id, hmac) do
+      form = Contacts.get_project_forms(project_id) |> List.first() || @default_unsubscribe_form
+
+      conn
+      |> put_meta(:title, gettext("Unsubscribe"))
+      |> assign(:form, form)
+      |> assign(:project_id, project_id)
+      |> assign(:recipient_id, recipient_id)
+      |> assign(:hmac, hmac)
+      |> assign(:mode, :full)
+      |> render("unsubscribe.html")
+    else
+      conn |> put_status(404) |> halt()
+    end
+  end
+
+  def unsubscribe(conn = %{method: "POST"}, %{
+        "project_id" => project_id,
+        "recipient_id" => recipient_id,
+        "hmac" => hmac
+      }) do
+    # Validate HMAC and unsubscribe on any POST
     if Mailings.valid_unsubscribe_hmac?(project_id, recipient_id, hmac) do
       Keila.Mailings.unsubscribe_recipient(recipient_id)
 
       form = Contacts.get_project_forms(project_id) |> List.first() || @default_unsubscribe_form
 
       conn
-      |> put_meta(:title, gettext("Unsubscribe"))
+      |> put_meta(:title, gettext("Unsubscribed"))
       |> assign(:form, form)
+      |> assign(:project_id, project_id)
+      |> assign(:recipient_id, recipient_id)
+      |> assign(:hmac, hmac)
       |> assign(:mode, :full)
-      |> render("unsubscribe.html")
+      |> render("unsubscribe_success.html")
     else
       conn |> put_status(404) |> halt()
     end
@@ -160,7 +185,7 @@ defmodule KeilaWeb.PublicFormController do
     |> put_meta(:title, gettext("Unsubscribe"))
     |> assign(:form, form)
     |> assign(:mode, :full)
-    |> render("unsubscribe.html")
+    |> render("unsubscribe_deprecated.html")
   end
 
   defp fetch(conn, _) do
