@@ -20,8 +20,7 @@ defmodule Keila.Contacts do
           {:ok, Contact.t()} | {:error, Changeset.t(Contact.t())}
   def create_contact(project_id, params, opts \\ [])
       when is_binary(project_id) or is_integer(project_id) do
-    params
-    |> Contact.creation_changeset(project_id)
+    Contact.creation_changeset(%Contact{}, params, project_id)
     |> maybe_update_contact_status(params, opts[:set_status])
     |> Repo.insert()
   end
@@ -193,11 +192,14 @@ defmodule Keila.Contacts do
   with the format `{:contacts_import_progress, imported_contacts, import_total}`
 
   The structure of the CSV file has to be:
-  | Email        | First name | Last name  |
-  | ------------ |------------| ---------- |
-  | foo@example.com | Foo     | Bar        |
+  | Email        | First name | Last name  | Data | Status | External ID |
+  | ------------ |------------| ---------- | ---- | ------ | ----------- |
+  | foo@example.com | Foo     | Bar        | {}   | active | 123         |
 
-  The `First name` and `Last name` columns can be empty but must be present.
+  The `First name`, `Last name`, `Data`, `Status`, and `External ID` columns can be empty but must be present.
+  
+  Valid status values are: `active`, `unsubscribed`, `unreachable` (case-insensitive).
+  If no status is provided or status column is missing, contacts default to `active`.
 
   ## Options
   - `:notify` - PID of the process that is going to be sent progress notifications. Defaults to `self()`.
