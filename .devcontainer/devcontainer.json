@@ -6,6 +6,23 @@
   "service": "elixir",
   "workspaceFolder": "/workspace",
 
+  // Use 'features' to install common utilities and programming languages
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "installOhMyZsh": true,
+      "username": "vscode",
+      "userUid": 1000,
+      "userGid": 1000,
+      "upgradePackages": true
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "nodeGypDependencies": true,
+      "version": "lts",
+      "nvmVersion": "latest"
+    }
+  },
+
   "customizations": {
     "vscode": {
       "settings": {
@@ -38,6 +55,6 @@
   // Use 'postCreateCommand' to run commands after the container is created.
   "postCreateCommand": "mix deps.get && cd assets && npm install",
 
-  // Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
+  // Connect as a non-root user
   "remoteUser": "vscode"
 }

@@ -6,12 +6,8 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        # Elixir Version: 1.9, 1.10, 1.10.4, ...
-        VARIANT: "1.15.1"
-        # Phoenix Version: 1.4.17, 1.5.4, ...
-        PHOENIX_VERSION: "1.6.2"
-        # Node Version: 10, 11, ...
-        NODE_VERSION: "lts/*"
+        ELIXIR_VERSION: "1.15.8"
+        PHOENIX_VERSION: "1.7.10"
 
     volumes:
       - ..:/workspace:cached
@@ -20,7 +16,6 @@ services:
 
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
-
   db:
     image: postgres:latest
     restart: unless-stopped
