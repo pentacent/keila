@@ -2778,7 +2778,7 @@ msgstr "Eigener E-Mail-Betreff"
 #: lib/keila_web/templates/form/edit_live.html.heex:395
 #, elixir-autogen, elixir-format
 msgid "Custom email text"
-msgstr "Eigener E-Mail-Test"
+msgstr "Eigener E-Mail-Text"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:206
 #, elixir-autogen, elixir-format
