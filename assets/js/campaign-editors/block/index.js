@@ -6,6 +6,7 @@ import Button from "./blocks/button"
 import Image from "./blocks/image"
 import Layout from "./blocks/layout"
 import Separator from "./blocks/separator"
+import SocialIcons from "./blocks/social-icons"
 import TextColor from "./tools/text-color"
 
 export default class BlockEditor {
@@ -50,6 +51,7 @@ export default class BlockEditor {
                 class: List,
                 inlineToolbar: true
               },
+              socialIcons: SocialIcons,
               separator: Separator
             }
           }
@@ -67,7 +69,8 @@ export default class BlockEditor {
           class: List,
           inlineToolbar: true
         },
-        separator: Separator
+        separator: Separator,
+        socialIcons: SocialIcons
       },
       onChange() {
         window.setUnsavedReminder(true)

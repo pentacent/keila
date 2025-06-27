@@ -54,6 +54,7 @@ defmodule Keila.Mailings.Builder do
         process_assigns(Map.take(campaign, [:data, :subject, :preview_text]))
       )
       |> Map.put("unsubscribe_link", unsubscribe_link)
+      |> Map.put("assets_url", Routes.static_url(KeilaWeb.Endpoint, "/"))
 
     Email.new()
     |> put_subject(campaign.subject, assigns)
