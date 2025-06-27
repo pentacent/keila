@@ -20,7 +20,7 @@ defmodule KeilaWeb.Gettext do
 
   See the [Gettext Docs](https://hexdocs.pm/gettext) for detailed usage.
   """
-  use Gettext, otp_app: :keila
+  use Gettext, otp_app: :keila, default_locale: "en", priv: "priv/gettext"
 
   @doc """
   Convenience macro for translating Markdown strings. Returns `{:safe, html}`.

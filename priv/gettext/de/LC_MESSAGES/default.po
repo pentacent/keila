@@ -143,7 +143,7 @@ msgid "Bold"
 msgstr "Fett"
 
 #: lib/keila/templates/default_template.ex:63
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:41
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:68
 #: lib/keila_web/templates/campaign/_markdown_editor.html.heex:19
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:81
 #, elixir-autogen, elixir-format
@@ -178,6 +178,7 @@ msgstr "Kampagnen"
 msgid "Campaigns associated with this sender will not be deleted."
 msgstr "Kampagnen, die mit diesem Sender verknüpft sind, werden nicht gelöscht."
 
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:95
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:50
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:156
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:235
@@ -565,7 +566,7 @@ msgstr "Noch keinen Account?"
 msgid "Download template"
 msgstr "Vorlage herunterladen"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:38
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:65
 #: lib/keila_web/templates/campaign/index.html.heex:66
 #: lib/keila_web/templates/form/index.html.heex:33
 #: lib/keila_web/templates/segment/index.html.heex:32
@@ -641,7 +642,6 @@ msgstr "Felder"
 msgid "Fine print"
 msgstr "Kleingedrucktes"
 
-#: extra/keila_cloud_web/templates/cloud_account/_user_name.html.heex:24
 #: lib/keila/contacts/contacts.ex:276
 #: lib/keila_web/live/segment_edit_live.ex:9
 #: lib/keila_web/templates/contact/_list.html.heex:32
@@ -717,7 +717,7 @@ msgstr "Ich bin ein Mensch."
 msgid "If you’ve forgotten your password, you can request an email to reset it here."
 msgstr "Wenn du dein Passwort vergessen hast, kannst du eine E-Mail zur Zurücksetzung anfordern."
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:35
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:62
 #: lib/keila_web/templates/campaign/_markdown_editor.html.heex:12
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:74
 #: lib/keila_web/views/template_view.ex:40
@@ -799,7 +799,6 @@ msgstr "Kursiv"
 msgid "Jane"
 msgstr "Erika"
 
-#: extra/keila_cloud_web/templates/cloud_account/_user_name.html.heex:30
 #: lib/keila/contacts/contacts.ex:284
 #: lib/keila_web/live/segment_edit_live.ex:10
 #: lib/keila_web/templates/contact/_list.html.heex:42
@@ -813,7 +812,7 @@ msgstr "Nachname"
 
 #: lib/keila/templates/default_template.ex:23
 #: lib/keila/templates/hybrid_template.ex:24
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:29
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "Layout"
 msgstr "Layout"
@@ -999,7 +998,7 @@ msgstr "Bitte kontaktiere einen Administrator."
 msgid "Please start a subscription before sending your first campaign."
 msgstr "Bitte wähle ein Abo aus bevor du deine erste Kampagne sendest."
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:55
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:163
 #: lib/keila_web/templates/campaign/_markdown_editor.html.heex:27
 #: lib/keila_web/templates/campaign/_mjml_editor.html.heex:21
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:103
@@ -1049,6 +1048,7 @@ msgid "Reset your password."
 msgstr "Passwort zurücksetzen."
 
 #: lib/keila_web/templates/api_key/new.html.heex:8
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:113
 #: lib/keila_web/templates/campaign/clone.html.heex:8
 #: lib/keila_web/templates/campaign/edit_live.html.heex:35
 #: lib/keila_web/templates/contact/edit.html.heex:38
@@ -2308,7 +2308,7 @@ msgstr "24-Stunden-Performance"
 msgid "API key copied to clipboard"
 msgstr "API-Schlüssel in die Zwischenablage kopiert"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:26
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "Add content to this column here …"
 msgstr "Inhalt zu dieser Spalte hinzufügen …"
@@ -2346,7 +2346,7 @@ msgstr "Kannst du deine Kampagne in 50 Zeichen zusammenfassen?"
 msgid "Choose Your Editor"
 msgstr "Wähle deinen Editor"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:12
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Click here to select an image."
 msgstr "Hier klicken um ein Bild auszuwählen."
@@ -2377,22 +2377,22 @@ msgstr "Fußzeile"
 msgid "Footer links"
 msgstr "Fußzeilen-Links"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:17
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Image caption (optional)"
 msgstr "Bildunterschrift (optional)"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:20
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Link for this image (optional)"
 msgstr "Verlinkung für dieses Bild (optional)"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:44
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "Make centered"
 msgstr "Zentrieren"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:47
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "Make full width"
 msgstr "Volle Breite"
@@ -2428,12 +2428,12 @@ msgstr "Zitat"
 msgid "Quotes"
 msgstr "Zitate"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:32
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Separator"
 msgstr "Trenner"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:23
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "Start creating your newsletter here …"
 msgstr "Beginne mit deinem Newsletter hier …"
@@ -2778,7 +2778,7 @@ msgstr "Eigener E-Mail-Betreff"
 #: lib/keila_web/templates/form/edit_live.html.heex:395
 #, elixir-autogen, elixir-format
 msgid "Custom email text"
-msgstr "Eigener E-Mail-Test"
+msgstr "Eigener E-Mail-Text"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:206
 #, elixir-autogen, elixir-format
@@ -3229,9 +3229,7 @@ msgstr ""
 msgid "Address copied to clipboard."
 msgstr "Die Adresse wurde in die Zwischenablage kopiert."
 
-#: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:50
-#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:56
-#: extra/keila_cloud_web/templates/cloud_account/_user_name.html.heex:38
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:92
 #, elixir-autogen, elixir-format
 msgid "Continue"
 msgstr "Weiter"
@@ -3284,3 +3282,123 @@ msgstr ""
 "Um die Kampagne mit anderen zu teilen, kann ein öffentlicher Link erstellt werden. Über den Link ist die Kampagne dann für jeden verfügbar.\n"
 "\n"
 "Der Link kann später auch wieder deaktiviert werden.\n"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:110
+#, elixir-autogen, elixir-format
+msgid "Add"
+msgstr "Hinzufügen"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:116
+#, elixir-autogen, elixir-format
+msgid "Add %{network} Profile"
+msgstr "%{network}-Profil hinzufügen"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:122
+#, elixir-autogen, elixir-format
+msgid "Add Custom Social Network"
+msgstr "Benutzerdefinierten Button hinzufügen"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:80
+#, elixir-autogen, elixir-format
+msgid "Add Social Media Icon"
+msgstr "Social-Media-Button hinzufügen"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:143
+#, elixir-autogen, elixir-format
+msgid "Align center"
+msgstr "Zentriert"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:140
+#, elixir-autogen, elixir-format
+msgid "Align left"
+msgstr "Linksbündig"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:146
+#, elixir-autogen, elixir-format
+msgid "Align right"
+msgstr "Rechtsbündig"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:98
+#, elixir-autogen, elixir-format
+msgid "Background Color"
+msgstr "Hintergrund"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:104
+#, elixir-autogen, elixir-format
+msgid "Black"
+msgstr "Schwarz"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:89
+#, elixir-autogen, elixir-format
+msgid "Choose Social Network"
+msgstr "Netzwerk auswählen"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:119
+#, elixir-autogen, elixir-format
+msgid "Edit %{network} Profile"
+msgstr "%{network}-Profil bearbeiten"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:125
+#, elixir-autogen, elixir-format
+msgid "Edit Custom Social Network"
+msgstr "Benutzerdefinierten Button bearbeiten"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:101
+#, elixir-autogen, elixir-format
+msgid "Icon Color"
+msgstr "Logo-Farbe"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:134
+#, elixir-autogen, elixir-format
+msgid "Icon URL (e.g. https://example.com/icon.png)"
+msgstr "Logo-URL (z.B. https://example.com/icon.png)"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:155
+#, elixir-autogen, elixir-format
+msgid "Large"
+msgstr "Groß"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:152
+#, elixir-autogen, elixir-format
+msgid "Medium"
+msgstr "Mittel"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:86
+#, elixir-autogen, elixir-format
+msgid "Other (Custom)"
+msgstr "Benutzerdefiniert"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:131
+#, elixir-autogen, elixir-format
+msgid "Platform name (e.g. Mastodon)"
+msgstr "Plattform-Name (z. B. Mastodon)"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:137
+#, elixir-autogen, elixir-format
+msgid "Profile URL (e.g., https://example.com/yourprofile)"
+msgstr "Profil-URL (z.B. https://example.com/dein-profil)"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:83
+#, elixir-autogen, elixir-format
+msgid "Select a site..."
+msgstr "Plattform auswählen …"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:149
+#, elixir-autogen, elixir-format
+msgid "Small"
+msgstr "Klein"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:77
+#, elixir-autogen, elixir-format
+msgid "Social Icons"
+msgstr "Social-Buttons"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:107
+#, elixir-autogen, elixir-format
+msgid "White"
+msgstr "Weiß"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:128
+#, elixir-autogen, elixir-format
+msgid "https://example.com/yourprofile"
+msgstr "https://example.com/dein-profil"

@@ -1,0 +1,38 @@
+<tr class="block block--social-icons">
+    {% assign iconSize =  block.data.size | default: 24 %}
+    {% assign align = block.data.alignment | default: "center" %}
+
+    <td align="{{ align }}" style="font-size:0px;padding:10px 25px;padding-bottom:20px;word-break:break-word;">
+        <!--[if mso | IE]><table border="0" cellpadding="0" cellspacing="0" role="presentation" align="{{ align }}"><tr><![endif]-->
+        {% for icon in block.data.social_icons %}
+            {%- if icon.icon contains "https://" or icon.icon contains "http://" %}
+                {% assign src = icon.icon %}
+            {% else %}
+                {% assign src = assets_url | append:'/images/social-icons/' | append: icon.icon | append: '-' | append: icon.iconColor | append: '.png' %}
+            {% endif %}
+
+            <!--[if mso | IE]><td><![endif]-->
+            <table border="0" cellpadding="0" cellspacing="0" role="presentation" align="{{ align }}" style="float:none;display:inline-table;">
+                <tbody>
+                    <tr>
+                        <td style="padding:4px;vertical-align:middle;">
+                            <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:{{ icon.backgroundColor | default: 'transparent' }};border-radius:3px">
+                                <tbody>
+                                    <tr>
+                                        <td height="{{ iconSize | times: 1.5 }}" width="{{ iconSize | times: 1.5 }}" style="font-size:0; vertical-align:middle; text-align: center;">
+                                            <a href="{{ icon.link }}" style="display:block;padding: {{ iconSize | divided_by: 4 }}px" target="_blank" rel="nofollow">
+                                                <img height="{{ iconSize }}" src="{{ src }}" width="{{ iconSize }}" alt="{{ icon.name }}" style="border-radius:3px;display:block;">
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!--[if mso | IE]></td><![endif]-->
+        {% endfor %}
+        <!--[if mso | IE]></tr></table><![endif]-->
+    </td>
+</tr>
