@@ -17,7 +17,9 @@ defmodule KeilaWeb.IconHelper do
 
   @paths [
     Path.join(:code.priv_dir(:keila), "vendor/hero-icons-outline"),
-    Path.join(:code.priv_dir(:keila), "vendor/keila-icons")
+    Path.join(:code.priv_dir(:keila), "vendor/keila-icons"),
+    Path.join(:code.priv_dir(:keila), "vendor/social-icons"),
+    Path.join(:code.priv_dir(:keila), "vendor/font-awesome")
   ]
 
   for path <- @paths do

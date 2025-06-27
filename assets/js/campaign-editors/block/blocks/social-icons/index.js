@@ -1,6 +1,6 @@
 const defaultIconSize = 24
 const defaultAlignment = "center"
-const defaultBgColor = "#000000"
+const defaultBgColor = "#059669"
 const knownSites = {
   bluesky: { label: "Bluesky", color: "#00A8E8" },
   discord: { label: "Discord", color: "#5865F2" },
@@ -17,6 +17,7 @@ const knownSites = {
   soundcloud: { label: "SoundCloud", color: "#FF5500" },
   threads: { label: "Threads", color: "#000000" },
   tiktok: { label: "TikTok", color: "#000000" },
+  twitch: { label: "Twitch", color: "#9146FF" },
   whatsapp: { label: "WhatsApp", color: "#25D366" },
   "x-twitter": { label: "X (Twitter)", color: "#000000" },
   xing: { label: "Xing", color: "#006567" },
@@ -130,7 +131,9 @@ export default class SocialIcons {
       center: "justify-center",
       right: "justify-end"
     }
-    iconsContainer.className = `flex flex-wrap items-center ${alignmentClasses[this.data.alignment] || "justify-start"}`
+    iconsContainer.className = `flex flex-wrap items-center ${
+      alignmentClasses[this.data.alignment] || "justify-center"
+    }`
     iconsContainer.style.gap = `${this.data.size / 4}px`
 
     this.data.social_icons.forEach((socialIcon, index) => {
@@ -178,10 +181,6 @@ export default class SocialIcons {
             svgElement.style.width = `${this.data.size}px`
             svgElement.style.height = `${this.data.size}px`
           }
-        } else {
-          // Fallback to first letter if icon not found
-          iconElement.textContent = socialIcon.name.charAt(0).toUpperCase()
-          iconElement.style.color = socialIcon.iconColor
         }
       }
 
@@ -413,7 +412,7 @@ export default class SocialIcons {
     const input = createUrlInput(getText("url-placeholder"), socialIcon.link)
     const { label: bgLabel, input: bgInput } = createColorInputWithLabel(
       getText("background-color-label"),
-      socialIcon.backgroundColor || "#3B82F6"
+      socialIcon.backgroundColor || defaultBgColor
     )
     const { label: iconLabel, select: iconSelect } = createIconColorSelect(socialIcon.iconColor || "white")
 
@@ -480,7 +479,7 @@ export default class SocialIcons {
 
     const { label: bgLabel, input: bgInput } = createColorInputWithLabel(
       getText("background-color-label"),
-      socialIcon.backgroundColor || "#1877F2"
+      socialIcon.backgroundColor || defaultBgColor
     )
 
     const modal = this.showModal(
@@ -585,12 +584,12 @@ export default class SocialIcons {
     document.body.removeChild(modal)
   }
 
-  addSocialIcon(name, icon, link, backgroundColor = "#1877F2", iconColor = "#FFFFFF") {
+  addSocialIcon(name, icon, link, backgroundColor = defaultBgColor, iconColor = "#FFFFFF") {
     const socialIcon = {
       name,
       icon,
       link,
-      backgroundColor: backgroundColor || "#1877F2",
+      backgroundColor: backgroundColor || defaultBgColor,
       iconColor: iconColor || "#FFFFFF"
     }
     this.data.social_icons.push(socialIcon)
@@ -604,7 +603,7 @@ export default class SocialIcons {
       name,
       icon,
       link,
-      backgroundColor: backgroundColor !== null ? backgroundColor : (existingIcon.backgroundColor || "#1877F2"),
+      backgroundColor: backgroundColor !== null ? backgroundColor : (existingIcon.backgroundColor || defaultBgColor),
       iconColor: iconColor !== null ? iconColor : (existingIcon.iconColor || "#FFFFFF")
     }
     this.drawView()
@@ -698,7 +697,7 @@ export default class SocialIcons {
       tags: ["A"],
       patterns: {
         social:
-          /https?:\/\/(www\.)?(facebook|instagram|twitter|linkedin|github|youtube|tiktok|discord|mastodon|bluesky)\.[\w\/\.\-_]+/
+          /https?:\/\/(www\.)?(facebook|instagram|twitter|x\.com|linkedin|github|youtube|tiktok|discord|mastodon|bluesky|reddit|signal|slack|snapchat|soundcloud|threads|twitch|whatsapp|xing)\.[\w\/\.\-_]+/
       }
     }
   }

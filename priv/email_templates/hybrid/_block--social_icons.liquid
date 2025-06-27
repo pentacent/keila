@@ -2,8 +2,6 @@
     {% assign iconSize =  block.data.size | default: 24 %}
     {% assign align = block.data.alignment | default: "center" %}
 
-    HELLO! {{ assets_url }}??
-
     <td align="{{ align }}" style="font-size:0px;padding:10px 25px;padding-bottom:20px;word-break:break-word;">
         <!--[if mso | IE]><table border="0" cellpadding="0" cellspacing="0" role="presentation" align="{{ align }}"><tr><![endif]-->
         {% for icon in block.data.social_icons %}
