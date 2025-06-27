@@ -8,7 +8,7 @@
             {%- if icon.icon contains "https://" or icon.icon contains "http://" %}
                 {% assign src = icon.icon %}
             {% else %}
-                {% assign src = assets_url | append:'/images/social-icons/' | append: icon.icon | append: '-' | append: icon.iconColor | append: '.png' %}
+                {% assign src = assets_url | append:'social-icons/' | append: icon.icon | append: '-' | append: icon.iconColor | append: '.png' %}
             {% endif %}
 
             <!--[if mso | IE]><td><![endif]-->
