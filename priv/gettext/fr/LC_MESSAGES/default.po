@@ -3289,11 +3289,6 @@ msgstr ""
 msgid "JavaScript is required to unsubscribe. Please enable JavaScript and try again."
 msgstr ""
 
-#: lib/keila_web/views/public_form_view.ex:358
-#, elixir-autogen, elixir-format, fuzzy
-msgid "Unsubscribed"
-msgstr "Se désabonner"
-
 #: lib/keila_web/views/public_form_view.ex:417
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Unsubscribing..."
