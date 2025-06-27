@@ -211,3 +211,128 @@ msgstr "Votre lien de connexion"
 #, elixir-autogen, elixir-format
 msgid "Log in with your new password"
 msgstr "Connectez-vous avec votre nouveau mot de passe"
+
+# Two-Factor Authentication translations
+#, elixir-autogen, elixir-format
+msgid "Two-Factor Authentication"
+msgstr "Authentification à deux facteurs"
+
+#, elixir-autogen, elixir-format
+msgid "Your Two-Factor Authentication Code"
+msgstr "Votre code d'authentification à deux facteurs"
+
+#, elixir-autogen, elixir-format
+msgid "Your two-factor authentication code is:\n\n%{code}\n\nThis code will expire in 10 minutes. If you didn't request this code, please ignore this message.\n"
+msgstr "Votre code d'authentification à deux facteurs est :\n\n%{code}\n\nCe code expirera dans 10 minutes. Si vous n'avez pas demandé ce code, veuillez ignorer ce message.\n"
+
+#, elixir-autogen, elixir-format
+msgid "Two-factor authentication has been enabled."
+msgstr "L'authentification à deux facteurs a été activée."
+
+#, elixir-autogen, elixir-format
+msgid "Two-factor authentication has been disabled."
+msgstr "L'authentification à deux facteurs a été désactivée."
+
+#, elixir-autogen, elixir-format
+msgid "Failed to enable two-factor authentication."
+msgstr "Échec de l'activation de l'authentification à deux facteurs."
+
+#, elixir-autogen, elixir-format
+msgid "Failed to disable two-factor authentication."
+msgstr "Échec de la désactivation de l'authentification à deux facteurs."
+
+#, elixir-autogen, elixir-format
+msgid "A verification code has been sent to your email."
+msgstr "Un code de vérification a été envoyé à votre e-mail."
+
+#, elixir-autogen, elixir-format
+msgid "A new verification code has been sent to your email."
+msgstr "Un nouveau code de vérification a été envoyé à votre e-mail."
+
+#, elixir-autogen, elixir-format
+msgid "Failed to send verification code."
+msgstr "Échec de l'envoi du code de vérification."
+
+#, elixir-autogen, elixir-format
+msgid "Invalid verification code"
+msgstr "Code de vérification invalide"
+
+#, elixir-autogen, elixir-format
+msgid "Enter the verification code sent to your email address."
+msgstr "Entrez le code de vérification envoyé à votre adresse e-mail."
+
+#, elixir-autogen, elixir-format
+msgid "Verification Code"
+msgstr "Code de vérification"
+
+#, elixir-autogen, elixir-format
+msgid "000000"
+msgstr "000000"
+
+#, elixir-autogen, elixir-format
+msgid "Resend code"
+msgstr "Renvoyer le code"
+
+#, elixir-autogen, elixir-format
+msgid "Verify"
+msgstr "Vérifier"
+
+#, elixir-autogen, elixir-format
+msgid "You can also use one of your backup codes instead."
+msgstr "Vous pouvez également utiliser l'un de vos codes de sauvegarde à la place."
+
+#, elixir-autogen, elixir-format
+msgid "Two-factor authentication is currently enabled for your account."
+msgstr "L'authentification à deux facteurs est actuellement activée pour votre compte."
+
+#, elixir-autogen, elixir-format
+msgid "Add an extra layer of security to your account by enabling two-factor authentication."
+msgstr "Ajoutez une couche de sécurité supplémentaire à votre compte en activant l'authentification à deux facteurs."
+
+#, elixir-autogen, elixir-format
+msgid "When enabled, you'll receive a verification code via email each time you sign in."
+msgstr "Lorsqu'elle est activée, vous recevrez un code de vérification par e-mail à chaque connexion."
+
+#, elixir-autogen, elixir-format
+msgid "Enable Two-Factor Authentication"
+msgstr "Activer l'authentification à deux facteurs"
+
+#, elixir-autogen, elixir-format
+msgid "Disable Two-Factor Authentication"
+msgstr "Désactiver l'authentification à deux facteurs"
+
+#, elixir-autogen, elixir-format
+msgid "Backup Codes"
+msgstr "Codes de sauvegarde"
+
+#, elixir-autogen, elixir-format
+msgid "Save these backup codes somewhere safe. You can use each code once to sign in if you can't access your email."
+msgstr "Enregistrez ces codes de sauvegarde dans un endroit sûr. Vous pouvez utiliser chaque code une fois pour vous connecter si vous ne pouvez pas accéder à votre e-mail."
+
+#, elixir-autogen, elixir-format
+msgid "Important:"
+msgstr "Important :"
+
+#, elixir-autogen, elixir-format
+msgid "These codes will only be shown once. Make sure to save them in a secure location before continuing."
+msgstr "Ces codes ne seront affichés qu'une seule fois. Assurez-vous de les enregistrer dans un endroit sûr avant de continuer."
+
+#, elixir-autogen, elixir-format
+msgid "Continue"
+msgstr "Continuer"
+
+#, elixir-autogen, elixir-format
+msgid "Add an extra layer of security to your account."
+msgstr "Ajoutez une couche de sécurité supplémentaire à votre compte."
+
+#, elixir-autogen, elixir-format
+msgid "Two-factor authentication is enabled"
+msgstr "L'authentification à deux facteurs est activée"
+
+#, elixir-autogen, elixir-format
+msgid "Two-factor authentication is disabled"
+msgstr "L'authentification à deux facteurs est désactivée"
+
+#, elixir-autogen, elixir-format
+msgid "Manage Two-Factor Authentication"
+msgstr "Gérer l'authentification à deux facteurs"

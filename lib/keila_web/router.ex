@@ -42,6 +42,15 @@ defmodule KeilaWeb.Router do
     post "/auth/reset", AuthController, :post_reset
     get "/auth/reset/:token", AuthController, :reset_change_password
     post "/auth/reset/:token", AuthController, :post_reset_change_password
+    
+    # Two-factor authentication challenge for unauthenticated users
+    get "/auth/2fa/challenge", TwoFactorController, :challenge
+    post "/auth/2fa/verify", TwoFactorController, :verify
+    post "/auth/2fa/resend", TwoFactorController, :resend_code
+    
+    # WebAuthn authentication for unauthenticated users
+    post "/auth/webauthn/authenticate/begin", WebauthnController, :authenticate_begin
+    post "/auth/webauthn/authenticate/complete", WebauthnController, :authenticate_complete
   end
 
   # Authenticated Routes without activation requirement
@@ -66,6 +75,16 @@ defmodule KeilaWeb.Router do
     put "/account", AccountController, :post_edit
     get "/account/await-subscription", AccountController, :await_subscription
 
+    # Two-factor authentication management
+    get "/auth/2fa/setup", TwoFactorController, :setup
+    post "/auth/2fa/enable", TwoFactorController, :enable
+    post "/auth/2fa/disable", TwoFactorController, :disable
+
+    # WebAuthn management (authenticated users)
+    post "/auth/webauthn/register/begin", WebauthnController, :register_begin
+    post "/auth/webauthn/register/complete", WebauthnController, :register_complete
+    delete "/auth/webauthn/credential/:credential_id", WebauthnController, :remove_credential
+
     Keila.if_cloud do
       get "/account/onboarding", CloudAccountController, :onboarding
     end
@@ -78,6 +97,16 @@ defmodule KeilaWeb.Router do
     get "/admin/users/new", UserAdminController, :new
     post "/admin/users", UserAdminController, :create
     delete "/admin/users", UserAdminController, :delete
+    get "/admin/users/:id/edit", UserAdminController, :edit
+    put "/admin/users/:id", UserAdminController, :update
+    post "/admin/users/:id/activate", UserAdminController, :activate
+    post "/admin/users/:id/deactivate", UserAdminController, :deactivate
+    post "/admin/users/:id/enable_2fa", UserAdminController, :enable_2fa
+    post "/admin/users/:id/disable_2fa", UserAdminController, :disable_2fa
+    delete "/admin/users/:id/webauthn", UserAdminController, :remove_webauthn_key
+    post "/admin/users/:id/disable_all_webauthn", UserAdminController, :disable_all_webauthn
+    post "/admin/users/:id/update_password", UserAdminController, :update_password
+    post "/admin/users/:id/send_password_reset", UserAdminController, :send_password_reset
     get "/admin/users/:id/impersonate", UserAdminController, :impersonate
     get "/admin/users/:id/credits", UserAdminController, :show_credits
     post "/admin/users/:id/credits", UserAdminController, :create_credits
