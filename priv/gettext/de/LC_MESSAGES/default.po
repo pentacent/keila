@@ -1257,7 +1257,7 @@ msgstr "Danke für das Bestätigen deines Senders. Du kannst nun E-Mails mit Kei
 #: lib/keila_web/templates/form/edit_live.html.heex:117
 #, elixir-autogen, elixir-format
 msgid "Thank you message"
-msgstr "Danke für deine Nachricht"
+msgstr "Danke-Nachricht"
 
 #: lib/keila_web/views/public_form_view.ex:324
 #, elixir-autogen, elixir-format
