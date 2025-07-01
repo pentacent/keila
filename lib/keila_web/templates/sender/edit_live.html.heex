@@ -56,6 +56,11 @@
           class: "text-black",
           autofocus: true
         ) %>
+        <p class="text-xs text-gray-300">
+          <%= gettext(
+            "This is the internal name of your sender. It is not shown to your recipients."
+          ) %>
+        </p>
       <% end %>
     </div>
     <div class="form-row">
@@ -65,29 +70,51 @@
           placeholder: gettext("newsletter@example.org"),
           class: "text-black"
         ) %>
+
+        <p class="text-xs text-gray-300">
+          <%= gettext("This is the email address from which your emails will be sent.") %>
+        </p>
       <% end %>
     </div>
     <div class="form-row">
       <%= label(f, :from_name, gettext("From name")) %>
       <%= with_validation(f, :from_name) do %>
         <%= text_input(f, :from_name, placeholder: gettext("You, Inc"), class: "text-black") %>
+
+        <p class="text-xs text-gray-300">
+          <%= gettext("This is the name that will show up in the inbox of your recipients.") %>
+        </p>
       <% end %>
     </div>
-    <div class="form-row">
-      <%= label(f, :reply_to_email, gettext("Reply-to address")) %>
-      <%= with_validation(f, :reply_to_email) do %>
-        <%= text_input(f, :reply_to_email,
-          placeholder: gettext("hello@example.org"),
-          class: "text-black"
-        ) %>
-      <% end %>
-    </div>
-    <div class="form-row">
-      <%= label(f, :reply_to_name, gettext("Reply-to name")) %>
-      <%= with_validation(f, :reply_to_name) do %>
-        <%= text_input(f, :reply_to_name, placeholder: gettext("You, Inc"), class: "text-black") %>
-      <% end %>
-    </div>
+
+    <details>
+      <summary><%= gettext("Reply-to settings") %></summary>
+      <div class="p-4">
+        <div class="text-xs text-gray-300 mb-4">
+          <%= gettext(
+            "If you want replies to your newsletters to go to a different address than the one specified above, you can configure an alternative email address and name here."
+          ) %>
+        </div>
+        <div class="form-row">
+          <%= label(f, :reply_to_email, gettext("Reply-to address")) %>
+          <%= with_validation(f, :reply_to_email) do %>
+            <%= text_input(f, :reply_to_email,
+              placeholder: gettext("hello@example.org"),
+              class: "text-black"
+            ) %>
+          <% end %>
+        </div>
+        <div class="form-row">
+          <%= label(f, :reply_to_name, gettext("Reply-to name")) %>
+          <%= with_validation(f, :reply_to_name) do %>
+            <%= text_input(f, :reply_to_name,
+              placeholder: gettext("You, Inc"),
+              class: "text-black"
+            ) %>
+          <% end %>
+        </div>
+      </div>
+    </details>
     <div class="form-row">
       <%= render("_config.html",
         form: f,
