@@ -1,8 +1,9 @@
 defmodule KeilaWeb.SenderController do
   use KeilaWeb, :controller
 
-  alias Keila.{Mailings, Mailings.Sender, Mailings.Sender.Config}
+  alias Keila.Mailings
   import Ecto.Changeset
+  import Phoenix.LiveView.Controller
 
   plug :put_resource
        when action not in [
@@ -45,18 +46,14 @@ defmodule KeilaWeb.SenderController do
 
   @spec edit(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def edit(conn, _params) do
-    conn
-    |> render_edit(Ecto.Changeset.change(conn.assigns.sender))
-  end
-
-  @spec update(Plug.Conn.t(), map()) :: Plug.Conn.t()
-  def update(conn, params = %{"id" => id}) do
-    project = current_project(conn)
-
-    case Mailings.update_sender(id, params["sender"] || %{}) do
-      {:ok, _sender} -> redirect(conn, to: Routes.sender_path(conn, :index, project.id))
-      {:error, changeset} -> conn |> put_status(400) |> render_edit(changeset)
-    end
+    live_render(conn, KeilaWeb.SenderEditLive,
+      session: %{
+        "current_project" => conn.assigns.current_project,
+        "current_user" => conn.assigns.current_user,
+        "sender" => conn.assigns.sender,
+        "locale" => Gettext.get_locale()
+      }
+    )
   end
 
   @spec delete_confirmation(Plug.Conn.t(), any) :: Plug.Conn.t()
