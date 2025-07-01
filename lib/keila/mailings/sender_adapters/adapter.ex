@@ -72,6 +72,9 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
 
       def cancel_verification_from_token(_, _), do: raise("Not implemented")
       defoverridable cancel_verification_from_token: 2
+
+      def only_shared?, do: false
+      defoverridable only_shared?: 0
     end
   end
 
@@ -138,4 +141,9 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
   Callback for canceling the verification of a `"mailings.verify_sender"` token.
   """
   @callback cancel_verification_from_token(Sender.t(), Token.t()) :: :ok
+
+  @doc """
+  Returns true if this Sender adapter is only available as a shared sender.
+  """
+  @callback only_shared?() :: boolean()
 end
