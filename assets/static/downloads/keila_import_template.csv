@@ -1,3 +1,4 @@
-Email,First name,Last name,Data,External ID
-jane@example.com,Jane,Doe,"{""marketing_consent"": true, ""age"": 34, ""birthplace"": ""Paris"", ""tags"":[""rocket-scientist""]}",
-john@example.com,John,Smith,"{""birthplace"": ""Berlin"", ""tags"":[""book-enthusiast""]}",
+Email,First name,Last name,Data,Status,External ID
+jane@example.com,Jane,Doe,"{""marketing_consent"": true, ""age"": 34, ""birthplace"": ""Paris"", ""tags"":[""rocket-scientist""]}",active,
+john@example.com,John,Smith,"{""birthplace"": ""Berlin"", ""tags"":[""book-enthusiast""]}",unsubscribed,
+test@example.com,Test,User,"{}",unreachable,12345
