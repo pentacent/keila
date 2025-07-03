@@ -17,7 +17,7 @@ on:
         description: "Elixir version"
         required: false
         type: string
-        default: "1.18"
+        default: "1.18-otp-27"
 
 jobs:
   test:
