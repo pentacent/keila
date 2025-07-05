@@ -28,7 +28,7 @@ html {
 }
 
 .button {
-    @apply rounded inline-flex flex-nowrap whitespace-nowrap px-2 py-1 gap-2 outline-none items-center focus:outline-none cursor-pointer;
+    @apply rounded inline-flex flex-nowrap whitespace-nowrap px-2 py-1 gap-2 outline-none items-center focus:outline-none cursor-pointer disabled:cursor-default;
 
     svg {
         @apply w-6;
@@ -47,7 +47,9 @@ html {
         @apply bg-emerald-700 text-white outline-none
             hover:ring-2 hover:ring-emerald-400
             focus:ring-2 hover:ring-emerald-400
-            active:bg-emerald-800;
+            active:bg-emerald-800
+            disabled:bg-gray-700 disabled:text-gray-500
+            disabled:ring-gray-600 disabled:hover:ring-gray-600;
     }
 
     &.button--muted {
