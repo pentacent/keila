@@ -65,6 +65,20 @@ defmodule KeilaWeb.ContactControllerTest do
   end
 
   @tag :contact_controller
+  test "POST /projects/:p_id/contacts/new with status", %{conn: conn} do
+    {conn, project} = with_login_and_project(conn)
+
+    params = params(:contact) |> Map.put("status", "unsubscribed")
+    conn = post(conn, Routes.contact_path(conn, :new, project.id, contact: params))
+    assert redirected_to(conn, 302) == Routes.contact_path(conn, :index, project.id)
+    
+    # Verify the contact was created with the specified status
+    contacts = Keila.Contacts.get_project_contacts(project.id)
+    created_contact = Enum.find(contacts, &(&1.email == params["email"]))
+    assert created_contact.status == :unsubscribed
+  end
+
+  @tag :contact_controller
   test "GET /projects/:p_id/contacts/:id", %{conn: conn} do
     {conn, project} = with_login_and_project(conn)
     contact = insert!(:contact, project_id: project.id)
@@ -94,6 +108,60 @@ defmodule KeilaWeb.ContactControllerTest do
 
     assert redirected_to(conn, 302) == Routes.contact_path(conn, :index, project.id)
     assert %{email: "updated@example.com"} = Keila.Contacts.get_contact(contact.id)
+  end
+
+  @tag :contact_controller
+  test "PUT /projects/:p_id/contacts/:id updates contact status", %{conn: conn} do
+    {conn, project} = with_login_and_project(conn)
+    contact = insert!(:contact, project_id: project.id, status: :active)
+
+    conn =
+      put(
+        conn,
+        Routes.contact_path(conn, :post_edit, project.id, contact.id,
+          contact: %{"status" => "unsubscribed"}
+        )
+      )
+
+    assert redirected_to(conn, 302) == Routes.contact_path(conn, :index, project.id)
+    updated_contact = Keila.Contacts.get_contact(contact.id)
+    assert updated_contact.status == :unsubscribed
+  end
+
+  @tag :contact_controller
+  test "PUT /projects/:p_id/contacts/:id can change status from unsubscribed to active", %{conn: conn} do
+    {conn, project} = with_login_and_project(conn)
+    contact = insert!(:contact, project_id: project.id, status: :unsubscribed)
+
+    conn =
+      put(
+        conn,
+        Routes.contact_path(conn, :post_edit, project.id, contact.id,
+          contact: %{"status" => "active"}
+        )
+      )
+
+    assert redirected_to(conn, 302) == Routes.contact_path(conn, :index, project.id)
+    updated_contact = Keila.Contacts.get_contact(contact.id)
+    assert updated_contact.status == :active
+  end
+
+  @tag :contact_controller
+  test "PUT /projects/:p_id/contacts/:id can set status to unreachable", %{conn: conn} do
+    {conn, project} = with_login_and_project(conn)
+    contact = insert!(:contact, project_id: project.id, status: :active)
+
+    conn =
+      put(
+        conn,
+        Routes.contact_path(conn, :post_edit, project.id, contact.id,
+          contact: %{"status" => "unreachable"}
+        )
+      )
+
+    assert redirected_to(conn, 302) == Routes.contact_path(conn, :index, project.id)
+    updated_contact = Keila.Contacts.get_contact(contact.id)
+    assert updated_contact.status == :unreachable
   end
 
   @tag :contact_controller
