@@ -55,7 +55,8 @@ defmodule Keila.Contacts.FormActionHandler do
       %{changeset | valid?: true, errors: []}
       |> EctoStringMap.finalize_string_map(:data)
 
-    {:ok, form_params} = Contacts.create_form_params(form.id, changeset.changes)
+    attrs = changeset.changes |> Map.put(:email, get_field(changeset, :email))
+    {:ok, form_params} = Contacts.create_form_params(form.id, attrs)
 
     SendDoubleOptInMailWorker.new(%{"form_params_id" => form_params.id})
     |> Oban.insert()

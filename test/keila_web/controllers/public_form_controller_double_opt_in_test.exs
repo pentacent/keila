@@ -6,8 +6,8 @@ defmodule KeilaWeb.PublicFormControllerDoubleOptInTest do
   alias Keila.Repo
   @endpoint KeilaWeb.Endpoint
 
-  @tag :double_opt_in
   describe "POST /forms/:id" do
+    @describetag :double_opt_in
     test "submits form with double opt-in and sends opt-in email", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
 
@@ -23,6 +23,31 @@ defmodule KeilaWeb.PublicFormControllerDoubleOptInTest do
       assert [] = Contacts.get_project_contacts(project.id)
       assert form_params = Repo.one(Contacts.FormParams)
       assert form_params.params["email"] == params["email"]
+
+      assert_enqueued(
+        worker: Keila.Mailings.SendDoubleOptInMailWorker,
+        args: %{"form_params_id" => form_params.id}
+      )
+    end
+
+    test "DOI is also required for existing contacts", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+
+      contact = insert!(:contact, project_id: project.id, email: "existing@example.com")
+
+      form =
+        insert!(:contacts_form,
+          project_id: project.id,
+          settings: %{captcha_required: false, double_opt_in_required: true}
+        )
+
+      params = params(:contact, email: contact.email)
+      conn = post(conn, Routes.public_form_path(conn, :show, form.id), contact: params)
+
+      assert html_response(conn, 200) =~ ~r{Please confirm your email}
+      assert contact == Contacts.get_contact(contact.id)
+      assert form_params = Repo.one(Contacts.FormParams)
+      assert form_params.params["email"] == contact.email
 
       assert_enqueued(
         worker: Keila.Mailings.SendDoubleOptInMailWorker,
@@ -49,8 +74,8 @@ defmodule KeilaWeb.PublicFormControllerDoubleOptInTest do
     end
   end
 
-  @tag :double_opt_in
   describe "GET /double-opt-in" do
+    @describetag :double_opt_in
     test "creates Contact from FormParams", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
 
@@ -113,8 +138,8 @@ defmodule KeilaWeb.PublicFormControllerDoubleOptInTest do
     end
   end
 
-  @tag :double_opt_in
   describe "GET /double-opt-in/cancel" do
+    @describetag :double_opt_in
     test "deletes FormParams", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
 
