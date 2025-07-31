@@ -22,15 +22,29 @@ defmodule KeilaWeb.CampaignController do
 
   @spec new(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def new(conn, _params) do
+    current_project = current_project(conn)
+
     conn
-    |> render_new(new_campaign_changeset())
+    |> render_new(new_campaign_changeset(current_project))
   end
 
-  defp new_campaign_changeset() do
-    settings_changeset = %Mailings.Campaign.Settings{type: :block} |> change()
+  @default_settings %Mailings.Campaign.Settings{type: :block}
+  @inherited_settings_fields [:type, :enable_wysiwyg, :do_not_track]
+  @inherited_campaign_fields [:template_id, :segment_id, :sender_id, :public_link_enabled]
+  defp new_campaign_changeset(project) do
+    previous_campaign = Mailings.get_latest_project_campaign(project.id)
+    previous_settings = get_in(previous_campaign, [Access.key(:settings)])
 
-    %Mailings.Campaign{settings: settings_changeset}
-    |> change()
+    settings_changeset =
+      %Mailings.Campaign.Settings{}
+      |> change((previous_settings || @default_settings) |> Map.take(@inherited_settings_fields))
+
+    inherited_attrs =
+      Map.take(previous_campaign || %{}, @inherited_campaign_fields)
+
+    %Mailings.Campaign{}
+    |> change(inherited_attrs)
+    |> change(%{settings: settings_changeset})
   end
 
   @spec post_new(Plug.Conn.t(), map()) :: Plug.Conn.t()
