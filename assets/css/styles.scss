@@ -354,3 +354,8 @@ Hover helper to bridge the gap between the Plus button and the toolbox
 .codex-editor .codex-editor--toolbox-opened .ce-toolbox:active:after {
     pointer-events: none;
 }
+
+/* Fix for Safari SVG display issues */
+svg {
+    width: 100%;
+}
