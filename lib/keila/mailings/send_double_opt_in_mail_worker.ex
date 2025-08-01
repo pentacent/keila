@@ -72,7 +72,7 @@ defmodule Keila.Mailings.SendDoubleOptInMailWorker do
       "double_opt_in_link" => double_opt_in_link,
       "unsubscribe_link" => unsubscribe_link,
       "contact" => form_params.params,
-      "signature" => if(template, do: template["signature"])
+      "signature" => if(template, do: template.assigns["signature"])
     }
 
     Email.new()
