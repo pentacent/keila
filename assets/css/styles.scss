@@ -357,5 +357,5 @@ Hover helper to bridge the gap between the Plus button and the toolbox
 
 /* Fix for Safari SVG display issues */
 svg {
-    width: 100%;
+    flex: auto;
 }
