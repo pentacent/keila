@@ -2,6 +2,7 @@ defmodule Keila.Mailings.SendDoubleOptInMailWorker do
   alias Keila.Mailings.RateLimiter
   use Oban.Worker, queue: :mailer
   use Keila.Repo
+  require Keila
 
   import KeilaWeb.Gettext
 
@@ -16,16 +17,39 @@ defmodule Keila.Mailings.SendDoubleOptInMailWorker do
     sender = Keila.Mailings.get_sender(form.sender_id)
     project_id = form.project_id
 
-    if Keila.Billing.feature_available?(project_id, :double_opt_in) do
-      case RateLimiter.check_sender_rate_limit(sender) do
-        :ok ->
-          send_double_opt_in_email(form_params, form, sender)
+    with :ok <- ensure_feature_available(project_id),
+         :ok <- ensure_account_active(project_id),
+         :ok <- ensure_rate_limit(sender) do
+      send_double_opt_in_email(form_params, form, sender)
+    end
+  end
 
-        {:error, {schedule_at, scheduling_requested_at}} ->
-          {:snooze, DateTime.diff(schedule_at, scheduling_requested_at)}
+  defp ensure_feature_available(project_id) do
+    if Keila.Billing.feature_available?(project_id, :double_opt_in) do
+      :ok
+    else
+      {:cancel, "Double opt-in not enabled for account of project #{project_id}"}
+    end
+  end
+
+  defp ensure_account_active(project_id) do
+    Keila.if_cloud do
+      case Keila.Accounts.get_project_account(project_id) do
+        %{status: :active} -> :ok
+        _other -> {:cancel, "Account of project #{project_id} is not active"}
       end
     else
-      {:cancel, "Double opt-in not enabled for account of project #{form.project_id}"}
+      :ok
+    end
+  end
+
+  defp ensure_rate_limit(sender) do
+    case RateLimiter.check_sender_rate_limit(sender) do
+      :ok ->
+        :ok
+
+      {:error, {schedule_at, scheduling_requested_at}} ->
+        {:snooze, DateTime.diff(schedule_at, scheduling_requested_at)}
     end
   end
 
