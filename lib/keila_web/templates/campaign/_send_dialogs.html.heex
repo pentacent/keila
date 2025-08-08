@@ -218,6 +218,34 @@
       <h2 class="text-3xl"><%= raw(gettext("Campaign Preview")) %></h2>
       <br />
       <%= cond do %>
+        <% @onboarding_required -> %>
+          <p>
+            <%= gettext(
+              "To prevent abuse by spammers, sending emails is only possible once your onboarding has been completed."
+            ) %>
+          </p>
+          <p class="mt-4"></p>
+          <br />
+          <div class="flex justify-end gap-4">
+            <button
+              class="button button--text button--large"
+              phx-click="dismiss-preview-error"
+              @click.prevent="$dispatch('x-cancel')"
+            >
+              <%= gettext("Cancel") %>
+            </button>
+            <%= Keila.if_cloud do %>
+              <a
+                href={Routes.cloud_account_path(@conn, :onboarding)}
+                class="button button--large button--cta"
+                phx-click="dismiss-preview-error"
+                @click="$dispatch('x-cancel')"
+                target="_blank"
+              >
+                <%= gettext("Review account information") %>
+              </a>
+            <% end %>
+          </div>
         <% @subscription_required -> %>
           <p>
             <%= gettext(
