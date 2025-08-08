@@ -236,7 +236,7 @@
             </button>
             <%= Keila.if_cloud do %>
               <a
-                href={Routes.cloud_account_path(@conn, :onboarding)}
+                href={Routes.cloud_account_path(@socket, :onboarding)}
                 class="button button--large button--cta"
                 phx-click="dismiss-preview-error"
                 @click="$dispatch('x-cancel')"
