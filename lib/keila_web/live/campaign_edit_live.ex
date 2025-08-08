@@ -3,7 +3,6 @@ defmodule KeilaWeb.CampaignEditLive do
   require Keila
 
   alias Keila.Accounts
-  alias Keila.Billing
   alias Keila.Mailings
 
   @impl true
@@ -235,7 +234,7 @@ defmodule KeilaWeb.CampaignEditLive do
           :ok
 
         _other ->
-          if is_nil(Billing.get_account_subscription(account.id)) do
+          if is_nil(Keila.Billing.get_account_subscription(account.id)) do
             {:error, :subscription_required}
           else
             {:error, gettext("Insufficient credits.")}
