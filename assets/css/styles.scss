@@ -31,7 +31,7 @@ html {
     @apply rounded inline-flex flex-nowrap whitespace-nowrap px-2 py-1 gap-2 outline-none items-center focus:outline-none cursor-pointer;
 
     svg {
-        @apply w-6;
+        @apply w-6 flex-grow-0;
     }
 
     &:not(.button--cta):not(.button--warn):not(.button--text):not(
