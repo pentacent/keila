@@ -94,41 +94,6 @@ defmodule Keila.Mailings.Builder do
 
   defp put_template_assigns(assigns, _), do: assigns
 
-  defp process_assigns(value)
-       when is_number(value) or is_binary(value) or
-              is_boolean(value) or is_nil(value) do
-    value
-  end
-
-  defp process_assigns(value) when is_atom(value) do
-    Atom.to_string(value)
-  end
-
-  defp process_assigns(value) when is_tuple(value) do
-    Tuple.to_list(value)
-  end
-
-  defp process_assigns(value) when is_struct(value) do
-    process_assigns(Map.from_struct(value))
-  end
-
-  defp process_assigns(value) when is_map(value) do
-    Enum.map(value, fn {key, value} ->
-      key = to_string(key)
-      value = process_assigns(value)
-      {key, value}
-    end)
-    |> Enum.filter(fn
-      {"__" <> _, _} -> false
-      _ -> true
-    end)
-    |> Enum.into(%{})
-  end
-
-  defp process_assigns(value) when is_list(value) do
-    Enum.map(value, &process_assigns/1)
-  end
-
   defp put_subject(email, subject, assigns) do
     case render_liquid(subject || "", assigns) do
       {:ok, subject} ->
