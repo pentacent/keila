@@ -136,6 +136,51 @@ defmodule KeilaWeb.PublicFormControllerDoubleOptInTest do
 
       assert contact.double_opt_in_at
     end
+
+    test "success_url supports Liquid", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+
+      form =
+        insert!(:contacts_form,
+          project_id: project.id,
+          settings: %{
+            captcha_required: false,
+            double_opt_in_required: true,
+            success_url: "https://example.com/{{ contact.id }}"
+          }
+        )
+
+      {:ok, form_params} = Contacts.create_form_params(form.id, %{email: "test@example.com"})
+      hmac = Contacts.double_opt_in_hmac(form.id, form_params.id)
+
+      conn =
+        get(conn, Routes.public_form_path(conn, :double_opt_in, form.id, form_params.id, hmac))
+
+      contact = Repo.one(Contact)
+      assert redirected_to(conn, 302) == "https://example.com/#{contact.id}"
+    end
+
+    test "redirects to verbatim success_url if Liquid is invalid", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+
+      form =
+        insert!(:contacts_form,
+          project_id: project.id,
+          settings: %{
+            captcha_required: false,
+            double_opt_in_required: true,
+            success_url: "https://example.com/{{{ invalid_liquid }}"
+          }
+        )
+
+      {:ok, form_params} = Contacts.create_form_params(form.id, %{email: "test@example.com"})
+      hmac = Contacts.double_opt_in_hmac(form.id, form_params.id)
+
+      conn =
+        get(conn, Routes.public_form_path(conn, :double_opt_in, form.id, form_params.id, hmac))
+
+      assert redirected_to(conn, 302) == form.settings.success_url
+    end
   end
 
   describe "GET /double-opt-in/cancel" do

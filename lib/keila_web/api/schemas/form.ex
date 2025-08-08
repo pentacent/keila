@@ -27,7 +27,10 @@ defmodule KeilaWeb.Api.Schemas.Form do
         double_opt_in_subject: %{type: :string},
         double_opt_in_markdown_body: %{type: :string},
         double_opt_in_message: %{type: :string},
-        double_opt_in_url: %{type: :string},
+        double_opt_in_url: %{
+          type: :string,
+          description: "URL to redirect after a form was submitted and double opt-in is required."
+        },
         csrf_disabled: %{type: :boolean},
         intro_text: %{type: :string},
         fine_print: %{type: :string},
@@ -40,8 +43,12 @@ defmodule KeilaWeb.Api.Schemas.Form do
         input_bg_color: %{type: :string},
         input_border_color: %{type: :string},
         input_text_color: %{type: :string},
-        success_text: %{type: :string},
-        success_url: %{type: :string}
+        success_url: %{
+          type: :string,
+          description:
+            "URL to redirect after contact was successfully created - either after double opt-in or after form submission without double opt-in. Supports Liquid with the `contact` assign present.",
+          example: "https://example.com/thank-you/{{ contact.id }}"
+        }
       }
     },
     fields: %{
