@@ -32,15 +32,15 @@ defmodule Keila.Mailings.SendDoubleOptInMailWorker do
     end
   end
 
-  defp ensure_account_active(project_id) do
-    Keila.if_cloud do
+  Keila.if_cloud do
+    defp ensure_account_active(project_id) do
       case Keila.Accounts.get_project_account(project_id) do
         %{status: :active} -> :ok
         _other -> {:cancel, "Account of project #{project_id} is not active"}
       end
-    else
-      :ok
     end
+  else
+    defp ensure_account_active(_project_id), do: :ok
   end
 
   defp ensure_rate_limit(sender) do
