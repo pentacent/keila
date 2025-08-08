@@ -120,8 +120,13 @@
           <% end %>
         </div>
         <div class="flex flex-col">
-          <%= label(fs, :success_text, gettext("Thank you redirect URL")) %>
+          <%= label(fs, :success_text, gettext("Success redirect URL")) %>
           <%= with_validation(fs, :success_url) do %>
+            <div class="text-xs">
+              <%= gettext_md("""
+                Custom URL to which users are redirected when the new contact was created - either after double opt-in was successful or a form without double opt-in was submitted. Supports Liquid with the `contact` assign.
+              """) %>
+            </div>
             <%= url_input(fs, :success_url, class: "text-black") %>
           <% end %>
         </div>
