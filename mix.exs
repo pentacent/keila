@@ -94,7 +94,8 @@ defmodule Keila.MixProject do
       {:tls_certificate_check, "~> 1.20"},
       {:mjml, "~> 4.0"},
       {:ex_cldr, "~> 2.42"},
-      {:ex_cldr_territories, "~> 2.9"}
+      {:ex_cldr_territories, "~> 2.9"},
+      {:wax_, "~> 0.7.0"}
     ]
   end
 

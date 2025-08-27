@@ -55,3 +55,10 @@ config :keila, Keila.Billing,
   enabled: false,
   # Disable paddle signature verification
   paddle_signature_verification_enabled: false
+
+# Configure Wax for WebAuthn in testing
+config :wax_,
+  origin: "http://localhost:4002",
+  rp_id: :auto,
+  user_verification: "preferred",
+  timeout: 20 * 60
