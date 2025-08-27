@@ -120,13 +120,8 @@
           <% end %>
         </div>
         <div class="flex flex-col">
-          <%= label(fs, :success_text, gettext("Success redirect URL")) %>
+          <%= label(fs, :success_text, gettext("Thank you redirect URL")) %>
           <%= with_validation(fs, :success_url) do %>
-            <div class="text-xs">
-              <%= gettext_md("""
-                Custom URL to which users are redirected when the new contact was created - either after double opt-in was successful or a form without double opt-in was submitted. Supports Liquid with the `contact` assign.
-              """) %>
-            </div>
             <%= url_input(fs, :success_url, class: "text-black") %>
           <% end %>
         </div>
@@ -447,6 +442,36 @@
                     """) %>
                   </div>
                   <%= url_input(fs, :double_opt_in_url, class: "text-black") %>
+                <% end %>
+              </div>
+            </template>
+
+            <template x-if="enable">
+              <div class="form-row">
+                <%= label(fs, :failure_text, gettext("Double Opt-in Failure Message")) %>
+                <%= with_validation(fs, :failure_text) do %>
+                  <div class="text-xs">
+                    <%= gettext_md("""
+                      Custom message that is shown when a double opt-in link has expired or
+                      has already been used.
+                    """) %>
+                  </div>
+                  <%= text_input(fs, :failure_text, class: "text-black") %>
+                <% end %>
+              </div>
+            </template>
+
+            <template x-if="enable">
+              <div class="form-row">
+                <%= label(fs, :failure_url, gettext("Double Opt-in Failure Redirect URL")) %>
+                <%= with_validation(fs, :failure_url) do %>
+                  <div class="text-xs">
+                    <%= gettext_md("""
+                      Custom URL to which users are redirected when a double opt-in link
+                      has expired or has already been used.
+                    """) %>
+                  </div>
+                  <%= url_input(fs, :failure_url, class: "text-black") %>
                 <% end %>
               </div>
             </template>

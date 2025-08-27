@@ -181,6 +181,100 @@ defmodule KeilaWeb.PublicFormControllerDoubleOptInTest do
 
       assert redirected_to(conn, 302) == form.settings.success_url
     end
+
+    @invalid_form_params_id Keila.Contacts.FormParams.Id.encode(0) |> elem(1)
+    test "redirects to failure_url when form_params not found", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+
+      form =
+        insert!(:contacts_form,
+          project_id: project.id,
+          settings: %{
+            captcha_required: false,
+            double_opt_in_required: true,
+            failure_url: "https://example.com/failure"
+          }
+        )
+
+      hmac = Contacts.double_opt_in_hmac(form.id, @invalid_form_params_id)
+
+      conn =
+        get(
+          conn,
+          Routes.public_form_path(
+            conn,
+            :double_opt_in,
+            form.id,
+            @invalid_form_params_id,
+            hmac
+          )
+        )
+
+      assert redirected_to(conn, 302) == form.settings.failure_url
+    end
+
+    test "shows failure_text when form_params not found and no failure_url", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+
+      form =
+        insert!(:contacts_form,
+          project_id: project.id,
+          settings: %{
+            captcha_required: false,
+            double_opt_in_required: true,
+            failure_text: "Custom failure message"
+          }
+        )
+
+      hmac = Contacts.double_opt_in_hmac(form.id, @invalid_form_params_id)
+
+      conn =
+        get(
+          conn,
+          Routes.public_form_path(
+            conn,
+            :double_opt_in,
+            form.id,
+            @invalid_form_params_id,
+            hmac
+          )
+        )
+
+      assert html_response(conn, 200) =~ "Custom failure message"
+      assert html_response(conn, 200) =~ "submit the form again"
+    end
+
+    test "shows default message when form_params not found and no custom settings", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+
+      form =
+        insert!(:contacts_form,
+          project_id: project.id,
+          settings: %{
+            captcha_required: false,
+            double_opt_in_required: true
+          }
+        )
+
+      hmac = Contacts.double_opt_in_hmac(form.id, @invalid_form_params_id)
+
+      conn =
+        get(
+          conn,
+          Routes.public_form_path(
+            conn,
+            :double_opt_in,
+            form.id,
+            @invalid_form_params_id,
+            hmac
+          )
+        )
+
+      assert html_response(conn, 200) =~
+               "This confirmation link has expired or has already been used"
+
+      assert html_response(conn, 200) =~ "submit the form again"
+    end
   end
 
   describe "GET /double-opt-in/cancel" do

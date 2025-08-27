@@ -130,6 +130,16 @@ defmodule KeilaWeb.PublicFormController do
     end
   end
 
+  defp render_failure_or_redirect(conn) do
+    case conn.assigns.form.settings.failure_url do
+      url when url not in [nil, ""] ->
+        redirect(conn, external: url)
+
+      _other ->
+        render(conn, "double_opt_in_failure.html")
+    end
+  end
+
   def cancel_double_opt_in(conn, %{"hmac" => hmac}) do
     form = conn.assigns.form
     form_params = conn.assigns.form_params
@@ -205,7 +215,7 @@ defmodule KeilaWeb.PublicFormController do
         conn |> assign(:form, form) |> assign(:form_params, form_params)
 
       form ->
-        conn |> redirect(to: Routes.public_form_path(conn, :show, form.id))
+        conn |> assign(:form, form) |> render_failure_or_redirect() |> halt()
 
       true ->
         conn |> put_status(404) |> halt()

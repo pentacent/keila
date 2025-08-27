@@ -1,0 +1,19 @@
+<div>
+  <%= render_h1(@form) %>
+  <h2 class="text-xl">
+    <%= if @form.settings.failure_text && @form.settings.failure_text != "" do %>
+      <%= @form.settings.failure_text %>
+    <% else %>
+      <%= gettext("This confirmation link has expired or has already been used.") %>
+    <% end %>
+  </h2>
+  <p>
+    <%= gettext("Please submit the form again to receive a new confirmation link.") %>
+  </p>
+  <p>
+    <a href={Routes.public_form_path(@conn, :show, @form.id)} class="button">
+      <%= gettext("Back to form") %>
+    </a>
+  </p>
+  <%= render_fine_print(@form) %>
+</div>

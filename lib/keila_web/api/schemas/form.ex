@@ -43,12 +43,15 @@ defmodule KeilaWeb.Api.Schemas.Form do
         input_bg_color: %{type: :string},
         input_border_color: %{type: :string},
         input_text_color: %{type: :string},
+        success_text: %{type: :string},
         success_url: %{
           type: :string,
           description:
             "URL to redirect after contact was successfully created - either after double opt-in or after form submission without double opt-in. Supports Liquid with the `contact` assign present.",
           example: "https://example.com/thank-you/{{ contact.id }}"
-        }
+        },
+        failure_text: %{type: :string},
+        failure_url: %{type: :string}
       }
     },
     fields: %{
