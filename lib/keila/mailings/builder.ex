@@ -260,68 +260,39 @@ defmodule Keila.Mailings.Builder do
     blocks
     |> Enum.reverse()
     |> Enum.reduce({:ok, []}, fn block, {status, blocks} ->
-      {rendered_status, rendered_block} = apply_liquid_to_block(block, assigns)
+      {rendered_status, rendered_block} = apply_liquid(block, assigns)
       updated_status = if status == :ok && rendered_status == :ok, do: :ok, else: :error
       {updated_status, [rendered_block | blocks]}
     end)
   end
 
-  # Layout blocks don’t have "blocks" not nested within "data"
-  defp apply_liquid_to_block(block = %{"blocks" => blocks}, assigns) do
-    {status, rendered_blocks} = apply_liquid_to_blocks(blocks, assigns)
-    {status, Map.put(block, "blocks", rendered_blocks)}
+  defp apply_liquid(map, assigns) when is_map(map) do
+    {rendered_map, statuses} =
+      Enum.reduce(map, {%{}, []}, fn {key, value}, {acc, statuses} ->
+        {status, rendered_value} = apply_liquid(value, assigns)
+        {Map.put(acc, key, rendered_value), [status | statuses]}
+      end)
+
+    status = if Enum.all?(statuses, &(&1 == :ok)), do: :ok, else: :error
+    {status, rendered_map}
   end
 
-  # Regular blocks have everything that needs to be rendered in "data"
-  defp apply_liquid_to_block(block, assigns) do
-    Map.get(block, "data", %{})
-    |> Enum.reduce({:ok, %{}}, fn
-      {key, value}, {status, data} when is_binary(value) ->
-        case render_liquid(value, assigns) do
-          {:ok, rendered_value} ->
-            status = if status == :ok, do: :ok, else: :error
-            {status, Map.put(data, key, rendered_value)}
+  defp apply_liquid(list, assigns) when is_list(list) do
+    {reversed_rendered_list, statuses} =
+      Enum.reduce(list, {[], []}, fn value, {acc, statuses} ->
+        {status, rendered_value} = apply_liquid(value, assigns)
+        {[rendered_value | acc], [status | statuses]}
+      end)
 
-          {:error, reason} ->
-            {:error, Map.put(data, key, reason)}
-        end
-
-      {key, value}, {status, data} when is_list(value) and key == "blocks" ->
-        {rendered_status, rendered_blocks} = apply_liquid_to_blocks(value, assigns)
-        updated_status = if status == :ok && rendered_status == :ok, do: :ok, else: :error
-        {updated_status, Map.put(data, key, rendered_blocks)}
-
-      {key, value}, {status, data} when is_map(value) ->
-        {rendered_status, rendered_value} = apply_liquid_to_map(value, assigns)
-        updated_status = if status == :ok && rendered_status == :ok, do: :ok, else: :error
-        {updated_status, Map.put(data, key, rendered_value)}
-
-      {key, value}, {status, data} ->
-        {status, Map.put(data, key, value)}
-    end)
-    |> then(fn {status, data} -> {status, Map.put(block, "data", data)} end)
+    status = if Enum.all?(statuses, &(&1 == :ok)), do: :ok, else: :error
+    {status, Enum.reverse(reversed_rendered_list)}
   end
 
-  defp apply_liquid_to_map(map, assigns) do
-    map
-    |> Enum.reduce(
-      {:ok, %{}},
-      fn
-        {key, value}, {status, map} when is_binary(value) ->
-          case render_liquid(value, assigns) do
-            {:ok, rendered_value} ->
-              updated_status = if status == :ok, do: :ok, else: :error
-              {updated_status, Map.put(map, key, rendered_value)}
-
-            {:error, reason} ->
-              {:error, Map.put(map, key, reason)}
-          end
-
-        {key, value}, {status, map} ->
-          {status, Map.put(map, key, value)}
-      end
-    )
+  defp apply_liquid(string, assigns) when is_binary(string) do
+    render_liquid(string, assigns)
   end
+
+  defp apply_liquid(other, _assigns), do: {:ok, other}
 
   defp put_unsubscribe_header(email, unsubscribe_link) do
     email
