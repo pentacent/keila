@@ -61,6 +61,19 @@
             </p>
           </div>
         <% _other -> %>
+          <% system_disruption_message = KeilaCloud.system_disruption_message() %>
+          <%= if system_disruption_message do %>
+            <div class="bg-amber-200 text-black" role="alert">
+              <p class="container py-5 my-0">
+                <a href="https://status.keila.io">
+                  <%= system_disruption_message %>
+                  <span class="underline">
+                    <%= dgettext("cloud", "Status page") %>
+                  </span>
+                </a>
+              </p>
+            </div>
+          <% end %>
       <% end %>
     <% end %>
   <% end %>

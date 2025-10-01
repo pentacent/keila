@@ -29,4 +29,20 @@ defmodule Keila.Mailings.Builder.LiquidRendererTest do
       assert {:error, "Unexpected rendering error"} = render_liquid(input, assigns)
     end
   end
+
+  describe "process_assigns/1" do
+    test "processes assigns to ensure they can be safely used for Liquid template rendering" do
+      assigns = %{
+        contact: %Keila.Contacts.Contact{email: "test@example.com"},
+        tuple: {1, 2},
+        map: %{child: %{foo: :bar}}
+      }
+
+      assert %{
+               "contact" => %{"email" => "test@example.com"},
+               "tuple" => [1, 2],
+               "map" => %{"child" => %{"foo" => "bar"}}
+             } = process_assigns(assigns)
+    end
+  end
 end

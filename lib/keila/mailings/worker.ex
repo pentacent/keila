@@ -172,9 +172,9 @@ defmodule Keila.Mailings.Worker do
     )
   end
 
-  defp set_contact_unreachable_query(recipient) do
+  defp set_contact_unreachable_query(%{contact_id: contact_id}) when not is_nil(contact_id) do
     from(c in Contact,
-      where: c.id == ^recipient.contact_id,
+      where: c.id == ^contact_id,
       update: [
         set: [
           status: :unreachable,
@@ -183,6 +183,8 @@ defmodule Keila.Mailings.Worker do
       ]
     )
   end
+
+  defp set_contact_unreachable_query(_), do: :ok
 
   defp get_receipt(%{id: receipt}), do: receipt
   defp get_receipt(receipt) when is_binary(receipt), do: receipt

@@ -222,12 +222,25 @@ defmodule Keila.Mailings do
   end
 
   @doc """
-  Returns all Campaigns belonging to specified Project.
+  Returns all Campaigns belonging to the specified Project.
   """
   @spec get_project_campaigns(Project.id()) :: [Campaign.t()]
   def get_project_campaigns(project_id) when is_id(project_id) do
     from(c in Campaign, where: c.project_id == ^project_id, order_by: [desc: c.updated_at])
     |> Repo.all()
+  end
+
+  @doc """
+  Returns the latest Campaign belonging to the specified Project.
+  """
+  @spec get_latest_project_campaign(Project.id()) :: Campaign.t() | nil
+  def get_latest_project_campaign(project_id) when is_id(project_id) do
+    from(c in Campaign,
+      where: c.project_id == ^project_id,
+      order_by: [desc: c.inserted_at],
+      limit: 1
+    )
+    |> Repo.one()
   end
 
   @doc """

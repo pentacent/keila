@@ -58,4 +58,46 @@ defmodule Keila.Mailings.Builder.LiquidRenderer do
       {:error, _, _} -> {:error, "Error processing Markdown"}
     end
   end
+
+  @doc """
+  Processes assigns to ensure they can be safely used for Liquid template rendering.
+
+  Structs are converted to maps, atoms to strings, and tuples to lists. All map keys
+  are converted to string keys. Processing is done recursively.
+  """
+  @spec process_assigns(any()) :: any()
+  def process_assigns(value)
+      when is_number(value) or is_binary(value) or
+             is_boolean(value) or is_nil(value) do
+    value
+  end
+
+  def process_assigns(value) when is_atom(value) do
+    Atom.to_string(value)
+  end
+
+  def process_assigns(value) when is_tuple(value) do
+    Tuple.to_list(value)
+  end
+
+  def process_assigns(value) when is_struct(value) do
+    process_assigns(Map.from_struct(value))
+  end
+
+  def process_assigns(value) when is_map(value) do
+    Enum.map(value, fn {key, value} ->
+      key = to_string(key)
+      value = process_assigns(value)
+      {key, value}
+    end)
+    |> Enum.filter(fn
+      {"__" <> _, _} -> false
+      _ -> true
+    end)
+    |> Enum.into(%{})
+  end
+
+  def process_assigns(value) when is_list(value) do
+    Enum.map(value, &process_assigns/1)
+  end
 end

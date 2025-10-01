@@ -19,5 +19,9 @@ defmodule KeilaCloud do
       Logger.flush()
       System.halt(1)
     end
+
+    def system_disruption_message() do
+      Application.get_env(:keila, :system_disruption_message)
+    end
   end
 end

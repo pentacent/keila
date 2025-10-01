@@ -45,6 +45,23 @@ defmodule Keila.MailingsCampaignTest do
   end
 
   @tag :mailings_campaign
+  test "get latest campaign in a project", %{project: project} do
+    previous_campaign_inserted_at = DateTime.utc_now(:second) |> DateTime.add(-1000, :second)
+
+    previous_campaign = insert!(:mailings_campaign, project_id: project.id)
+
+    from(c in Mailings.Campaign,
+      where: c.id == ^previous_campaign.id,
+      update: [set: [inserted_at: ^previous_campaign_inserted_at]]
+    )
+    |> Repo.update_all([])
+
+    latest_campaign = insert!(:mailings_campaign, project_id: project.id)
+
+    assert latest_campaign == Mailings.get_latest_project_campaign(project.id)
+  end
+
+  @tag :mailings_campaign
   test "delete campaign", %{project: project} do
     campaign = insert!(:mailings_campaign, project_id: project.id)
     assert :ok = Mailings.delete_campaign(campaign.id)

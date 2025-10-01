@@ -1,7 +1,8 @@
 defmodule KeilaWeb.CampaignEditLive do
   use KeilaWeb, :live_view
+  require Keila
+
   alias Keila.Accounts
-  alias Keila.Billing
   alias Keila.Mailings
 
   @impl true
@@ -27,6 +28,7 @@ defmodule KeilaWeb.CampaignEditLive do
       |> assign(:settings_changeset, changeset)
       |> assign(:account, account)
       |> assign(:subscription_required, false)
+      |> assign(:onboarding_required, false)
       |> assign(:send_preview_error, nil)
       |> put_recipient_count()
       |> put_campaign_preview()
@@ -161,11 +163,13 @@ defmodule KeilaWeb.CampaignEditLive do
     with {:ok, contacts} <- get_preview_contacts(socket, raw_emails),
          {:ok, campaign} <- get_preview_campaign(socket),
          {:ok, sender} <- get_preview_sender(socket, campaign.sender_id),
-         :ok <- maybe_consume_preview_credits(socket, contacts),
+         :ok <- ensure_account_active(socket.assigns.account),
+         :ok <- maybe_consume_preview_credits(socket.assigns.account, contacts),
          _ <- send_previews(socket, contacts, campaign, sender) do
       {:noreply, socket |> push_event("preview-sent", %{})}
     else
       {:error, :subscription_required} -> {:noreply, assign(socket, :subscription_required, true)}
+      {:error, :onboarding_required} -> {:noreply, assign(socket, :onboarding_required, true)}
       {:error, message} -> {:noreply, assign(socket, :send_preview_error, message)}
     end
   end
@@ -174,7 +178,8 @@ defmodule KeilaWeb.CampaignEditLive do
     {:noreply,
      socket
      |> assign(:send_preview_error, nil)
-     |> assign(:subscription_required, false)}
+     |> assign(:subscription_required, false)
+     |> assign(:onboarding_required, false)}
   end
 
   defp get_preview_contacts(socket, raw_emails) do
@@ -213,22 +218,40 @@ defmodule KeilaWeb.CampaignEditLive do
     end
   end
 
-  defp maybe_consume_preview_credits(socket, contacts) do
-    account = socket.assigns.account
-    recipients_count = length(contacts)
+  Keila.if_cloud do
+    defp ensure_account_active(%{status: :active}), do: :ok
+    defp ensure_account_active(_), do: {:error, :onboarding_required}
+  else
+    defp ensure_account_active(_project_id), do: :ok
+  end
 
-    cond do
-      not Accounts.credits_enabled?() ->
-        :ok
+  Keila.if_cloud do
+    defp maybe_consume_preview_credits(account, contacts) do
+      recipients_count = length(contacts)
 
-      :ok == Accounts.consume_credits(account.id, recipients_count) ->
-        :ok
+      case Accounts.consume_credits(account.id, recipients_count) do
+        :ok ->
+          :ok
 
-      Keila.Billing.billing_enabled?() && is_nil(Billing.get_account_subscription(account.id)) ->
-        {:error, :subscription_required}
+        _other ->
+          if is_nil(Keila.Billing.get_account_subscription(account.id)) do
+            {:error, :subscription_required}
+          else
+            {:error, gettext("Insufficient credits.")}
+          end
+      end
+    end
+  else
+    defp maybe_consume_preview_credits(account, contacts) do
+      recipients_count = length(contacts)
 
-      true ->
-        {:error, gettext("Insufficient credits.")}
+      case Accounts.consume_credits(account.id, recipients_count) do
+        :ok ->
+          :ok
+
+        _other ->
+          {:error, gettext("Insufficient credits.")}
+      end
     end
   end
 

@@ -5,6 +5,7 @@ defmodule KeilaWeb.PublicFormController do
   alias Keila.Contacts.Contact
   alias Keila.Contacts.FormParams
   import Ecto.Changeset
+  import Keila.Mailings.Builder.LiquidRenderer, only: [render_liquid: 2, process_assigns: 1]
 
   plug :fetch when action in [:show, :submit]
   plug :fetch_form_params when action in [:double_opt_in, :cancel_double_opt_in]
@@ -36,7 +37,9 @@ defmodule KeilaWeb.PublicFormController do
         data = if form.settings.captcha_required, do: %{"captcha" => true}, else: %{}
         Tracking.log_event("subscribe", contact.id, data)
 
-        render_success_or_redirect(conn)
+        conn
+        |> assign(:contact, contact)
+        |> render_success_or_redirect()
 
       {:ok, form_params = %FormParams{}} ->
         conn
@@ -80,12 +83,14 @@ defmodule KeilaWeb.PublicFormController do
       |> Map.put("double_opt_in_hmac", hmac)
 
     case Contacts.perform_form_action(form, params) do
-      {:ok, %Contact{id: id}} ->
+      {:ok, contact = %Contact{}} ->
         data = %{"double_opt_in" => true}
-        Tracking.log_event("subscribe", id, data)
+        Tracking.log_event("subscribe", contact.id, data)
         Contacts.delete_form_params(form_params.id)
 
-        render_success_or_redirect(conn)
+        conn
+        |> assign(:contact, contact)
+        |> render_success_or_redirect()
 
       {:ok, form_params = %FormParams{}} ->
         conn
@@ -99,15 +104,39 @@ defmodule KeilaWeb.PublicFormController do
 
   defp render_success_or_redirect(conn) do
     case conn.assigns.form.settings.success_url do
-      url when url not in [nil, ""] -> redirect(conn, external: url)
-      _other -> render(conn, "success.html")
+      url when url not in [nil, ""] ->
+        processed_url = process_redirect_url(url, conn.assigns.contact)
+        redirect(conn, external: processed_url)
+
+      _other ->
+        render(conn, "success.html")
+    end
+  end
+
+  defp process_redirect_url(url, contact) do
+    case render_liquid(url, %{"contact" => process_assigns(contact)}) do
+      {:ok, url} -> url
+      _other -> url
     end
   end
 
   defp render_double_opt_in_required_or_redirect(conn) do
     case conn.assigns.form.settings.double_opt_in_url do
-      url when url not in [nil, ""] -> redirect(conn, external: url)
-      _other -> render(conn, "double_opt_in_required.html")
+      url when url not in [nil, ""] ->
+        redirect(conn, external: url)
+
+      _other ->
+        render(conn, "double_opt_in_required.html")
+    end
+  end
+
+  defp render_failure_or_redirect(conn) do
+    case conn.assigns.form.settings.failure_url do
+      url when url not in [nil, ""] ->
+        redirect(conn, external: url)
+
+      _other ->
+        render(conn, "double_opt_in_failure.html")
     end
   end
 
@@ -186,7 +215,7 @@ defmodule KeilaWeb.PublicFormController do
         conn |> assign(:form, form) |> assign(:form_params, form_params)
 
       form ->
-        conn |> redirect(to: Routes.public_form_path(conn, :show, form.id))
+        conn |> assign(:form, form) |> render_failure_or_redirect() |> halt()
 
       true ->
         conn |> put_status(404) |> halt()
@@ -216,6 +245,7 @@ defmodule KeilaWeb.PublicFormController do
       :timer.sleep(500)
 
       conn
+      |> assign(:contact, nil)
       |> render_success_or_redirect()
       |> halt()
     end

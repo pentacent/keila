@@ -162,7 +162,7 @@ defmodule KeilaWeb.Router do
     plug :fetch_live_flash
     plug :put_root_layout, {KeilaWeb.PublicFormLayoutView, :root}
     plug :put_layout, false
-    plug :put_secure_browser_headers
+    plug :put_secure_browser_headers, %{"content-security-policy" => "frame-ancestors *"}
     plug KeilaWeb.Meta.Plug
     plug KeilaWeb.PutLocalePlug
   end

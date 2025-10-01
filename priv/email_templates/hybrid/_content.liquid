@@ -15,6 +15,8 @@
         {% render "block--button", block: block %}
     {% when "separator" %}
         {% render "block--separator", block: block %}
+    {% when "socialIcons" %}
+        {% render "block--social_icons", block: block, assets_url: assets_url %}
     {% when "list" %}
         {% render "block--list", block: block %}
     {% when "markdown" %}
