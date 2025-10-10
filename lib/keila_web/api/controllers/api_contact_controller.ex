@@ -173,7 +173,16 @@ defmodule KeilaWeb.ApiContactController do
 
   @spec delete(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def delete(conn, %{id: id}) do
-    Contacts.delete_project_contacts(project_id(conn), filter: %{"id" => id})
+    id_type = conn.params[:id_type] || :id
+
+    filter =
+      case id_type do
+        :id -> %{"id" => id}
+        :email -> %{"email" => id}
+        :external_id -> %{"external_id" => id}
+      end
+
+    Contacts.delete_project_contacts(project_id(conn), filter: filter)
 
     conn
     |> send_resp(:no_content, "")
