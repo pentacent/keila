@@ -254,5 +254,16 @@ defmodule KeilaWeb.ApiContactControllerTest do
       conn = delete(conn, Routes.api_contact_path(conn, :delete, contact.id))
       assert conn.status == 204
     end
+
+    @tag :api_contact_controller
+    test "supports id_type param", %{authorized_conn: conn, project: project} do
+      contact = insert!(:contact, project_id: project.id)
+      conn = delete(conn, Routes.api_contact_path(conn, :delete, contact.email, id_type: "email"))
+      assert conn.status == 204
+      assert nil == Keila.Contacts.get_contact(contact.id)
+
+      conn = delete(conn, Routes.api_contact_path(conn, :delete, contact.id))
+      assert conn.status == 204
+    end
   end
 end
