@@ -21,9 +21,9 @@ defmodule Keila.Contacts.Contact do
     timestamps()
   end
 
-  @spec creation_changeset(t(), Ecto.Changeset.data(), Keila.Projects.Project.id()) ::
+  @spec creation_changeset(t(), Ecto.Changeset.data(), Keila.Projects.Project.id(), Keyword.t()) ::
           Ecto.Changeset.t(t())
-  def creation_changeset(struct \\ %__MODULE__{}, params, project_id) do
+  def creation_changeset(struct \\ %__MODULE__{}, params, project_id, opts \\ []) do
     struct
     |> cast(params, [:email, :external_id, :first_name, :last_name, :project_id, :data])
     |> put_change(:project_id, project_id)
@@ -36,8 +36,19 @@ defmodule Keila.Contacts.Contact do
   @spec update_status_changeset(t() | Ecto.Changeset.t(t()), Ecto.Changeset.data()) ::
           Ecto.Changeset.t(t())
   def update_status_changeset(struct \\ %__MODULE__{}, params) do
-    struct
+    changeset = struct
     |> cast(params, [:status])
+    
+    # Force status to be included in changeset if it was present in params
+    # This is needed because Ecto won't include it if it's the same as the default value
+    changeset = if Map.has_key?(params, :status) and not Map.has_key?(changeset.changes, :status) do
+      put_change(changeset, :status, params[:status])
+    else
+      changeset
+    end
+
+    changeset
+    |> normalize_status([])
   end
 
   @spec update_changeset(t(), Ecto.Changeset.data()) :: Ecto.Changeset.t(t())
@@ -147,5 +158,64 @@ defmodule Keila.Contacts.Contact do
     changeset
     |> validate_length(:external_id, max: 40)
     |> unique_constraint([:external_id, :project_id])
+  end
+
+  defp normalize_status(changeset, opts) do
+    case get_change(changeset, :status) do
+      nil ->
+        changeset
+      status when is_binary(status) ->
+        trimmed_status = String.trim(status)
+
+        case String.downcase(trimmed_status) do
+          "" ->
+            # Empty status defaults to active
+            handle_valid_status(changeset, :active, trimmed_status, opts)
+          "active" ->
+            handle_valid_status(changeset, :active, trimmed_status, opts)
+          "unsubscribed" ->
+            handle_valid_status(changeset, :unsubscribed, trimmed_status, opts)
+          "unreachable" ->
+            handle_valid_status(changeset, :unreachable, trimmed_status, opts)
+          _invalid_status ->
+            # Add validation error for invalid status
+            add_error(changeset, :status, "must be one of: active, unsubscribed, unreachable")
+        end
+
+      status when is_atom(status) ->
+        changeset
+    end
+  end
+
+  defp handle_valid_status(changeset, normalized_status, trimmed_status, opts) do
+    # Check if this is an update that would downgrade status (reactivate unsubscribed/unreachable)
+    # Only prevent if the status was empty (not explicitly set to "active")
+    current_status = get_field(changeset, :status)
+
+    if should_prevent_status_downgrade?(current_status, normalized_status, trimmed_status, opts) do
+      # Don't change the status if it would be a downgrade and wasn't explicit
+      # Remove the status change entirely so the existing value is preserved
+      Map.update!(changeset, :changes, &Map.delete(&1, :status))
+    else
+      # Use force_change to ensure the status is included even if it's the same as the current value
+      force_change(changeset, :status, normalized_status)
+    end
+  end
+
+  # Prevent reactivating contacts that are unsubscribed or unreachable ONLY if status was empty
+  # If someone explicitly sets status to "active", allow the reactivation
+  defp should_prevent_status_downgrade?(_current_status, new_status, original_status_string, opts) do
+    # If explicit reactivation is allowed via opts, don't prevent
+    if Keyword.get(opts, :allow_reactivation, false) do
+      false
+    else
+      # During import, current_status might be empty string or nil because we're creating a changeset from scratch
+      # We should only prevent reactivation if the new status would be :active and the original was empty
+      # This logic assumes that if someone imports with empty status, they don't want to change the existing status
+      case {new_status, original_status_string} do
+        {:active, ""} -> true  # Empty status trying to set to active - prevent this (preserve existing status)
+        _ -> false  # Allow all other changes, including explicit "active", "unsubscribed", etc.
+      end
+    end
   end
 end
