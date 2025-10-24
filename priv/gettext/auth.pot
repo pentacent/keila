@@ -210,3 +210,229 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Log in with your new password"
 msgstr ""
+
+# Two-Factor Authentication translations
+#, elixir-autogen, elixir-format
+msgid "Two-Factor Authentication"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Your Two-Factor Authentication Code"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Your two-factor authentication code is:\n\n%{code}\n\nThis code will expire in 10 minutes. If you didn't request this code, please ignore this message.\n"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Two-factor authentication has been enabled."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Two-factor authentication has been disabled."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Failed to enable two-factor authentication."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Failed to disable two-factor authentication."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "A verification code has been sent to your email."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "A new verification code has been sent to your email."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Please use your security key to authenticate."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Please use your security key or one of your backup codes."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Please contact support for assistance."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Failed to send verification code."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Invalid verification code"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Enter the verification code sent to your email address."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Verification Code"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "000000"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Resend code"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Verify"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "You can also use one of your backup codes instead."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Two-factor authentication is currently enabled for your account."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Add an extra layer of security to your account by enabling two-factor authentication."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "When enabled, you'll receive a verification code via email each time you sign in."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Enable Two-Factor Authentication"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Disable Two-Factor Authentication"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Backup Codes"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Save these backup codes somewhere safe. You can use each code once to sign in if you can't access your email."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Important:"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "These codes will only be shown once. Make sure to save them in a secure location before continuing."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Continue"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Add an extra layer of security to your account."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Two-factor authentication is enabled"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Two-factor authentication is disabled"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Manage Two-Factor Authentication"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Email Verification"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Security Keys"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Use hardware security keys, fingerprint readers, or face recognition for secure authentication."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Registered Security Keys"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Add Security Key"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Use Security Key"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "WebAuthn is not supported by your browser"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Failed to register security key. Please try again."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Are you sure you want to remove this security key?"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Failed to remove security key. Please try again."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Authentication failed. Please try again or use email verification."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Invalid authentication session"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Email-based two-factor authentication is currently active. You'll receive verification codes via email when signing in."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Disable Email 2FA"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Receive verification codes via email each time you sign in."
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Enable Email 2FA"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Back to Account Settings"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Security key has been registered successfully"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Failed to register security key: %{reason}"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Security key has been removed"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Failed to remove security key: %{reason}"
+msgstr ""
+
+#: lib/keila_web/templates/two_factor/challenge.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "You can use your security key, email verification code, or one of your backup codes."
+msgstr ""
