@@ -9,7 +9,7 @@ steps:
     args:
       [
         "-c",
-        "docker buildx build --push --build-arg PROJECT_ID=$PROJECT_ID --build-arg COMMIT_SHA=$COMMIT_SHA --tag us-central1-docker.pkg.dev/$PROJECT_ID/keila/keila:$COMMIT_SHA --tag us-central1-docker.pkg.dev/$PROJECT_ID/keila/keila:latest --cache-to type=registry,ref=us-central1-docker.pkg.dev/$PROJECT_ID/keila/keila:build-cache,mode=max --cache-from type=registry,ref=us-central1-docker.pkg.dev/$PROJECT_ID/keila/keila:build-cache --file ops/Dockerfile .",
+        "docker buildx build --push --build-arg PROJECT_ID=$PROJECT_ID --build-arg COMMIT_SHA=$COMMIT_SHA --tag us-central1-docker.pkg.dev/$PROJECT_ID/keila/keila:$COMMIT_SHA --tag us-central1-docker.pkg.dev/$PROJECT_ID/keila/keila:latest --file ops/Dockerfile .",
       ]
 
   # Deploy production
