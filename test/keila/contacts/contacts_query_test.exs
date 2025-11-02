@@ -148,6 +148,17 @@ defmodule Keila.ContactsQueryTest do
   end
 
   @tag :contacts_query
+  test "filter using $empty operator" do
+    c1 = insert!(:contact, %{first_name: nil})
+    c2 = insert!(:contact, %{first_name: ""})
+    c3 = insert!(:contact, %{first_name: "Jane", double_opt_in_at: DateTime.utc_now(:second)})
+
+    assert [^c1, ^c2] = filter_contacts(%{"first_name" => %{"$empty" => true}})
+    assert [^c3] = filter_contacts(%{"first_name" => %{"$empty" => false}})
+    assert [^c1, ^c2] = filter_contacts(%{"double_opt_in_at" => %{"$empty" => true}})
+  end
+
+  @tag :contacts_query
   test "filter for custom data" do
     c1 =
       insert!(:contact, %{
@@ -203,6 +214,35 @@ defmodule Keila.ContactsQueryTest do
     assert [c1, c2] == filter_contacts(%{"$not" => %{"data.string" => "no_match"}})
     assert [c1, c2] == filter_contacts(%{"$not" => %{"data.stringOnly2" => "no_match"}})
     assert [c1] == filter_contacts(%{"$not" => %{"data.stringOnly2" => "yes"}})
+  end
+
+  @tag :contacts_query
+  test "support $empty operator for custom data" do
+    c1 =
+      insert!(:contact, %{
+        data: %{
+          "empty_string_field" => "",
+          "non_empty_field" => "foo",
+          "empty_list_field" => [],
+          "non_empty_list_field" => ["foo"],
+          "empty_object_field" => %{},
+          "non_empty_object_field" => %{"foo" => "bar"}
+        }
+      })
+
+    c2 = insert!(:contact)
+
+    assert [c1, c2] == filter_contacts(%{"data.empty_string_field" => %{"$empty" => true}})
+    assert [c1] == filter_contacts(%{"data.non_empty_field" => %{"$empty" => false}})
+    assert [c2] == filter_contacts(%{"data.non_empty_field" => %{"$empty" => true}})
+
+    assert [c1, c2] == filter_contacts(%{"data.empty_list_field" => %{"$empty" => true}})
+    assert [c1] == filter_contacts(%{"data.non_empty_list_field" => %{"$empty" => false}})
+    assert [c2] == filter_contacts(%{"data.non_empty_list_field" => %{"$empty" => true}})
+
+    assert [c1, c2] == filter_contacts(%{"data.empty_object_field" => %{"$empty" => true}})
+    assert [c1] == filter_contacts(%{"data.non_empty_object_field" => %{"$empty" => false}})
+    assert [c2] == filter_contacts(%{"data.non_empty_object_field" => %{"$empty" => true}})
   end
 
   @tag :contacts_query

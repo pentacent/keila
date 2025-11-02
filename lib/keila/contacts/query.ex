@@ -19,6 +19,9 @@ defmodule Keila.Contacts.Query do
   - `"$lt"` - lesser-than operator.
     `%{"inserted_at" => %{"$lt" => "2020-01-01 00:00:00Z"}}`
   - `"$lte"` - lesser-than-or-equal operator.
+  - `"$empty"` - checks if field is null, nil, or an empty string.
+    `%{"first_name" => %{"$empty" => true}}` - matches if first_name is unset, nil, or ""
+    `%{"data.tags" => %{"$empty" => empty}}` - matches if tags is unset, nil, "", an empty list or an empty object.
   - `"$in"` - queries if field value is part of a set.
      `%{"email" => %{"$in" => ["foo@example.com", "bar@example.com"]}}`
   - `"$like"` - queries if the field matches using the SQL `ILIKE` statement.
@@ -35,6 +38,7 @@ defmodule Keila.Contacts.Query do
   """
 
   use Keila.Repo
+  alias Keila.Contacts.Contact
 
   @type opts :: {:filter, map()} | {:sort, map()}
 
@@ -53,7 +57,7 @@ defmodule Keila.Contacts.Query do
   @spec valid_opts?([opts]) :: boolean()
   def valid_opts?(opts) do
     try do
-      from(c in Keila.Contacts.Contact)
+      from(c in Contact)
       |> maybe_filter(opts)
       |> maybe_sort(opts)
 
@@ -123,6 +127,14 @@ defmodule Keila.Contacts.Query do
   defp build_condition(field, %{"$lte" => value}) when is_atom(field),
     do: dynamic([c], field(c, ^field) <= ^value)
 
+  defp build_condition(field, %{"$empty" => empty?}) when is_atom(field) and is_boolean(empty?) do
+    if Contact.__schema__(:type, field) == :string do
+      dynamic([c], ^empty? == (is_nil(field(c, ^field)) or field(c, ^field) == ""))
+    else
+      dynamic([c], ^empty? == is_nil(field(c, ^field)))
+    end
+  end
+
   defp build_condition(field, %{"$in" => value}) when is_atom(field) and is_list(value),
     do: dynamic([c], field(c, ^field) in ^value)
 
@@ -157,6 +169,19 @@ defmodule Keila.Contacts.Query do
 
   defp build_data_condition(path, %{"$lte" => value}),
     do: dynamic([c], fragment("?#>?", c.data, ^path) <= ^value)
+
+  defp build_data_condition(path, %{"$empty" => empty?}) when is_boolean(empty?) do
+    is_null = dynamic([c], is_nil(fragment("?#>>?", c.data, ^path)))
+    is_empty_string = dynamic([c], fragment("?#>>?", c.data, ^path) == "")
+    is_empty_list = dynamic([c], fragment("?#>? = '[]'::jsonb", c.data, ^path))
+    is_empty_object = dynamic([c], fragment("?#>? = '{}'::jsonb", c.data, ^path))
+
+    dynamic(
+      [c],
+      ^empty? ==
+        (^is_null or ^is_empty_string or ^is_empty_list or ^is_empty_object)
+    )
+  end
 
   defp build_data_condition(path, %{"$in" => value}) when is_list(value),
     do: dynamic([c], fragment("?#>?", c.data, ^path) in ^value)
