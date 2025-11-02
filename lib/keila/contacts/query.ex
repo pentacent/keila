@@ -94,6 +94,7 @@ defmodule Keila.Contacts.Query do
 
   defp filter(query, input) do
     from(q in query,
+      distinct: true,
       left_join: r in Keila.Mailings.Recipient,
       on: r.contact_id == q.id,
       as: :recipients,

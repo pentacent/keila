@@ -119,10 +119,10 @@ defmodule Keila.Contacts do
   @spec get_project_contacts_count(Project.id(), [Query.opts()]) :: integer()
   def get_project_contacts_count(project_id, opts \\ [])
       when is_binary(project_id) or is_integer(project_id) do
-    opts = Keyword.put_new(opts, :sort, %{"inserted_at" => -1})
+    opts = opts |> Keyword.take([:filter]) |> Keyword.put(:sort, false)
 
     from(c in Contact, where: c.project_id == ^project_id)
-    |> Keila.Contacts.Query.apply(Keyword.take(opts, [:filter, :sort]))
+    |> Keila.Contacts.Query.apply(opts)
     |> Repo.aggregate(:count, :id)
   end
 
@@ -179,9 +179,19 @@ defmodule Keila.Contacts do
   """
   @spec delete_project_contacts(Project.id(), filter: map(), sort: map()) :: :ok
   def delete_project_contacts(project_id, opts \\ []) do
-    from(c in Contact, where: c.project_id == ^project_id)
-    |> Keila.Contacts.Query.apply(opts |> Keyword.put(:sort, false))
-    |> Repo.delete_all()
+    opts = opts |> Keyword.take([:filter]) |> Keyword.put(:sort, false)
+
+    Repo.transaction(fn ->
+      from(c in Contact, where: c.project_id == ^project_id)
+      |> Keila.Contacts.Query.apply(opts)
+      |> select([c], c.id)
+      |> Repo.stream()
+      |> Stream.chunk_every(5000)
+      |> Enum.each(fn ids ->
+        from(c in Contact, where: c.id in ^ids)
+        |> Repo.delete_all()
+      end)
+    end)
 
     :ok
   end
