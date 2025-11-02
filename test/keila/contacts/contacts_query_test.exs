@@ -151,7 +151,7 @@ defmodule Keila.ContactsQueryTest do
   test "filter using $empty operator" do
     c1 = insert!(:contact, %{first_name: nil})
     c2 = insert!(:contact, %{first_name: ""})
-    c3 = insert!(:contact, %{first_name: "Jane", double_opt_in_at: DateTime.utc_now(:second)})
+    c3 = insert!(:contact, %{first_name: "Jane", double_opt_in_at: now()})
 
     assert [^c1, ^c2] = filter_contacts(%{"first_name" => %{"$empty" => true}})
     assert [^c3] = filter_contacts(%{"first_name" => %{"$empty" => false}})
@@ -246,6 +246,82 @@ defmodule Keila.ContactsQueryTest do
   end
 
   @tag :contacts_query
+  test "filter for contact being included in campaign", %{project: project} do
+    c = insert!(:contact, %{project_id: project.id})
+    campaign1 = insert!(:mailings_campaign, %{project_id: project.id})
+    campaign2 = insert!(:mailings_campaign, %{project_id: project.id})
+
+    assert [] = filter_contacts(%{"messages" => %{"campaign_id" => campaign1.id}})
+    insert!(:mailings_recipient, %{contact_id: c.id, campaign_id: campaign1.id})
+    assert [^c] = filter_contacts(%{"messages" => %{"campaign_id" => campaign1.id}})
+    assert [] = filter_contacts(%{"messages" => %{"campaign_id" => campaign2.id}})
+  end
+
+  @tag :contacts_query
+  test "filter for contact having opened a message", %{project: project} do
+    c = insert!(:contact, %{project_id: project.id})
+    campaign1 = insert!(:mailings_campaign, %{project_id: project.id})
+    campaign2 = insert!(:mailings_campaign, %{project_id: project.id})
+    r1 = insert!(:mailings_recipient, %{contact_id: c.id, campaign_id: campaign1.id})
+
+    assert [] =
+             filter_contacts(%{
+               "messages" => %{"opened_at" => %{"$empty" => false}}
+             })
+
+    r1 |> Ecto.Changeset.change(%{opened_at: now()}) |> Repo.update!()
+
+    assert [^c] =
+             filter_contacts(%{
+               "messages" => %{"opened_at" => %{"$empty" => false}}
+             })
+
+    assert [^c] =
+             filter_contacts(%{
+               "messages" => %{"campaign_id" => campaign1.id, "opened_at" => %{"$empty" => false}}
+             })
+
+    assert [] =
+             filter_contacts(%{
+               "messages" => %{"campaign_id" => campaign2.id, "opened_at" => %{"$empty" => false}}
+             })
+  end
+
+  test "filter for contact with the messages.bounced_at alias", %{project: project} do
+    c = insert!(:contact, %{project_id: project.id})
+    campaign = insert!(:mailings_campaign, %{project_id: project.id})
+    r = insert!(:mailings_recipient, %{contact_id: c.id, campaign_id: campaign.id})
+
+    assert [] =
+             filter_contacts(%{
+               "messages" => %{"campaign_id" => campaign.id, "bounced_at" => %{"$empty" => false}}
+             })
+
+    r |> Ecto.Changeset.change(%{hard_bounce_received_at: now()}) |> Repo.update!()
+
+    assert [^c] =
+             filter_contacts(%{
+               "messages" => %{"campaign_id" => campaign.id, "bounced_at" => %{"$empty" => false}}
+             })
+
+    assert [^c] =
+             filter_contacts(%{
+               "messages" => %{
+                 "campaign_id" => campaign.id,
+                 "hard_bounce_received_at" => %{"$empty" => false}
+               }
+             })
+
+    assert [] =
+             filter_contacts(%{
+               "messages" => %{
+                 "campaign_id" => campaign.id,
+                 "soft_bounce_received_at" => %{"$empty" => false}
+               }
+             })
+  end
+
+  @tag :contacts_query
   test "safely validate query opts" do
     assert true == Query.valid_opts?(filter: %{"email" => "foo@example.com"})
     assert false == Query.valid_opts?(filter: %{"invalid_field" => "foo@example.com"})
@@ -254,4 +330,6 @@ defmodule Keila.ContactsQueryTest do
   defp filter_contacts(filter) do
     from(Contact) |> Query.apply(filter: filter) |> Repo.all()
   end
+
+  defp now(), do: DateTime.utc_now(:second)
 end

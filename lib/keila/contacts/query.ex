@@ -27,6 +27,12 @@ defmodule Keila.Contacts.Query do
   - `"$like"` - queries if the field matches using the SQL `ILIKE` statement.
      `%{"email" => %{"$like" => "%keila.io"}}`
 
+  # Filtering on received messages (recipients)
+  A `messages` map can be defined to filter contacts based on their received messages.
+  All status fields (like `"opened_at"`) can be defined, as well as `"campaign_id"`.
+  For convenience purposes, `"bounced_at"` can be defined to filter based on bounces
+  regardless if they were hard or soft bounces.
+
   ## Sorting
   Using the `:sort` option, you can supply MongoDB-style sorting options:
   - `sort: %{"email" => 1}` will sort results by email in ascending order.
@@ -43,6 +49,18 @@ defmodule Keila.Contacts.Query do
   @type opts :: {:filter, map()} | {:sort, map()}
 
   @fields ["id", "email", "inserted_at", "first_name", "last_name", "status", "double_opt_in_at"]
+  @recipient_fields [
+    "campaign_id",
+    "sent_at",
+    "opened_at",
+    "clicked_at",
+    "failed_at",
+    "bounced_at",
+    "soft_bounce_received_at",
+    "hard_bounce_received_at",
+    "complaint_received_at",
+    "unsubscribed_at"
+  ]
 
   @spec apply(Ecto.Query.t(), [opts]) :: Ecto.Query.t()
   def apply(query, opts) do
@@ -75,7 +93,12 @@ defmodule Keila.Contacts.Query do
   end
 
   defp filter(query, input) do
-    from(q in query, where: ^build_and(input))
+    from(q in query,
+      left_join: r in Keila.Mailings.Recipient,
+      on: r.contact_id == q.id,
+      as: :recipients,
+      where: ^build_and(input)
+    )
   end
 
   defp build_and([]), do: true
@@ -153,6 +176,10 @@ defmodule Keila.Contacts.Query do
     build_data_condition(path, input)
   end
 
+  defp build_condition("messages", input) do
+    build_recipient_condition(input)
+  end
+
   defp build_condition(field, value),
     do: raise(~s{Unsupported filter "#{field}": "#{inspect(value)}"})
 
@@ -208,6 +235,47 @@ defmodule Keila.Contacts.Query do
     array_contains = dynamic([c], fragment("?#>? @> ?", c.data, ^path, ^value_in_array))
     dynamic([c], ^contains or ^array_contains)
   end
+
+  defp build_recipient_condition(input) do
+    base_condition = dynamic([c, recipients: r], not is_nil(r.campaign_id))
+
+    @recipient_fields
+    |> Enum.filter(&Map.has_key?(input, &1))
+    |> Enum.map(fn field_name ->
+      field = String.to_existing_atom(field_name)
+      value = Map.get(input, field_name)
+      build_recipient_condition(field, value)
+    end)
+    |> Enum.reduce(base_condition, fn condition, acc -> dynamic([], ^condition and ^acc) end)
+  end
+
+  defp build_recipient_condition(:bounced_at, value) do
+    hard_bounce_condtion = build_recipient_condition(:hard_bounce_received_at, value)
+    soft_bounce_condtion = build_recipient_condition(:soft_bounce_received_at, value)
+    dynamic([], ^hard_bounce_condtion or ^soft_bounce_condtion)
+  end
+
+  defp build_recipient_condition(field, %{"$gt" => value}) when is_atom(field),
+    do: dynamic([recipients: r], field(r, ^field) > ^value)
+
+  defp build_recipient_condition(field, %{"$gte" => value}) when is_atom(field),
+    do: dynamic([recipients: r], field(r, ^field) >= ^value)
+
+  defp build_recipient_condition(field, %{"$lt" => value}) when is_atom(field),
+    do: dynamic([recipients: r], field(r, ^field) < ^value)
+
+  defp build_recipient_condition(field, %{"$lte" => value}) when is_atom(field),
+    do: dynamic([recipients: r], field(r, ^field) <= ^value)
+
+  defp build_recipient_condition(field, %{"$empty" => empty?}) when is_atom(field),
+    do: dynamic([recipients: r], ^empty? == is_nil(field(r, ^field)))
+
+  defp build_recipient_condition(field, value) when is_atom(field) and value in [nil],
+    do: dynamic([recipients: r], is_nil(field(r, ^field)))
+
+  defp build_recipient_condition(field, value)
+       when is_atom(field) and (is_binary(value) or is_number(value)),
+       do: dynamic([recipients: r], field(r, ^field) == ^value)
 
   defp maybe_sort(query, opts) do
     case Keyword.get(opts, :sort) do
