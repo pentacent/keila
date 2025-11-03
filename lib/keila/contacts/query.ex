@@ -94,10 +94,8 @@ defmodule Keila.Contacts.Query do
 
   defp filter(query, input) do
     from(q in query,
+      as: :contact,
       distinct: true,
-      left_join: r in Keila.Mailings.Recipient,
-      on: r.contact_id == q.id,
-      as: :recipients,
       where: ^build_and(input)
     )
   end
@@ -178,11 +176,52 @@ defmodule Keila.Contacts.Query do
   end
 
   defp build_condition("messages", input) do
-    build_recipient_condition(input)
+    dynamic(exists(from r in Keila.Mailings.Recipient, where: ^build_recipient_conditions(input)))
   end
 
   defp build_condition(field, value),
     do: raise(~s{Unsupported filter "#{field}": "#{inspect(value)}"})
+
+  defp build_recipient_conditions(input) do
+    base_condition = dynamic([r], r.contact_id == parent_as(:contact).id)
+
+    @recipient_fields
+    |> Enum.filter(&Map.has_key?(input, &1))
+    |> Enum.reduce(base_condition, fn field_name, conditions ->
+      field = String.to_existing_atom(field_name)
+      value = Map.get(input, field_name)
+      condition = build_recipient_condition(field, value)
+      dynamic([], ^condition and ^conditions)
+    end)
+  end
+
+  defp build_recipient_condition(:bounced_at, value) do
+    hard_bounce_condition = build_recipient_condition(:hard_bounce_received_at, value)
+    soft_bounce_condition = build_recipient_condition(:soft_bounce_received_at, value)
+
+    dynamic([], ^hard_bounce_condition or ^soft_bounce_condition)
+  end
+
+  defp build_recipient_condition(field, %{"$gt" => value}),
+    do: dynamic([r], field(r, ^field) > ^value)
+
+  defp build_recipient_condition(field, %{"$gte" => value}),
+    do: dynamic([r], field(r, ^field) >= ^value)
+
+  defp build_recipient_condition(field, %{"$lt" => value}),
+    do: dynamic([r], field(r, ^field) < ^value)
+
+  defp build_recipient_condition(field, %{"$lte" => value}),
+    do: dynamic([r], field(r, ^field) <= ^value)
+
+  defp build_recipient_condition(field, %{"$empty" => empty?}),
+    do: dynamic([r], ^empty? == is_nil(field(r, ^field)))
+
+  defp build_recipient_condition(field, nil),
+    do: dynamic([r], is_nil(field(r, ^field)))
+
+  defp build_recipient_condition(field, value) when is_binary(value) or is_number(value),
+    do: dynamic([r], field(r, ^field) == ^value)
 
   defp build_data_condition(path, input)
 
@@ -236,47 +275,6 @@ defmodule Keila.Contacts.Query do
     array_contains = dynamic([c], fragment("?#>? @> ?", c.data, ^path, ^value_in_array))
     dynamic([c], ^contains or ^array_contains)
   end
-
-  defp build_recipient_condition(input) do
-    base_condition = dynamic([c, recipients: r], not is_nil(r.campaign_id))
-
-    @recipient_fields
-    |> Enum.filter(&Map.has_key?(input, &1))
-    |> Enum.map(fn field_name ->
-      field = String.to_existing_atom(field_name)
-      value = Map.get(input, field_name)
-      build_recipient_condition(field, value)
-    end)
-    |> Enum.reduce(base_condition, fn condition, acc -> dynamic([], ^condition and ^acc) end)
-  end
-
-  defp build_recipient_condition(:bounced_at, value) do
-    hard_bounce_condtion = build_recipient_condition(:hard_bounce_received_at, value)
-    soft_bounce_condtion = build_recipient_condition(:soft_bounce_received_at, value)
-    dynamic([], ^hard_bounce_condtion or ^soft_bounce_condtion)
-  end
-
-  defp build_recipient_condition(field, %{"$gt" => value}) when is_atom(field),
-    do: dynamic([recipients: r], field(r, ^field) > ^value)
-
-  defp build_recipient_condition(field, %{"$gte" => value}) when is_atom(field),
-    do: dynamic([recipients: r], field(r, ^field) >= ^value)
-
-  defp build_recipient_condition(field, %{"$lt" => value}) when is_atom(field),
-    do: dynamic([recipients: r], field(r, ^field) < ^value)
-
-  defp build_recipient_condition(field, %{"$lte" => value}) when is_atom(field),
-    do: dynamic([recipients: r], field(r, ^field) <= ^value)
-
-  defp build_recipient_condition(field, %{"$empty" => empty?}) when is_atom(field),
-    do: dynamic([recipients: r], ^empty? == is_nil(field(r, ^field)))
-
-  defp build_recipient_condition(field, value) when is_atom(field) and value in [nil],
-    do: dynamic([recipients: r], is_nil(field(r, ^field)))
-
-  defp build_recipient_condition(field, value)
-       when is_atom(field) and (is_binary(value) or is_number(value)),
-       do: dynamic([recipients: r], field(r, ^field) == ^value)
 
   defp maybe_sort(query, opts) do
     case Keyword.get(opts, :sort) do

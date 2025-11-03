@@ -322,6 +322,34 @@ defmodule Keila.ContactsQueryTest do
   end
 
   @tag :contacts_query
+  test "multiple recipients for the same contact don't interfere with the $not filter", %{
+    project: project
+  } do
+    c = insert!(:contact, %{project_id: project.id})
+    campaign1 = insert!(:mailings_campaign, %{project_id: project.id})
+    campaign2 = insert!(:mailings_campaign, %{project_id: project.id})
+
+    _r1 =
+      insert!(:mailings_recipient, %{
+        contact_id: c.id,
+        campaign_id: campaign1.id,
+        clicked_at: now()
+      })
+
+    _r2 = insert!(:mailings_recipient, %{contact_id: c.id, campaign_id: campaign2.id})
+
+    assert [] =
+             filter_contacts(%{
+               "$not" => %{
+                 "messages" => %{
+                   "campaign_id" => campaign1.id,
+                   "clicked_at" => %{"$empty" => false}
+                 }
+               }
+             })
+  end
+
+  @tag :contacts_query
   test "safely validate query opts" do
     assert true == Query.valid_opts?(filter: %{"email" => "foo@example.com"})
     assert false == Query.valid_opts?(filter: %{"invalid_field" => "foo@example.com"})
