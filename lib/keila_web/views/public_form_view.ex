@@ -83,7 +83,7 @@ defmodule KeilaWeb.PublicFormView do
     end
   end
 
-  defp build_form_styles(form) do
+  def build_form_styles(form) do
     build_styles(%{
       "background-color" => form.settings.form_bg_color,
       "color" => form.settings.text_color
@@ -344,13 +344,26 @@ defmodule KeilaWeb.PublicFormView do
     end
   end
 
-  def render_unsubscribe_form(form) do
+  def render_unsubscribe_deprecated(form) do
     form_styles = build_form_styles(form)
 
     content_tag(:div, class: @form_classes, style: form_styles) do
       gettext("You have been unsubscribed from this list.")
     end
   end
+
+  # Helper functions to handle different route types
+  def get_unsubscribe_action_url(assigns) do
+    cond do
+      Map.get(assigns, :deprecated_route) ->
+        Routes.public_form_url(KeilaWeb.Endpoint, :unsubscribe, assigns.project_id, assigns.contact_id)
+      Map.has_key?(assigns, :hmac) ->
+        Routes.public_form_url(KeilaWeb.Endpoint, :unsubscribe, assigns.project_id, assigns.recipient_id, assigns.hmac)
+      true ->
+        "" # Current page (relative post)
+    end
+  end
+
 
   defp data_field_mapping(form) do
     form.field_settings
