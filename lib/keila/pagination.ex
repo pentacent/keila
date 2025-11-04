@@ -22,7 +22,7 @@ defmodule Keila.Pagination do
     page = Keyword.get(opts, :page, 0)
     page_size = Keyword.get(opts, :page_size, 10)
     id_field = get_id_field(query)
-    count = Keila.Repo.aggregate(query, :count, id_field)
+    count = query |> exclude(:order_by) |> Keila.Repo.aggregate(:count, id_field)
     page_count = ceil(count / page_size)
 
     data =
