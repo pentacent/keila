@@ -71,14 +71,14 @@
                   </select>
 
                   <select name={"#{index}[widget]"}>
-                    <%= for %{name: widget, label: label} <- @widgets[selected_field["type"]] do %>
+                    <%= for %{name: widget, label: label} <- @widgets[selected_field["field"]] do %>
                       <option value={widget} selected={widget == selected_field["widget"]}>
                         <%= label %>
                       </option>
                     <% end %>
                   </select>
 
-                  <%= render_widget(index, selected_field) %>
+                  <%= render_widget(index, Map.put(selected_field, "campaigns", @campaigns)) %>
 
                   <input name={"#{index}[type]"} value={selected_field["type"]} type="hidden" />
 

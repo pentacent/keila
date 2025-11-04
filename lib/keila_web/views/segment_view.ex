@@ -74,10 +74,20 @@ defmodule KeilaWeb.SegmentView do
 />)
   end
 
+  defp render_widget(index, %{"widget" => widget, "type" => type})
+       when widget in ["empty", "not_empty"] and type in ["date", "string"] do
+    assigns = %{}
+
+    ~H"""
+    <input id={"#{index}[value]"} name={"#{index}[value]"} type="hidden" value="" />
+    """
+  end
+
   defp render_widget(index, condition = %{"type" => "custom"}) do
     value = condition["value"] || %{}
     key = value["key"]
     match = value["match"]
+    widget = condition["widget"]
     assigns = %{}
 
     ~H"""
@@ -91,16 +101,42 @@ defmodule KeilaWeb.SegmentView do
       value={key}
       class="text-black w-28"
     />
-    <label for={"#{index}[value][match]"} class="self-center text-right">
-      <%= gettext("Match:") %>
-    </label>
-    <input
-      id={"#{index}[value][match]"}
-      name={"#{index}[value][match]"}
-      type="text"
-      value={match}
+    <%= if widget == "match" do %>
+      <label for={"#{index}[value][match]"} class="self-center text-right">
+        <%= gettext("Match:") %>
+      </label>
+      <input
+        id={"#{index}[value][match]"}
+        name={"#{index}[value][match]"}
+        type="text"
+        value={match}
+        class="text-black"
+      />
+    <% end %>
+    """
+  end
+
+  defp render_widget(index, condition = %{"type" => "messages"}) do
+    value = condition["value"] || %{}
+    campaign_id = value["campaign_id"]
+    campaigns = condition["campaigns"] || []
+    assigns = %{}
+
+    ~H"""
+    <select
+      id={"#{index}[value][campaign_id]"}
+      name={"#{index}[value][campaign_id]"}
       class="text-black"
-    />
+    >
+      <option value="any" selected={campaign_id == "any" || campaign_id == nil || campaign_id == ""}>
+        <%= gettext("Any campaign") %>
+      </option>
+      <%= for campaign <- campaigns do %>
+        <option value={campaign.id} selected={campaign_id == campaign.id}>
+          <%= campaign.subject %>
+        </option>
+      <% end %>
+    </select>
     """
   end
 

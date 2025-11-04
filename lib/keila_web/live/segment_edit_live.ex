@@ -1,6 +1,7 @@
 defmodule KeilaWeb.SegmentEditLive do
   use KeilaWeb, :live_view
   alias Keila.Contacts
+  alias Keila.Mailings
 
   defp fields do
     %{
@@ -9,24 +10,61 @@ defmodule KeilaWeb.SegmentEditLive do
       "first_name" => %{type: "string", label: gettext("First name")},
       "last_name" => %{type: "string", label: gettext("Last name")},
       "double_opt_in_at" => %{type: "date", label: gettext("Double opt-in date")},
-      "data" => %{type: "custom", label: gettext("Custom data")}
+      "data" => %{type: "custom", label: gettext("Custom data")},
+      "messages" => %{type: "messages", label: gettext("Messages")}
     }
   end
 
-  defp widgets do
+  defp widgets() do
     %{
-      "date" => [
-        %{name: "lt", label: gettext("is before")},
-        %{name: "gt", label: gettext("is after")}
-      ],
-      "string" => [
+      "email" => [
         %{name: "eq", label: gettext("is equal")},
         %{name: "starts_with", label: gettext("starts with")},
         %{name: "ends_with", label: gettext("ends with")},
         %{name: "includes", label: gettext("includes")}
       ],
-      "custom" => [
-        %{name: "matches", label: gettext("matches")}
+      "inserted_at" => [
+        %{name: "lt", label: gettext("is before")},
+        %{name: "gt", label: gettext("is after")}
+      ],
+      "double_opt_in_at" => [
+        %{name: "lt", label: gettext("is before")},
+        %{name: "gt", label: gettext("is after")},
+        %{name: "empty", label: gettext("is empty")},
+        %{name: "not_empty", label: gettext("is not empty")}
+      ],
+      "first_name" => [
+        %{name: "eq", label: gettext("is equal")},
+        %{name: "starts_with", label: gettext("starts with")},
+        %{name: "ends_with", label: gettext("ends with")},
+        %{name: "includes", label: gettext("includes")},
+        %{name: "empty", label: gettext("is empty")},
+        %{name: "not_empty", label: gettext("is not empty")}
+      ],
+      "last_name" => [
+        %{name: "eq", label: gettext("is equal")},
+        %{name: "starts_with", label: gettext("starts with")},
+        %{name: "ends_with", label: gettext("ends with")},
+        %{name: "includes", label: gettext("includes")},
+        %{name: "empty", label: gettext("is empty")},
+        %{name: "not_empty", label: gettext("is not empty")}
+      ],
+      "data" => [
+        %{name: "matches", label: gettext("matches")},
+        %{name: "empty", label: gettext("is empty")},
+        %{name: "not_empty", label: gettext("is not empty")}
+      ],
+      "messages" => [
+        %{name: "received", label: gettext("received")},
+        %{name: "not_received", label: gettext("not received")},
+        %{name: "opened", label: gettext("opened")},
+        %{name: "not_opened", label: gettext("not opened")},
+        %{name: "clicked", label: gettext("clicked")},
+        %{name: "not_clicked", label: gettext("not clicked")},
+        %{name: "bounced", label: gettext("bounced")},
+        %{name: "not_bounced", label: gettext("not bounced")},
+        %{name: "complained", label: gettext("complaint received")},
+        %{name: "not_complained", label: gettext("no complaint received")}
       ]
     }
   end
@@ -43,6 +81,8 @@ defmodule KeilaWeb.SegmentEditLive do
   def mount(_params, session, socket) do
     Gettext.put_locale(session["locale"])
 
+    campaigns = Mailings.get_project_campaigns(session["current_project"].id)
+
     socket =
       socket
       |> assign(:current_project, session["current_project"])
@@ -50,6 +90,7 @@ defmodule KeilaWeb.SegmentEditLive do
       |> assign(:changeset, Ecto.Changeset.change(session["segment"]))
       |> assign(:fields, fields())
       |> assign(:widgets, widgets())
+      |> assign(:campaigns, campaigns)
       |> assign(:page, 0)
       |> put_filter(session["segment"].filter || %{})
       |> update_assigns()
@@ -275,16 +316,26 @@ defmodule KeilaWeb.SegmentEditLive do
     |> Enum.map(fn {condition, condition_index} ->
       {field, condition} = Enum.at(condition, 0)
 
-      type =
-        case field do
-          "data." <> _ -> "custom"
-          field -> fields()[field].type
+      {actual_field, actual_condition, type} =
+        case {field, condition} do
+          {"$not", %{"messages" => inner}} ->
+            # $not wrapping messages - pass the whole $not structure
+            {"messages", %{"$not" => %{"messages" => inner}}, "messages"}
+
+          {"messages", _} ->
+            {"messages", condition, "messages"}
+
+          {"data." <> _, _} ->
+            {field, condition, "custom"}
+
+          {field, _} ->
+            {field, condition, fields()[field][:type] || "string"}
         end
 
       form_data =
-        filter_condition_to_form_data(type, field, condition)
+        filter_condition_to_form_data(type, actual_field, actual_condition)
         |> Map.put("type", type)
-        |> Map.put("field", field)
+        |> Map.put("field", actual_field)
 
       {to_string(condition_index), form_data}
     end)
@@ -310,6 +361,14 @@ defmodule KeilaWeb.SegmentEditLive do
     %{"value" => condition, "widget" => "eq"}
   end
 
+  defp filter_condition_to_form_data("string", _field, %{"$empty" => true}) do
+    %{"value" => nil, "widget" => "empty"}
+  end
+
+  defp filter_condition_to_form_data("string", _field, %{"$empty" => false}) do
+    %{"value" => nil, "widget" => "not_empty"}
+  end
+
   defp filter_condition_to_form_data("date", _field, condition) when is_map(condition) do
     {widget, datetime_string} =
       case condition do
@@ -328,9 +387,70 @@ defmodule KeilaWeb.SegmentEditLive do
     %{"value" => value, "widget" => widget}
   end
 
+  defp filter_condition_to_form_data("date", _field, %{"$empty" => true}) do
+    %{"value" => nil, "widget" => "empty"}
+  end
+
+  defp filter_condition_to_form_data("date", _field, %{"$empty" => false}) do
+    %{"value" => nil, "widget" => "not_empty"}
+  end
+
   defp filter_condition_to_form_data("custom", "data." <> field, condition)
        when is_binary(condition) do
     %{"value" => %{"key" => field, "match" => condition}}
+  end
+
+  defp filter_condition_to_form_data("custom", "data." <> field, %{"$empty" => true}) do
+    %{"value" => %{"key" => field}, "widget" => "empty"}
+  end
+
+  defp filter_condition_to_form_data("custom", "data." <> field, %{"$empty" => false}) do
+    %{"value" => %{"key" => field}, "widget" => "not_empty"}
+  end
+
+  defp filter_condition_to_form_data("messages", _field, messages_condition) do
+    # Handle message filters - check if entire messages condition is wrapped in $not
+    {is_negated, inner_condition} =
+      case messages_condition do
+        %{"$not" => %{"messages" => inner}} -> {true, inner}
+        %{"messages" => inner} -> {false, inner}
+        _ -> {false, messages_condition}
+      end
+
+    # Extract campaign_id and field check
+    {campaign_id, field_condition} =
+      case inner_condition do
+        %{"campaign_id" => cid} ->
+          {cid, Map.delete(inner_condition, "campaign_id")}
+
+        _ ->
+          {nil, inner_condition}
+      end
+
+    # Determine the widget based on field check and negation
+    widget =
+      cond do
+        Map.has_key?(field_condition, "sent_at") ->
+          if is_negated, do: "not_received", else: "received"
+
+        Map.has_key?(field_condition, "opened_at") ->
+          if is_negated, do: "not_opened", else: "opened"
+
+        Map.has_key?(field_condition, "clicked_at") ->
+          if is_negated, do: "not_clicked", else: "clicked"
+
+        Map.has_key?(field_condition, "bounced_at") ->
+          if is_negated, do: "not_bounced", else: "bounced"
+
+        Map.has_key?(field_condition, "complained_at") ->
+          if is_negated, do: "not_complained", else: "complained"
+
+        true ->
+          # default
+          "received"
+      end
+
+    %{"value" => %{"campaign_id" => campaign_id}, "widget" => widget}
   end
 
   # Transforms form_data to filter
@@ -338,6 +458,7 @@ defmodule KeilaWeb.SegmentEditLive do
     form_data
     |> Enum.sort_by(fn {group_index, _groups} -> group_index end)
     |> Enum.map(fn {_group_index, group} -> form_data_group_to_filter(group) end)
+    |> Enum.reject(fn group -> group["$and"] == [] end)
     |> then(fn groups -> %{"$or" => groups} end)
   end
 
@@ -348,7 +469,20 @@ defmodule KeilaWeb.SegmentEditLive do
       field = form_data_condition["field"]
       widget = form_data_condition["widget"]
       value = form_data_condition["value"]
-      type = fields()[field].type
+
+      type =
+        case field do
+          "data." <> _ ->
+            "custom"
+
+          field ->
+            case fields()[field] do
+              %{type: t} -> t
+              # Default to string type if field not found
+              _ -> "string"
+            end
+        end
+
       form_data_condition_to_filter(field, type, widget, value)
     end)
     |> Enum.filter(& &1)
@@ -374,6 +508,14 @@ defmodule KeilaWeb.SegmentEditLive do
     %{field => %{"$like" => "%" <> value}}
   end
 
+  defp form_data_condition_to_filter(field, "string", "empty", _value) do
+    %{field => %{"$empty" => true}}
+  end
+
+  defp form_data_condition_to_filter(field, "string", "not_empty", _value) do
+    %{field => %{"$empty" => false}}
+  end
+
   defp form_data_condition_to_filter(field, "date", widget, value)
        when widget in ["lt", "lte", "gt", "gte"] and is_map(value) do
     with {:ok, date} <- Date.from_iso8601(value["date"]),
@@ -386,6 +528,14 @@ defmodule KeilaWeb.SegmentEditLive do
     end
   end
 
+  defp form_data_condition_to_filter(field, "date", "empty", _value) do
+    %{field => %{"$empty" => true}}
+  end
+
+  defp form_data_condition_to_filter(field, "date", "not_empty", _value) do
+    %{field => %{"$empty" => false}}
+  end
+
   defp form_data_condition_to_filter(_field, "custom", widget, value)
        when widget in ["matches"] and is_map(value) do
     key = value["key"]
@@ -393,6 +543,61 @@ defmodule KeilaWeb.SegmentEditLive do
 
     if key && match do
       %{("data." <> key) => match}
+    end
+  end
+
+  defp form_data_condition_to_filter(_field, "custom", "empty", value) when is_map(value) do
+    key = value["key"]
+
+    if key do
+      %{("data." <> key) => %{"$empty" => true}}
+    end
+  end
+
+  defp form_data_condition_to_filter(_field, "custom", "not_empty", value) when is_map(value) do
+    key = value["key"]
+
+    if key do
+      %{("data." <> key) => %{"$empty" => false}}
+    end
+  end
+
+  defp form_data_condition_to_filter(_field, "messages", widget, value) when is_map(value) do
+    campaign_id = value["campaign_id"]
+
+    # Determine which field to check based on widget
+    {field_name, is_negated} =
+      case widget do
+        "received" -> {"sent_at", false}
+        "not_received" -> {"sent_at", true}
+        "opened" -> {"opened_at", false}
+        "not_opened" -> {"opened_at", true}
+        "clicked" -> {"clicked_at", false}
+        "not_clicked" -> {"clicked_at", true}
+        "bounced" -> {"bounced_at", false}
+        "not_bounced" -> {"bounced_at", true}
+        "complained" -> {"complained_at", false}
+        "not_complained" -> {"complained_at", true}
+        _ -> {nil, false}
+      end
+
+    if field_name do
+      base_filter = %{field_name => %{"$empty" => false}}
+
+      # Add campaign_id if specified (not "any")
+      filter_with_campaign =
+        if campaign_id && campaign_id != "" && campaign_id != "any" do
+          Map.put(base_filter, "campaign_id", campaign_id)
+        else
+          base_filter
+        end
+
+      # Wrap in "messages" key, then wrap entire thing in $not if negated
+      if is_negated do
+        %{"$not" => %{"messages" => filter_with_campaign}}
+      else
+        %{"messages" => filter_with_campaign}
+      end
     end
   end
 
@@ -407,18 +612,48 @@ defmodule KeilaWeb.SegmentEditLive do
       form_data_conditions =
         form_data_conditions
         |> Enum.map(fn {condition_index, condition} ->
-          type = fields()[condition["field"]].type
-          allowed_widgets = Enum.map(widgets()[type], & &1.name)
+          field = condition["field"]
+
+          type =
+            case field do
+              "messages" ->
+                "messages"
+
+              "data." <> _ ->
+                "custom"
+
+              field ->
+                case fields()[field] do
+                  %{type: t} -> t
+                  # Default to string type if field not found
+                  _ -> "string"
+                end
+            end
+
+          allowed_widgets = Enum.map(widgets()[field], & &1.name)
 
           if condition["type"] != type || condition["widget"] not in allowed_widgets do
+            default_value =
+              case type do
+                "messages" -> %{"campaign_id" => "any"}
+                _ -> nil
+              end
+
             condition =
               condition
               |> Map.put("type", type)
               |> Map.put("widget", allowed_widgets |> hd())
-              |> Map.put("value", nil)
+              |> Map.put("value", default_value)
 
             {condition_index, condition}
           else
+            condition =
+              if type == "messages" && (is_nil(condition["value"]) || condition["value"] == %{}) do
+                Map.put(condition, "value", %{"campaign_id" => "any"})
+              else
+                condition
+              end
+
             {condition_index, condition}
           end
         end)
