@@ -59,8 +59,6 @@ defmodule Keila.Mailings.Builder do
     Email.new()
     |> put_subject(campaign.subject, assigns)
     |> put_recipient(contact)
-    |> put_sender(campaign)
-    |> maybe_put_reply_to(campaign)
     |> put_body(campaign, assigns)
     |> put_unsubscribe_header(unsubscribe_link)
     |> maybe_put_precedence_header()
@@ -148,18 +146,6 @@ defmodule Keila.Mailings.Builder do
       |> String.trim()
 
     to(email, [{name, contact.email}])
-  end
-
-  defp put_sender(email, campaign) do
-    from(email, {campaign.sender.from_name, campaign.sender.from_email})
-  end
-
-  defp maybe_put_reply_to(email, campaign) do
-    if campaign.sender.reply_to_email do
-      reply_to(email, {campaign.sender.reply_to_name, campaign.sender.reply_to_email})
-    else
-      email
-    end
   end
 
   defp put_body(email, campaign, assigns)

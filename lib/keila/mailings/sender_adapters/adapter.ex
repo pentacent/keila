@@ -75,6 +75,22 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
 
       def only_shared?, do: false
       defoverridable only_shared?: 0
+
+      def from(sender) do
+        {sender.from_email, sender.from_name}
+      end
+
+      defoverridable from: 1
+
+      def reply_to(sender) do
+        if is_nil(sender.reply_to_email) do
+          nil
+        else
+          {sender.reply_to_email, sender.reply_to_name}
+        end
+      end
+
+      defoverridable reply_to: 1
     end
   end
 
@@ -143,7 +159,13 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
   @callback cancel_verification_from_token(Sender.t(), Token.t()) :: :ok
 
   @doc """
-  Returns true if this Sender adapter is only available as a shared sender.
+  Returns the sender's from address and name for `Swoosh.Email.from/2`.
   """
-  @callback only_shared?() :: boolean()
+  @callback get_from(Sender.t()) :: Swoosh.Email.Recipient.t()
+
+  @doc """
+  Returns the sender's from address and name for `Swoosh.Email.reply_to/2`.
+  Returns `nil` if no reply-to address is configured.
+  """
+  @callback get_reply_to(Sender.t()) :: Swoosh.Email.Recipient.t() | nil
 end

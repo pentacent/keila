@@ -27,7 +27,6 @@ defmodule Keila.Mailings.SenderAdapters do
   @spec adapter_names() :: list(String.t())
   def adapter_names() do
     adapters()
-    |> Enum.reject(& &1.only_shared?())
     |> Enum.map(& &1.name())
   end
 
