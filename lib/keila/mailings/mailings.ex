@@ -105,7 +105,7 @@ defmodule Keila.Mailings do
   @doc """
   Updates an existing Sender with given params.
 
-  When a Sender is updated, this is broadcast via `Phoenix.PubSub` on the channel `"sender:#{sender_id}"`
+  When a Sender is updated, this is broadcast via `Phoenix.PubSub` on the channel `"sender:%sender_id%"`
 
   ## Options
   - `:config_cast_opts` (optional) - Options passed to the `cast_embed` function of the config field.
@@ -199,14 +199,13 @@ defmodule Keila.Mailings do
       |> DateTime.add(3 * 24, :hour)
       |> DateTime.truncate(:second)
 
-    token_params = %{
-      scope: "mailings.verify_sender",
-      user_id: nil,
-      data: %{email: sender.from_email, sender_id: sender.id},
-      expires_at: expires_at
-    }
-
-    {:ok, token} = Keila.Auth.Token.changeset(token_params) |> Repo.insert()
+    {:ok, token} =
+      Keila.Auth.create_token(%{
+        scope: "mailings.verify_sender",
+        user_id: nil,
+        data: %{email: sender.from_email, sender_id: sender.id},
+        expires_at: expires_at
+      })
 
     if function_exported?(adapter, :deliver_verification_email, 2) do
       adapter.deliver_verification_email(sender, token.key)
@@ -234,23 +233,22 @@ defmodule Keila.Mailings do
       sender
       |> Sender.verify_sender_changeset(email)
       |> Repo.update()
-      |> tap(fn
-        {:ok, sender} ->
-          adapter = SenderAdapters.get_adapter(sender.config.type)
-
-          if function_exported?(adapter, :after_from_email_verification, 1),
-            do: adapter.after_from_email_verification(sender)
-
-          {:ok, sender}
-
-        {:error, _} ->
-          {:error, :invalid_token}
-      end)
+      |> tap(&maybe_run_after_from_email_verification_callback/1)
       |> tap(&maybe_send_update_message/1)
     else
-      _ -> {:error, :invalid_token}
+      _ -> :error
     end
   end
+
+  defp maybe_run_after_from_email_verification_callback({:ok, sender}) do
+    adapter = SenderAdapters.get_adapter(sender.config.type)
+
+    if function_exported?(adapter, :after_from_email_verification, 1) do
+      adapter.after_from_email_verification(sender)
+    end
+  end
+
+  defp maybe_run_after_from_email_verification_callback(_), do: :ok
 
   @doc """
   Cancels a sender verification by deleting the verification token.

@@ -70,9 +70,6 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
       def put_provider_options(email, _), do: email
       defoverridable put_provider_options: 2
 
-      def after_from_email_verification(_), do: raise("Not implemented")
-      defoverridable after_from_email_verification: 1
-
       def configurable?, do: true
       defoverridable configurable?: 0
 
