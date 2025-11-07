@@ -105,6 +105,8 @@ defmodule Keila.Mailings do
   @doc """
   Updates an existing Sender with given params.
 
+  When a Sender is updated, this is broadcast via `Phoenix.PubSub` on the channel `"sender:#{sender_id}"`
+
   ## Options
   - `:config_cast_opts` (optional) - Options passed to the `cast_embed` function of the config field.
   """
@@ -118,6 +120,7 @@ defmodule Keila.Mailings do
     |> adapter.update_changeset()
     |> update_sender_with_callback()
     |> unwrap_transaction_result()
+    |> tap(&maybe_send_update_message/1)
   end
 
   defp update_sender_with_callback(changeset) do
@@ -148,6 +151,17 @@ defmodule Keila.Mailings do
       end
     end)
   end
+
+  defp maybe_send_update_message({ok_or_action_required, updated_sender})
+       when ok_or_action_required in [:ok, :action_required] do
+    Phoenix.PubSub.broadcast(
+      Keila.PubSub,
+      "sender:#{updated_sender.id}",
+      {:sender_updated, updated_sender}
+    )
+  end
+
+  defp maybe_send_update_message(_), do: :ok
 
   @doc """
   Deletes Sender with given ID. Associated Campaigns are *not* deleted.
@@ -197,7 +211,10 @@ defmodule Keila.Mailings do
     if function_exported?(adapter, :deliver_verification_email, 2) do
       adapter.deliver_verification_email(sender, token.key)
     else
-      Keila.Auth.Emails.send!(:verify_sender, %{sender: sender, url: url_fn.(token.key)})
+      Keila.Auth.Emails.send!(:verify_sender_from_email, %{
+        sender: sender,
+        url: url_fn.(token.key)
+      })
     end
   end
 
@@ -229,6 +246,7 @@ defmodule Keila.Mailings do
         {:error, _} ->
           {:error, :invalid_token}
       end)
+      |> tap(&maybe_send_update_message/1)
     else
       _ -> {:error, :invalid_token}
     end
