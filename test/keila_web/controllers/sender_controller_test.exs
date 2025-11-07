@@ -109,12 +109,16 @@ defmodule KeilaWeb.SenderControllerTest do
     {conn, project} = with_login_and_project(conn)
     sender = insert!(:mailings_sender, %{project_id: project.id})
 
-    token = Keila.TestSenderAdapter.get_verification_token(sender)
+    {:ok, agent_pid} = Agent.start_link(fn -> nil end)
+    capture_token = fn token -> Agent.update(agent_pid, fn _ -> token end) end
+    Keila.Mailings.send_sender_verification_email(sender.id, &capture_token.(&1))
+    token = Agent.get(agent_pid, & &1)
+
     conn = get(conn, Routes.sender_path(conn, :verify_from_token, token))
     assert html_response(conn, 200) =~ ~r{Sender verified!\s*</h1>}
 
     verified_sender = Keila.Repo.get(Keila.Mailings.Sender, sender.id)
-    assert not is_nil(verified_sender.config.test_verified_at)
+    assert verified_sender.verified_from_email == verified_sender.from_email
 
     # Can only be done once with same token
     conn = get(conn, Routes.sender_path(conn, :verify_from_token, token))
