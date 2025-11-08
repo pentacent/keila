@@ -109,6 +109,7 @@ defmodule Keila.Mailings do
 
   ## Options
   - `:config_cast_opts` (optional) - Options passed to the `cast_embed` function of the config field.
+  - `:skip_callback` (optional) - If true, the adapter `after_update` callback will not be called.
   """
   @spec update_sender(Sender.id(), map()) :: {:ok, Sender.t()} | {:error, Changeset.t(Sender.t())}
   def update_sender(id, params, opts \\ []) when is_id(id) do
@@ -118,24 +119,30 @@ defmodule Keila.Mailings do
     sender
     |> Sender.update_changeset(params, opts)
     |> adapter.update_changeset()
-    |> update_sender_with_callback()
+    |> update_sender_with_callback(opts)
     |> unwrap_transaction_result()
     |> tap(&maybe_send_update_message/1)
   end
 
-  defp update_sender_with_callback(changeset) do
+  defp update_sender_with_callback(changeset, opts) do
     transaction_with_rescue(fn ->
       sender = Repo.update!(changeset) |> Repo.preload(:shared_sender)
       adapter = SenderAdapters.get_adapter(sender.config.type)
 
-      verification_required? =
-        adapter.requires_verification?() and is_nil(sender.verified_from_email)
+      from_email_changed? =
+        get_change(changeset, :from_email) != changeset.data.from_email and
+          get_change(changeset, :from_email) != changeset.data.verified_from_email
+
+      verification_required? = from_email_changed? and adapter.requires_verification?()
 
       if verification_required? do
         send_sender_verification_email(sender.id)
       end
 
-      case adapter.after_update(sender) do
+      skip_callback? = opts[:skip_callback] || false
+      callback_response = if skip_callback?, do: :ok, else: adapter.after_update(sender)
+
+      case callback_response do
         :ok ->
           if verification_required? do
             {:action_required, sender}
@@ -233,22 +240,24 @@ defmodule Keila.Mailings do
       sender
       |> Sender.verify_sender_changeset(email)
       |> Repo.update()
-      |> tap(&maybe_run_after_from_email_verification_callback/1)
+      |> tap(&maybe_run_after_from_email_verification_callbacks/1)
       |> tap(&maybe_send_update_message/1)
     else
       _ -> :error
     end
   end
 
-  defp maybe_run_after_from_email_verification_callback({:ok, sender}) do
+  defp maybe_run_after_from_email_verification_callbacks({:ok, sender}) do
     adapter = SenderAdapters.get_adapter(sender.config.type)
 
     if function_exported?(adapter, :after_from_email_verification, 1) do
       adapter.after_from_email_verification(sender)
     end
+
+    adapter.after_update(sender)
   end
 
-  defp maybe_run_after_from_email_verification_callback(_), do: :ok
+  defp maybe_run_after_from_email_verification_callbacks(_), do: :ok
 
   @doc """
   Cancels a sender verification by deleting the verification token.
