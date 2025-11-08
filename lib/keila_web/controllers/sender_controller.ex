@@ -85,15 +85,25 @@ defmodule KeilaWeb.SenderController do
 
   @spec verify_from_token(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def verify_from_token(conn, %{"token" => token}) do
-    case Mailings.verify_sender_from_token(token) do
-      {:ok, sender} -> conn |> assign(:sender, sender) |> render("verification_success.html")
-      :error -> conn |> put_status(404) |> render("verification_failure.html")
+    case Mailings.verify_sender_from_email(token) do
+      {:ok, sender} ->
+        current_user = conn.assigns[:current_user]
+        user_projects = if current_user, do: Keila.Projects.get_user_projects(current_user.id)
+
+        if current_user && Enum.any?(user_projects, &(&1.id == sender.project_id)) do
+          conn |> redirect(to: Routes.sender_path(conn, :edit, sender.project_id, sender.id))
+        else
+          conn |> assign(:sender, sender) |> render("verification_success.html")
+        end
+
+      :error ->
+        conn |> put_status(404) |> render("verification_failure.html")
     end
   end
 
   @spec cancel_verification_from_token(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def cancel_verification_from_token(conn, %{"token" => token}) do
-    Keila.Auth.find_and_delete_token("mailings.confirm_sender_email", token)
+    Keila.Mailings.cancel_sender_from_email_verification(token)
 
     conn |> put_status(404) |> render("verification_failure.html")
   end

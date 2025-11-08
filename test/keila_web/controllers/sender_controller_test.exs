@@ -115,7 +115,9 @@ defmodule KeilaWeb.SenderControllerTest do
     token = Agent.get(agent_pid, & &1)
 
     conn = get(conn, Routes.sender_path(conn, :verify_from_token, token))
-    assert html_response(conn, 200) =~ ~r{Sender verified!\s*</h1>}
+
+    assert redirected_to(conn, 302) ==
+             Routes.sender_path(conn, :edit, sender.project_id, sender.id)
 
     verified_sender = Keila.Repo.get(Keila.Mailings.Sender, sender.id)
     assert verified_sender.verified_from_email == verified_sender.from_email
@@ -126,15 +128,39 @@ defmodule KeilaWeb.SenderControllerTest do
   end
 
   @tag :sender_controller
-  test "sender verification can be canceled", %{conn: conn} do
+  test "sender verification shows message instead of redirect when user not logged in", %{
+    conn: conn
+  } do
+    {_conn, project} = with_login_and_project(conn)
+    sender = insert!(:mailings_sender, %{project_id: project.id})
+
+    {:ok, agent_pid} = Agent.start_link(fn -> nil end)
+    capture_token = fn token -> Agent.update(agent_pid, fn _ -> token end) end
+    Keila.Mailings.send_sender_verification_email(sender.id, &capture_token.(&1))
+    token = Agent.get(agent_pid, & &1)
+
+    conn = get(conn, Routes.sender_path(conn, :verify_from_token, token))
+
+    assert html_response(conn, 200) =~ ~r{Sender verified!\s*</h1>}
+
+    verified_sender = Keila.Repo.get(Keila.Mailings.Sender, sender.id)
+    assert verified_sender.verified_from_email == verified_sender.from_email
+  end
+
+  @tag :sender_controller
+  test "sender verification can be cancelled", %{conn: conn} do
     {conn, project} = with_login_and_project(conn)
     sender = insert!(:mailings_sender, %{project_id: project.id})
 
-    token = Keila.TestSenderAdapter.get_verification_token(sender)
+    {:ok, agent_pid} = Agent.start_link(fn -> nil end)
+    capture_token = fn token -> Agent.update(agent_pid, fn _ -> token end) end
+    Keila.Mailings.send_sender_verification_email(sender.id, &capture_token.(&1))
+    token = Agent.get(agent_pid, & &1)
+
     conn = get(conn, Routes.sender_path(conn, :cancel_verification_from_token, token))
     assert html_response(conn, 404) =~ ~r{Sender verification not successful.\s*</h1>}
 
     unverified_sender = Keila.Repo.get(Keila.Mailings.Sender, sender.id)
-    assert is_nil(unverified_sender.config.test_verified_at)
+    assert is_nil(unverified_sender.verified_from_email)
   end
 end
