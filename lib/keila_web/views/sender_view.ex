@@ -1,7 +1,6 @@
 defmodule KeilaWeb.SenderView do
   use KeilaWeb, :view
   alias KeilaWeb.Endpoint
-  import Phoenix.LiveView
 
   def meta("index.html", :title, _assigns), do: gettext("Senders")
 
@@ -14,12 +13,6 @@ defmodule KeilaWeb.SenderView do
     do: gettext("Delete Sender %{sender}?", sender: sender.name)
 
   def meta(_template, _key, _assigns), do: nil
-
-  defp form_path(%{id: project_id}, %{data: %{id: nil}}),
-    do: Routes.sender_path(Endpoint, :create, project_id)
-
-  defp form_path(%{id: project_id}, %{data: %{id: id}}),
-    do: Routes.sender_path(Endpoint, :update, project_id, id)
 
   def sender_adapters do
     if Application.get_env(:keila, :sender_creation_disabled) do
