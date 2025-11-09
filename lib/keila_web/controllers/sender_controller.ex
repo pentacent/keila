@@ -30,18 +30,7 @@ defmodule KeilaWeb.SenderController do
 
   @spec new(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def new(conn, _) do
-    changeset = change(%Sender{}, %{config: change(%Config{}, %{type: "smtp"})})
-
-    conn
-    |> render_edit(changeset)
-  end
-
-  @spec create(Plug.Conn.t(), map()) :: Plug.Conn.t()
-  def create(conn, %{"sender" => params}) do
-    case Mailings.create_sender(project_id(conn), params) do
-      {:ok, _} -> redirect(conn, to: Routes.sender_path(conn, :index, project_id(conn)))
-      {:error, changeset} -> conn |> put_status(400) |> render_edit(changeset)
-    end
+    edit(conn, %{})
   end
 
   @spec edit(Plug.Conn.t(), map()) :: Plug.Conn.t()
@@ -50,7 +39,7 @@ defmodule KeilaWeb.SenderController do
       session: %{
         "current_project" => conn.assigns.current_project,
         "current_user" => conn.assigns.current_user,
-        "sender" => conn.assigns.sender,
+        "sender" => conn.assigns[:sender],
         "locale" => Gettext.get_locale()
       }
     )
@@ -106,15 +95,6 @@ defmodule KeilaWeb.SenderController do
     Keila.Mailings.cancel_sender_from_email_verification(token)
 
     conn |> put_status(404) |> render("verification_failure.html")
-  end
-
-  defp render_edit(conn, changeset) do
-    shared_senders = Mailings.get_shared_senders()
-
-    conn
-    |> assign(:changeset, changeset)
-    |> assign(:shared_senders, shared_senders)
-    |> render("edit.html")
   end
 
   defp render_delete(conn, changeset) do

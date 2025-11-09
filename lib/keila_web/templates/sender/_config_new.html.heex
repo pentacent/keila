@@ -17,7 +17,7 @@
     x-data={tab_data}
     x-init="$nextTick(() => { if (! $el.querySelector('button.tab-label.active')) {$el.querySelector('button.tab-label').click()} })"
   >
-    <%= hidden_input(fc, :type, x_model: "senderType") %>
+    <%= select(fc, :type, @sender_adapters, x_model: "senderType", class: "hidden") %>
 
     <%= for adapter <- @sender_adapters do %>
       <% class = "{ 'active': tab === '#{adapter}' }"

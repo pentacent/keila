@@ -103,7 +103,9 @@ defmodule KeilaWeb.Router do
     get "/projects/:project_id/delete", ProjectController, :delete
     put "/projects/:project_id/delete", ProjectController, :post_delete
 
-    resources "/projects/:project_id/senders", SenderController
+    resources "/projects/:project_id/senders", SenderController,
+      only: [:index, :new, :edit, :delete]
+
     get "/projects/:project_id/senders/:id/delete", SenderController, :delete_confirmation
 
     get "/projects/:project_id/contacts", ContactController, :index

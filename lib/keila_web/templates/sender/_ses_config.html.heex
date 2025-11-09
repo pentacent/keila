@@ -28,11 +28,11 @@
   <% end %>
 </div>
 
-<%= if is_nil(input_value(@form, :ses_secret)) do %>
+<%= if is_nil(@form.data.ses_secret) do %>
   <div class="form-row">
     <%= label(@form, :ses_secret, gettext("Secret")) %>
     <%= with_validation(@form, :ses_secret) do %>
-      <%= password_input(@form, :ses_secret, class: "text-black") %>
+      <%= password_input(@form, :ses_secret, class: "text-black", phx_update: :ignore) %>
     <% end %>
   </div>
 <% else %>

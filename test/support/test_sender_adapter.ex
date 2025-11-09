@@ -57,4 +57,7 @@ defmodule Keila.TestSenderAdapter do
       |> then(fn sender -> {:ok, sender} end)
     end
   end
+
+  @impl true
+  def requires_verification?(), do: true
 end

@@ -1,6 +1,7 @@
 defmodule KeilaWeb.SenderView do
   use KeilaWeb, :view
   alias KeilaWeb.Endpoint
+  import Phoenix.LiveView
 
   def meta("index.html", :title, _assigns), do: gettext("Senders")
 
