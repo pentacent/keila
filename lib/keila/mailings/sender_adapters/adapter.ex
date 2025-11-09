@@ -151,14 +151,6 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
   @callback before_delete(Sender.t()) :: :ok | {:error, term()}
 
   @doc """
-  Callback for handling a `"mailings.verify_sender"` token.
-  When creating this token in one of the other callbacks,
-  make sure to include the attribute `"sender_id"` and `"type"`
-  for the Sender ID and the Adapter name respectively.
-  """
-  @callback after_from_email_verification(Sender.t()) :: {:ok, Sender.t()} | {:error, term()}
-
-  @doc """
   Returns true if this Sender adapter can be configured by the user.
   """
   @callback configurable?() :: boolean()
@@ -172,13 +164,13 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
   @doc """
   Returns the sender's from address and name for `Swoosh.Email.from/2`.
   """
-  @callback get_from(Sender.t()) :: Swoosh.Email.Recipient.t()
+  @callback from(Sender.t()) :: Swoosh.Email.Recipient.t()
 
   @doc """
   Returns the sender's from address and name for `Swoosh.Email.reply_to/2`.
   Returns `nil` if no reply-to address is configured.
   """
-  @callback get_reply_to(Sender.t()) :: Swoosh.Email.Recipient.t() | nil
+  @callback reply_to(Sender.t()) :: Swoosh.Email.Recipient.t() | nil
 
   @doc """
   Optional callback for implementing a custom method of delivering the Sender verification email.
@@ -191,5 +183,10 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
   """
   @callback after_from_email_verification(Sender.t()) :: :ok
 
-  @optional_callbacks [deliver_verification_email: 2, after_from_email_verification: 1]
+  @optional_callbacks [
+    deliver_verification_email: 2,
+    after_from_email_verification: 1,
+    from: 1,
+    reply_to: 1
+  ]
 end

@@ -12,7 +12,9 @@ defmodule KeilaWeb.DateTimeHelpers do
   Optionally, the resolution can be set to `:minute` or `:second`.
   """
   @spec local_datetime_tag(DateTime.t(), :minute | :second) :: Phoenix.HTML.safe()
-  def local_datetime_tag(datetime = %DateTime{}, resolution \\ :minute) do
+  def local_datetime_tag(datetime, resolution \\ :minute)
+
+  def local_datetime_tag(datetime = %DateTime{}, resolution) do
     content_tag(
       :span,
       Calendar.strftime(datetime, "%a, %b %d %Y, %H:%M"),
