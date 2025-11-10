@@ -93,31 +93,53 @@ defmodule Keila.Mailings.SenderTest do
     end
   end
 
-  describe "Verify senders" do
+  describe "Sender from_email verification" do
     @tag :mailings
-    test "through the API" do
+    test "send_sender_verification_email creates token and sends email" do
       group = insert!(:group)
       project = insert!(:project, group: group)
       sender = insert!(:mailings_sender, project: project)
-      token = Keila.TestSenderAdapter.get_verification_token(sender)
+      from_email = sender.from_email
 
-      assert {:ok, %Sender{config: %{test_verified_at: verified_at}}} =
-               Mailings.verify_sender_from_token(token)
+      {:ok, agent_pid} = Agent.start_link(fn -> nil end)
+      capture_token = capture_and_return_token(agent_pid)
+      Keila.Mailings.send_sender_verification_email(sender.id, &capture_token.(&1))
+      token = Agent.get(agent_pid, & &1)
 
-      assert not is_nil(verified_at)
+      {:email, %{text_body: text_body}} = assert_email_sent()
+      assert String.contains?(text_body, token)
+
+      assert {:ok, %Sender{verified_from_email: ^from_email}} =
+               Mailings.verify_sender_from_email(token)
     end
 
     @tag :mailings
-    test "fails when there is a callback error" do
+    test "verify_sender_from_email fails with invalid token" do
+      assert :error == Mailings.verify_sender_from_email("invalid-token")
+    end
+
+    @tag :mailings
+    test "cancel_sender_from_email_verification deletes token and returns :ok" do
       group = insert!(:group)
       project = insert!(:project, group: group)
+      sender = insert!(:mailings_sender, project: project)
 
-      sender =
-        insert!(:mailings_sender, project: project, config: %{test_string: "callback-fail"})
+      # Create a token
+      {:ok, agent_pid} = Agent.start_link(fn -> nil end)
+      capture_token = capture_and_return_token(agent_pid)
+      Keila.Mailings.send_sender_verification_email(sender.id, &capture_token.(&1))
+      token = Agent.get(agent_pid, & &1)
 
-      token = Keila.TestSenderAdapter.get_verification_token(sender)
+      # Cancel the token
+      assert :ok == Mailings.cancel_sender_from_email_verification(token)
 
-      assert {:error, _term} = Mailings.verify_sender_from_token(token)
+      # Verify token is deleted - verification should fail
+      assert :error == Mailings.verify_sender_from_email(token)
+    end
+
+    @tag :mailings
+    test "cancel_sender_from_email_verification returns :ok for non-existent token" do
+      assert :ok == Mailings.cancel_sender_from_email_verification("non-existent-token")
     end
   end
 
@@ -213,6 +235,13 @@ defmodule Keila.Mailings.SenderTest do
       for _ <- 1..50 do
         assert :ok = RateLimiter.check_sender_rate_limit(sender)
       end
+    end
+  end
+
+  defp capture_and_return_token(agent_pid) do
+    fn token ->
+      :ok = Agent.update(agent_pid, fn _ -> token end)
+      token
     end
   end
 end

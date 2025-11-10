@@ -25,8 +25,9 @@ defmodule Keila.Mailings.SenderAdapters do
   Returns the names of all configured sender adapters.
   """
   @spec adapter_names() :: list(String.t())
-  def adapter_names do
-    Enum.map(adapters(), fn adapter -> adapter.name() end)
+  def adapter_names() do
+    adapters()
+    |> Enum.map(& &1.name())
   end
 
   @doc """

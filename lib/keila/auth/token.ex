@@ -19,8 +19,8 @@ defmodule Keila.Auth.Token do
   If `:expires_at` is not set, a default expiry of one day is enforced.
   """
   @spec changeset(%{
-          :user_id => Auth.User.id(),
           :scope => String.t(),
+          optional(:user_id) => Auth.User.id(),
           optional(:expires_at) => DateTime.t(),
           optional(:data) => map()
         }) :: Ecto.Changeset.t()

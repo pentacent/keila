@@ -8,6 +8,7 @@ defmodule Keila.Mailings.Sender do
     field :from_name, :string
     field :reply_to_email, :string
     field :reply_to_name, :string
+    field :verified_from_email, :string
     embeds_one(:config, Keila.Mailings.Sender.Config)
     belongs_to(:project, Keila.Projects.Project, type: Keila.Projects.Project.Id)
     belongs_to(:shared_sender, Keila.Mailings.SharedSender, type: Keila.Mailings.SharedSender.Id)
@@ -33,8 +34,11 @@ defmodule Keila.Mailings.Sender do
     |> apply_constraints()
   end
 
-  @spec update_changeset(Ecto.Changeset.data(), map()) :: Ecto.Changeset.t(t())
-  def update_changeset(struct \\ %__MODULE__{}, params) do
+  @spec update_changeset(Ecto.Changeset.data(), map(), Keyword.t()) :: Ecto.Changeset.t(t())
+  def update_changeset(struct \\ %__MODULE__{}, params, opts \\ []) do
+    config_cast_opts =
+      opts[:config_cast_opts] || []
+
     struct
     |> cast(params, [
       :name,
@@ -45,9 +49,18 @@ defmodule Keila.Mailings.Sender do
       :shared_sender_id
     ])
     |> validate_required([:name, :from_email])
-    |> cast_embed(:config)
+    |> cast_embed(:config, config_cast_opts)
+    |> maybe_remove_from_email_validation()
     |> lowercase_emails()
     |> apply_constraints()
+  end
+
+  defp maybe_remove_from_email_validation(changeset) do
+    if changeset.data.verified_from_email != get_field(changeset, :from_email) do
+      changeset |> put_change(:verified_from_email, nil)
+    else
+      changeset
+    end
   end
 
   defp lowercase_emails(changeset) do
@@ -60,6 +73,13 @@ defmodule Keila.Mailings.Sender do
     changeset
     |> unique_constraint([:from_email])
     |> unique_constraint([:name, :project_id])
+  end
+
+  @spec verify_sender_changeset(Ecto.Changeset.data(), String.t()) :: Ecto.Changeset.t(t())
+  def verify_sender_changeset(struct \\ %__MODULE__{}, email) do
+    struct
+    |> cast(%{verified_from_email: email, from_email: email}, [:verified_from_email, :from_email])
+    |> validate_required([:verified_from_email, :from_email])
   end
 
   defp downcase_change(string) when is_binary(string), do: String.downcase(string)

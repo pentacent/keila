@@ -1,9 +1,9 @@
 <div class="flex flex-col">
-  <%= if is_nil(input_value(@form, :postmark_api_key)) do %>
+  <%= if is_nil(@form.data.postmark_api_key) do %>
     <div class="form-row">
       <%= label(@form, :postmark_api_key, gettext("API Key")) %>
       <%= with_validation(@form, :postmark_api_key) do %>
-        <%= password_input(@form, :postmark_api_key, class: "text-black") %>
+        <%= password_input(@form, :postmark_api_key, class: "text-black", phx_update: :ignore) %>
       <% end %>
     </div>
   <% else %>

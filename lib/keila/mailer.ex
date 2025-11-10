@@ -18,10 +18,27 @@ defmodule Keila.Mailer do
 
     try do
       email
+      |> put_from(sender, adapter)
+      |> maybe_put_reply_to(sender, adapter)
       |> adapter.put_provider_options(sender)
       |> deliver(config)
     rescue
       e -> {:error, e}
+    end
+  end
+
+  defp put_from(email, sender, adapter) do
+    from = adapter.from(sender)
+    Swoosh.Email.from(email, from)
+  end
+
+  defp maybe_put_reply_to(email, sender, adapter) do
+    reply_to = adapter.reply_to(sender)
+
+    if reply_to do
+      Swoosh.Email.reply_to(email, reply_to)
+    else
+      email
     end
   end
 end

@@ -108,6 +108,31 @@ defmodule Keila.Auth.Emails do
     )
   end
 
+  @spec build(:verify_sender_from_email, %{url: String.t(), sender: Keila.Mailings.Sender.t()}) ::
+          term() | no_return()
+  def build(:verify_sender_from_email, %{sender: sender, url: url}) do
+    new()
+    |> subject(dgettext("auth", "Please Verify Your Email for Keila"))
+    |> to(sender.from_email)
+    |> from({"Keila", system_from_email()})
+    |> text_body(
+      dgettext(
+        "auth",
+        """
+        Hey there,
+
+        please verify your sender email address by visiting the following link:
+
+        %{url}
+
+        If you didn't request this verification, please ignore this message and
+        do not click on the link.
+        """,
+        url: url
+      )
+    )
+  end
+
   defp system_from_email() do
     Application.get_env(:keila, __MODULE__) |> Keyword.fetch!(:from_email)
   end

@@ -14,11 +14,11 @@
   <% end %>
 </div>
 
-<%= if is_nil(input_value(@form, :smtp_password)) do %>
+<%= if is_nil(@form.data.smtp_password) do %>
   <div class="form-row">
     <%= label(@form, :smtp_password, gettext("Password")) %>
     <%= with_validation(@form, :smtp_password) do %>
-      <%= password_input(@form, :smtp_password, class: "text-black") %>
+      <%= password_input(@form, :smtp_password, class: "text-black", phx_update: :ignore) %>
     <% end %>
   </div>
 <% else %>
@@ -55,6 +55,7 @@
           {gettext("STARTTLS"), "starttls"},
           {gettext("None"), "none"}
         ],
+        phx_update: :ignore,
         "x-ref": "smtpTlsMode",
         "x-on:change":
           "switch ($refs.smtpTlsMode.value) {case 'tls': $refs.smtpPort.value = '465';break; case 'starttls': $refs.smtpPort.value = '587';break}"

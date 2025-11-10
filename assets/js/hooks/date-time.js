@@ -46,7 +46,8 @@ const putLocalDateTime = el => {
     month: "short",
     day: "2-digit",
     hour: "2-digit",
-    minute: "2-digit"
+    minute: "2-digit",
+    second: el.dataset.resolution === "second" ? "2-digit" : undefined
   })
 }
 export const SetLocalDateTimeContent = {
