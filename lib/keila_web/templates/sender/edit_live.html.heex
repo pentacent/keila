@@ -2,7 +2,7 @@
 <div class="container flex py-8 sm:py-11 sm:mb-4">
   <div class="flex-grow gap-4 flex flex-col-reverse sm:flex-row sm:items-center max-w-md">
     <h1 class="text-2xl md:text-3xl text-gray-100">
-      <%= if assigns[:sender] do %>
+      <%= if @sender do %>
         <%= @sender.name %>
       <% else %>
         <%= gettext("New Sender") %>
@@ -16,7 +16,7 @@
       >
         <%= gettext("Cancel") %>
       </a>
-      <%= if assigns[:sender] do %>
+      <%= if @sender do %>
         <a
           href={
             Routes.sender_path(@socket, :delete_confirmation, @current_project.id, @sender.id)
@@ -39,12 +39,51 @@
 </div>
 
 <div class="container">
+  <%= if @sender do %>
+    <%= if @sender_status_component || @adapter_requires_verification? do %>
+      <div class="mb-8 flex flex-col gap-2">
+        <%= if is_nil(@sender.verified_from_email) do %>
+          <div class="px-4 max-w-xl prose prose-invert bg-pink-800 rounded">
+            <div class="flex gap-4 items-center">
+              <div class="w-8 h-8 flex animate-spin" style="animation-duration: 4000ms;">
+                <%= render_icon(:spinner) %>
+              </div>
+              <div>
+                <h3 class="mt-4">Please verify your email</h3>
+                <%= gettext_md(
+                  """
+                  We have sent you an email to *%{email}*. \\
+                  Please click on the link in the email to verify your email address.
+                  """,
+                  email: @sender.from_email
+                ) %>
+              </div>
+            </div>
+          </div>
+        <% else %>
+          <div class="max-w-md prose prose-invert text-white p-2 bg-emerald-900 rounded">
+            <div class="flex gap-2 items-center">
+              <div class="w-6 h-6 flex">
+                <%= render_icon(:check) %>
+              </div>
+              <div class="text-md">
+                <%= gettext("Email verified") %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <%= if @sender_status_component do %>
+          <.live_component module={@sender_status_component} id={@sender.id} sender={@sender} />
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
   <.form
     let={f}
     for={@changeset}
     id="form"
     phx-submit="save"
-    class="max-w-md flex flex-col gap-4"
+    class="max-w-md flex flex-col gap-2"
     x-data
     @change="setUnsavedReminder(true)"
   >
@@ -115,12 +154,21 @@
         </div>
       </div>
     </details>
-    <div class="form-row">
-      <%= render("_config.html",
-        form: f,
-        sender_adapters: sender_adapters(),
-        shared_senders: @shared_senders
-      ) %>
-    </div>
+    <%= if @configurable? do %>
+      <div class="form-row">
+        <%= if is_nil(@sender) do %>
+          <%= render("_config_new.html",
+            form: f,
+            sender_adapters: sender_adapters(),
+            shared_senders: @shared_senders
+          ) %>
+        <% else %>
+          <%= render("_config_edit.html",
+            form: f,
+            sender: @sender
+          ) %>
+        <% end %>
+      </div>
+    <% end %>
   </.form>
 </div>
