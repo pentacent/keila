@@ -130,7 +130,8 @@ defmodule Keila.Mailings do
       adapter = SenderAdapters.get_adapter(sender.config.type)
 
       from_email_changed? =
-        get_change(changeset, :from_email) != changeset.data.from_email and
+        changed?(changeset, :from_email) and
+          get_change(changeset, :from_email) != changeset.data.from_email and
           get_change(changeset, :from_email) != changeset.data.verified_from_email
 
       verification_required? = from_email_changed? and adapter.requires_verification?()
