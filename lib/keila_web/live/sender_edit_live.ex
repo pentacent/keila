@@ -6,14 +6,6 @@ defmodule KeilaWeb.SenderEditLive do
   alias Keila.Mailings.SenderAdapters
   import Ecto.Changeset
 
-  import KeilaWeb.SenderView,
-    only: [
-      sender_adapters: 0,
-      sender_adapter_name: 1,
-      render_sender_adapter_form: 2,
-      render_shared_sender_adapter_form: 2
-    ]
-
   @impl true
   def mount(_params, session, socket) do
     Gettext.put_locale(session["locale"])
