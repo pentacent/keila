@@ -11,8 +11,7 @@ defmodule KeilaWeb.SenderEditLive do
       sender_adapters: 0,
       sender_adapter_name: 1,
       render_sender_adapter_form: 2,
-      render_shared_sender_adapter_form: 2,
-      render_sender_status_component: 2
+      render_shared_sender_adapter_form: 2
     ]
 
   @impl true
