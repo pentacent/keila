@@ -1,5 +1,6 @@
 import Config
 require Logger
+require Keila
 :ok = Application.ensure_started(:logger)
 {:ok, _} = Application.ensure_all_started(:tls_certificate_check)
 
@@ -319,24 +320,10 @@ if config_env() == :prod do
   config :keila, Keila.Accounts,
     credits_enabled: System.get_env("ENABLE_QUOTAS") in [1, "1", "true", "TRUE"]
 
-  # Enable billing
-  config :keila, Keila.Billing,
-    enabled: System.get_env("ENABLE_BILLING") in [1, "1", "true", "TRUE"]
-
   # Enable update check
   config :keila,
          :update_checks_enabled,
          System.get_env("DISABLE_UPDATE_CHECKS") not in [nil, "", "0", "false", "FALSE"]
-
-  paddle_vendor = System.get_env("PADDLE_VENDOR")
-
-  if paddle_vendor not in [nil, ""],
-    do: config(:keila, Keila.Billing, paddle_vendor: paddle_vendor)
-
-  paddle_environment = System.get_env("PADDLE_ENVIRONMENT")
-
-  if paddle_environment not in [nil, ""],
-    do: config(:keila, Keila.Billing, paddle_environment: paddle_environment)
 
   # Precedence Bulk Header
   if System.get_env("DISABLE_PRECEDENCE_HEADER") in [1, "1", "true", "TRUE"] do
@@ -360,4 +347,8 @@ if config_env() == :test do
     db_url = db_url <> "#{System.get_env("MIX_TEST_PARTITION")}"
     config(:keila, Keila.Repo, url: db_url)
   end
+end
+
+Keila.if_cloud do
+  use KeilaCloud.RuntimeConfig
 end
