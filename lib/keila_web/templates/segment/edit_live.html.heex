@@ -70,8 +70,13 @@
                     <% end %>
                   </select>
 
+                  <% widgets =
+                    case selected_field["field"] do
+                      "data." <> _ -> @widgets["data"]
+                      other -> @widgets[other]
+                    end %>
                   <select name={"#{index}[widget]"}>
-                    <%= for %{name: widget, label: label} <- @widgets[selected_field["field"]] do %>
+                    <%= for %{name: widget, label: label} <- widgets do %>
                       <option value={widget} selected={widget == selected_field["widget"]}>
                         <%= label %>
                       </option>

@@ -87,7 +87,7 @@ defmodule KeilaWeb.SegmentView do
     value = condition["value"] || %{}
     key = value["key"]
     match = value["match"]
-    widget = condition["widget"]
+    widget = condition["widget"] || "matches"
     assigns = %{}
 
     ~H"""
@@ -101,7 +101,7 @@ defmodule KeilaWeb.SegmentView do
       value={key}
       class="text-black w-28"
     />
-    <%= if widget == "match" do %>
+    <%= if widget == "matches" do %>
       <label for={"#{index}[value][match]"} class="self-center text-right">
         <%= gettext("Match:") %>
       </label>
