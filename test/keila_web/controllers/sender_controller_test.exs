@@ -44,7 +44,7 @@ defmodule KeilaWeb.SenderControllerTest do
     |> render_submit()
 
     # The test adapter requires verification of the from email address.
-    assert render(lv) =~ "Please verify your email"
+    assert render(lv) =~ "Waiting for email verification ..."
 
     # Verify sender was created with correct attributes
     [sender] = Keila.Mailings.get_project_senders(project.id)
@@ -65,7 +65,7 @@ defmodule KeilaWeb.SenderControllerTest do
 
     # The LiveView updates automatically and shows the verification success message
     assert render(lv) =~ "Email verified"
-    refute render(lv) =~ "Please verify your email"
+    refute render(lv) =~ "Waiting for email verification ..."
 
     # Sender from email is now verified
     sender = Keila.Repo.reload(sender)
