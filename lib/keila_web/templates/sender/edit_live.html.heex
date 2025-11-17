@@ -49,7 +49,7 @@
                 <%= render_icon(:spinner) %>
               </div>
               <div>
-                <h3 class="mt-4">Please verify your email</h3>
+                <h3 class="mt-4">Waiting for email verification ...</h3>
                 <%= gettext_md(
                   """
                   We have sent you an email to *%{email}*. \\
@@ -57,6 +57,20 @@
                   """,
                   email: @sender.from_email
                 ) %>
+                <button
+                  phx-click="send_verification_email"
+                  type="button"
+                  class="button button--white-frame transition disabled:cursor-wait mb-4"
+                  x-data="{waiting: false}"
+                  x-on:click="$el.disabled = true; waiting = true; setTimeout(() => { $el.disabled = false; waiting = false; }, 3000)"
+                >
+                  <template x-if="waiting">
+                    <div class="w-4 h-4 flex animate-spin" style="animation-duration: 8000ms;">
+                      <%= render_icon(:spinner) %>
+                    </div>
+                  </template>
+                  <span><%= dgettext("cloud", "Resend email") %></span>
+                </button>
               </div>
             </div>
           </div>
