@@ -50,7 +50,7 @@ defmodule Keila.Mailings.SenderAdapters.Shared.SES do
   def requires_verification?(), do: true
 
   @impl true
-  def deliver_verification_email(sender, token) do
+  def deliver_verification_email(sender, token, _url_fn) do
     email = sender.from_email
     template_name = template_name(sender, email)
     aws_config = aws_config(sender)

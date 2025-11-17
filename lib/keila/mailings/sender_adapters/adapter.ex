@@ -175,7 +175,11 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
   @doc """
   Optional callback for implementing a custom method of delivering the Sender verification email.
   """
-  @callback deliver_verification_email(Sender.t(), token :: String.t()) ::
+  @callback deliver_verification_email(
+              Sender.t(),
+              token :: String.t(),
+              url_fn :: (String.t() -> String.t())
+            ) ::
               {:ok, Sender.t()} | {:error, term()}
 
   @doc """
@@ -184,7 +188,7 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
   @callback after_from_email_verification(Sender.t()) :: :ok
 
   @optional_callbacks [
-    deliver_verification_email: 2,
+    deliver_verification_email: 3,
     after_from_email_verification: 1,
     from: 1,
     reply_to: 1

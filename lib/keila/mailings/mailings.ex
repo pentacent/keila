@@ -215,8 +215,8 @@ defmodule Keila.Mailings do
         expires_at: expires_at
       })
 
-    if function_exported?(adapter, :deliver_verification_email, 2) do
-      adapter.deliver_verification_email(sender, token.key)
+    if function_exported?(adapter, :deliver_verification_email, 3) do
+      adapter.deliver_verification_email(sender, token.key, url_fn)
     else
       Keila.Auth.Emails.send!(:verify_sender_from_email, %{
         sender: sender,
