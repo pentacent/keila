@@ -34,9 +34,7 @@ html {
         @apply w-6;
     }
 
-    &:not(.button--cta):not(.button--warn):not(.button--text):not(
-            .button--muted
-        ):not(.button--white) {
+    &:not(.button--cta):not(.button--warn):not(.button--text):not(.button--muted):not(.button--white-frame):not(.button--white) {
         @apply ring-2 ring-emerald-500
             hover:ring-emerald-700;
         focus: ring-emerald-700;
@@ -59,6 +57,10 @@ html {
 
     &.button--white {
         @apply bg-white text-emerald-600 ring-2 ring-emerald-600 hover:bg-gray-50 hover:ring-emerald-400 focus:ring-emerald-400 active:bg-gray-200 active:text-emerald-600;
+    }
+
+    &.button--white-frame {
+        @apply bg-transparent text-white ring-2 ring-white hover:bg-white/20 focus:bg-white/80 active:bg-white/90 active:text-black disabled:bg-gray-300/50 disabled:text-gray-400;
     }
 
     &.button--warn {
