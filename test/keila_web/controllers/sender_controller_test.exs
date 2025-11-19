@@ -1,5 +1,6 @@
 defmodule KeilaWeb.SenderControllerTest do
   use KeilaWeb.ConnCase, async: false
+  require Keila
   import Phoenix.LiveViewTest
 
   setup :set_swoosh_global
@@ -23,53 +24,55 @@ defmodule KeilaWeb.SenderControllerTest do
     assert html_response(conn, 200) =~ ~r{New Sender\s*</h1>}
   end
 
-  @tag :sender_controller
-  test "creates sender with test adapter and completes email verification", %{conn: conn} do
-    {conn, project} = with_login_and_project(conn)
+  Keila.unless_cloud do
+    @tag :sender_controller
+    test "creates sender with test adapter and completes email verification", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
 
-    {:ok, lv, _html} = live(conn, Routes.sender_path(conn, :new, project.id))
+      {:ok, lv, _html} = live(conn, Routes.sender_path(conn, :new, project.id))
 
-    # Submit the form to create a new sender
-    sender_params = %{
-      "name" => "Test Sender",
-      "from_name" => "Test Newsletter",
-      "from_email" => "test@example.com",
-      "config" => %{
-        "type" => "test"
+      # Submit the form to create a new sender
+      sender_params = %{
+        "name" => "Test Sender",
+        "from_name" => "Test Newsletter",
+        "from_email" => "test@example.com",
+        "config" => %{
+          "type" => "test"
+        }
       }
-    }
 
-    lv
-    |> form("#form", sender: sender_params)
-    |> render_submit()
+      lv
+      |> form("#form", sender: sender_params)
+      |> render_submit()
 
-    # The test adapter requires verification of the from email address.
-    assert render(lv) =~ "Waiting for email verification ..."
+      # The test adapter requires verification of the from email address.
+      assert render(lv) =~ "Waiting for email verification ..."
 
-    # Verify sender was created with correct attributes
-    [sender] = Keila.Mailings.get_project_senders(project.id)
-    assert sender.name == sender_params["name"]
-    assert sender.from_name == sender_params["from_name"]
-    assert sender.from_email == sender_params["from_email"]
-    assert sender.config.type == "test"
-    assert is_nil(sender.verified_from_email)
+      # Verify sender was created with correct attributes
+      [sender] = Keila.Mailings.get_project_senders(project.id)
+      assert sender.name == sender_params["name"]
+      assert sender.from_name == sender_params["from_name"]
+      assert sender.from_email == sender_params["from_email"]
+      assert sender.config.type == "test"
+      assert is_nil(sender.verified_from_email)
 
-    # Verification email should have been sent
-    {:email, %{text_body: text_body}} = assert_email_sent()
-    refute_email_sent()
-    [_, token] = Regex.run(~r{verify-sender/([^\s]+)}, text_body)
+      # Verification email should have been sent
+      {:email, %{text_body: text_body}} = assert_email_sent()
+      refute_email_sent()
+      [_, token] = Regex.run(~r{verify-sender/([^\s]+)}, text_body)
 
-    # Submitting the verification redirects to edit page
-    conn = get(conn, Routes.sender_path(conn, :verify_from_token, token))
-    assert redirected_to(conn, 302) == Routes.sender_path(conn, :edit, project.id, sender.id)
+      # Submitting the verification redirects to edit page
+      conn = get(conn, Routes.sender_path(conn, :verify_from_token, token))
+      assert redirected_to(conn, 302) == Routes.sender_path(conn, :edit, project.id, sender.id)
 
-    # The LiveView updates automatically and shows the verification success message
-    assert render(lv) =~ "Email verified"
-    refute render(lv) =~ "Waiting for email verification ..."
+      # The LiveView updates automatically and shows the verification success message
+      assert render(lv) =~ "Email verified"
+      refute render(lv) =~ "Waiting for email verification ..."
 
-    # Sender from email is now verified
-    sender = Keila.Repo.reload(sender)
-    assert sender.verified_from_email == sender_params["from_email"]
+      # Sender from email is now verified
+      sender = Keila.Repo.reload(sender)
+      assert sender.verified_from_email == sender_params["from_email"]
+    end
   end
 
   @tag :sender_controller

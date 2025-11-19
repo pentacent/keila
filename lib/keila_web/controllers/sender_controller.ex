@@ -1,6 +1,7 @@
 defmodule KeilaWeb.SenderController do
   use KeilaWeb, :controller
 
+  require Keila
   alias Keila.Mailings
   import Ecto.Changeset
   import Phoenix.LiveView.Controller
@@ -30,7 +31,18 @@ defmodule KeilaWeb.SenderController do
 
   @spec new(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def new(conn, _) do
-    edit(conn, %{})
+    Keila.if_cloud do
+      live_render(conn, KeilaWeb.CloudSenderCreateLive,
+        session: %{
+          "current_project_id" => conn.assigns.current_project.id,
+          "current_user_id" => conn.assigns.current_user.id,
+          "sender_id" => nil,
+          "locale" => Gettext.get_locale()
+        }
+      )
+    else
+      edit(conn, %{})
+    end
   end
 
   @spec edit(Plug.Conn.t(), map()) :: Plug.Conn.t()
@@ -39,7 +51,7 @@ defmodule KeilaWeb.SenderController do
       session: %{
         "current_project" => conn.assigns.current_project,
         "current_user" => conn.assigns.current_user,
-        "sender" => conn.assigns[:sender],
+        "sender_id" => conn.assigns[:sender] && conn.assigns.sender.id,
         "locale" => Gettext.get_locale()
       }
     )

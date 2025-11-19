@@ -9,10 +9,8 @@ defmodule Keila.Repo.Migrations.AddVerifiedFromEmailToSenders do
     # Data migration to set verified_from_email based on sender type
     execute """
     UPDATE mailings_senders
-    SET verified_from_email = CASE
-      WHEN config->>'type' = 'shared_ses' AND config->>'shared_ses_verified_at' IS NOT NULL THEN config->>'shared_ses_verification_requested_for'
-      ELSE from_email
-    END
+    SET verified_from_email = config->>'shared_ses_verification_requested_for'
+    WHERE config->>'type' = 'shared_ses' AND config->>'shared_ses_verified_at' IS NOT NULL
     """
   end
 

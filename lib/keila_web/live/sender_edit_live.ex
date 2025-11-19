@@ -1,5 +1,7 @@
 defmodule KeilaWeb.SenderEditLive do
   use KeilaWeb, :live_view
+  require Keila
+
   alias Keila.Mailings
   alias Keila.Mailings.Sender
   alias Keila.Mailings.Sender.Config
@@ -9,7 +11,7 @@ defmodule KeilaWeb.SenderEditLive do
   @impl true
   def mount(_params, session, socket) do
     Gettext.put_locale(session["locale"])
-    sender = Keila.Mailings.get_sender(session["sender"].id)
+    sender = Keila.Mailings.get_sender(session["sender_id"])
 
     if sender && connected?(socket) do
       Phoenix.PubSub.subscribe(Keila.PubSub, "sender:#{sender.id}")
@@ -72,8 +74,10 @@ defmodule KeilaWeb.SenderEditLive do
     {:noreply, maybe_put_sender(socket, sender)}
   end
 
-  def sender_status_component(%{config: %{type: "send_with_keila"}}),
-    do: KeilaCloudWeb.Components.SharedSendWithKeilaStatus
+  Keila.if_cloud do
+    def sender_status_component(%{config: %{type: "send_with_keila"}}),
+      do: KeilaCloudWeb.Components.SharedSendWithKeilaStatus
+  end
 
   def sender_status_component(_), do: nil
 

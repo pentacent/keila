@@ -26,8 +26,7 @@ defmodule Keila.Mailings.SenderAdapters do
   """
   @spec adapter_names() :: list(String.t())
   def adapter_names() do
-    adapters()
-    |> Enum.map(& &1.name())
+    Enum.map(adapters(), fn adapter -> adapter.name() end)
   end
 
   @doc """
