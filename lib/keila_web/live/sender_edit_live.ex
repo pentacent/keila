@@ -9,7 +9,7 @@ defmodule KeilaWeb.SenderEditLive do
   @impl true
   def mount(_params, session, socket) do
     Gettext.put_locale(session["locale"])
-    sender = session["sender"]
+    sender = Keila.Mailings.get_sender(session["sender"].id)
 
     if sender && connected?(socket) do
       Phoenix.PubSub.subscribe(Keila.PubSub, "sender:#{sender.id}")
