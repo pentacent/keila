@@ -1,6 +1,6 @@
 defmodule KeilaWeb.SenderView do
   use KeilaWeb, :view
-  alias KeilaWeb.Endpoint
+  require Keila
 
   def meta("index.html", :title, _assigns), do: gettext("Senders")
 
@@ -13,12 +13,6 @@ defmodule KeilaWeb.SenderView do
     do: gettext("Delete Sender %{sender}?", sender: sender.name)
 
   def meta(_template, _key, _assigns), do: nil
-
-  defp form_path(%{id: project_id}, %{data: %{id: nil}}),
-    do: Routes.sender_path(Endpoint, :create, project_id)
-
-  defp form_path(%{id: project_id}, %{data: %{id: id}}),
-    do: Routes.sender_path(Endpoint, :update, project_id, id)
 
   def sender_adapters do
     if Application.get_env(:keila, :sender_creation_disabled) do
@@ -34,6 +28,10 @@ defmodule KeilaWeb.SenderView do
   def sender_adapter_name("mailgun"), do: "Mailgun"
   def sender_adapter_name("postmark"), do: "Postmark"
   def sender_adapter_name("shared_ses"), do: "Shared SES"
+
+  Keila.if_cloud do
+    def sender_adapter_name("send_with_keila"), do: dgettext("cloud", "Send With Keila")
+  end
 
   if Mix.env() == :test do
     def sender_adapter_name("test"), do: "Test"

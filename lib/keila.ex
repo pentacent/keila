@@ -34,6 +34,10 @@ defmodule Keila do
     build_if(@cloud?, clauses)
   end
 
+  defmacro unless_cloud(clauses) do
+    build_if(!@cloud?, clauses)
+  end
+
   defp build_if(condition, do: do_clause),
     do: build_if(condition, do: do_clause, else: :noop)
 

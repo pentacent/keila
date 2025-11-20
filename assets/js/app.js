@@ -43,6 +43,10 @@ let liveSocket = new LiveSocket("/live", Socket, {
   dom: {
     onBeforeElUpdated(from, to) {
       if (from.__x) window.Alpine.clone(from.__x, to)
+
+      if (from instanceof HTMLDetailsElement && to instanceof HTMLDetailsElement) {
+        to.open = from.open
+      }
     }
   }
 })

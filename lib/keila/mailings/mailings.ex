@@ -44,7 +44,7 @@ defmodule Keila.Mailings do
   Creates a new Sender with given params.
   """
   @spec create_sender(Project.id(), map()) ::
-          {:ok, Sender.t()} | {:error, Changeset.t(Sender.t())}
+          {:ok, Sender.t()} | {:action_required, Sender.t()} | {:error, Changeset.t(Sender.t())}
   def create_sender(project_id, params) do
     params
     |> stringize_params()
@@ -58,12 +58,27 @@ defmodule Keila.Mailings do
       sender = Repo.insert!(changeset) |> Repo.preload(:shared_sender)
       adapter = SenderAdapters.get_adapter(sender.config.type)
 
-      case adapter.after_update(sender) do
-        :ok -> sender
+      verification_required? = adapter.requires_verification?()
+
+      if verification_required? do
+        send_sender_verification_email(sender.id)
+      end
+
+      case adapter.after_create(sender) do
+        :ok -> if verification_required?, do: {:action_required, sender}, else: sender
+        {:action_required, sender} -> {:action_required, sender}
         {:error, message} -> changeset |> add_error(:config, message) |> apply_action!(:insert)
       end
     end)
+    |> unwrap_transaction_result()
   end
+
+  defp unwrap_transaction_result({:ok, sender = %Sender{}}), do: {:ok, sender}
+
+  defp unwrap_transaction_result({:ok, {:action_required, sender = %Sender{}}}),
+    do: {:action_required, sender}
+
+  defp unwrap_transaction_result({:error, changeset}), do: {:error, changeset}
 
   @doc """
   Returns the Sender from line in the form of `"Name <test@example.com>"`
@@ -89,25 +104,72 @@ defmodule Keila.Mailings do
 
   @doc """
   Updates an existing Sender with given params.
+
+  When a Sender is updated, this is broadcast via `Phoenix.PubSub` on the channel `"sender:%sender_id%"`
+
+  ## Options
+  - `:config_cast_opts` (optional) - Options passed to the `cast_embed` function of the config field.
+  - `:skip_callback` (optional) - If true, the adapter `after_update` callback will not be called.
   """
   @spec update_sender(Sender.id(), map()) :: {:ok, Sender.t()} | {:error, Changeset.t(Sender.t())}
-  def update_sender(id, params) when is_id(id) do
-    Repo.get(Sender, id)
-    |> Sender.update_changeset(params)
-    |> update_sender_with_callback()
+  def update_sender(id, params, opts \\ []) when is_id(id) do
+    sender = Repo.get(Sender, id)
+    adapter = SenderAdapters.get_adapter(sender.config.type)
+
+    sender
+    |> Sender.update_changeset(params, opts)
+    |> adapter.update_changeset()
+    |> update_sender_with_callback(opts)
+    |> unwrap_transaction_result()
+    |> tap(&maybe_send_update_message/1)
   end
 
-  defp update_sender_with_callback(changeset) do
+  defp update_sender_with_callback(changeset, opts) do
     transaction_with_rescue(fn ->
       sender = Repo.update!(changeset) |> Repo.preload(:shared_sender)
       adapter = SenderAdapters.get_adapter(sender.config.type)
 
-      case adapter.after_update(sender) do
-        :ok -> sender
-        {:error, message} -> changeset |> add_error(:config, message) |> apply_action!(:update)
+      from_email_changed? =
+        changed?(changeset, :from_email) and
+          get_change(changeset, :from_email) != changeset.data.from_email and
+          get_change(changeset, :from_email) != changeset.data.verified_from_email
+
+      verification_required? = from_email_changed? and adapter.requires_verification?()
+
+      if verification_required? do
+        send_sender_verification_email(sender.id)
+      end
+
+      skip_callback? = opts[:skip_callback] || false
+      callback_response = if skip_callback?, do: :ok, else: adapter.after_update(sender)
+
+      case callback_response do
+        :ok ->
+          if verification_required? do
+            {:action_required, sender}
+          else
+            sender
+          end
+
+        {:action_required, updated_sender} ->
+          {:action_required, updated_sender}
+
+        {:error, message} ->
+          changeset |> add_error(:config, message) |> apply_action!(:update)
       end
     end)
   end
+
+  defp maybe_send_update_message({ok_or_action_required, updated_sender})
+       when ok_or_action_required in [:ok, :action_required] do
+    Phoenix.PubSub.broadcast(
+      Keila.PubSub,
+      "sender:#{updated_sender.id}",
+      {:sender_updated, updated_sender}
+    )
+  end
+
+  defp maybe_send_update_message(_), do: :ok
 
   @doc """
   Deletes Sender with given ID. Associated Campaigns are *not* deleted.
@@ -133,20 +195,89 @@ defmodule Keila.Mailings do
   end
 
   @doc """
+  Sends a verification email to the sender with the given ID.
+  """
+  @spec send_sender_verification_email(Sender.id(), (String.t() -> String.t())) :: :ok
+  def send_sender_verification_email(id, url_fn \\ &default_url_function/1) do
+    sender = get_sender(id)
+    adapter = SenderAdapters.get_adapter(sender.config.type)
+
+    expires_at =
+      DateTime.utc_now()
+      |> DateTime.add(3 * 24, :hour)
+      |> DateTime.truncate(:second)
+
+    {:ok, token} =
+      Keila.Auth.create_token(%{
+        scope: "mailings.verify_sender",
+        user_id: nil,
+        data: %{email: sender.from_email, sender_id: sender.id},
+        expires_at: expires_at
+      })
+
+    if function_exported?(adapter, :deliver_verification_email, 3) do
+      adapter.deliver_verification_email(sender, token.key, url_fn)
+    else
+      Keila.Auth.Emails.send!(:verify_sender_from_email, %{
+        sender: sender,
+        url: url_fn.(token.key)
+      })
+    end
+  end
+
+  defp default_url_function(token) do
+    KeilaWeb.Router.Helpers.sender_url(KeilaWeb.Endpoint, :verify_from_token, token)
+  end
+
+  @doc """
   Verifies sender from `mailings.verify_sender` token.
   """
-  @spec verify_sender_from_token(String.t()) :: {:ok, Sender.t()} | {:error, term}
-  def verify_sender_from_token(raw_token) do
-    case Keila.Auth.find_and_delete_token(raw_token, "mailings.verify_sender") do
-      token = %Keila.Auth.Token{} ->
-        sender = get_sender(token.data["sender_id"])
-        adapter = SenderAdapters.get_adapter(token.data["type"])
-
-        adapter.verify_from_token(sender, token)
-
-      nil ->
-        :error
+  @spec verify_sender_from_email(String.t()) :: {:ok, Sender.t()} | {:error, term}
+  def verify_sender_from_email(raw_token) do
+    with token = %Keila.Auth.Token{} <- find_and_delete_verification_token(raw_token),
+         sender_id when is_binary(sender_id) <- token.data["sender_id"],
+         email when is_binary(email) <- token.data["email"],
+         sender = %Sender{} <- get_sender(sender_id) do
+      sender
+      |> Sender.verify_sender_changeset(email)
+      |> Repo.update()
+      |> tap(&maybe_run_after_from_email_verification_callbacks/1)
+      |> tap(&maybe_send_update_message/1)
+    else
+      _ -> :error
     end
+  end
+
+  defp maybe_run_after_from_email_verification_callbacks({:ok, sender}) do
+    adapter = SenderAdapters.get_adapter(sender.config.type)
+
+    if function_exported?(adapter, :after_from_email_verification, 1) do
+      adapter.after_from_email_verification(sender)
+    end
+
+    adapter.after_update(sender)
+  end
+
+  defp maybe_run_after_from_email_verification_callbacks(_), do: :ok
+
+  @doc """
+  Cancels a sender verification by deleting the verification token.
+  This function is idempotent and always returns `:ok`.
+  """
+  @spec cancel_sender_from_email_verification(String.t()) :: :ok
+  def cancel_sender_from_email_verification(raw_token) do
+    with token = %Keila.Auth.Token{} <- find_and_delete_verification_token(raw_token),
+         sender = %Sender{} <- get_sender(token.data["sender_id"]),
+         adapter = SenderAdapters.get_adapter(sender.config.type),
+         true <- function_exported?(adapter, :after_from_email_verification, 1) do
+      adapter.after_from_email_verification(sender)
+    else
+      _ -> :ok
+    end
+  end
+
+  defp find_and_delete_verification_token(raw_token) do
+    Keila.Auth.find_and_delete_token(raw_token, "mailings.verify_sender")
   end
 
   @doc """

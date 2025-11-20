@@ -20,7 +20,7 @@
   <% end %>
 </div>
 
-<%= if is_nil(input_value(@form, :mailgun_api_key)) do %>
+<%= if is_nil(@form.data.mailgun_api_key) do %>
   <div class="form-row">
     <%= label(@form, :mailgun_api_key, gettext("API Key")) %>
     <%= with_validation(@form, :mailgun_api_key) do %>

@@ -1,0 +1,29 @@
+<%= inputs_for @form, :config, fn fc -> %>
+  <%= hidden_input(fc, :type) %>
+  <hr class="my-4 border-gray-700" />
+
+  <%= if @sender.shared_sender do
+    render_shared_sender_adapter_form(fc, @sender.shared_sender.config.type)
+  else
+    render_sender_adapter_form(fc, @sender.config.type)
+  end %>
+
+  <div class="form-row">
+    <%= label(fc, :rate_limit_per_second, gettext("Rate limit per second")) %>
+    <%= with_validation(fc, :rate_limit_per_second) do %>
+      <%= number_input(fc, :rate_limit_per_second, class: "text-black", min: 0) %>
+    <% end %>
+  </div>
+  <div class="form-row">
+    <%= label(fc, :rate_limit_per_minute, gettext("Rate limit per minute")) %>
+    <%= with_validation(fc, :rate_limit_per_minute) do %>
+      <%= number_input(fc, :rate_limit_per_minute, class: "text-black", min: 0) %>
+    <% end %>
+  </div>
+  <div class="form-row">
+    <%= label(fc, :rate_limit_per_hour, gettext("Rate limit per hour")) %>
+    <%= with_validation(fc, :rate_limit_per_hour) do %>
+      <%= number_input(fc, :rate_limit_per_hour, class: "text-black", min: 0) %>
+    <% end %>
+  </div>
+<% end %>

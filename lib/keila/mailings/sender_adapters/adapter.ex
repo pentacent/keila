@@ -64,14 +64,33 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
       def after_update(_), do: :ok
       defoverridable after_update: 1
 
+      def update_changeset(changeset), do: changeset
+      defoverridable update_changeset: 1
+
       def put_provider_options(email, _), do: email
       defoverridable put_provider_options: 2
 
-      def verify_from_token(_, _), do: raise("Not implemented")
-      defoverridable verify_from_token: 2
+      def configurable?, do: true
+      defoverridable configurable?: 0
 
-      def cancel_verification_from_token(_, _), do: raise("Not implemented")
-      defoverridable cancel_verification_from_token: 2
+      def requires_verification?, do: false
+      defoverridable requires_verification?: 0
+
+      def from(sender) do
+        {sender.from_name, sender.from_email}
+      end
+
+      defoverridable from: 1
+
+      def reply_to(sender) do
+        if is_nil(sender.reply_to_email) do
+          nil
+        else
+          {sender.reply_to_name, sender.reply_to_email}
+        end
+      end
+
+      defoverridable reply_to: 1
     end
   end
 
@@ -112,13 +131,18 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
   Creation will be rolled back if error tuple is returned and the error is added
   to the `:config` attribute of the Sender changeset.
   """
-  @callback after_create(Sender.t()) :: :ok | {:error, term()}
+  @callback after_create(Sender.t()) :: :ok | {:error, term()} | {:action_required, Sender.t()}
 
   @doc """
   Callback after Sender update for adapter-specific actions.
   Update will be rolled back if error tuple is returned.
   """
-  @callback after_update(Sender.t()) :: :ok | {:error, term()}
+  @callback after_update(Sender.t()) :: :ok | {:error, term()} | {:action_required, Sender.t()}
+
+  @doc """
+  Callback that allows the adapter to react to changes (e.g. resetting the verification status when the from_email changes).
+  """
+  @callback update_changeset(Ecto.Changeset.t()) :: Ecto.Changeset.t()
 
   @doc """
   Callback after Sender deletion for adapter-specific cleanup.
@@ -127,15 +151,58 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
   @callback before_delete(Sender.t()) :: :ok | {:error, term()}
 
   @doc """
-  Callback for handling a `"mailings.verify_sender"` token.
-  When creating this token in one of the other callbacks,
-  make sure to include the attribute `"sender_id"` and `"type"`
-  for the Sender ID and the Adapter name respectively.
+  Returns true if this Sender adapter can be configured by the user.
   """
-  @callback verify_from_token(Sender.t(), Token.t()) :: {:ok, Sender.t()} | {:error, term()}
+  @callback configurable?() :: boolean()
 
   @doc """
-  Callback for canceling the verification of a `"mailings.verify_sender"` token.
+  Returns true if the sender requires verification of the from_email field.
+  TODO: Right now, this is only implemented for the SWK adapter but should be extended to all adapters later.
   """
-  @callback cancel_verification_from_token(Sender.t(), Token.t()) :: :ok
+  @callback requires_verification?() :: boolean()
+
+  @doc """
+  Returns the sender's from address and name for `Swoosh.Email.from/2`.
+  """
+  @callback from(Sender.t()) :: Swoosh.Email.Recipient.t()
+
+  @doc """
+  Returns the sender's from address and name for `Swoosh.Email.reply_to/2`.
+  Returns `nil` if no reply-to address is configured.
+  """
+  @callback reply_to(Sender.t()) :: Swoosh.Email.Recipient.t() | nil
+
+  @doc """
+  Optional callback for implementing a custom method of delivering the Sender verification email.
+  """
+  @callback deliver_verification_email(
+              Sender.t(),
+              token :: String.t(),
+              url_fn :: (String.t() -> String.t())
+            ) ::
+              {:ok, Sender.t()} | {:error, term()}
+
+  @doc """
+  Optional callback for cleaning up after a successful verification.
+  """
+  @callback after_from_email_verification(Sender.t()) :: :ok
+
+  @doc """
+  Optional callback for implementing rate limits at the adapter level.
+  Returns rate limit configuration as keyword list with units as keys
+  and limits as values.
+
+  Units must be sorted from largest to smallest.
+  """
+  @callback rate_limit(Sender.t() | SharedSender.t()) :: [
+              {:hour | :minute | :second, non_neg_integer() | nil}
+            ]
+
+  @optional_callbacks [
+    deliver_verification_email: 3,
+    after_from_email_verification: 1,
+    from: 1,
+    reply_to: 1,
+    rate_limit: 1
+  ]
 end

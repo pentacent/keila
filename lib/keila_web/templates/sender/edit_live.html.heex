@@ -1,0 +1,188 @@
+<div x-data="{activeDialog: null}" x-init="Hooks.RememberUnsaved.mounted.call({el: $el})"></div>
+<div class="container flex py-8 sm:py-11 sm:mb-4">
+  <div class="flex-grow gap-4 flex flex-col-reverse sm:flex-row sm:items-center max-w-md">
+    <h1 class="text-2xl md:text-3xl text-gray-100">
+      <%= if @sender do %>
+        <%= @sender.name %>
+      <% else %>
+        <%= gettext("New Sender") %>
+      <% end %>
+    </h1>
+    <div class="flex-grow flex flex-row justify-end gap-4 sm:flex-row" x-data>
+      <a
+        href={Routes.sender_path(@socket, :index, @current_project.id)}
+        class="button button--large button--text"
+        @click="setUnsavedReminder(false)"
+      >
+        <%= gettext("Cancel") %>
+      </a>
+      <%= if @sender do %>
+        <a
+          href={
+            Routes.sender_path(@socket, :delete_confirmation, @current_project.id, @sender.id)
+          }
+          class="button button--large button--text"
+          @click="setUnsavedReminder(false)"
+        >
+          <%= gettext("Delete") %>
+        </a>
+      <% end %>
+      <button
+        form="form"
+        class="button button--cta button--large"
+        @click="setUnsavedReminder(false)"
+      >
+        <%= gettext("Save") %>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <%= if @sender do %>
+    <%= if @sender_status_component || @adapter_requires_verification? do %>
+      <div class="mb-8 flex flex-col gap-2">
+        <%= if is_nil(@sender.verified_from_email) do %>
+          <div class="px-4 max-w-xl prose prose-invert bg-pink-800 rounded">
+            <div class="flex gap-4 items-center">
+              <div class="w-8 h-8 flex animate-spin" style="animation-duration: 4000ms;">
+                <%= render_icon(:spinner) %>
+              </div>
+              <div>
+                <h3 class="mt-4">Waiting for email verification ...</h3>
+                <%= gettext_md(
+                  """
+                  We have sent you an email to *%{email}*. \\
+                  Please click on the link in the email to verify your email address.
+                  """,
+                  email: @sender.from_email
+                ) %>
+                <button
+                  phx-click="send_verification_email"
+                  type="button"
+                  class="button button--white-frame transition disabled:cursor-wait mb-4"
+                  x-data="{waiting: false}"
+                  x-on:click="$el.disabled = true; waiting = true; setTimeout(() => { $el.disabled = false; waiting = false; }, 3000)"
+                >
+                  <template x-if="waiting">
+                    <div class="w-4 h-4 flex animate-spin" style="animation-duration: 8000ms;">
+                      <%= render_icon(:spinner) %>
+                    </div>
+                  </template>
+                  <span><%= dgettext("cloud", "Resend email") %></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        <% else %>
+          <div class="max-w-md prose prose-invert text-white p-2 bg-emerald-900 rounded">
+            <div class="flex gap-2 items-center">
+              <div class="w-6 h-6 flex">
+                <%= render_icon(:check) %>
+              </div>
+              <div class="text-md">
+                <%= gettext("Email verified") %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <%= if @sender_status_component do %>
+          <.live_component module={@sender_status_component} id={@sender.id} sender={@sender} />
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+  <.form
+    let={f}
+    for={@changeset}
+    id="form"
+    phx-submit="save"
+    class="max-w-md flex flex-col gap-2"
+    x-data
+    @change="setUnsavedReminder(true)"
+  >
+    <div class="form-row">
+      <%= label(f, :name, gettext("Sender name")) %>
+      <%= with_validation(f, :name) do %>
+        <%= text_input(f, :name,
+          placeholder: gettext("My Sender"),
+          class: "text-black",
+          autofocus: true
+        ) %>
+        <p class="text-xs text-gray-300">
+          <%= gettext(
+            "This is the internal name of your sender. It is not shown to your recipients."
+          ) %>
+        </p>
+      <% end %>
+    </div>
+    <div class="form-row">
+      <%= label(f, :from_email, gettext("From address")) %>
+      <%= with_validation(f, :from_email) do %>
+        <%= text_input(f, :from_email,
+          placeholder: gettext("newsletter@example.org"),
+          class: "text-black"
+        ) %>
+
+        <p class="text-xs text-gray-300">
+          <%= gettext("This is the email address from which your emails will be sent.") %>
+        </p>
+      <% end %>
+    </div>
+    <div class="form-row">
+      <%= label(f, :from_name, gettext("From name")) %>
+      <%= with_validation(f, :from_name) do %>
+        <%= text_input(f, :from_name, placeholder: gettext("You, Inc"), class: "text-black") %>
+
+        <p class="text-xs text-gray-300">
+          <%= gettext("This is the name that will show up in the inbox of your recipients.") %>
+        </p>
+      <% end %>
+    </div>
+
+    <details>
+      <summary><%= gettext("Reply-to settings") %></summary>
+      <div class="p-4">
+        <div class="text-xs text-gray-300 mb-4">
+          <%= gettext(
+            "If you want replies to your newsletters to go to a different address than the one specified above, you can configure an alternative email address and name here."
+          ) %>
+        </div>
+        <div class="form-row">
+          <%= label(f, :reply_to_email, gettext("Reply-to address")) %>
+          <%= with_validation(f, :reply_to_email) do %>
+            <%= text_input(f, :reply_to_email,
+              placeholder: gettext("hello@example.org"),
+              class: "text-black"
+            ) %>
+          <% end %>
+        </div>
+        <div class="form-row">
+          <%= label(f, :reply_to_name, gettext("Reply-to name")) %>
+          <%= with_validation(f, :reply_to_name) do %>
+            <%= text_input(f, :reply_to_name,
+              placeholder: gettext("You, Inc"),
+              class: "text-black"
+            ) %>
+          <% end %>
+        </div>
+      </div>
+    </details>
+    <%= if @configurable? do %>
+      <div class="form-row">
+        <%= if is_nil(@sender) do %>
+          <%= render("_config_new.html",
+            form: f,
+            sender_adapters: sender_adapters(),
+            shared_senders: @shared_senders
+          ) %>
+        <% else %>
+          <%= render("_config_edit.html",
+            form: f,
+            sender: @sender
+          ) %>
+        <% end %>
+      </div>
+    <% end %>
+  </.form>
+</div>

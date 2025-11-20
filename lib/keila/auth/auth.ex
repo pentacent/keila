@@ -524,7 +524,7 @@ defmodule Keila.Auth do
   """
   @spec create_token(%{
           :scope => binary,
-          :user_id => User.id(),
+          optional(:user_id) => User.id(),
           optional(:data) => map(),
           optional(:expires_at) => DateTime.t()
         }) :: {:ok, Token.t()} | {:error, Ecto.Changeset.t(Token.t())}
@@ -566,7 +566,7 @@ defmodule Keila.Auth do
 
   API Keys are Auth Tokens with the scope `"api"`.
   """
-  @spec create_api_key(Keila.Auth.User.id(), Keila.Projects.Project.id(), Strimg.t()) ::
+  @spec create_api_key(Keila.Auth.User.id(), Keila.Projects.Project.id(), String.t()) ::
           {:ok, Token.t()}
   def create_api_key(user_id, project_id, name \\ nil) do
     create_token(%{

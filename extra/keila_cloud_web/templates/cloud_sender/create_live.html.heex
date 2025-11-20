@@ -1,0 +1,150 @@
+<div x-data="{activeDialog: null}" x-init="Hooks.RememberUnsaved.mounted.call({el: $el})"></div>
+
+<div class="container flex py-8 sm:py-11 sm:mb-4">
+  <div class="flex-grow gap-4 flex flex-col-reverse sm:flex-row sm:items-center max-w-md">
+    <h1 class="text-2xl md:text-3xl text-gray-100">
+      <%= gettext("New Sender") %>
+    </h1>
+  </div>
+</div>
+
+<div class="container">
+  <.form
+    let={f}
+    for={@setup_changeset}
+    as="sender"
+    id="form"
+    class="max-w-md flex flex-col gap-4"
+    x-data="{}"
+    @change="setUnsavedReminder(true)"
+    phx-change="update_changeset"
+    phx-submit="submit_step"
+  >
+    <%= case @step do %>
+      <% :name -> %>
+        <div class="form-row">
+          <%= label(f, :name, gettext("Name")) %>
+          <%= with_validation(f, :name) do %>
+            <%= text_input(f, :name,
+              placeholder: dgettext("cloud", "My Newsletter"),
+              class: "text-black w-64"
+            ) %>
+          <% end %>
+          <p class="text-sm">
+            <%= dgettext_md(
+              "cloud",
+              "This name will show up as the *From name* in the inbox of your recipients."
+            ) %>
+          </p>
+        </div>
+      <% :email -> %>
+        <div class="form-row">
+          <%= label(f, :name, gettext("Email")) %>
+          <%= with_validation(f, :email) do %>
+            <%= email_input(f, :email,
+              placeholder: dgettext("cloud", "newsletter@example.com"),
+              class: "text-black w-64"
+            ) %>
+          <% end %>
+          <div class="text-sm">
+            <%= dgettext_md(
+              "cloud",
+              "This email will show up as the *From email* in the inbox of your recipients."
+            ) %>
+          </div>
+        </div>
+      <% :use_swk -> %>
+        <div class="flex flex-col gap-3">
+          <div class="flex">
+            <%= radio_button(f, :use_swk, "true", class: "w-0 h-0 opacity-0 peer/radio") %>
+            <label
+              for={input_id(f, :use_swk, "true")}
+              class="flex flex-row gap-5 rounded-md border-2 border-gray-600 bg-gray-800 hover:bg-gray-700 peer-focus/radio:border-emerald-600 peer-checked/radio:bg-emerald-800 peer-checked/radio:border-emerald-600 peer-checked/radio:hover:bg-emerald-700 p-4 peer-checked/radio:[&_.status]:bg-gray-200 group ease-in duration-100"
+            >
+              <div class="flex w-12 h-12 text-gray-200 my-4">
+                <%= render_icon(:logo) %>
+              </div>
+              <div>
+                <h3 class="text-bold text-xl"><%= dgettext("cloud", "Send with Keila") %></h3>
+                <p class="text-sm">
+                  <%= dgettext(
+                    "cloud",
+                    "Use our dedicated European email infrastructure for excellent deliverability and automatic bounce handling."
+                  ) %>
+                </p>
+              </div>
+              <div class="rounded-full border-2 border-gray-200 w-3 h-3 self-center shrink-0 flex items-center justify-center">
+                <div class="status w-2/3 h-2/3 rounded-full group-hover:bg-gray-500"></div>
+              </div>
+            </label>
+          </div>
+          <div class="flex">
+            <%= radio_button(f, :use_swk, "false", class: "w-0 h-0 opacity-0 peer/radio") %>
+            <label
+              for={input_id(f, :use_swk, "false")}
+              class="flex flex-row gap-5 rounded-md border-2 border-gray-600 bg-gray-800 hover:bg-gray-700 peer-focus/radio:border-emerald-600 peer-checked/radio:bg-emerald-800 peer-checked/radio:border-emerald-600 peer-checked/radio:hover:bg-emerald-700 p-4 peer-checked/radio:[&_.status]:bg-gray-200 group ease-in duration-100"
+            >
+              <div class="flex w-12 h-12 text-gray-200 my-4 soss">
+                <%= render_icon(:cog) %>
+              </div>
+              <div>
+                <h3 class="text-bold text-xl"><%= dgettext("cloud", "Custom") %></h3>
+                <p class="text-sm">
+                  <%= dgettext(
+                    "cloud",
+                    "Leverage your existing email infrastructure and send emails with SMTP, or via Mailgun, Sendgrid, SES, or Postmark."
+                  ) %>
+                </p>
+              </div>
+              <div class="rounded-full border-2 border-gray-200 w-3 h-3 self-center shrink-0 flex items-center justify-center">
+                <div class="status w-2/3 h-2/3 rounded-full group-hover:bg-gray-500"></div>
+              </div>
+            </label>
+          </div>
+        </div>
+      <% :custom_adapter_type -> %>
+        <div class="flex flex-wrap gap-2">
+          <%= for adapter <- Keila.Mailings.SenderAdapters.adapters() do %>
+            <div class="flex flex-col gap-3">
+              <div class="flex">
+                <%= radio_button(f, :adapter_type, adapter.name(),
+                  class: "w-0 h-0 opacity-0 peer/radio"
+                ) %>
+                <label
+                  for={input_id(f, :adapter_type, adapter.name())}
+                  class="flex flex-row gap-5 rounded-md border-2 border-gray-600 bg-gray-800 hover:bg-gray-700 peer-focus/radio:border-emerald-600 peer-checked/radio:bg-emerald-800 peer-checked/radio:border-emerald-600 peer-checked/radio:hover:bg-emerald-700 p-4 peer-checked/radio:[&_.status]:bg-gray-200 group ease-in duration-100"
+                >
+                  <div>
+                    <h3 class="text-bold text-xl">
+                      <%= KeilaWeb.SenderView.sender_adapter_name(adapter.name()) %>
+                    </h3>
+                  </div>
+                  <div class="rounded-full border-2 border-gray-200 w-3 h-3 self-center shrink-0 flex items-center justify-center">
+                    <div class="status w-2/3 h-2/3 rounded-full group-hover:bg-gray-500"></div>
+                  </div>
+                </label>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% :custom_settings -> %>
+        <%= inputs_for f, :adapter_config, fn fc -> %>
+          <%= hidden_input(
+            fc,
+            :type,
+            value: Ecto.Changeset.get_field(@setup_changeset, :adapter_type)
+          ) %>
+          <%= KeilaWeb.SenderView.render_sender_adapter_form(
+            fc,
+            Ecto.Changeset.get_field(@setup_changeset, :adapter_type)
+          ) %>
+        <% end %>
+    <% end %>
+
+    <div class="mt-4">
+      <button class="button button--cta button--large" @click="setUnsavedReminder(false)">
+        <%= gettext("Continue") %>
+      </button>
+    </div>
+  </.form>
+</div>

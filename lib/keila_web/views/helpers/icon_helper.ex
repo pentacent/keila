@@ -4,6 +4,7 @@ defmodule KeilaWeb.IconHelper do
 
   Icons are from [Heroicons](https://heroicons.com/) and placed in
   `priv/vendor/hero-icons-outline`.
+  Icons from Font Awesome are placed in `priv/vendor/font-awesome`.
 
   All icon names from Heroicons are supported; hyphens are transformed to
   underscores (i.e. use `arrow_left` instead of `arrow-left`).

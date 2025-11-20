@@ -1,8 +1,10 @@
 defmodule KeilaWeb.SenderController do
   use KeilaWeb, :controller
 
-  alias Keila.{Mailings, Mailings.Sender, Mailings.Sender.Config}
+  require Keila
+  alias Keila.Mailings
   import Ecto.Changeset
+  import Phoenix.LiveView.Controller
 
   plug :put_resource
        when action not in [
@@ -29,34 +31,30 @@ defmodule KeilaWeb.SenderController do
 
   @spec new(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def new(conn, _) do
-    changeset = change(%Sender{}, %{config: change(%Config{}, %{type: "smtp"})})
-
-    conn
-    |> render_edit(changeset)
-  end
-
-  @spec create(Plug.Conn.t(), map()) :: Plug.Conn.t()
-  def create(conn, %{"sender" => params}) do
-    case Mailings.create_sender(project_id(conn), params) do
-      {:ok, _} -> redirect(conn, to: Routes.sender_path(conn, :index, project_id(conn)))
-      {:error, changeset} -> conn |> put_status(400) |> render_edit(changeset)
+    Keila.if_cloud do
+      live_render(conn, KeilaWeb.CloudSenderCreateLive,
+        session: %{
+          "current_project_id" => conn.assigns.current_project.id,
+          "current_user_id" => conn.assigns.current_user.id,
+          "sender_id" => nil,
+          "locale" => Gettext.get_locale()
+        }
+      )
+    else
+      edit(conn, %{})
     end
   end
 
   @spec edit(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def edit(conn, _params) do
-    conn
-    |> render_edit(Ecto.Changeset.change(conn.assigns.sender))
-  end
-
-  @spec update(Plug.Conn.t(), map()) :: Plug.Conn.t()
-  def update(conn, params = %{"id" => id}) do
-    project = current_project(conn)
-
-    case Mailings.update_sender(id, params["sender"] || %{}) do
-      {:ok, _sender} -> redirect(conn, to: Routes.sender_path(conn, :index, project.id))
-      {:error, changeset} -> conn |> put_status(400) |> render_edit(changeset)
-    end
+    live_render(conn, KeilaWeb.SenderEditLive,
+      session: %{
+        "current_project" => conn.assigns.current_project,
+        "current_user" => conn.assigns.current_user,
+        "sender_id" => conn.assigns[:sender] && conn.assigns.sender.id,
+        "locale" => Gettext.get_locale()
+      }
+    )
   end
 
   @spec delete_confirmation(Plug.Conn.t(), any) :: Plug.Conn.t()
@@ -88,26 +86,27 @@ defmodule KeilaWeb.SenderController do
 
   @spec verify_from_token(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def verify_from_token(conn, %{"token" => token}) do
-    case Mailings.verify_sender_from_token(token) do
-      {:ok, sender} -> conn |> assign(:sender, sender) |> render("verification_success.html")
-      :error -> conn |> put_status(404) |> render("verification_failure.html")
+    case Mailings.verify_sender_from_email(token) do
+      {:ok, sender} ->
+        current_user = conn.assigns[:current_user]
+        user_projects = if current_user, do: Keila.Projects.get_user_projects(current_user.id)
+
+        if current_user && Enum.any?(user_projects, &(&1.id == sender.project_id)) do
+          conn |> redirect(to: Routes.sender_path(conn, :edit, sender.project_id, sender.id))
+        else
+          conn |> assign(:sender, sender) |> render("verification_success.html")
+        end
+
+      :error ->
+        conn |> put_status(404) |> render("verification_failure.html")
     end
   end
 
   @spec cancel_verification_from_token(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def cancel_verification_from_token(conn, %{"token" => token}) do
-    Keila.Auth.find_and_delete_token("mailings.confirm_sender_email", token)
+    Keila.Mailings.cancel_sender_from_email_verification(token)
 
     conn |> put_status(404) |> render("verification_failure.html")
-  end
-
-  defp render_edit(conn, changeset) do
-    shared_senders = Mailings.get_shared_senders()
-
-    conn
-    |> assign(:changeset, changeset)
-    |> assign(:shared_senders, shared_senders)
-    |> render("edit.html")
   end
 
   defp render_delete(conn, changeset) do
