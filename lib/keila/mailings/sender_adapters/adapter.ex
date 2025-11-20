@@ -187,10 +187,22 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
   """
   @callback after_from_email_verification(Sender.t()) :: :ok
 
+  @doc """
+  Optional callback for implementing rate limits at the adapter level.
+  Returns rate limit configuration as keyword list with units as keys
+  and limits as values.
+
+  Units must be sorted from largest to smallest.
+  """
+  @callback rate_limit(Sender.t() | SharedSender.t()) :: [
+              {:hour | :minute | :second, non_neg_integer() | nil}
+            ]
+
   @optional_callbacks [
     deliver_verification_email: 3,
     after_from_email_verification: 1,
     from: 1,
-    reply_to: 1
+    reply_to: 1,
+    rate_limit: 1
   ]
 end

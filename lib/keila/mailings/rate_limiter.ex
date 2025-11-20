@@ -6,7 +6,7 @@ defmodule Keila.Mailings.RateLimiter do
   use GenServer
 
   require Logger
-  alias Keila.Mailings.Sender
+  alias Keila.Mailings.{Sender, SenderAdapters}
 
   def start_link(_opts) do
     GenServer.start_link(__MODULE__, nil, name: __MODULE__)
@@ -42,12 +42,22 @@ defmodule Keila.Mailings.RateLimiter do
 
   # List rate limits with larger scale first
   defp get_rate_limits(sender) do
+    adapter = SenderAdapters.get_adapter(sender.config.type)
+
+    if adapter && function_exported?(adapter, :rate_limit, 1) do
+      adapter.rate_limit(sender)
+    else
+      get_sender_config_rate_limits(sender)
+    end
+    |> Enum.reject(fn {_unit, limit} -> is_nil(limit) end)
+  end
+
+  defp get_sender_config_rate_limits(sender) do
     [
       {:hour, sender.config.rate_limit_per_hour},
       {:minute, sender.config.rate_limit_per_minute},
       {:second, sender.config.rate_limit_per_second}
     ]
-    |> Enum.reject(fn {_unit, limit} -> is_nil(limit) end)
   end
 
   defp ets_key(sender_id, rate_limits) do

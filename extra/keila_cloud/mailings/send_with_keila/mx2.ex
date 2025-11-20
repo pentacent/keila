@@ -232,6 +232,17 @@ Keila.if_cloud do
     end
 
     @doc """
+    Returns rate limits based on domain verification status.
+    """
+    def rate_limit(sender) do
+      if use_fallback_domain?(sender) do
+        [hour: 2500, second: 5]
+      else
+        [hour: 15000, second: 15]
+      end
+    end
+
+    @doc """
     Attempts to remove an email address from the AWS SES suppression list.
 
     This function always returns `:ok`. If there is an error, the function still

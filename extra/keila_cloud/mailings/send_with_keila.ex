@@ -130,7 +130,7 @@ Keila.if_cloud do
 
     @impl true
     def put_provider_options(email, sender) do
-      case config.swk_preferred_server do
+      case sender.config.swk_preferred_server do
         _default -> Mx2.put_provider_options(email, sender)
       end
     end
@@ -143,6 +143,11 @@ Keila.if_cloud do
     @impl true
     def reply_to(sender) do
       Mx2.reply_to(sender)
+    end
+
+    @impl true
+    def rate_limit(sender) do
+      Mx2.rate_limit(sender)
     end
 
     @impl true
