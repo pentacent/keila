@@ -11,6 +11,8 @@ Keila.if_cloud do
     alias KeilaCloud.Mailings.SendWithKeila
     alias Keila.Mailings
 
+    @configuration_set "keila"
+
     @doc """
     Sets up a domain identity in AWS SES for the given sender.
 
@@ -34,6 +36,13 @@ Keila.if_cloud do
       [
         adapter: Swoosh.Adapters.AmazonSES
       ] ++ aws_config()
+    end
+
+    @doc """
+    Adds configuration set.
+    """
+    def put_provider_options(email, _sender) do
+      Swoosh.Email.put_provider_option(email, :configuration_set_name, @configuration_set)
     end
 
     defp aws_config() do
