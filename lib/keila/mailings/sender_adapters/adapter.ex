@@ -191,18 +191,25 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
   Optional callback for implementing rate limits at the adapter level.
   Returns rate limit configuration as keyword list with units as keys
   and limits as values.
-
-  Units must be sorted from largest to smallest.
   """
   @callback rate_limit(Sender.t() | SharedSender.t()) :: [
-              {:hour | :minute | :second, non_neg_integer() | nil}
+              {:second | :minute | :hour, non_neg_integer() | nil}
             ]
+
+  @doc """
+  Optional callback for implementing global rate limits
+  for all Senders using the adapter.
+  Returns rate limit configuration as a list of tuples with unit and limit.
+  """
+  @callback adapter_rate_limit() ::
+              [{:second | :minute | :hour, non_neg_integer()}] | nil
 
   @optional_callbacks [
     deliver_verification_email: 3,
     after_from_email_verification: 1,
     from: 1,
     reply_to: 1,
-    rate_limit: 1
+    rate_limit: 1,
+    adapter_rate_limit: 0
   ]
 end

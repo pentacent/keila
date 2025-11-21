@@ -36,6 +36,17 @@ Keila.if_cloud do
           region: System.get_env("SWK_SES_REGION"),
           dkim_private_key: System.get_env("SWK_SES_DKIM_PRIVATE_KEY")
         )
+
+        rate_limits =
+          [
+            {:hour, System.get_env("SWK_RATE_LIMIT_HOUR")},
+            {:minute, System.get_env("SWK_RATE_LIMIT_MINUTE")},
+            {:second, System.get_env("SWK_RATE_LIMIT_SECOND")}
+          ]
+          |> Enum.reject(fn {_unit, limit} -> limit in [nil, ""] end)
+          |> Enum.map(fn {unit, limit} -> {unit, String.to_integer(limit)} end)
+
+        config(:keila, KeilaCloud.Mailings.SendWithKeila, adapter_rate_limits: rate_limits)
       end
     end
   end
