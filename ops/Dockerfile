@@ -1,4 +1,4 @@
-FROM elixir:1.18-alpine AS build
+FROM elixir:1.18-otp-27-alpine AS build
 
 ARG WITH_EXTRA=0
 ARG KEILA_CLOUD=0
@@ -23,7 +23,7 @@ RUN mix deps.clean mime --build && \
     mix assets.deploy && \
     mix release
 
-FROM elixir:1.15-alpine
+FROM elixir:1.18-otp-27-alpine
 ENV HOME=/opt/app
 
 WORKDIR ${HOME}
