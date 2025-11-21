@@ -60,4 +60,12 @@ defmodule Keila.TestSenderAdapter do
 
   @impl true
   def requires_verification?(), do: true
+
+  @impl true
+  def adapter_rate_limit() do
+    case Application.get_env(:keila, __MODULE__, [])[:rate_limit] do
+      nil -> []
+      rate_limit -> rate_limit
+    end
+  end
 end
