@@ -1,4 +1,4 @@
-FROM elixir:1.15-alpine AS build
+FROM elixir:1.18-alpine AS build
 
 ARG WITH_EXTRA=0
 ARG KEILA_CLOUD=0
