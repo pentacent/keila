@@ -75,7 +75,7 @@ defmodule Keila.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:ex_doc, "~> 0.23", only: :dev, runtime: false},
       {:swoosh, "~> 1.3"},
-      {:gen_smtp, "~> 1.2"},
+      {:gen_smtp, "~> 1.3"},
       {:hackney, "~> 1.9"},
       {:hashids, "~> 2.1"},
       {:argon2_elixir, "~> 2.3"},
