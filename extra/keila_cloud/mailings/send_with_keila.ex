@@ -151,6 +151,12 @@ Keila.if_cloud do
     end
 
     @impl true
+    def adapter_rate_limit() do
+      Application.get_env(:keila, __MODULE__, [])
+      |> Keyword.get(:adapter_rate_limits, nil)
+    end
+
+    @impl true
     def deliver_verification_email(sender, token, url_fn) do
       :ok = Mx2.maybe_remove_email_from_suppression_list(sender.from_email)
 
