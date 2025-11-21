@@ -142,7 +142,7 @@ msgid "Please activate your account first."
 msgstr "Bitte aktiviere erst noch deinen Account"
 
 #: lib/keila_web/controllers/auth_controller.ex:42
-#: lib/keila_web/controllers/public_form_controller.ex:59
+#: lib/keila_web/controllers/public_form_controller.ex:62
 #, elixir-autogen, elixir-format
 msgid "Please complete the captcha."
 msgstr "Bitte löse das Captcha."
@@ -249,3 +249,13 @@ msgstr "Dein Login-Link"
 #, elixir-autogen, elixir-format
 msgid "Log in with your new password"
 msgstr "Logge dich mit deinem neuen Passwort ein"
+
+#: lib/keila/auth/emails.ex:119
+#, elixir-autogen, elixir-format
+msgid "Hey there,\n\nplease verify your sender email address by visiting the following link:\n\n%{url}\n\nIf you didn't request this verification, please ignore this message and\ndo not click on the link.\n"
+msgstr ""
+
+#: lib/keila/auth/emails.ex:115
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Please Verify Your Email for Keila"
+msgstr "Bitte bestätige deine E-Mail"
