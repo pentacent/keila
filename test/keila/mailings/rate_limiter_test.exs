@@ -3,15 +3,7 @@ defmodule Keila.Mailings.RateLimiterAdapterTest do
   alias Keila.Mailings.RateLimiter
 
   setup do
-    case Process.whereis(RateLimiter) do
-      nil ->
-        RateLimiter.start_link([])
-
-      pid ->
-        GenServer.stop(pid)
-        RateLimiter.start_link([])
-    end
-
+    RateLimiter.reset()
     on_exit(fn -> Application.put_env(:keila, Keila.TestSenderAdapter, rate_limit: nil) end)
   end
 

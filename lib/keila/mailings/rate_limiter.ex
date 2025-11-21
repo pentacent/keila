@@ -40,6 +40,13 @@ defmodule Keila.Mailings.RateLimiter do
     GenServer.call(__MODULE__, {:get_schedule_at, rate_limit_entries})
   end
 
+  @doc """
+  Resets all rate limit buckets.
+  """
+  def reset() do
+    GenServer.call(__MODULE__, :reset)
+  end
+
   # Get all rate limit entries as {key, unit, limit} tuples
   # ordered by unit from smallest to largest.
   defp get_rate_limit_entries(sender) do
@@ -113,6 +120,11 @@ defmodule Keila.Mailings.RateLimiter do
   def handle_call({:get_schedule_at, rate_limit_entries}, _from, state) do
     ets_table = state.ets_table
     {:reply, get_schedule_at(ets_table, rate_limit_entries), state}
+  end
+
+  def handle_call(:reset, _from, state) do
+    :ets.delete_all_objects(state.ets_table)
+    {:reply, :ok, state}
   end
 
   defp get_schedule_at(ets_table, rate_limit_entries) do
