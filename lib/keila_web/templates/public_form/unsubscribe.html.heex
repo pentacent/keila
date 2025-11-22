@@ -1,1 +1,16 @@
-<%= render_unsubscribe_form(@form) %>
+<div class="contact-form container bg-white rounded py-4 md:py-8 flex flex-col gap-4" style={build_form_styles(@form)}>
+  <div class="text-center">
+    <h1 class="text-2xl font-bold mb-4"><%= gettext("Unsubscribe") %></h1>
+    <p class="text-lg mb-6"><%= gettext("Are you sure you want to unsubscribe from this list?") %></p>
+    
+    <form method="post" action={get_unsubscribe_action_url(assigns)}>
+      <div class="space-y-4">
+        <button 
+          type="submit"
+          class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded cursor-pointer">
+          <%= gettext("Unsubscribe") %>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
