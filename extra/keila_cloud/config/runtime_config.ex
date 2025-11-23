@@ -31,8 +31,8 @@ Keila.if_cloud do
           do: config(:keila, Keila.Billing, paddle_environment: paddle_environment)
 
         config(:keila, KeilaCloud.Mailings.SendWithKeila.Mx2,
-          access_key_id: System.get_env("SWK_SES_ACCESS_KEY_ID"),
-          secret_access_key: System.get_env("SWK_SES_SECRET_ACCESS_KEY"),
+          access_key: System.get_env("SWK_SES_ACCESS_KEY"),
+          secret: System.get_env("SWK_SES_SECRET"),
           region: System.get_env("SWK_SES_REGION"),
           dkim_private_key: System.get_env("SWK_SES_DKIM_PRIVATE_KEY")
         )

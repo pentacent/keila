@@ -35,7 +35,7 @@ Keila.if_cloud do
     def to_swoosh_config(_sender) do
       [
         adapter: Swoosh.Adapters.AmazonSES
-      ] ++ aws_config()
+      ] ++ swoosh_aws_config()
     end
 
     @doc """
@@ -48,8 +48,16 @@ Keila.if_cloud do
     defp aws_config() do
       [
         region: Application.get_env(:keila, __MODULE__)[:region],
-        access_key_id: Application.get_env(:keila, __MODULE__)[:access_key_id],
-        secret_access_key: Application.get_env(:keila, __MODULE__)[:secret_access_key]
+        access_key_id: Application.get_env(:keila, __MODULE__)[:access_key],
+        secret_access_key: Application.get_env(:keila, __MODULE__)[:secret]
+      ]
+    end
+
+    defp swoosh_aws_config() do
+      [
+        region: Application.get_env(:keila, __MODULE__)[:region],
+        access_key: Application.get_env(:keila, __MODULE__)[:access_key],
+        secret: Application.get_env(:keila, __MODULE__)[:secret]
       ]
     end
 

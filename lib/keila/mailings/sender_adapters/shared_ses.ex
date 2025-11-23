@@ -99,8 +99,8 @@ defmodule Keila.Mailings.SenderAdapters.Shared.SES do
   defp aws_config(%{shared_sender: %{config: config}}) do
     [
       region: config.ses_region,
-      access_key_id: config.ses_access_key,
-      secret_access_key: config.ses_secret
+      access_key: config.ses_access_key,
+      secret: config.ses_secret
     ]
   end
 
