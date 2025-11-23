@@ -253,7 +253,7 @@ msgstr "Logge dich mit deinem neuen Passwort ein"
 #: lib/keila/auth/emails.ex:119
 #, elixir-autogen, elixir-format
 msgid "Hey there,\n\nplease verify your sender email address by visiting the following link:\n\n%{url}\n\nIf you didn't request this verification, please ignore this message and\ndo not click on the link.\n"
-msgstr ""
+msgstr "Hallo,\n\nbitte bestätige deine Sender-E-Mail-Adresse, indem du den folgenden Link besuchst:\n\n%{url}\n\nSolltest du diese Bestätigung nicht angefordert haben, ignoriere diese Nachricht bitte und klicke nicht auf den Link.\n"
 
 #: lib/keila/auth/emails.ex:115
 #, elixir-autogen, elixir-format, fuzzy

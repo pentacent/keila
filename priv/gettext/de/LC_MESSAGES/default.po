@@ -468,7 +468,7 @@ msgstr "Sender %{sender} löschen?"
 #: lib/keila_web/templates/sender/delete.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Type in the sender name to confirm its deletion:"
-msgstr ""
+msgstr "Gib den Namen des Absenders ein, um die Löschung zu bestätigen:"
 
 #: lib/keila_web/templates/template/delete.html.heex:3
 #, elixir-autogen, elixir-format
@@ -508,7 +508,7 @@ msgstr "Das Löschen eines Projekts kann nicht rückgängig gemacht werden."
 #: lib/keila_web/templates/project/delete.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "Type in the project name to confirm its deletion:"
-msgstr ""
+msgstr "Gib den Projektnamen ein, um die Löschung zu bestätigen:"
 
 #: lib/keila_web/templates/sender/delete.html.heex:13
 #, elixir-autogen, elixir-format

@@ -14,156 +14,156 @@ msgstr ""
 #: lib/keila_web/templates/user_admin/show_credits.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "%{remaining} / %{total} credits"
-msgstr ""
+msgstr "%{remaining} / %{total} Credits"
 
 #: lib/keila_web/templates/user_admin/index.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Activation"
-msgstr ""
+msgstr "Aktivierung"
 
 #: lib/keila_web/templates/user_admin/index.html.heex:54
 #: lib/keila_web/templates/user_admin/show_credits.html.heex:26
 #: lib/keila_web/templates/user_admin/show_credits.html.heex:85
 #, elixir-autogen, elixir-format
 msgid "Add credits"
-msgstr ""
+msgstr "Credits hinzufügen"
 
 #: lib/keila_web/templates/user_admin/show_credits.html.heex:3
 #, elixir-autogen, elixir-format
 msgid "Administer Credits for %{email}"
-msgstr ""
+msgstr "Credits für %{email} verwalten"
 
 #: lib/keila_web/controllers/user_admin_controller.ex:16
 #, elixir-autogen, elixir-format
 msgid "Administrate Users"
-msgstr ""
+msgstr "Benutzer verwalten"
 
 #: lib/keila_web/templates/user_admin/show_credits.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Amount"
-msgstr ""
+msgstr "Betrag"
 
 #: lib/keila_web/templates/shared_sender_admin/delete.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Campaigns associated with this sender will not be deleted."
-msgstr ""
+msgstr "Kampagnen, die mit diesem Absender verknüpft sind, werden nicht gelöscht."
 
 #: lib/keila_web/templates/shared_sender_admin/index.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Create a new Shared Sender"
-msgstr ""
+msgstr "Einen neuen gemeinsamen Absender erstellen"
 
 #: lib/keila_web/templates/user_admin/index.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Credits"
-msgstr ""
+msgstr "Credits"
 
 #: lib/keila_web/templates/user_admin/show_credits.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Credits for account %{account}"
-msgstr ""
+msgstr "Credits für Konto %{account}"
 
 #: lib/keila_web/templates/shared_sender_admin/delete.html.heex:3
 #, elixir-autogen, elixir-format
 msgid "Delete Shared Sender %{sender}?"
-msgstr ""
+msgstr "Gemeinsamen Absender %{sender} löschen?"
 
 #: lib/keila_web/templates/shared_sender_admin/delete.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Deleting a shared sender cannot be undone."
-msgstr ""
+msgstr "Das Löschen eines gemeinsamen Absenders kann nicht rückgängig gemacht werden."
 
 #: lib/keila_web/templates/user_admin/index.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Email"
-msgstr ""
+msgstr "E-Mail"
 
 #: lib/keila_web/templates/user_admin/index.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Here you can manage other users on your Keila instance."
-msgstr ""
+msgstr "Hier kannst du andere Benutzer deiner Keila-Instanz verwalten."
 
 #: lib/keila_web/templates/shared_sender_admin/edit.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "New Shared Sender"
-msgstr ""
+msgstr "Neuer gemeinsamer Absender"
 
 #: lib/keila_web/templates/shared_sender_admin/edit.html.heex:51
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Shared Sender Name"
-msgstr ""
+msgstr "Name des gemeinsamen Absenders"
 
 #: lib/keila_web/templates/shared_sender_admin/edit.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "My Shared Sender"
-msgstr ""
+msgstr "Mein gemeinsamer Absender"
 
 #: lib/keila_web/templates/shared_sender_admin/index.html.heex:4
 #, elixir-autogen, elixir-format
 msgid "Shared Senders"
-msgstr ""
+msgstr "Gemeinsame Absender"
 
 #: lib/keila_web/templates/shared_sender_admin/index.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "Shared Senders are available to all users on this instance of Keila."
-msgstr ""
+msgstr "Gemeinsame Absender stehen allen Benutzern dieser Keila-Instanz zur Verfügung."
 
 #: lib/keila_web/templates/user_admin/index.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "Sign-up"
-msgstr ""
+msgstr "Anmeldung"
 
 #: lib/keila_web/templates/shared_sender_admin/delete.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Type in the shared sender name to confirm its deletion:"
-msgstr ""
+msgstr "Gib den Namen des gemeinsamen Absenders ein, um seine Löschung zu bestätigen:"
 
 #: lib/keila_web/templates/user_admin/index.html.heex:78
 #, elixir-autogen, elixir-format
 msgid "Login as"
-msgstr ""
+msgstr "Anmelden als"
 
 #: lib/keila_web/templates/layout/app.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "A new version of Keila is available."
-msgstr ""
+msgstr "Eine neue Version von Keila ist verfügbar."
 
 #: lib/keila_web/templates/layout/app.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "Read more"
-msgstr ""
+msgstr "Mehr erfahren"
 
 #: lib/keila_web/templates/layout/_menu.html.heex:155
 #, elixir-autogen, elixir-format
 msgid "System Info"
-msgstr ""
+msgstr "Systeminfo"
 
 #: lib/keila_web/templates/instance_admin/show.html.heex:4
 #, elixir-autogen, elixir-format
 msgid "You are currently running Keila %{version} on %{host}."
-msgstr ""
+msgstr "Du verwendest derzeit Keila %{version} auf %{host}."
 
 #: lib/keila_web/templates/instance_admin/show.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "There are updates available for your Keila instance!"
-msgstr ""
+msgstr "Für deine Keila-Instanz sind Updates verfügbar!"
 
 #: lib/keila_web/templates/instance_admin/show.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "Update checks are disabled."
-msgstr ""
+msgstr "Update-Prüfungen sind deaktiviert."
 
 #: lib/keila_web/templates/instance_admin/show.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "You seem to be running the most recent version of Keila!"
-msgstr ""
+msgstr "Du scheinst die aktuellste Version von Keila zu verwenden!"
 
 #: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Update status"
-msgstr ""
+msgstr "Status aktualisieren"

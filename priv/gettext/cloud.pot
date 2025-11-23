@@ -344,7 +344,7 @@ msgstr ""
 
 #: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:70
 #, elixir-autogen, elixir-format
-msgid "Use our dedicated European email infrastructure for excellent deliverability and automatic bounce handling."
+msgid "Use our reliable European email infrastructure for excellent deliverability and automatic bounce handling."
 msgstr ""
 
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:205
