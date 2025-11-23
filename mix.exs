@@ -85,7 +85,7 @@ defmodule Keila.MixProject do
       {:solid, "~> 0.14.1"},
       {:earmark, "~> 1.4"},
       {:tzdata, "~> 1.1"},
-      {:ex_aws, "~> 2.2.3"},
+      {:ex_aws, "~> 2.6.0"},
       {:sweet_xml, "~> 0.6"},
       {:ex_aws_ses, "~> 2.4.1"},
       {:php_serializer, "~> 2.0"},
