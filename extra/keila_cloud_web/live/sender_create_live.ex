@@ -193,6 +193,7 @@ Keila.if_cloud do
     def mount(_params, session, socket) do
       current_project = Keila.Projects.get_project(session["current_project_id"])
       current_user = Keila.Auth.get_user(session["current_user_id"])
+      Gettext.put_locale(session["locale"])
 
       {:ok,
        socket
