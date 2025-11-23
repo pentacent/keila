@@ -29,6 +29,7 @@ Keila.if_cloud do
         raw_dmarc_tags
         |> String.split(";")
         |> Enum.map(&String.trim/1)
+        |> Enum.reject(&(&1 == ""))
 
       Enum.all?(dmarc_tags, &String.contains?(&1, "=")) and
         Enum.any?(dmarc_tags, &String.starts_with?(&1, "p="))
