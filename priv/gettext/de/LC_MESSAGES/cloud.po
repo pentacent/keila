@@ -18,411 +18,354 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2;\n"
-"X-Generator: Poedit 3.6\n"
+"X-Generator: Poedit 3.8\n"
 
 #: extra/keila_cloud_web/templates/cloud_account/onboarding.html.heex:10
-#, elixir-autogen, elixir-format
 msgid "Account Verification"
 msgstr "Kontoüberprüfung"
 
 #: lib/keila_web/templates/campaign/stats_live.html.heex:173
-#, elixir-autogen, elixir-format
 msgid "Account not activated"
 msgstr "Konto nicht aktiviert"
 
 #: lib/keila_web/templates/user_admin/index.html.heex:64
-#, elixir-autogen, elixir-format
 msgid "Account status"
 msgstr "Kontostatus"
 
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:38
-#, elixir-autogen, elixir-format
 msgid "Address line 1"
 msgstr "Adresszeile 1"
 
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:41
-#, elixir-autogen, elixir-format
 msgid "Address line 2"
 msgstr "Adresszeile 2"
 
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:44
-#, elixir-autogen, elixir-format
 msgid "Address line 3"
 msgstr "Adresszeile 3"
 
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:91
-#, elixir-autogen, elixir-format
 msgid "Apt 1"
 msgstr "Wohnung 1"
 
 #: extra/keila_cloud_web/templates/cloud_account/_completed.html.heex:15
-#, elixir-autogen, elixir-format
 msgid "Back to project list"
 msgstr "Zurück zur Projektliste"
 
 #: lib/keila_web/templates/layout/app.html.heex:41
-#, elixir-autogen, elixir-format
 msgid "Before you can start sending emails, we need some more information about your account."
 msgstr "Bevor du E-Mails versenden kannst, benötigen wir noch einige Informationen über dein Konto."
 
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:29
-#, elixir-autogen, elixir-format
 msgid "Business/organization name"
 msgstr "Name der Firma/Organisation"
 
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:290
-#, elixir-autogen, elixir-format
 msgid "Check Domain"
 msgstr "Domain prüfen"
 
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:113
-#, elixir-autogen, elixir-format
 msgid "Check status"
 msgstr "Status prüfen"
 
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:69
-#, elixir-autogen, elixir-format
 msgid "City"
 msgstr "Stadt"
 
 #: lib/keila_web/templates/layout/app.html.heex:45
-#, elixir-autogen, elixir-format
 msgid "Complete information"
 msgstr "Informationen vervollständigen"
 
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:61
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:109
-#, elixir-autogen, elixir-format
 msgid "Country"
 msgstr "Land"
 
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:62
-#, elixir-autogen, elixir-format
 msgid "County"
 msgstr "Bezirk"
 
 #: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:91
-#, elixir-autogen, elixir-format
 msgid "Custom"
 msgstr "Benutzerdefiniert"
 
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:60
-#, elixir-autogen, elixir-format
 msgid "Department"
 msgstr "Abteilung"
 
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:64
-#, elixir-autogen, elixir-format
 msgid "District"
 msgstr "Bezirk"
 
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:74
-#, elixir-autogen, elixir-format
 msgid "Domain verified"
 msgstr "Domain bestätigt"
 
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:54
-#, elixir-autogen, elixir-format
 msgid "Emirate"
 msgstr "Emirat"
 
 #: extra/keila_cloud_web/templates/cloud_account/onboarding.html.heex:13
-#, elixir-autogen, elixir-format
-msgid "Every new account has to undergo a quick manual review.\nPlease share some information about you to help with this process.\n"
-msgstr "Jedes neue Konto muss eine kurze manuelle Überprüfung durchlaufen.\nBitte teile uns dazu noch ein paar Informationen über dich mit.\n"
+msgid ""
+"Every new account has to undergo a quick manual review.\n"
+"Please share some information about you to help with this process.\n"
+msgstr ""
+"Jedes neue Konto muss eine kurze manuelle Überprüfung durchlaufen.\n"
+"Bitte teile uns dazu noch ein paar Informationen über dich mit.\n"
 
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:93
-#, elixir-autogen, elixir-format
 msgid "Finalizing your sender ..."
 msgstr "Sender wird finalisiert ..."
 
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:32
-#, elixir-autogen, elixir-format
 msgid "First name"
 msgstr "Vorname"
 
 #: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:29
-#, elixir-autogen, elixir-format
 msgid "I don't have an existing contact list yet."
 msgstr "Ich habe noch keine bestehende Kontaktliste."
 
 #: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:25
-#, elixir-autogen, elixir-format
 msgid "I have an existing contact list that I want to import into Keila."
 msgstr "Ich habe eine bestehende Kontaktliste, die ich in Keila importieren möchte."
 
 #: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:45
-#, elixir-autogen, elixir-format
 msgid "If you don't have a website yet, you can also enter the link to a social media profile or some other public online presence."
 msgstr "Falls du noch keine Website hast, kannst du auch den Link zu einem Social-Media-Profil oder einer anderen öffentlichen Online-Präsenz angeben."
 
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:55
-#, elixir-autogen, elixir-format
 msgid "Island"
 msgstr "Insel"
 
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:295
-#, elixir-autogen, elixir-format
 msgid "Last checked at:"
 msgstr "Letzte Überprüfung:"
 
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:35
-#, elixir-autogen, elixir-format
 msgid "Last name"
 msgstr "Nachname"
 
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:127
-#, elixir-autogen, elixir-format
 msgid "Legacy Settings"
 msgstr "Legacy-Einstellungen"
 
 #: extra/keila_cloud_web/templates/cloud_account/_user_name.html.heex:9
-#, elixir-autogen, elixir-format
 msgid "Let’s get to know each other!"
 msgstr "Lernen wir uns kennen!"
 
 #: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:93
-#, elixir-autogen, elixir-format
 msgid "Leverage your existing email infrastructure and send emails with SMTP, or via Mailgun, Sendgrid, SES, or Postmark."
 msgstr "Nutze deine bestehende E-Mail-Infrastruktur und sende E-Mails über SMTP oder über Mailgun, Sendgrid, SES oder Postmark."
 
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:85
-#, elixir-autogen, elixir-format
 msgid "Main Street 1"
 msgstr "Hauptstraße 1"
 
 #: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:29
-#, elixir-autogen, elixir-format
 msgid "My Newsletter"
 msgstr "Mein Newsletter"
 
 #: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:9
-#, elixir-autogen, elixir-format
 msgid "Nice to meet you, %{given_name}!"
 msgstr "Schön, dich kennenzulernen, %{given_name}!"
 
 #: lib/keila_web/templates/campaign/stats_live.html.heex:176
-#, elixir-autogen, elixir-format
-msgid "Once you have provided the necessary details, we will perform a manual review of your account. This usually takes less than one working day.\n\nIf you have any questions, please reach out to our support at [%{support_email}](mailto:%{support_email}).\n"
-msgstr "Sobald du die notwendigen Details bereitgestellt hast, führen wir eine manuelle Überprüfung deines Kontos durch. Dies dauert in der Regel weniger als einen Werktag.\n\nFalls du Fragen hast, wende dich bitte an unseren Support unter [%{support_email}](mailto:%{support_email}).\n"
+msgid ""
+"Once you have provided the necessary details, we will perform a manual review of your account. This usually takes less than one working day.\n"
+"\n"
+"If you have any questions, please reach out to our support at [%{support_email}](mailto:%{support_email}).\n"
+msgstr ""
+"Sobald du die notwendigen Details bereitgestellt hast, führen wir eine manuelle Überprüfung deines Kontos durch. Dies dauert in der Regel weniger als einen Werktag.\n"
+"\n"
+"Falls du Fragen hast, wende dich bitte an unseren Support unter [%{support_email}](mailto:%{support_email}).\n"
 
 #: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:26
-#, elixir-autogen, elixir-format
 msgid "Organization/business name"
 msgstr "Name der Organisation/Firma"
 
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:58
-#, elixir-autogen, elixir-format
 msgid "Parish"
 msgstr "Gemeinde"
 
 #: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:37
-#, elixir-autogen, elixir-format
 msgid "Please describe the origin of your contact list and how you've obtained consent from your existing contacts."
 msgstr "Bitte beschreibe die Herkunft deiner Kontaktliste und wie du die Einverständnis deiner bestehenden Kontakte erhalten hast."
 
 #: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:12
-#, elixir-autogen, elixir-format
 msgid "Please describe the type of content and the purpose of the emails you are planning to send with Keila."
 msgstr "Bitte beschreibe Inhalt und Zweck der E-Mails, die du mit Keila versenden möchtest."
 
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:112
-#, elixir-autogen, elixir-format
 msgid "Please select a country"
 msgstr "Bitte wähle ein Land aus"
 
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:49
-#, elixir-autogen, elixir-format
 msgid "Postal code"
 msgstr "Postleitzahl"
 
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:63
-#, elixir-autogen, elixir-format
 msgid "Prefecture"
 msgstr "Präfektur"
 
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:57
-#, elixir-autogen, elixir-format
 msgid "Province"
 msgstr "Provinz"
 
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:59
-#, elixir-autogen, elixir-format
 msgid "Region"
 msgstr "Region"
 
 #: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:3
-#, elixir-autogen, elixir-format
 msgid "Review account for %{email}"
 msgstr "Konto von %{email} überprüfen"
 
 #: lib/keila_web/templates/layout/app.html.heex:33
-#, elixir-autogen, elixir-format
 msgid "Select plan"
 msgstr "Abo auswählen"
 
 #: lib/keila_web/views/sender_view.ex:33
-#, elixir-autogen, elixir-format
 msgid "Send With Keila"
 msgstr "Mit Keila versenden"
 
 #: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:68
-#, elixir-autogen, elixir-format
 msgid "Send with Keila"
 msgstr "Mit Keila versenden"
 
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:197
-#, elixir-autogen, elixir-format
 msgid "Show DNS Records"
 msgstr "DNS-Einträge anzeigen"
 
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:56
-#, elixir-autogen, elixir-format
 msgid "State"
 msgstr "Bundesland"
 
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:65
-#, elixir-autogen, elixir-format
 msgid "State/Province"
 msgstr "Bundesland/Provinz"
 
 #: lib/keila_web/templates/layout/app.html.heex:71
-#, elixir-autogen, elixir-format
 msgid "Status page"
 msgstr "Statusseite"
 
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:203
-#, elixir-autogen, elixir-format
 msgid "Subdomain"
 msgstr "Subdomain"
 
 #: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:17
-#, elixir-autogen, elixir-format
 msgid "This account is for a business/organization"
 msgstr "Dieses Konto ist für eine Firma/Organisation"
 
 #: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:50
-#, elixir-autogen, elixir-format
 msgid "This email will show up as the *From email* in the inbox of your recipients."
 msgstr "Diese E-Mail wird als *Absender-E-Mail* im Posteingang deiner Empfänger angezeigt."
 
 #: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:21
-#, elixir-autogen, elixir-format
 msgid "This is a private account"
 msgstr "Dies ist ein privates Konto"
 
 #: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:34
-#, elixir-autogen, elixir-format
 msgid "This name will show up as the *From name* in the inbox of your recipients."
 msgstr "Dieser Name wird als *Absendername* im Posteingang deiner Empfänger angezeigt."
 
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:9
-#, elixir-autogen, elixir-format
 msgid "To comply with anti-spam regulations, we need to know your address."
 msgstr "Um den Anti-Spam-Bestimmungen zu entsprechen, benötigen wir deine Adresse."
 
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:50
-#, elixir-autogen, elixir-format
 msgid "To ensure good deliverability of your emails, you need to verify your domain by adding DNS records. [Read more](https://www.keila.io/docs/managed-dmarc){:target=\"_blank\"}"
 msgstr "Um eine gute Zustellbarkeit deiner E-Mails zu gewährleisten, musst du deine Domain durch das Hinzufügen von DNS-Einträgen verifizieren. [Mehr erfahren](https://www.keila.io/docs/managed-dmarc){:target=\"_blank\"}"
 
 #: extra/keila_cloud_web/templates/cloud_account/_user_name.html.heex:13
-#, elixir-autogen, elixir-format
-msgid "To make sure Keila is only used to send legitimate emails, we need to review every new account.\n\nThank you for helping us fight spam!\n"
-msgstr "Um sicherzustellen, dass Keila nur zum Versand legitimer E-Mails genutzt wird, müssen wir jedes neue Konto überprüfen.\n\nVielen Dank, dass du uns dabei hilfst, Spam zu bekämpfen!\n"
+msgid ""
+"To make sure Keila is only used to send legitimate emails, we need to review every new account.\n"
+"\n"
+"Thank you for helping us fight spam!\n"
+msgstr ""
+"Um sicherzustellen, dass Keila nur zum Versand legitimer E-Mails genutzt wird, müssen wir jedes neue Konto überprüfen.\n"
+"\n"
+"Vielen Dank, dass du uns dabei hilfst, Spam zu bekämpfen!\n"
 
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:204
-#, elixir-autogen, elixir-format
 msgid "Type"
 msgstr "Typ"
 
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:56
-#, elixir-autogen, elixir-format
 msgid "Until you have verified your domain, emails for this sender will be sent from *%{fallback_email}*. Replies will go to *%{from_email}*."
 msgstr "Bis du deine Domain bestätigt hast, werden E-Mails für diesen Sender von *%{fallback_email}* gesendet. Antworten gehen an *%{from_email}*."
 
 #: lib/keila_web/templates/campaign/stats_live.html.heex:192
 #: lib/keila_web/templates/layout/app.html.heex:58
-#, elixir-autogen, elixir-format
 msgid "Update account information"
 msgstr "Kontoinformationen aktualisieren"
 
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:148
-#, elixir-autogen, elixir-format
 msgid "Update to new settings"
 msgstr "Auf neue Einstellungen aktualisieren"
 
 #: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:70
-#, elixir-autogen, elixir-format
 msgid "Use our reliable European email infrastructure for excellent deliverability and automatic bounce handling."
 msgstr "Nutze unsere zuverlässige europäische E-Mail-Infrastruktur für hervorragende Zustellbarkeit und automatische Bearbeitung von zurückgewiesenen E-Mails."
 
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:205
-#, elixir-autogen, elixir-format
 msgid "Value"
 msgstr "Wert"
 
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:48
-#, elixir-autogen, elixir-format
 msgid "Waiting for domain verification ..."
 msgstr "Warten auf Domain-Bestätigung ..."
 
 #: extra/keila_cloud_web/templates/cloud_account/_completed.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "We will now perform a manual review of your data. This usually doesn't take longer than one working day.\n\nIn the meantime, you can continue to use Keila. Sending emails will be enabled for your account\nonce the review has been completed.\n"
-msgstr "Wir führen nun eine manuelle Überprüfung deiner Daten durch. Dies dauert in der Regel nicht länger als einen Werktag.\n\nIn der Zwischenzeit kannst du Keila weiter nutzen. Das Versenden von E-Mails wird für dein Konto freigeschaltet,\nsobald die Überprüfung abgeschlossen ist.\n"
+msgid ""
+"We will now perform a manual review of your data. This usually doesn't take longer than one working day.\n"
+"\n"
+"In the meantime, you can continue to use Keila. Sending emails will be enabled for your account\n"
+"once the review has been completed.\n"
+msgstr ""
+"Wir führen nun eine manuelle Überprüfung deiner Daten durch. Dies dauert in der Regel nicht länger als einen Werktag.\n"
+"\n"
+"In der Zwischenzeit kannst du Keila weiter nutzen. Das Versenden von E-Mails wird für dein Konto freigeschaltet,\n"
+"sobald die Überprüfung abgeschlossen ist.\n"
 
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:96
-#, elixir-autogen, elixir-format
 msgid "We're currently finalizing the setup of your sender. This may take a few minutes."
 msgstr "Wir finalisieren gerade die Einrichtung deines Senders. Dies kann einige Minuten dauern."
 
 #: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:37
-#, elixir-autogen, elixir-format
 msgid "Website"
 msgstr "Website"
 
 #: lib/keila_web/templates/layout/app.html.heex:29
-#, elixir-autogen, elixir-format
 msgid "Welcome to Keila, have a look around! To start sending emails, please choose a subscription."
 msgstr "Willkommen bei Keila, schau dich um! Um E-Mails zu versenden, wähle bitte ein Abo."
 
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:131
-#, elixir-autogen, elixir-format
 msgid "You are currently using legacy email settings. We recommend updating to the new settings for better performance and reliability."
 msgstr "Du verwendest derzeit die Legacy-Domain-Einstellungen. Wir empfehlen, auf die neuen Einstellungen zu aktualisieren, um eine bessere Leistung und Zuverlässigkeit zu gewährleisten."
 
 #: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:29
-#, elixir-autogen, elixir-format
 msgid "Your Company, Inc."
 msgstr "Deine Firma GmbH"
 
 #: lib/keila_web/templates/layout/app.html.heex:53
-#, elixir-autogen, elixir-format
 msgid "Your account is currently under review. Sending emails will be enabled once the review has been completed."
 msgstr "Dein Konto wird derzeit überprüft. Das Versenden von E-Mails wird freigeschaltet, sobald die Überprüfung abgeschlossen ist."
 
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:30
-#, elixir-autogen, elixir-format
 msgid "You’re using a shared domain. Emails will be sent from *%{fallback_email}*. Replies will go to *%{from_email}*. [Read more](https://www.keila.io/docs/shared-domains){:target=\"_blank\"}"
 msgstr "Du verwendest eine öffentliche Domain. E-Mails werden von *%{fallback_email}* gesendet. Antworten gehen an *%{from_email}*. [Mehr erfahren](https://www.keila.io/docs/shared-domains){:target=\"_blank\"}"
 
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:263
-#, elixir-autogen, elixir-format
 msgid "current value:"
 msgstr "aktueller Wert:"
 
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:260
-#, elixir-autogen, elixir-format
 msgid "empty"
 msgstr "leer"
 
 #: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:40
-#, elixir-autogen, elixir-format
 msgid "https://example.com"
 msgstr "https://example.com"
 
 #: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:45
-#, elixir-autogen, elixir-format
 msgid "newsletter@example.com"
 msgstr "newsletter@example.com"
