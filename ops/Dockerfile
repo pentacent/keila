@@ -6,7 +6,7 @@ ARG KEILA_CLOUD_LICENSE
 
 ENV MIX_ENV=prod
 
-RUN apk add git npm build-base cmake
+RUN apk add git npm build-base openssl cmake
 
 COPY mix.exs mix.lock ./
 COPY config .
@@ -28,6 +28,7 @@ ENV HOME=/opt/app
 
 WORKDIR ${HOME}
 COPY --from=build _build/prod/rel/keila ${HOME}
+RUN apk add openssl
 RUN mkdir -p ${HOME} && \
     adduser -s /bin/sh -u 1001 -G root -h ${HOME} -S -D default && \
     chown -R 1001:0 ${HOME}
