@@ -23,7 +23,7 @@ RUN mix deps.clean mime --build && \
     mix assets.deploy && \
     mix release
 
-FROM elixir:1.15-alpine
+FROM elixir:1.18-otp-27-alpine
 ENV HOME=/opt/app
 
 WORKDIR ${HOME}
