@@ -27,7 +27,7 @@ Keila.if_cloud do
     defp get_sender_ids() do
       from(s in Sender,
         where: fragment("?->>'type' = ?", s.config, "send_with_keila"),
-        where: not fragment("(?->>'swk_domain_is_known_shared_domain')::bool", s.config),
+        where: fragment("(?->>'swk_domain_is_known_shared_domain')::bool IS NOT TRUE", s.config),
         where: ^domain_check_required?(),
         select: s.id
       )
