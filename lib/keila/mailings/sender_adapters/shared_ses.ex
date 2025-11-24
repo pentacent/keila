@@ -37,12 +37,11 @@ defmodule Keila.Mailings.SenderAdapters.Shared.SES do
 
   @impl true
   def put_provider_options(email, %{
-        from_email: email,
+        from_email: from_email,
         verified_from_email: verified_from_email,
-        config: %{},
         shared_sender: shared_sender
       })
-      when email == verified_from_email do
+      when from_email == verified_from_email do
     Keila.Mailings.SenderAdapters.SES.put_provider_options(email, shared_sender)
   end
 
