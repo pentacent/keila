@@ -18,11 +18,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2;\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.8\n"
 
 #: lib/keila_web/templates/account/edit.html.heex:75
 #: lib/keila_web/templates/account/edit.html.heex:128
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "%{monthly_emails} emails/month"
 msgstr "%{monthly_emails} e-mails/mois"
 
@@ -465,7 +465,7 @@ msgid "Delete Sender %{sender}?"
 msgstr "Supprimer l’expéditeur %{sender}?"
 
 #: lib/keila_web/templates/sender/delete.html.heex:28
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Type in the sender name to confirm its deletion:"
 msgstr "Saisissez le nom de l’expéditeur pour confirmer sa suppression:"
 
@@ -1235,7 +1235,7 @@ msgid "Text color"
 msgstr "Couleur du texte"
 
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:73
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Campaign Type"
 msgstr "Type de campagne"
 
@@ -1579,12 +1579,12 @@ msgid "Docs"
 msgstr "Documentation"
 
 #: lib/keila_web/templates/layout/_footer.html.heex:42
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Newsletter"
 msgstr "Infolettre"
 
 #: lib/keila_web/templates/layout/_footer.html.heex:10
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Open Source Newsletters"
 msgstr "Infolettres open-source"
 
@@ -1898,7 +1898,7 @@ msgid "Add AND condition"
 msgstr "Ajouter une condition ET"
 
 #: lib/keila_web/templates/segment/edit_live.html.heex:116
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Add OR condition"
 msgstr "Ajouter une condition OU"
 
@@ -1923,7 +1923,7 @@ msgid "New Segment"
 msgstr "Nouveau segment"
 
 #: lib/keila_web/templates/segment/new.html.heex:23
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Segment Name"
 msgstr "Nom du segment"
 
@@ -2870,7 +2870,7 @@ msgid "From address"
 msgstr "De : adresse"
 
 #: lib/keila_web/templates/sender/edit_live.html.heex:133
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "From name"
 msgstr "De : nom"
 
@@ -2923,7 +2923,7 @@ msgid "Rate limit per hour"
 msgstr "Limite de débit par heure"
 
 #: lib/keila_web/templates/sender/_mailgun_config.html.heex:9
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Base URL"
 msgstr "URL de base"
 
@@ -2963,17 +2963,17 @@ msgid "Asia Pacific (Seoul)"
 msgstr "Asie Pacifique (Séoul)"
 
 #: lib/keila_web/templates/sender/_ses_config.html.heex:11
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Asia Pacific (Singapore)"
 msgstr "Asie Pacifique (Singapour)"
 
 #: lib/keila_web/templates/sender/_ses_config.html.heex:12
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Asia Pacific (Sydney)"
-msgstr "Asie Pacifique (Séoul)"
+msgstr "Asie Pacifique (Sydney)"
 
 #: lib/keila_web/templates/sender/_ses_config.html.heex:13
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Asia Pacific (Tokyo)"
 msgstr "Asie Pacifique (Tokyo)"
 
@@ -3238,9 +3238,9 @@ msgstr "Code copié dans le presse-papier."
 #: extra/keila_cloud_web/templates/cloud_account/_user_name.html.heex:38
 #: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:146
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:92
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Continue"
-msgstr "Contenu"
+msgstr "Continuer"
 
 #: lib/keila_web/templates/campaign/share.html.heex:61
 #, elixir-autogen, elixir-format
@@ -3289,9 +3289,9 @@ msgid "You can enable a public link to share your campaign with others. Your cam
 msgstr ""
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:110
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Add"
-msgstr "Ajouté"
+msgstr "Ajouter"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:116
 #, elixir-autogen, elixir-format
@@ -3329,9 +3329,9 @@ msgid "Background Color"
 msgstr "Arrière plan"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:104
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Black"
-msgstr "Retour"
+msgstr "Noir"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:89
 #, elixir-autogen, elixir-format
@@ -3555,12 +3555,12 @@ msgid "received"
 msgstr ""
 
 #: lib/keila_web/templates/contact/import_live.html.heex:147
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "1. Download the template.\n2. Fill in the template in the same way that the sample data is filled in.\n3. Click on *File*, then *Save as*. Select *Text CSV (.csv)* and save the file.\n    In the following dialogue pick:\n    - **Character set:** *Unicode (UTF-8)*\n    - **Field delimiter:** *, (Comma)*\n    - **String delimiter:** *\" (Double Quote)*\n"
 msgstr ""
 "1. Télécharger le modèle.\n"
 "2. Remplissez le modèle de la même façon que les donées d’exemple.\n"
-"2. Cliquer sur *Fichier*, puis *Enregistrer sous*. Sélectionner *CSV (séparateur: virgule) (.csv)* et enregistrer le fichier.\n"
+"3. Cliquer sur *Fichier*, puis *Enregistrer sous*. Sélectionner *CSV (séparateur: virgule) (.csv)* et enregistrer le fichier.\n"
 "    Dans la boîte de dialogue suivante choisissez:\n"
 "    - **Codage:** *Unicode (UTF-8)*\n"
 "    - **Séparateur de champ:** *, (Virgule)*\n"
