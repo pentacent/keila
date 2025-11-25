@@ -45,8 +45,6 @@ if Repo.all(Auth.Group) == [] do
       Logger.info("Created root user with #{email}")
 
     {:error, changeset} ->
-      Keila.ReleaseTasks.rollback(0)
-
       errors =
         Ecto.Changeset.traverse_errors(changeset, fn {msg, opts} ->
           Enum.reduce(opts, msg, fn {key, value}, acc ->
@@ -56,6 +54,8 @@ if Repo.all(Auth.Group) == [] do
 
       Logger.error("Failed to create root user: #{inspect(errors)}")
       Logger.flush()
+
+      Keila.ReleaseTasks.rollback(0)
       System.halt(1)
   end
 else
