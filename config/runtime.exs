@@ -323,7 +323,7 @@ if config_env() == :prod do
   # Enable update check
   config :keila,
          :update_checks_enabled,
-         System.get_env("DISABLE_UPDATE_CHECKS") not in [nil, "", "0", "false", "FALSE"]
+         System.get_env("DISABLE_UPDATE_CHECKS") not in [1, "1", "true", "TRUE"]
 
   # Precedence Bulk Header
   if System.get_env("DISABLE_PRECEDENCE_HEADER") in [1, "1", "true", "TRUE"] do
