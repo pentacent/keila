@@ -96,6 +96,13 @@
       <%= gettext_md("""
       Please follow the **exact** instructions on this page.
       Incorrectly formatted files can not be imported.
+      
+      **Status column**: Only use these exact values:
+      - `active` - Contact can receive emails
+      - `unsubscribed` - Contact has opted out
+      - `unreachable` - Contact's email bounces
+      
+      Leave the Status column empty to keep existing contact status unchanged.
       """) %>
       <br />
       <div x-data="{ tab: 'excel' }" class="tabs" phx-update="ignore" id="tabs">
