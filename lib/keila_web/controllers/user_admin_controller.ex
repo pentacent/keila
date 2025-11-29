@@ -8,7 +8,8 @@ defmodule KeilaWeb.UserAdminController do
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, params) do
     page = String.to_integer(Map.get(params, "page", "1")) - 1
-    users = Auth.list_users(paginate: [page: page, page_size: 20])
+    filter = Map.get(params, "filter", nil)
+    users = Auth.list_users(paginate: [page: page, page_size: 20], filter: filter)
     user_accounts = get_user_accounts(users.data)
     user_credits = maybe_get_user_credits(user_accounts)
 
