@@ -50,6 +50,11 @@ defmodule Keila.Mailings.SenderAdapters.SMTP do
         |> Keyword.put(:tls_options, :tls_certificate_check.options(config.smtp_relay))
         |> put_in([:tls_options, :versions], [:"tlsv1.2"])
 
+      config.smtp_tls_mode == "none" ->
+        opts
+        |> Keyword.put(:tls, :never)
+        |> Keyword.put(:ssl, false)
+
       true ->
         opts
     end
