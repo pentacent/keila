@@ -15,7 +15,7 @@ defmodule KeilaWeb.AuthSession.RequireNoAuthPlug do
     case conn.assigns.current_user do
       nil -> conn
       %User{activated_at: nil} -> assign(conn, :current_user, nil)
-      _user -> redirect_halt(conn, "/")
+      _user -> redirect_halt(conn, KeilaWeb.Router.Helpers.project_path(conn, :index))
     end
   end
 
