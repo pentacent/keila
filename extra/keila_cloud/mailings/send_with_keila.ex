@@ -86,6 +86,7 @@ Keila.if_cloud do
             swk_domain: nil,
             swk_domain_verified_at: nil,
             swk_domain_checked_at: nil,
+            swk_domain_is_known_shared_domain: nil,
             swk_mx1_set_up_at: nil,
             swk_mx2_set_up_at: nil
           })
