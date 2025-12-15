@@ -176,7 +176,7 @@ Keila.if_cloud do
       with {:ok, domain} <- email_domain(sender.from_email),
            {:ok, sender} <- verify_domain_is_not_shared(sender, domain),
            {:ok, sender} <- verify_dns_entries(sender, domain),
-           {:ok, sender} <- __MODULE__.Mx2.set_up_domain(sender) do
+           {:ok, sender} <- __MODULE__.Mx2.maybe_set_up_domain(sender) do
         {:ok, sender}
       else
         {:shared_domain, sender} -> {:ok, sender}

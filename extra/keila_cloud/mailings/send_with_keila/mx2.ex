@@ -30,6 +30,19 @@ Keila.if_cloud do
     end
 
     @doc """
+    Sets up a domain identity in AWS SES (see `set_up_domain/1`) for the given sender but only if the domain has been verified.
+    Returns `{:ok, sender}` if the domain has not been verified, else the result of `set_up_domain/1`.
+    """
+    @spec maybe_set_up_domain(Sender.t()) :: {:ok, Sender.t()} | {:error, any()}
+    def maybe_set_up_domain(sender) do
+      if sender.swk_domain_verified_at do
+        set_up_domain(sender)
+      else
+        {:ok, sender}
+      end
+    end
+
+    @doc """
     Returns the Swoosh configuration for SWK SES.
     """
     def to_swoosh_config(_sender) do
@@ -172,7 +185,8 @@ Keila.if_cloud do
       }
 
       case Mailings.update_sender(sender.id, %{config: updated_config},
-             config_cast_opts: [with: &SendWithKeila.private_changeset/2]
+             config_cast_opts: [with: &SendWithKeila.private_changeset/2],
+             skip_callback: true
            ) do
         {:ok, updated_sender} -> {:ok, updated_sender}
         {:error, reason} -> {:error, "Failed to update sender: #{inspect(reason)}"}
