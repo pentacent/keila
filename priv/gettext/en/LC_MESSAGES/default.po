@@ -3110,6 +3110,11 @@ msgstr ""
 msgid "Please enter no more than five addresses."
 msgstr ""
 
+#: lib/keila_web/live/campaign_edit_live.ex:260
+#, elixir-autogen, elixir-format
+msgid "[Preview] %{subject}"
+msgstr ""
+
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:295
 #, elixir-autogen, elixir-format
 msgid "Recipients"
