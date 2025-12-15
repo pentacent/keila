@@ -257,10 +257,17 @@ defmodule KeilaWeb.CampaignEditLive do
 
   defp send_previews(socket, contacts, campaign, sender) do
     template = Enum.find(socket.assigns.templates, &(&1.id == campaign.template_id))
+    subject = gettext("[Preview] %{subject}", subject: campaign.subject)
 
     for contact <- contacts do
       Task.async(fn ->
-        campaign = %Mailings.Campaign{campaign | sender: sender, template: template}
+        campaign = %Mailings.Campaign{
+          campaign
+          | subject: subject,
+            sender: sender,
+            template: template
+        }
+
         email = Mailings.Builder.build(campaign, contact, %{})
 
         # TODO: Once campaign sending has been refactored, enqueue these messages to ensure
