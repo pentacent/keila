@@ -45,7 +45,7 @@
             class="w-full bg-gray-800"
             readonly
             x-ref="campaign-link"
-            value={Routes.public_campaign_url(@conn, :show, @campaign.id)}
+            value={Keila.Mailings.get_public_campaign_link(@campaign.id)}
           />
           <button
             class="button"

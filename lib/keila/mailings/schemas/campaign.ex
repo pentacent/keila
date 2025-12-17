@@ -16,7 +16,8 @@ defmodule Keila.Mailings.Campaign do
     :template_id,
     :segment_id,
     :data,
-    :preview_text
+    :preview_text,
+    :public_link_enabled
   ]
   @creation_fields [:project_id | @update_fields]
 

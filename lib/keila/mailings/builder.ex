@@ -55,6 +55,7 @@ defmodule Keila.Mailings.Builder do
       )
       |> Map.put("unsubscribe_link", unsubscribe_link)
       |> Map.put("assets_url", Routes.static_url(KeilaWeb.Endpoint, "/"))
+      |> maybe_put_public_link(campaign)
 
     Email.new()
     |> put_subject(campaign.subject, assigns)
@@ -360,6 +361,14 @@ defmodule Keila.Mailings.Builder do
       end
     end)
   end
+
+  defp maybe_put_public_link(assigns, %{public_link_enabled: true, id: campaign_id})
+       when not is_nil(campaign_id) do
+    public_link = Keila.Mailings.get_public_campaign_link(campaign_id)
+    put_in(assigns, ["campaign", "public_link"], public_link)
+  end
+
+  defp maybe_put_public_link(assigns, _campaign), do: assigns
 
   defp put_tracking_pixel(html, campaign, recipient) do
     pixel_url = Routes.static_url(KeilaWeb.Endpoint, "/images/pixel.gif")

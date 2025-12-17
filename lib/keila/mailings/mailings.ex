@@ -881,4 +881,15 @@ defmodule Keila.Mailings do
     )
     |> Repo.one()
   end
+
+  @doc """
+  Returns the public campaign link URL for a given campaign ID.
+
+  This is just a convenience function and doesn't actually check whether the
+  public link is enabled for the given campaign.
+  """
+  @spec get_public_campaign_link(campaign_id :: Campaign.id()) :: String.t()
+  def get_public_campaign_link(campaign_id) do
+    Routes.public_campaign_url(KeilaWeb.Endpoint, :show, campaign_id)
+  end
 end
