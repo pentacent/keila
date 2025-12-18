@@ -35,7 +35,7 @@ Keila.if_cloud do
     """
     @spec maybe_set_up_domain(Sender.t()) :: {:ok, Sender.t()} | {:error, any()}
     def maybe_set_up_domain(sender) do
-      if sender.swk_domain_verified_at do
+      if sender.config.swk_domain_verified_at do
         set_up_domain(sender)
       else
         {:ok, sender}
