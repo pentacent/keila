@@ -80,6 +80,19 @@
         <% end %>
       </div>
       <div class="form-row">
+        <%= label(f, :status, gettext("Status")) %>
+        <span class="block text-sm mb-2">
+          <%= gettext("The subscription status of this contact.") %>
+        </span>
+        <%= with_validation(f, :status) do %>
+          <%= select(f, :status, [
+            {gettext("Active"), :active},
+            {gettext("Unsubscribed"), :unsubscribed},
+            {gettext("Unreachable"), :unreachable}
+          ], class: "text-black") %>
+        <% end %>
+      </div>
+      <div class="form-row">
         <%= label(f, :data, gettext("Data")) %>
         <span class="block text-sm mb-2">
           <%= gettext("You can add any JSON object as custom data to your contacts.") %>
