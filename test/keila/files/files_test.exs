@@ -43,7 +43,7 @@ defmodule Keila.FilesTest do
 
     # Store a file
     {:ok, file} =
-      Files.store_file(project.id, @test_file_webp, filename: "keila.webp", type: "image/webp")
+      Files.store_file(project.id, @test_file, filename: "keila.png", type: "image/png")
 
     file_url = Files.get_file_url(file.uuid)
 
