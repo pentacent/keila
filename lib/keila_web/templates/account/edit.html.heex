@@ -237,6 +237,30 @@
       </button>
     </div>
   </.form>
+  <.form
+    let={f}
+    for={@conn}
+    action={Routes.account_path(@conn, :delete)}
+    class="rounded shadow p-8 mt-8 max-w-5xl mx-auto flex flex-col gap-4 bg-gray-900 text-gray-50"
+    method="delete"
+  >
+    <%= hidden_input(f, :require_confirmation, value: "true") %>
+    <h2 class="text-3xl font-bold">
+      <%= gettext("Remove account") %>
+    </h2>
+    <p class="text-lg text-gray-200">
+      <%= gettext("Here you can remove your Keila account") %>
+    </p>
+    <div class="flex justify-end mt-8">
+      <button
+        type="submit"
+        class="button button--warn button--large"
+        @click="setUnsavedReminder(false)"
+      >
+        <%= gettext("Remove account") %>
+      </button>
+    </div>
+  </.form>
 </div>
 
 <script src="https://cdn.paddle.com/paddle/paddle.js">
