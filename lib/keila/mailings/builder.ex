@@ -85,7 +85,7 @@ defmodule Keila.Mailings.Builder do
   @spec build_preview(campaign :: Campaign.t(), contact :: Contact.t()) :: Email.t()
   def build_preview(campaign, contact \\ @default_contact) do
     %{campaign | sender: @default_sender}
-    |> build(contact)
+    |> build(contact, %{})
   end
 
   defp put_template_assigns(assigns, %Template{assigns: template_assigns = %{}}),
