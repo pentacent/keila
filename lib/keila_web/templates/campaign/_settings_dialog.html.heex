@@ -31,7 +31,7 @@
         let={f}
         for={@settings_changeset}
         id="campaign-settings"
-        class="grid gap-4"
+        class="flex flex-col gap-4"
         phx-submit="update-settings"
         x-on:change="setUnsavedReminder(true)"
         x-data="{type: null}"
