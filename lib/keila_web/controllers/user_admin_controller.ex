@@ -128,7 +128,7 @@ defmodule KeilaWeb.UserAdminController do
     conn
     |> KeilaWeb.AuthSession.end_auth_session()
     |> KeilaWeb.AuthSession.start_auth_session(user_id)
-    |> redirect(to: "/")
+    |> redirect(to: KeilaWeb.Router.Helpers.project_path(conn, :index))
   end
 
   defp authorize(conn, _) do
