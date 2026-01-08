@@ -6,6 +6,7 @@ defmodule Keila.FilesTest do
 
   @test_file "test/keila/files/keila.png"
   @test_file_jpg "test/keila/files/keila.jpg"
+  @test_file_webp "test/keila/files/keila.webp"
 
   @tag :files
   test "Test media type by filename and file signature" do
@@ -14,6 +15,9 @@ defmodule Keila.FilesTest do
 
     assert {:ok, "image/jpeg"} = Files.MediaType.type_from_filename(@test_file_jpg)
     assert {:ok, "image/jpeg"} = Files.MediaType.type_from_magic_number(@test_file_jpg)
+
+    assert {:ok, "image/webp"} = Files.MediaType.type_from_filename(@test_file_webp)
+    assert {:ok, "image/webp"} = Files.MediaType.type_from_magic_number(@test_file_webp)
   end
 
   @tag :files

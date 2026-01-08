@@ -27,6 +27,7 @@ defmodule Keila.Files.MediaType do
   defp do_type_from_filename(".jpeg"), do: {:ok, "image/jpeg"}
   defp do_type_from_filename(".png"), do: {:ok, "image/png"}
   defp do_type_from_filename(".gif"), do: {:ok, "image/gif"}
+  defp do_type_from_filename(".webp"), do: {:ok, "image/webp"}
   defp do_type_from_filename(_), do: {:error, :unknown_type}
 
   @doc """
@@ -36,7 +37,7 @@ defmodule Keila.Files.MediaType do
   def type_from_magic_number(path) do
     File.open(path, [:read], fn file ->
       file
-      |> IO.binread(8)
+      |> IO.binread(12)
       |> do_type_from_magic_number()
     end)
     |> strip_extra_ok()
@@ -55,6 +56,9 @@ defmodule Keila.Files.MediaType do
 
   defp do_type_from_magic_number(<<0x47, 0x49, 0x46, 0x38, 0x39, 0x61>> <> _),
     do: {:ok, "image/gif"}
+
+  defp do_type_from_magic_number(<<"RIFF", _::binary-size(4), "WEBP", _::binary>>),
+    do: {:ok, "image/webp"}
 
   defp do_type_from_magic_number(_), do: {:error, :unknown_type}
 

@@ -5,7 +5,7 @@ defmodule KeilaWeb.FileManagerLiveComponent do
   def mount(socket) do
     {:ok,
      socket
-     |> allow_upload(:files, accept: ~w(.jpg .jpeg .png .gif))
+     |> allow_upload(:files, accept: ~w(.jpg .jpeg .png .gif .webp))
      |> assign(:files, [])
      |> assign(:page, 0)}
   end
