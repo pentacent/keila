@@ -773,8 +773,6 @@ defmodule Keila.Mailings do
   Returns a signed unsubscribe link for the given project id and recipient.
   """
   @spec get_unsubscribe_link(Project.id(), Recipient.id()) :: String.t()
-  def get_unsubscribe_link(_project_id, "00000000-0000-4000-0000-000000000000"), do: "#"
-
   def get_unsubscribe_link(project_id, recipient_id) do
     hmac = unsubscribe_hmac(project_id, recipient_id)
 
