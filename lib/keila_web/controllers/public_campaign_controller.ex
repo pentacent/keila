@@ -4,7 +4,7 @@ defmodule KeilaWeb.PublicCampaignController do
   plug :fetch_campaign
 
   def show(conn, _params) do
-    email = Keila.Mailings.Builder.build_preview(conn.assigns.campaign, %{})
+    email = Keila.Mailings.Builder.build_preview(conn.assigns.campaign)
 
     cond do
       Map.has_key?(email.headers, "X-Keila-Invalid") ->

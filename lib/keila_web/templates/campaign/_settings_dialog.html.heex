@@ -31,7 +31,7 @@
         let={f}
         for={@settings_changeset}
         id="campaign-settings"
-        class="grid gap-4"
+        class="flex flex-col gap-4"
         phx-submit="update-settings"
         x-on:change="setUnsavedReminder(true)"
         x-data="{type: null}"
@@ -147,6 +147,16 @@
             <%= checkbox(fs, :do_not_track, checked_value: "false", unchecked_value: "true") %>
             <%= label(fs, :do_not_track, gettext("Enable click/open tracking")) %>
           <% end) %>
+        </div>
+
+        <div class="form-row-checkbox">
+          <%= checkbox(f, :public_link_enabled) %>
+          <%= label(f, :public_link_enabled, gettext("Enable public link")) %>
+          <span class="block text-sm">
+            <%= gettext(
+              "This will allow anyone who has the public link to access your campaign after it's been sent."
+            ) %>
+          </span>
         </div>
 
         <div class="form-row md:col-span-full">

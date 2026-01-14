@@ -1,0 +1,97 @@
+## This is a PO Template file.
+##
+## `msgid`s here are often extracted from source code.
+## Add new translations manually only if they're dynamic
+## translations that can't be statically extracted.
+##
+## Run `mix gettext.extract` to bring this file up to
+## date. Leave `msgstr`s empty as changing them here has no
+## effect: edit them in PO (`.po`) files instead.
+## From Ecto.Changeset.cast/4
+msgid "can't be blank"
+msgstr "no puede estar en blanco"
+
+## From Ecto.Changeset.unique_constraint/3
+msgid "has already been taken"
+msgstr "ya está en uso"
+
+## From Ecto.Changeset.put_change/3
+msgid "is invalid"
+msgstr "no es válido"
+
+## From Ecto.Changeset.validate_acceptance/3
+msgid "must be accepted"
+msgstr "debe ser aceptado"
+
+## From Ecto.Changeset.validate_format/3
+msgid "has invalid format"
+msgstr "tiene un formato no válido"
+
+## From Ecto.Changeset.validate_subset/3
+msgid "has an invalid entry"
+msgstr "contiene una entrada no válida"
+
+## From Ecto.Changeset.validate_exclusion/3
+msgid "is reserved"
+msgstr "está reservado"
+
+## From Ecto.Changeset.validate_confirmation/3
+msgid "does not match confirmation"
+msgstr "no coincide con la confirmación"
+
+## From Ecto.Changeset.no_assoc_constraint/3
+msgid "is still associated with this entry"
+msgstr "todavía está asociado con esta entrada"
+
+msgid "are still associated with this entry"
+msgstr "todavía están asociados con esta entrada"
+
+## From Ecto.Changeset.validate_length/3
+msgid "should be %{count} character(s)"
+msgid_plural "should be %{count} character(s)"
+msgstr[0] "debe tener %{count} carácter"
+msgstr[1] "debe tener %{count} caracteres"
+
+msgid "should have %{count} item(s)"
+msgid_plural "should have %{count} item(s)"
+msgstr[0] "debe tener %{count} elemento"
+msgstr[1] "debe tener %{count} elementos"
+
+msgid "should be at least %{count} character(s)"
+msgid_plural "should be at least %{count} character(s)"
+msgstr[0] "debe tener al menos %{count} carácter"
+msgstr[1] "debe tener al menos %{count} caracteres"
+
+msgid "should have at least %{count} item(s)"
+msgid_plural "should have at least %{count} item(s)"
+msgstr[0] "debe tener al menos %{count} elemento"
+msgstr[1] "debe tener al menos %{count} elementos"
+
+msgid "should be at most %{count} character(s)"
+msgid_plural "should be at most %{count} character(s)"
+msgstr[0] "debe tener como máximo %{count} carácter"
+msgstr[1] "debe tener como máximo %{count} caracteres"
+
+msgid "should have at most %{count} item(s)"
+msgid_plural "should have at most %{count} item(s)"
+msgstr[0] "debe tener como máximo %{count} elemento"
+msgstr[1] "debe tener como máximo %{count} elementos"
+
+## From Ecto.Changeset.validate_number/3
+msgid "must be less than %{number}"
+msgstr "debe ser menor que %{number}"
+
+msgid "must be greater than %{number}"
+msgstr "debe ser mayor que %{number}"
+
+msgid "must be less than or equal to %{number}"
+msgstr "debe ser menor o igual que %{number}"
+
+msgid "must be greater than or equal to %{number}"
+msgstr "debe ser mayor o igual que %{number}"
+
+msgid "must be equal to %{number}"
+msgstr "debe ser igual a %{number}"
+
+msgid "must be at least %{offset} seconds in the future"
+msgstr "debe ser al menos %{offset} segundos en el futuro"

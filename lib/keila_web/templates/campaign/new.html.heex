@@ -194,6 +194,16 @@
       </div>
     </template>
 
+    <div class="form-row-checkbox">
+      <%= checkbox(f, :public_link_enabled) %>
+      <%= label(f, :public_link_enabled, gettext("Enable public link")) %>
+      <span class="block text-sm">
+        <%= gettext(
+          "This will allow anyone who has the public link to access your campaign after it's been sent."
+        ) %>
+      </span>
+    </div>
+
     <br />
 
     <div class="form-row md:col-span-full">

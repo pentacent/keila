@@ -2,6 +2,50 @@
 
 ## Unreleased
 
+## Version 0.18.0
+
+> Newsletter archives, interaction-based segmentation, many improvements and Keila en español!
+
+### Added
+- Added public archive links for campaigns
+- Added ability to review sent campaigns
+- Added `$empty` operator to Contact query language and segment editor
+- Added segment filtering based on campaign interactions
+- Added text color tool to Block Editor
+- Added social media icons block to Block Editor (see #444)
+- `success_url` in contact forms is now processed with Liquid, allowing personalized redirects
+- Added support for `id_type` in API Contact deletion endpoint
+- Preview emails are now prefixed with "[Preview]"
+- Added Spanish translation (thanks @PedroMartpico)
+- Added failure text and redirect URL options for double opt-in forms
+
+### Improved
+- Improved sender creation and editing experience
+- Improved copy and paste functionality in the block editor
+- Contacts are now marked as unreachable if delivery fails because they are invalid (thanks @henriqueberlesi)
+- Contacts list now uses localized datetimes
+- The `preview_text` of a campaign can now also be set via the API (thanks @samuelc92)
+- Logs now include an ISO 8601 timestamp (thanks @samuelc92)
+- Settings and send modals in the campaign editor can now be scrolled correctly
+- Contact forms can now be embedded in Iframes
+- TLS/SSL are now completely disabled when TLS mode is set to "none" in SMTP adapter
+- Added message stream setting to Postmark adapter (thanks @codecat)
+- New campaigns now use settings from the most recently sent campaign as defaults
+
+### Fixed
+- Fixed an issue where a contact that was already in the contact list would not receive the double opt-in email when trying to sign up again
+- Template signature is now included in double opt-in emails
+- Fixed issues with icon sizes in Safari
+- Error message when root user failed to be created is now logged correctly
+- Fixed logic and documentation of `DISABLE_UPDATE_CHECKS`
+- When trying to access an auth URL as an authenticated user, the user is now correctly redirected to the project index page even if `URL_PATH` is set to a non-root path.
+- Example data in .ods import template now uses correct straight quotes (thanks @individual-it)
+- Upgraded Elixir and OTP have fixed previous SMTP adapter TLS issues
+- Fixed exception in Mailings worker when contact has been deleted after recipient was created
+
+## License Update
+Keila continues to be licensed under the AGPLv3 license. However, going forward, all components that are only relevant for Keila Cloud (such as billing or the Send with Keila feature) are provided for informational purposes only and are not licensed under the terms of the AGPLv3 license. You can find more information in [extra/README.md](extra/README.md)
+
 
 ## Version 0.17.1
 
