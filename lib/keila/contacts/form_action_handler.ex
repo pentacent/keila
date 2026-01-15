@@ -9,6 +9,7 @@ defmodule Keila.Contacts.FormActionHandler do
   alias Keila.Contacts.EctoStringMap
   alias Keila.Contacts.FormParams
   alias Keila.Mailings.SendDoubleOptInMailWorker
+  alias Keila.Mailings.SendWelcomeEmailWorker
 
   @doc """
   Creates a new Contact within the given Project with dynamic casts and
@@ -34,6 +35,7 @@ defmodule Keila.Contacts.FormActionHandler do
     |> Repo.insert_or_update()
     |> case do
       {:ok, contact} ->
+        maybe_send_welcome_email(contact, form)
         {:ok, contact}
 
       {:error, changeset = %{errors: [double_opt_in: {"HMAC missing", _}]}} ->
@@ -87,4 +89,11 @@ defmodule Keila.Contacts.FormActionHandler do
   end
 
   defp postprocess_error_changeset(changeset, _), do: changeset
+
+  defp maybe_send_welcome_email(contact, form) do
+    if form.settings.welcome_enabled && form.sender_id do
+      SendWelcomeEmailWorker.new(%{"contact_id" => contact.id, "form_id" => form.id})
+      |> Oban.insert()
+    end
+  end
 end

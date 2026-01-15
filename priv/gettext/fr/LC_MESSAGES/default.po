@@ -2566,11 +2566,11 @@ msgstr "Date de double opt-in"
 #: lib/keila/mailings/send_double_opt_in_mail_worker.ex:75
 #: lib/keila_web/templates/form/edit_live.html.heex:409
 #, elixir-autogen, elixir-format
-msgid "Please click here to confirm your subscription:\n\n### [Confirm subscription]({{ double_opt_in_link }})\n"
+msgid "Please click here to confirm your subscription:\n\n#### [Confirm subscription]({{ double_opt_in_link }})\n"
 msgstr ""
 "Veuillez cliquer ici pour confirmer votre abonnement:\n"
 "\n"
-"### [Confirmer l’abonnement]({{ double_opt_in_link }})\n"
+"#### [Confirmer l’abonnement]({{ double_opt_in_link }})\n"
 
 #: lib/keila_web/views/public_form_view.ex:335
 #, elixir-autogen, elixir-format

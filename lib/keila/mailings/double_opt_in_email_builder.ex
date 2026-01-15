@@ -7,14 +7,13 @@ defmodule Keila.Mailings.DoubleOptInEmailBuilder do
 
   alias Keila.Contacts.Form
   alias Keila.Contacts.FormParams
-  alias Keila.Mailings.Sender
   alias Keila.Templates.{Css, HybridTemplate}
   alias Swoosh.Email
   alias KeilaWeb.Router.Helpers, as: Routes
   alias KeilaWeb.Endpoint
 
   @doc """
-  Builds a double opt-in email for the given form_params.
+  Builds a double opt-in email for the given `FormParams`.
   `form_params` must be preloaded with the `form` assoc.
   """
   @spec build(FormParams.t(), map()) :: Email.t()
@@ -25,6 +24,7 @@ defmodule Keila.Mailings.DoubleOptInEmailBuilder do
 
     template = if form.template_id, do: Keila.Templates.get_template(form.template_id)
     styles = get_styles(template)
+
     assigns = build_assigns(assigns, form_params, template, subject)
 
     Email.new()
@@ -58,17 +58,40 @@ defmodule Keila.Mailings.DoubleOptInEmailBuilder do
     build(preview_form_params, @preview_assigns)
   end
 
+  @doc """
+  Returns the default subject for a double opt-in email.
+  """
+  @spec default_subject() :: String.t()
+  def default_subject() do
+    gettext("Please confirm your email address")
+  end
+
+  @doc """
+  Returns the default markdown body for a double opt-in email.
+  """
+  @spec default_markdown_body() :: String.t()
+  def default_markdown_body() do
+    gettext("""
+    # Email Confirmation
+
+    Please click here to confirm your subscription:
+
+    #### [Confirm subscription]({{ double_opt_in_link }})
+    """)
+  end
+
   defp get_subject(form) do
-    form.settings.double_opt_in_subject || gettext("Please confirm your email address")
+    case form.settings.double_opt_in_subject do
+      empty when empty in [nil, ""] -> default_subject()
+      subject -> subject
+    end
   end
 
   defp get_body_markdown(form) do
-    form.settings.double_opt_in_markdown_body ||
-      gettext("""
-      Please click here to confirm your subscription:
-
-      #### [Confirm subscription]({{ double_opt_in_link }})
-      """)
+    case form.settings.double_opt_in_markdown_body do
+      empty when empty in [nil, ""] -> default_markdown_body()
+      body -> body
+    end
   end
 
   defp get_styles(template) do

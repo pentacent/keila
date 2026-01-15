@@ -29,12 +29,16 @@ defmodule KeilaWeb.FormController do
     double_opt_in_available? =
       Keila.Billing.feature_available?(current_project.id, :double_opt_in)
 
+    welcome_email_available? =
+      Keila.Billing.feature_available?(current_project.id, :welcome_email)
+
     live_render(conn, KeilaWeb.FormEditLive,
       session: %{
         "current_project" => current_project(conn),
         "form" => conn.assigns.form,
         "locale" => Gettext.get_locale(),
-        "double_opt_in_available" => double_opt_in_available?
+        "double_opt_in_available" => double_opt_in_available?,
+        "welcome_email_available" => welcome_email_available?
       }
     )
   end
