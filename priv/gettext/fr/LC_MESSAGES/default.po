@@ -3535,105 +3535,105 @@ msgstr ""
 #: lib/keila_web/templates/sender/edit_live.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "Resend email"
-msgstr ""
+msgstr "Renvoyer l'e-mail"
 
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:245
 #, elixir-autogen, elixir-format
 msgid "Review account information"
-msgstr ""
+msgstr "Vérifier les informations du compte"
 
 #: lib/keila/mailings/double_opt_in_email_builder.ex:74
 #, elixir-autogen, elixir-format
 msgid "# Email Confirmation\n\nPlease click here to confirm your subscription:\n\n#### [Confirm subscription]({{ double_opt_in_link }})\n"
-msgstr ""
+msgstr "# Confirmation d'e-mail\n\nVeuillez cliquer ici pour confirmer votre inscription :\n\n#### [Confirmer l'inscription]({{ double_opt_in_link }})\n"
 
 #: lib/keila/mailings/welcome_email_builder.ex:65
 #, elixir-autogen, elixir-format
 msgid "# Welcome!\n\nThank you for subscribing to this newsletter.\n"
-msgstr ""
+msgstr "# Bienvenue !\n\nMerci de vous être inscrit à cette newsletter.\n"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:384
 #: lib/keila_web/templates/form/edit_live.html.heex:593
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "**Important:** You must create and select a sender to send emails."
-msgstr "**Important:** Vous devez créer et sélectionner un expéditeur ici. Dans le cas contraire, aucuns e-mails d‘opt-in ne pourront être envoyés."
+msgstr "**Important :** Vous devez créer et sélectionner un expéditeur pour envoyer des e-mails."
 
 #: lib/keila_web/templates/form/edit_live.html.heex:552
 #, elixir-autogen, elixir-format
 msgid "Email subject"
-msgstr ""
+msgstr "Objet de l'e-mail"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:634
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Email text"
-msgstr "E-mail"
+msgstr "Texte de l'e-mail"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:361
 #: lib/keila_web/templates/form/edit_live.html.heex:570
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Select a sender"
-msgstr "Sélectionner un fichier"
+msgstr "Sélectionner un expéditeur"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:546
 #, elixir-autogen, elixir-format
 msgid "Send welcome email"
-msgstr ""
+msgstr "Envoyer un e-mail de bienvenue"
 
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:156
 #: lib/keila_web/templates/campaign/new.html.heex:201
 #, elixir-autogen, elixir-format
 msgid "This will allow anyone who has the public link to access your campaign after it's been sent."
-msgstr ""
+msgstr "Cela permettra à toute personne disposant du lien public d'accéder à votre campagne après son envoi."
 
 #: lib/keila_web/templates/form/edit_live.html.heex:664
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "To prevent abuse by spammers, the welcome email feature is currently only available if you have a subscription. Sorry for the inconvenience!"
-msgstr "Pour éviter les abus par les spammeurs, la fonctionnalité de double opt-in n’est actuellement disponible que si vous avez un abonnement. Désolé pour le désagrément!"
+msgstr "Pour éviter les abus par les spammeurs, la fonctionnalité d'e-mail de bienvenue n'est actuellement disponible que si vous avez un abonnement. Désolé pour le désagrément !"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:98
 #, elixir-autogen, elixir-format
 msgid "Welcome Email"
-msgstr ""
+msgstr "E-mail de bienvenue"
 
 #: lib/keila/mailings/welcome_email_builder.ex:57
 #, elixir-autogen, elixir-format
 msgid "Welcome!"
-msgstr ""
+msgstr "Bienvenue !"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:325
 #, elixir-autogen, elixir-format
 msgid "When enabled, a confirmation email will be sent to new contacts after they submit the form. The contact is only added to your contact list after they open the confirmation link."
-msgstr ""
+msgstr "Lorsque cette option est activée, un e-mail de confirmation sera envoyé aux nouveaux contacts après avoir soumis le formulaire. Le contact n'est ajouté à votre liste qu'après avoir cliqué sur le lien de confirmation."
 
 #: lib/keila_web/templates/form/edit_live.html.heex:534
 #, elixir-autogen, elixir-format
 msgid "When enabled, a welcome email will be sent to new contacts after they subscribe. If double opt-in is enabled, the email will be sent after the contact confirms their email."
-msgstr ""
+msgstr "Lorsque cette option est activée, un e-mail de bienvenue sera envoyé aux nouveaux contacts après leur inscription. Si le double opt-in est activé, l'e-mail sera envoyé après que le contact ait confirmé son adresse e-mail."
 
 #: lib/keila_web/templates/form/edit_live.html.heex:636
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "You may use Liquid and Markdown in the email body.\n\nAvailable variables: `{{ contact.email }}`, `{{ contact.first_name }}`, `{{ contact.last_name }}`, `{{ contact.data.* }}`\n"
-msgstr ""
+msgstr "Vous pouvez utiliser Liquid et Markdown dans le corps de l'e-mail.\n\nVariables disponibles : `{{ contact.email }}`, `{{ contact.first_name }}`, `{{ contact.last_name }}`, `{{ contact.data.* }}`\n"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:494
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Custom URL to which users are redirected when a double opt-in link\nhas expired or has already been used.\n"
-msgstr "  URL personnalisée vers laquelle les utilisateurs sont redirigés quand ils soumettent le formulaire et que le double opt-in est requis.\n"
+msgstr "URL personnalisée vers laquelle les utilisateurs sont redirigés lorsqu'un lien de double opt-in\na expiré ou a déjà été utilisé.\n"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:464
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Custom URL to which users are redirected when they submit the form and double opt-in\nis required.\n"
-msgstr "  URL personnalisée vers laquelle les utilisateurs sont redirigés quand ils soumettent le formulaire et que le double opt-in est requis.\n"
+msgstr "URL personnalisée vers laquelle les utilisateurs sont redirigés lorsqu'ils soumettent le formulaire\net que le double opt-in est requis.\n"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:479
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Custom message that is shown when a double opt-in link has expired or\nhas already been used.\n"
-msgstr "  Message personnalisé affiché quand un utilisateur soumet le formulaire et que le double opt-in est requis.\n"
+msgstr "Message personnalisé affiché lorsqu'un lien de double opt-in a expiré\nou a déjà été utilisé.\n"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:449
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Custom message that is shown when a user submits the form and double opt-in\nis required.\n"
-msgstr "  Message personnalisé affiché quand un utilisateur soumet le formulaire et que le double opt-in est requis.\n"
+msgstr "Message personnalisé affiché lorsqu'un utilisateur soumet le formulaire\net que le double opt-in est requis.\n"
 
 #: lib/keila_web/templates/sender/edit_live.html.heex:53
 #, elixir-autogen, elixir-format, fuzzy
