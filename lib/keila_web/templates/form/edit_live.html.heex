@@ -425,9 +425,9 @@
                 <%= label(fs, :double_opt_in_markdown_body, gettext("Custom email text")) %>
                 <div class="text-xs">
                   <%= gettext_md("""
-                    You may use Liquid and Markdown in the email body.
+                  You may use Liquid and Markdown in the email body.
 
-                    Use `[Confirm]({{ double_opt_in_link }})` to include the opt-in link.
+                  Use `[Confirm]({{ double_opt_in_link }})` to include the opt-in link.
                   """) %>
                 </div>
                 <br />
@@ -447,8 +447,8 @@
                 <%= with_validation(fs, :double_opt_in_message) do %>
                   <div class="text-xs">
                     <%= gettext_md("""
-                      Custom message that is shown when a user submits the form and double opt-in
-                      is required.
+                    Custom message that is shown when a user submits the form and double opt-in
+                    is required.
                     """) %>
                   </div>
                   <%= text_input(fs, :double_opt_in_message, class: "text-black") %>
@@ -462,8 +462,8 @@
                 <%= with_validation(fs, :double_opt_in_url) do %>
                   <div class="text-xs">
                     <%= gettext_md("""
-                      Custom URL to which users are redirected when they submit the form and double opt-in
-                      is required.
+                    Custom URL to which users are redirected when they submit the form and double opt-in
+                    is required.
                     """) %>
                   </div>
                   <%= url_input(fs, :double_opt_in_url, class: "text-black") %>
@@ -477,8 +477,8 @@
                 <%= with_validation(fs, :failure_text) do %>
                   <div class="text-xs">
                     <%= gettext_md("""
-                      Custom message that is shown when a double opt-in link has expired or
-                      has already been used.
+                    Custom message that is shown when a double opt-in link has expired or
+                    has already been used.
                     """) %>
                   </div>
                   <%= text_input(fs, :failure_text, class: "text-black") %>
@@ -492,8 +492,8 @@
                 <%= with_validation(fs, :failure_url) do %>
                   <div class="text-xs">
                     <%= gettext_md("""
-                      Custom URL to which users are redirected when a double opt-in link
-                      has expired or has already been used.
+                    Custom URL to which users are redirected when a double opt-in link
+                    has expired or has already been used.
                     """) %>
                   </div>
                   <%= url_input(fs, :failure_url, class: "text-black") %>
@@ -634,9 +634,9 @@
                 <%= label(fs, :welcome_markdown_body, gettext("Email text")) %>
                 <div class="text-xs">
                   <%= gettext_md("""
-                    You may use Liquid and Markdown in the email body.
+                  You may use Liquid and Markdown in the email body.
 
-                    Available variables: `{{ contact.email }}`, `{{ contact.first_name }}`, `{{ contact.last_name }}`, `{{ contact.data.* }}`
+                  Available variables: `{{ contact.email }}`, `{{ contact.first_name }}`, `{{ contact.last_name }}`, `{{ contact.data.* }}`
                   """) %>
                 </div>
                 <br />
