@@ -51,7 +51,7 @@ defmodule KeilaWeb.FormEditLive do
 
   @impl true
   def handle_event("set_tab", %{"tab" => tab}, socket) do
-    {:noreply, assign(socket, :current_tab, tab)}
+    {:noreply, socket |> assign(:current_tab, tab) |> put_default_assigns()}
   end
 
   @impl true
@@ -161,8 +161,14 @@ defmodule KeilaWeb.FormEditLive do
           |> Floki.parse_fragment!()
           |> Floki.raw_html(pretty: true)
 
-        welcome_email_preview = WelcomeEmailBuilder.build_preview(form).html_body
-        double_opt_in_preview = DoubleOptInEmailBuilder.build_preview(form).html_body
+        double_opt_in_preview =
+          if form.settings.double_opt_in_required &&
+               socket.assigns.current_tab == "double-opt-in",
+             do: DoubleOptInEmailBuilder.build_preview(form).html_body
+
+        welcome_email_preview =
+          if form.settings.welcome_enabled && socket.assigns.current_tab == "welcome-email",
+            do: WelcomeEmailBuilder.build_preview(form).html_body
 
         socket
         |> assign(:form_preview, form)

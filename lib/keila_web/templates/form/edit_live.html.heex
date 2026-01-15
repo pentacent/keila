@@ -434,7 +434,7 @@
                 <%= with_validation(fs, :double_opt_in_markdown_body) do %>
                   <%= textarea(fs, :double_opt_in_markdown_body,
                     class: "text-black",
-                    rows: 6,
+                    rows: 8,
                     placeholder: Keila.Mailings.DoubleOptInEmailBuilder.default_markdown_body()
                   ) %>
                 <% end %>
@@ -643,7 +643,7 @@
                 <%= with_validation(fs, :welcome_markdown_body) do %>
                   <%= textarea(fs, :welcome_markdown_body,
                     class: "text-black",
-                    rows: 6,
+                    rows: 8,
                     placeholder: Keila.Mailings.WelcomeEmailBuilder.default_markdown_body()
                   ) %>
                 <% end %>
@@ -740,8 +740,8 @@
   </.form>
 
   <div class="col-span-2">
-    <%= case @current_tab do %>
-      <% "welcome-email" -> %>
+    <%= cond do %>
+      <% @current_tab == "welcome-email" && @welcome_email_preview -> %>
         <div class="bg-white w-full">
           <iframe
             id="welcome-email-preview"
@@ -759,7 +759,7 @@
             <%= @welcome_email_preview %>
           </div>
         </div>
-      <% "double-opt-in" -> %>
+      <% @current_tab == "double-opt-in" && @double_opt_in_preview -> %>
         <div class="bg-white rounded">
           <iframe
             id="double-opt-in-preview"
@@ -777,7 +777,7 @@
             <%= @double_opt_in_preview %>
           </div>
         </div>
-      <% _other -> %>
+      <% true -> %>
         <div
           class="form-main p-4 md:p-8"
           style={build_styles(%{"background-color" => @form_preview.settings.body_bg_color})}
