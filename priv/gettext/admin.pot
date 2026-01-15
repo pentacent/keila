@@ -32,7 +32,7 @@ msgstr ""
 msgid "Administer Credits for %{email}"
 msgstr ""
 
-#: lib/keila_web/controllers/user_admin_controller.ex:16
+#: lib/keila_web/controllers/user_admin_controller.ex:17
 #, elixir-autogen, elixir-format
 msgid "Administrate Users"
 msgstr ""
