@@ -27,6 +27,9 @@ defmodule Keila.Contacts.Form.Settings do
     field(:success_url, :string)
     field(:failure_text, :string)
     field(:failure_url, :string)
+    field(:welcome_enabled, :boolean, default: false)
+    field(:welcome_subject, :string)
+    field(:welcome_markdown_body, :string)
   end
 
   def changeset(struct \\ %__MODULE__{}, params) do
@@ -53,7 +56,10 @@ defmodule Keila.Contacts.Form.Settings do
       :success_text,
       :success_url,
       :failure_text,
-      :failure_url
+      :failure_url,
+      :welcome_enabled,
+      :welcome_subject,
+      :welcome_markdown_body
     ])
   end
 end

@@ -9,8 +9,8 @@ defmodule Keila.Billing.Features do
   alias Keila.Billing
   alias Keila.Projects.Project
 
-  @features ~w[double_opt_in]a
-  @type feature :: :double_opt_in
+  @features ~w[double_opt_in welcome_email]a
+  @type feature :: :double_opt_in | :welcome_email
 
   @doc """
   Returns `true` if the given feature is available for the specified project.
@@ -28,6 +28,13 @@ defmodule Keila.Billing.Features do
   end
 
   defp do_feature_available?(account, :double_opt_in) do
+    case Accounts.get_credits(account.id) do
+      {n, _} when n > 0 -> true
+      _other -> false
+    end
+  end
+
+  defp do_feature_available?(account, :welcome_email) do
     case Accounts.get_credits(account.id) do
       {n, _} when n > 0 -> true
       _other -> false
