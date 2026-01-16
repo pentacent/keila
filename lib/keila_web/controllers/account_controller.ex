@@ -35,6 +35,31 @@ defmodule KeilaWeb.AccountController do
     end
   end
 
+  @spec delete(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def delete(conn, params) do
+    case get_in(params, ["require_confirmation"]) do
+      "true" ->
+        render_delete_confirmation(conn)
+
+      _ ->
+        Keila.Admin.purge_user(conn.assigns.current_user.id)
+
+        conn
+        |> end_auth_session()
+        |> redirect(to: Routes.auth_path(conn, :login))
+    end
+  end
+
+  defp render_delete_confirmation(conn) do
+    account =
+      Accounts.get_user_account(conn.assigns.current_user.id)
+
+    conn
+    |> put_meta(:title, gettext("Confirm Account Deletion"))
+    |> assign(:account, account)
+    |> render("delete.html")
+  end
+
   defp render_edit(conn, changeset) do
     account = Accounts.get_user_account(conn.assigns.current_user.id)
     credits = if account, do: Accounts.get_credits(account.id)
