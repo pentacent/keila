@@ -14,10 +14,11 @@
     "priv/vendor",
     "priv/static",
     "**/priv/cldr",
-    "**/.elixir_ls"
+    "**/.elixir_ls",
+    "**/phoenix-colocated"
   ],
   "plugins": [
-    "https://plugins.dprint.dev/typescript-0.80.2.wasm",
-    "https://plugins.dprint.dev/json-0.17.0.wasm"
+    "https://plugins.dprint.dev/typescript-0.95.13.wasm",
+    "https://plugins.dprint.dev/json-0.21.1.wasm"
   ]
 }
