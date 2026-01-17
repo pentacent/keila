@@ -84,6 +84,7 @@ defmodule Keila.MixProject do
       {:httpoison, "~> 1.8"},
       {:nimble_csv, "~> 1.3"},
       {:oban, "~> 2.18"},
+      {:nimble_parsec, "~> 1.4"},
       {:solid, "~> 1.0"},
       {:earmark, "~> 1.4"},
       {:tzdata, "~> 1.1"},
