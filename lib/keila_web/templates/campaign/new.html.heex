@@ -1,7 +1,7 @@
 <div class="container flex py-8 sm:py-11 sm:mb-4">
   <div class="flex-grow gap-4 flex flex-col-reverse sm:flex-row sm:items-center max-w-xl">
     <h1 class="text-2xl md:text-3xl text-gray-100">
-      <%= gettext("New Campaign") %>
+      {gettext("New Campaign")}
     </h1>
   </div>
 </div>
@@ -17,16 +17,16 @@
     x-init="type = $el.querySelector('[name=\'campaign[settings][type]\'][checked]').value"
   >
     <div class="inline-form-row">
-      <%= label(f, :sender_id, gettext("Sender")) %>
+      {label(f, :sender_id, gettext("Sender"))}
 
       <%= if not Enum.empty?(@senders) do %>
         <%= with_validation(f, :sender_id) do %>
-          <%= select(
+          {select(
             f,
             :sender_id,
             Enum.map(@senders, &{"#{&1.name} (#{&1.from_name} <#{&1.from_email}>)", &1.id}),
             class: "text-black"
-          ) %>
+          )}
         <% end %>
       <% else %>
         <p>
@@ -34,33 +34,33 @@
             href={Routes.sender_path(@conn, :new, @current_project.id)}
             class="button button--muted"
           >
-            <%= gettext("Create your first sender") %>
+            {gettext("Create your first sender")}
           </a>
         </p>
       <% end %>
     </div>
 
     <div class="inline-form-row">
-      <%= label(f, :segment_id, gettext("Segment")) %>
+      {label(f, :segment_id, gettext("Segment"))}
 
       <%= with_validation(f, :segment_id) do %>
-        <%= select(
+        {select(
           f,
           :segment_id,
           [{gettext("All Contacts"), nil}] ++ Enum.map(@segments, &{&1.name, &1.id}),
           class: "text-black"
-        ) %>
+        )}
       <% end %>
     </div>
 
     <div class="flex flex-col">
-      <%= label(f, :subject, gettext("Subject")) %>
+      {label(f, :subject, gettext("Subject"))}
       <%= with_validation(f, :subject) do %>
-        <%= text_input(f, :subject,
+        {text_input(f, :subject,
           placeholder: gettext("My Campaign Subject"),
           class: "text-black",
           autofocus: true
-        ) %>
+        )}
       <% end %>
     </div>
 
@@ -68,72 +68,68 @@
 
     <div class="form-row">
       <%= inputs_for(f, :settings, fn fs -> %>
-        <%= label(fs, :type, gettext("Choose Your Editor")) %>
+        {label(fs, :type, gettext("Choose Your Editor"))}
         <div class="flex gap-4">
-          <%= radio_button(fs, :type, "text", class: "hidden", x_model: "type") %>
+          {radio_button(fs, :type, "text", class: "hidden", x_model: "type")}
           <label
             for={input_id(fs, :type, "text")}
             class="bg-gray-800 p-4 600"
             x-bind:class="type == 'text' && 'outline outline-2 outline-green-500'"
           >
-            <h3 class="text-bold text-xl"><%= gettext("Plain Text") %></h3>
+            <h3 class="text-bold text-xl">{gettext("Plain Text")}</h3>
             <div class="flex w-24 h-24 bg-gradient-to-br from-gray-200 to-gray-300 rounded text-gray-600 p-2 my-4">
-              <%= render_icon(:plain_text) %>
+              {render_icon(:plain_text)}
             </div>
             <p class="text-sm">
-              <%= gettext(
+              {gettext(
                 "The simplest type of email. Text and nothing else. No images, no links, just text."
-              ) %>
+              )}
             </p>
           </label>
-          <%= radio_button(fs, :type, "markdown", class: "hidden", x_model: "type") %>
+          {radio_button(fs, :type, "markdown", class: "hidden", x_model: "type")}
           <label
             for={input_id(fs, :type, "markdown")}
             class="bg-gray-800 p-4"
             x-bind:class="type == 'markdown' && 'outline outline-2 outline-green-500'"
           >
-            <h3 class="text-bold text-xl"><%= gettext("Markdown") %></h3>
+            <h3 class="text-bold text-xl">{gettext("Markdown")}</h3>
             <div class="flex w-24 h-24 bg-gradient-to-br from-gray-200 to-gray-300 rounded text-gray-600 p-2 my-4">
-              <%= render_icon(:markdown) %>
+              {render_icon(:markdown)}
             </div>
             <p class="text-sm">
-              <%= gettext(
-                "Use the Markdown editor to create beautiful single-column hybrid emails."
-              ) %>
+              {gettext("Use the Markdown editor to create beautiful single-column hybrid emails.")}
             </p>
           </label>
-          <%= radio_button(fs, :type, "block", class: "hidden", x_model: "type") %>
+          {radio_button(fs, :type, "block", class: "hidden", x_model: "type")}
           <label
             for={input_id(fs, :type, "block")}
             class="bg-gray-800 p-4 600 relative"
             x-bind:class="type == 'block' && 'outline outline-2 outline-green-500'"
           >
-            <h3 class="text-bold text-xl"><%= gettext("Block") %></h3>
+            <h3 class="text-bold text-xl">{gettext("Block")}</h3>
             <div class="flex w-24 h-24 bg-gradient-to-br from-gray-200 to-gray-300 rounded text-gray-600 p-2 my-4">
-              <%= render_icon(:block) %>
+              {render_icon(:block)}
             </div>
             <p class="text-sm">
-              <%= gettext(
-                "Create stunning emails with multi-column layouts with the Block editor."
-              ) %>
+              {gettext("Create stunning emails with multi-column layouts with the Block editor.")}
             </p>
             <span class="absolute bg-green-600 text-white right-0 top-5 px-4 rotate-45 text-md rounded-md">
               beta
             </span>
           </label>
 
-          <%= radio_button(fs, :type, "mjml", class: "hidden", x_model: "type") %>
+          {radio_button(fs, :type, "mjml", class: "hidden", x_model: "type")}
           <label
             for={input_id(fs, :type, "mjml")}
             class="bg-gray-800 p-4"
             x-bind:class="type == 'mjml' && 'outline outline-2 outline-green-500'"
           >
-            <h3 class="text-bold text-xl"><%= gettext("MJML") %></h3>
+            <h3 class="text-bold text-xl">{gettext("MJML")}</h3>
             <div class="flex w-24 h-24 bg-gradient-to-br from-gray-200 to-gray-300 rounded text-gray-600 p-2 my-4">
-              <%= render_icon(:mjml) %>
+              {render_icon(:mjml)}
             </div>
             <p class="text-sm">
-              <%= gettext("Build fully customized responsive email layouts with MJML.") %>
+              {gettext("Build fully customized responsive email layouts with MJML.")}
             </p>
           </label>
         </div>
@@ -143,22 +139,22 @@
     <template x-if="type === 'markdown'">
       <div class="form-row-checkbox">
         <%= inputs_for(f, :settings, fn fs -> %>
-          <%= checkbox(fs, :enable_wysiwyg) %>
-          <%= label(fs, :enable_wysiwyg, gettext("Enable rich text editor")) %>
+          {checkbox(fs, :enable_wysiwyg)}
+          {label(fs, :enable_wysiwyg, gettext("Enable rich text editor"))}
         <% end) %>
       </div>
     </template>
     <template x-if="type === 'markdown' || type === 'block'">
       <div class="form-row">
-        <%= label(f, :template_id, gettext("Template")) %>
+        {label(f, :template_id, gettext("Template"))}
 
         <%= with_validation(f, :template_id) do %>
-          <%= select(
+          {select(
             f,
             :template_id,
             [{gettext("Default"), nil} | Enum.map(@templates, &{&1.name, &1.id})],
             class: "text-black"
-          ) %>
+          )}
         <% end %>
       </div>
     </template>
@@ -166,19 +162,19 @@
     <template x-if="type === 'markdown' || type === 'block' || type === 'mjml'">
       <div class="flex flex-col">
         <%= label(f, :preview_text) do %>
-          <%= gettext("Preview Text") %><br />
+          {gettext("Preview Text")}<br />
           <span class="text-sm">
-            <%= gettext(
+            {gettext(
               "Users see this preview before they open your email. Use up to 50 characters."
-            ) %>
+            )}
           </span>
         <% end %>
         <%= with_validation(f, :preview_text) do %>
-          <%= textarea(f, :preview_text,
+          {textarea(f, :preview_text,
             placeholder: gettext("Can you summarize your campaign in 50 characters?"),
             class: "text-black",
             autofocus: true
-          ) %>
+          )}
         <% end %>
       </div>
     </template>
@@ -188,46 +184,46 @@
     <template x-if="type === 'markdown' || type === 'block'">
       <div class="form-row-checkbox">
         <%= inputs_for(f, :settings, fn fs -> %>
-          <%= checkbox(fs, :do_not_track, checked_value: "false", unchecked_value: "true") %>
-          <%= label(fs, :do_not_track, gettext("Enable click/open tracking")) %>
+          {checkbox(fs, :do_not_track, checked_value: "false", unchecked_value: "true")}
+          {label(fs, :do_not_track, gettext("Enable click/open tracking"))}
         <% end) %>
       </div>
     </template>
 
     <div class="form-row-checkbox">
-      <%= checkbox(f, :public_link_enabled) %>
-      <%= label(f, :public_link_enabled, gettext("Enable public link")) %>
+      {checkbox(f, :public_link_enabled)}
+      {label(f, :public_link_enabled, gettext("Enable public link"))}
       <span class="block text-sm">
-        <%= gettext(
+        {gettext(
           "This will allow anyone who has the public link to access your campaign after it's been sent."
-        ) %>
+        )}
       </span>
     </div>
 
     <br />
 
     <div class="form-row md:col-span-full">
-      <%= label(f, :segment_id, gettext("Campaign data")) %>
+      {label(f, :segment_id, gettext("Campaign data"))}
       <span class="block text-sm mb-2">
-        <%= gettext("You can add any JSON object as custom data to your campaign.") %>
+        {gettext("You can add any JSON object as custom data to your campaign.")}
       </span>
       <%= with_validation(f, :data) do %>
         <%= case input_value(f, :data) do %>
           <% data when is_map(data) -> %>
-            <%= textarea(f, :data,
+            {textarea(f, :data,
               value: Jason.encode!(data),
               class: "text-white bg-gray-900",
               rows: 5
-            ) %>
+            )}
           <% _other -> %>
-            <%= textarea(f, :data, class: "text-white bg-gray-900", rows: 5) %>
+            {textarea(f, :data, class: "text-white bg-gray-900", rows: 5)}
         <% end %>
       <% end %>
     </div>
 
     <div class="flex">
       <button class="button button--cta button--large">
-        <%= gettext("Create campaign") %>
+        {gettext("Create campaign")}
       </button>
     </div>
   </.form>

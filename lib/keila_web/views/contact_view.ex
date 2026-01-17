@@ -15,9 +15,9 @@ defmodule KeilaWeb.ContactView do
           ((@active? && " bg-gray-600 hover:bg-gray-700") || "")
       }
     >
-      <%= if @active? and @current_order == -1,
+      {if @active? and @current_order == -1,
         do: render_icon(:chevron_up),
-        else: render_icon(:chevron_down) %>
+        else: render_icon(:chevron_down)}
     </button>
     """
   end

@@ -1,24 +1,24 @@
 <div class="form-row">
-  <%= label(@form, :smtp_relay, gettext("Server")) %>
+  {label(@form, :smtp_relay, gettext("Server"))}
   <%= with_validation(@form, :smtp_relay) do %>
-    <%= text_input(@form, :smtp_relay,
+    {text_input(@form, :smtp_relay,
       placeholder: gettext("mail.example.org"),
       class: "text-black"
-    ) %>
+    )}
   <% end %>
 </div>
 <div class="form-row">
-  <%= label(@form, :smtp_username, gettext("Username")) %>
+  {label(@form, :smtp_username, gettext("Username"))}
   <%= with_validation(@form, :smtp_username) do %>
-    <%= text_input(@form, :smtp_username, class: "text-black") %>
+    {text_input(@form, :smtp_username, class: "text-black")}
   <% end %>
 </div>
 
 <%= if is_nil(@form.data.smtp_password) do %>
   <div class="form-row">
-    <%= label(@form, :smtp_password, gettext("Password")) %>
+    {label(@form, :smtp_password, gettext("Password"))}
     <%= with_validation(@form, :smtp_password) do %>
-      <%= password_input(@form, :smtp_password, class: "text-black", phx_update: :ignore) %>
+      {password_input(@form, :smtp_password, class: "text-black", phx_update: :ignore)}
     <% end %>
   </div>
 <% else %>
@@ -28,26 +28,26 @@
     class="form-row"
   >
     <div class="flex gap-5">
-      <%= label(@form, :smtp_password, gettext("Password")) %>
+      {label(@form, :smtp_password, gettext("Password"))}
       <label>
         <input type="checkbox" x-model="show" />
-        <%= gettext("Change") %>
+        {gettext("Change")}
       </label>
     </div>
 
     <template x-if="show">
       <%= with_validation(@form, :smtp_password) do %>
-        <%= password_input(@form, :smtp_password, class: "text-black", x_ref: "password") %>
+        {password_input(@form, :smtp_password, class: "text-black", x_ref: "password")}
       <% end %>
     </template>
   </div>
 <% end %>
 
 <div class="form-row">
-  <%= label(@form, :smtp_tls_mode, gettext("Connection security")) %>
+  {label(@form, :smtp_tls_mode, gettext("Connection security"))}
   <%= with_validation(@form, :smtp_tls_mode) do %>
     <%= label(@form, :smtp_tls_mode) do %>
-      <%= select(
+      {select(
         @form,
         :smtp_tls_mode,
         [
@@ -59,14 +59,14 @@
         "x-ref": "smtpTlsMode",
         "x-on:change":
           "switch ($refs.smtpTlsMode.value) {case 'tls': $refs.smtpPort.value = '465';break; case 'starttls': $refs.smtpPort.value = '587';break}"
-      ) %>
+      )}
     <% end %>
   <% end %>
 </div>
 
 <div class="form-row">
-  <%= label(@form, :smtp_port, gettext("Port")) %>
+  {label(@form, :smtp_port, gettext("Port"))}
   <%= with_validation(@form, :smtp_port) do %>
-    <%= number_input(@form, :smtp_port, class: "text-black", "x-ref": "smtpPort") %>
+    {number_input(@form, :smtp_port, class: "text-black", "x-ref": "smtpPort")}
   <% end %>
 </div>

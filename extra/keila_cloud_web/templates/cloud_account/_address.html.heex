@@ -4,12 +4,16 @@
   phx-change="update_address"
   phx-submit="submit_address"
 >
-  <h2 class="text-3xl mb-2">Nice to meet you, <%= @current_user.given_name %>!</h2>
+  <h2 class="text-3xl mb-2">
+    {dgettext("cloud", "Nice to meet you, %{given_name}!", %{
+      given_name: @current_user.given_name
+    })}
+  </h2>
   <p class="mb-2">
-    <%= dgettext(
+    {dgettext(
       "cloud",
       "To comply with anti-spam regulations, we need to know your address."
-    ) %>
+    )}
   </p>
 
   <% country = country(@contact_data_changeset)
@@ -24,7 +28,7 @@
             "flex flex-col gap-2 #{if field == "postal_code", do: "w-32", else: "grow"}  #{if field == "address_line_2", do: "-my-4"}"
           }>
             <label>
-              <%= case field do
+              {case field do
                 "organization_name" ->
                   dgettext("cloud", "Business/organization name")
 
@@ -70,12 +74,12 @@
 
                 other ->
                   other
-              end %>
+              end}
               <%= if field in required_fields do %>
                 <span class="text-red-600">*</span>
               <% end %>
             </label>
-            <%= case field do
+            {case field do
               "administrative_area" ->
                 select(f, :administrative_area, administrative_areas(@contact_data_changeset))
 
@@ -96,7 +100,7 @@
 
               _other ->
                 text_input(f, String.to_existing_atom(field), class: "max-w-64 text-black")
-            end %>
+            end}
           </div>
         <% end %>
       </div>
@@ -106,10 +110,10 @@
     <div class="flex flex-col gap-2">
       <%= if not is_nil(country) do %>
         <label>
-          <%= dgettext("cloud", "Country") %>
+          {dgettext("cloud", "Country")}
         </label>
       <% end %>
-      <%= select(f, :country, [{dgettext("cloud", "Please select a country"), nil} | @countries]) %>
+      {select(f, :country, [{dgettext("cloud", "Please select a country"), nil} | @countries])}
     </div>
   </div>
 

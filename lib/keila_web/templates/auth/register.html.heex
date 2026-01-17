@@ -6,49 +6,49 @@
     class="rounded shadow p-8 mt-8 max-w-xl mx-auto flex flex-col gap-4 bg-gray-900 text-gray-50"
   >
     <h1 class="text-5xl font-bold">
-      <%= gettext("Start sending emails with Keila now") %>
+      {gettext("Start sending emails with Keila now")}
     </h1>
     <p class="text-lg text-gray-200">
-      <%= gettext(
+      {gettext(
         "Register your Keila account now and start your newsletter project within minutes."
-      ) %>
+      )}
     </p>
     <div class="flex flex-col">
-      <%= label(f, :email, gettext("Email")) %>
+      {label(f, :email, gettext("Email"))}
       <%= with_validation(f, :email) do %>
-        <%= text_input(f, :email,
+        {text_input(f, :email,
           placeholder: gettext("you@keila.io"),
           class: "text-black",
           autofocus: true
-        ) %>
+        )}
       <% end %>
     </div>
     <div class="flex flex-col">
-      <%= label(f, :password, gettext("Password")) %>
+      {label(f, :password, gettext("Password"))}
       <p class="text-gray-300 text-sm mb-2">
-        <%= gettext("Must have at least 10 characters.") %>
+        {gettext("Must have at least 10 characters.")}
       </p>
       <%= with_validation(f, :password) do %>
-        <%= password_input(f, :password, class: "text-black") %>
+        {password_input(f, :password, class: "text-black")}
       <% end %>
     </div>
     <div class="flex flex-col">
       <%= with_validation(f, :captcha) do %>
-        <%= captcha_tag() %>
+        {captcha_tag()}
       <% end %>
     </div>
     <div class="hidden">
-      <%= hidden_input(f, :locale, value: Gettext.get_locale()) %>
+      {hidden_input(f, :locale, value: Gettext.get_locale())}
     </div>
     <div class="flex justify-end mt-8">
       <button class="button button--cta button--large">
-        <%= render_icon(:key) %>
-        <%= gettext("Sign up now") %>
+        {render_icon(:key)}
+        {gettext("Sign up now")}
       </button>
     </div>
     <p>
-      <%= gettext("Already have an account?") %>
-      <a href={Routes.auth_path(@conn, :login)} class="underline"><%= gettext("Sign in.") %></a>
+      {gettext("Already have an account?")}
+      <a href={Routes.auth_path(@conn, :login)} class="underline">{gettext("Sign in.")}</a>
     </p>
   </.form>
 </div>

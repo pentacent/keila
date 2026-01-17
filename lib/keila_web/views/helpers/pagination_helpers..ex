@@ -25,7 +25,7 @@ defmodule KeilaWeb.PaginationHelpers do
     ~H"""
     <%= if @current_page > 0 do %>
       <.pagination_button page={@current_page - 1} {assigns}>
-        <%= render_icon(:chevron_left) %>
+        {render_icon(:chevron_left)}
       </.pagination_button>
     <% end %>
 
@@ -43,7 +43,7 @@ defmodule KeilaWeb.PaginationHelpers do
 
     <%= if @current_page < @page_count - 1 do %>
       <.pagination_button page={@current_page + 1} {assigns}>
-        <%= render_icon(:chevron_right) %>
+        {render_icon(:chevron_right)}
       </.pagination_button>
     <% end %>
     """
@@ -78,9 +78,9 @@ defmodule KeilaWeb.PaginationHelpers do
       phx-value-page={@page}
     >
       <%= if @inner_block != [] do %>
-        <%= render_slot(@inner_block) %>
+        {render_slot(@inner_block)}
       <% else %>
-        <%= @page + 1 %>
+        {@page + 1}
       <% end %>
     </a>
     """

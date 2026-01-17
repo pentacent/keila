@@ -1,6 +1,6 @@
 <div class="container flex py-8 sm:py-11 mb-4">
   <h1 class="text-2xl sm:text-3xl">
-    <%= dgettext("cloud", "Review account for %{email}", email: @user.email) %>
+    {dgettext("cloud", "Review account for %{email}", email: @user.email)}
   </h1>
 </div>
 
@@ -11,10 +11,10 @@
         Onboarding Review Data
       </h2>
       <h3 class="font-bold mt-2">Sending Purpose</h3>
-      <%= @account.onboarding_review_data.sending_purpose %>
+      {@account.onboarding_review_data.sending_purpose}
       <%= if @account.onboarding_review_data.is_import_planned do %>
         <h3 class="font-bold mt-2">Import Origin</h3>
-        <%= @account.onboarding_review_data.import_origin %>
+        {@account.onboarding_review_data.import_origin}
       <% end %>
     </div>
   <% end %>
@@ -24,7 +24,7 @@
       Contact Data
     </h2>
     <div class="whitespace-pre">
-      <%= Jason.encode!(Map.from_struct(@account.contact_data), pretty: true) %>
+      {Jason.encode!(Map.from_struct(@account.contact_data), pretty: true)}
     </div>
   <% end %>
 
@@ -35,12 +35,12 @@
     action={Routes.cloud_admin_path(@conn, :update_user_account_status, @user.id)}
   >
     <h2 class="text-2xl font-light">
-      <%= dgettext("admin", "Status") %>
+      {dgettext("admin", "Status")}
     </h2>
     <div class="flex flex-col"></div>
-    <%= select(f, :status, [:default, :onboarding_required, :under_review, :active, :suspended]) %>
+    {select(f, :status, [:default, :onboarding_required, :under_review, :active, :suspended])}
     <button class="button button--large button--cta">
-      <%= dgettext("admin", "Update status") %>
+      {dgettext("admin", "Update status")}
     </button>
   </.form>
 </div>

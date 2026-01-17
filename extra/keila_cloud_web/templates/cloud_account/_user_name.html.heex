@@ -6,36 +6,36 @@
   class="flex flex-col gap-2"
 >
   <h2 class="text-3xl mb-2">
-    <%= dgettext("cloud", "Let’s get to know each other!") %>
+    {dgettext("cloud", "Let’s get to know each other!")}
   </h2>
 
   <div class="mb-2">
-    <%= dgettext_md(
+    {dgettext_md(
       "cloud",
       """
       To make sure Keila is only used to send legitimate emails, we need to review every new account.
 
       Thank you for helping us fight spam!
       """
-    ) %>
+    )}
   </div>
 
   <div class="form-row">
-    <%= label(f, :given_name, gettext("First name")) %>
+    {label(f, :given_name, gettext("First name"))}
     <%= with_validation(f, :given_name) do %>
-      <%= text_input(f, :given_name, class: "text-black w-64") %>
+      {text_input(f, :given_name, class: "text-black w-64")}
     <% end %>
   </div>
   <div class="form-row">
-    <%= label(f, :family_name, gettext("Last name")) %>
+    {label(f, :family_name, gettext("Last name"))}
     <%= with_validation(f, :family_name) do %>
-      <%= text_input(f, :family_name, class: "text-black w-64") %>
+      {text_input(f, :family_name, class: "text-black w-64")}
     <% end %>
 
     <%= if @user_changeset.valid? do %>
       <div class="mt-4">
         <button class="button button--cta button--large">
-          <%= gettext("Continue") %>
+          {gettext("Continue")}
         </button>
       </div>
     <% end %>

@@ -1,36 +1,36 @@
 <div class="container flex py-8 sm:py-11 mb-4">
   <div class="flex-grow gap-4 flex flex-col sm:flex-row sm:items-center">
     <h1 class="text-2xl sm:text-3xl text-gray-100">
-      <%= gettext("Senders") %>
+      {gettext("Senders")}
     </h1>
     <div class="flex-grow flex flex-row-reverse justify-end gap-4 sm:flex-row">
       <a href={Routes.sender_path(@conn, :new, @current_project.id)} class="button button--large">
-        <%= render_icon(:document_add) %>
-        <%= gettext("Create") %>
+        {render_icon(:document_add)}
+        {gettext("Create")}
       </a>
     </div>
   </div>
 </div>
 
 <%= if Enum.empty?(@senders) do %>
-  <%= render("_empty_state.html", assigns) %>
+  {render("_empty_state.html", assigns)}
 <% end %>
 
 <div class="container grid gap-4 lg:grid-cols-2 md:gap-8">
   <%= for sender <- @senders do %>
     <div class="card bg-gray-800">
       <h2 class="font-light text-2xl flex items-center gap-2 mb-2">
-        <%= sender.name %>
+        {sender.name}
       </h2>
       <p>
-        <%= Keila.Mailings.sender_from_line(sender) %>
+        {Keila.Mailings.sender_from_line(sender)}
       </p>
       <br />
       <a
         href={Routes.sender_path(@conn, :edit, @current_project.id, sender.id)}
         class="button button--large"
       >
-        <%= gettext("Settings") %>
+        {gettext("Settings")}
       </a>
     </div>
   <% end %>
