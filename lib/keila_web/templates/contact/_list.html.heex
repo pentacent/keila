@@ -1,6 +1,6 @@
 <div class="container">
   <.form
-    let={f}
+    :let={f}
     for={@conn}
     as="contact"
     action={Routes.contact_path(@conn, :delete, @current_project.id)}
@@ -109,23 +109,26 @@
 
   <%= if @contacts.page_count > 1 do %>
     <div class="flex gap-3 justify-center py-8">
-      <%= pagination_nav(@contacts,
-        href: fn n ->
-          query = %{
-            "page" => n + 1,
-            "sort_by" => @sort_by,
-            "sort_order" => @sort_order,
-            "search" => @search
-          }
+      <.pagination_nav
+        pagination={@contacts}
+        href={
+          fn n ->
+            query = %{
+              "page" => n + 1,
+              "sort_by" => @sort_by,
+              "sort_order" => @sort_order,
+              "search" => @search
+            }
 
-          Routes.contact_path(
-            @conn,
-            if(@contacts_status == :active, do: :index, else: :"index_#{@contacts_status}"),
-            @current_project.id,
-            query
-          )
-        end
-      ) %>
+            Routes.contact_path(
+              @conn,
+              if(@contacts_status == :active, do: :index, else: :"index_#{@contacts_status}"),
+              @current_project.id,
+              query
+            )
+          end
+        }
+      />
     </div>
   <% end %>
 </div>

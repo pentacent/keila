@@ -11,7 +11,7 @@
       <%= if Enum.empty?(@uploads.files.entries) do %>
         <%= gettext("Select a file") %>
       <% end %>
-      <%= live_file_input(@uploads.files, class: "hidden") %>
+      <.live_file_input upload={@uploads.files} class="hidden" />
       <div class="flex flex-col gap-2">
         <%= for entry <- @uploads.files.entries do %>
           <p class="text-sm font-italic text-ellipsis flex-grow max-w-8">
@@ -84,7 +84,7 @@
     </div>
 
     <div class="flex gap-3 justify-center py-8">
-      <%= pagination_nav(@files, phx_click: "change-page", phx_target: @myself) %>
+      <.pagination_nav pagination={@files} phx_click="change-page" phx_target={@myself} />
     </div>
   <% end %>
 
@@ -106,7 +106,7 @@
           <span x-text="campaign.subject"></span>
           <span
             x-text="$refs.i18n.dataset[campaign.status]"
-            :class="{
+            x-bind:class="{
               'text-green-700': campaign.status === 'draft',
               'text-red-600': campaign.status === 'sent'
               }"

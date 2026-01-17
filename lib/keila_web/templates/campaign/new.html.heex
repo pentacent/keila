@@ -8,7 +8,7 @@
 
 <div class="container">
   <.form
-    let={f}
+    :let={f}
     for={@changeset}
     id="form"
     action={Routes.campaign_path(@conn, :post_new, @current_project.id)}

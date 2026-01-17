@@ -10,7 +10,7 @@
       <%= gettext("Do you really want to delete the following templates?") %>
     </p>
     <.form
-      let={f}
+      :let={f}
       for={:template}
       action={Routes.template_path(@conn, :delete, @current_project.id)}
       method="delete"

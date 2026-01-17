@@ -49,7 +49,7 @@
         contact -> Routes.contact_path(@conn, :post_edit, @current_project.id, contact.id)
       end %>
     <.form
-      let={f}
+      :let={f}
       for={@changeset}
       id="form"
       action={path}

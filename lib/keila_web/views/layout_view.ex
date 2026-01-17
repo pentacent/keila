@@ -22,16 +22,16 @@ defmodule KeilaWeb.LayoutView do
 
     icon = Keyword.get(opts, :icon, nil)
 
-    assigns = %{label: label, icon: icon}
+    assigns = %{label: label, icon: icon, path: path, class: class}
 
     ~H"""
-    <a href={path} class={class}>
-      <%= if icon do %>
+    <a href={@path} class={@class}>
+      <%= if @icon do %>
         <span class="flex h-4 w-4">
-          <%= render_icon(icon) %>
+          <%= render_icon(@icon) %>
         </span>
       <% end %>
-      <%= label %>
+      <%= @label %>
     </a>
     """
   end

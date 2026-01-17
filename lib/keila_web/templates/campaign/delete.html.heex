@@ -10,7 +10,7 @@
       <%= gettext("Do you really want to delete the following campaigns?") %>
     </p>
     <.form
-      let={f}
+      :let={f}
       for={:campaign}
       action={Routes.campaign_path(@conn, :delete, @current_project.id)}
       method="delete"

@@ -191,6 +191,14 @@ Keila.if_cloud do
           {entry, SendWithKeila.expected_value(sender, entry)}
         end
 
+      assigns =
+        assigns
+        |> assign(:entry_values, entry_values)
+        |> assign(:valid_entries, valid_entries)
+        |> assign(:subdomains, subdomains)
+        |> assign(:entry_types, entry_types)
+        |> assign(:expected_values, expected_values)
+
       ~H"""
       <details class="mb-4">
         <summary class="pl-12 cursor-pointer hover:underline">
@@ -206,24 +214,24 @@ Keila.if_cloud do
             </tr>
           </thead>
           <tbody>
-            <%= for {entry, value} <- entry_values, not is_nil(expected_values[entry]) do %>
+            <%= for {entry, value} <- @entry_values, not is_nil(@expected_values[entry]) do %>
               <tr class="border-b border-gray-600">
                 <td class="p-2">
                   <input
                     type="text"
                     class="p-0 border-0 bg-transparent text-sm w-auto min-w-0"
                     readonly
-                    value={subdomains[entry]}
+                    value={@subdomains[entry]}
                     x-data="{}"
                     x-on:click="$el.select()"
                   /><br />
                   <span class="text-xs text-gray-400">
-                    (<%= subdomains[entry] %>.<%= @sender.config.swk_domain %>)
+                    (<%= @subdomains[entry] %>.<%= @sender.config.swk_domain %>)
                   </span>
                 </td>
-                <td class="p-2"><%= entry_types[entry] |> to_string() |> String.upcase() %></td>
+                <td class="p-2"><%= @entry_types[entry] |> to_string() |> String.upcase() %></td>
 
-                <%= if valid_entries[entry] do %>
+                <%= if @valid_entries[entry] do %>
                   <td class="p-2" colspan="2">
                     <div class="flex gap-2 items-center">
                       <span class="w-4 h-4 shrink-0 text-emerald-600">
@@ -245,7 +253,7 @@ Keila.if_cloud do
                       type="text"
                       class="p-0 border-0 bg-transparent text-sm w-auto min-w-0"
                       readonly
-                      value={expected_values[entry]}
+                      value={@expected_values[entry]}
                       x-data="{}"
                       x-on:click="$el.select()"
                     />
@@ -260,7 +268,8 @@ Keila.if_cloud do
                         <span class="italic text-xs"><%= dgettext("cloud", "empty") %></span>
                       <% else %>
                         <div class="text-xs">
-                          <span class="italic"><%= dgettext("cloud", "current value:") %></span><br />
+                          <span class="italic"><%= dgettext("cloud", "current value:") %></span>
+                          <br />
                           <span>
                             <%= value %>
                           </span>

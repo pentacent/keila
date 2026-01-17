@@ -14,7 +14,7 @@
   <%= cond do %>
     <% @import_total == 0 -> %>
       <.form
-        let={f}
+        :let={f}
         for={:import}
         id="import-form"
         phx-submit="import"
@@ -26,7 +26,7 @@
         <label class={class}>
           <%= render_icon(:upload) %>
           <%= gettext("Select a file") %>
-          <%= live_file_input(@uploads.csv, class: "hidden") %>
+          <.live_file_input upload={@uploads.csv} class="hidden" />
           <%= for entry <- @uploads.csv.entries do %>
             <p class="text-sm font-italic"><%= entry.client_name %> - <%= entry.progress %>%</p>
           <% end %>
@@ -102,7 +102,7 @@
         <a
           href="#"
           class="tab-label"
-          :class="{ 'active': tab === 'excel' }"
+          x-bind:class="{ 'active': tab === 'excel' }"
           @click.prevent="tab = 'excel'"
         >
           Excel
@@ -110,7 +110,7 @@
         <a
           href="#"
           class="tab-label"
-          :class="{ 'active': tab === 'libreoffice' }"
+          x-bind:class="{ 'active': tab === 'libreoffice' }"
           @click.prevent="tab = 'libreoffice'"
         >
           LibreOffice
@@ -118,7 +118,7 @@
         <a
           href="#"
           class="tab-label"
-          :class="{ 'active': tab === 'code' }"
+          x-bind:class="{ 'active': tab === 'code' }"
           @click.prevent="tab = 'code'"
         >
           Code

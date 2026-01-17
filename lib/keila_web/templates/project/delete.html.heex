@@ -15,7 +15,7 @@
       <%= gettext("Deleting a project cannot be undone.") %>
     </p>
     <.form
-      let={f}
+      :let={f}
       for={@changeset}
       action={Routes.project_path(@conn, :post_delete, @current_project.id)}
       class="mt-8 max-w-md flex flex-col gap-4"

@@ -144,7 +144,7 @@
               name="schedule[timezone]"
               readonly
               value="Etc/UTC"
-              :value="Intl.DateTimeFormat().resolvedOptions().timeZone"
+              x-bind:value="Intl.DateTimeFormat().resolvedOptions().timeZone"
               class="bg-transparent text-white"
             />
           </div>

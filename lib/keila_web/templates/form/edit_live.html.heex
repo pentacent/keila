@@ -38,7 +38,7 @@
   x-data="{tab: 'settings', showClipboardMessage: false}"
 >
   <.form
-    let={f}
+    :let={f}
     for={@changeset}
     id="form"
     action={Routes.form_path(@socket, :post_edit, @current_project.id, @form.id)}
@@ -49,7 +49,7 @@
       <a
         href="#"
         class="tab-label"
-        :class="{ 'active': tab === 'settings' }"
+        x-bind:class="{ 'active': tab === 'settings' }"
         @click.prevent="tab = 'settings'"
         phx-click="set_tab"
         phx-value-tab="settings"
@@ -59,7 +59,7 @@
       <a
         href="#"
         class="tab-label"
-        :class="{ 'active': tab === 'fields' }"
+        x-bind:class="{ 'active': tab === 'fields' }"
         @click.prevent="tab = 'fields'"
         phx-click="set_tab"
         phx-value-tab="fields"
@@ -70,7 +70,7 @@
       <a
         href="#"
         class="tab-label"
-        :class="{ 'active': tab === 'style' }"
+        x-bind:class="{ 'active': tab === 'style' }"
         @click.prevent="tab = 'style'"
         phx-click="set_tab"
         phx-value-tab="style"
@@ -80,7 +80,7 @@
       <a
         href="#"
         class="tab-label"
-        :class="{ 'active': tab === 'double-opt-in' }"
+        x-bind:class="{ 'active': tab === 'double-opt-in' }"
         @click.prevent="tab = 'double-opt-in'"
         phx-click="set_tab"
         phx-value-tab="double-opt-in"
@@ -90,7 +90,7 @@
       <a
         href="#"
         class="tab-label"
-        :class="{ 'active': tab === 'welcome-email' }"
+        x-bind:class="{ 'active': tab === 'welcome-email' }"
         @click.prevent="tab = 'welcome-email'"
         phx-click="set_tab"
         phx-value-tab="welcome-email"

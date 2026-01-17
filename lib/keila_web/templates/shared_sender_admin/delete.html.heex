@@ -13,7 +13,7 @@
       <%= dgettext("admin", "Deleting a shared sender cannot be undone.") %>
     </p>
     <.form
-      let={f}
+      :let={f}
       for={@changeset}
       action={Routes.shared_sender_admin_path(@conn, :delete, @shared_sender.id)}
       class="mt-8 max-w-md flex flex-col gap-4"

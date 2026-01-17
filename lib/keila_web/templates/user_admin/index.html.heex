@@ -91,9 +91,7 @@
 
     <%= if @users.page_count > 1 do %>
       <div class="flex gap-3 justify-center py-8">
-        <%= pagination_nav(@users,
-          href: fn n -> Routes.user_admin_path(@conn, :index, %{"page" => n + 1}) end
-        ) %>
+        <.pagination_nav pagination={@users} href={&~p"/admin/users?page=#{&1 + 1}"} />
       </div>
     <% end %>
   </div>

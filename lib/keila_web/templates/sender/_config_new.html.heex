@@ -22,7 +22,7 @@
     <%= for adapter <- @sender_adapters do %>
       <% class = "{ 'active': tab === '#{adapter}' }"
       prevent = "senderType = '#{adapter}'; tab = '#{adapter}'" %>
-      <button class="tab-label" :class={class} @click.prevent={prevent}>
+      <button class="tab-label" x-bind:class={class} @click.prevent={prevent}>
         <%= sender_adapter_name(adapter) %>
       </button>
     <% end %>
@@ -32,7 +32,7 @@
 
         prevent =
           "tab = 'shared_sender_#{shared_sender.id}'; senderType = 'shared_#{shared_sender.config.type}'" %>
-        <button class="tab-label" :class={class} @click.prevent={prevent}>
+        <button class="tab-label" x-bind:class={class} @click.prevent={prevent}>
           <%= shared_sender.name %>
         </button>
       <% end %>

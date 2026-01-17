@@ -35,7 +35,7 @@
 
 <div class="container flex gap-4 tabs" x-data="{ tab: 'settings' }">
   <.form
-    let={f}
+    :let={f}
     for={@changeset}
     id="template"
     action={Routes.template_path(@socket, :post_edit, @current_project.id, @template.id)}
@@ -49,7 +49,7 @@
       <a
         href="#"
         class="tab-label"
-        :class="{ 'active': tab === 'settings' }"
+        x-bind:class="{ 'active': tab === 'settings' }"
         @click.prevent="tab = 'settings'"
       >
         <%= gettext("Settings") %>
@@ -57,7 +57,7 @@
       <a
         href="#"
         class="tab-label"
-        :class="{ 'active': tab === 'style' }"
+        x-bind:class="{ 'active': tab === 'style' }"
         @click.prevent="tab = 'style'"
       >
         <%= gettext("Style") %>
