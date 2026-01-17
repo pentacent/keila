@@ -6,8 +6,8 @@ defmodule Keila.Templates.DefaultTemplate do
   template configuration.
   """
 
+  use KeilaWeb.Gettext
   alias Keila.Templates.Css
-  import KeilaWeb.Gettext
 
   @html_body File.read!("priv/email_templates/default.html.liquid") |> Solid.parse!()
   @styles File.read!("priv/email_templates/default.css") |> Css.parse!()

@@ -3,7 +3,7 @@ require Keila
 Keila.if_cloud do
   defmodule KeilaCloudWeb.Components.SharedSendWithKeilaStatus do
     use Phoenix.LiveComponent
-    import KeilaWeb.Gettext
+    use KeilaWeb.Gettext
     import KeilaWeb.IconHelper
     import KeilaWeb.DateTimeHelpers
     alias KeilaCloud.Mailings.SendWithKeila

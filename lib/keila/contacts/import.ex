@@ -9,7 +9,7 @@ defmodule Keila.Contacts.Import do
   @moduledoc false
 
   use Keila.Repo
-  import KeilaWeb.Gettext
+  use KeilaWeb.Gettext
   alias Keila.Contacts.{Contact, ImportError}
 
   @doc """

@@ -8,8 +8,8 @@ Keila.if_cloud do
 
     use Phoenix.HTML
     use Phoenix.LiveView
+    use KeilaWeb.Gettext
     import Phoenix.Component
-    import KeilaWeb.Gettext
     import KeilaWeb.ErrorHelpers
     import Ecto.Changeset
     alias KeilaCloud.Countries

@@ -7,9 +7,8 @@ Keila.if_cloud do
       namespace: KeilaWeb
 
     use Phoenix.HTML
+    use KeilaWeb.Gettext
     import Phoenix.Component
-
-    import KeilaWeb.Gettext
     alias KeilaWeb.Router.Helpers, as: Routes
   end
 end
