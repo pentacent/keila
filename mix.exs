@@ -61,8 +61,8 @@ defmodule Keila.MixProject do
       {:ecto, "~> 3.7"},
       {:ecto_sql, "~> 3.13"},
       {:postgrex, "~> 0.22.0"},
-      {:floki, "~> 0.37.0"},
-      {:fast_html, "~> 2.0"},
+      {:floki, "~> 0.38.0"},
+      {:fast_html, "~> 2.5", only: :prod},
       {:phoenix_html, "~> 3.0"},
       {:phoenix_view, "~> 2.0"},
       {:phoenix_live_view, "~> 1.1"},
@@ -84,7 +84,7 @@ defmodule Keila.MixProject do
       {:httpoison, "~> 1.8"},
       {:nimble_csv, "~> 1.3"},
       {:oban, "~> 2.18"},
-      {:solid, "~> 0.14.1"},
+      {:solid, "~> 1.0"},
       {:earmark, "~> 1.4"},
       {:tzdata, "~> 1.1"},
       {:ex_aws, "~> 2.6.0"},
@@ -94,10 +94,10 @@ defmodule Keila.MixProject do
       {:open_api_spex, "~> 3.22"},
       {:ex_rated, "~> 2.1"},
       {:tls_certificate_check, "~> 1.31"},
-      {:mjml, "~> 4.0"},
+      {:mjml, "~> 5.0"},
       {:ex_cldr, "~> 2.44"},
       {:ex_cldr_territories, "~> 2.11"},
-      {:lazy_html, ">= 0.0.0", only: :test},
+      {:lazy_html, ">= 0.0.0", only: :test}
     ]
   end
 
