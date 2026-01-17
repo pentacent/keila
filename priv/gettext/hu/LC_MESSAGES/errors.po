@@ -1,0 +1,103 @@
+#  This is a PO Template file.
+#
+#  `msgid`s here are often extracted from source code.
+#  Add new translations manually only if they're dynamic
+#  translations that can't be statically extracted.
+#
+#  Run `mix gettext.extract` to bring this file up to
+#  date. Leave `msgstr`s empty as changing them here has no
+#  effect: edit them in PO (`.po`) files instead.
+#  From Ecto.Changeset.cast/4
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+msgid "can't be blank"
+msgstr "nem lehet üres"
+
+# From Ecto.Changeset.unique_constraint/3
+msgid "has already been taken"
+msgstr "már foglalt"
+
+# From Ecto.Changeset.put_change/3
+msgid "is invalid"
+msgstr "érvénytelen"
+
+# From Ecto.Changeset.validate_acceptance/3
+msgid "must be accepted"
+msgstr "el kell fogadni"
+
+# From Ecto.Changeset.validate_format/3
+msgid "has invalid format"
+msgstr "érvénytelen formátumú"
+
+# From Ecto.Changeset.validate_subset/3
+msgid "has an invalid entry"
+msgstr "érvénytelen bejegyzést tartalmaz"
+
+# From Ecto.Changeset.validate_exclusion/3
+msgid "is reserved"
+msgstr "fenntartott"
+
+# From Ecto.Changeset.validate_confirmation/3
+msgid "does not match confirmation"
+msgstr "nem egyezik a megerősítéssel"
+
+# From Ecto.Changeset.no_assoc_constraint/3
+msgid "is still associated with this entry"
+msgstr "még mindig ehhez a bejegyzéshez kapcsolódik"
+
+msgid "are still associated with this entry"
+msgstr "még mindig ehhez a bejegyzéshez kapcsolódnak"
+
+# From Ecto.Changeset.validate_length/3
+msgid "should be %{count} character(s)"
+msgid_plural "should be %{count} character(s)"
+msgstr[0] "%{count} karakternek kell lennie"
+msgstr[1] "%{count} karakternek kell lennie"
+
+msgid "should have %{count} item(s)"
+msgid_plural "should have %{count} item(s)"
+msgstr[0] "%{count} elem(ek)kel kell rendelkeznie"
+msgstr[1] "%{count} elem(ek)et kell tartalmaznia"
+
+msgid "should be at least %{count} character(s)"
+msgid_plural "should be at least %{count} character(s)"
+msgstr[0] "legalább %{count} karakternek kell lennie"
+msgstr[1] "legalább %{count} karakternek kell lennie"
+
+msgid "should have at least %{count} item(s)"
+msgid_plural "should have at least %{count} item(s)"
+msgstr[0] "legalább %{count} elem(ek)et kell tartalmaznia"
+msgstr[1] "legalább %{count} elemnek kell lennie"
+
+msgid "should be at most %{count} character(s)"
+msgid_plural "should be at most %{count} character(s)"
+msgstr[0] "legfeljebb %{count} karakter lehet"
+msgstr[1] "legfeljebb %{count} karakter lehet"
+
+msgid "should have at most %{count} item(s)"
+msgid_plural "should have at most %{count} item(s)"
+msgstr[0] "legfeljebb %{count} elem(ek)-et tartalmazhat"
+msgstr[1] "legfeljebb %{count} elem(ek) lehetnek"
+
+# From Ecto.Changeset.validate_number/3
+msgid "must be less than %{number}"
+msgstr "kisebbnek kell lennie, mint %{number}"
+
+msgid "must be greater than %{number}"
+msgstr "nagyobbnak kell lennie, mint %{number}"
+
+msgid "must be less than or equal to %{number}"
+msgstr "kisebbnek vagy egyenlőnek kell lennie, mint %{number}"
+
+msgid "must be greater than or equal to %{number}"
+msgstr "nagyobbnak vagy egyenlőnek kell lennie, mint %{number}"
+
+msgid "must be equal to %{number}"
+msgstr "egyenlőnek kell lennie %{number} értékével"
+
+msgid "must be at least %{offset} seconds in the future"
+msgstr "legalább %{offset} másodperccel a jövőben kell lennie"
