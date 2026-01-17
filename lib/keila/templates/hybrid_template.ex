@@ -4,8 +4,8 @@ defmodule Keila.Templates.HybridTemplate do
   template configuration.
   """
 
+  use KeilaWeb.Gettext
   alias Keila.Templates.Css
-  import KeilaWeb.Gettext
 
   @external_resource "priv/email_templates/hybrid/hybrid.html.liquid"
   @external_resource "priv/email_templates/hybrid/default.css"

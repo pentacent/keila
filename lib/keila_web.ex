@@ -20,9 +20,9 @@ defmodule KeilaWeb do
   def controller do
     quote do
       use Phoenix.Controller, namespace: KeilaWeb
+      use KeilaWeb.Gettext
 
       import Plug.Conn
-      import KeilaWeb.Gettext
       import KeilaWeb.Meta, only: [put_meta: 3]
       import KeilaWeb.Captcha, only: [captcha_valid?: 1]
       import KeilaWeb.AuthSession, only: [start_auth_session: 2, end_auth_session: 1]
@@ -112,7 +112,7 @@ defmodule KeilaWeb do
       import KeilaWeb.DeleteButtonHelpers
       import KeilaWeb.IconHelper
       import KeilaWeb.DateTimeHelpers
-      import KeilaWeb.Gettext
+      use KeilaWeb.Gettext
 
       alias KeilaWeb.Router.Helpers, as: Routes
       alias Phoenix.LiveView.JS
