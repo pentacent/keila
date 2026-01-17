@@ -1,35 +1,35 @@
 <div class="container flex py-8 sm:py-11 mb-4">
   <div class="flex-grow gap-4 flex flex-col sm:flex-row sm:items-center">
     <h1 class="text-2xl sm:text-3xl text-gray-100">
-      <%= gettext("Segments") %>
+      {gettext("Segments")}
     </h1>
     <div class="flex-grow flex flex-row-reverse justify-end gap-4 sm:flex-row">
       <a href={Routes.segment_path(@conn, :new, @current_project.id)} class="button">
-        <%= render_icon(:document_add) %>
-        <%= gettext("Create a new segment") %>
+        {render_icon(:document_add)}
+        {gettext("Create a new segment")}
       </a>
     </div>
   </div>
 </div>
 
 <%= if Enum.empty?(@segments) do %>
-  <%= render("_empty_state.html", assigns) %>
+  {render("_empty_state.html", assigns)}
 <% end %>
 
 <div class="container grid gap-4 md:grid-cols-2 md:gap-8">
   <%= for segment <- @segments do %>
     <div class="card bg-gray-800">
       <h2 class="font-light text-2xl flex items-center gap-2 mb-2">
-        <%= segment.name %>
+        {segment.name}
       </h2>
       <p>
-        <%= gettext("Updated at:") %>
-        <%= local_datetime_tag(segment.updated_at) %>
+        {gettext("Updated at:")}
+        {local_datetime_tag(segment.updated_at)}
       </p>
       <br />
       <a href={Routes.segment_path(@conn, :edit, @current_project.id, segment.id)} class="button">
-        <%= render_icon(:pencil_alt) %>
-        <%= gettext("Edit") %>
+        {render_icon(:pencil_alt)}
+        {gettext("Edit")}
       </a>
     </div>
   <% end %>

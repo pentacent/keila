@@ -26,11 +26,11 @@
         @keydown.esc.prevent="$dispatch('x-cancel')"
         @click.away="$dispatch('x-cancel')"
       >
-        <h2 class="text-3xl"><%= gettext("Insert Link") %></h2>
+        <h2 class="text-3xl">{gettext("Insert Link")}</h2>
         <br />
         <div class="grid gap-4">
           <div class="flex flex-col">
-            <label class="font-bold"><%= gettext("Link URL") %></label>
+            <label class="font-bold">{gettext("Link URL")}</label>
             <input
               x-model="link.href"
               type="text"
@@ -40,7 +40,7 @@
           </div>
 
           <div class="flex flex-col">
-            <label class="font-bold"><%= gettext("Link Title") %></label>
+            <label class="font-bold">{gettext("Link Title")}</label>
             <input
               x-model="link.title"
               type="text"
@@ -52,10 +52,10 @@
         <br />
         <div class="flex justify-end gap-8">
           <button class="button button--text button--large" @click.prevent="$dispatch('x-cancel')">
-            <%= gettext("Cancel") %>
+            {gettext("Cancel")}
           </button>
           <button class="button button--cta button--large" @click.prevent="$dispatch('x-confirm')">
-            <%= gettext("Ok") %>
+            {gettext("Ok")}
           </button>
         </div>
       </div>
@@ -73,7 +73,7 @@
         @keydown.esc.prevent="$dispatch('x-cancel')"
         @click.away="$dispatch('x-cancel')"
       >
-        <h2 class="text-3xl"><%= gettext("Insert Image") %></h2>
+        <h2 class="text-3xl">{gettext("Insert Image")}</h2>
         <br />
         <div class="tabs" id="tabs">
           <a
@@ -82,7 +82,7 @@
             x-bind:class="{ 'active': imageTab === 'uploads' }"
             @click.prevent="imageTab = 'uploads'"
           >
-            <%= gettext("Uploads") %>
+            {gettext("Uploads")}
           </a>
           <a
             href="#"
@@ -90,7 +90,7 @@
             x-bind:class="{ 'active': imageTab === 'url' }"
             @click.prevent="imageTab = 'url'"
           >
-            <%= gettext("URL") %>
+            {gettext("URL")}
           </a>
           <div class="tab-content" data-tab="uploads" x-show="imageTab === 'uploads'">
             <.live_component
@@ -102,9 +102,9 @@
           </div>
           <div class="tab-content" data-tab="url" x-show="imageTab === 'url'">
             <div class="flex flex-col">
-              <label class="font-bold"><%= gettext("Image URL") %></label>
+              <label class="font-bold">{gettext("Image URL")}</label>
               <p class="text-sm italic mb-2">
-                <%= gettext("For best results, choose an image that is 600px wide.") %>
+                {gettext("For best results, choose an image that is 600px wide.")}
               </p>
               <input
                 x-model="image.src"
@@ -113,7 +113,7 @@
               />
             </div>
             <div class="flex flex-col">
-              <label class="font-bold"><%= gettext("Alt Text") %></label>
+              <label class="font-bold">{gettext("Alt Text")}</label>
               <input
                 x-model="image.alt"
                 type="text"
@@ -121,7 +121,7 @@
               />
             </div>
             <div class="flex flex-col">
-              <label class="font-bold"><%= gettext("Title") %></label>
+              <label class="font-bold">{gettext("Title")}</label>
               <input
                 x-model="image.title"
                 type="text"
@@ -133,10 +133,10 @@
         <br />
         <div class="flex justify-end gap-8">
           <button class="button button--text button--large" @click.prevent="$dispatch('x-cancel')">
-            <%= gettext("Cancel") %>
+            {gettext("Cancel")}
           </button>
           <button class="button button--cta button--large" @click.prevent="$dispatch('x-confirm')">
-            <%= gettext("Ok") %>
+            {gettext("Ok")}
           </button>
         </div>
       </div>
@@ -152,11 +152,11 @@
         @keydown.esc.prevent="$dispatch('x-cancel')"
         @click.away="$dispatch('x-cancel')"
       >
-        <h2 class="text-3xl"><%= gettext("Insert Button") %></h2>
+        <h2 class="text-3xl">{gettext("Insert Button")}</h2>
         <br />
         <div class="grid gap-4">
           <div class="flex flex-col">
-            <label class="font-bold"><%= gettext("Button URL") %></label>
+            <label class="font-bold">{gettext("Button URL")}</label>
             <input
               x-model="button.href"
               type="text"
@@ -164,7 +164,7 @@
             />
           </div>
           <div class="flex flex-col">
-            <label class="font-bold"><%= gettext("Button Text") %></label>
+            <label class="font-bold">{gettext("Button Text")}</label>
             <input
               x-model="button.text"
               type="text"
@@ -175,10 +175,10 @@
         <br />
         <div class="flex justify-end gap-8">
           <button class="button button--text button--large" @click.prevent="$dispatch('x-cancel')">
-            <%= gettext("Cancel") %>
+            {gettext("Cancel")}
           </button>
           <button class="button button--cta button--large" @click.prevent="$dispatch('x-confirm')">
-            <%= gettext("Ok") %>
+            {gettext("Ok")}
           </button>
         </div>
       </div>
@@ -194,11 +194,11 @@
         @keydown.esc.prevent="$dispatch('x-cancel')"
         @click.away="$dispatch('x-cancel')"
       >
-        <h2 class="text-3xl"><%= gettext("Insert Code") %></h2>
+        <h2 class="text-3xl">{gettext("Insert Code")}</h2>
         <br />
         <div class="grid gap-4">
           <div class="flex flex-col">
-            <label class="font-bold"><%= gettext("Code") %></label>
+            <label class="font-bold">{gettext("Code")}</label>
             <input
               x-model="liquid.text"
               type="text"
@@ -210,34 +210,34 @@
         <br />
         <div class="flex justify-end gap-8">
           <button class="button button--text button--large" @click.prevent="$dispatch('x-cancel')">
-            <%= gettext("Cancel") %>
+            {gettext("Cancel")}
           </button>
           <button class="button button--cta button--large" @click.prevent="$dispatch('x-confirm')">
-            <%= gettext("Ok") %>
+            {gettext("Ok")}
           </button>
         </div>
         <br />
         <div>
           <h3 class="font-bold flex gap-2 flex-row">
-            <%= gettext("How does this work?") %>
+            {gettext("How does this work?")}
           </h3>
 
           <div class="markdown">
-            <%= gettext_md("""
+            {gettext_md("""
             You can insert data from your contacts or your campaign
             using the [Liquid template language](https://shopify.github.io/liquid/basics/introduction/).
-            """) %>
+            """)}
           </div>
           <br />
           <div>
-            <%= gettext("You can get started by trying one of these examples:") %>
+            {gettext("You can get started by trying one of these examples:")}
             <ul>
               <li>
                 <button
                   class="button button--text button-small"
                   @click.stop="liquid.text = '{{ contact.first_name }}'"
                 >
-                  <%= render_icon(:cursor_click) %> <%= gettext("Contact first name") %>
+                  {render_icon(:cursor_click)} {gettext("Contact first name")}
                 </button>
               </li>
               <li>
@@ -245,7 +245,7 @@
                   class="button button--text button-small"
                   @click.stop="liquid.text = '{{ contact.email }}'"
                 >
-                  <%= render_icon(:cursor_click) %> <%= gettext("Contact email address") %>
+                  {render_icon(:cursor_click)} {gettext("Contact email address")}
                 </button>
               </li>
               <li>
@@ -253,7 +253,7 @@
                   class="button button--text button-small"
                   @click.stop="liquid.text = 'Hello {{ contact.first_name | default: &quot;there&quot; }}!'"
                 >
-                  <%= render_icon(:cursor_click) %> <%= gettext("Greeting with first name") %>
+                  {render_icon(:cursor_click)} {gettext("Greeting with first name")}
                 </button>
               </li>
             </ul>
@@ -262,10 +262,10 @@
           <hr class="my-5" />
 
           <div class="text-sm markdown">
-            <%= gettext_md("""
+            {gettext_md("""
             Read more about [how to use Liquid in Keila](https://www.keila.io/docs/campaigns#liquid-templating)
             or about [custom contact data](https://www.keila.io/docs/contacts#contact-data).
-            """) %>
+            """)}
           </div>
         </div>
       </div>

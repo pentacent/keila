@@ -3,9 +3,9 @@
   <div class="flex-grow gap-4 flex flex-col-reverse sm:flex-row sm:items-center max-w-md">
     <h1 class="text-2xl md:text-3xl text-gray-100">
       <%= if @sender do %>
-        <%= @sender.name %>
+        {@sender.name}
       <% else %>
-        <%= gettext("New Sender") %>
+        {gettext("New Sender")}
       <% end %>
     </h1>
     <div class="flex-grow flex flex-row justify-end gap-4 sm:flex-row" x-data>
@@ -14,7 +14,7 @@
         class="button button--large button--text"
         @click="setUnsavedReminder(false)"
       >
-        <%= gettext("Cancel") %>
+        {gettext("Cancel")}
       </a>
       <%= if @sender do %>
         <a
@@ -24,7 +24,7 @@
           class="button button--large button--text"
           @click="setUnsavedReminder(false)"
         >
-          <%= gettext("Delete") %>
+          {gettext("Delete")}
         </a>
       <% end %>
       <button
@@ -32,7 +32,7 @@
         class="button button--cta button--large"
         @click="setUnsavedReminder(false)"
       >
-        <%= gettext("Save") %>
+        {gettext("Save")}
       </button>
     </div>
   </div>
@@ -46,17 +46,17 @@
           <div class="px-4 max-w-xl prose prose-invert bg-pink-800 rounded">
             <div class="flex gap-4 items-center">
               <div class="w-8 h-8 flex animate-spin" style="animation-duration: 4000ms;">
-                <%= render_icon(:spinner) %>
+                {render_icon(:spinner)}
               </div>
               <div>
                 <h3 class="mt-4">Waiting for email verification ...</h3>
-                <%= gettext_md(
+                {gettext_md(
                   """
                   We have sent you an email to *%{email}*. \\
                   Please click on the link in the email to verify your email address.
                   """,
                   email: @sender.from_email
-                ) %>
+                )}
                 <button
                   phx-click="send_verification_email"
                   type="button"
@@ -66,10 +66,10 @@
                 >
                   <template x-if="waiting">
                     <div class="w-4 h-4 flex animate-spin" style="animation-duration: 8000ms;">
-                      <%= render_icon(:spinner) %>
+                      {render_icon(:spinner)}
                     </div>
                   </template>
-                  <span><%= gettext("Resend email") %></span>
+                  <span>{gettext("Resend email")}</span>
                 </button>
               </div>
             </div>
@@ -78,10 +78,10 @@
           <div class="max-w-md prose prose-invert text-white p-2 bg-emerald-900 rounded">
             <div class="flex gap-2 items-center">
               <div class="w-6 h-6 flex">
-                <%= render_icon(:check) %>
+                {render_icon(:check)}
               </div>
               <div class="text-md">
-                <%= gettext("Email verified") %>
+                {gettext("Email verified")}
               </div>
             </div>
           </div>
@@ -102,68 +102,68 @@
     @change="setUnsavedReminder(true)"
   >
     <div class="form-row">
-      <%= label(f, :name, gettext("Sender name")) %>
+      {label(f, :name, gettext("Sender name"))}
       <%= with_validation(f, :name) do %>
-        <%= text_input(f, :name,
+        {text_input(f, :name,
           placeholder: gettext("My Sender"),
           class: "text-black",
           autofocus: true
-        ) %>
+        )}
         <p class="text-xs text-gray-300">
-          <%= gettext(
+          {gettext(
             "This is the internal name of your sender. It is not shown to your recipients."
-          ) %>
+          )}
         </p>
       <% end %>
     </div>
     <div class="form-row">
-      <%= label(f, :from_email, gettext("From address")) %>
+      {label(f, :from_email, gettext("From address"))}
       <%= with_validation(f, :from_email) do %>
-        <%= text_input(f, :from_email,
+        {text_input(f, :from_email,
           placeholder: gettext("newsletter@example.org"),
           class: "text-black"
-        ) %>
+        )}
 
         <p class="text-xs text-gray-300">
-          <%= gettext("This is the email address from which your emails will be sent.") %>
+          {gettext("This is the email address from which your emails will be sent.")}
         </p>
       <% end %>
     </div>
     <div class="form-row">
-      <%= label(f, :from_name, gettext("From name")) %>
+      {label(f, :from_name, gettext("From name"))}
       <%= with_validation(f, :from_name) do %>
-        <%= text_input(f, :from_name, placeholder: gettext("You, Inc"), class: "text-black") %>
+        {text_input(f, :from_name, placeholder: gettext("You, Inc"), class: "text-black")}
 
         <p class="text-xs text-gray-300">
-          <%= gettext("This is the name that will show up in the inbox of your recipients.") %>
+          {gettext("This is the name that will show up in the inbox of your recipients.")}
         </p>
       <% end %>
     </div>
 
     <details>
-      <summary><%= gettext("Reply-to settings") %></summary>
+      <summary>{gettext("Reply-to settings")}</summary>
       <div class="p-4">
         <div class="text-xs text-gray-300 mb-4">
-          <%= gettext(
+          {gettext(
             "If you want replies to your newsletters to go to a different address than the one specified above, you can configure an alternative email address and name here."
-          ) %>
+          )}
         </div>
         <div class="form-row">
-          <%= label(f, :reply_to_email, gettext("Reply-to address")) %>
+          {label(f, :reply_to_email, gettext("Reply-to address"))}
           <%= with_validation(f, :reply_to_email) do %>
-            <%= text_input(f, :reply_to_email,
+            {text_input(f, :reply_to_email,
               placeholder: gettext("hello@example.org"),
               class: "text-black"
-            ) %>
+            )}
           <% end %>
         </div>
         <div class="form-row">
-          <%= label(f, :reply_to_name, gettext("Reply-to name")) %>
+          {label(f, :reply_to_name, gettext("Reply-to name"))}
           <%= with_validation(f, :reply_to_name) do %>
-            <%= text_input(f, :reply_to_name,
+            {text_input(f, :reply_to_name,
               placeholder: gettext("You, Inc"),
               class: "text-black"
-            ) %>
+            )}
           <% end %>
         </div>
       </div>
@@ -171,16 +171,16 @@
     <%= if @configurable? do %>
       <div class="form-row">
         <%= if is_nil(@sender) do %>
-          <%= render("_config_new.html",
+          {render("_config_new.html",
             form: f,
             sender_adapters: sender_adapters(),
             shared_senders: @shared_senders
-          ) %>
+          )}
         <% else %>
-          <%= render("_config_edit.html",
+          {render("_config_edit.html",
             form: f,
             sender: @sender
-          ) %>
+          )}
         <% end %>
       </div>
     <% end %>

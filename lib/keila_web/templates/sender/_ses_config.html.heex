@@ -1,7 +1,7 @@
 <div class="form-row">
-  <%= label(@form, :ses_region, gettext("Region")) %>
+  {label(@form, :ses_region, gettext("Region"))}
   <%= with_validation(@form, :ses_region) do %>
-    <%= select(@form, :ses_region, %{
+    {select(@form, :ses_region, %{
       gettext("US East (Ohio)") => "us-east-2",
       gettext("US East (N. Virginia)") => "us-east-1",
       gettext("US West (N. California)") => "us-west-1",
@@ -18,21 +18,21 @@
       gettext("Europe (Paris)") => "eu-west-3",
       gettext("Europe (Stockholm)") => "eu-north-1",
       gettext("South America (São Paulo)") => "sa-east-1"
-    }) %>
+    })}
   <% end %>
 </div>
 <div class="form-row">
-  <%= label(@form, :ses_access_key, gettext("Access Key")) %>
+  {label(@form, :ses_access_key, gettext("Access Key"))}
   <%= with_validation(@form, :ses_access_key) do %>
-    <%= text_input(@form, :ses_access_key, class: "text-black") %>
+    {text_input(@form, :ses_access_key, class: "text-black")}
   <% end %>
 </div>
 
 <%= if is_nil(@form.data.ses_secret) do %>
   <div class="form-row">
-    <%= label(@form, :ses_secret, gettext("Secret")) %>
+    {label(@form, :ses_secret, gettext("Secret"))}
     <%= with_validation(@form, :ses_secret) do %>
-      <%= password_input(@form, :ses_secret, class: "text-black", phx_update: :ignore) %>
+      {password_input(@form, :ses_secret, class: "text-black", phx_update: :ignore)}
     <% end %>
   </div>
 <% else %>
@@ -42,24 +42,24 @@
     class="form-row"
   >
     <div class="flex gap-5">
-      <%= label(@form, :ses_secret, gettext("Secret")) %>
+      {label(@form, :ses_secret, gettext("Secret"))}
       <label>
         <input type="checkbox" x-model="show" />
-        <%= gettext("Change") %>
+        {gettext("Change")}
       </label>
     </div>
 
     <template x-if="show">
       <%= with_validation(@form, :ses_secret) do %>
-        <%= password_input(@form, :ses_secret, class: "text-black", x_ref: "password") %>
+        {password_input(@form, :ses_secret, class: "text-black", x_ref: "password")}
       <% end %>
     </template>
   </div>
 <% end %>
 
 <div class="form-row">
-  <%= label(@form, :ses_configuration_set, gettext("Configuration Set")) %>
+  {label(@form, :ses_configuration_set, gettext("Configuration Set"))}
   <%= with_validation(@form, :ses_configuration_set) do %>
-    <%= text_input(@form, :ses_configuration_set, class: "text-black") %>
+    {text_input(@form, :ses_configuration_set, class: "text-black")}
   <% end %>
 </div>

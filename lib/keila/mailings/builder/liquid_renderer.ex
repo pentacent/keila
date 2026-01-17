@@ -38,7 +38,8 @@ defmodule Keila.Mailings.Builder.LiquidRenderer do
   defp template_error_to_string(%Solid.TemplateError{errors: errors}) do
     errors
     |> Enum.map(fn
-      %Solid.ParserError{meta: %{line: line, column: column}, reason: reason, text: text} -> "Parsing error in line #{line}:#{column}: #{reason} (near #{text})"
+      %Solid.ParserError{meta: %{line: line, column: column}, reason: reason, text: text} ->
+        "Parsing error in line #{line}:#{column}: #{reason} (near #{text})"
     end)
     |> Enum.join("\n")
   end

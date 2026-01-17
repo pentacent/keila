@@ -24,15 +24,15 @@ Keila.if_cloud do
             <div class="prose prose-sm prose-invert text-white px-2 rounded">
               <div class="max-w-md flex gap-2 items-center bg-gray-900 rounded p-2 -mx-2">
                 <div class="w-6 h-6 flex">
-                  <%= render_icon(:check) %>
+                  {render_icon(:check)}
                 </div>
                 <div class="text-md">
-                  <%= dgettext_md(
+                  {dgettext_md(
                     "cloud",
                     "You’re using a shared domain. Emails will be sent from *%{fallback_email}*. Replies will go to *%{from_email}*. [Read more](https://www.keila.io/docs/shared-domains){:target=\"_blank\"}",
                     fallback_email: KeilaCloud.Mailings.SendWithKeila.fallback_from_email(@sender),
                     from_email: @sender.from_email
-                  ) %>
+                  )}
                 </div>
               </div>
             </div>
@@ -40,43 +40,43 @@ Keila.if_cloud do
             <div class="px-4 rounded">
               <div class="flex gap-4 items-center prose prose-invert">
                 <div class="w-8 h-8 flex animate-spin" style="animation-duration: 4000ms;">
-                  <%= render_icon(:spinner) %>
+                  {render_icon(:spinner)}
                 </div>
 
                 <div class="max-w-lg">
                   <h3 class="text-xl mt-4">
-                    <%= dgettext("cloud", "Waiting for domain verification ...") %>
+                    {dgettext("cloud", "Waiting for domain verification ...")}
                   </h3>
-                  <%= dgettext_md(
+                  {dgettext_md(
                     "cloud",
                     "To ensure good deliverability of your emails, you need to verify your domain by adding DNS records. [Read more](https://www.keila.io/docs/managed-dmarc){:target=\"_blank\"}"
-                  ) %>
+                  )}
 
                   <div class="text-sm">
-                    <%= dgettext_md(
+                    {dgettext_md(
                       "cloud",
                       "Until you have verified your domain, emails for this sender will be sent from *%{fallback_email}*. Replies will go to *%{from_email}*.",
                       fallback_email: KeilaCloud.Mailings.SendWithKeila.fallback_from_email(@sender),
                       from_email: @sender.from_email
-                    ) %>
+                    )}
                   </div>
                 </div>
               </div>
-              <%= render_dns_table(assigns) %>
+              {render_dns_table(assigns)}
             </div>
           <% not is_nil(@sender.config.swk_domain_verified_at) -> %>
             <div class="prose prose-invert text-white px-2 rounded">
               <div class="max-w-md flex gap-2 items-center bg-emerald-900 rounded p-2 -mx-2">
                 <div class="w-6 h-6 flex">
-                  <%= render_icon(:check) %>
+                  {render_icon(:check)}
                 </div>
                 <div class="text-md">
-                  <%= dgettext("cloud", "Domain verified") %>
+                  {dgettext("cloud", "Domain verified")}
                 </div>
               </div>
             </div>
             <div class="-ml-2 -mt-1 -mb-4 text-sm">
-              <%= render_dns_table(assigns) %>
+              {render_dns_table(assigns)}
             </div>
           <% true -> %>
         <% end %>
@@ -85,18 +85,18 @@ Keila.if_cloud do
           <div class="px-4 rounded">
             <div class="flex gap-4 items-center prose prose-invert">
               <div class="w-8 h-8 flex animate-spin" style="animation-duration: 4000ms;">
-                <%= render_icon(:spinner) %>
+                {render_icon(:spinner)}
               </div>
 
               <div class="max-w-sm">
                 <h3 class="text-xl mt-4">
-                  <%= dgettext("cloud", "Finalizing your sender ...") %>
+                  {dgettext("cloud", "Finalizing your sender ...")}
                 </h3>
                 <p>
-                  <%= dgettext(
+                  {dgettext(
                     "cloud",
                     "We're currently finalizing the setup of your sender. This may take a few minutes."
-                  ) %>
+                  )}
                 </p>
                 <button
                   phx-click="check_domain"
@@ -107,10 +107,10 @@ Keila.if_cloud do
                 >
                   <%= if @loading_sender_hash && @sender_hash == @loading_sender_hash do %>
                     <div class="w-4 h-4 flex animate-spin" style="animation-duration: 8000ms;">
-                      <%= render_icon(:spinner) %>
+                      {render_icon(:spinner)}
                     </div>
                   <% end %>
-                  <%= dgettext("cloud", "Check status") %>
+                  {dgettext("cloud", "Check status")}
                 </button>
               </div>
             </div>
@@ -121,17 +121,17 @@ Keila.if_cloud do
           <div class="max-w-md prose prose-invert p-4 bg-amber-900 rounded">
             <div class="flex gap-2 items-center mb-3">
               <div class="w-6 h-6 flex">
-                <%= render_icon(:exclamation_triangle) %>
+                {render_icon(:exclamation_triangle)}
               </div>
               <div class="font-semibold">
-                <%= dgettext("cloud", "Legacy Settings") %>
+                {dgettext("cloud", "Legacy Settings")}
               </div>
             </div>
             <p class="text-sm mb-4">
-              <%= dgettext(
+              {dgettext(
                 "cloud",
                 "You are currently using legacy email settings. We recommend updating to the new settings for better performance and reliability."
-              ) %>
+              )}
             </p>
             <button
               phx-click="reset_legacy_settings"
@@ -142,10 +142,10 @@ Keila.if_cloud do
             >
               <%= if @loading_sender_hash && @sender_hash == @loading_sender_hash do %>
                 <div class="w-4 h-4 flex animate-spin mr-2" style="animation-duration: 8000ms;">
-                  <%= render_icon(:spinner) %>
+                  {render_icon(:spinner)}
                 </div>
               <% end %>
-              <%= dgettext("cloud", "Update to new settings") %>
+              {dgettext("cloud", "Update to new settings")}
             </button>
           </div>
         <% end %>
@@ -202,15 +202,15 @@ Keila.if_cloud do
       ~H"""
       <details class="mb-4">
         <summary class="pl-12 cursor-pointer hover:underline">
-          <%= dgettext("cloud", "Show DNS Records") %>
+          {dgettext("cloud", "Show DNS Records")}
         </summary>
 
         <table class="border border-gray-600 mt-4">
           <thead>
             <tr class="text-left bg-gray-700">
-              <th class="p-2 "><%= dgettext("cloud", "Subdomain") %></th>
-              <th class="p-2"><%= dgettext("cloud", "Type") %></th>
-              <th colspan="2"><%= dgettext("cloud", "Value") %></th>
+              <th class="p-2 ">{dgettext("cloud", "Subdomain")}</th>
+              <th class="p-2">{dgettext("cloud", "Type")}</th>
+              <th colspan="2">{dgettext("cloud", "Value")}</th>
             </tr>
           </thead>
           <tbody>
@@ -226,16 +226,16 @@ Keila.if_cloud do
                     x-on:click="$el.select()"
                   /><br />
                   <span class="text-xs text-gray-400">
-                    (<%= @subdomains[entry] %>.<%= @sender.config.swk_domain %>)
+                    ({@subdomains[entry]}.{@sender.config.swk_domain})
                   </span>
                 </td>
-                <td class="p-2"><%= @entry_types[entry] |> to_string() |> String.upcase() %></td>
+                <td class="p-2">{@entry_types[entry] |> to_string() |> String.upcase()}</td>
 
                 <%= if @valid_entries[entry] do %>
                   <td class="p-2" colspan="2">
                     <div class="flex gap-2 items-center">
                       <span class="w-4 h-4 shrink-0 text-emerald-600">
-                        <%= render_icon(:check) %>
+                        {render_icon(:check)}
                       </span>
                       <input
                         type="text"
@@ -261,17 +261,17 @@ Keila.if_cloud do
                   <td class="p-2" colspan="2">
                     <div class="flex gap-2 items-center">
                       <span class="h-4 w-4 inline-flex text-amber-600">
-                        <%= render_icon(:exclamation_triangle) %>
+                        {render_icon(:exclamation_triangle)}
                       </span>
 
                       <%= if is_nil(value) do %>
-                        <span class="italic text-xs"><%= dgettext("cloud", "empty") %></span>
+                        <span class="italic text-xs">{dgettext("cloud", "empty")}</span>
                       <% else %>
                         <div class="text-xs">
-                          <span class="italic"><%= dgettext("cloud", "current value:") %></span>
+                          <span class="italic">{dgettext("cloud", "current value:")}</span>
                           <br />
                           <span>
-                            <%= value %>
+                            {value}
                           </span>
                         </div>
                       <% end %>
@@ -293,15 +293,15 @@ Keila.if_cloud do
           >
             <%= if @loading_sender_hash && @sender_hash == @loading_sender_hash do %>
               <div class="w-4 h-4 flex animate-spin" style="animation-duration: 8000ms;">
-                <%= render_icon(:spinner) %>
+                {render_icon(:spinner)}
               </div>
             <% end %>
-            <%= dgettext("cloud", "Check Domain") %>
+            {dgettext("cloud", "Check Domain")}
           </button>
 
           <%= if @sender.config.swk_domain_checked_at && (!@loading_sender_hash || @sender_hash != @loading_sender_hash) do %>
             <div class="text-sm italic">
-              <%= dgettext("cloud", "Last checked at:") %>
+              {dgettext("cloud", "Last checked at:")}
               <span
                 id="domain-checked-at"
                 phx-hook="SetLocalDateTimeContent"

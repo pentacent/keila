@@ -1,20 +1,20 @@
 <main role="main" class="static-container flex-grow bg-gray-950 text-gray-300 min-h-screen">
   <%= if Phoenix.Flash.get(@flash, :info) do %>
     <div class="bg-emerald-200 text-black" role="alert">
-      <p class="container py-5 my-0"><%= Phoenix.Flash.get(@flash, :info) %></p>
+      <p class="container py-5 my-0">{Phoenix.Flash.get(@flash, :info)}</p>
     </div>
   <% end %>
   <%= if Phoenix.Flash.get(@flash, :errors) do %>
     <div class="bg-yellow-200" role="alert">
-      <p class="container py-5 my-0"><%= Phoenix.Flash.get(@flash, :error) %></p>
+      <p class="container py-5 my-0">{Phoenix.Flash.get(@flash, :error)}</p>
     </div>
   <% end %>
   <%= if assigns[:is_admin?] && assigns[:instance_updates_available?] do %>
     <div class="bg-amber-200 text-black" role="alert">
       <p class="container py-5 my-0">
         <a href={~p"/admin/instance"}>
-          <%= dgettext("admin", "A new version of Keila is available.") %>
-          <span class="underline"><%= dgettext("admin", "Read more") %></span>
+          {dgettext("admin", "A new version of Keila is available.")}
+          <span class="underline">{dgettext("admin", "Read more")}</span>
         </a>
       </p>
     </div>
@@ -26,11 +26,11 @@
           <div class="bg-gradient-to-b from-emerald-200 to-emerald-300 text-black" role="alert">
             <p class="container py-5 my-0">
               <a href={~p"/account"}>
-                <%= dgettext(
+                {dgettext(
                   "cloud",
                   "Welcome to Keila, have a look around! To start sending emails, please choose a subscription."
-                ) %>
-                <span class="underline"><%= dgettext("cloud", "Select plan") %></span>
+                )}
+                <span class="underline">{dgettext("cloud", "Select plan")}</span>
               </a>
             </p>
           </div>
@@ -38,11 +38,11 @@
           <div class="bg-gradient-to-b from-emerald-200 to-emerald-300 text-black" role="alert">
             <p class="container py-5 my-0">
               <a href={~p"/account/onboarding"}>
-                <%= dgettext(
+                {dgettext(
                   "cloud",
                   "Before you can start sending emails, we need some more information about your account."
-                ) %>
-                <span class="underline"><%= dgettext("cloud", "Complete information") %></span>
+                )}
+                <span class="underline">{dgettext("cloud", "Complete information")}</span>
               </a>
             </p>
           </div>
@@ -50,12 +50,12 @@
           <div class="bg-gradient-to-b from-emerald-200 to-emerald-300 text-black" role="alert">
             <p class="container py-5 my-0">
               <a href={~p"/account/onboarding"}>
-                <%= dgettext(
+                {dgettext(
                   "cloud",
                   "Your account is currently under review. Sending emails will be enabled once the review has been completed."
-                ) %>
+                )}
                 <span class="underline">
-                  <%= dgettext("cloud", "Update account information") %>
+                  {dgettext("cloud", "Update account information")}
                 </span>
               </a>
             </p>
@@ -66,9 +66,9 @@
             <div class="bg-amber-200 text-black" role="alert">
               <p class="container py-5 my-0">
                 <a href="https://status.keila.io">
-                  <%= system_disruption_message %>
+                  {system_disruption_message}
                   <span class="underline">
-                    <%= dgettext("cloud", "Status page") %>
+                    {dgettext("cloud", "Status page")}
                   </span>
                 </a>
               </p>
@@ -77,5 +77,5 @@
       <% end %>
     <% end %>
   <% end %>
-  <%= @inner_content %>
+  {@inner_content}
 </main>

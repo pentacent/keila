@@ -1,14 +1,14 @@
 <div class="container flex py-8 sm:py-11 sm:mb-2">
   <div class="flex-grow gap-4 flex flex-col-reverse sm:flex-row sm:items-center">
     <h1 class="text-2xl md:text-3xl text-gray-100">
-      <%= @campaign.subject %>
+      {@campaign.subject}
     </h1>
     <div class="flex-grow flex flex-row justify-end gap-4 sm:flex-row">
       <a
         class="button button--text button--large"
         href={Routes.campaign_path(@conn, :index, @current_project.id)}
       >
-        <%= gettext("Back") %>
+        {gettext("Back")}
       </a>
     </div>
   </div>
@@ -20,16 +20,16 @@
       href={Routes.campaign_path(@conn, :stats, @current_project.id, @campaign.id)}
       class="tab-label"
     >
-      <%= gettext("Statistics") %>
+      {gettext("Statistics")}
     </a>
     <a class="tab-label active">
-      <%= gettext("View") %>
+      {gettext("View")}
     </a>
     <a
       href={Routes.campaign_path(@conn, :share, @current_project.id, @campaign.id)}
       class="tab-label"
     >
-      <%= gettext("Share") %>
+      {gettext("Share")}
     </a>
   </div>
 </div>
@@ -49,7 +49,7 @@
         x-bind:class="previewDevice == 'desktop' ? 'bg-gray-700' : 'bg-gray-800'"
         x-on:click.prevent="$dispatch('x-toggle-desktop-preview')"
       >
-        <%= render_icon(:desktop_computer) %>
+        {render_icon(:desktop_computer)}
       </button>
       <button
         title={gettext("Mobile preview")}
@@ -57,7 +57,7 @@
         x-bind:class="previewDevice == 'mobile' ? 'bg-gray-700' : 'bg-gray-800'"
         x-on:click.prevent="$dispatch('x-toggle-mobile-preview')"
       >
-        <%= render_icon(:device_mobile) %>
+        {render_icon(:device_mobile)}
       </button>
     </div>
     <iframe
@@ -77,5 +77,5 @@
   class="hidden"
   data-iframe="#html-preview"
 >
-  <%= @preview %>
+  {@preview}
 </div>

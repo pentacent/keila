@@ -1,26 +1,26 @@
 <div class="container">
   <div class="flex gap-4 p-4 sm:p-8 bg-onboarding">
     <span class="hidden sm:flex h-24 w-24 grow-0 shrink-0">
-      <%= render_icon(:template) %>
+      {render_icon(:template)}
     </span>
     <div class="flex flex-col gap-4">
       <h2 class="text-xl sm:text-2xl">
-        <%= gettext("Wow, such empty!") %>
+        {gettext("Wow, such empty!")}
       </h2>
-      <%= gettext_md("""
+      {gettext_md("""
       You can create one or multiple forms to let new contacts sign
       up to your newsletter.
 
       With the form editor, you can customize the look & feel of the
       forms and decide which input fields to include.
-      """) %>
+      """)}
       <p class="flex flex-wrap gap-4">
         <a
           class="button button--cta button--large"
           href={Routes.form_path(@conn, :new, @current_project.id)}
         >
-          <%= render_icon(:document_add) %>
-          <%= gettext("Create your first form") %>
+          {render_icon(:document_add)}
+          {gettext("Create your first form")}
         </a>
       </p>
     </div>

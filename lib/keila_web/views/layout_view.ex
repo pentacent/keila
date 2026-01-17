@@ -28,10 +28,10 @@ defmodule KeilaWeb.LayoutView do
     <a href={@path} class={@class}>
       <%= if @icon do %>
         <span class="flex h-4 w-4">
-          <%= render_icon(@icon) %>
+          {render_icon(@icon)}
         </span>
       <% end %>
-      <%= @label %>
+      {@label}
     </a>
     """
   end

@@ -99,7 +99,7 @@ defmodule KeilaWeb.SegmentView do
 
     ~H"""
     <label for={"#{@index}[value][key]"} class="self-center text-right">
-      <%= gettext("Field:") %>
+      {gettext("Field:")}
     </label>
     <input
       id={"#{@index}[value][key]"}
@@ -110,7 +110,7 @@ defmodule KeilaWeb.SegmentView do
     />
     <%= if @widget == "matches" do %>
       <label for={"#{@index}[value][match]"} class="self-center text-right">
-        <%= gettext("Match:") %>
+        {gettext("Match:")}
       </label>
       <input
         id={"#{@index}[value][match]"}
@@ -139,11 +139,11 @@ defmodule KeilaWeb.SegmentView do
         value="any"
         selected={@campaign_id == "any" || @campaign_id == nil || @campaign_id == ""}
       >
-        <%= gettext("Any campaign") %>
+        {gettext("Any campaign")}
       </option>
       <%= for campaign <- @campaigns do %>
         <option value={campaign.id} selected={@campaign_id == campaign.id}>
-          <%= campaign.subject %>
+          {campaign.subject}
         </option>
       <% end %>
     </select>
@@ -152,6 +152,6 @@ defmodule KeilaWeb.SegmentView do
 
   defp render_widget(_widget, field_form_data) do
     assigns = %{condition: field_form_data}
-    ~H{<p><%= inspect(@condition) %></p>}
+    ~H"<p>{inspect(@condition)}</p>"
   end
 end

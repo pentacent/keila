@@ -6,7 +6,7 @@
   <%= if Keila.Accounts.credits_enabled?() do %>
     <div class="rounded shadow p-8 mt-8 max-w-5xl mx-auto flex flex-col gap-4 bg-gray-900 text-gray-50">
       <h2 class="text-3xl font-bold">
-        <%= gettext("Sending Quota") %>
+        {gettext("Sending Quota")}
       </h2>
 
       <div class="h-3 relative w-full rounded-full overflow-hidden mt-4">
@@ -23,10 +23,10 @@
         </div>
       </div>
 
-      <%= gettext("%{remaining} / %{total} emails remaining",
+      {gettext("%{remaining} / %{total} emails remaining",
         total: elem(@credits, 0),
         remaining: elem(@credits, 1)
-      ) %>
+      )}
     </div>
   <% end %>
   <.form
@@ -37,30 +37,30 @@
     @change="setUnsavedReminder(true)"
   >
     <h2 class="text-3xl font-bold">
-      <%= gettext("Change Password") %>
+      {gettext("Change Password")}
     </h2>
     <p class="text-lg text-gray-200">
-      <%= gettext("Here you can update your Keila password.") %>
+      {gettext("Here you can update your Keila password.")}
     </p>
     <div class="flex flex-col">
-      <%= label(f, :email, gettext("Email")) %>
+      {label(f, :email, gettext("Email"))}
       <%= with_validation(f, :email) do %>
-        <%= text_input(f, :email,
+        {text_input(f, :email,
           placeholder: gettext("you@keila.io"),
           class: "text-black",
           disabled: true
-        ) %>
+        )}
       <% end %>
     </div>
     <div class="flex flex-col">
-      <%= label(f, :password, gettext("New Password")) %>
+      {label(f, :password, gettext("New Password"))}
       <%= with_validation(f, :password) do %>
-        <%= password_input(f, :password, class: "text-black") %>
+        {password_input(f, :password, class: "text-black")}
       <% end %>
     </div>
     <div class="flex justify-end mt-8">
       <button class="button button--cta button--large" @click="setUnsavedReminder(false)">
-        <%= gettext("Update password") %>
+        {gettext("Update password")}
       </button>
     </div>
   </.form>
@@ -72,20 +72,20 @@
     @change="setUnsavedReminder(true)"
   >
     <h2 class="text-3xl font-bold">
-      <%= gettext("Change Language") %>
+      {gettext("Change Language")}
     </h2>
     <p class="text-lg text-gray-200">
-      <%= gettext("Here you can change the language for the Keila interface.") %>
+      {gettext("Here you can change the language for the Keila interface.")}
     </p>
     <div class="flex flex-col">
-      <%= label(f, :locale, gettext("Language")) %>
+      {label(f, :locale, gettext("Language"))}
       <%= with_validation(f, :locale) do %>
-        <%= select(f, :locale, KeilaWeb.Gettext.available_locales(), class: "text-black") %>
+        {select(f, :locale, KeilaWeb.Gettext.available_locales(), class: "text-black")}
       <% end %>
     </div>
     <div class="flex justify-end mt-8">
       <button class="button button--cta button--large" @click="setUnsavedReminder(false)">
-        <%= gettext("Update language settings") %>
+        {gettext("Update language settings")}
       </button>
     </div>
   </.form>

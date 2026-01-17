@@ -1,26 +1,26 @@
 <div class="container flex py-8 sm:py-11 sm:mb-2">
   <div class="flex-grow gap-4 flex flex-col-reverse sm:flex-row sm:items-center">
     <h1 class="text-2xl md:text-3xl text-gray-100">
-      <%= @campaign.subject %>
+      {@campaign.subject}
     </h1>
     <div class="flex-grow flex flex-row justify-end gap-4 sm:flex-row">
       <a
         class="button button--text button--large"
         href={Routes.campaign_path(@socket, :index, @current_project.id)}
       >
-        <%= gettext("Back") %>
+        {gettext("Back")}
       </a>
       <%= if @stats.status in [:insufficient_credits, :account_not_active, :sent] do %>
-        <%= delete_form_tag(
+        {delete_form_tag(
           @campaign,
           Routes.campaign_path(@socket, :delete, @current_project.id),
           as: :campaign
-        ) %>
-        <%= delete_button_tag(
+        )}
+        {delete_button_tag(
           @campaign,
           [class: "button button--text button--large"],
           gettext("Delete")
-        ) %>
+        )}
       <% end %>
     </div>
   </div>
@@ -30,13 +30,13 @@
   <div class="container mb-12">
     <%= case @stats.status do %>
       <% :unsent -> %>
-        <p><%= gettext("This campaign has not yet been sent.") %></p>
+        <p>{gettext("This campaign has not yet been sent.")}</p>
         <p class="mt-4">
           <a
             href={Routes.campaign_path(@socket, :edit, @current_project.id, @campaign.id)}
             class="button button--large button--cta"
           >
-            <%= gettext("Edit this campaign") %>
+            {gettext("Edit this campaign")}
           </a>
         </p>
       <% :insufficient_credits -> %>
@@ -44,42 +44,42 @@
           <%= cond do %>
             <% KeilaCloud.Billing.billing_enabled?() && is_nil(@subscription) -> %>
               <div class="flex gap-4 items-center">
-                <span class="inline-flex h-20 w-20"><%= render_icon(:paper_airplane) %></span>
+                <span class="inline-flex h-20 w-20">{render_icon(:paper_airplane)}</span>
                 <div>
                   <p class="text-2xl">
-                    <%= gettext("Thanks for trying out Keila!") %>
+                    {gettext("Thanks for trying out Keila!")}
                   </p>
                   <p>
-                    <%= gettext("Please start a subscription before sending your first campaign.") %>
+                    {gettext("Please start a subscription before sending your first campaign.")}
                   </p>
                   <p class="mt-4">
                     <a
                       href={Routes.account_path(@socket, :edit)}
                       class="button button--large button--cta"
                     >
-                      <%= gettext("Start your subscription now") %>
+                      {gettext("Start your subscription now")}
                     </a>
                   </p>
                 </div>
               </div>
             <% KeilaCloud.Billing.billing_enabled?() -> %>
               <div class="flex gap-4 items-center">
-                <span class="inline-flex h-20 w-20"><%= render_icon(:information_circle) %></span>
+                <span class="inline-flex h-20 w-20">{render_icon(:information_circle)}</span>
                 <div>
                   <p class="text-2xl">
-                    <%= gettext("Insufficient email quota.") %>
+                    {gettext("Insufficient email quota.")}
                   </p>
                   <p>
-                    <%= gettext(
+                    {gettext(
                       "It looks like you’ve already used up the email quota from your subscription."
-                    ) %>
+                    )}
                   </p>
                   <p class="mt-4">
                     <a
                       href={Routes.account_path(@socket, :edit)}
                       class="button button--large button--cta"
                     >
-                      <%= gettext("Check your subscription now") %>
+                      {gettext("Check your subscription now")}
                     </a>
                   </p>
                 </div>
@@ -87,20 +87,20 @@
           <% end %>
         <% else %>
           <div class="flex gap-4 items-center">
-            <span class="inline-flex h-20 w-20"><%= render_icon(:information_circle) %></span>
+            <span class="inline-flex h-20 w-20">{render_icon(:information_circle)}</span>
             <div>
               <p class="text-2xl">
-                <%= gettext("Insufficient email quota.") %>
+                {gettext("Insufficient email quota.")}
               </p>
               <p>
-                <%= gettext("Your email quota is not sufficient for sending this campaign.") %>
+                {gettext("Your email quota is not sufficient for sending this campaign.")}
               </p>
               <p class="mt-4">
                 <a
                   href={Routes.account_path(@socket, :edit)}
                   class="button button--large button--cta"
                 >
-                  <%= gettext("Check your sending quota now") %>
+                  {gettext("Check your sending quota now")}
                 </a>
               </p>
             </div>
@@ -124,7 +124,7 @@
             >
             </circle>
           </svg>
-          <%= gettext("This campaign is currently being prepared for sending.") %>
+          {gettext("This campaign is currently being prepared for sending.")}
         </p>
       <% :sending -> %>
         <div class="flex gap-4 items-center">
@@ -145,9 +145,9 @@
             </circle>
           </svg>
           <div class="flex-grow">
-            <p><%= gettext("This campaign is currently being sent out.") %></p>
+            <p>{gettext("This campaign is currently being sent out.")}</p>
             <div class="flex gap-4 items-center mt-4">
-              <span><%= "#{@stats.sent_count}/#{@stats.recipients_count}" %></span>
+              <span>{"#{@stats.sent_count}/#{@stats.recipients_count}"}</span>
               <div class="h-3 relative flex-grow rounded-full overflow-hidden">
                 <div class="w-full h-full bg-gray-200 absolute"></div>
                 <div
@@ -168,14 +168,14 @@
         <%= Keila.if_cloud do %>
           <div class="flex gap-4">
             <span class="inline-flex h-20 w-20">
-              <%= render_icon(:clipboard_list) %>
+              {render_icon(:clipboard_list)}
             </span>
             <div>
               <p class="text-2xl">
-                <%= dgettext("cloud", "Account not activated") %>
+                {dgettext("cloud", "Account not activated")}
               </p>
               <div class="prose prose-invert">
-                <%= dgettext_md(
+                {dgettext_md(
                   "cloud",
                   """
                   Once you have provided the necessary details, we will perform a manual review of your account. This usually takes less than one working day.
@@ -183,7 +183,7 @@
                   If you have any questions, please reach out to our support at [%{support_email}](mailto:%{support_email}).
                   """,
                   support_email: "hello@keila.io"
-                ) %>
+                )}
               </div>
               <p class="mt-4">
                 <a
@@ -191,7 +191,7 @@
                   }
                   class="button button--large button--cta"
                 >
-                  <%= dgettext("cloud", "Update account information") %>
+                  {dgettext("cloud", "Update account information")}
                 </a>
               </p>
             </div>
@@ -204,42 +204,42 @@
 <%= if @stats.sent_count > 0 || @stats.failed_count > 0 do %>
   <div class="container">
     <div class="tabs -mt-8">
-      <a class="tab-label active"><%= gettext("Statistics") %></a>
+      <a class="tab-label active">{gettext("Statistics")}</a>
       <a
         href={Routes.campaign_path(@socket, :view, @current_project.id, @campaign.id)}
         class="tab-label"
       >
-        <%= gettext("View") %>
+        {gettext("View")}
       </a>
       <a
         href={Routes.campaign_path(@socket, :share, @current_project.id, @campaign.id)}
         class="tab-label"
       >
-        <%= gettext("Share") %>
+        {gettext("Share")}
       </a>
     </div>
     <div class="bg-gray-800 p-4 grid lg:grid-cols-2 gap-8 items-center xl:p-4 xl:grid-cols-3 xl:gap-4 whitespace-nowrap">
       <div class="flex flex-row gap-4 xl:p-4">
         <div class="flex h-14 w-14 p-4 bg-emerald-800 rounded-full text-white">
-          <%= render_icon(:mail) %>
+          {render_icon(:mail)}
         </div>
         <div class="flex flex-col">
-          <div class="text-sm"><%= gettext("emails sent") %></div>
-          <div class="text-3xl"><%= @stats.sent_count %></div>
+          <div class="text-sm">{gettext("emails sent")}</div>
+          <div class="text-3xl">{@stats.sent_count}</div>
         </div>
       </div>
       <%= if !@campaign.settings.do_not_track do %>
         <div class="flex flex-row gap-4 xl:p-4">
           <div class="flex h-14 w-14 p-4 bg-cyan-800 rounded-full text-white">
-            <%= render_icon(:mail_open) %>
+            {render_icon(:mail_open)}
           </div>
           <div>
-            <div class="text-sm"><%= gettext("emails opened") %></div>
+            <div class="text-sm">{gettext("emails opened")}</div>
             <div class="flex flex-row gap-2 items-end">
-              <span class="text-3xl"><%= @stats.open_count %></span>
+              <span class="text-3xl">{@stats.open_count}</span>
               <%= if @stats.sent_count > 0 do %>
                 <span class="text-xl opacity-75">
-                  <%= (@stats.open_count / @stats.sent_count * 100) |> Float.round(1) %>&thinsp;%
+                  {(@stats.open_count / @stats.sent_count * 100) |> Float.round(1)}&thinsp;%
                 </span>
               <% end %>
             </div>
@@ -247,15 +247,15 @@
         </div>
         <div class="flex flex-row gap-4 xl:p-4">
           <div class="flex h-14 w-14 p-4 bg-purple-800 rounded-full text-white">
-            <%= render_icon(:cursor_click) %>
+            {render_icon(:cursor_click)}
           </div>
           <div>
-            <div class="text-sm"><%= gettext("emails clicked") %></div>
+            <div class="text-sm">{gettext("emails clicked")}</div>
             <div class="flex flex-row gap-2 items-end">
-              <span class="text-3xl"><%= @stats.click_count %></span>
+              <span class="text-3xl">{@stats.click_count}</span>
               <%= if @stats.sent_count > 0 do %>
                 <span class="text-xl opacity-75">
-                  <%= (@stats.click_count / @stats.sent_count * 100) |> Float.round(1) %>&thinsp;%
+                  {(@stats.click_count / @stats.sent_count * 100) |> Float.round(1)}&thinsp;%
                 </span>
               <% end %>
             </div>
@@ -264,30 +264,30 @@
       <% else %>
         <div class="flex gap-4 bg-gradient-to-r from-purple-900 to-purple-800 p-4 md:col-span-2 md:col-start-1 md:row-start-1 xl:col-start-2">
           <div class="flex flex-shrink-0 h-14 w-14 p-4 bg-purple-800 rounded-full text-white">
-            <%= render_icon(:eye_off) %>
+            {render_icon(:eye_off)}
           </div>
           <div>
-            <div class="text-xl"><%= gettext("Untracked Campaign") %></div>
+            <div class="text-xl">{gettext("Untracked Campaign")}</div>
             <div class="text-sm whitespace-normal">
-              <%= gettext(
+              {gettext(
                 "You have disabled tracking for this campaign. Thanks for respecting the privacy of your recipients!",
                 count: @stats.sent_count
-              ) %>
+              )}
             </div>
           </div>
         </div>
       <% end %>
       <div class="flex flex-row gap-4 xl:p-4">
         <div class="flex h-14 w-14 p-4 bg-gray-400 text-gray-900 rounded-full">
-          <%= render_icon(:thumb_down) %>
+          {render_icon(:thumb_down)}
         </div>
         <div>
-          <div class="text-sm"><%= gettext("unsubscribes") %></div>
+          <div class="text-sm">{gettext("unsubscribes")}</div>
           <div class="flex flex-row gap-2 items-end">
-            <span class="text-3xl"><%= @stats.unsubscribe_count %></span>
+            <span class="text-3xl">{@stats.unsubscribe_count}</span>
             <%= if @stats.sent_count > 0 do %>
               <span class="text-xl opacity-75">
-                <%= (@stats.unsubscribe_count / @stats.sent_count * 100) |> Float.round(1) %>&thinsp;%
+                {(@stats.unsubscribe_count / @stats.sent_count * 100) |> Float.round(1)}&thinsp;%
               </span>
             <% end %>
           </div>
@@ -295,15 +295,15 @@
       </div>
       <div class="flex flex-row gap-4 xl:p-4">
         <div class="flex h-14 w-14 p-4 bg-gray-400 text-gray-900 rounded-full">
-          <%= render_icon(:arrow_uturn_left) %>
+          {render_icon(:arrow_uturn_left)}
         </div>
         <div>
-          <div class="text-sm"><%= gettext("bounces") %></div>
+          <div class="text-sm">{gettext("bounces")}</div>
           <div class="flex flex-row gap-2 items-end">
-            <span class="text-3xl"><%= @stats.hard_bounce_count %></span>
+            <span class="text-3xl">{@stats.hard_bounce_count}</span>
             <%= if @stats.sent_count > 0 do %>
               <span class="text-xl opacity-75">
-                <%= (@stats.hard_bounce_count / @stats.sent_count * 100) |> Float.round(1) %>&thinsp;%
+                {(@stats.hard_bounce_count / @stats.sent_count * 100) |> Float.round(1)}&thinsp;%
               </span>
             <% end %>
           </div>
@@ -311,15 +311,15 @@
       </div>
       <div class="flex flex-row gap-4 xl:p-4">
         <div class="flex h-14 w-14 p-4 bg-gray-400 text-gray-900 rounded-full">
-          <%= render_icon(:exclamation_triangle) %>
+          {render_icon(:exclamation_triangle)}
         </div>
         <div>
-          <div class="text-sm"><%= gettext("complaints") %></div>
+          <div class="text-sm">{gettext("complaints")}</div>
           <div class="flex flex-row gap-2 items-end">
-            <span class="text-3xl"><%= @stats.complaint_count %></span>
+            <span class="text-3xl">{@stats.complaint_count}</span>
             <%= if @stats.sent_count > 0 do %>
               <span class="text-xl opacity-75">
-                <%= (@stats.complaint_count / @stats.sent_count * 100) |> Float.round(1) %>&thinsp;%
+                {(@stats.complaint_count / @stats.sent_count * 100) |> Float.round(1)}&thinsp;%
               </span>
             <% end %>
           </div>
@@ -328,7 +328,7 @@
     </div>
 
     <%= if !@campaign.settings.do_not_track do %>
-      <h3 class="font-light text-2xl mt-8 mb-4"><%= gettext("24-Hour Performance") %></h3>
+      <h3 class="font-light text-2xl mt-8 mb-4">{gettext("24-Hour Performance")}</h3>
       <div class="h-64 w-full mt-8 overflow-hidden">
         <canvas
           id="chart"
@@ -341,26 +341,26 @@
         />
       </div>
 
-      <h3 class="font-light text-2xl mt-8 mb-4"><%= gettext("Links") %></h3>
+      <h3 class="font-light text-2xl mt-8 mb-4">{gettext("Links")}</h3>
       <table class="w-full text-left">
         <tr>
           <th>
-            <%= gettext("URL") %>
+            {gettext("URL")}
           </th>
           <th>
-            <%= gettext("Clicks") %>
+            {gettext("Clicks")}
           </th>
           <th>
-            <%= gettext("Click rate") %>
+            {gettext("Click rate")}
           </th>
         </tr>
         <%= for {link, clicks} <- @link_stats do %>
           <tr>
-            <td><%= link %></td>
-            <td><%= clicks %></td>
+            <td>{link}</td>
+            <td>{clicks}</td>
             <td>
               <%= if @stats.sent_count > 0 do %>
-                <%= (clicks / @stats.sent_count * 100) |> Float.round(2) %>%
+                {(clicks / @stats.sent_count * 100) |> Float.round(2)}%
               <% end %>
             </td>
           </tr>
