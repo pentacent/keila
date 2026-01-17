@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Language: de\n"
-"Plural-Forms: nplurals=2\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: lib/keila_web/templates/user_admin/show_credits.html.heex:12
 #, elixir-autogen, elixir-format
