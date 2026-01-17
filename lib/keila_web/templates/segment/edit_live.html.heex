@@ -37,7 +37,7 @@
 
 <div class="container flex gap-4 tabs" x-data="{tab: 'settings', showClipboardMessage: false}">
   <.form
-    let={f}
+    :let={f}
     for={@changeset}
     id="form"
     phx-change="change"
@@ -209,7 +209,7 @@
             <% end %>
           </table>
           <div class="flex gap-3 justify-center py-8">
-            <%= pagination_nav(@contacts, phx_click: "change-page") %>
+            <.pagination_nav pagination={@contacts} phx_click="change-page" />
           </div>
         </div>
         <div></div>

@@ -16,7 +16,7 @@
   </p>
 
   <.form
-    let={_f}
+    :let={_f}
     for={@conn}
     as="credits"
     action={Routes.user_admin_path(@conn, :create_credits, @user.id)}
@@ -75,7 +75,7 @@
           readonly
           value="Etc/UTC"
           x-data={}
-          :value="Intl.DateTimeFormat().resolvedOptions().timeZone"
+          x-bind:value="Intl.DateTimeFormat().resolvedOptions().timeZone"
           class="bg-transparent text-white"
         />
       </div>

@@ -29,9 +29,9 @@
   <% end %>
 
   <.form
+    :let={f}
     method="POST"
     for={@account_changeset}
-    let={f}
     action={Routes.cloud_admin_path(@conn, :update_user_account_status, @user.id)}
   >
     <h2 class="text-2xl font-light">

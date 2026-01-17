@@ -33,7 +33,7 @@
 
 <div class="container">
   <.form
-    let={f}
+    :let={f}
     for={@changeset}
     id="form"
     action={Routes.project_path(@conn, :post_edit, @current_project.id)}

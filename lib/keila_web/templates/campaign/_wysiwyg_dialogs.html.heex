@@ -79,7 +79,7 @@
           <a
             href="#"
             class="tab-label"
-            :class="{ 'active': imageTab === 'uploads' }"
+            x-bind:class="{ 'active': imageTab === 'uploads' }"
             @click.prevent="imageTab = 'uploads'"
           >
             <%= gettext("Uploads") %>
@@ -87,7 +87,7 @@
           <a
             href="#"
             class="tab-label"
-            :class="{ 'active': imageTab === 'url' }"
+            x-bind:class="{ 'active': imageTab === 'url' }"
             @click.prevent="imageTab = 'url'"
           >
             <%= gettext("URL") %>

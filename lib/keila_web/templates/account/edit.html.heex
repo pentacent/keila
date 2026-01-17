@@ -30,7 +30,7 @@
     </div>
   <% end %>
   <.form
-    let={f}
+    :let={f}
     for={@changeset}
     action={Routes.account_path(@conn, :post_edit)}
     class="rounded shadow p-8 mt-8 max-w-5xl mx-auto flex flex-col gap-4 bg-gray-900 text-gray-50"
@@ -65,7 +65,7 @@
     </div>
   </.form>
   <.form
-    let={f}
+    :let={f}
     for={@changeset}
     action={Routes.account_path(@conn, :post_edit)}
     class="rounded shadow p-8 mt-8 max-w-5xl mx-auto flex flex-col gap-4 bg-gray-900 text-gray-50"

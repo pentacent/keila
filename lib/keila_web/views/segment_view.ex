@@ -15,38 +15,45 @@ defmodule KeilaWeb.SegmentView do
     date_value = if date != time, do: date
     time_value = if date != time, do: time
 
-    assigns = %{}
+    assigns = %{
+      index: index,
+      date_value: date_value,
+      date: date,
+      time_value: time_value,
+      time: time,
+      timezone: timezone
+    }
 
     ~H"""
     <input
-      id={"#{index}[value][date]"}
+      id={"#{@index}[value][date]"}
       class="text-black"
-      name={"#{index}[value][date]"}
+      name={"#{@index}[value][date]"}
       type="date"
-      value={date_value}
-      data-value={date}
+      value={@date_value}
+      data-value={@date}
       phx-hook="SetLocalDateValue"
       phx-update="ignore"
     />
     <input
-      id={"#{index}[value][time]"}
+      id={"#{@index}[value][time]"}
       class="text-black"
-      name={"#{index}[value][time]"}
+      name={"#{@index}[value][time]"}
       type="time"
-      value={time_value}
-      data-value={time}
+      value={@time_value}
+      data-value={@time}
       phx-hook="SetLocalTimeValue"
       phx-update="ignore"
     />
     <input
-      id={"#{index}[value][timezone]"}
+      id={"#{@index}[value][timezone]"}
       class="bg-transparent text-white"
-      name={"#{index}[value][timezone]"}
+      name={"#{@index}[value][timezone]"}
       type="text"
       readonly
-      value={timezone}
+      value={@timezone}
       x-data="{}"
-      :value="Intl.DateTimeFormat().resolvedOptions().timeZone"
+      x-bind:value="Intl.DateTimeFormat().resolvedOptions().timeZone"
       phx-update="ignore"
     />
     """
@@ -63,23 +70,23 @@ defmodule KeilaWeb.SegmentView do
               "not_includes"
             ] do
     value = condition["value"]
-    assigns = %{}
+    assigns = %{index: index, value: value}
 
     ~H(<input
-  id={"#{index}[value]"}
-  name={"#{index}[value]"}
+  id={"#{@index}[value]"}
+  name={"#{@index}[value]"}
   type="text"
-  value={value}
+  value={@value}
   class="text-black"
 />)
   end
 
   defp render_widget(index, %{"widget" => widget, "type" => type})
        when widget in ["empty", "not_empty"] and type in ["date", "string"] do
-    assigns = %{}
+    assigns = %{index: index}
 
     ~H"""
-    <input id={"#{index}[value]"} name={"#{index}[value]"} type="hidden" value="" />
+    <input id={"#{@index}[value]"} name={"#{@index}[value]"} type="hidden" value="" />
     """
   end
 
@@ -88,28 +95,28 @@ defmodule KeilaWeb.SegmentView do
     key = value["key"]
     match = value["match"]
     widget = condition["widget"] || "matches"
-    assigns = %{}
+    assigns = %{index: index, key: key, match: match, widget: widget}
 
     ~H"""
-    <label for={"#{index}[value][key]"} class="self-center text-right">
+    <label for={"#{@index}[value][key]"} class="self-center text-right">
       <%= gettext("Field:") %>
     </label>
     <input
-      id={"#{index}[value][key]"}
-      name={"#{index}[value][key]"}
+      id={"#{@index}[value][key]"}
+      name={"#{@index}[value][key]"}
       type="text"
-      value={key}
+      value={@key}
       class="text-black w-28"
     />
-    <%= if widget == "matches" do %>
-      <label for={"#{index}[value][match]"} class="self-center text-right">
+    <%= if @widget == "matches" do %>
+      <label for={"#{@index}[value][match]"} class="self-center text-right">
         <%= gettext("Match:") %>
       </label>
       <input
-        id={"#{index}[value][match]"}
-        name={"#{index}[value][match]"}
+        id={"#{@index}[value][match]"}
+        name={"#{@index}[value][match]"}
         type="text"
-        value={match}
+        value={@match}
         class="text-black"
       />
     <% end %>
@@ -120,19 +127,22 @@ defmodule KeilaWeb.SegmentView do
     value = condition["value"] || %{}
     campaign_id = value["campaign_id"]
     campaigns = condition["campaigns"] || []
-    assigns = %{}
+    assigns = %{index: index, campaign_id: campaign_id, campaigns: campaigns}
 
     ~H"""
     <select
-      id={"#{index}[value][campaign_id]"}
-      name={"#{index}[value][campaign_id]"}
+      id={"#{@index}[value][campaign_id]"}
+      name={"#{@index}[value][campaign_id]"}
       class="text-black"
     >
-      <option value="any" selected={campaign_id == "any" || campaign_id == nil || campaign_id == ""}>
+      <option
+        value="any"
+        selected={@campaign_id == "any" || @campaign_id == nil || @campaign_id == ""}
+      >
         <%= gettext("Any campaign") %>
       </option>
-      <%= for campaign <- campaigns do %>
-        <option value={campaign.id} selected={campaign_id == campaign.id}>
+      <%= for campaign <- @campaigns do %>
+        <option value={campaign.id} selected={@campaign_id == campaign.id}>
           <%= campaign.subject %>
         </option>
       <% end %>

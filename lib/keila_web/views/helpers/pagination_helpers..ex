@@ -1,7 +1,7 @@
 defmodule KeilaWeb.PaginationHelpers do
   use Phoenix.HTML
+  use Phoenix.Component
   import KeilaWeb.IconHelper
-  import Phoenix.LiveView.Helpers, only: [sigil_H: 2]
 
   @doc """
   Renders a pagination navigation element with the given `Keila.Pagination`
@@ -10,50 +10,78 @@ defmodule KeilaWeb.PaginationHelpers do
   The callback function takes `n` (the page number) as an argument and returns
   the paginated route.
   """
-  @spec pagination_nav(
-          Keila.Pagination.t(),
-          [href: (integer() -> String.t())] | [phx_click: String.t()]
-        ) :: list()
-  def pagination_nav(pagination, opts) do
-    page = pagination.page
-    page_count = pagination.page_count
+  attr :pagination, Keila.Pagination, required: true
+  # TODO: Later versions of LiveView support {:fun, arity}
+  attr :href, :any
+  attr :phx_click, :string
+  attr :phx_target, :string
 
-    assigns = %{}
+  def pagination_nav(assigns) do
+    assigns =
+      assigns
+      |> assign(:current_page, assigns.pagination.page)
+      |> assign(:page_count, assigns.pagination.page_count)
 
     ~H"""
-    <%= if page > 0, do: pagination_button(page, page - 1, opts, render_icon(:chevron_left)) %>
-    <%= pagination_button(page, 0, opts) %>
-    <%= for n <- -3..3 do %>
-      <%= if page + n > 0 and page + n < page_count - 1, do: pagination_button(page, page + n, opts) %>
+    <%= if @current_page > 0 do %>
+      <.pagination_button page={@current_page - 1} {assigns}>
+        <%= render_icon(:chevron_left) %>
+      </.pagination_button>
     <% end %>
-    <%= if page_count > 1, do: pagination_button(page, page_count - 1, opts) %>
-    <%= if page < page_count - 1,
-      do: pagination_button(page, page + 1, opts, render_icon(:chevron_right)) %>
+
+    <%= if @page_count > 0 do %>
+      <.pagination_button page={0} {assigns} />
+    <% end %>
+
+    <%= for n <- -3..3, @current_page + n > 0 && @current_page + n + 1 < @page_count do %>
+      <.pagination_button {assigns} page={@current_page + n} />
+    <% end %>
+
+    <%= if @page_count > 1 do %>
+      <.pagination_button page={@page_count - 1} {assigns} />
+    <% end %>
+
+    <%= if @current_page < @page_count - 1 do %>
+      <.pagination_button page={@current_page + 1} {assigns}>
+        <%= render_icon(:chevron_right) %>
+      </.pagination_button>
+    <% end %>
     """
   end
 
-  defp pagination_button(current_page, page, opts, content \\ nil)
+  attr :page, :integer, required: true
+  attr :current_page, :integer, required: true
+  # TODO: Later versions of LiveView support {:fun, arity}
+  attr :href, :any
+  attr :phx_target, :any
+  attr :phx_click, :any
+  slot :inner_block
 
-  defp pagination_button(current_page, page, [href: route_fn], content) do
-    route = route_fn.(page)
-    class = if page == current_page, do: "button bg-emerald-500 text-black", else: "button"
-
-    assigns = %{content: content || to_string(page + 1)}
+  defp pagination_button(assigns) do
+    assigns =
+      assigns
+      |> assign(:href, if(assigns[:href], do: assigns.href.(assigns.page)))
+      |> assign(
+        :class,
+        if(assigns.page == assigns.current_page,
+          do: "button bg-emerald-500 text-black",
+          else: "button"
+        )
+      )
 
     ~H"""
-    <a href={route} class={class}><%= @content %></a>
-    """
-  end
-
-  defp pagination_button(current_page, page, opts, content) do
-    event_name = Keyword.fetch!(opts, :phx_click)
-    event_target = Keyword.get(opts, :phx_target)
-    class = if page == current_page, do: "button bg-emerald-600 text-white", else: "button"
-    assigns = %{content: content || to_string(page + 1)}
-
-    ~H"""
-    <a phx-click={event_name} phx-target={event_target} phx-value-page={page} class={class}>
-      <%= @content %>
+    <a
+      class={@class}
+      href={assigns[:href]}
+      phx-click={assigns[:phx_click]}
+      phx-target={assigns[:phx_target]}
+      phx-value-page={@page}
+    >
+      <%= if @inner_block != [] do %>
+        <%= render_slot(@inner_block) %>
+      <% else %>
+        <%= @page + 1 %>
+      <% end %>
     </a>
     """
   end

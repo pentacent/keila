@@ -14,7 +14,7 @@
     </p>
     <br />
     <.form
-      let={f}
+      :let={f}
       for={@changeset}
       id="form"
       action={Routes.sender_path(@conn, :delete, @current_project.id, @sender.id)}

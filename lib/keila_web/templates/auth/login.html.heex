@@ -1,6 +1,6 @@
 <div class="container mt-8">
   <.form
-    let={f}
+    :let={f}
     for={@changeset}
     action={Routes.auth_path(@conn, :post_login)}
     method="post"

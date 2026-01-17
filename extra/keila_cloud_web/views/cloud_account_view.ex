@@ -7,7 +7,8 @@ Keila.if_cloud do
       namespace: KeilaWeb
 
     use Phoenix.HTML
-    import Phoenix.LiveView.Helpers
+    use Phoenix.LiveView
+    import Phoenix.Component
     import KeilaWeb.Gettext
     import KeilaWeb.ErrorHelpers
     import Ecto.Changeset

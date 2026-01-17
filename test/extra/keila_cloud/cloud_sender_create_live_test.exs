@@ -19,14 +19,14 @@ Keila.if_cloud do
       {:ok, live, html} = live(conn, Routes.sender_path(conn, :new, project.id))
 
       # Select "Send with Keila" option (use_swk: true)
-      submit_form(live, sender: %{use_swk: "true"})
+      do_render_submit(live, sender: %{use_swk: "true"})
 
       # Sender name input defaults to project name
       assert live
              |> element("input[name='sender[name]'][value='#{project.name}']")
              |> has_element?()
 
-      submit_form(live)
+      do_render_submit(live)
 
       # Sender email defaults to user email
       assert live
@@ -35,7 +35,7 @@ Keila.if_cloud do
 
       assert {:ok, conn} =
                live
-               |> submit_form(sender: %{email: @email_with_configured_domain})
+               |> do_render_submit(sender: %{email: @email_with_configured_domain})
                |> follow_redirect(conn)
 
       {:ok, live, html} = live(conn, conn.request_path)
@@ -108,13 +108,13 @@ Keila.if_cloud do
       {:ok, live, html} = live(conn, Routes.sender_path(conn, :new, project.id))
 
       # Select "Send with Keila" option (use_swk: true)
-      submit_form(live, sender: %{use_swk: "true"})
+      do_render_submit(live, sender: %{use_swk: "true"})
       # Submit default name
-      submit_form(live)
+      do_render_submit(live)
 
       assert {:ok, conn} =
                live
-               |> submit_form(sender: %{email: @email_with_new_domain})
+               |> do_render_submit(sender: %{email: @email_with_new_domain})
                |> follow_redirect(conn)
 
       {:ok, live, html} = live(conn, conn.request_path)
@@ -174,13 +174,13 @@ Keila.if_cloud do
       {:ok, live, html} = live(conn, Routes.sender_path(conn, :new, project.id))
 
       # Select "Send with Keila" option (use_swk: true)
-      submit_form(live, sender: %{use_swk: "true"})
+      do_render_submit(live, sender: %{use_swk: "true"})
       # Submit default name
-      submit_form(live)
+      do_render_submit(live)
 
       assert {:ok, conn} =
                live
-               |> submit_form(sender: %{email: @email_with_shared_domain})
+               |> do_render_submit(sender: %{email: @email_with_shared_domain})
                |> follow_redirect(conn)
 
       {:ok, live, html} = live(conn, conn.request_path)
@@ -239,20 +239,20 @@ Keila.if_cloud do
       {:ok, live, html} = live(conn, Routes.sender_path(conn, :new, project.id))
 
       # Select "Send with Keila" option (use_swk: true)
-      submit_form(live, sender: %{use_swk: "false"})
+      do_render_submit(live, sender: %{use_swk: "false"})
 
       # Accept default name
-      submit_form(live)
+      do_render_submit(live)
 
       # Accept default from email
-      submit_form(live)
+      do_render_submit(live)
 
       # Select SMTP
-      submit_form(live, sender: %{"adapter_type" => "smtp"})
+      do_render_submit(live, sender: %{"adapter_type" => "smtp"})
 
       # Set SMTP credentials
       assert {:ok, conn} =
-               submit_form(live,
+               do_render_submit(live,
                  sender: %{
                    adapter_config: %{
                      smtp_relay: "example.com",
@@ -268,7 +268,7 @@ Keila.if_cloud do
       refute_email_sent()
     end
 
-    defp submit_form(live, form_data \\ []) do
+    defp do_render_submit(live, form_data \\ []) do
       live
       |> form("#form", form_data)
       |> render_submit()

@@ -1,7 +1,7 @@
 defmodule KeilaWeb.ApiDocsController do
   use KeilaWeb, :controller
   use Phoenix.HTML
-  import Phoenix.LiveView.Helpers
+  import Phoenix.Component
 
   def show(conn, _) do
     assigns = %{conn: conn}

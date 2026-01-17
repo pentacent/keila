@@ -13,7 +13,7 @@
 
 <div class="container">
   <.form
-    let={f}
+    :let={f}
     for={@changeset}
     id="form"
     action={Routes.segment_path(@conn, :create, @current_project.id)}

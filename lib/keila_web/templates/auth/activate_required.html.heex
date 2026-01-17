@@ -9,7 +9,7 @@
         "You need to verify your email before you can use Keila. Please check your inbox."
       ) %>
     </p>
-    <.form let={_f} for={@conn} action={Routes.auth_path(@conn, :post_activate_resend)}>
+    <.form :let={_f} for={@conn} action={Routes.auth_path(@conn, :post_activate_resend)}>
       <p class="flex justify-start mt-8">
         <button class="button button--cta button--large">
           <%= dgettext("auth", "Resend activation link") %>
