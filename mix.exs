@@ -7,7 +7,7 @@ defmodule Keila.MixProject do
       version: "0.18.0",
       elixir: "~> 1.15",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: Mix.compilers(),
+      compilers: [:phoenix_live_view] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
@@ -65,9 +65,9 @@ defmodule Keila.MixProject do
       {:fast_html, "~> 2.0"},
       {:phoenix_html, "~> 3.0"},
       {:phoenix_view, "~> 2.0"},
-      {:phoenix_live_view, "~> 0.18.18"},
+      {:phoenix_live_view, "~> 1.1"},
       {:phoenix_live_reload, "~> 1.3", only: :dev},
-      {:phoenix_live_dashboard, "~> 0.7.2"},
+      {:phoenix_live_dashboard, "~> 0.8.7"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 0.5"},
       {:esbuild, "~> 0.10", runtime: Mix.env() == :dev},
@@ -96,7 +96,8 @@ defmodule Keila.MixProject do
       {:tls_certificate_check, "~> 1.20"},
       {:mjml, "~> 4.0"},
       {:ex_cldr, "~> 2.42"},
-      {:ex_cldr_territories, "~> 2.9"}
+      {:ex_cldr_territories, "~> 2.9"},
+      {:lazy_html, ">= 0.0.0", only: :test},
     ]
   end
 
