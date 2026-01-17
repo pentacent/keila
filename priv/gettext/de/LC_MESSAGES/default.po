@@ -3652,4 +3652,4 @@ msgid "You may use Liquid and Markdown in the email body.\n\nUse `[Confirm]({{ d
 msgstr ""
 "Du kannst Liquid und Markdown für den E-Mail-Inhalt verwenden.\n"
 "\n"
-"Verwende [Bestätigen]({{ double_opt_in_link }}), um den Double-Opt-In-Link einzufügen.\n"
+"Verwende `[Bestätigen]({{ double_opt_in_link }})`, um den Double-Opt-In-Link einzufügen.\n"
