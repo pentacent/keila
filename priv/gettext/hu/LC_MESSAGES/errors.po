@@ -12,6 +12,13 @@ msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Project-Id-Version: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Language: hu\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 
 msgid "can't be blank"
@@ -60,8 +67,8 @@ msgstr[1] "%{count} karakternek kell lennie"
 
 msgid "should have %{count} item(s)"
 msgid_plural "should have %{count} item(s)"
-msgstr[0] "%{count} elem(ek)kel kell rendelkeznie"
-msgstr[1] "%{count} elem(ek)et kell tartalmaznia"
+msgstr[0] "%{count} elemet kell tartalmaznia"
+msgstr[1] "%{count} elemet kell tartalmaznia"
 
 msgid "should be at least %{count} character(s)"
 msgid_plural "should be at least %{count} character(s)"
@@ -70,8 +77,8 @@ msgstr[1] "legalább %{count} karakternek kell lennie"
 
 msgid "should have at least %{count} item(s)"
 msgid_plural "should have at least %{count} item(s)"
-msgstr[0] "legalább %{count} elem(ek)et kell tartalmaznia"
-msgstr[1] "legalább %{count} elemnek kell lennie"
+msgstr[0] "legalább %{count} elemet kell tartalmaznia"
+msgstr[1] "legalább %{count} elemet kell tartalmaznia"
 
 msgid "should be at most %{count} character(s)"
 msgid_plural "should be at most %{count} character(s)"
@@ -80,8 +87,8 @@ msgstr[1] "legfeljebb %{count} karakter lehet"
 
 msgid "should have at most %{count} item(s)"
 msgid_plural "should have at most %{count} item(s)"
-msgstr[0] "legfeljebb %{count} elem(ek)-et tartalmazhat"
-msgstr[1] "legfeljebb %{count} elem(ek) lehetnek"
+msgstr[0] "legfeljebb %{count} elemet tartalmazhat"
+msgstr[1] "legfeljebb %{count} elemet tartalmazhat"
 
 # From Ecto.Changeset.validate_number/3
 msgid "must be less than %{number}"

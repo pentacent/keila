@@ -350,7 +350,7 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "To comply with anti-spam regulations, we need to know your address."
 msgstr ""
-"Az anti-spam szabályozásoknak való megfeleléshez ismernünk kell a címedet."
+"Az anti-spam szabályozásoknak való megfeleléshez ismernünk kell a címét."
 
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:50
 #, elixir-autogen, elixir-format
@@ -359,8 +359,8 @@ msgid ""
 " by adding DNS records. [Read more](https://www.keila.io/docs/managed-"
 "dmarc){:target=\"_blank\"}"
 msgstr ""
-"Az e-mailjeid jó kézbesíthetőségének biztosításához ellenőrizned kell a "
-"domainedet DNS-rekordok hozzáadásával. [További "
+"Az e-mailjei jó kézbesíthetőségének biztosításához ellenőriznie kell a "
+"domainjét DNS-rekordok hozzáadásával. [További "
 "információ](https://www.keila.io/docs/managed-dmarc){:target=\"_blank\"}"
 
 #: extra/keila_cloud_web/templates/cloud_account/_user_name.html.heex:13
@@ -372,7 +372,7 @@ msgid ""
 msgstr ""
 "Annak érdekében, hogy a Keilát csak legitim e-mailek küldésére használják, minden új fiókot felül kell vizsgálnunk.\n"
 "\n"
-"Köszönjük, hogy segítesz a spam elleni küzdelemben!\n"
+"Köszönjük, hogy segít a spam elleni küzdelemben!\n"
 
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:204
 #, elixir-autogen, elixir-format
@@ -427,9 +427,9 @@ msgid ""
 "In the meantime, you can continue to use Keila. Sending emails will be enabled for your account\n"
 "once the review has been completed.\n"
 msgstr ""
-"Most manuálisan felülvizsgáljuk az adataidat. Ez általában nem tart tovább egy munkanapnál.\n"
+"Most manuálisan felülvizsgáljuk az adatait. Ez általában nem tart tovább egy munkanapnál.\n"
 "\n"
-"Addig is tovább használhatod a Keilát. Az e-mail küldés engedélyezve lesz a fiókodban,\n"
+"Addig is tovább használhatja a Keilát. Az e-mail küldés engedélyezve lesz a fiókjában,\n"
 "amint a felülvizsgálat befejeződött.\n"
 
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:96
@@ -438,7 +438,7 @@ msgid ""
 "We're currently finalizing the setup of your sender. This may take a few "
 "minutes."
 msgstr ""
-"Jelenleg a feladód beállításainak véglegesítésén dolgozunk. Ez eltarthat "
+"Jelenleg a feladója beállításainak véglegesítésén dolgozunk. Ez eltarthat "
 "néhány percig."
 
 #: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:37
@@ -452,8 +452,8 @@ msgid ""
 "Welcome to Keila, have a look around! To start sending emails, please choose"
 " a subscription."
 msgstr ""
-"Üdvözlünk a Keilában, nézz körül! Az e-mailek küldésének megkezdéséhez "
-"kérjük, válassz előfizetést."
+"Üdvözöljük a Keilában, nézzen körül! Az e-mailek küldésének megkezdéséhez "
+"kérjük, válasszon előfizetést."
 
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:131
 #, elixir-autogen, elixir-format
@@ -461,7 +461,7 @@ msgid ""
 "You are currently using legacy email settings. We recommend updating to the "
 "new settings for better performance and reliability."
 msgstr ""
-"Jelenleg régi e-mail beállításokat használsz. A jobb teljesítmény és "
+"Jelenleg régi e-mail beállításokat használ. A jobb teljesítmény és "
 "megbízhatóság érdekében javasoljuk az új beállításokra való frissítést."
 
 #: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:29
@@ -475,7 +475,7 @@ msgid ""
 "Your account is currently under review. Sending emails will be enabled once "
 "the review has been completed."
 msgstr ""
-"A fiókod jelenleg felülvizsgálat alatt áll. Az e-mailek küldése a "
+"A fiókja jelenleg felülvizsgálat alatt áll. Az e-mailek küldése a "
 "felülvizsgálat befejezése után lesz engedélyezve."
 
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:30
@@ -485,7 +485,7 @@ msgid ""
 "Replies will go to *%{from_email}*. [Read "
 "more](https://www.keila.io/docs/shared-domains){:target=\"_blank\"}"
 msgstr ""
-"Megosztott domaint használsz. Az e-mailek *%{fallback_email}* címről lesznek"
+"Megosztott domaint használ. Az e-mailek *%{fallback_email}* címről lesznek"
 " elküldve. A válaszok a *%{from_email}* címre mennek. [További "
 "információ](https://www.keila.io/docs/shared-domains){:target=\"_blank\"}"
 
