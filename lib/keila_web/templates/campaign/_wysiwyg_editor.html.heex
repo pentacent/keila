@@ -19,28 +19,28 @@
       class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black italic"
       data-action="indent-decrease"
     >
-      <%= render_icon(:indent_decrease) %>
+      {render_icon(:indent_decrease)}
     </button>
     <button
       title={gettext("Increase indent")}
       class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black italic"
       data-action="indent-increase"
     >
-      <%= render_icon(:indent_increase) %>
+      {render_icon(:indent_increase)}
     </button>
     <button
       title={gettext("Unordered list")}
       class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black italic"
       data-action="ul"
     >
-      <%= render_icon(:list_unordered) %>
+      {render_icon(:list_unordered)}
     </button>
     <button
       title={gettext("Ordered list")}
       class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black italic"
       data-action="ol"
     >
-      <%= render_icon(:list_ordered) %>
+      {render_icon(:list_ordered)}
     </button>
     <button
       title={gettext("Heading 1")}
@@ -68,35 +68,35 @@
       class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
       data-action="link"
     >
-      <%= render_icon(:link) %>
+      {render_icon(:link)}
     </button>
     <button
       title={gettext("Image")}
       class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
       data-action="img"
     >
-      <%= render_icon(:photograph) %>
+      {render_icon(:photograph)}
     </button>
     <button
       title={gettext("Button")}
       class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
       data-action="button"
     >
-      <%= render_icon(:button_alt) %>
+      {render_icon(:button_alt)}
     </button>
     <button
       title={gettext("Spacer")}
       class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
       data-action="hr"
     >
-      <%= render_icon(:horizontal_rule) %>
+      {render_icon(:horizontal_rule)}
     </button>
     <button
       title={gettext("Insert Code")}
       class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
       data-action="liquid"
     >
-      <%= render_icon(:code) %>
+      {render_icon(:code)}
     </button>
     <div class="flex-grow"></div>
     <button
@@ -104,7 +104,7 @@
       class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
       data-action="toggle-preview"
     >
-      <%= render_icon(:eye) %>
+      {render_icon(:eye)}
     </button>
   </div>
 
@@ -120,5 +120,5 @@
   data-iframe="#html-preview"
   class="hidden"
 >
-  <%= @preview %>
+  {@preview}
 </div>

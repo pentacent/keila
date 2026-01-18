@@ -1,36 +1,36 @@
 <div class="container flex py-8 sm:py-11 mb-4">
   <h1 class="text-2xl sm:text-3xl">
-    <%= gettext("Delete Project %{project}?", project: @current_project.name) %>
+    {gettext("Delete Project %{project}?", project: @current_project.name)}
   </h1>
 </div>
 
 <div class="container">
   <div class="p-4 ring ring-red-900">
     <p class="text-lg">
-      <%= gettext(
+      {gettext(
         "This will delete all contacts, campaigns, and forms associated with this project."
-      ) %>
+      )}
     </p>
     <p class="text-lg font-bold">
-      <%= gettext("Deleting a project cannot be undone.") %>
+      {gettext("Deleting a project cannot be undone.")}
     </p>
     <.form
-      let={f}
+      :let={f}
       for={@changeset}
       action={Routes.project_path(@conn, :post_delete, @current_project.id)}
       class="mt-8 max-w-md flex flex-col gap-4"
     >
       <div class="form-row">
-        <%= label(
+        {label(
           f,
           :delete_confirmation,
           gettext("Type in the project name to confirm its deletion:")
-        ) %>
+        )}
         <%= with_validation(f, :delete_confirmation) do %>
-          <%= text_input(f, :delete_confirmation,
+          {text_input(f, :delete_confirmation,
             placeholder: @current_project.name,
             class: "text-black"
-          ) %>
+          )}
         <% end %>
       </div>
       <div class="flex gap-4 mt-4">
@@ -38,10 +38,10 @@
           class="button button--text button--large"
           href={Routes.project_path(@conn, :show, @current_project.id)}
         >
-          <%= gettext("Cancel") %>
+          {gettext("Cancel")}
         </a>
         <button class="button button--warn button--large">
-          <%= gettext("Delete") %>
+          {gettext("Delete")}
         </button>
       </div>
     </.form>

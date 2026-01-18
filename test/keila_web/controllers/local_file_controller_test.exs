@@ -6,7 +6,8 @@ defmodule KeilaWeb.LocalFileControllerTest do
 
   @tag :files
   test "Serve file", %{conn: conn} do
-    project = insert!(:project)
+    group = insert!(:group)
+    project = insert!(:project, group: group)
 
     assert {:ok, file} =
              Files.store_file(project.id, @test_file,

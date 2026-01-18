@@ -17,13 +17,13 @@
     x-data={tab_data}
     x-init="$nextTick(() => { if (! $el.querySelector('button.tab-label.active')) {$el.querySelector('button.tab-label').click()} })"
   >
-    <%= select(fc, :type, @sender_adapters, x_model: "senderType", class: "hidden") %>
+    {select(fc, :type, @sender_adapters, x_model: "senderType", class: "hidden")}
 
     <%= for adapter <- @sender_adapters do %>
       <% class = "{ 'active': tab === '#{adapter}' }"
       prevent = "senderType = '#{adapter}'; tab = '#{adapter}'" %>
-      <button class="tab-label" :class={class} @click.prevent={prevent}>
-        <%= sender_adapter_name(adapter) %>
+      <button class="tab-label" x-bind:class={class} @click.prevent={prevent}>
+        {sender_adapter_name(adapter)}
       </button>
     <% end %>
     <%= if assigns[:shared_senders] do %>
@@ -32,8 +32,8 @@
 
         prevent =
           "tab = 'shared_sender_#{shared_sender.id}'; senderType = 'shared_#{shared_sender.config.type}'" %>
-        <button class="tab-label" :class={class} @click.prevent={prevent}>
-          <%= shared_sender.name %>
+        <button class="tab-label" x-bind:class={class} @click.prevent={prevent}>
+          {shared_sender.name}
         </button>
       <% end %>
     <% end %>
@@ -42,38 +42,41 @@
       <% x_if = "tab === '#{adapter}'" %>
       <template x-if={x_if}>
         <div class="tab-content">
-          <%= render_sender_adapter_form(fc, adapter) %>
+          {render_sender_adapter_form(fc, adapter)}
 
           <div class="form-row">
-            <%= label(fc, :rate_limit_per_second, gettext("Rate limit per second")) %>
+            <% id = "rate_limit_per_second_#{adapter}" %>
+            {label(fc, :rate_limit_per_second, gettext("Rate limit per second"), for: id)}
             <%= with_validation(fc, :rate_limit_per_second) do %>
-              <%= number_input(fc, :rate_limit_per_second, class: "text-black", min: 0) %>
+              {number_input(fc, :rate_limit_per_second, id: id, class: "text-black", min: 0)}
             <% end %>
           </div>
           <div class="form-row">
-            <%= label(fc, :rate_limit_per_minute, gettext("Rate limit per minute")) %>
+            <% id = "rate_limit_per_minute_#{adapter}" %>
+            {label(fc, :rate_limit_per_minute, gettext("Rate limit per minute"), for: id)}
             <%= with_validation(fc, :rate_limit_per_minute) do %>
-              <%= number_input(fc, :rate_limit_per_minute, class: "text-black", min: 0) %>
+              {number_input(fc, :rate_limit_per_minute, id: id, class: "text-black", min: 0)}
             <% end %>
           </div>
           <div class="form-row">
-            <%= label(fc, :rate_limit_per_hour, gettext("Rate limit per hour")) %>
+            <% id = "rate_limit_per_hour_#{adapter}" %>
+            {label(fc, :rate_limit_per_hour, gettext("Rate limit per hour"), for: id)}
             <%= with_validation(fc, :rate_limit_per_hour) do %>
-              <%= number_input(fc, :rate_limit_per_hour, class: "text-black", min: 0) %>
+              {number_input(fc, :rate_limit_per_hour, id: id, class: "text-black", min: 0)}
             <% end %>
           </div>
         </div>
       </template>
     <% end %>
-    <%= hidden_input(@form, :shared_sender_id, value: nil) %>
+    {hidden_input(@form, :shared_sender_id, value: nil)}
     <%= if assigns[:shared_senders] do %>
       <%= for shared_sender <- @shared_senders do %>
         <% x_if = "tab === 'shared_sender_#{shared_sender.id}'" %>
         <template x-if={x_if}>
           <div class="tab-content">
-            <%= hidden_input(@form, :shared_sender_id, value: shared_sender.id) %>
+            {hidden_input(@form, :shared_sender_id, value: shared_sender.id)}
             <%= with_validation(@form, :config) do %>
-              <%= render_shared_sender_adapter_form(fc, shared_sender.config.type) %>
+              {render_shared_sender_adapter_form(fc, shared_sender.config.type)}
             <% end %>
           </div>
         </template>

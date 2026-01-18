@@ -7,7 +7,7 @@ defmodule Keila.Repo.Migrations.AddContactSoftDelete do
     end
 
     create table("contacts_events") do
-      add :contact_id, references("contacts", on_delete: :delete_all, null: false)
+      add :contact_id, references("contacts", on_delete: :delete_all), null: false
       add :type, :smallint
       add :data, :jsonb
       timestamps(updated_at: false)

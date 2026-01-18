@@ -5,7 +5,8 @@ defmodule Keila.Mailings.MailingsRecipientActionsTest do
 
   @tag :mailings
   test "Handle recipient actions" do
-    project = insert!(:project)
+    group = insert!(:group)
+    project = insert!(:project, group: group)
     campaign = insert!(:mailings_campaign, project_id: project.id)
 
     contact = insert!(:contact, project_id: project.id)
@@ -30,7 +31,8 @@ defmodule Keila.Mailings.MailingsRecipientActionsTest do
   end
 
   test "Three soft bounces in the last five recipients mark contact as unreachable" do
-    project = insert!(:project)
+    group = insert!(:group)
+    project = insert!(:project, group: group)
     campaign = insert!(:mailings_campaign, project_id: project.id)
 
     contact = insert!(:contact, project_id: project.id)

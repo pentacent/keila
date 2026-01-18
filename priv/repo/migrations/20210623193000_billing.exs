@@ -11,7 +11,7 @@ defmodule Keila.Repo.Migrations.Billing do
       add :next_billed_on, :date, null: false
       add :status, :integer, null: false
 
-      add :account_id, references("accounts", on_delete: :delete_all, null: false)
+      add :account_id, references("accounts", on_delete: :delete_all), null: false
 
       timestamps()
     end

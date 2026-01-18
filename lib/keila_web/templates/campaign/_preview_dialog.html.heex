@@ -16,7 +16,7 @@
         x-bind:class="previewDevice == 'desktop' && 'bg-gray-700'"
         x-on:click.prevent="$dispatch('x-toggle-desktop-preview')"
       >
-        <%= render_icon(:desktop_computer) %>
+        {render_icon(:desktop_computer)}
       </button>
       <button
         title={gettext("Mobile preview")}
@@ -24,14 +24,14 @@
         x-bind:class="previewDevice == 'mobile' && 'bg-gray-700'"
         x-on:click.prevent="$dispatch('x-toggle-mobile-preview')"
       >
-        <%= render_icon(:device_mobile) %>
+        {render_icon(:device_mobile)}
       </button>
       <div class="w-4"></div>
       <button
         x-on:click.prevent="previewMode = !previewMode"
         class="h-10 p-2 items-center justify-center bg-gray-800 hover:bg-gray-600 text-white"
       >
-        <%= gettext("Close preview") %>
+        {gettext("Close preview")}
       </button>
     </div>
     <iframe

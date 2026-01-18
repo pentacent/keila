@@ -2,10 +2,8 @@ defmodule Keila.Mailings.Builder.MJML do
   @moduledoc """
   Builder for MJML emails.
   """
-  require KeilaWeb.Gettext
-
+  use KeilaWeb.Gettext
   import Swoosh.Email
-  import KeilaWeb.Gettext
 
   @spec put_body(Swoosh.Email.t(), String.t(), map()) :: Swoosh.Email.t()
   def put_body(email, mjml_content, assigns \\ %{}) do

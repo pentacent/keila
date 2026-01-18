@@ -1,44 +1,42 @@
 <div class="container flex py-8 sm:py-11 mb-4">
   <div class="flex-grow gap-4 flex flex-col sm:flex-row sm:items-center">
     <h1 class="text-2xl sm:text-3xl text-gray-100">
-      <%= gettext("API Keys") %>
+      {gettext("API Keys")}
     </h1>
     <div class="flex-grow flex flex-row-reverse justify-end gap-4 sm:flex-row">
       <a href="/api" class="button button--text" target="_blank">
-        <%= render_icon(:external_link) %>
-        <%= gettext("API Docs") %>
+        {render_icon(:external_link)}
+        {gettext("API Docs")}
       </a>
       <a href={Routes.api_key_path(@conn, :new, @current_project.id)} class="button">
-        <%= render_icon(:document_add) %>
-        <%= gettext("Create a new API Key") %>
+        {render_icon(:document_add)}
+        {gettext("Create a new API Key")}
       </a>
     </div>
   </div>
 </div>
 
 <%= if Enum.empty?(@tokens) do %>
-  <%= render("_empty_state.html", assigns) %>
+  {render("_empty_state.html", assigns)}
 <% end %>
 
 <%= if assigns[:token] do %>
   <div class="container mb-8">
     <div class="bg-gradient-to-r from-gray-900 to-emerald-900 p-8">
       <h2 class="font-light text-2xl mb-2">
-        <%= gettext("New API key created:") %>
+        {gettext("New API key created:")}
         <%= if @token.data["name"] && String.length(@token.data["name"]) > 0 do %>
-          <%= @token.data["name"] %>
-          <span class="text-sm"><%= @token.id %></span>
+          {@token.data["name"]}
+          <span class="text-sm">{@token.id}</span>
         <% else %>
-          <%= @token.id %>
+          {@token.id}
         <% end %>
       </h2>
       <p>
-        <%= gettext("The following is your private API Key. Use it to authorize API calls.") %>
+        {gettext("The following is your private API Key. Use it to authorize API calls.")}
       </p>
       <p class="font-bold text-emerald-500">
-        <%= gettext(
-          "Important: The private API Key is displayed only once and cannot be recovered."
-        ) %>
+        {gettext("Important: The private API Key is displayed only once and cannot be recovered.")}
       </p>
       <div class="flex flex-row mt-2 relative" x-data="{showFeedback: false}">
         <input
@@ -53,15 +51,15 @@
           class="button"
           @click="navigator.clipboard.writeText($refs.input.value); showFeedback = true; setTimeout(() => {showFeedback = false}, 2000)"
         >
-          <%= render_icon(:clipboard) %>
-          <%= gettext("Copy to clipboard") %>
+          {render_icon(:clipboard)}
+          {gettext("Copy to clipboard")}
         </button>
         <div
           style="display: none"
           class="absolute left-0 top-12 bg-green-700 p-2 font-sm rounded text-white"
           x-show.transition="showFeedback"
         >
-          <%= gettext("API key copied to clipboard") %>
+          {gettext("API key copied to clipboard")}
         </div>
       </div>
     </div>
@@ -73,27 +71,30 @@
     <div class="bg-gray-800 p-8 flex flex-row items-center gap-4">
       <h2 class="font-light text-2xl flex items-center gap-2">
         <%= if token.data["name"] && String.length(token.data["name"]) > 0 do %>
-          <%= token.data["name"] %>
-          <span class="text-sm"><%= token.id %></span>
+          {token.data["name"]}
+          <span class="text-sm">{token.id}</span>
         <% else %>
-          <%= token.id %>
+          {token.id}
         <% end %>
       </h2>
       <p class="flex-grow text-sm flex items-center gap-2">
-        <%= local_datetime_tag(token.inserted_at) %>
+        {local_datetime_tag(token.inserted_at)}
       </p>
       <br />
       <div class="flex flex-row gap-4 justify-end">
-        <%= delete_form_tag(
-          token,
-          Routes.api_key_path(@conn, :delete, @current_project.id, token.id),
-          as: :api_key
-        ) %>
-        <%= delete_button_tag(
-          token,
-          [class: "button button--text button--large", icon: :trash],
-          gettext("Revoke")
-        ) %>
+        <.delete_form
+          struct={token}
+          route={~p"/projects/#{@current_project.id}/api_keys/#{token.id}"}
+          as={:api_key}
+        >
+        </.delete_form>
+        <.delete_button
+          struct={token}
+          class="button button--text button--large"
+          icon={:trash}
+        >
+          {gettext("Revoke")}
+        </.delete_button>
       </div>
     </div>
   <% end %>

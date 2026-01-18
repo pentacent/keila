@@ -1,14 +1,14 @@
 <div class="container">
   <.form
-    let={f}
+    :let={f}
     for={@conn}
     as="contact"
     action={Routes.contact_path(@conn, :delete, @current_project.id)}
     method="delete"
     class=" p-4 bg-gray-800"
   >
-    <%= hidden_input(f, :return, value: @contacts_status) %>
-    <%= hidden_input(f, :require_confirmation, value: "true") %>
+    {hidden_input(f, :return, value: @contacts_status)}
+    {hidden_input(f, :require_confirmation, value: "true")}
     <table
       x-data="{checked: false}"
       class="w-full"
@@ -19,7 +19,7 @@
         <th class="p-2">
           <div class="flex gap-1">
             <.table_sort_button key="email" current_key={@sort_by} current_order={@sort_order} />
-            <%= gettext("Email") %>
+            {gettext("Email")}
           </div>
         </th>
         <th class="p-2 hidden lg:table-cell gap-2">
@@ -29,7 +29,7 @@
               current_key={@sort_by}
               current_order={@sort_order}
             />
-            <%= gettext("First name") %>
+            {gettext("First name")}
           </div>
         </th>
         <th class="p-2 hidden lg:table-cell gap-2">
@@ -39,7 +39,7 @@
               current_key={@sort_by}
               current_order={@sort_order}
             />
-            <%= gettext("Last name") %>
+            {gettext("Last name")}
           </div>
         </th>
         <th class="p-2 hidden lg:table-cell gap-2">
@@ -49,7 +49,7 @@
               current_key={@sort_by}
               current_order={@sort_order}
             />
-            <%= gettext("Added") %>
+            {gettext("Added")}
           </div>
         </th>
         <th class="p-2"></th>
@@ -57,75 +57,80 @@
       <%= for contact <- @contacts.data do %>
         <tr>
           <td>
-            <%= checkbox(f, :id,
+            {checkbox(f, :id,
               hidden_input: false,
               "x_bind:checked": "checked",
               class: "text-emerald-500",
               checked_value: contact.id,
               name: "contact[id][]"
-            ) %>
+            )}
           </td>
           <td class="p-2">
             <a
               class="button button--text overflow-x-hidden"
               href={Routes.contact_path(@conn, :edit, @current_project.id, contact.id)}
             >
-              <%= contact.email %>
+              {contact.email}
             </a>
           </td>
           <td class="p-2 hidden lg:table-cell">
-            <%= contact.first_name %>
+            {contact.first_name}
           </td>
           <td class="p-2 hidden lg:table-cell">
-            <%= contact.last_name %>
+            {contact.last_name}
           </td>
           <td class="p-2 hidden lg:table-cell">
-            <%= local_datetime_tag(contact.inserted_at) %>
+            {local_datetime_tag(contact.inserted_at)}
           </td>
           <td class="p-2 flex justify-end gap-2">
-            <%= delete_button_tag(contact, icon: :trash, class: "button button--text") %>
+            <.delete_button struct={contact} icon={:trash} class="button button--text" />
 
             <a
               class="button button--text"
               href={Routes.contact_path(@conn, :edit, @current_project.id, contact.id)}
             >
-              <%= render_icon(:pencil_alt) %>
+              {render_icon(:pencil_alt)}
             </a>
           </td>
         </tr>
       <% end %>
     </table>
     <button class="button mt-4">
-      <%= gettext("Delete all selected contacts") %>
+      {gettext("Delete all selected contacts")}
     </button>
   </.form>
 
-  <%= for contact <- @contacts.data do
-    delete_form_tag(contact, Routes.contact_path(@conn, :delete, @current_project.id),
-      as: :contact,
-      return: @contacts_status
-    )
-  end %>
+  <%= for contact <- @contacts.data do %>
+    <.delete_form
+      struct={contact}
+      as={:contact}
+      route={~p"/projects/#{@current_project.id}/contacts"}
+      return={@contacts_status}
+    />
+  <% end %>
 
   <%= if @contacts.page_count > 1 do %>
     <div class="flex gap-3 justify-center py-8">
-      <%= pagination_nav(@contacts,
-        href: fn n ->
-          query = %{
-            "page" => n + 1,
-            "sort_by" => @sort_by,
-            "sort_order" => @sort_order,
-            "search" => @search
-          }
+      <.pagination_nav
+        pagination={@contacts}
+        href={
+          fn n ->
+            query = %{
+              "page" => n + 1,
+              "sort_by" => @sort_by,
+              "sort_order" => @sort_order,
+              "search" => @search
+            }
 
-          Routes.contact_path(
-            @conn,
-            if(@contacts_status == :active, do: :index, else: :"index_#{@contacts_status}"),
-            @current_project.id,
-            query
-          )
-        end
-      ) %>
+            Routes.contact_path(
+              @conn,
+              if(@contacts_status == :active, do: :index, else: :"index_#{@contacts_status}"),
+              @current_project.id,
+              query
+            )
+          end
+        }
+      />
     </div>
   <% end %>
 </div>

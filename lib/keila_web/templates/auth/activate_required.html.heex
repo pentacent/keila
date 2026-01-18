@@ -1,18 +1,18 @@
 <div class="container mt-8">
   <div class="rounded shadow p-8 mt-8 max-w-xl mx-auto flex flex-col gap-4 bg-gray-900 text-gray-50">
     <h1 class="text-5xl font-bold">
-      <%= dgettext("auth", "Please activate your account first.") %>
+      {dgettext("auth", "Please activate your account first.")}
     </h1>
     <p class="text-lg text-gray-200">
-      <%= dgettext(
+      {dgettext(
         "auth",
         "You need to verify your email before you can use Keila. Please check your inbox."
-      ) %>
+      )}
     </p>
-    <.form let={_f} for={@conn} action={Routes.auth_path(@conn, :post_activate_resend)}>
+    <.form :let={_f} for={@conn} action={Routes.auth_path(@conn, :post_activate_resend)}>
       <p class="flex justify-start mt-8">
         <button class="button button--cta button--large">
-          <%= dgettext("auth", "Resend activation link") %>
+          {dgettext("auth", "Resend activation link")}
         </button>
       </p>
     </.form>

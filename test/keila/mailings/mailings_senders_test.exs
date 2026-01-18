@@ -4,9 +4,8 @@ defmodule Keila.Mailings.SenderTest do
   alias Mailings.Sender
   alias Mailings.RateLimiter
 
-  @tag :mailings
   describe "Creating senders" do
-    @tag :mailings
+    @describetag :mailings
     test "through the API" do
       group = insert!(:group)
       project = insert!(:project, group: group)
@@ -14,7 +13,6 @@ defmodule Keila.Mailings.SenderTest do
       {:ok, %Sender{}} = Mailings.create_sender(project.id, params(:mailings_sender))
     end
 
-    @tag :mailingsx
     test "fails when there is a callback error" do
       group = insert!(:group)
       project = insert!(:project, group: group)
@@ -30,7 +28,7 @@ defmodule Keila.Mailings.SenderTest do
   end
 
   describe "Deleting senders" do
-    @tag :mailings
+    @describetag :mailings
     test "is idempotent" do
       group = insert!(:group)
       project = insert!(:project, group: group)
@@ -41,7 +39,6 @@ defmodule Keila.Mailings.SenderTest do
       assert :ok == Mailings.delete_sender(sender.id)
     end
 
-    @tag :mailings
     test "fails when there is a callback error" do
       group = insert!(:group)
       project = insert!(:project, group: group)
@@ -60,7 +57,7 @@ defmodule Keila.Mailings.SenderTest do
   end
 
   describe "Update senders" do
-    @tag :mailings
+    @describetag :mailings
     test "through the API" do
       group = insert!(:group)
       project = insert!(:project, group: group)
@@ -76,7 +73,6 @@ defmodule Keila.Mailings.SenderTest do
       assert {:ok, %{name: "Updated name"}} = Mailings.update_sender(sender.id, params)
     end
 
-    @tag :mailings
     test "fails when there is a callback error" do
       group = insert!(:group)
       project = insert!(:project, group: group)
@@ -94,7 +90,7 @@ defmodule Keila.Mailings.SenderTest do
   end
 
   describe "Sender from_email verification" do
-    @tag :mailings
+    @describetag :mailings
     test "send_sender_verification_email creates token and sends email" do
       group = insert!(:group)
       project = insert!(:project, group: group)
@@ -113,12 +109,10 @@ defmodule Keila.Mailings.SenderTest do
                Mailings.verify_sender_from_email(token)
     end
 
-    @tag :mailings
     test "verify_sender_from_email fails with invalid token" do
       assert :error == Mailings.verify_sender_from_email("invalid-token")
     end
 
-    @tag :mailings
     test "cancel_sender_from_email_verification deletes token and returns :ok" do
       group = insert!(:group)
       project = insert!(:project, group: group)
@@ -137,13 +131,13 @@ defmodule Keila.Mailings.SenderTest do
       assert :error == Mailings.verify_sender_from_email(token)
     end
 
-    @tag :mailings
     test "cancel_sender_from_email_verification returns :ok for non-existent token" do
       assert :ok == Mailings.cancel_sender_from_email_verification("non-existent-token")
     end
   end
 
   describe "Testing senders with Rate Limiting" do
+    @describetag :mailings
     test "using check rate limit by seconds of new sender" do
       rate_limit_per_second = 50
       group = insert!(:group)

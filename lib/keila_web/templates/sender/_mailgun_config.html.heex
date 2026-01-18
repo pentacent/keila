@@ -1,14 +1,14 @@
 <div class="form-row">
-  <%= label(@form, :mailgun_domain, gettext("Domain")) %>
+  {label(@form, :mailgun_domain, gettext("Domain"))}
   <%= with_validation(@form, :mailgun_domain) do %>
-    <%= text_input(@form, :mailgun_domain, class: "text-black") %>
+    {text_input(@form, :mailgun_domain, class: "text-black")}
   <% end %>
 </div>
 
 <div class="form-row">
-  <%= label(@form, :mailgun_base_url, gettext("Base URL")) %>
+  {label(@form, :mailgun_base_url, gettext("Base URL"))}
   <%= with_validation(@form, :mailgun_base_url) do %>
-    <%= select(
+    {select(
       @form,
       :mailgun_base_url,
       [
@@ -16,15 +16,15 @@
         "https://api.eu.mailgun.net/v3"
       ],
       class: "text-black"
-    ) %>
+    )}
   <% end %>
 </div>
 
 <%= if is_nil(@form.data.mailgun_api_key) do %>
   <div class="form-row">
-    <%= label(@form, :mailgun_api_key, gettext("API Key")) %>
+    {label(@form, :mailgun_api_key, gettext("API Key"))}
     <%= with_validation(@form, :mailgun_api_key) do %>
-      <%= password_input(@form, :mailgun_api_key, class: "text-black") %>
+      {password_input(@form, :mailgun_api_key, class: "text-black")}
     <% end %>
   </div>
 <% else %>
@@ -34,16 +34,16 @@
     class="form-row"
   >
     <div class="flex gap-5">
-      <%= label(@form, :mailgun_api_key, gettext("API Key")) %>
+      {label(@form, :mailgun_api_key, gettext("API Key"))}
       <label>
         <input type="checkbox" x-model="show" />
-        <%= gettext("Change") %>
+        {gettext("Change")}
       </label>
     </div>
 
     <template x-if="show">
       <%= with_validation(@form, :mailgun_api_key) do %>
-        <%= password_input(@form, :mailgun_api_key, class: "text-black", x_ref: "password") %>
+        {password_input(@form, :mailgun_api_key, class: "text-black", x_ref: "password")}
       <% end %>
     </template>
   </div>

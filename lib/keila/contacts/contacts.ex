@@ -5,9 +5,9 @@ defmodule Keila.Contacts do
   Use this module to create/update/delete, verify, and import Contacts.
   """
   use Keila.Repo
+  use KeilaWeb.Gettext
   alias Keila.Projects.Project
   alias __MODULE__.{Contact, Import, Form, FormParams, Segment}
-  import KeilaWeb.Gettext
 
   @doc """
   Creates a new Contact within the given Project.

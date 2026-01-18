@@ -70,9 +70,9 @@ defmodule KeilaWeb.ErrorHelpers do
     # should be written to the errors.po file. The :count option is
     # set by Ecto and indicates we should also apply plural rules.
     if count = opts[:count] do
-      Gettext.dngettext(KeilaWeb.Gettext, "errors", msg, msg, count, opts)
+      Gettext.dngettext(KeilaWeb.Gettext.Backend, "errors", msg, msg, count, opts)
     else
-      Gettext.dgettext(KeilaWeb.Gettext, "errors", msg, opts)
+      Gettext.dgettext(KeilaWeb.Gettext.Backend, "errors", msg, opts)
     end
   end
 end
