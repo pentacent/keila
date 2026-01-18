@@ -17,7 +17,7 @@ defmodule Keila.Mailings.Builder.LiquidRenderer do
     try do
       case Solid.parse(input) do
         {:ok, template} -> render_liquid(template, assigns, opts)
-        {:error, error = %Solid.TemplateError{}} -> {:error, template_error_to_string(error)}
+        {:error, error = %Solid.TemplateError{}} -> {:error, errors_to_string(error.errors)}
       end
     rescue
       _e -> {:error, "Unexpected parsing error"}
@@ -26,20 +26,40 @@ defmodule Keila.Mailings.Builder.LiquidRenderer do
 
   def render_liquid(input = %Solid.Template{}, assigns, opts) do
     try do
-      result = input |> Solid.render!(assigns, opts) |> to_string()
+      {:ok, result, errors} = input |> Solid.render(assigns, opts)
 
-      {:ok, result}
+      case errors do
+        [] -> {:ok, to_string(result)}
+        errors -> {:error, errors_to_string(errors)}
+      end
     rescue
-      _error ->
-        {:error, "Unexpected rendering error"}
+      _exception ->
+        {:error, "Unexpected rendering error."}
     end
   end
 
-  defp template_error_to_string(%Solid.TemplateError{errors: errors}) do
+  defp errors_to_string(errors) when is_list(errors) do
     errors
     |> Enum.map(fn
       %Solid.ParserError{meta: %{line: line, column: column}, reason: reason, text: text} ->
-        "Parsing error in line #{line}:#{column}: #{reason} (near #{text})"
+        "Parsing error in line #{line}:#{column}: #{reason} (near \"#{text}\")"
+
+      %Solid.UndefinedVariableError{variable: variable, loc: %{line: line, column: column}} ->
+        "Undefined variable \"#{variable}\" in line #{line}:#{column}"
+
+      %Solid.UndefinedFilterError{filter: filter, loc: %{line: line, column: column}} ->
+        "Undefined filter \"#{filter}\" in line #{line}:#{column}"
+
+      %Solid.ArgumentError{message: message, loc: %{line: line, column: column}} ->
+        "Argument error in line #{line}:#{column}: #{message}"
+
+      %Solid.WrongFilterArityError{
+        filter: filter,
+        arity: arity,
+        expected_arity: expected_arity,
+        loc: %{line: line, column: column}
+      } ->
+        "Wrong filter arity for \"#{filter}\" in line #{line}:#{column}: expected #{expected_arity} argument(s), got #{arity}"
     end)
     |> Enum.join("\n")
   end
