@@ -13,16 +13,18 @@
       >
         {gettext("Cancel")}
       </a>
-      {delete_form_tag(
-        @segment,
-        Routes.segment_path(KeilaWeb.Endpoint, :delete, @current_project.id),
-        as: :segment
-      )}
-      {delete_button_tag(
-        @segment,
-        [class: "button button--text", "@click": "setUnsavedReminder(false)"],
-        gettext("Delete")
-      )}
+      <.delete_form
+        struct={@segment}
+        as={:segment}
+        route={~p"/projects/#{@current_project.id}/segments"}
+      />
+      <.delete_button
+        struct={@segment}
+        class="button button--text"
+        @click="setUnsavedReminder(false)"
+      >
+        {gettext("Delete")}
+      </.delete_button>
       <button
         class="button button--cta button--large"
         form="form"

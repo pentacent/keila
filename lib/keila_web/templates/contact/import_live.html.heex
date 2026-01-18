@@ -15,7 +15,8 @@
     <% @import_total == 0 -> %>
       <.form
         :let={f}
-        for={:import}
+        for={%{}}
+        as={:import}
         id="import-form"
         phx-submit="import"
         phx-change="validate"

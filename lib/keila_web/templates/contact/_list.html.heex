@@ -83,7 +83,7 @@
             {local_datetime_tag(contact.inserted_at)}
           </td>
           <td class="p-2 flex justify-end gap-2">
-            {delete_button_tag(contact, icon: :trash, class: "button button--text")}
+            <.delete_button struct={contact} icon={:trash} class="button button--text" />
 
             <a
               class="button button--text"
@@ -100,12 +100,14 @@
     </button>
   </.form>
 
-  {for contact <- @contacts.data do
-    delete_form_tag(contact, Routes.contact_path(@conn, :delete, @current_project.id),
-      as: :contact,
-      return: @contacts_status
-    )
-  end}
+  <%= for contact <- @contacts.data do %>
+    <.delete_form
+      struct={contact}
+      as={:contact}
+      route={~p"/projects/#{@current_project.id}/contacts"}
+      return={@contacts_status}
+    />
+  <% end %>
 
   <%= if @contacts.page_count > 1 do %>
     <div class="flex gap-3 justify-center py-8">

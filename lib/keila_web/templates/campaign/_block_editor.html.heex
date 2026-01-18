@@ -169,8 +169,9 @@
   </div>
 </div>
 
-<% f = form_for(@changeset, "#") %>
-{textarea(f, :json_body, class: "hidden", value: @json_body, phx_debounce: "1000")}
+<.form :let={f} for={@changeset}>
+  {textarea(f, :json_body, class: "hidden", value: @json_body, phx_debounce: "1000")}
+</.form>
 
 <div
   id="block-container"

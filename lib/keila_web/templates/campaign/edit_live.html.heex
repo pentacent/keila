@@ -15,16 +15,19 @@
         >
           {gettext("Cancel")}
         </a>
-        {delete_form_tag(
-          @campaign,
-          Routes.campaign_path(@socket, :delete, @current_project.id),
-          as: :campaign
-        )}
-        {delete_button_tag(
-          @campaign,
-          [class: "button button--text button--large", "@click": "setUnsavedReminder(false)"],
-          gettext("Delete")
-        )}
+        <.delete_form
+          struct={@campaign}
+          as={:campaign}
+          route={~p"/projects/#{@current_project.id}/campaigns"}
+        >
+        </.delete_form>
+        <.delete_button
+          struct={@campaign}
+          class="button button--text button--large"
+          @click="setUnsavedReminder(false)"
+        >
+          {gettext("Delete")}
+        </.delete_button>
         <button
           class="button button--large"
           type="submit"

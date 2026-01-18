@@ -51,12 +51,13 @@
   </div>
 </div>
 
-<% f = form_for(@changeset, "#") %>
-{textarea(f, :mjml_body,
-  rows: 20,
-  class: "hidden",
-  phx_debounce: "1000"
-)}
+<.form :let={f} for={@changeset}>
+  {textarea(f, :mjml_body,
+    rows: 20,
+    class: "hidden",
+    phx_debounce: "1000"
+  )}
+</.form>
 <div
   id="html-preview-data"
   phx-hook="HtmlPreview"

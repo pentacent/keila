@@ -23,12 +23,18 @@
         {gettext("Cancel")}
       </a>
       <%= if assigns[:contact] do %>
-        {delete_form_tag(@contact, Routes.contact_path(@conn, :delete, @current_project.id),
-          as: :contact
-        )}
-        <%= delete_button_tag(@contact, class: "button button--text", "@click": "setUnsavedReminder(false)") do %>
+        <.delete_form
+          struct={@contact}
+          as={:contact}
+          route={~p"/projects/#{@current_project.id}/contacts"}
+        />
+        <.delete_button
+          struct={@contact}
+          class="button button--text button--large"
+          @click="setUnsavedReminder(false)"
+        >
           {gettext("Delete")}
-        <% end %>
+        </.delete_button>
       <% end %>
       <button
         form="form"
