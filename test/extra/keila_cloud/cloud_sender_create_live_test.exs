@@ -15,8 +15,7 @@ Keila.if_cloud do
     test "creates sender with domain that's already set up", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
       [user] = Keila.Auth.list_group_users(project.group_id)
-
-      {:ok, live, html} = live(conn, Routes.sender_path(conn, :new, project.id))
+      {:ok, live, _html} = live(conn, Routes.sender_path(conn, :new, project.id))
 
       # Select "Send with Keila" option (use_swk: true)
       do_render_submit(live, sender: %{use_swk: "true"})
@@ -38,7 +37,7 @@ Keila.if_cloud do
                |> do_render_submit(sender: %{email: @email_with_configured_domain})
                |> follow_redirect(conn)
 
-      {:ok, live, html} = live(conn, conn.request_path)
+      {:ok, live, _html} = live(conn, conn.request_path)
 
       # Email verification message is shown
       assert live
@@ -103,9 +102,7 @@ Keila.if_cloud do
     @tag :cloud_sender_create_live
     test "creates sender with an unverified custom domain", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
-      [user] = Keila.Auth.list_group_users(project.group_id)
-
-      {:ok, live, html} = live(conn, Routes.sender_path(conn, :new, project.id))
+      {:ok, live, _html} = live(conn, Routes.sender_path(conn, :new, project.id))
 
       # Select "Send with Keila" option (use_swk: true)
       do_render_submit(live, sender: %{use_swk: "true"})
@@ -117,7 +114,7 @@ Keila.if_cloud do
                |> do_render_submit(sender: %{email: @email_with_new_domain})
                |> follow_redirect(conn)
 
-      {:ok, live, html} = live(conn, conn.request_path)
+      {:ok, live, _html} = live(conn, conn.request_path)
 
       # Email verification message is shown
       assert live
@@ -169,9 +166,7 @@ Keila.if_cloud do
     @tag :cloud_sender_create_live
     test "creates sender with a known shared domain", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
-      [user] = Keila.Auth.list_group_users(project.group_id)
-
-      {:ok, live, html} = live(conn, Routes.sender_path(conn, :new, project.id))
+      {:ok, live, _html} = live(conn, Routes.sender_path(conn, :new, project.id))
 
       # Select "Send with Keila" option (use_swk: true)
       do_render_submit(live, sender: %{use_swk: "true"})
@@ -183,7 +178,7 @@ Keila.if_cloud do
                |> do_render_submit(sender: %{email: @email_with_shared_domain})
                |> follow_redirect(conn)
 
-      {:ok, live, html} = live(conn, conn.request_path)
+      {:ok, live, _html} = live(conn, conn.request_path)
 
       # Email verification message is shown
       assert live
@@ -234,9 +229,7 @@ Keila.if_cloud do
 
     test "creates SMTP sender", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
-      [user] = Keila.Auth.list_group_users(project.group_id)
-
-      {:ok, live, html} = live(conn, Routes.sender_path(conn, :new, project.id))
+      {:ok, live, _html} = live(conn, Routes.sender_path(conn, :new, project.id))
 
       # Select "Send with Keila" option (use_swk: true)
       do_render_submit(live, sender: %{use_swk: "false"})
@@ -251,7 +244,7 @@ Keila.if_cloud do
       do_render_submit(live, sender: %{"adapter_type" => "smtp"})
 
       # Set SMTP credentials
-      assert {:ok, conn} =
+      assert {:ok, _conn} =
                do_render_submit(live,
                  sender: %{
                    adapter_config: %{

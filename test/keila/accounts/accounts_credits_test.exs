@@ -127,6 +127,7 @@ defmodule Keila.AccountsTest.Credits do
       )
 
     Keila.if_cloud do
+      account = Keila.Accounts.get_user_account(user.id)
       KeilaCloud.Accounts.update_account_status(account.id, :active)
     end
 
