@@ -19,14 +19,15 @@ defmodule Keila.Mailings.Builder.LiquidRendererTest do
     test "returns an error tuple from an invalid Liquid template" do
       input = "Hello {{ world"
 
-      assert {:error, "Parsing error in line 1: expected end of string"} =
+      assert {:error,
+              "Parsing error in line 1:7: Tag or Object not properly terminated (near \"Hello {{ world\")"} =
                render_liquid(input, %{})
     end
 
-    test "returns an error tuple when there is a Liquid rendering error" do
-      input = "Hello {{ foo | abs }}"
-      assigns = %{"foo" => "bar"}
-      assert {:error, "Unexpected rendering error"} = render_liquid(input, assigns)
+    test "returns an error tuple with a useful error message" do
+      input = "Hello {{ foo | divided_by: bar }}"
+      assigns = %{"foo" => 2, "bar" => 0}
+      assert {:error, "Argument error in line 1:16: divided by 0"} = render_liquid(input, assigns)
     end
   end
 
