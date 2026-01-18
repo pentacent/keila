@@ -1,0 +1,173 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new translations manually only if they're dynamic
+#  translations that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here as no
+#  effect: edit them in PO (.po) files instead.
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "%{remaining} / %{total} credits"
+msgstr "%{remaining} / %{total} kredit"
+
+#: lib/keila_web/templates/user_admin/index.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Activation"
+msgstr "Aktiválás"
+
+#: lib/keila_web/templates/user_admin/index.html.heex:54
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:26
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:85
+#, elixir-autogen, elixir-format
+msgid "Add credits"
+msgstr "Kreditek hozzáadása"
+
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:3
+#, elixir-autogen, elixir-format
+msgid "Administer Credits for %{email}"
+msgstr "Kreditek kezelése a következőhöz: %{email}"
+
+#: lib/keila_web/controllers/user_admin_controller.ex:17
+#, elixir-autogen, elixir-format
+msgid "Administrate Users"
+msgstr "Felhasználók kezelése"
+
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Amount"
+msgstr "Összeg"
+
+#: lib/keila_web/templates/shared_sender_admin/delete.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Campaigns associated with this sender will not be deleted."
+msgstr "Az ehhez a feladóhoz társított kampányok nem lesznek törölve."
+
+#: lib/keila_web/templates/shared_sender_admin/index.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Create a new Shared Sender"
+msgstr "Új megosztott feladó létrehozása"
+
+#: lib/keila_web/templates/user_admin/index.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Credits"
+msgstr "Kreditek"
+
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Credits for account %{account}"
+msgstr "Kreditek a(z) %{account} fiókhoz"
+
+#: lib/keila_web/templates/shared_sender_admin/delete.html.heex:3
+#, elixir-autogen, elixir-format
+msgid "Delete Shared Sender %{sender}?"
+msgstr "Törli a megosztott feladót: %{sender}?"
+
+#: lib/keila_web/templates/shared_sender_admin/delete.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Deleting a shared sender cannot be undone."
+msgstr "A megosztott feladó törlése nem vonható vissza."
+
+#: lib/keila_web/templates/user_admin/index.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Email"
+msgstr "E-mail"
+
+#: lib/keila_web/templates/user_admin/index.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Here you can manage other users on your Keila instance."
+msgstr "Itt kezelheti a Keila példányán lévő többi felhasználót."
+
+#: lib/keila_web/templates/shared_sender_admin/edit.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "New Shared Sender"
+msgstr "Új megosztott feladó"
+
+#: lib/keila_web/templates/shared_sender_admin/edit.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Shared Sender Name"
+msgstr "Megosztott feladó neve"
+
+#: lib/keila_web/templates/shared_sender_admin/edit.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "My Shared Sender"
+msgstr "Saját megosztott feladóm"
+
+#: lib/keila_web/templates/shared_sender_admin/index.html.heex:4
+#, elixir-autogen, elixir-format
+msgid "Shared Senders"
+msgstr "Megosztott feladók"
+
+#: lib/keila_web/templates/shared_sender_admin/index.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Shared Senders are available to all users on this instance of Keila."
+msgstr ""
+"A megosztott feladók a Keila ezen példányának minden felhasználója számára "
+"elérhetők."
+
+#: lib/keila_web/templates/user_admin/index.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Sign-up"
+msgstr "Regisztráció"
+
+#: lib/keila_web/templates/shared_sender_admin/delete.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Type in the shared sender name to confirm its deletion:"
+msgstr "A törlés megerősítéséhez írja be a megosztott feladó nevét:"
+
+#: lib/keila_web/templates/user_admin/index.html.heex:78
+#, elixir-autogen, elixir-format
+msgid "Login as"
+msgstr "Bejelentkezés mint"
+
+#: lib/keila_web/templates/layout/app.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "A new version of Keila is available."
+msgstr "A Keila új verziója elérhető."
+
+#: lib/keila_web/templates/layout/app.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Read more"
+msgstr "További információ"
+
+#: lib/keila_web/templates/layout/_menu.html.heex:155
+#, elixir-autogen, elixir-format
+msgid "System Info"
+msgstr "Rendszerinformáció"
+
+#: lib/keila_web/templates/instance_admin/show.html.heex:4
+#, elixir-autogen, elixir-format
+msgid "You are currently running Keila %{version} on %{host}."
+msgstr "Jelenleg a Keila %{version} verzióját futtatja a(z) %{host} hoszton."
+
+#: lib/keila_web/templates/instance_admin/show.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "There are updates available for your Keila instance!"
+msgstr "Frissítések érhetők el a Keila példányához!"
+
+#: lib/keila_web/templates/instance_admin/show.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "Update checks are disabled."
+msgstr "A frissítésellenőrzések le vannak tiltva."
+
+#: lib/keila_web/templates/instance_admin/show.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "You seem to be running the most recent version of Keila!"
+msgstr "Úgy tűnik, a Keila legfrissebb verzióját futtatja!"
+
+#: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "Állapot"
+
+#: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "Update status"
+msgstr "Frissítési állapot"

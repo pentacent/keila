@@ -109,7 +109,7 @@ config :mime, :types, %{
 # Configure locales
 config :keila, KeilaWeb.Gettext,
   default_locale: "en",
-  locales: ["de", "en", "fr", "es"]
+  locales: ["de", "en", "fr", "es", "hu"]
 
 config :ex_cldr,
   default_backend: Keila.Cldr
