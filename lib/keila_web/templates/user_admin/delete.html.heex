@@ -13,7 +13,8 @@
     </p>
     <.form
       :let={f}
-      for={:user}
+      for={%{}}
+      as={:user}
       action={Routes.user_admin_path(@conn, :delete)}
       method="delete"
       class=""

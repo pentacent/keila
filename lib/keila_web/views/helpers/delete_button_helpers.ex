@@ -4,46 +4,54 @@ defmodule KeilaWeb.DeleteButtonHelpers do
   a `DELETE` action for a given struct on a given route.
   """
 
+  use Phoenix.Component
   use Phoenix.HTML
 
-  @spec delete_form_tag(struct(), String.t(), Keyword.t()) :: Phoenix.HTML.safe()
-  def delete_form_tag(struct, route, opts) do
-    as = Keyword.fetch!(opts, :as)
-    return = Keyword.get(opts, :return)
+  attr :struct, :any, required: true
+  attr :as, :atom, required: true
+  attr :route, :string, required: true
+  attr :return, :string
+  slot :inner_block
 
-    form_for(
-      as,
-      route,
-      [as: as, id: build_form_id(struct), method: "delete", class: "hidden"],
-      fn f ->
-        [
-          hidden_input(f, :require_confirmation, value: "true"),
-          hidden_input(f, :return, value: return),
-          hidden_input(f, :id, value: struct.id)
-        ]
-      end
-    )
+  def delete_form(assigns) do
+    assigns =
+      assigns
+      |> assign(:id, build_form_id(assigns.struct))
+
+    ~H"""
+    <.form :let={f} for={%{}} as={@as} id={@id} method="delete" action={@route} class="hidden">
+      {hidden_input(f, :require_confirmation, value: "true")}
+      <%= if assigns[:return] do %>
+        {hidden_input(f, :return, value: assigns.return)}
+      <% end %>
+      {hidden_input(f, :id, value: @struct.id)}
+
+      <%= if @inner_block != [] do %>
+        {render_slot(@inner_block)}
+      <% end %>
+    </.form>
+    """
   end
 
-  @spec delete_button_tag(struct(), Keyword.t(), term()) :: Phoenix.HTML.safe()
-  def delete_button_tag(struct, opts, content \\ [])
+  attr :struct, :any
+  attr :icon, :string
+  attr :class, :string
+  attr :"@click", :string
+  slot :inner_block
 
-  def delete_button_tag(struct, opts, do: content), do: delete_button_tag(struct, opts, content)
+  def delete_button(assigns) do
+    assigns =
+      assigns
+      |> assign(:form_id, if(assigns[:struct], do: build_form_id(assigns.struct)))
 
-  def delete_button_tag(struct, opts, content) do
-    icon = maybe_render_icon(opts[:icon])
-
-    opts =
-      opts
-      |> Keyword.put_new(:class, "button")
-      |> Keyword.put(:form, build_form_id(struct))
-      |> Keyword.delete(:icon)
-
-    content_tag(
-      :button,
-      [icon, content],
-      opts
-    )
+    ~H"""
+    <button type="submit" form={@form_id} class={@class} x-on:click={assigns[:"@click"]}>
+      {maybe_render_icon(assigns[:icon])}
+      <%= if @inner_block != [] do %>
+        {render_slot(@inner_block)}
+      <% end %>
+    </button>
+    """
   end
 
   defp build_form_id(struct) do

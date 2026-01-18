@@ -11,7 +11,8 @@
     </p>
     <.form
       :let={f}
-      for={:form}
+      for={%{}}
+      as={:form}
       action={Routes.form_path(@conn, :delete, @current_project.id)}
       method="delete"
     >

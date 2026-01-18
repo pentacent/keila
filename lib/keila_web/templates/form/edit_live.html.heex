@@ -13,12 +13,19 @@
       >
         {gettext("Cancel")}
       </a>
-      {delete_form_tag(@form, Routes.form_path(@socket, :delete, @current_project.id), as: :form)}
-      {delete_button_tag(
-        @form,
-        [class: "button button--text", "@click": "setUnsavedReminder(false)"],
-        gettext("Delete")
-      )}
+      <.delete_form
+        struct={@form}
+        as={:form}
+        route={~p"/projects/#{@current_project.id}/forms"}
+      />
+      <.delete_button
+        struct={@form}
+        class="button button--text"
+        @click="setUnsavedReminder(false)"
+      >
+        {gettext("Delete")}
+      </.delete_button>
+
       <button
         class="button button--cta button--large"
         action="submit"
@@ -151,9 +158,8 @@
     </div>
 
     <div class="flex flex-col gap-2 tab-content bg-gray-800" x-show="tab === 'fields'">
-      <%= for fs <- inputs_for(f, :field_settings) do %>
+      <.inputs_for :let={fs} field={f[:field_settings]} ) %>
         <div class="flex flex-col gap-2" x-data="{cast: $el.querySelector('input.cast').checked}">
-          {hidden_inputs_for(fs)}
           {hidden_input(fs, :field)}
           <% field = fs.source.changes[:field] || fs.data.field %>
           <% key = fs.source.changes[:key] || fs.data.key %>
@@ -305,7 +311,7 @@
             </div>
           <% end %>
         </div>
-      <% end %>
+      </.inputs_for>
       <div class="mt-4">
         <button type="button" class="button button--cta" phx-click="add_custom_field">
           {render_icon(:plus)} {gettext("Add custom field")}

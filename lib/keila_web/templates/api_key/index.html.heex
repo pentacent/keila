@@ -82,16 +82,19 @@
       </p>
       <br />
       <div class="flex flex-row gap-4 justify-end">
-        {delete_form_tag(
-          token,
-          Routes.api_key_path(@conn, :delete, @current_project.id, token.id),
-          as: :api_key
-        )}
-        {delete_button_tag(
-          token,
-          [class: "button button--text button--large", icon: :trash],
-          gettext("Revoke")
-        )}
+        <.delete_form
+          struct={token}
+          route={~p"/projects/#{@current_project.id}/api_keys/#{token.id}"}
+          as={:api_key}
+        >
+        </.delete_form>
+        <.delete_button
+          struct={token}
+          class="button button--text button--large"
+          icon={:trash}
+        >
+          {gettext("Revoke")}
+        </.delete_button>
       </div>
     </div>
   <% end %>

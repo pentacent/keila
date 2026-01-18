@@ -13,14 +13,18 @@
       >
         {gettext("Cancel")}
       </a>
-      {delete_form_tag(@template, Routes.template_path(@socket, :delete, @current_project.id),
-        as: :template
-      )}
-      {delete_button_tag(
-        @template,
-        [class: "button button--text", "@click": "setUnsavedReminder(false)"],
-        gettext("Delete")
-      )}
+      <.delete_form
+        struct={@template}
+        as={:template}
+        route={~p"/projects/#{@current_project.id}/templates"}
+      />
+      <.delete_button
+        struct={@template}
+        class="button button--text"
+        @click="setUnsavedReminder(false)"
+      >
+        {gettext("Delete")}
+      </.delete_button>
       <button
         class="button button--cta button--large"
         action="submit"

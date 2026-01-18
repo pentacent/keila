@@ -129,8 +129,7 @@ defmodule Keila.AccountsTest.Credits do
   @tag :mailings
   @tag :contacts
   test "A campaign that failed to deliver with insufficient credits is un-scheduled", %{
-    user: user,
-    account: account
+    user: user
   } do
     {:ok, project} = Keila.Projects.create_project(user.id, params(:project))
     :ok = Keila.Contacts.import_csv(project.id, "test/keila/contacts/import_rfc_4180.csv")

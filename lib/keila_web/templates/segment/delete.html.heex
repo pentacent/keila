@@ -11,7 +11,8 @@
     </p>
     <.form
       :let={f}
-      for={:segment}
+      for={%{}}
+      as={:segment}
       action={Routes.segment_path(@conn, :delete, @current_project.id)}
       method="delete"
     >
