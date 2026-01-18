@@ -45,21 +45,24 @@
           {render_sender_adapter_form(fc, adapter)}
 
           <div class="form-row">
-            {label(fc, :rate_limit_per_second, gettext("Rate limit per second"))}
+            <% id = "rate_limit_per_second_#{adapter}" %>
+            {label(fc, :rate_limit_per_second, gettext("Rate limit per second"), for: id)}
             <%= with_validation(fc, :rate_limit_per_second) do %>
-              {number_input(fc, :rate_limit_per_second, class: "text-black", min: 0)}
+              {number_input(fc, :rate_limit_per_second, id: id, class: "text-black", min: 0)}
             <% end %>
           </div>
           <div class="form-row">
-            {label(fc, :rate_limit_per_minute, gettext("Rate limit per minute"))}
+            <% id = "rate_limit_per_minute_#{adapter}" %>
+            {label(fc, :rate_limit_per_minute, gettext("Rate limit per minute"), for: id)}
             <%= with_validation(fc, :rate_limit_per_minute) do %>
-              {number_input(fc, :rate_limit_per_minute, class: "text-black", min: 0)}
+              {number_input(fc, :rate_limit_per_minute, id: id, class: "text-black", min: 0)}
             <% end %>
           </div>
           <div class="form-row">
-            {label(fc, :rate_limit_per_hour, gettext("Rate limit per hour"))}
+            <% id = "rate_limit_per_hour_#{adapter}" %>
+            {label(fc, :rate_limit_per_hour, gettext("Rate limit per hour"), for: id)}
             <%= with_validation(fc, :rate_limit_per_hour) do %>
-              {number_input(fc, :rate_limit_per_hour, class: "text-black", min: 0)}
+              {number_input(fc, :rate_limit_per_hour, id: id, class: "text-black", min: 0)}
             <% end %>
           </div>
         </div>
