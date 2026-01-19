@@ -57,6 +57,23 @@ defmodule Keila.AccountsTest.Credits do
   end
 
   @tag :accounts
+  test "expired credits are ignored", %{account: account} do
+    :ok = Accounts.add_credits(account.id, 10, yesterday())
+    assert Accounts.get_credits(account.id) == {0, 0}
+    assert :error == Accounts.consume_credits(account.id, 1)
+  end
+
+  @tag :accounts
+  test "not-yet-valid credits are ignored", %{account: account} do
+    :ok = Accounts.add_credits(account.id, 10, tomorrow(), tomorrow())
+    :ok = Accounts.add_credits(account.id, 10, tomorrow(), yesterday())
+
+    assert Accounts.get_credits(account.id) == {10, 10}
+    assert :ok == Accounts.consume_credits(account.id, 10)
+    assert :error == Accounts.consume_credits(account.id, 10)
+  end
+
+  @tag :accounts
   test "account with parent account has credits of parent account", %{
     account: account,
     child_account: child_account
@@ -143,10 +160,9 @@ defmodule Keila.AccountsTest.Credits do
     Application.put_env(:keila, Keila.Accounts, config)
   end
 
-  defp tomorrow,
-    do: DateTime.utc_now() |> DateTime.add(24 * 60 * 60, :second) |> DateTime.truncate(:second)
+  defp tomorrow, do: DateTime.utc_now(:second) |> DateTime.add(1, :day)
 
-  defp after_tomorrow,
-    do:
-      DateTime.utc_now() |> DateTime.add(2 * 24 * 60 * 60, :second) |> DateTime.truncate(:second)
+  defp after_tomorrow, do: DateTime.utc_now(:second) |> DateTime.add(2, :day)
+
+  defp yesterday,do: DateTime.utc_now(:second) |> DateTime.add(-1, :day)
 end
