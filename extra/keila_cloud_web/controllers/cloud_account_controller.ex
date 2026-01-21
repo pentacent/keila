@@ -14,5 +14,11 @@ Keila.if_cloud do
         }
       )
     end
+
+    def await_subscription(conn, _) do
+      live_render(conn, KeilaWeb.CloudAwaitSubscriptionLive,
+        session: %{"current_user" => conn.assigns.current_user, "locale" => Gettext.get_locale()}
+      )
+    end
   end
 end

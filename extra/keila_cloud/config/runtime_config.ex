@@ -17,18 +17,18 @@ Keila.if_cloud do
 
         config :keila, Oban, queues: [domain_verification: 10], plugins: updated_oban_plugins
 
-        config :keila, Keila.Billing,
+        config :keila, KeilaCloud.Billing,
           enabled: System.get_env("ENABLE_BILLING") in [1, "1", "true", "TRUE"]
 
         paddle_vendor = System.get_env("PADDLE_VENDOR")
 
         if paddle_vendor not in [nil, ""],
-          do: config(:keila, Keila.Billing, paddle_vendor: paddle_vendor)
+          do: config(:keila, KeilaCloud.Billing, paddle_vendor: paddle_vendor)
 
         paddle_environment = System.get_env("PADDLE_ENVIRONMENT")
 
         if paddle_environment not in [nil, ""],
-          do: config(:keila, Keila.Billing, paddle_environment: paddle_environment)
+          do: config(:keila, KeilaCloud.Billing, paddle_environment: paddle_environment)
 
         config(:keila, KeilaCloud.Mailings.SendWithKeila.Mx2,
           access_key: System.get_env("SWK_SES_ACCESS_KEY"),

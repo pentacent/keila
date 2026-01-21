@@ -164,5 +164,5 @@ defmodule Keila.AccountsTest.Credits do
 
   defp after_tomorrow, do: DateTime.utc_now(:second) |> DateTime.add(2, :day)
 
-  defp yesterday,do: DateTime.utc_now(:second) |> DateTime.add(-1, :day)
+  defp yesterday, do: DateTime.utc_now(:second) |> DateTime.add(-1, :day)
 end
