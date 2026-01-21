@@ -60,12 +60,6 @@ config :keila, Keila.Accounts,
   # Disable sending quotas by default
   credits_enabled: false
 
-config :keila, Keila.Billing,
-  # Disable subscriptions by default
-  enabled: false,
-  paddle_vendor: "2518",
-  paddle_environment: "sandbox"
-
 # Staging configuration for hCaptcha or FriendlyCaptcha
 config :keila, KeilaWeb.Captcha,
   secret_key: "0x0000000000000000000000000000000000000000",

@@ -178,13 +178,10 @@ defmodule Keila.Accounts do
   def get_available_credits(account_id) do
     if credits_enabled?() do
       credits_for_account(account_id)
-      |> where([c], c.expires_at >= fragment("NOW()"))
       |> select([c], sum(c.amount))
       |> Repo.one()
-      |> maybe_nil_to_zero()
-    else
-      0
     end
+    |> maybe_nil_to_zero()
   end
 
   defp credits_for_account(account_id) do
@@ -193,7 +190,9 @@ defmodule Keila.Accounts do
         c.account_id == ^account_id or
           c.account_id in subquery(
             from a in Account, where: a.id == ^account_id, select: a.parent_id
-          )
+          ),
+      where: c.expires_at >= fragment("NOW()"),
+      where: is_nil(c.valid_from) or c.valid_from <= fragment("NOW()")
     )
   end
 
@@ -212,14 +211,11 @@ defmodule Keila.Accounts do
   def get_total_credits(account_id) do
     if credits_enabled?() do
       credits_for_account(account_id)
-      |> where([c], c.expires_at >= fragment("NOW()"))
       |> where([c], c.amount > 0)
       |> select([c], sum(c.amount))
       |> Repo.one()
-      |> maybe_nil_to_zero()
-    else
-      0
     end
+    |> maybe_nil_to_zero()
   end
 
   @doc """
@@ -245,12 +241,17 @@ defmodule Keila.Accounts do
 
   If credits are disabled in the application configuration, always returns `:ok`.
   """
-  @spec add_credits(Account.id(), integer(), DateTime.t()) :: :ok | :error
-  def add_credits(account_id, amount, expires_at) do
+  @spec add_credits(Account.id(), integer(), DateTime.t(), DateTime.t() | nil) :: :ok | :error
+  def add_credits(account_id, amount, expires_at, valid_from \\ nil) do
     if credits_enabled?() do
       expires_at = DateTime.truncate(expires_at, :second)
 
-      %CreditTransaction{account_id: account_id, amount: amount, expires_at: expires_at}
+      %CreditTransaction{
+        account_id: account_id,
+        amount: amount,
+        expires_at: expires_at,
+        valid_from: valid_from
+      }
       |> Repo.insert()
       |> case do
         {:ok, _} -> :ok
@@ -273,10 +274,7 @@ defmodule Keila.Accounts do
   @spec consume_credits(Account.id(), integer()) :: :ok | :error
   def consume_credits(account_id, amount) do
     if credits_enabled?() do
-      now = now()
-
       credits_for_account(account_id)
-      |> where([c], c.expires_at >= ^now)
       |> order_by([c], c.expires_at)
       |> group_by([c], [c.account_id, c.expires_at])
       |> select([c], {c.account_id, sum(c.amount), c.expires_at})

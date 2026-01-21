@@ -234,7 +234,7 @@ defmodule KeilaWeb.CampaignEditLive do
           :ok
 
         _other ->
-          if is_nil(Keila.Billing.get_account_subscription(account.id)) do
+          if is_nil(KeilaCloud.Billing.get_account_subscription(account.id)) do
             {:error, :subscription_required}
           else
             {:error, gettext("Insufficient credits.")}
