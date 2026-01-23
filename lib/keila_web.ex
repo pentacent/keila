@@ -99,7 +99,9 @@ defmodule KeilaWeb do
   defp html_helpers do
     quote do
       # Use all HTML functionality (forms, tags, etc)
-      use Phoenix.HTML
+      import Phoenix.HTML
+      import Phoenix.HTML.Form
+      use PhoenixHTMLHelpers
 
       # Import LiveView and Component helpers (live_render, live_component, etc)
       import Phoenix.Component

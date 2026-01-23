@@ -5,7 +5,7 @@ defmodule KeilaWeb.DeleteButtonHelpers do
   """
 
   use Phoenix.Component
-  use Phoenix.HTML
+  use PhoenixHTMLHelpers
 
   attr :struct, :any, required: true
   attr :as, :atom, required: true

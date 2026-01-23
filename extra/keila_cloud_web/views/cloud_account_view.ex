@@ -6,7 +6,7 @@ Keila.if_cloud do
       root: "extra/keila_cloud_web/templates",
       namespace: KeilaWeb
 
-    use Phoenix.HTML
+    use PhoenixHTMLHelpers
     use Phoenix.LiveView
     use KeilaWeb.Gettext
     import Phoenix.Component

@@ -1,6 +1,6 @@
 defmodule KeilaWeb.ApiDocsController do
   use KeilaWeb, :controller
-  use Phoenix.HTML
+  use PhoenixHTMLHelpers
   import Phoenix.Component
 
   def show(conn, _) do

@@ -6,7 +6,7 @@ defmodule KeilaWeb.Captcha do
   By default, the staging environment of hCaptcha is used.
   """
 
-  use Phoenix.HTML
+  use PhoenixHTMLHelpers
 
   @default_urls [
     hcaptcha: [

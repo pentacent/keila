@@ -1,6 +1,6 @@
 defmodule KeilaWeb.ContactView do
   use KeilaWeb, :view
-  use Phoenix.HTML
+  use PhoenixHTMLHelpers
 
   def table_sort_button(assigns) do
     assigns = assign(assigns, :active?, assigns[:current_key] == assigns[:key])

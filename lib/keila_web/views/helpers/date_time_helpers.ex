@@ -3,7 +3,7 @@ defmodule KeilaWeb.DateTimeHelpers do
   Helper module for handling datetimes in views.
   """
 
-  use Phoenix.HTML
+  use PhoenixHTMLHelpers
 
   @doc """
   Render `span` tag with formatted UTC date.

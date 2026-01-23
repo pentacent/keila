@@ -1,6 +1,6 @@
 defmodule KeilaWeb.LayoutView do
   use KeilaWeb, :view
-  use Phoenix.HTML
+  use PhoenixHTMLHelpers
   require Keila
   import KeilaWeb.IconHelper
 

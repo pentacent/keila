@@ -1,5 +1,5 @@
 defmodule KeilaWeb.PaginationHelpers do
-  use Phoenix.HTML
+  use PhoenixHTMLHelpers
   use Phoenix.Component
   import KeilaWeb.IconHelper
 
