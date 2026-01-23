@@ -3,8 +3,8 @@ require Keila
 Keila.if_cloud do
   defmodule KeilaCloud.Components.SubscriptionStatus do
     use Phoenix.Component
+    use KeilaWeb.Gettext
     import Phoenix.HTML
-    import KeilaWeb.Gettext
     import KeilaWeb.IconHelper
 
     alias KeilaCloud.Billing
@@ -87,11 +87,11 @@ Keila.if_cloud do
               <input type="checkbox" class="hidden" x-model="annual" />
               <div
                 class="relative h-6 w-11 rounded-full transition-colors"
-                :class="{ 'bg-gray-300': !annual, 'bg-emerald-600': annual }"
+                x-bind:class="{ 'bg-gray-300': !annual, 'bg-emerald-600': annual }"
               >
                 <span
                   class="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white transition-transform"
-                  :class="{ 'translate-x-full': annual }"
+                  x-bind:class="{ 'translate-x-full': annual }"
                 >
                 </span>
               </div>
