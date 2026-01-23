@@ -14,6 +14,7 @@ config :keila, KeilaWeb.ContactsCsvExport, chunk_size: 100
 # Configures the endpoint
 config :keila, KeilaWeb.Endpoint,
   url: [host: "localhost"],
+  adapter: Bandit.PhoenixAdapter,
   secret_key_base: "ipC9dsQLUBKuLmcrKzqB3m1M/Sw/53FcA1xQd1yUKdTSqjlBqL729evTWqqwd6zT",
   render_errors: [
     formats: [html: KeilaWeb.ErrorView, json: KeilaWeb.ErrorView],
