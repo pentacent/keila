@@ -7,6 +7,7 @@ Keila.if_cloud do
       namespace: KeilaWeb
 
     use PhoenixHTMLHelpers
+    import Phoenix.HTML.Form, only: [input_id: 3]
     use KeilaWeb.Gettext
     import Phoenix.Component
     import KeilaWeb.ErrorHelpers
