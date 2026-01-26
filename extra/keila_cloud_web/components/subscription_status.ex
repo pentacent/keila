@@ -6,6 +6,7 @@ Keila.if_cloud do
     use KeilaWeb.Gettext
     import Phoenix.HTML
     import KeilaWeb.IconHelper
+    import KeilaWeb.DateTimeHelpers, only: [local_date_tag: 1]
 
     alias KeilaCloud.Billing
     alias KeilaWeb.Router.Helpers, as: Routes
@@ -17,11 +18,20 @@ Keila.if_cloud do
       subscription = Billing.get_account_subscription(assigns.account.id)
       plan = if subscription, do: Billing.get_plan(subscription.paddle_plan_id)
 
+      subscription_expiry_date =
+        with %{next_billed_on: %Date{} = date} <- subscription,
+             :gt <- Date.compare(date, Date.utc_today()) do
+          date
+        else
+          _ -> nil
+        end
+
       assigns =
         assigns
         |> assign(:subscription, subscription)
         |> assign(:plans, Billing.get_plans())
         |> assign(:plan, plan)
+        |> assign(:subscription_expiry_date, subscription_expiry_date)
 
       ~H"""
       <div class="rounded shadow p-8 mt-8 max-w-5xl mx-auto flex flex-col gap-4 bg-gray-900 text-gray-50">
@@ -63,6 +73,12 @@ Keila.if_cloud do
                 </span>
                 {gettext("Your subscription has been cancelled.")}
               </p>
+              <%= if @subscription_expiry_date do %>
+                <p class="text-gray-300">
+                  {gettext("You can continue using your subscription until:")}
+                  {local_date_tag(@subscription_expiry_date)}.
+                </p>
+              <% end %>
               <form
                 method="post"
                 action={Routes.cloud_account_path(KeilaWeb.Endpoint, :delete_subscription)}
