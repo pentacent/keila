@@ -28,26 +28,26 @@
         <h2 class="text-3xl">Ready to send your campaign?</h2>
         <br />
         <p>
-          <%= raw(
+          {raw(
             gettext(
               "Are you ready to send your campaign <em>%{subject}</em> to %{count} contacts?",
               subject: Ecto.Changeset.get_field(@changeset, :subject),
               count: @recipient_count
             )
-          ) %>
+          )}
         </p>
         <%= if get_field(@changeset, :scheduled_for) do %>
           <br />
           <p>
-            <%= gettext(
+            {gettext(
               "This campaign has already been scheduled. You can manually send it up to five minutes before the scheduled sending time."
-            ) %>
+            )}
           </p>
         <% end %>
         <br />
         <div class="flex justify-end gap-8">
           <button class="button button--text button--large" @click.prevent="$dispatch('x-cancel')">
-            <%= gettext("Cancel") %>
+            {gettext("Cancel")}
           </button>
           <button
             class="button button--cta button--large"
@@ -55,8 +55,8 @@
             @click="setUnsavedReminder(false); $dispatch('x-confirm')"
             phx-click="send"
           >
-            <%= render_icon(:paper_airplane) %>
-            <%= gettext("Send") %>
+            {render_icon(:paper_airplane)}
+            {gettext("Send")}
           </button>
         </div>
       </div>
@@ -67,15 +67,15 @@
         aria-modal="true"
         aria-labelledby="modal-headline"
       >
-        <h2 class="text-3xl"><%= gettext("No Contacts, No Campaign.") %></h2>
+        <h2 class="text-3xl">{gettext("No Contacts, No Campaign.")}</h2>
         <br />
         <p>
-          <%= gettext("It looks like you don’t yet have any contacts to receive this campaign.") %>
+          {gettext("It looks like you don’t yet have any contacts to receive this campaign.")}
         </p>
         <br />
         <div class="flex justify-end gap-8">
           <button class="button button--cta button--large" @click.prevent="$dispatch('x-cancel')">
-            <%= gettext("Ok") %>
+            {gettext("Ok")}
           </button>
         </div>
       </div>
@@ -97,26 +97,26 @@
         aria-labelledby="modal-headline"
         phx-submit="schedule"
       >
-        <h2 class="text-3xl"><%= gettext("Ready to schedule your campaign?") %></h2>
+        <h2 class="text-3xl">{gettext("Ready to schedule your campaign?")}</h2>
         <br />
         <p>
           <%= if get_field(@changeset, :scheduled_for) do %>
-            <%= gettext(
+            {gettext(
               "This campaign has already been scheduled. You can reschedule or cancel it up to five minutes before the scheduled sending time."
-            ) %>
+            )}
           <% else %>
-            <%= raw(
+            {raw(
               gettext(
                 "Are you ready to schedule sending your campaign <em>%{subject}</em> to %{count} contacts?",
                 subject: Ecto.Changeset.get_field(@changeset, :subject),
                 count: @recipient_count
               )
-            ) %>
+            )}
           <% end %>
         </p>
         <div class="grid gap-4 mt-4">
           <div class="flex flex-col">
-            <label class="font-bold"><%= gettext("Date") %></label>
+            <label class="font-bold">{gettext("Date")}</label>
             <input
               type="date"
               name="schedule[date]"
@@ -127,7 +127,7 @@
             />
           </div>
           <div class="flex flex-col">
-            <label class="font-bold"><%= gettext("Time") %></label>
+            <label class="font-bold">{gettext("Time")}</label>
             <input
               type="time"
               id="schedule[time]"
@@ -138,13 +138,13 @@
             />
           </div>
           <div class="flex flex-col">
-            <label class="font-bold"><%= gettext("Timezone") %></label>
+            <label class="font-bold">{gettext("Timezone")}</label>
             <input
               type="text"
               name="schedule[timezone]"
               readonly
               value="Etc/UTC"
-              :value="Intl.DateTimeFormat().resolvedOptions().timeZone"
+              x-bind:value="Intl.DateTimeFormat().resolvedOptions().timeZone"
               class="bg-transparent text-white"
             />
           </div>
@@ -153,7 +153,7 @@
         <br />
         <div class="flex justify-end gap-4">
           <button class="button button--text button--large" @click.prevent="$dispatch('x-cancel')">
-            <%= gettext("Cancel") %>
+            {gettext("Cancel")}
           </button>
           <%= if get_field(@changeset, :scheduled_for) do %>
             <button
@@ -163,8 +163,8 @@
               @click="setUnsavedReminder(false); $dispatch('x-confirm')"
               phx-click="unschedule"
             >
-              <%= render_icon(:x) %>
-              <%= gettext("Unschedule") %>
+              {render_icon(:x)}
+              {gettext("Unschedule")}
             </button>
           <% end %>
           <button
@@ -174,8 +174,8 @@
             value="true"
             @click="setUnsavedReminder(false); $dispatch('x-confirm')"
           >
-            <%= render_icon(:clock) %>
-            <%= gettext("Schedule") %>
+            {render_icon(:clock)}
+            {gettext("Schedule")}
           </button>
         </div>
       </form>
@@ -186,15 +186,15 @@
         aria-modal="true"
         aria-labelledby="modal-headline"
       >
-        <h2 class="text-3xl"><%= gettext("No Contacts, No Campaign.") %></h2>
+        <h2 class="text-3xl">{gettext("No Contacts, No Campaign.")}</h2>
         <br />
         <p>
-          <%= gettext("It looks like you don’t yet have any contacts to receive this campaign.") %>
+          {gettext("It looks like you don’t yet have any contacts to receive this campaign.")}
         </p>
         <br />
         <div class="flex justify-end gap-8">
           <button class="button button--cta button--large" @click.prevent="activeDialog = false">
-            <%= gettext("Ok") %>
+            {gettext("Ok")}
           </button>
         </div>
       </div>
@@ -215,14 +215,14 @@
       aria-labelledby="modal-headline"
       phx-submit="send-preview"
     >
-      <h2 class="text-3xl"><%= raw(gettext("Campaign Preview")) %></h2>
+      <h2 class="text-3xl">{raw(gettext("Campaign Preview"))}</h2>
       <br />
       <%= cond do %>
         <% @onboarding_required -> %>
           <p>
-            <%= gettext(
+            {gettext(
               "To prevent abuse by spammers, sending emails is only possible once your onboarding has been completed."
-            ) %>
+            )}
           </p>
           <p class="mt-4"></p>
           <br />
@@ -232,7 +232,7 @@
               phx-click="dismiss-preview-error"
               @click.prevent="$dispatch('x-cancel')"
             >
-              <%= gettext("Cancel") %>
+              {gettext("Cancel")}
             </button>
             <%= Keila.if_cloud do %>
               <a
@@ -242,15 +242,15 @@
                 @click="$dispatch('x-cancel')"
                 target="_blank"
               >
-                <%= gettext("Review account information") %>
+                {gettext("Review account information")}
               </a>
             <% end %>
           </div>
         <% @subscription_required -> %>
           <p>
-            <%= gettext(
+            {gettext(
               "To prevent abuse by spammers, sending emails is only possible if you have an active subscription."
-            ) %>
+            )}
           </p>
           <p class="mt-4"></p>
           <br />
@@ -260,7 +260,7 @@
               phx-click="dismiss-preview-error"
               @click.prevent="$dispatch('x-cancel')"
             >
-              <%= gettext("Cancel") %>
+              {gettext("Cancel")}
             </button>
             <a
               href={Routes.account_path(@socket, :edit)}
@@ -269,30 +269,30 @@
               @click="$dispatch('x-cancel')"
               target="_blank"
             >
-              <%= gettext("Start your subscription now") %>
+              {gettext("Start your subscription now")}
             </a>
           </div>
         <% not is_nil(@send_preview_error) -> %>
-          <p><%= gettext("There was an error sending the preview campaign.") %></p>
-          <p class="mt-4 font-bold"><%= @send_preview_error %></p>
+          <p>{gettext("There was an error sending the preview campaign.")}</p>
+          <p class="mt-4 font-bold">{@send_preview_error}</p>
           <div class="flex justify-end gap-4">
             <button
               class="button button--text button--large"
               phx-click="dismiss-preview-error"
               @click.prevent="$dispatch('x-cancel')"
             >
-              <%= gettext("Cancel") %>
+              {gettext("Cancel")}
             </button>
           </div>
         <% true -> %>
           <p>
-            <%= gettext(
+            {gettext(
               "Enter up to five email addresses (separated with commas). If they exist in your contacts list, contact data will be used."
-            ) %>
+            )}
           </p>
           <br />
           <div class="form-row">
-            <label for="preview-emails"><%= gettext("Recipients") %></label>
+            <label for="preview-emails">{gettext("Recipients")}</label>
             <input
               id="preview-emails"
               type="text"
@@ -308,11 +308,11 @@
               class="button button--text button--large"
               @click.prevent="$dispatch('x-cancel')"
             >
-              <%= gettext("Cancel") %>
+              {gettext("Cancel")}
             </button>
 
             <button class="button button--cta button--large" type="submit">
-              <%= gettext("Send preview") %>
+              {gettext("Send preview")}
             </button>
           </div>
       <% end %>

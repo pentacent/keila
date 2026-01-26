@@ -6,9 +6,10 @@ Keila.if_cloud do
       root: "extra/keila_cloud_web/templates",
       namespace: KeilaWeb
 
-    use Phoenix.HTML
-    import Phoenix.LiveView.Helpers
-    import KeilaWeb.Gettext
+    use PhoenixHTMLHelpers
+    use Phoenix.LiveView
+    use KeilaWeb.Gettext
+    import Phoenix.Component
     import KeilaWeb.ErrorHelpers
     import Ecto.Changeset
     alias KeilaCloud.Countries

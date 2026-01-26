@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Language: bg\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 msgid "can't be blank"
 msgstr "не може да бъде празно"

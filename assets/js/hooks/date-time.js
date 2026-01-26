@@ -58,3 +58,27 @@ export const SetLocalDateTimeContent = {
     putLocalDateTime(this.el)
   }
 }
+
+/**
+ * This hook replaces the inner text of an element with a formatted local date (date only, no time).
+ * Specify a date string (YYYY-MM-DD) as data-value.
+ */
+const putLocalDate = el => {
+  const rawDate = el.dataset.value
+  if (!rawDate) return
+
+  const date = new Date(rawDate + "T00:00:00Z")
+  el.innerText = date.toLocaleDateString(undefined, {
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  })
+}
+export const SetLocalDateContent = {
+  mounted() {
+    putLocalDate(this.el)
+  },
+  updated() {
+    putLocalDate(this.el)
+  }
+}

@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Language: en\n"
-"Plural-Forms: nplurals=2\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: extra/keila_cloud_web/templates/cloud_account/onboarding.html.heex:10
 #, elixir-autogen, elixir-format

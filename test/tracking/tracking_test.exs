@@ -14,7 +14,8 @@ defmodule Keila.TrackingTest do
   end
 
   test "Log contact events" do
-    project = insert!(:project)
+    group = insert!(:group)
+    project = insert!(:project, group: group)
     %{id: contact_id} = insert!(:contact, project_id: project.id)
     assert {:ok, _} = Tracking.log_event("open", contact_id, %{})
     assert {:ok, _} = Tracking.log_event("click", contact_id, %{})

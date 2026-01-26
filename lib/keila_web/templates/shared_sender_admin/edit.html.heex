@@ -4,9 +4,9 @@
   <div class="flex-grow gap-4 flex flex-col-reverse sm:flex-row sm:items-center max-w-md">
     <h1 class="text-2xl md:text-3xl text-gray-100">
       <%= if assigns[:shared_sender] do %>
-        <%= @shared_sender.name %>
+        {@shared_sender.name}
       <% else %>
-        <%= dgettext("admin", "New Shared Sender") %>
+        {dgettext("admin", "New Shared Sender")}
       <% end %>
     </h1>
     <div class="flex-grow flex flex-row justify-end gap-4 sm:flex-row" x-data>
@@ -15,7 +15,7 @@
         class="button button--large button--text"
         @click="setUnsavedReminder(false)"
       >
-        <%= gettext("Cancel") %>
+        {gettext("Cancel")}
       </a>
       <%= if assigns[:shared_sender] do %>
         <a
@@ -23,7 +23,7 @@
           class="button button--large button--text"
           @click="setUnsavedReminder(false)"
         >
-          <%= gettext("Delete") %>
+          {gettext("Delete")}
         </a>
       <% end %>
       <button
@@ -31,7 +31,7 @@
         class="button button--cta button--large"
         @click="setUnsavedReminder(false)"
       >
-        <%= gettext("Save") %>
+        {gettext("Save")}
       </button>
     </div>
   </div>
@@ -39,7 +39,7 @@
 
 <div class="container">
   <.form
-    let={f}
+    :let={f}
     for={@changeset}
     id="form"
     action={form_path(@changeset)}
@@ -48,16 +48,16 @@
     @change="setUnsavedReminder(true)"
   >
     <div class="flex flex-col">
-      <%= label(f, :name, dgettext("admin", "Shared Sender Name")) %>
+      {label(f, :name, dgettext("admin", "Shared Sender Name"))}
       <%= with_validation(f, :name) do %>
-        <%= text_input(f, :name,
+        {text_input(f, :name,
           placeholder: dgettext("admin", "My Shared Sender"),
           class: "text-black"
-        ) %>
+        )}
       <% end %>
     </div>
 
-    <%= render(KeilaWeb.SenderView, "_config.html", form: f, sender_adapters: @sender_adapters) %>
+    {render(KeilaWeb.SenderView, "_config.html", form: f, sender_adapters: @sender_adapters)}
 
     <div class="flex gap-4 mt-4"></div>
   </.form>

@@ -1,15 +1,15 @@
 <div class="container mt-8">
   <div class="rounded shadow p-8 mt-8 max-w-xl mx-auto flex flex-col gap-4 bg-gray-900 text-gray-50">
     <h1 class="text-5xl font-bold">
-      <%= dgettext("auth", "Welcome to Keila!") %>
+      {dgettext("auth", "Welcome to Keila!")}
     </h1>
     <p class="text-lg text-gray-200">
-      <%= dgettext("auth", "Thanks for verifying your email.") %>
+      {dgettext("auth", "Thanks for verifying your email.")}
     </p>
     <p class="flex justify-start mt-8">
       <a class="button button--cta button--large" href={Routes.project_path(@conn, :index)}>
-        <%= render_icon(:paper_airplane) %>
-        <%= dgettext("auth", "Get started!") %>
+        {render_icon(:paper_airplane)}
+        {dgettext("auth", "Get started!")}
       </a>
     </p>
   </div>
