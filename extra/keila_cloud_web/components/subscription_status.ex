@@ -61,10 +61,18 @@ Keila.if_cloud do
                 <span class="flex h-2 w-8 items-center text-red-500">
                   {render_icon(:information_circle)}
                 </span>
-                {gettext(
-                  "Your subscription has been cancelled. Please contact us if you want to start a new subscription."
-                )}
+                {gettext("Your subscription has been cancelled.")}
               </p>
+              <form
+                method="post"
+                action={Routes.cloud_account_path(KeilaWeb.Endpoint, :delete_subscription)}
+              >
+                <input type="hidden" name="_method" value="delete" />
+                <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
+                <button type="submit" class="button button--cta">
+                  {gettext("Start new subscription")}
+                </button>
+              </form>
           <% end %>
 
           <%= if @subscription.status != :deleted do %>
@@ -95,7 +103,7 @@ Keila.if_cloud do
                 >
                 </span>
               </div>
-              <span>Subscribe for a year and get one month for free!</span>
+              <span>{dgettext("cloud", "Subscribe for a year and get one month for free!")}</span>
             </label>
 
             <div x-show="annual" class="grid grid-cols-2 md:grid-cols-3 gap-8">

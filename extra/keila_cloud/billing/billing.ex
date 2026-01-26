@@ -150,6 +150,27 @@ Keila.if_cloud do
     end
 
     @doc """
+    Deletes a `Subscription` from the database. This is only allowed if the
+    subscription status is `:deleted`. If the subscription is still active,
+    returns `{:error, :subscription_active}`.
+    """
+    @spec delete_account_subscription(Account.id()) ::
+            :ok | {:error, :subscription_active}
+    def delete_account_subscription(account_id) do
+      case get_account_subscription(account_id) do
+        %Subscription{status: :deleted} = subscription ->
+          Repo.delete(subscription)
+          :ok
+
+        %Subscription{} ->
+          {:error, :subscription_active}
+
+        nil ->
+          :ok
+      end
+    end
+
+    @doc """
     Returns all `Plan`s.
     """
     @spec get_plans() :: [Plan.t()]
