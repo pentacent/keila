@@ -26,15 +26,15 @@ defmodule Keila.Mailings.SendDoubleOptInMailWorker do
     end
   end
 
-  defp ensure_feature_available(project_id) do
-    if Keila.Billing.feature_available?(project_id, :double_opt_in) do
-      :ok
-    else
-      {:cancel, "Double opt-in not enabled for account of project #{project_id}"}
-    end
-  end
-
   Keila.if_cloud do
+    defp ensure_feature_available(project_id) do
+      if KeilaCloud.Billing.feature_available?(project_id, :double_opt_in) do
+        :ok
+      else
+        {:cancel, "Double opt-in not enabled for account of project #{project_id}"}
+      end
+    end
+
     defp ensure_account_active(project_id) do
       case Keila.Accounts.get_project_account(project_id) do
         %{status: :active} -> :ok
@@ -42,6 +42,7 @@ defmodule Keila.Mailings.SendDoubleOptInMailWorker do
       end
     end
   else
+    defp ensure_feature_available(_project_id), do: :ok
     defp ensure_account_active(_project_id), do: :ok
   end
 

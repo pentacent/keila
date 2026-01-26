@@ -1,0 +1,90 @@
+## "msgid"s in this file come from POT (.pot) files.
+##
+## Do not add, change, or remove "msgid"s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
+##
+## Use "mix gettext.extract --merge" or "mix gettext.merge"
+## to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: bg\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "can't be blank"
+msgstr "не може да бъде празно"
+
+msgid "has already been taken"
+msgstr "вече е заето"
+
+msgid "is invalid"
+msgstr "невалидно"
+
+msgid "must be accepted"
+msgstr "трябва да бъде прието"
+
+msgid "has invalid format"
+msgstr "невалиден формат"
+
+msgid "has an invalid entry"
+msgstr "невалидно съдържание"
+
+msgid "is reserved"
+msgstr "запазено"
+
+msgid "does not match confirmation"
+msgstr "не съвпада с потвърждението"
+
+msgid "is still associated with this entry"
+msgstr "все още е свързано с това съдържание"
+
+msgid "are still associated with this entry"
+msgstr "все още са свързани с това съдържание"
+
+msgid "should be %{count} character(s)"
+msgid_plural "should be %{count} character(s)"
+msgstr[0] "трябва да бъде %{count} символ"
+msgstr[1] "трябва да бъдат %{count} символа"
+
+msgid "should have %{count} item(s)"
+msgid_plural "should have %{count} item(s)"
+msgstr[0] "трябва да има %{count} елемент"
+msgstr[1] "трябва да имат %{count} елемента"
+
+msgid "should be at least %{count} character(s)"
+msgid_plural "should be at least %{count} character(s)"
+msgstr[0] "трябва да бъде поне %{count} символ"
+msgstr[1] "трябва да бъдат поне %{count} символа"
+
+msgid "should have at least %{count} item(s)"
+msgid_plural "should have at least %{count} item(s)"
+msgstr[0] "трябва да има поне %{count} елемент"
+msgstr[1] "трябва да имат поне %{count} елемента"
+
+msgid "should be at most %{count} character(s)"
+msgid_plural "should be at most %{count} character(s)"
+msgstr[0] "трябва да бъде най-много %{count} символ"
+msgstr[1] "трябва да бъдат най-много %{count} символа"
+
+msgid "should have at most %{count} item(s)"
+msgid_plural "should have at most %{count} item(s)"
+msgstr[0] "трябва да има най-много %{count} елемент"
+msgstr[1] "трябва да имат най-много %{count} елемента"
+
+msgid "must be less than %{number}"
+msgstr "трябва да бъде по-малко от %{number}"
+
+msgid "must be greater than %{number}"
+msgstr "трябва да бъде по-голямо от %{number}"
+
+msgid "must be less than or equal to %{number}"
+msgstr "трябва да бъде по-малко или равно на %{number}"
+
+msgid "must be greater than or equal to %{number}"
+msgstr "трябва да бъде по-голямо или равно на %{number}"
+
+msgid "must be equal to %{number}"
+msgstr "трябва да бъде равно на %{number}"
+
+msgid "must be at least %{offset} seconds in the future"
+msgstr "трябва да бъде поне %{offset} секунди в бъдещето"

@@ -3,7 +3,7 @@
 <div class="container flex py-8 sm:py-11 sm:mb-4">
   <div class="flex-grow gap-4 flex flex-col-reverse sm:flex-row sm:items-center">
     <h1 class="text-2xl md:text-3xl text-gray-100">
-      <%= gettext("Edit Segment") %>
+      {gettext("Edit Segment")}
     </h1>
     <div class="flex-grow flex flex-row justify-end gap-4 sm:flex-row" x-data>
       <a
@@ -11,25 +11,27 @@
         href={Routes.segment_path(@socket, :index, @current_project.id)}
         @click="setUnsavedReminder(false)"
       >
-        <%= gettext("Cancel") %>
+        {gettext("Cancel")}
       </a>
-      <%= delete_form_tag(
-        @segment,
-        Routes.segment_path(KeilaWeb.Endpoint, :delete, @current_project.id),
-        as: :segment
-      ) %>
-      <%= delete_button_tag(
-        @segment,
-        [class: "button button--text", "@click": "setUnsavedReminder(false)"],
-        gettext("Delete")
-      ) %>
+      <.delete_form
+        struct={@segment}
+        as={:segment}
+        route={~p"/projects/#{@current_project.id}/segments"}
+      />
+      <.delete_button
+        struct={@segment}
+        class="button button--text"
+        @click="setUnsavedReminder(false)"
+      >
+        {gettext("Delete")}
+      </.delete_button>
       <button
         class="button button--cta button--large"
         form="form"
         value="save"
         @click="setUnsavedReminder(false)"
       >
-        <%= gettext("Save") %>
+        {gettext("Save")}
       </button>
     </div>
   </div>
@@ -37,7 +39,7 @@
 
 <div class="container flex gap-4 tabs" x-data="{tab: 'settings', showClipboardMessage: false}">
   <.form
-    let={f}
+    :let={f}
     for={@changeset}
     id="form"
     phx-change="change"
@@ -46,15 +48,15 @@
     x-on:change="setUnsavedReminder(true)"
   >
     <div class="form-row max-w-xl">
-      <%= label(f, :name, gettext("Name")) %>
+      {label(f, :name, gettext("Name"))}
       <%= with_validation(f, :name) do %>
-        <%= text_input(f, :name, class: "text-black") %>
+        {text_input(f, :name, class: "text-black")}
       <% end %>
     </div>
     <br />
     <%= if @use_editor do %>
       <div class="form-row">
-        <%= label(f, :filter, gettext("Filter")) %>
+        {label(f, :filter, gettext("Filter"))}
         <div class="flex flex-col gap-4 bg-gradient-to-r from-gray-900 to-emerald-900 p-4">
           <%= for {group_index, fields} <- @form_data do %>
             <div class="and-group rounded ring-1 ring-gray-600 p-4 flex flex-col gap-4">
@@ -65,7 +67,7 @@
                   <select name={"#{index}[field]"}>
                     <%= for {field, %{label: label}} <- @fields do %>
                       <option value={field} selected={field == selected_field["field"]}>
-                        <%= label %>
+                        {label}
                       </option>
                     <% end %>
                   </select>
@@ -78,12 +80,12 @@
                   <select name={"#{index}[widget]"}>
                     <%= for %{name: widget, label: label} <- widgets do %>
                       <option value={widget} selected={widget == selected_field["widget"]}>
-                        <%= label %>
+                        {label}
                       </option>
                     <% end %>
                   </select>
 
-                  <%= render_widget(index, Map.put(selected_field, "campaigns", @campaigns)) %>
+                  {render_widget(index, Map.put(selected_field, "campaigns", @campaigns))}
 
                   <input name={"#{index}[type]"} value={selected_field["type"]} type="hidden" />
 
@@ -94,7 +96,7 @@
                     phx-value-group={group_index}
                     phx-value-field={field_index}
                   >
-                    <%= render_icon(:x_circle) %>
+                    {render_icon(:x_circle)}
                   </a>
                 </div>
               <% end %>
@@ -106,14 +108,14 @@
                   phx-click="add-field"
                   phx-value-group={group_index}
                 >
-                  <%= render_icon(:plus) %> <%= gettext("Add AND condition") %>
+                  {render_icon(:plus)} {gettext("Add AND condition")}
                 </a>
               </div>
             </div>
           <% end %>
           <div>
             <a href="#" class="button button--muted button--small mt-2" o phx-click="add-group">
-              <%= render_icon(:plus) %> <%= gettext("Add OR condition") %>
+              {render_icon(:plus)} {gettext("Add OR condition")}
             </a>
           </div>
         </div>
@@ -123,7 +125,7 @@
     <div class="form-row">
       <div class="flex flex-row gap-2 items-center ">
         <h2>
-          <%= gettext("Query") %>
+          {gettext("Query")}
         </h2>
       </div>
       <div class="form-row">
@@ -131,17 +133,17 @@
           <%= if @use_editor || @can_use_editor do %>
             <a class="button button--small button--text" phx-click="toggle-editor">
               <%= if @use_editor do %>
-                <%= render_icon(:pencil_alt) %>
-                <%= gettext("edit") %>
+                {render_icon(:pencil_alt)}
+                {gettext("edit")}
               <% else %>
-                <%= render_icon(:switch_vertical) %>
-                <%= gettext("use filter editor") %>
+                {render_icon(:switch_vertical)}
+                {gettext("use filter editor")}
               <% end %>
             </a>
           <% end %>
           <%= if !@can_use_editor do %>
             <p class="text-sm">
-              <%= gettext("This query can only be edited manually.") %>
+              {gettext("This query can only be edited manually.")}
             </p>
           <% end %>
         </div>
@@ -156,7 +158,7 @@
 
       <%= if !@valid_filter do %>
         <p class="bg-red-800 p-4 max-w-xl">
-          <%= gettext("Invalid filter") %>
+          {gettext("Invalid filter")}
         </p>
       <% end %>
     </div>
@@ -165,7 +167,7 @@
         <div>
           <div class="sm:flex gap-4 items-center mb-4 mt-4">
             <h2 class="font-light text-2xl">
-              <%= gettext("Contacts in this segment (%{count})", count: @contacts.count) %>
+              {gettext("Contacts in this segment (%{count})", count: @contacts.count)}
             </h2>
 
             <a
@@ -175,16 +177,16 @@
               class="button button--small"
               target="_blank"
             >
-              <%= render_icon(:download) %>
-              <%= gettext("Download") %>
+              {render_icon(:download)}
+              {gettext("Download")}
             </a>
           </div>
           <table class="w-full text-sm">
             <tr class="text-left">
-              <th class="p-2 pl-0"><%= gettext("Email") %></th>
-              <th class="p-2 hidden lg:table-cell"><%= gettext("First name") %></th>
-              <th class="p-2 hidden lg:table-cell"><%= gettext("Last name") %></th>
-              <th class="p-2 hidden lg:table-cell"><%= gettext("Added") %></th>
+              <th class="p-2 pl-0">{gettext("Email")}</th>
+              <th class="p-2 hidden lg:table-cell">{gettext("First name")}</th>
+              <th class="p-2 hidden lg:table-cell">{gettext("Last name")}</th>
+              <th class="p-2 hidden lg:table-cell">{gettext("Added")}</th>
             </tr>
             <%= for contact <- @contacts.data do %>
               <tr>
@@ -193,23 +195,23 @@
                     class="button button--text overflow-x-hidden"
                     href={Routes.contact_path(@socket, :edit, @current_project.id, contact.id)}
                   >
-                    <%= contact.email %>
+                    {contact.email}
                   </a>
                 </td>
                 <td class="p-2 hidden lg:table-cell">
-                  <%= contact.first_name %>
+                  {contact.first_name}
                 </td>
                 <td class="p-2 hidden lg:table-cell">
-                  <%= contact.last_name %>
+                  {contact.last_name}
                 </td>
                 <td class="p-2 hidden lg:table-cell">
-                  <%= Calendar.strftime(contact.inserted_at, "%c") %>
+                  {Calendar.strftime(contact.inserted_at, "%c")}
                 </td>
               </tr>
             <% end %>
           </table>
           <div class="flex gap-3 justify-center py-8">
-            <%= pagination_nav(@contacts, phx_click: "change-page") %>
+            <.pagination_nav pagination={@contacts} phx_click="change-page" />
           </div>
         </div>
         <div></div>

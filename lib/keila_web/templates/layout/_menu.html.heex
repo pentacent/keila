@@ -9,8 +9,8 @@
           class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
           aria-expanded="false"
         >
-          <span class="sr-only"><%= gettext("Open menu") %></span>
-          <span class="inline-flex h-6 w-6"><%= render_icon(:menu) %></span>
+          <span class="sr-only">{gettext("Open menu")}</span>
+          <span class="inline-flex h-6 w-6">{render_icon(:menu)}</span>
         </label>
         <label
           id="hide-main-menu"
@@ -18,37 +18,37 @@
           class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
           aria-expanded="false"
         >
-          <span class="sr-only"><%= gettext("Close menu") %></span>
-          <span class="inline-flex h-6 w-6"><%= render_icon(:x) %></span>
+          <span class="sr-only">{gettext("Close menu")}</span>
+          <span class="inline-flex h-6 w-6">{render_icon(:x)}</span>
         </label>
       </div>
       <div class="shrink-0 grow-0 flex mx-4 text-white">
         <a href={Routes.project_path(@conn, :index)} class="flex items-center sm:h-24 my-4">
           <span class="flex justify-end h-10 w-10">
-            <%= render_icon(:logo) %>
+            {render_icon(:logo)}
           </span>
           <span class="text-2xl font-light">Keila</span>
         </a>
       </div>
       <nav class="font-medium hidden flex-col gap-1 mt-2 mb-4 sm:flex flex-grow">
         <%= if is_nil(assigns[:current_project]) do %>
-          <%= menu_link(@conn, :project, :index, [], gettext("Projects"),
+          {menu_link(@conn, :project, :index, [], gettext("Projects"),
             exact: true,
             icon: :collection
-          ) %>
+          )}
         <% else %>
           <a
             href={Routes.project_path(@conn, :index)}
             class="block text-xs font-light text-white my-2 align-middle hover:underline"
           >
-            <%= gettext("Back to projects overview") %>
+            {gettext("Back to projects overview")}
           </a>
-          <%= menu_link(@conn, :project, :show, [@current_project.id], @current_project.name,
+          {menu_link(@conn, :project, :show, [@current_project.id], @current_project.name,
             exact: true,
             icon: :desktop_computer
-          ) %>
+          )}
           <%= if show_project_submenu?(@conn, @current_project) do %>
-            <%= menu_link(
+            {menu_link(
               @conn,
               :project,
               :edit,
@@ -57,27 +57,27 @@
               exact: true,
               icon: :cog,
               indent: 1
-            ) %>
-            <%= menu_link(@conn, :sender, :index, [@current_project.id], gettext("Senders"),
+            )}
+            {menu_link(@conn, :sender, :index, [@current_project.id], gettext("Senders"),
               exact: false,
               icon: :speakerphone,
               indent: 1
-            ) %>
+            )}
           <% end %>
-          <%= menu_link(@conn, :contact, :index, [@current_project.id], gettext("Contacts"),
+          {menu_link(@conn, :contact, :index, [@current_project.id], gettext("Contacts"),
             icon: :user_group,
             exclude: [
               {:contact, :new, [@current_project.id]},
               {:contact, :import, [@current_project.id]}
             ]
-          ) %>
+          )}
           <%= if String.starts_with?(@conn.request_path, Routes.contact_path(@conn, :index, @current_project.id)) do %>
-            <%= menu_link(@conn, :contact, :new, [@current_project.id], gettext("Create contact"),
+            {menu_link(@conn, :contact, :new, [@current_project.id], gettext("Create contact"),
               exact: true,
               icon: :document_add,
               indent: 1
-            ) %>
-            <%= menu_link(
+            )}
+            {menu_link(
               @conn,
               :contact,
               :import,
@@ -86,29 +86,29 @@
               exact: true,
               icon: :user_add,
               indent: 1
-            ) %>
+            )}
           <% end %>
-          <%= menu_link(@conn, :segment, :index, [@current_project.id], gettext("Segments"),
+          {menu_link(@conn, :segment, :index, [@current_project.id], gettext("Segments"),
             icon: :filter,
             exclude: [{:form, :new, [@current_project.id]}]
-          ) %>
-          <%= menu_link(@conn, :form, :index, [@current_project.id], gettext("Forms"),
+          )}
+          {menu_link(@conn, :form, :index, [@current_project.id], gettext("Forms"),
             icon: :template,
             exclude: [{:form, :new, [@current_project.id]}]
-          ) %>
+          )}
           <%= if String.starts_with?(@conn.request_path, Routes.form_path(@conn, :index, @current_project.id)) do %>
-            <%= menu_link(@conn, :form, :new, [@current_project.id], gettext("Create form"),
+            {menu_link(@conn, :form, :new, [@current_project.id], gettext("Create form"),
               exact: true,
               icon: :document_add,
               indent: 1
-            ) %>
+            )}
           <% end %>
-          <%= menu_link(@conn, :template, :index, [@current_project.id], gettext("Templates"),
+          {menu_link(@conn, :template, :index, [@current_project.id], gettext("Templates"),
             icon: :color_swatch,
             exclude: [{:template, :new, [@current_project.id]}]
-          ) %>
+          )}
           <%= if String.starts_with?(@conn.request_path, Routes.template_path(@conn, :index, @current_project.id)) do %>
-            <%= menu_link(
+            {menu_link(
               @conn,
               :template,
               :new,
@@ -117,14 +117,14 @@
               exact: true,
               icon: :document_add,
               indent: 1
-            ) %>
+            )}
           <% end %>
-          <%= menu_link(@conn, :campaign, :index, [@current_project.id], gettext("Campaigns"),
+          {menu_link(@conn, :campaign, :index, [@current_project.id], gettext("Campaigns"),
             icon: :at_symbol,
             exclude: [{:campaign, :new, [@current_project.id]}]
-          ) %>
+          )}
           <%= if String.starts_with?(@conn.request_path, Routes.campaign_path(@conn, :index, @current_project.id)) do %>
-            <%= menu_link(
+            {menu_link(
               @conn,
               :campaign,
               :new,
@@ -133,30 +133,28 @@
               exact: true,
               icon: :document_add,
               indent: 1
-            ) %>
+            )}
           <% end %>
-          <%= menu_link(@conn, :api_key, :index, [@current_project.id], gettext("API Keys"),
+          {menu_link(@conn, :api_key, :index, [@current_project.id], gettext("API Keys"),
             exact: true,
             icon: :code
-          ) %>
+          )}
         <% end %>
         <div class="hidden sm:block sm:flex-grow"></div>
-        <%= menu_link(@conn, Routes.account_path(@conn, :edit), gettext("Account"), icon: :user) %>
+        {menu_link(@conn, Routes.account_path(@conn, :edit), gettext("Account"), icon: :user)}
         <%= if assigns[:is_admin?] do %>
-          <%= menu_link(@conn, Routes.user_admin_path(@conn, :index), gettext("Users"),
-            icon: :users
-          ) %>
-          <%= menu_link(@conn, Routes.shared_sender_admin_path(@conn, :index), gettext("Senders"),
+          {menu_link(@conn, Routes.user_admin_path(@conn, :index), gettext("Users"), icon: :users)}
+          {menu_link(@conn, Routes.shared_sender_admin_path(@conn, :index), gettext("Senders"),
             icon: :speakerphone
-          ) %>
-          <%= menu_link(
+          )}
+          {menu_link(
             @conn,
             Routes.instance_admin_path(@conn, :show),
             dgettext("admin", "System Info"),
             icon: :information_circle
-          ) %>
+          )}
         <% end %>
-        <%= menu_link(@conn, Routes.auth_path(@conn, :logout), gettext("Sign out"), icon: :logout) %>
+        {menu_link(@conn, Routes.auth_path(@conn, :logout), gettext("Sign out"), icon: :logout)}
       </nav>
     </div>
   </aside>
@@ -165,7 +163,7 @@
     <div class="container my-4 text-emerald-500 flex justify-center">
       <a href={Routes.project_path(@conn, :index)} class="inline-flex items-start">
         <span class="flex h-11 w-11 -mr-1">
-          <%= render_icon(:logo) %>
+          {render_icon(:logo)}
         </span>
         <span class="text-3xl font-light">Keila</span>
       </a>

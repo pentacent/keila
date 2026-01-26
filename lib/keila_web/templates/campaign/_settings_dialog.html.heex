@@ -25,10 +25,10 @@
       aria-modal="true"
       aria-labelledby="modal-headline"
     >
-      <h2 class="text-3xl"><%= gettext("Settings") %></h2>
+      <h2 class="text-3xl">{gettext("Settings")}</h2>
 
       <.form
-        let={f}
+        :let={f}
         for={@settings_changeset}
         id="campaign-settings"
         class="flex flex-col gap-4"
@@ -38,11 +38,11 @@
         x-init="type = $el.querySelector('[name=\'campaign[settings][type]\']').value"
       >
         <div class="form-row">
-          <%= label(f, :sender_id, gettext("Sender")) %>
+          {label(f, :sender_id, gettext("Sender"))}
 
           <%= if not Enum.empty?(@senders) do %>
             <%= with_validation(f, :sender_id) do %>
-              <%= select(
+              {select(
                 f,
                 :sender_id,
                 if(input_value(f, :sender_id) == nil,
@@ -54,7 +54,7 @@
                     &{"#{&1.name} (#{Keila.Mailings.sender_from_line(&1)})", &1.id}
                   ),
                 class: "text-black w-full"
-              ) %>
+              )}
             <% end %>
           <% else %>
             <p>
@@ -62,7 +62,7 @@
                 href={Routes.sender_path(@socket, :new, @current_project.id)}
                 class="button button--muted"
               >
-                <%= gettext("Create your first sender") %>
+                {gettext("Create your first sender")}
               </a>
             </p>
           <% end %>
@@ -70,8 +70,8 @@
 
         <div class="form-row">
           <%= inputs_for(f, :settings, fn fs -> %>
-            <%= label(fs, :type, gettext("Campaign Type")) %>
-            <%= select(
+            {label(fs, :type, gettext("Campaign Type"))}
+            {select(
               fs,
               :type,
               [
@@ -81,30 +81,30 @@
                 {gettext("MJML"), "mjml"}
               ],
               x_model: "type"
-            ) %>
+            )}
           <% end) %>
         </div>
 
         <template x-if="type === 'markdown'">
           <div class="form-row-checkbox">
             <%= inputs_for(f, :settings, [skip_hidden: true], fn fs -> %>
-              <%= checkbox(fs, :enable_wysiwyg) %>
-              <%= label(fs, :enable_wysiwyg, gettext("Enable rich text editor")) %>
+              {checkbox(fs, :enable_wysiwyg)}
+              {label(fs, :enable_wysiwyg, gettext("Enable rich text editor"))}
             <% end) %>
           </div>
         </template>
 
         <template x-if="type === 'markdown' || type === 'block'">
           <div class="form-row">
-            <%= label(f, :template_id, gettext("Template")) %>
+            {label(f, :template_id, gettext("Template"))}
 
             <%= with_validation(f, :template_id) do %>
-              <%= select(
+              {select(
                 f,
                 :template_id,
                 [{gettext("Default"), nil} | Enum.map(@templates, &{&1.name, &1.id})],
                 class: "text-black"
-              ) %>
+              )}
             <% end %>
           </div>
         </template>
@@ -112,68 +112,68 @@
         <template x-if="type === 'markdown' || type === 'block' || type === 'mjml'">
           <div class="form-row flex flex-col">
             <%= label(f, :preview_text) do %>
-              <%= gettext("Preview Text") %><br />
+              {gettext("Preview Text")}<br />
               <span class="text-sm">
-                <%= gettext(
+                {gettext(
                   "Users see this preview before they open your email. Use up to 50 characters."
-                ) %>
+                )}
               </span>
             <% end %>
             <%= with_validation(f, :preview_text) do %>
-              <%= textarea(f, :preview_text,
+              {textarea(f, :preview_text,
                 placeholder: gettext("Can you summarize your campaign in 50 characters?"),
                 class: "text-black",
                 autofocus: true
-              ) %>
+              )}
             <% end %>
           </div>
         </template>
 
         <div class="form-row">
-          <%= label(f, :segment_id, gettext("Segment")) %>
+          {label(f, :segment_id, gettext("Segment"))}
 
           <%= with_validation(f, :segment_id) do %>
-            <%= select(
+            {select(
               f,
               :segment_id,
               [{gettext("All Contacts"), nil}] ++ Enum.map(@segments, &{&1.name, &1.id}),
               class: "text-black"
-            ) %>
+            )}
           <% end %>
         </div>
 
         <div class="form-row-checkbox">
           <%= inputs_for(f, :settings, [skip_hidden: true], fn fs -> %>
-            <%= checkbox(fs, :do_not_track, checked_value: "false", unchecked_value: "true") %>
-            <%= label(fs, :do_not_track, gettext("Enable click/open tracking")) %>
+            {checkbox(fs, :do_not_track, checked_value: "false", unchecked_value: "true")}
+            {label(fs, :do_not_track, gettext("Enable click/open tracking"))}
           <% end) %>
         </div>
 
         <div class="form-row-checkbox">
-          <%= checkbox(f, :public_link_enabled) %>
-          <%= label(f, :public_link_enabled, gettext("Enable public link")) %>
+          {checkbox(f, :public_link_enabled)}
+          {label(f, :public_link_enabled, gettext("Enable public link"))}
           <span class="block text-sm">
-            <%= gettext(
+            {gettext(
               "This will allow anyone who has the public link to access your campaign after it's been sent."
-            ) %>
+            )}
           </span>
         </div>
 
         <div class="form-row md:col-span-full">
-          <%= label(f, :segment_id, gettext("Campaign data")) %>
+          {label(f, :segment_id, gettext("Campaign data"))}
           <span class="block text-sm mb-2">
-            <%= gettext("You can add any JSON object as custom data to your campaign.") %>
+            {gettext("You can add any JSON object as custom data to your campaign.")}
           </span>
           <%= with_validation(f, :data) do %>
             <%= case input_value(f, :data) do %>
               <% data when is_map(data) -> %>
-                <%= textarea(f, :data,
+                {textarea(f, :data,
                   value: Jason.encode!(data),
                   class: "text-white bg-gray-900",
                   rows: 5
-                ) %>
+                )}
               <% _other -> %>
-                <%= textarea(f, :data, class: "text-white bg-gray-900", rows: 5) %>
+                {textarea(f, :data, class: "text-white bg-gray-900", rows: 5)}
             <% end %>
           <% end %>
         </div>
@@ -181,10 +181,10 @@
         <br />
         <div class="flex justify-end gap-8">
           <button class="button button--text button--large" @click.prevent="$dispatch('x-cancel')">
-            <%= gettext("Cancel") %>
+            {gettext("Cancel")}
           </button>
           <button class="button button--cta button--large">
-            <%= gettext("Ok") %>
+            {gettext("Ok")}
           </button>
         </div>
       </.form>

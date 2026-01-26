@@ -1,11 +1,11 @@
 <div class="container flex py-8 sm:py-11 mb-4">
   <div class="flex-grow gap-4 flex flex-col sm:flex-row sm:items-center">
     <h1 class="text-2xl sm:text-3xl text-gray-100">
-      <%= gettext("Administer Users") %>
+      {gettext("Administer Users")}
     </h1>
     <div class="flex-grow flex flex-row-reverse justify-end gap-4 sm:flex-row">
       <a href={Routes.user_admin_path(@conn, :new)} class="button">
-        <%= render_icon(:plus) %> <%= gettext("Add user") %>
+        {render_icon(:plus)} {gettext("Add user")}
       </a>
     </div>
   </div>
@@ -13,7 +13,7 @@
 
 <div class="container mb-4">
   <p>
-    <%= dgettext("admin", "Here you can manage other users on your Keila instance.") %>
+    {dgettext("admin", "Here you can manage other users on your Keila instance.")}
   </p>
 </div>
 
@@ -21,34 +21,34 @@
   <div class="container">
     <table class="w-full bg-gray-800">
       <tr class="text-left">
-        <th class="p-2"><%= dgettext("admin", "Email") %></th>
-        <th class="p-2"><%= dgettext("admin", "Sign-up") %></th>
-        <th class="p-2"><%= dgettext("admin", "Activation") %></th>
+        <th class="p-2">{dgettext("admin", "Email")}</th>
+        <th class="p-2">{dgettext("admin", "Sign-up")}</th>
+        <th class="p-2">{dgettext("admin", "Activation")}</th>
         <%= if @user_credits do %>
-          <th class="p-2"><%= dgettext("admin", "Credits") %></th>
+          <th class="p-2">{dgettext("admin", "Credits")}</th>
         <% end %>
         <th class="p-2"></th>
       </tr>
       <%= for user <- @users.data do %>
         <tr>
           <td class="p-2">
-            <%= user.email %>
+            {user.email}
           </td>
           <td class="p-2">
-            <%= Calendar.strftime(user.inserted_at, "%c") %>
+            {Calendar.strftime(user.inserted_at, "%c")}
           </td>
           <td class="p-2 flex gap-2">
             <%= if user.activated_at do %>
-              <%= Calendar.strftime(user.activated_at, "%c") %>
+              {Calendar.strftime(user.activated_at, "%c")}
             <% end %>
           </td>
           <%= if @user_credits do %>
             <td>
-              <%= @user_credits[user.id] |> elem(1) %>/<%= @user_credits[user.id] |> elem(0) %>
+              {@user_credits[user.id] |> elem(1)}/{@user_credits[user.id] |> elem(0)}
             </td>
           <% end %>
           <td>
-            <%= if @user_credits do
+            {if @user_credits do
               content_tag(:a,
                 href: Routes.user_admin_path(@conn, :show_credits, user.id),
                 title: dgettext("admin", "Add credits"),
@@ -56,9 +56,9 @@
               ) do
                 render_icon(:plus_circle)
               end
-            end %>
+            end}
 
-            <%= Keila.if_cloud do
+            {Keila.if_cloud do
               content_tag(:a,
                 href: Routes.cloud_admin_path(@conn, :show_user_account_status, user.id),
                 title: dgettext("cloud", "Account status"),
@@ -70,20 +70,26 @@
                   render_icon(:shield_exclamation)
                 end
               end
-            end %>
-            <%= if user.id != @current_user.id do
-              [
-                content_tag(:a,
-                  href: Routes.user_admin_path(@conn, :impersonate, user.id),
-                  title: dgettext("admin", "Login as"),
-                  class: "button button--text"
-                ) do
-                  render_icon(:login)
-                end,
-                delete_form_tag(user, Routes.user_admin_path(@conn, :delete), as: :user),
-                delete_button_tag(user, icon: :trash, class: "button button--text")
-              ]
-            end %>
+            end}
+            <%= if user.id != @current_user.id do %>
+              <a
+                href={~p"/admin/users/#{user.id}/impersonate"}
+                title={dgettext("admin", "Login as")}
+                class="button button--text"
+              >
+                {render_icon(:login)}
+              </a>
+              <.delete_form
+                struct={user}
+                as={:user}
+                route={~p"/admin/users"}
+              />
+              <.delete_button
+                struct={user}
+                icon={:trash}
+                class="button button--text"
+              />
+            <% end %>
           </td>
         </tr>
       <% end %>
@@ -91,9 +97,7 @@
 
     <%= if @users.page_count > 1 do %>
       <div class="flex gap-3 justify-center py-8">
-        <%= pagination_nav(@users,
-          href: fn n -> Routes.user_admin_path(@conn, :index, %{"page" => n + 1}) end
-        ) %>
+        <.pagination_nav pagination={@users} href={&~p"/admin/users?page=#{&1 + 1}"} />
       </div>
     <% end %>
   </div>

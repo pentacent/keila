@@ -5,8 +5,8 @@
       "rounded-t p-4 text-center flex flex-col #{if @contacts_status == :active, do: "bg-emerald-700 hover:bg-emerald-600", else: "bg-gray-700 hover:bg-gray-600"}"
     }
   >
-    <span class="text-3xl"><%= @contacts_stats.active %></span>
-    <span><%= gettext("active subscribers") %></span>
+    <span class="text-3xl">{@contacts_stats.active}</span>
+    <span>{gettext("active subscribers")}</span>
   </a>
 
   <a
@@ -15,8 +15,8 @@
       "rounded-t p-4 text-center flex flex-col #{if @contacts_status == :unsubscribed, do: "bg-emerald-700 hover:bg-emerald-600", else: "bg-gray-700 hover:bg-gray-600"}"
     }
   >
-    <span class="text-3xl"><%= @contacts_stats.unsubscribed %></span>
-    <span><%= gettext("unsubscribed contacts") %></span>
+    <span class="text-3xl">{@contacts_stats.unsubscribed}</span>
+    <span>{gettext("unsubscribed contacts")}</span>
   </a>
 
   <a
@@ -25,7 +25,7 @@
       "rounded-t p-4 text-center flex flex-col #{if @contacts_status == :unreachable, do: "bg-emerald-700 hover:bg-emerald-600", else: "bg-gray-700 hover:bg-gray-600"}"
     }
   >
-    <span class="text-3xl"><%= @contacts_stats.unreachable %></span>
-    <span><%= gettext("unreachable contacts") %></span>
+    <span class="text-3xl">{@contacts_stats.unreachable}</span>
+    <span>{gettext("unreachable contacts")}</span>
   </a>
 </div>

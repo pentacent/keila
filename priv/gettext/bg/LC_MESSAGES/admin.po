@@ -1,0 +1,169 @@
+## "msgid"s in this file come from POT (.pot) files.
+##
+## Do not add, change, or remove "msgid"s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
+##
+## Use "mix gettext.extract --merge" or "mix gettext.merge"
+## to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: bg\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "%{remaining} / %{total} credits"
+msgstr "%{remaining} / %{total} кредити"
+
+#: lib/keila_web/templates/user_admin/index.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Activation"
+msgstr "Активиране"
+
+#: lib/keila_web/templates/user_admin/index.html.heex:54
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:26
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:85
+#, elixir-autogen, elixir-format
+msgid "Add credits"
+msgstr "Добавяне на кредити"
+
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:3
+#, elixir-autogen, elixir-format
+msgid "Administer Credits for %{email}"
+msgstr "Оправление на кредити за %{email}"
+
+#: lib/keila_web/controllers/user_admin_controller.ex:17
+#, elixir-autogen, elixir-format
+msgid "Administrate Users"
+msgstr "Оправление на потребители"
+
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Amount"
+msgstr "Сума"
+
+#: lib/keila_web/templates/shared_sender_admin/delete.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Campaigns associated with this sender will not be deleted."
+msgstr "Кампании, свързани с този подател, няма да бъдат изтрити."
+
+#: lib/keila_web/templates/shared_sender_admin/index.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Create a new Shared Sender"
+msgstr "Създаване на нов общ подател"
+
+#: lib/keila_web/templates/user_admin/index.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Credits"
+msgstr "Кредити"
+
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Credits for account %{account}"
+msgstr "Кредити за акаунт %{account}"
+
+#: lib/keila_web/templates/shared_sender_admin/delete.html.heex:3
+#, elixir-autogen, elixir-format
+msgid "Delete Shared Sender %{sender}?"
+msgstr "Изтриване на общ подател %{sender}?"
+
+#: lib/keila_web/templates/shared_sender_admin/delete.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Deleting a shared sender cannot be undone."
+msgstr "Изтриването на общ подател не може да бъде отменено."
+
+#: lib/keila_web/templates/user_admin/index.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Email"
+msgstr "Имейл"
+
+#: lib/keila_web/templates/user_admin/index.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Here you can manage other users on your Keila instance."
+msgstr "Тук можете да управлявате други потребители в тaзи инсталация на Keila."
+
+#: lib/keila_web/templates/shared_sender_admin/edit.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "New Shared Sender"
+msgstr "Нов общ подател"
+
+#: lib/keila_web/templates/shared_sender_admin/edit.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Shared Sender Name"
+msgstr "Име на общ подател"
+
+#: lib/keila_web/templates/shared_sender_admin/edit.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "My Shared Sender"
+msgstr "Мой общ подател"
+
+#: lib/keila_web/templates/shared_sender_admin/index.html.heex:4
+#, elixir-autogen, elixir-format
+msgid "Shared Senders"
+msgstr "Общи податели"
+
+#: lib/keila_web/templates/shared_sender_admin/index.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Shared Senders are available to all users on this instance of Keila."
+msgstr "Общите податели са достъпни за всички потребители в тaзи инсталация на Keila."
+
+#: lib/keila_web/templates/user_admin/index.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Sign-up"
+msgstr "Регистрация"
+
+#: lib/keila_web/templates/shared_sender_admin/delete.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Type in the shared sender name to confirm its deletion:"
+msgstr "Въведете името на общия подател, за да потвърдите изтриването му:"
+
+#: lib/keila_web/templates/user_admin/index.html.heex:78
+#, elixir-autogen, elixir-format
+msgid "Login as"
+msgstr "Вход като"
+
+#: lib/keila_web/templates/layout/app.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "A new version of Keila is available."
+msgstr "Налична е нова версия на Keila."
+
+#: lib/keila_web/templates/layout/app.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Read more"
+msgstr "Прочетете още"
+
+#: lib/keila_web/templates/layout/_menu.html.heex:155
+#, elixir-autogen, elixir-format
+msgid "System Info"
+msgstr "Системна информация"
+
+#: lib/keila_web/templates/instance_admin/show.html.heex:4
+#, elixir-autogen, elixir-format
+msgid "You are currently running Keila %{version} on %{host}."
+msgstr "В момента използвате Keila `%{version}` на `%{host}`."
+
+#: lib/keila_web/templates/instance_admin/show.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "There are updates available for your Keila instance!"
+msgstr "Налични са актуализации за вашaта инсталация на Keila"
+
+#: lib/keila_web/templates/instance_admin/show.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "Update checks are disabled."
+msgstr "Проверките за актуализации са деактивирани."
+
+#: lib/keila_web/templates/instance_admin/show.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "You seem to be running the most recent version of Keila!"
+msgstr "Изглежда, че използвате най-новата версия на Keila!"
+
+#: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "Статус"
+
+#: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "Update status"
+msgstr "Актуализирайте статуса си"

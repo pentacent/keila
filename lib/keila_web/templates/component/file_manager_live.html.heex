@@ -1,21 +1,21 @@
 <div>
   <h3 class="font-bold mb-4">
-    <%= gettext("Upload a new file") %>
+    {gettext("Upload a new file")}
   </h3>
 
   <form phx-submit="upload" phx-change="validate-upload" phx-target={@myself}>
     <% class =
       "button flex gap-2 #{if Enum.empty?(@uploads.files.entries), do: "button--cta button--large"}" %>
     <label class={class}>
-      <%= render_icon(:upload) %>
+      {render_icon(:upload)}
       <%= if Enum.empty?(@uploads.files.entries) do %>
-        <%= gettext("Select a file") %>
+        {gettext("Select a file")}
       <% end %>
-      <%= live_file_input(@uploads.files, class: "hidden") %>
+      <.live_file_input upload={@uploads.files} class="hidden" />
       <div class="flex flex-col gap-2">
         <%= for entry <- @uploads.files.entries do %>
           <p class="text-sm font-italic text-ellipsis flex-grow max-w-8">
-            <%= entry.client_name %>
+            {entry.client_name}
           </p>
         <% end %>
       </div>
@@ -23,8 +23,8 @@
     <%= if not Enum.empty?(@uploads.files.entries) do %>
       <br />
       <button class="button button--cta button--large mt-4" type="submit">
-        <%= render_icon(:cursor_click) %>
-        <%= gettext("Start Upload") %>
+        {render_icon(:cursor_click)}
+        {gettext("Start Upload")}
       </button>
     <% end %>
   </form>
@@ -36,15 +36,15 @@
   <%= if Enum.empty?(@files.data) do %>
     <div class="flex gap-4 p-4 sm:p-8 bg-onboarding">
       <span class="hidden sm:flex h-24 w-24 grow-0 shrink-0">
-        <%= render_icon(:photograph) %>
+        {render_icon(:photograph)}
       </span>
       <div class="flex flex-col gap-4">
         <h2 class="text-xl sm:text-2xl">
-          <%= gettext("Wow, such empty!") %>
+          {gettext("Wow, such empty!")}
         </h2>
-        <%= gettext_md("""
+        {gettext_md("""
         Use the upload form to upload your first image.
-        """) %>
+        """)}
       </div>
     </div>
   <% else %>
@@ -62,9 +62,9 @@
         >
           <img id={"file-#{file.uuid}"} src={url} alt="" class="h-32 w-full object-cover" />
           <div class="flex items-center justify-between text-xs mt-1 relative">
-            <p class="break-all"><%= file.filename %></p>
+            <p class="break-all">{file.filename}</p>
             <button @click.stop="showDelete = true" class="button button--text button--small">
-              <%= render_icon(:trash) %>
+              {render_icon(:trash)}
               <span class="sr-only">title={gettext("Delete")}</span>
             </button>
             <button
@@ -76,7 +76,7 @@
               phx-target={@myself}
               class="button button--small button--warn l-0 w-full absolute"
             >
-              <%= gettext("Click to delete") %>
+              {gettext("Click to delete")}
             </button>
           </div>
         </div>
@@ -84,7 +84,7 @@
     </div>
 
     <div class="flex gap-3 justify-center py-8">
-      <%= pagination_nav(@files, phx_click: "change-page", phx_target: @myself) %>
+      <.pagination_nav pagination={@files} phx_click="change-page" phx_target={@myself} />
     </div>
   <% end %>
 
@@ -97,16 +97,16 @@
     <div class="bg-gray-900 p-4 rounded-lg max-w-lg" @click.away="show = false; id = null">
       <div x-ref="i18n" data-draft={gettext("draft")} data-sent={gettext("sent")}></div>
       <h3 class="text-lg font-bold mb-4">
-        <%= gettext(
+        {gettext(
           "This file can’t be deleted because it’s already in use in the following campaigns:"
-        ) %>
+        )}
       </h3>
       <template x-for="campaign in campaigns">
         <div class="flex justify-between items-center mb-2">
           <span x-text="campaign.subject"></span>
           <span
             x-text="$refs.i18n.dataset[campaign.status]"
-            :class="{
+            x-bind:class="{
               'text-green-700': campaign.status === 'draft',
               'text-red-600': campaign.status === 'sent'
               }"
@@ -116,7 +116,7 @@
       </template>
       <div class="flex justify-end gap-8 mt-4">
         <button @click="id = null; show = false" class="button button--cta">
-          <%= gettext("Ok") %>
+          {gettext("Ok")}
         </button>
       </div>
     </div>

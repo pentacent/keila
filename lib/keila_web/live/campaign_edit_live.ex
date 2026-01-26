@@ -163,6 +163,7 @@ defmodule KeilaWeb.CampaignEditLive do
     with {:ok, contacts} <- get_preview_contacts(socket, raw_emails),
          {:ok, campaign} <- get_preview_campaign(socket),
          {:ok, sender} <- get_preview_sender(socket, campaign.sender_id),
+         :ok <- ensure_account_has_subscription(socket.assigns.account),
          :ok <- ensure_account_active(socket.assigns.account),
          :ok <- maybe_consume_preview_credits(socket.assigns.account, contacts),
          _ <- send_previews(socket, contacts, campaign, sender) do
@@ -219,6 +220,18 @@ defmodule KeilaWeb.CampaignEditLive do
   end
 
   Keila.if_cloud do
+    defp ensure_account_has_subscription(account) do
+      if Keila.Accounts.has_credits?(account.id, 1) do
+        :ok
+      else
+        {:error, :subscription_required}
+      end
+    end
+  else
+    defp ensure_account_has_subscription(_account), do: :ok
+  end
+
+  Keila.if_cloud do
     defp ensure_account_active(%{status: :active}), do: :ok
     defp ensure_account_active(_), do: {:error, :onboarding_required}
   else
@@ -234,7 +247,7 @@ defmodule KeilaWeb.CampaignEditLive do
           :ok
 
         _other ->
-          if is_nil(Keila.Billing.get_account_subscription(account.id)) do
+          if is_nil(KeilaCloud.Billing.get_account_subscription(account.id)) do
             {:error, :subscription_required}
           else
             {:error, gettext("Insufficient credits.")}

@@ -3,7 +3,7 @@ defmodule Keila.Mailings.WelcomeEmailBuilder do
   Builder for welcome emails sent after form submission.
   """
 
-  import KeilaWeb.Gettext
+  use KeilaWeb.Gettext
 
   alias Keila.Contacts.Contact
   alias Keila.Contacts.Form

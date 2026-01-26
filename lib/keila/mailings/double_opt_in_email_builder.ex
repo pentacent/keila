@@ -3,7 +3,7 @@ defmodule Keila.Mailings.DoubleOptInEmailBuilder do
   Builder for double opt-in confirmation emails.
   """
 
-  import KeilaWeb.Gettext
+  use KeilaWeb.Gettext
 
   alias Keila.Contacts.Form
   alias Keila.Contacts.FormParams

@@ -1,51 +1,51 @@
 <.form
+  :let={f}
   for={@contact_data_changeset}
-  let={f}
   phx-change="update_org_name"
   phx-submit="submit_org_name"
   class="flex flex-col gap-2"
 >
   <h2 class="text-3xl mb-2">
-    <%= dgettext("cloud", "Nice to meet you, %{given_name}!", %{
+    {dgettext("cloud", "Nice to meet you, %{given_name}!", %{
       given_name: @current_user.given_name
-    }) %>
+    })}
   </h2>
 
   <div class="form-row">
     <%= label(f, :is_organization_true, class: "flex flex-row gap-2 items-center") do %>
-      <%= radio_button(f, :is_organization, "true") %>
-      <%= dgettext("cloud", "This account is for a business/organization") %>
+      {radio_button(f, :is_organization, "true")}
+      {dgettext("cloud", "This account is for a business/organization")}
     <% end %>
     <%= label(f, :is_organization_false, class: "flex flex-row gap-2 items-center") do %>
-      <%= radio_button(f, :is_organization, "false") %>
-      <%= dgettext("cloud", "This is a private account") %>
+      {radio_button(f, :is_organization, "false")}
+      {dgettext("cloud", "This is a private account")}
     <% end %>
   </div>
   <%= if Ecto.Changeset.get_field(@contact_data_changeset, :is_organization) do %>
     <div class="form-row">
-      <%= label(f, :organization_name, dgettext("cloud", "Organization/business name")) %>
+      {label(f, :organization_name, dgettext("cloud", "Organization/business name"))}
       <%= with_validation(f, :organization_name) do %>
-        <%= text_input(f, :organization_name,
+        {text_input(f, :organization_name,
           placeholder: dgettext("cloud", "Your Company, Inc."),
           class: "text-black w-64"
-        ) %>
+        )}
       <% end %>
     </div>
   <% end %>
   <%= if not is_nil(Ecto.Changeset.get_field(@contact_data_changeset, :is_organization)) do %>
     <div class="form-row">
-      <%= label(f, :given_name, dgettext("cloud", "Website")) %>
+      {label(f, :given_name, dgettext("cloud", "Website"))}
       <%= with_validation(f, :website) do %>
-        <%= url_input(f, :website,
+        {url_input(f, :website,
           placeholder: dgettext("cloud", "https://example.com"),
           class: "text-black w-64"
-        ) %>
+        )}
       <% end %>
       <p class="text-sm">
-        <%= dgettext(
+        {dgettext(
           "cloud",
           "If you don’t have a website yet, you can also enter the link to a social media profile or some other public online presence."
-        ) %>
+        )}
       </p>
     </div>
   <% end %>
@@ -53,7 +53,7 @@
   <%= if @contact_data_changeset.valid? do %>
     <div class="mt-4">
       <button class="button button--cta button--large">
-        <%= gettext("Continue") %>
+        {gettext("Continue")}
       </button>
     </div>
   <% end %>
