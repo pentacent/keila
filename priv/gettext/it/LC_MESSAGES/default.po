@@ -1222,7 +1222,7 @@ msgid ""
 "than a minute …"
 msgstr ""
 "Stiamo attualmente processando la tua sottoscrizione. Non dovrebbe volerci "
-"più di un minuto ..."
+"più di un minuto …"
 
 #: lib/keila_web/templates/account/edit.html.heex:15
 msgid "You currently have an active subscription. Thanks for supporting Keila!"
@@ -2063,7 +2063,7 @@ msgstr "Chiave API copiata negli appunti"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:53
 msgid "Add content to this column here …"
-msgstr "Aggiunti contenuti a questa colonna qui ..."
+msgstr "Aggiunti contenuti a questa colonna qui …"
 
 #: lib/keila_web/templates/campaign/share.html.heex:11
 #: lib/keila_web/templates/campaign/stats_live.html.heex:11
@@ -2165,7 +2165,7 @@ msgstr "Separatore"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:50
 msgid "Start creating your newsletter here …"
-msgstr "Inizia a creare la tua newsletter qui ..."
+msgstr "Inizia a creare la tua newsletter qui …"
 
 #: lib/keila_web/views/template_view.ex:71
 msgid "System"
@@ -2862,39 +2862,43 @@ msgstr "Invia & Pianifica"
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:315
 #: lib/keila_web/templates/campaign/edit_live.html.heex:72
 msgid "Send preview"
-msgstr ""
+msgstr "Invia anteprima"
 
 #: lib/keila_web/templates/auth/register.html.heex:9
 msgid "Start sending emails with Keila now"
-msgstr ""
+msgstr "Inizia ad inviare email con Keila ora"
 
 #: lib/keila_web/templates/contact/edit.html.heex:104
 msgid ""
 "The external ID allows updating the contact profile from an external source "
 "even if its email address changes."
 msgstr ""
+"L'ID esterno ti permette di aggiornare il profilo contatto da una sorgente "
+"esterna anche se il suo indirizzo email cambia."
 
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:276
 msgid "There was an error sending the preview campaign."
-msgstr ""
+msgstr "Si è verificato un errore inviando l'anteprima della campagna."
 
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:251
 msgid ""
 "To prevent abuse by spammers, sending emails is only possible if you have an "
 "active subscription."
 msgstr ""
+"Per prevenire l'abuso degli spammer l'invio delle email è possibile solo se "
+"hai una sottoscrizione attiva."
 
 #: lib/keila_web/live/campaign_edit_live.ex:216
 msgid "You must select a sender first."
-msgstr ""
+msgstr "Devi selezionare un mittente prima."
 
 #: lib/keila/contacts/import.ex:220
 msgid "duplicate entry"
-msgstr ""
+msgstr "voce duplicata"
 
 #: lib/keila_web/templates/campaign/share.html.heex:81
 msgid "Address copied to clipboard."
-msgstr ""
+msgstr "Indirizzo copiato negli appunti"
 
 #: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:50
 #: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:56
@@ -2902,41 +2906,41 @@ msgstr ""
 #: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:146
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:92
 msgid "Continue"
-msgstr ""
+msgstr "Continua"
 
 #: lib/keila_web/templates/campaign/share.html.heex:61
 msgid "Disable public link"
-msgstr ""
+msgstr "Disabilita link pubblico"
 
 #: lib/keila_web/templates/campaign/share.html.heex:70
 msgid "Enable public link"
-msgstr ""
+msgstr "Abilita link pubblico"
 
 #: lib/keila_web/templates/sender/_postmark_config.html.heex:32
 msgid "Message Stream"
-msgstr ""
+msgstr "Flusso Messaggi"
 
 #: lib/keila_web/templates/campaign/share.html.heex:32
 #: lib/keila_web/templates/campaign/stats_live.html.heex:216
 #: lib/keila_web/templates/campaign/view.html.heex:32
 msgid "Share"
-msgstr ""
+msgstr "Condividi"
 
 #: lib/keila_web/templates/campaign/share.html.heex:23
 #: lib/keila_web/templates/campaign/stats_live.html.heex:205
 #: lib/keila_web/templates/campaign/view.html.heex:23
 msgid "Statistics"
-msgstr ""
+msgstr "Statistiche"
 
 #: lib/keila_web/templates/campaign/share.html.heex:41
 msgid "Use the following link to share your campaign with other people:"
-msgstr ""
+msgstr "Ua il seguente link per condividere la tua campagna con altre persone:"
 
 #: lib/keila_web/templates/campaign/share.html.heex:29
 #: lib/keila_web/templates/campaign/stats_live.html.heex:210
 #: lib/keila_web/templates/campaign/view.html.heex:26
 msgid "View"
-msgstr ""
+msgstr "Vista"
 
 #: lib/keila_web/templates/campaign/share.html.heex:64
 msgid ""
@@ -2945,134 +2949,144 @@ msgid ""
 "\n"
 "You can disable the public link later if you want.\n"
 msgstr ""
+"Puoi abilitare un link pubblico per condividere la tua campagna con altri. "
+"La tua campagna sarà accessibile a chiunque abbia il link.\n"
+"\n"
+"Puoi disabilitare il link pubblico più avanti se lo vorrai.\n"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:110
 msgid "Add"
-msgstr ""
+msgstr "Aggiungi"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:116
 msgid "Add %{network} Profile"
-msgstr ""
+msgstr "Aggiuni Profilo %{network}"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:122
 msgid "Add Custom Social Network"
-msgstr ""
+msgstr "Aggiungi Social Network Personalizzato"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:80
 msgid "Add Social Media Icon"
-msgstr ""
+msgstr "Aggiungi Icona Social Media"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:143
 msgid "Align center"
-msgstr ""
+msgstr "Allinea al centro"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:140
 msgid "Align left"
-msgstr ""
+msgstr "Allinea a sinistra"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:146
 msgid "Align right"
-msgstr ""
+msgstr "Allinea a destra"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:98
 msgid "Background Color"
-msgstr ""
+msgstr "Colore Sfondo"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:104
 msgid "Black"
-msgstr ""
+msgstr "Nero"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:89
 msgid "Choose Social Network"
-msgstr ""
+msgstr "Scegli Social Network"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:119
 msgid "Edit %{network} Profile"
-msgstr ""
+msgstr "Modifica Profilo %{network}"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:125
 msgid "Edit Custom Social Network"
-msgstr ""
+msgstr "Modifica Social Network Personalizzato"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:101
 msgid "Icon Color"
-msgstr ""
+msgstr "Colore Icona"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:134
 msgid "Icon URL (e.g. https://example.com/icon.png)"
-msgstr ""
+msgstr "URL icona (es.https://example.com/icon.png)"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:155
 msgid "Large"
-msgstr ""
+msgstr "Grande"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:152
 msgid "Medium"
-msgstr ""
+msgstr "Medio"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:86
 msgid "Other (Custom)"
-msgstr ""
+msgstr "Altro (Personalizzato)"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:131
 msgid "Platform name (e.g. Mastodon)"
-msgstr ""
+msgstr "Nome piattaforma (es. Mastodon)"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:137
 msgid "Profile URL (e.g., https://example.com/yourprofile)"
-msgstr ""
+msgstr "URL profilo (es. https://example.com/yourprofile)"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:83
 msgid "Select a site..."
-msgstr ""
+msgstr "Seleziona un sito..."
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:149
 msgid "Small"
-msgstr ""
+msgstr "Piccolo"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:77
 msgid "Social Icons"
-msgstr ""
+msgstr "Icone Social"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:107
 msgid "White"
-msgstr ""
+msgstr "Bianco"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:128
 msgid "https://example.com/yourprofile"
-msgstr ""
+msgstr "https://example.com/yourprofile"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:469
 msgid ""
 "  Custom URL to which users are redirected when a double opt-in link\n"
 "  has expired or has already been used.\n"
 msgstr ""
+"  URL personalizzato a cui saranno reindirizzati gli utenti quando un link "
+"di doppia adesione\n"
+"  è scaduto o è già stato usato.\n"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:454
 msgid ""
 "  Custom message that is shown when a double opt-in link has expired or\n"
 "  has already been used.\n"
 msgstr ""
+"  Messaggio personalizzato che viene mostrato quando un link di doppia "
+"adesione è scaduto o\n"
+"  è già stato usato.\n"
 
 #: lib/keila_web/views/segment_view.ex:132
 msgid "Any campaign"
-msgstr ""
+msgstr "Ogni campagna"
 
 #: lib/keila_web/templates/public_form/double_opt_in_failure.html.heex:15
 msgid "Back to form"
-msgstr ""
+msgstr "Indietro al modulo"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:451
 msgid "Double Opt-in Failure Message"
-msgstr ""
+msgstr "Messaggio Fallimento Doppia Adesione"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:466
 msgid "Double Opt-in Failure Redirect URL"
-msgstr ""
+msgstr "URL Reindirizzamento Fallimento Doppia Adesione"
 
 #: lib/keila_web/templates/sender/edit_live.html.heex:84
 msgid "Email verified"
-msgstr ""
+msgstr "Email verificata"
 
 #: lib/keila_web/templates/sender/edit_live.html.heex:147
 msgid ""
@@ -3080,95 +3094,104 @@ msgid ""
 "the one specified above, you can configure an alternative email address and "
 "name here."
 msgstr ""
+"Se vuoi che le risposte alla tua newsletter vadano ad un indirizzo "
+"differente da quello specificato sopra puoi configurare un indirizzo email e "
+"nome alternativo qui."
 
 #: lib/keila_web/live/segment_edit_live.ex:14
 msgid "Messages"
-msgstr ""
+msgstr "Messaggi"
 
 #: lib/keila_web/templates/public_form/double_opt_in_failure.html.heex:11
 msgid "Please submit the form again to receive a new confirmation link."
-msgstr ""
+msgstr "Invia il modulo ancora per ricevere un nuovo link di conferma."
 
 #: lib/keila_web/templates/sender/edit_live.html.heex:144
 msgid "Reply-to settings"
-msgstr ""
+msgstr "Impostazioni risposte"
 
 #: lib/keila_web/templates/public_form/double_opt_in_failure.html.heex:7
 msgid "This confirmation link has expired or has already been used."
-msgstr ""
+msgstr "Questo link di conferma è scaduto o è già stato usato."
 
 #: lib/keila_web/templates/sender/edit_live.html.heex:128
 msgid "This is the email address from which your emails will be sent."
-msgstr ""
+msgstr "Questo è l'indirizzo email a cui le tue email saranno inviate."
 
 #: lib/keila_web/templates/sender/edit_live.html.heex:113
 msgid ""
 "This is the internal name of your sender. It is not shown to your recipients."
 msgstr ""
+"Questo è il nome interno del tuo mittente. Non sarà mostrato ai tuoi "
+"destinatari."
 
 #: lib/keila_web/templates/sender/edit_live.html.heex:138
 msgid "This is the name that will show up in the inbox of your recipients."
 msgstr ""
+"Questo è il nome che sarà mostrato nella posta in arrivo dei tuoi "
+"destinatari."
 
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:223
 msgid ""
 "To prevent abuse by spammers, sending emails is only possible once your "
 "onboarding has been completed."
 msgstr ""
+"Per prevenire abusi dagli spammer l'invio di email è possibile solo dopo che "
+"l'onboarding sarà completato."
 
 #: lib/keila_web/live/segment_edit_live.ex:64
 msgid "bounced"
-msgstr ""
+msgstr "rimbalzato"
 
 #: lib/keila_web/live/segment_edit_live.ex:62
 msgid "clicked"
-msgstr ""
+msgstr "cliccato"
 
 #: lib/keila_web/live/segment_edit_live.ex:66
 msgid "complaint received"
-msgstr ""
+msgstr "reclamo ricevuto"
 
 #: lib/keila_web/live/segment_edit_live.ex:33
 #: lib/keila_web/live/segment_edit_live.ex:41
 #: lib/keila_web/live/segment_edit_live.ex:49
 #: lib/keila_web/live/segment_edit_live.ex:54
 msgid "is empty"
-msgstr ""
+msgstr "è vuoto"
 
 #: lib/keila_web/live/segment_edit_live.ex:34
 #: lib/keila_web/live/segment_edit_live.ex:42
 #: lib/keila_web/live/segment_edit_live.ex:50
 #: lib/keila_web/live/segment_edit_live.ex:55
 msgid "is not empty"
-msgstr ""
+msgstr "non è vuoto"
 
 #: lib/keila_web/live/segment_edit_live.ex:67
 msgid "no complaint received"
-msgstr ""
+msgstr "nessun reclamo ricevuto"
 
 #: lib/keila_web/live/segment_edit_live.ex:65
 msgid "not bounced"
-msgstr ""
+msgstr "non rimbalzato"
 
 #: lib/keila_web/live/segment_edit_live.ex:63
 msgid "not clicked"
-msgstr ""
+msgstr "non cliccato"
 
 #: lib/keila_web/live/segment_edit_live.ex:61
 msgid "not opened"
-msgstr ""
+msgstr "non aperto"
 
 #: lib/keila_web/live/segment_edit_live.ex:59
 msgid "not received"
-msgstr ""
+msgstr "non ricevuto"
 
 #: lib/keila_web/live/segment_edit_live.ex:60
 msgid "opened"
-msgstr ""
+msgstr "aperto"
 
 #: lib/keila_web/live/segment_edit_live.ex:58
 msgid "received"
-msgstr ""
+msgstr "ricevuto"
 
 #: lib/keila_web/templates/contact/import_live.html.heex:147
 msgid ""
@@ -3181,17 +3204,28 @@ msgid ""
 "    - **Field delimiter:** *, (Comma)*\n"
 "    - **String delimiter:** *\" (Double Quote)*\n"
 msgstr ""
+"1. Scarica il modello.\n"
+"2. Riempi il modello nello stesso modo in cui sono stati riempiti i dati di "
+"esempio.\n"
+"3. Clicca su *File*, quindi *Salva come*. Seleziona *Testo CSV (.csv)* e "
+"salva il file.\n"
+"    Nella seguente finestra di dialogo scegli\n"
+"    - **Set caratteri:** *Unicode (UTF-8)*\n"
+"    - **Delimitatori di campo:** *, (Virgola)*\n"
+"    - **Delimitatori stringa:** *\" (Doppio apice)*\n"
 
 #: lib/keila_web/templates/sender/edit_live.html.heex:72
 msgid "Resend email"
-msgstr ""
+msgstr "Invia nuovamente mail"
 
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:245
 msgid "Review account information"
-msgstr ""
+msgstr "Verifica informazioni account"
 
 #: lib/keila_web/templates/sender/edit_live.html.heex:53
 msgid ""
 "We have sent you an email to *%{email}*. \\nPlease click on the link in the "
 "email to verify your email address.\n"
 msgstr ""
+"Ti abbiamo inviato una email a *%{email}*.\\nClicca sul link nella email per "
+"verificare il tuo indirizzo email.\n"
