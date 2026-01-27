@@ -6,6 +6,7 @@ defmodule Keila.FilesTest do
 
   @test_file "test/keila/files/keila.png"
   @test_file_jpg "test/keila/files/keila.jpg"
+  @test_file_webp "test/keila/files/keila.webp"
 
   @tag :files
   test "Test media type by filename and file signature" do
@@ -14,11 +15,15 @@ defmodule Keila.FilesTest do
 
     assert {:ok, "image/jpeg"} = Files.MediaType.type_from_filename(@test_file_jpg)
     assert {:ok, "image/jpeg"} = Files.MediaType.type_from_magic_number(@test_file_jpg)
+
+    assert {:ok, "image/webp"} = Files.MediaType.type_from_filename(@test_file_webp)
+    assert {:ok, "image/webp"} = Files.MediaType.type_from_magic_number(@test_file_webp)
   end
 
   @tag :files
   test "Store file, get URL, delete file" do
-    project = insert!(:project)
+    group = insert!(:group)
+    project = insert!(:project, group: group)
 
     assert {:ok, file} =
              Files.store_file(project.id, @test_file,
@@ -35,7 +40,8 @@ defmodule Keila.FilesTest do
 
   @tag :files
   test "detect file usage in campaigns" do
-    project = insert!(:project)
+    group = insert!(:group)
+    project = insert!(:project, group: group)
 
     # Store a file
     {:ok, file} =
@@ -63,15 +69,16 @@ defmodule Keila.FilesTest do
     assert length(url_results) == 1
     assert campaign_with_url.id in Enum.map(url_results, & &1.id)
 
-    other_project = insert!(:project)
+    other_project = insert!(:project, group: group)
     other_results = Mailings.search_in_project_campaigns(other_project.id, file.uuid)
     assert Enum.empty?(other_results)
   end
 
   @tag :files
   test "Get project files" do
-    project = insert!(:project)
-    project2 = insert!(:project)
+    group = insert!(:group)
+    project = insert!(:project, group: group)
+    project2 = insert!(:project, group: group)
 
     for _n <- 1..10 do
       {:ok, file} =
@@ -86,15 +93,18 @@ defmodule Keila.FilesTest do
 
   @tag :files
   test "Get project file" do
-    project = insert!(:project)
-    file = insert!(:file, project: project)
+    group = insert!(:group)
+    project = insert!(:project, group: group)
+    %{uuid: uuid, adapter: adapter, filename: filename} = insert!(:file, project: project)
 
-    assert Files.get_project_file(project.id, file.uuid) == file
+    assert %{uuid: ^uuid, adapter: ^adapter, filename: ^filename} =
+             Files.get_project_file(project.id, uuid)
   end
 
   @tag :files
   test "Media type and extension match check" do
-    project = insert!(:project)
+    group = insert!(:group)
+    project = insert!(:project, group: group)
 
     assert {:error, :type_mismatch} =
              Files.store_file(project.id, @test_file,
@@ -105,14 +115,16 @@ defmodule Keila.FilesTest do
 
   @tag :files
   test "Verify media type" do
-    project = insert!(:project)
+    group = insert!(:group)
+    project = insert!(:project, group: group)
 
     assert {:error, :type_mismatch} = Files.store_file(project.id, @test_file, type: "image/jpeg")
   end
 
   @tag :files
   test "Verify file extension" do
-    project = insert!(:project)
+    group = insert!(:group)
+    project = insert!(:project, group: group)
 
     assert {:error, :type_mismatch} =
              Files.store_file(project.id, @test_file, filename: "keila.jpg")

@@ -1,26 +1,24 @@
-<% f = form_for(@changeset, "#") %>
-
 <div class="relative shadow z-10 flex overflow-x-auto mt-4">
   <button
     title={gettext("Link")}
     class="flex w-10 h-10 p-2 items-center justify-center bg-gray-800 hover:bg-gray-600 text-white"
     @click.prevent="$dispatch('x-show-link-dialog')"
   >
-    <%= render_icon(:link) %>
+    {render_icon(:link)}
   </button>
   <button
     title={gettext("Image")}
     class="flex w-10 h-10 p-2 items-center justify-center bg-gray-800 hover:bg-gray-600 text-white"
     @click.prevent="$dispatch('x-show-image-dialog')"
   >
-    <%= render_icon(:photograph) %>
+    {render_icon(:photograph)}
   </button>
   <button
     title={gettext("Button")}
     class="flex w-10 h-10 p-2 items-center justify-center bg-gray-800 hover:bg-gray-600 text-white"
     @click.prevent="$dispatch('x-show-button-dialog')"
   >
-    <%= render_icon(:button_alt) %>
+    {render_icon(:button_alt)}
   </button>
   <div class="flex-grow"></div>
   <button
@@ -28,14 +26,16 @@
     class="flex w-10 h-10 p-2 items-center justify-center bg-gray-800 hover:bg-gray-600 text-white"
     x-on:click.prevent="$dispatch('x-toggle-preview')"
   >
-    <%= render_icon(:eye) %>
+    {render_icon(:eye)}
   </button>
 </div>
 <div class="flex gap-4">
-  <%= textarea(f, :text_body,
-    class:
-      "bg-gray-900 border-none appearance-none resize-y h-[calc(100vh-190px)] max-h-[1080px] flex-grow w-1/2"
-  ) %>
+  <.form :let={f} for={@changeset}>
+    {textarea(f, :text_body,
+      rows: 20,
+      class: "bg-gray-900 border-none appearance-none resize-y flex-grow w-1/2 h-[calc(100vh-190px)] max-h-[1080px] "
+    )}
+  </.form>
   <div
     id="preview-container-simple-markdown"
     class="w-1/2 flex-grow flex flex-col"
@@ -55,6 +55,6 @@
     class="hidden"
     data-iframe="#html-preview, #html-inline-preview"
   >
-    <%= @preview %>
+    {@preview}
   </div>
 </div>

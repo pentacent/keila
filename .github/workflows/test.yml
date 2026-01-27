@@ -68,7 +68,7 @@ jobs:
         run: |
           export DPRINT_INSTALL="$HOME/.dprint"
           mkdir -p "$DPRINT_INSTALL/bin"
-          curl -fsSL https://github.com/dprint/dprint/releases/download/0.36.0/dprint-x86_64-unknown-linux-musl.zip -o "$DPRINT_INSTALL/bin/dprint.zip"
+          curl -fsSL https://github.com/dprint/dprint/releases/download/0.51.1/dprint-x86_64-unknown-linux-musl.zip -o "$DPRINT_INSTALL/bin/dprint.zip"
           unzip "$DPRINT_INSTALL/bin/dprint.zip" -d "$DPRINT_INSTALL/bin/"
           chmod +x "$DPRINT_INSTALL/bin/dprint"
           export PATH="$PATH:$DPRINT_INSTALL/bin"

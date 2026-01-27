@@ -88,8 +88,8 @@ defmodule KeilaWeb.ContactImportLive do
   end
 
   @impl true
-  def terminate(:normal, socket) do
-    if socket.assigns.csv_filename do
+  def terminate(_, socket) do
+    if socket.assigns[:csv_filename] do
       File.rm(socket.assigns.csv_filename)
     end
   end

@@ -1,7 +1,7 @@
 defmodule Keila.Auth.Emails do
-  import Swoosh.Email
   # FIXME Don't depend on Web App here
-  import KeilaWeb.Gettext
+  use KeilaWeb.Gettext
+  import Swoosh.Email
 
   @spec send!(atom(), map()) :: term() | no_return()
   def send!(email, params) do

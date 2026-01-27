@@ -64,10 +64,11 @@ defmodule KeilaWeb.Router do
 
     get "/account", AccountController, :edit
     put "/account", AccountController, :post_edit
-    get "/account/await-subscription", AccountController, :await_subscription
 
     Keila.if_cloud do
       get "/account/onboarding", CloudAccountController, :onboarding
+      get "/account/await-subscription", CloudAccountController, :await_subscription
+      delete "/account/subscription", CloudAccountController, :delete_subscription
     end
 
     get "/", ProjectController, :index
@@ -236,8 +237,11 @@ defmodule KeilaWeb.Router do
   scope "/api/webhooks", KeilaWeb do
     pipe_through :api
 
-    post "/paddle", PaddleWebhookController, :webhook
     post "/senders/ses", SESWebhookController, :webhook
+
+    Keila.if_cloud do
+      post "/paddle", CloudPaddleWebhookController, :webhook
+    end
   end
 
   # Enables LiveDashboard only for development

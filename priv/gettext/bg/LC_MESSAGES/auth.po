@@ -1,0 +1,223 @@
+## "msgid"s in this file come from POT (.pot) files.
+##
+## Do not add, change, or remove "msgid"s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
+##
+## Use "mix gettext.extract --merge" or "mix gettext.merge"
+## to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: bg\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/keila_web/controllers/auth_controller.ex:78
+#, elixir-autogen, elixir-format
+msgid "Activation required"
+msgstr "Необходима e активирация"
+
+#: lib/keila_web/controllers/auth_controller.ex:66
+#, elixir-autogen, elixir-format
+msgid "Activation successful"
+msgstr "Активирация беше успешна"
+
+#: lib/keila_web/templates/auth/activate_resend_success.html.heex:4
+#: lib/keila_web/templates/auth/register_success.html.heex:4
+#: lib/keila_web/templates/auth/reset_success.html.heex:4
+#, elixir-autogen, elixir-format
+msgid "Check your inbox!"
+msgstr "Проверете пощенската си кутия!"
+
+#: lib/keila_web/templates/auth/login.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Don’t have an account?"
+msgstr "Нямате акаунт?"
+
+#: lib/keila_web/templates/auth/login.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Forgot your password?"
+msgstr "Забравena парола?"
+
+#: lib/keila_web/templates/auth/activate_success.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "Get started!"
+msgstr "Започнете сега!"
+
+#: lib/keila/auth/emails.ex:46
+#, elixir-autogen, elixir-format
+msgid "Hey there,\n\nplease confirm your new email address by visiting the following link:\n\n%{url}\n\nIf you weren’t trying to change your email address, simply ignore this message.\n"
+msgstr "Здравейте,\n\nмоля, потвърдете новия си имейл адрес, като посетите следния линк:\n\n%{url}\n\nАко не се желаете да смените имейл адреса си, просто не обръщайте внимание на това съобщение.\n"
+
+#: lib/keila/auth/emails.ex:95
+#, elixir-autogen, elixir-format
+msgid "Hey there,\n\nyou can login to Keila with the following link:\n\n%{url}\n\nIf you haven’t requested a login, simply ignore this message.\n"
+msgstr "Здравейте,\n\nможете да влезете в Keila с този линк:\n\n%{url}\n\nАко не сте искали вход, просто не обръщайте внимание на това съобщение.\n"
+
+#: lib/keila/auth/emails.ex:70
+#, elixir-autogen, elixir-format
+msgid "Hey there,\n\nyou have requested a password reset for your Keila account.\n\nYou can set a new password by visiting the following link:\n\n%{url}\n\nIf you weren’t trying to reset your password, simply ignore this message.\n"
+msgstr "Здравейте,\n\nвие сте поискали възстановяване на паролата за вашия Keila акаунт.\n\nМожете да зададете нова парола, като посетите следния линк:\n\n%{url}\n\nАко не се опитвахте да възстановите паролата си, просто не обръщайте внимание на това съобщение.\n"
+
+#: lib/keila_web/templates/auth/reset_success.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "If you have an account, we’ve sent you a verification link to %{email}."
+msgstr "Ако имате акаунт, ще ви изпратим линк за потвърждение на %{email}."
+
+#: lib/keila_web/templates/auth/404.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "It seems like your link has expired or is invalid."
+msgstr "Изглежда, че линкът ви е изтекъл или е невалиден."
+
+#: lib/keila_web/controllers/account_controller.ex:46
+#, elixir-autogen, elixir-format
+msgid "Manage Account"
+msgstr "Управление на акаунта"
+
+#: lib/keila_web/controllers/account_controller.ex:19
+#, elixir-autogen, elixir-format
+msgid "New password saved."
+msgstr "Новата парола e запазена."
+
+#: lib/keila_web/controllers/auth_controller.ex:205
+#, elixir-autogen, elixir-format
+msgid "Not found"
+msgstr "Не е намерено"
+
+#: lib/keila_web/controllers/auth_controller.ex:116
+#: lib/keila_web/controllers/auth_controller.ex:129
+#: lib/keila_web/controllers/auth_controller.ex:162
+#, elixir-autogen, elixir-format
+msgid "Password reset"
+msgstr "Възстановяване на парола"
+
+#: lib/keila_web/controllers/auth_controller.ex:149
+#, elixir-autogen, elixir-format
+msgid "Password reset successful"
+msgstr "Възстановяването на парола беше успешно"
+
+#: lib/keila/auth/emails.ex:19
+#, elixir-autogen, elixir-format
+msgid "Please Verify Your Account"
+msgstr "Моля, потвърдете акаунта си"
+
+#: lib/keila/auth/emails.ex:43
+#, elixir-autogen, elixir-format
+msgid "Please Verify Your Email"
+msgstr "Моля, потвърдете имейла си"
+
+#: lib/keila_web/templates/auth/activate_required.html.heex:4
+#, elixir-autogen, elixir-format
+msgid "Please activate your account first."
+msgstr "Моля, първо активирайте акаунта си"
+
+#: lib/keila_web/controllers/auth_controller.ex:42
+#: lib/keila_web/controllers/public_form_controller.ex:62
+#, elixir-autogen, elixir-format
+msgid "Please complete the captcha."
+msgstr "Моля, попълнете капчата."
+
+#: lib/keila_web/templates/auth/activate_required.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Resend activation link"
+msgstr "Изпрати линк за активиране от отново"
+
+#: lib/keila_web/templates/auth/login.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "Reset your password."
+msgstr "Възстановете паролата си."
+
+#: lib/keila_web/controllers/auth_controller.ex:185
+#: lib/keila_web/templates/auth/login.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Sign in"
+msgstr "Вход"
+
+#: lib/keila_web/templates/auth/login.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Sign in with your email address and password here."
+msgstr "Влезете с имел и парола от тук."
+
+#: lib/keila_web/templates/auth/login.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Sign in."
+msgstr "Вход."
+
+#: lib/keila_web/controllers/auth_controller.ex:56
+#, elixir-autogen, elixir-format
+msgid "Sign up"
+msgstr "Регистрация"
+
+#: lib/keila_web/controllers/auth_controller.ex:31
+#, elixir-autogen, elixir-format
+msgid "Sign up successful"
+msgstr "Регистрацията беше успешна"
+
+#: lib/keila_web/templates/auth/login.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "Sign up."
+msgstr "Регистрация."
+
+#: lib/keila_web/templates/auth/activate_success.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Thanks for verifying your email."
+msgstr "Благодарим ви, че потвърдихте имейла си."
+
+#: lib/keila_web/templates/auth/404.html.heex:4
+#, elixir-autogen, elixir-format
+msgid "That didn’t work :-("
+msgstr "Това не стана :-("
+
+#: lib/keila_web/templates/auth/activate_success.html.heex:4
+#, elixir-autogen, elixir-format
+msgid "Welcome to Keila!"
+msgstr "Добре дошли в Keila!"
+
+#: lib/keila/auth/emails.ex:22
+#, elixir-autogen, elixir-format
+msgid "Welcome to Keila,\n\nplease confirm your new account by visiting the following link:\n\n%{url}\n\nIf you weren’t trying to create an account, simply ignore this message.\n"
+msgstr "Добре дошли в Keila,\n\nмоля, потвърдете новия си акаунт, като посетите следния линк:\n\n%{url}\n\nАко не се опитвахте да създадете акаунт, просто не обръщайте внимание на това съобщение.\n"
+
+#: lib/keila_web/templates/auth/activate_resend_success.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "We’ve resent your verification link to %{email}."
+msgstr "Изпратихме отново линка за потвърждение на %{email}."
+
+#: lib/keila_web/templates/auth/register_success.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "We’ve sent you a verification link to %{email}."
+msgstr "Изпратихме ви линк за потвърждение на %{email}."
+
+#: lib/keila_web/templates/auth/reset_change_password_success.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "You can now continue using Keila."
+msgstr "Вече можете да използвате Keila."
+
+#: lib/keila_web/templates/auth/activate_required.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "You need to verify your email before you can use Keila. Please check your inbox."
+msgstr "Трябва да потвърдите имейла си, преди да може да използвате Keila. Моля, проверете пощенската си кутия."
+
+#: lib/keila/auth/emails.ex:66
+#, elixir-autogen, elixir-format
+msgid "Your Account Reset Link"
+msgstr "Линк за възстановяване на акаунта ви"
+
+#: lib/keila/auth/emails.ex:91
+#, elixir-autogen, elixir-format
+msgid "Your Login Link"
+msgstr "Линк за вход"
+
+#: lib/keila_web/templates/auth/reset_change_password_success.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "Log in with your new password"
+msgstr "Влезете с новата си парола"
+
+#: lib/keila/auth/emails.ex:119
+#, elixir-autogen, elixir-format
+msgid "Hey there,\n\nplease verify your sender email address by visiting the following link:\n\n%{url}\n\nIf you didn't request this verification, please ignore this message and\ndo not click on the link.\n"
+msgstr "Здравейте,\n\nмоля, потвърдете имейл адреса за подател, като посетите следния линк:\n\n%{url}\n\nАко не сте поискали това потвърждение, моля не обръщайте внимание на това съобщение и\nне кликайте на линка.\n"
+
+#: lib/keila/auth/emails.ex:115
+#, elixir-autogen, elixir-format
+msgid "Please Verify Your Email for Keila"
+msgstr "Моля, потвърдете имейла си за Keila"

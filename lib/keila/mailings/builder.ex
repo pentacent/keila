@@ -42,7 +42,10 @@ defmodule Keila.Mailings.Builder do
         contact = %Contact{} -> {%Recipient{id: @placeholder_recipient_id}, contact}
       end
 
-    unsubscribe_link = Keila.Mailings.get_unsubscribe_link(campaign.project_id, recipient.id)
+    unsubscribe_link =
+      Map.get_lazy(assigns, "unsubscribe_link", fn ->
+        Keila.Mailings.get_unsubscribe_link(campaign.project_id, recipient.id)
+      end)
 
     assigns =
       assigns
@@ -85,7 +88,7 @@ defmodule Keila.Mailings.Builder do
   @spec build_preview(campaign :: Campaign.t(), contact :: Contact.t()) :: Email.t()
   def build_preview(campaign, contact \\ @default_contact) do
     %{campaign | sender: @default_sender}
-    |> build(contact)
+    |> build(contact, %{"unsubscribe_link" => "#unsubscribe-preview-link"})
   end
 
   defp put_template_assigns(assigns, %Template{assigns: template_assigns = %{}}),

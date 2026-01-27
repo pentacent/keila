@@ -1,0 +1,306 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new translations manually only if they're dynamic
+#  translations that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here as no
+#  effect: edit them in PO (.po) files instead.
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+#: lib/keila_web/controllers/auth_controller.ex:78
+#, elixir-autogen, elixir-format
+msgid "Activation required"
+msgstr "Aktiválás szükséges"
+
+#: lib/keila_web/controllers/auth_controller.ex:66
+#, elixir-autogen, elixir-format
+msgid "Activation successful"
+msgstr "Aktiválás sikeres"
+
+#: lib/keila_web/templates/auth/activate_resend_success.html.heex:4
+#: lib/keila_web/templates/auth/register_success.html.heex:4
+#: lib/keila_web/templates/auth/reset_success.html.heex:4
+#, elixir-autogen, elixir-format
+msgid "Check your inbox!"
+msgstr "Ellenőrizze a beérkező leveleit!"
+
+#: lib/keila_web/templates/auth/login.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Don’t have an account?"
+msgstr "Nincs fiókja?"
+
+#: lib/keila_web/templates/auth/login.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Forgot your password?"
+msgstr "Elfelejtette a jelszavát?"
+
+#: lib/keila_web/templates/auth/activate_success.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "Get started!"
+msgstr "Kezdés!"
+
+#: lib/keila/auth/emails.ex:46
+#, elixir-autogen, elixir-format
+msgid ""
+"Hey there,\n"
+"\n"
+"please confirm your new email address by visiting the following link:\n"
+"\n"
+"%{url}\n"
+"\n"
+"If you weren’t trying to change your email address, simply ignore this message.\n"
+msgstr ""
+"Üdvözöljük!\n"
+"\n"
+"kérjük, erősítse meg új e-mail címét az alábbi link meglátogatásával:\n"
+"\n"
+"%{url}\n"
+"\n"
+"Ha nem Ön próbálta megváltoztatni az e-mail címét, egyszerűen hagyja figyelmen kívül ezt az üzenetet.\n"
+
+#: lib/keila/auth/emails.ex:95
+#, elixir-autogen, elixir-format
+msgid ""
+"Hey there,\n"
+"\n"
+"you can login to Keila with the following link:\n"
+"\n"
+"%{url}\n"
+"\n"
+"If you haven’t requested a login, simply ignore this message.\n"
+msgstr ""
+"Üdvözöljük!\n"
+"\n"
+"az alábbi linken tud bejelentkezni a Keilába:\n"
+"\n"
+"%{url}\n"
+"\n"
+"Ha nem kért bejelentkezést, egyszerűen hagyja figyelmen kívül ezt az üzenetet.\n"
+
+#: lib/keila/auth/emails.ex:70
+#, elixir-autogen, elixir-format
+msgid ""
+"Hey there,\n"
+"\n"
+"you have requested a password reset for your Keila account.\n"
+"\n"
+"You can set a new password by visiting the following link:\n"
+"\n"
+"%{url}\n"
+"\n"
+"If you weren’t trying to reset your password, simply ignore this message.\n"
+msgstr ""
+"Üdvözöljük!\n"
+"\n"
+"jelszó-visszaállítást kért a Keila-fiókjához.\n"
+"\n"
+"Új jelszót az alábbi link meglátogatásával állíthat be:\n"
+"\n"
+"%{url}\n"
+"\n"
+"Ha nem Ön próbálta visszaállítani a jelszavát, egyszerűen hagyja figyelmen kívül ezt az üzenetet.\n"
+
+#: lib/keila_web/templates/auth/reset_success.html.heex:7
+#, elixir-autogen, elixir-format
+msgid ""
+"If you have an account, we’ve sent you a verification link to %{email}."
+msgstr "Ha van fiókja, elküldtünk egy ellenőrző linket a(z) %{email} címre."
+
+#: lib/keila_web/templates/auth/404.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "It seems like your link has expired or is invalid."
+msgstr "Úgy tűnik, a linkje lejárt vagy érvénytelen."
+
+#: lib/keila_web/controllers/account_controller.ex:46
+#, elixir-autogen, elixir-format
+msgid "Manage Account"
+msgstr "Fiók kezelése"
+
+#: lib/keila_web/controllers/account_controller.ex:19
+#, elixir-autogen, elixir-format
+msgid "New password saved."
+msgstr "Az új jelszó mentve."
+
+#: lib/keila_web/controllers/auth_controller.ex:205
+#, elixir-autogen, elixir-format
+msgid "Not found"
+msgstr "Nem található"
+
+#: lib/keila_web/controllers/auth_controller.ex:116
+#: lib/keila_web/controllers/auth_controller.ex:129
+#: lib/keila_web/controllers/auth_controller.ex:162
+#, elixir-autogen, elixir-format
+msgid "Password reset"
+msgstr "Jelszó visszaállítása"
+
+#: lib/keila_web/controllers/auth_controller.ex:149
+#, elixir-autogen, elixir-format
+msgid "Password reset successful"
+msgstr "Jelszó-visszaállítás sikeres"
+
+#: lib/keila/auth/emails.ex:19
+#, elixir-autogen, elixir-format
+msgid "Please Verify Your Account"
+msgstr "Kérjük, erősítse meg fiókját"
+
+#: lib/keila/auth/emails.ex:43
+#, elixir-autogen, elixir-format
+msgid "Please Verify Your Email"
+msgstr "Kérjük, erősítse meg e-mail címét"
+
+#: lib/keila_web/templates/auth/activate_required.html.heex:4
+#, elixir-autogen, elixir-format
+msgid "Please activate your account first."
+msgstr "Kérjük, először aktiválja fiókját."
+
+#: lib/keila_web/controllers/auth_controller.ex:42
+#: lib/keila_web/controllers/public_form_controller.ex:62
+#, elixir-autogen, elixir-format
+msgid "Please complete the captcha."
+msgstr "Kérjük, töltse ki a captchát."
+
+#: lib/keila_web/templates/auth/activate_required.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Resend activation link"
+msgstr "Aktiválási link újraküldése"
+
+#: lib/keila_web/templates/auth/login.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "Reset your password."
+msgstr "Állítsa vissza a jelszavát."
+
+#: lib/keila_web/controllers/auth_controller.ex:185
+#: lib/keila_web/templates/auth/login.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Sign in"
+msgstr "Bejelentkezés"
+
+#: lib/keila_web/templates/auth/login.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Sign in with your email address and password here."
+msgstr "Itt jelentkezhet be e-mail címével és jelszavával."
+
+#: lib/keila_web/templates/auth/login.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Sign in."
+msgstr "Bejelentkezés."
+
+#: lib/keila_web/controllers/auth_controller.ex:56
+#, elixir-autogen, elixir-format
+msgid "Sign up"
+msgstr "Regisztráció"
+
+#: lib/keila_web/controllers/auth_controller.ex:31
+#, elixir-autogen, elixir-format
+msgid "Sign up successful"
+msgstr "Sikeres regisztráció"
+
+#: lib/keila_web/templates/auth/login.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "Sign up."
+msgstr "Regisztráció."
+
+#: lib/keila_web/templates/auth/activate_success.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Thanks for verifying your email."
+msgstr "Köszönjük, hogy megerősítette e-mail címét."
+
+#: lib/keila_web/templates/auth/404.html.heex:4
+#, elixir-autogen, elixir-format
+msgid "That didn’t work :-("
+msgstr "Ez nem sikerült :-("
+
+#: lib/keila_web/templates/auth/activate_success.html.heex:4
+#, elixir-autogen, elixir-format
+msgid "Welcome to Keila!"
+msgstr "Üdvözöljük a Keilában!"
+
+#: lib/keila/auth/emails.ex:22
+#, elixir-autogen, elixir-format
+msgid ""
+"Welcome to Keila,\n"
+"\n"
+"please confirm your new account by visiting the following link:\n"
+"\n"
+"%{url}\n"
+"\n"
+"If you weren’t trying to create an account, simply ignore this message.\n"
+msgstr ""
+"Üdvözöljük a Keilában!\n"
+"\n"
+"kérjük, erősítse meg új fiókját az alábbi link meglátogatásával:\n"
+"\n"
+"%{url}\n"
+"\n"
+"Ha nem Ön próbált fiókot létrehozni, egyszerűen hagyja figyelmen kívül ezt az üzenetet.\n"
+
+#: lib/keila_web/templates/auth/activate_resend_success.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "We’ve resent your verification link to %{email}."
+msgstr "Újraküldtük az ellenőrző linkjét a(z) %{email} címre."
+
+#: lib/keila_web/templates/auth/register_success.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "We’ve sent you a verification link to %{email}."
+msgstr "Elküldtünk egy ellenőrző linket a(z) %{email} címre."
+
+#: lib/keila_web/templates/auth/reset_change_password_success.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "You can now continue using Keila."
+msgstr "Most már folytathatja a Keila használatát."
+
+#: lib/keila_web/templates/auth/activate_required.html.heex:7
+#, elixir-autogen, elixir-format
+msgid ""
+"You need to verify your email before you can use Keila. Please check your "
+"inbox."
+msgstr ""
+"A Keila használatához előbb meg kell erősítenie e-mail címét. Kérjük, "
+"ellenőrizze beérkező leveleit."
+
+#: lib/keila/auth/emails.ex:66
+#, elixir-autogen, elixir-format
+msgid "Your Account Reset Link"
+msgstr "Fiók-visszaállítási linkje"
+
+#: lib/keila/auth/emails.ex:91
+#, elixir-autogen, elixir-format
+msgid "Your Login Link"
+msgstr "Bejelentkezési linkje"
+
+#: lib/keila_web/templates/auth/reset_change_password_success.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "Log in with your new password"
+msgstr "Jelentkezzen be új jelszavával"
+
+#: lib/keila/auth/emails.ex:119
+#, elixir-autogen, elixir-format
+msgid ""
+"Hey there,\n"
+"\n"
+"please verify your sender email address by visiting the following link:\n"
+"\n"
+"%{url}\n"
+"\n"
+"If you didn't request this verification, please ignore this message and\n"
+"do not click on the link.\n"
+msgstr ""
+"Üdvözöljük!\n"
+"\n"
+"kérjük, erősítse meg a feladó e-mail címét az alábbi link meglátogatásával:\n"
+"\n"
+"%{url}\n"
+"\n"
+"Ha nem Ön kérte ezt az ellenőrzést, kérjük, hagyja figyelmen kívül ezt az üzenetet, és\n"
+"ne kattintson a linkre.\n"
+
+#: lib/keila/auth/emails.ex:115
+#, elixir-autogen, elixir-format
+msgid "Please Verify Your Email for Keila"
+msgstr "Kérjük, erősítse meg e-mail címét a Keilához"

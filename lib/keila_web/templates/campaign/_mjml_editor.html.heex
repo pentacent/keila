@@ -1,18 +1,18 @@
-<div id="mjml-editor-toolbar" class="w-full" phx-update="ignore">
+<div id="mjml-editor-toolbar" class="w-full sticky top-0 z-10" phx-update="ignore">
   <div class="wysiwyg--menu bg-white relative shadow z-10 flex overflow-x-auto mt-4">
     <button
       title={gettext("Insert image")}
       class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
       @click.prevent="$dispatch('x-show-image-dialog')"
     >
-      <%= render_icon(:photograph) %>
+      {render_icon(:photograph)}
     </button>
     <button
       title={gettext("Expand editor")}
       class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
       @click.prevent="$dispatch('x-toggle-expand-editor')"
     >
-      <%= render_icon(:arrows_expand) %>
+      {render_icon(:arrows_expand)}
     </button>
 
     <div class="flex-grow"></div>
@@ -22,7 +22,7 @@
       class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
       @click.prevent="$dispatch('x-toggle-preview')"
     >
-      <%= render_icon(:eye) %>
+      {render_icon(:eye)}
     </button>
   </div>
 </div>
@@ -51,17 +51,18 @@
   </div>
 </div>
 
-<% f = form_for(@changeset, "#") %>
-<%= textarea(f, :mjml_body,
-  rows: 20,
-  class: "hidden",
-  phx_debounce: "1000"
-) %>
+<.form :let={f} for={@changeset}>
+  {textarea(f, :mjml_body,
+    rows: 20,
+    class: "hidden",
+    phx_debounce: "1000"
+  )}
+</.form>
 <div
   id="html-preview-data"
   phx-hook="HtmlPreview"
   class="hidden"
   data-iframe="#html-inline-preview, #html-preview"
 >
-  <%= @preview %>
+  {@preview}
 </div>

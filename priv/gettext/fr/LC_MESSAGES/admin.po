@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Language: fr\n"
-"Plural-Forms: nplurals=2\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
 
 #: lib/keila_web/templates/user_admin/show_credits.html.heex:12
 #, elixir-autogen, elixir-format
@@ -33,7 +33,7 @@ msgstr "Ajouter des crédits"
 msgid "Administer Credits for %{email}"
 msgstr "Administrer les crédits pour %{email}"
 
-#: lib/keila_web/controllers/user_admin_controller.ex:16
+#: lib/keila_web/controllers/user_admin_controller.ex:17
 #, elixir-autogen, elixir-format
 msgid "Administrate Users"
 msgstr "Administrer les utilisateurs"

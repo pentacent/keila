@@ -2,7 +2,8 @@ defmodule KeilaWeb.PublicCampaignControllerTest do
   use KeilaWeb.ConnCase, async: true
 
   setup do
-    project = insert!(:project)
+    group = insert!(:group)
+    project = insert!(:project, group: group)
     {:ok, project: project}
   end
 

@@ -1,29 +1,29 @@
 <span class="hidden sm:flex h-24 w-24 grow-0 shrink-0">
-  <%= render_icon(:color_swatch) %>
+  {render_icon(:color_swatch)}
 </span>
 <div class="flex flex-col gap-4">
   <h2 class="text-xl sm:text-2xl">
-    <%= gettext("Create engaging designs and campaigns!") %>
+    {gettext("Create engaging designs and campaigns!")}
   </h2>
-  <%= gettext_md("""
+  {gettext_md("""
   You can get started sending campaigns with Keila’s default template now.
 
   To create your design, you can use the template editor.
-  """) %>
+  """)}
   <p class="flex flex-wrap gap-4">
     <a
       class="button button--cta button--large"
       href={Routes.template_path(@conn, :new, @current_project.id)}
     >
-      <%= render_icon(:document_add) %>
-      <%= gettext("Create your own design") %>
+      {render_icon(:document_add)}
+      {gettext("Create your own design")}
     </a>
     <a
       class="button button--cta button--large"
       href={Routes.campaign_path(@conn, :new, @current_project.id)}
     >
-      <%= render_icon(:document_add) %>
-      <%= gettext("Create a campaign") %>
+      {render_icon(:document_add)}
+      {gettext("Create a campaign")}
     </a>
   </p>
 </div>

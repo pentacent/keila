@@ -14,8 +14,12 @@ config :keila, KeilaWeb.ContactsCsvExport, chunk_size: 100
 # Configures the endpoint
 config :keila, KeilaWeb.Endpoint,
   url: [host: "localhost"],
+  adapter: Bandit.PhoenixAdapter,
   secret_key_base: "ipC9dsQLUBKuLmcrKzqB3m1M/Sw/53FcA1xQd1yUKdTSqjlBqL729evTWqqwd6zT",
-  render_errors: [view: KeilaWeb.ErrorView, accepts: ~w(html json), layout: false],
+  render_errors: [
+    formats: [html: KeilaWeb.ErrorView, json: KeilaWeb.ErrorView],
+    layout: false
+  ],
   pubsub_server: Keila.PubSub,
   live_view: [signing_salt: "kH+cT7XL"]
 
@@ -27,11 +31,22 @@ config :keila, Keila.Files.StorageAdapters.Local,
   dir: "./uploads"
 
 config :esbuild,
-  version: "0.12.18",
+  version: "0.17.11",
   default: [
     args: ~w(js/app.js --bundle --target=es2016 --outdir=../priv/static/js),
     cd: Path.expand("../assets", __DIR__),
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
+  ]
+
+config :tailwind,
+  version: "3.4.10",
+  default: [
+    args: ~w(
+       --config=tailwind.config.js
+       --input=css/app.scss
+       --output=../priv/static/css/app.css
+     ),
+    cd: Path.expand("../assets", __DIR__)
   ]
 
 config :keila, Keila.Id,
@@ -59,12 +74,6 @@ config :keila, Keila.Mailings.SenderAdapters,
 config :keila, Keila.Accounts,
   # Disable sending quotas by default
   credits_enabled: false
-
-config :keila, Keila.Billing,
-  # Disable subscriptions by default
-  enabled: false,
-  paddle_vendor: "2518",
-  paddle_environment: "sandbox"
 
 # Staging configuration for hCaptcha or FriendlyCaptcha
 config :keila, KeilaWeb.Captcha,
@@ -109,7 +118,7 @@ config :mime, :types, %{
 # Configure locales
 config :keila, KeilaWeb.Gettext,
   default_locale: "en",
-  locales: ["de", "en", "fr"]
+  locales: ["de", "en", "fr", "es", "hu", "bg"]
 
 config :ex_cldr,
   default_backend: Keila.Cldr

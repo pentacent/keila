@@ -1,5 +1,6 @@
 defmodule KeilaWeb.CampaignStatsLive do
   use KeilaWeb, :live_view
+  require Keila
   alias Keila.{Mailings, Tracking}
 
   @impl true
@@ -11,7 +12,12 @@ defmodule KeilaWeb.CampaignStatsLive do
     stats = Mailings.get_campaign_stats(campaign.id)
     link_stats = Tracking.get_link_stats(campaign.id)
     account = session["account"]
-    subscription = Keila.Billing.get_account_subscription(account.id)
+
+    Keila.if_cloud do
+      subscription = KeilaCloud.Billing.get_account_subscription(account.id)
+    else
+      subscription = nil
+    end
 
     socket =
       socket

@@ -4,14 +4,14 @@
     )
   >
     <h1 class="text-5xl font-bold">
-      <%= gettext("Registration disabled.") %>
+      {gettext("Registration disabled.")}
     </h1>
     <p class="text-lg text-gray-200">
-      <%= gettext("Please contact an administrator.") %>
+      {gettext("Please contact an administrator.")}
     </p>
     <p>
-      <%= gettext("Already have an account?") %>
-      <a href={Routes.auth_path(@conn, :login)} class="underline"><%= gettext("Sign in.") %></a>
+      {gettext("Already have an account?")}
+      <a href={Routes.auth_path(@conn, :login)} class="underline">{gettext("Sign in.")}</a>
     </p>
   </div>
 </div>

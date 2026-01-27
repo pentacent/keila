@@ -1,6 +1,9 @@
 defmodule KeilaWeb.FormEditLive do
   use KeilaWeb, :live_view
 
+  alias Keila.Mailings.DoubleOptInEmailBuilder
+  alias Keila.Mailings.WelcomeEmailBuilder
+
   @impl true
   def mount(_params, session, socket) do
     Gettext.put_locale(session["locale"])
@@ -16,6 +19,8 @@ defmodule KeilaWeb.FormEditLive do
       |> assign(:senders, senders)
       |> assign(:templates, templates)
       |> assign(:double_opt_in_available, session["double_opt_in_available"])
+      |> assign(:welcome_email_available, session["welcome_email_available"])
+      |> assign(:current_tab, "settings")
       |> put_default_assigns()
 
     {:ok, socket}
@@ -42,6 +47,11 @@ defmodule KeilaWeb.FormEditLive do
       |> put_default_assigns()
 
     {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("set_tab", %{"tab" => tab}, socket) do
+    {:noreply, socket |> assign(:current_tab, tab) |> put_default_assigns()}
   end
 
   @impl true
@@ -151,9 +161,20 @@ defmodule KeilaWeb.FormEditLive do
           |> Floki.parse_fragment!()
           |> Floki.raw_html(pretty: true)
 
+        double_opt_in_preview =
+          if form.settings.double_opt_in_required &&
+               socket.assigns.current_tab == "double-opt-in",
+             do: DoubleOptInEmailBuilder.build_preview(form).html_body
+
+        welcome_email_preview =
+          if form.settings.welcome_enabled && socket.assigns.current_tab == "welcome-email",
+            do: WelcomeEmailBuilder.build_preview(form).html_body
+
         socket
         |> assign(:form_preview, form)
         |> assign(:embed, embed)
+        |> assign(:welcome_email_preview, welcome_email_preview)
+        |> assign(:double_opt_in_preview, double_opt_in_preview)
 
       _other ->
         socket

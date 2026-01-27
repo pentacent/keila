@@ -12,8 +12,11 @@ defmodule Keila.ContactsFormTest do
 
   @tag :contacts_form
   test "List forms", %{project: project} do
-    forms = insert_n!(:contacts_form, 5, fn _n -> %{project_id: project.id} end)
-    assert forms == Contacts.get_project_forms(project.id)
+    forms =
+      insert_n!(:contacts_form, 5, fn _n -> %{project_id: project.id} end)
+      |> Enum.sort_by(& &1.id)
+
+    assert forms == Contacts.get_project_forms(project.id) |> Enum.sort_by(& &1.id)
   end
 
   @tag :contacts_form

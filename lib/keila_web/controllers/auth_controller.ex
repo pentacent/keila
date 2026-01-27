@@ -189,7 +189,7 @@ defmodule KeilaWeb.AuthController do
   defp do_login(conn, user) do
     conn
     |> start_auth_session(user.id)
-    |> redirect(to: "/")
+    |> redirect(to: KeilaWeb.Router.Helpers.project_path(conn, :index))
   end
 
   @spec logout(Plug.Conn.t(), map) :: Plug.Conn.t()

@@ -1,7 +1,7 @@
 defmodule Keila.Mailings.SenderAdapters.Shared.SES do
   use Keila.Mailings.SenderAdapters.Adapter
+  use KeilaWeb.Gettext
   alias KeilaWeb.Router.Helpers, as: Routes
-  require KeilaWeb.Gettext
   import Ecto.Changeset
 
   @impl true
@@ -56,10 +56,10 @@ defmodule Keila.Mailings.SenderAdapters.Shared.SES do
 
     success_url = Routes.sender_url(KeilaWeb.Endpoint, :verify_from_token, token)
     failure_url = Routes.sender_url(KeilaWeb.Endpoint, :cancel_verification_from_token, token)
-    subject = KeilaWeb.Gettext.gettext("Verify Your Email for Keila")
+    subject = gettext("Verify Your Email for Keila")
 
     content =
-      KeilaWeb.Gettext.gettext(
+      gettext(
         "Please click on the following link to verify your email address %{email} for use with Keila.",
         email: email
       )

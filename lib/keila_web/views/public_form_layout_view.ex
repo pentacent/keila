@@ -1,6 +1,6 @@
 defmodule KeilaWeb.PublicFormLayoutView do
   use KeilaWeb, :view
-  use Phoenix.HTML
+  use PhoenixHTMLHelpers
 
   def build_styles(styles) do
     styles

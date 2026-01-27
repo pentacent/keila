@@ -65,7 +65,8 @@ defmodule Keila.Mailings.BuilderTest do
 
   @tag :mailings_builder
   test "Tracking can be enabled or disabled at the campaign-level" do
-    project = insert!(:project)
+    group = insert!(:group)
+    project = insert!(:project, group: group)
     contact = insert!(:contact, project_id: project.id)
     recipient = insert!(:mailings_recipient, contact: contact, project_id: project.id)
     sender = build(:mailings_sender)
