@@ -1,0 +1,3231 @@
+# # This file is a PO Template file.
+# #
+# # "msgid"s here are often extracted from source code.
+# # Add new translations manually only if they're dynamic
+# # translations that can't be statically extracted.
+# #
+# # Run "mix gettext.extract" to bring this file up to
+# # date. Leave "msgstr"s empty as changing them here as no
+# # effect: edit them in PO (.po) files instead.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: lib/keila_web/templates/account/edit.html.heex:75
+#: lib/keila_web/templates/account/edit.html.heex:128
+msgid "%{monthly_emails} emails/month"
+msgstr "%{monthly_emails} email/mese"
+
+#: lib/keila_web/templates/account/edit.html.heex:57
+#: lib/keila_web/templates/account/edit.html.heex:111
+msgid "%{price} / month"
+msgstr "%{price} / mese"
+
+#: lib/keila_web/templates/account/edit.html.heex:174
+msgid "%{remaining} / %{total} emails remaining"
+msgstr "%{remaining} / %{total} email rimanenti"
+
+#: lib/keila_web/templates/account/edit.html.heex:65
+#: lib/keila_web/templates/account/edit.html.heex:118
+msgid "(%{price} incl. tax)"
+msgstr "(%{price} incl. tasse)"
+
+#: lib/keila_web/views/public_form_view.ex:198
+#: lib/keila_web/views/public_form_view.ex:242
+#: lib/keila_web/views/public_form_view.ex:260
+msgid "(optional)"
+msgstr "(opzionale)"
+
+#: lib/keila_web/templates/sender/_mailgun_config.html.heex:25
+#: lib/keila_web/templates/sender/_mailgun_config.html.heex:37
+#: lib/keila_web/templates/sender/_postmark_config.html.heex:4
+#: lib/keila_web/templates/sender/_postmark_config.html.heex:16
+#: lib/keila_web/templates/sender/_sendgrid_config.html.heex:4
+#: lib/keila_web/templates/sender/_sendgrid_config.html.heex:16
+msgid "API Key"
+msgstr "Chiavi API"
+
+#: lib/keila_web/templates/layout/_menu.html.heex:144
+msgid "Account"
+msgstr "Account"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:131
+msgid "Allow embedding as HTML"
+msgstr "Permetti incorporamento come HTML"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:590
+msgid "Form HTML"
+msgstr "Modulo HTML"
+
+#: lib/keila_web/templates/auth/register.html.heex:50
+#: lib/keila_web/templates/auth/registration_disabled.html.heex:13
+msgid "Already have an account?"
+msgstr "Hai già un account?"
+
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:116
+msgid "Alt Text"
+msgstr "Testo Alternativo"
+
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:222
+msgid "How does this work?"
+msgstr "Come funziona?"
+
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:248
+msgid "Contact email address"
+msgstr "Email contatto"
+
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:240
+msgid "Contact first name"
+msgstr "Nome contatto"
+
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:256
+msgid "Greeting with first name"
+msgstr "Saluta con nome"
+
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:233
+msgid "You can get started by trying one of these examples:"
+msgstr "Puoi iniziare provando uno di questi esempi:"
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:109
+msgid ""
+"Are you ready to schedule sending your campaign <em>%{subject}</em> to %"
+"{count} contacts?"
+msgstr ""
+"Sei pronto a pianificare l'invio della tua campagna <em>%{subject}</em> a %"
+"{count} contatti?"
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:32
+msgid ""
+"Are you ready to send your campaign <em>%{subject}</em> to %{count} contacts?"
+msgstr ""
+"Sei pronto ad inviare la tua campagna <em>%{subject}</em> a %{count} "
+"contatti?"
+
+#: lib/keila_web/templates/contact/import_live.html.heex:76
+msgid "Back to Contacts overview"
+msgstr "Indietro a panoramica contatti"
+
+#: lib/keila_web/templates/sender/verification_success.html.heex:13
+msgid "Back to your project"
+msgstr "Indietro al tuo progetto"
+
+#: lib/keila_web/views/template_view.ex:39
+msgid "Background"
+msgstr "Sfondo"
+
+#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:4
+msgid "Bold"
+msgstr "Grassetto"
+
+#: lib/keila/templates/default_template.ex:63
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:68
+#: lib/keila_web/templates/campaign/_markdown_editor.html.heex:19
+#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:81
+msgid "Button"
+msgstr "Pulsante"
+
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:167
+msgid "Button Text"
+msgstr "Testo Pulsante"
+
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:159
+msgid "Button URL"
+msgstr "URL pulsante"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:93
+msgid "Button label"
+msgstr "Etichetta pulsante"
+
+#: lib/keila_web/controllers/campaign_controller.ex:19
+#: lib/keila_web/templates/campaign/index.html.heex:4
+#: lib/keila_web/templates/layout/_menu.html.heex:122
+#: lib/keila_web/templates/project/show.html.heex:36
+msgid "Campaigns"
+msgstr "Campagne"
+
+#: lib/keila_web/templates/sender/delete.html.heex:10
+msgid "Campaigns associated with this sender will not be deleted."
+msgstr "Le campagne associate a questo mittente non saranno cancellate."
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:95
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:50
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:156
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:235
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:263
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:284
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:311
+#: lib/keila_web/templates/campaign/_settings_dialog.html.heex:174
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:55
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:136
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:178
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:213
+#: lib/keila_web/templates/campaign/delete.html.heex:34
+#: lib/keila_web/templates/campaign/edit_live.html.heex:16
+#: lib/keila_web/templates/contact/delete.html.heex:55
+#: lib/keila_web/templates/contact/edit.html.heex:23
+#: lib/keila_web/templates/form/delete.html.heex:34
+#: lib/keila_web/templates/form/edit_live.html.heex:14
+#: lib/keila_web/templates/project/delete.html.heex:41
+#: lib/keila_web/templates/project/edit.html.heex:14
+#: lib/keila_web/templates/segment/delete.html.heex:34
+#: lib/keila_web/templates/segment/edit_live.html.heex:14
+#: lib/keila_web/templates/sender/delete.html.heex:39
+#: lib/keila_web/templates/sender/edit_live.html.heex:17
+#: lib/keila_web/templates/shared_sender_admin/delete.html.heex:40
+#: lib/keila_web/templates/shared_sender_admin/edit.html.heex:18
+#: lib/keila_web/templates/template/delete.html.heex:35
+#: lib/keila_web/templates/template/edit_live.html.heex:14
+#: lib/keila_web/templates/user_admin/delete.html.heex:34
+msgid "Cancel"
+msgstr "Annulla"
+
+#: lib/keila_web/templates/account/edit.html.heex:92
+msgid "Cancel subscription"
+msgstr "Annulla abbonamento"
+
+#: lib/keila_web/templates/sender/_mailgun_config.html.heex:40
+#: lib/keila_web/templates/sender/_postmark_config.html.heex:19
+#: lib/keila_web/templates/sender/_sendgrid_config.html.heex:19
+#: lib/keila_web/templates/sender/_ses_config.html.heex:48
+#: lib/keila_web/templates/sender/_smtp_config.html.heex:34
+msgid "Change"
+msgstr "Cambia"
+
+#: lib/keila_web/templates/account/edit.html.heex:188
+msgid "Change Password"
+msgstr "Cambia Password"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:101
+msgid "Check your sending quota now"
+msgstr "Controlla la tua quota di invio ora"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:81
+msgid "Check your subscription now"
+msgstr "Controlla il tuo abbonamento ora"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:352
+msgid "Click rate"
+msgstr "Tasso di click"
+
+#: lib/keila_web/live/campaign_stats_live.ex:72
+#: lib/keila_web/templates/campaign/stats_live.html.heex:349
+msgid "Clicks"
+msgstr "Click"
+
+#: lib/keila_web/templates/campaign/index.html.heex:58
+#: lib/keila_web/templates/template/index.html.heex:35
+msgid "Clone"
+msgstr "Clona"
+
+#: lib/keila_web/controllers/campaign_controller.ex:116
+#: lib/keila_web/templates/campaign/clone.html.heex:4
+msgid "Clone Campaign"
+msgstr "Clona Campagna"
+
+#: lib/keila_web/controllers/template_controller.ex:74
+#: lib/keila_web/templates/template/clone.html.heex:4
+msgid "Clone Template"
+msgstr "Clona Modello"
+
+#: lib/keila_web/templates/layout/_menu.html.heex:21
+msgid "Close menu"
+msgstr "Clona menu"
+
+#: lib/keila_web/templates/campaign/_preview_dialog.html.heex:34
+msgid "Close preview"
+msgstr "Clona anteprima"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:608
+msgid "Code copied to clipboard."
+msgstr "Codice copiato negli appunti."
+
+#: lib/keila_web/controllers/contact_controller.ex:147
+msgid "Confirm Contact Deletion"
+msgstr "Conferma Cancellazione Contatto"
+
+#: lib/keila_web/controllers/form_controller.ex:76
+msgid "Confirm Form Deletion"
+msgstr "Conferma Cancellazione Modulo"
+
+#: lib/keila_web/controllers/template_controller.ex:151
+msgid "Confirm Template Deletion"
+msgstr "Conferma Cancellazione Modello"
+
+#: lib/keila_web/controllers/user_admin_controller.ex:88
+msgid "Confirm User Deletion"
+msgstr "Conferma Cancellazione Utente"
+
+#: lib/keila_web/controllers/campaign_controller.ex:225
+msgid "Confirm campaign Deletion"
+msgstr "Conferma Cancellazione Campagna"
+
+#: lib/keila_web/controllers/contact_controller.ex:24
+#: lib/keila_web/templates/contact/index.html.heex:4
+#: lib/keila_web/templates/layout/_menu.html.heex:67
+#: lib/keila_web/templates/project/show.html.heex:49
+msgid "Contacts"
+msgstr "Contatti"
+
+#: lib/keila/templates/default_template.ex:28
+#: lib/keila/templates/hybrid_template.ex:28
+msgid "Content"
+msgstr "Contenuto"
+
+#: lib/keila_web/templates/campaign/share.html.heex:54
+#: lib/keila_web/templates/form/edit_live.html.heex:586
+#: lib/keila_web/templates/form/edit_live.html.heex:597
+msgid "Copy"
+msgstr "Copia"
+
+#: lib/keila_web/templates/form/index.html.heex:9
+#: lib/keila_web/templates/project/_empty_state_forms_contacts.html.heex:31
+msgid "Create a new form"
+msgstr "Crea un nuovo modulo"
+
+#: lib/keila_web/templates/project/index.html.heex:38
+msgid "Create a new project"
+msgstr "Crea un nuovo progetto"
+
+#: lib/keila_web/templates/template/index.html.heex:9
+msgid "Create a new template"
+msgstr "Crea un nuovo modello"
+
+#: lib/keila_web/templates/campaign/new.html.heex:220
+#: lib/keila_web/templates/layout/_menu.html.heex:132
+msgid "Create campaign"
+msgstr "Crea campagna"
+
+#: lib/keila_web/templates/layout/_menu.html.heex:75
+msgid "Create contact"
+msgstr "Crea contatto"
+
+#: lib/keila_web/templates/layout/_menu.html.heex:116
+msgid "Create template"
+msgstr "Crea modello"
+
+#: lib/keila_web/templates/campaign/_empty_state.html.heex:20
+#: lib/keila_web/templates/project/_empty_state_campaigns.html.heex:17
+msgid "Create your first campaign"
+msgstr "Crea la tua prima campagna"
+
+#: lib/keila_web/templates/form/_empty_state.html.heex:23
+#: lib/keila_web/templates/project/_empty_state_forms_contacts.html.heex:29
+msgid "Create your first form"
+msgstr "Crea il tuo primo modulo"
+
+#: lib/keila_web/templates/project/index.html.heex:22
+msgid "Create your first project"
+msgstr "Crea il tuo primo progetto"
+
+#: lib/keila_web/templates/campaign/_settings_dialog.html.heex:65
+#: lib/keila_web/templates/campaign/new.html.heex:37
+#: lib/keila_web/templates/form/edit_live.html.heex:358
+#: lib/keila_web/templates/project/_empty_state_senders.html.heex:20
+#: lib/keila_web/templates/sender/_empty_state.html.heex:22
+msgid "Create your first sender"
+msgstr "Crea il tuo primo invio"
+
+#: lib/keila_web/templates/template/_empty_state.html.heex:23
+msgid "Create your first template"
+msgstr "Crea il tuo primo modello"
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:119
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:40
+msgid "Date"
+msgstr "Data"
+
+#: lib/keila_web/views/template_view.ex:44
+msgid "Decoration"
+msgstr "Decorazione"
+
+#: lib/keila_web/templates/campaign/_settings_dialog.html.heex:105
+#: lib/keila_web/templates/campaign/new.html.heex:159
+#: lib/keila_web/templates/form/edit_live.html.heex:374
+#: lib/keila_web/views/template_view.ex:70
+msgid "Default"
+msgstr "Predefinito"
+
+#: lib/keila_web/templates/campaign/delete.html.heex:37
+#: lib/keila_web/templates/campaign/edit_live.html.heex:26
+#: lib/keila_web/templates/campaign/stats_live.html.heex:22
+#: lib/keila_web/templates/contact/delete.html.heex:58
+#: lib/keila_web/templates/contact/edit.html.heex:30
+#: lib/keila_web/templates/form/delete.html.heex:37
+#: lib/keila_web/templates/form/edit_live.html.heex:22
+#: lib/keila_web/templates/project/delete.html.heex:44
+#: lib/keila_web/templates/project/edit.html.heex:21
+#: lib/keila_web/templates/segment/delete.html.heex:37
+#: lib/keila_web/templates/segment/edit_live.html.heex:24
+#: lib/keila_web/templates/sender/delete.html.heex:42
+#: lib/keila_web/templates/sender/edit_live.html.heex:27
+#: lib/keila_web/templates/shared_sender_admin/delete.html.heex:43
+#: lib/keila_web/templates/shared_sender_admin/edit.html.heex:26
+#: lib/keila_web/templates/template/delete.html.heex:38
+#: lib/keila_web/templates/template/edit_live.html.heex:22
+#: lib/keila_web/templates/user_admin/delete.html.heex:37
+msgid "Delete"
+msgstr "Cancella"
+
+#: lib/keila_web/controllers/project_controller.ex:112
+msgid "Delete %{project_name}"
+msgstr "Cancella %{project_name}"
+
+#: lib/keila_web/templates/campaign/delete.html.heex:3
+msgid "Delete Campaigns?"
+msgstr "Cancellare le Campagne?"
+
+#: lib/keila_web/templates/contact/delete.html.heex:3
+msgid "Delete Contacts?"
+msgstr "Cancellare i Contatti?"
+
+#: lib/keila_web/templates/form/delete.html.heex:3
+msgid "Delete Forms?"
+msgstr "Cancellare i moduli?"
+
+#: lib/keila_web/templates/project/delete.html.heex:3
+msgid "Delete Project %{project}?"
+msgstr "Cancellare il Progetto %{project}?"
+
+#: lib/keila_web/templates/sender/delete.html.heex:3
+#: lib/keila_web/views/sender_view.ex:13
+msgid "Delete Sender %{sender}?"
+msgstr "Cancellare Mittente %{sender}?"
+
+#: lib/keila_web/templates/sender/delete.html.heex:28
+msgid "Type in the sender name to confirm its deletion:"
+msgstr "Scrivi il nome del mittente per confermarne la cancellazione:"
+
+#: lib/keila_web/templates/template/delete.html.heex:3
+msgid "Delete Templates?"
+msgstr "Cancellare i Modelli?"
+
+#: lib/keila_web/templates/user_admin/delete.html.heex:3
+msgid "Delete Users?"
+msgstr "Cancellare gli Utenti?"
+
+#: lib/keila_web/templates/contact/_list.html.heex:99
+msgid "Delete all selected contacts"
+msgstr "Cancella tutti i contatti selezionati"
+
+#: lib/keila_web/templates/campaign/delete.html.heex:27
+msgid "Deleting a campaign cannot be undone."
+msgstr "La cancellazione di una campagna non può essere annullata."
+
+#: lib/keila_web/templates/contact/delete.html.heex:48
+msgid "Deleting a contact cannot be undone."
+msgstr "La cancellazione di un contatto non può essere annullata."
+
+#: lib/keila_web/templates/form/delete.html.heex:27
+msgid "Deleting a form cannot be undone."
+msgstr "La cancellazione di un modulo non può essere annullata."
+
+#: lib/keila_web/templates/project/delete.html.heex:15
+msgid "Deleting a project cannot be undone."
+msgstr "La cancellazione di un progetto non può essere annullata."
+
+#: lib/keila_web/templates/project/delete.html.heex:27
+msgid "Type in the project name to confirm its deletion:"
+msgstr "Scrivi il nome del progetto per confermarne la cancellazione:"
+
+#: lib/keila_web/templates/sender/delete.html.heex:13
+msgid "Deleting a sender cannot be undone."
+msgstr "La cancellazione di un mittente non può essere annullata."
+
+#: lib/keila_web/templates/template/delete.html.heex:28
+msgid "Deleting a template cannot be undone."
+msgstr "La cancellazione di un modello non può essere annullata."
+
+#: lib/keila_web/templates/user_admin/delete.html.heex:30
+msgid "Deleting a user cannot be undone."
+msgstr "La cancellazione di un utente non può essere annullata."
+
+#: lib/keila_web/templates/campaign/delete.html.heex:10
+msgid "Do you really want to delete the following campaigns?"
+msgstr "Vuoi realmente cancellare le seguenti campagne?"
+
+#: lib/keila_web/templates/contact/delete.html.heex:10
+msgid "Do you really want to delete the following contacts?"
+msgstr "Vuoi realmente cancellare i seguenti contatti?"
+
+#: lib/keila_web/templates/form/delete.html.heex:10
+msgid "Do you really want to delete the following forms?"
+msgstr "Vuoi realmente cancellare i seguenti moduli?"
+
+#: lib/keila_web/templates/template/delete.html.heex:10
+msgid "Do you really want to delete the following templates?"
+msgstr "Vuoi realmente cancellare i seguenti modelli?"
+
+#: lib/keila_web/templates/user_admin/delete.html.heex:10
+msgid ""
+"Do you really want to delete the following users? This will also delete "
+"their projects and contacts."
+msgstr ""
+"Vuoi realmente cancellare i seguenti utenti? Questo cancellerà anche i loro "
+"progetti e contatti."
+
+#: lib/keila_web/templates/contact/edit.html.heex:79
+msgid "Doe"
+msgstr "Rossi"
+
+#: lib/keila_web/templates/auth/reset.html.heex:26
+msgid "Don’t have an account?"
+msgstr "Non hai un account?"
+
+#: lib/keila_web/templates/contact/import_live.html.heex:141
+#: lib/keila_web/templates/contact/import_live.html.heex:162
+#: lib/keila_web/templates/contact/import_live.html.heex:181
+msgid "Download template"
+msgstr "Scarica modello"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:65
+#: lib/keila_web/templates/campaign/index.html.heex:66
+#: lib/keila_web/templates/form/index.html.heex:33
+#: lib/keila_web/templates/segment/index.html.heex:32
+#: lib/keila_web/templates/template/index.html.heex:42
+msgid "Edit"
+msgstr "Modifica"
+
+#: lib/keila_web/controllers/project_controller.ex:77
+msgid "Edit %{project_name}"
+msgstr "Modifica %{project_name}"
+
+#: lib/keila_web/templates/campaign/edit_live.html.heex:8
+msgid "Edit Campaign"
+msgstr "Modifica Campagna"
+
+#: lib/keila_web/controllers/contact_controller.ex:218
+msgid "Edit Contact"
+msgstr "Modifica Contatto"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:6
+msgid "Edit Form"
+msgstr "Modifica Modulo"
+
+#: lib/keila_web/views/sender_view.ex:8
+msgid "Edit Sender %{sender}"
+msgstr "Modifica Mittente %{sender}"
+
+#: lib/keila_web/templates/template/edit_live.html.heex:6
+msgid "Edit Template"
+msgstr "Modifica Modello"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:39
+msgid "Edit this campaign"
+msgstr "Modifica questa campagna"
+
+#: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:42
+#: lib/keila/contacts/contacts.ex:278 lib/keila_web/live/segment_edit_live.ex:9
+#: lib/keila_web/templates/account/edit.html.heex:194
+#: lib/keila_web/templates/auth/register.html.heex:17
+#: lib/keila_web/templates/auth/reset.html.heex:15
+#: lib/keila_web/templates/contact/_list.html.heex:22
+#: lib/keila_web/templates/contact/delete.html.heex:24
+#: lib/keila_web/templates/contact/edit.html.heex:61
+#: lib/keila_web/templates/form/edit_live.html.heex:153
+#: lib/keila_web/templates/form/edit_live.html.heex:196
+#: lib/keila_web/templates/segment/edit_live.html.heex:184
+#: lib/keila_web/templates/user_admin/new.html.heex:25
+msgid "Email"
+msgstr "Email"
+
+#: lib/keila/contacts/import.ex:223
+msgid "Field %{field}: %{message}"
+msgstr "Campo %{field}: %{message}"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:61
+#: lib/keila_web/templates/form/edit_live.html.heex:139
+msgid "Fields"
+msgstr "Campi"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:105
+msgid "Fine print"
+msgstr "Clausole di dettaglio"
+
+#: extra/keila_cloud_web/templates/cloud_account/_user_name.html.heex:24
+#: lib/keila/contacts/contacts.ex:286
+#: lib/keila_web/live/segment_edit_live.ex:10
+#: lib/keila_web/templates/contact/_list.html.heex:32
+#: lib/keila_web/templates/contact/delete.html.heex:25
+#: lib/keila_web/templates/contact/edit.html.heex:71
+#: lib/keila_web/templates/form/edit_live.html.heex:159
+#: lib/keila_web/templates/segment/edit_live.html.heex:185
+msgid "First name"
+msgstr "Nome"
+
+#: lib/keila_web/views/template_view.ex:41
+msgid "Font"
+msgstr "Carattere"
+
+#: lib/keila_web/views/template_view.ex:42
+msgid "Font style"
+msgstr "Stile carattere"
+
+#: lib/keila_web/views/template_view.ex:43
+msgid "Font weight"
+msgstr "Spessore carattere"
+
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:107
+msgid "For best results, choose an image that is 600px wide."
+msgstr "Per risultati migliori scegli una immagine che sia larga 600px."
+
+#: lib/keila_web/controllers/form_controller.ex:14
+#: lib/keila_web/templates/form/index.html.heex:4
+#: lib/keila_web/templates/layout/_menu.html.heex:95
+#: lib/keila_web/templates/project/show.html.heex:69
+msgid "Forms"
+msgstr "Moduli"
+
+#: lib/keila/templates/default_template.ex:34
+#: lib/keila/templates/hybrid_template.ex:34
+#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:46
+msgid "Heading 1"
+msgstr "Titolo 1"
+
+#: lib/keila/templates/default_template.ex:42
+#: lib/keila/templates/hybrid_template.ex:42
+#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:53
+msgid "Heading 2"
+msgstr "Titolo 2"
+
+#: lib/keila/templates/default_template.ex:50
+#: lib/keila/templates/hybrid_template.ex:50
+#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:60
+msgid "Heading 3"
+msgstr "Titolo 3"
+
+#: lib/keila_web/templates/account/edit.html.heex:191
+msgid "Here you can update your Keila password."
+msgstr "Qui puoi aggiornare la tua password di Keila."
+
+#: lib/keila_web/views/public_form_view.ex:126
+msgid "I am human."
+msgstr "Sono un umano."
+
+#: lib/keila_web/templates/auth/reset.html.heex:12
+msgid ""
+"If you’ve forgotten your password, you can request an email to reset it here."
+msgstr ""
+"Se hai dimenticato la tua password, puoi richiedere una email per "
+"reimpostarla qui."
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:62
+#: lib/keila_web/templates/campaign/_markdown_editor.html.heex:12
+#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:74
+#: lib/keila_web/views/template_view.ex:40
+msgid "Image"
+msgstr "Immagine"
+
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:105
+msgid "Image URL"
+msgstr "URL immagine"
+
+#: lib/keila_web/templates/contact/import_live.html.heex:4
+msgid "Import Contacts"
+msgstr "Importa Contatti"
+
+#: lib/keila_web/templates/contact/_empty_state.html.heex:23
+#: lib/keila_web/templates/layout/_menu.html.heex:85
+#: lib/keila_web/templates/project/_empty_state_forms_contacts.html.heex:21
+msgid "Import contacts"
+msgstr "Importa contatti"
+
+#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:25
+msgid "Increase indent"
+msgstr "Aumenta rientro"
+
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:155
+msgid "Insert Button"
+msgstr "Inserisci Pulsante"
+
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:76
+msgid "Insert Image"
+msgstr "Inserisci Immagine"
+
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:29
+msgid "Insert Link"
+msgstr "Inserisci Collegamento"
+
+#: lib/keila_web/templates/contact/import_live.html.heex:91
+msgid "Instructions"
+msgstr "Istruzioni"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:69
+#: lib/keila_web/templates/campaign/stats_live.html.heex:91
+msgid "Insufficient email quota."
+msgstr "Quota email insufficiente."
+
+#: lib/keila_web/templates/form/edit_live.html.heex:99
+msgid "Intro text"
+msgstr "Testo introduttivo"
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:73
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:192
+msgid "It looks like you don’t yet have any contacts to receive this campaign."
+msgstr ""
+"Sembra che tu non abbia ancora nessun contatto che riceva questa campagna."
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:72
+msgid ""
+"It looks like you’ve already used up the email quota from your subscription."
+msgstr "Sembra che tu abbia usato tutta la quota di email del tuo abbonamento."
+
+#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:11
+msgid "Italics"
+msgstr "Corsivo"
+
+#: lib/keila_web/templates/contact/edit.html.heex:73
+msgid "Jane"
+msgstr "Gianna"
+
+#: extra/keila_cloud_web/templates/cloud_account/_user_name.html.heex:30
+#: lib/keila/contacts/contacts.ex:294
+#: lib/keila_web/live/segment_edit_live.ex:11
+#: lib/keila_web/templates/contact/_list.html.heex:42
+#: lib/keila_web/templates/contact/delete.html.heex:26
+#: lib/keila_web/templates/contact/edit.html.heex:77
+#: lib/keila_web/templates/form/edit_live.html.heex:166
+#: lib/keila_web/templates/segment/edit_live.html.heex:186
+msgid "Last name"
+msgstr "Cognome"
+
+#: lib/keila/templates/default_template.ex:23
+#: lib/keila/templates/hybrid_template.ex:24
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:56
+msgid "Layout"
+msgstr "Disposizione"
+
+#: lib/keila_web/templates/campaign/_markdown_editor.html.heex:5
+#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:67
+msgid "Link"
+msgstr "Collegamento"
+
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:43
+msgid "Link Title"
+msgstr "Titolo Collegamento"
+
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:33
+msgid "Link URL"
+msgstr "URL Collegamento"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:573
+msgid "Link to this form"
+msgstr "Collegamento a questo modulo"
+
+#: lib/keila/templates/default_template.ex:58
+#: lib/keila/templates/hybrid_template.ex:58
+#: lib/keila_web/templates/campaign/stats_live.html.heex:342
+msgid "Links"
+msgstr "Collegamenti"
+
+#: lib/keila_web/templates/project/show.html.heex:43
+msgid "Manage Campaigns"
+msgstr "Gestisci Campagne"
+
+#: lib/keila_web/templates/project/show.html.heex:53
+msgid "Manage Contacts"
+msgstr "Gestisci Contatti"
+
+#: lib/keila_web/templates/project/show.html.heex:73
+msgid "Manage Forms"
+msgstr "Gestisci Moduli"
+
+#: lib/keila_web/templates/project/show.html.heex:96
+msgid "Manage Senders"
+msgstr "Gestisci Mittenti"
+
+#: lib/keila_web/templates/campaign/_settings_dialog.html.heex:78
+#: lib/keila_web/templates/campaign/new.html.heex:95
+msgid "Markdown"
+msgstr "Markdown"
+
+#: lib/keila_web/templates/campaign/clone.html.heex:27
+#: lib/keila_web/templates/campaign/new.html.heex:60
+msgid "My Campaign Subject"
+msgstr "Oggetto Della Mia Campagna"
+
+#: lib/keila_web/templates/project/new.html.heex:26
+msgid "My Keila Project"
+msgstr "Il Mio Progetto Keila"
+
+#: lib/keila/contacts/contacts.ex:270
+msgid "My New Form"
+msgstr "Il mio Nuovo Modulo"
+
+#: lib/keila_web/templates/project/edit.html.heex:48
+msgid "My Newsletter Project"
+msgstr "Il Mio Progetto Newsletter"
+
+#: lib/keila_web/templates/sender/edit_live.html.heex:108
+msgid "My Sender"
+msgstr "Il Mio Mittente"
+
+#: lib/keila_web/templates/template/new.html.heex:26
+msgid "My Template name"
+msgstr "Il mio nome Modello"
+
+#: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:26
+#: lib/keila_web/templates/form/edit_live.html.heex:87
+#: lib/keila_web/templates/segment/edit_live.html.heex:49
+#: lib/keila_web/templates/template/clone.html.heex:24
+#: lib/keila_web/templates/template/edit_live.html.heex:69
+#: lib/keila_web/templates/template/new.html.heex:23
+msgid "Name"
+msgstr "Nome"
+
+#: lib/keila_web/controllers/campaign_controller.ex:76
+#: lib/keila_web/templates/campaign/new.html.heex:4
+msgid "New Campaign"
+msgstr "Nuova Campagna"
+
+#: lib/keila_web/templates/contact/edit.html.heex:14
+msgid "New Contact"
+msgstr "Nuovo Contatto"
+
+#: lib/keila_web/templates/account/edit.html.heex:204
+msgid "New Password"
+msgstr "Nuova Password"
+
+#: lib/keila_web/controllers/project_controller.ex:54
+#: lib/keila_web/templates/project/new.html.heex:4
+msgid "New Project"
+msgstr "Nuovo Progetto"
+
+#: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:6
+#: lib/keila_web/templates/sender/edit_live.html.heex:8
+#: lib/keila_web/views/sender_view.ex:10
+msgid "New Sender"
+msgstr "Nuovo Mittente"
+
+#: lib/keila_web/controllers/template_controller.ex:46
+#: lib/keila_web/templates/template/new.html.heex:4
+msgid "New Template"
+msgstr "Nuovo Modello"
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:70
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:189
+msgid "No Contacts, No Campaign."
+msgstr "Nessun Contatto, Nessuna Campagna."
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:78
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:197
+#: lib/keila_web/templates/campaign/_settings_dialog.html.heex:177
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:58
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:139
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:181
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:216
+#: lib/keila_web/templates/component/file_manager_live.html.heex:119
+msgid "Ok"
+msgstr "Ok"
+
+#: lib/keila_web/templates/layout/root.html.heex:14
+#: lib/keila_web/templates/public_form_layout/root.html.heex:15
+msgid "Open Source Newsletter Tool"
+msgstr "Strumento Newsletter Open Source"
+
+#: lib/keila_web/templates/layout/_menu.html.heex:12
+msgid "Open menu"
+msgstr "Apri menu"
+
+#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:39
+msgid "Ordered list"
+msgstr "Lista ordinata"
+
+#: lib/keila_web/templates/auth/register.html.heex:27
+#: lib/keila_web/templates/auth/reset_change_password.html.heex:15
+#: lib/keila_web/templates/sender/_smtp_config.html.heex:19
+#: lib/keila_web/templates/sender/_smtp_config.html.heex:31
+#: lib/keila_web/templates/user_admin/new.html.heex:36
+msgid "Password"
+msgstr "Password"
+
+#: lib/keila_web/templates/auth/registration_disabled.html.heex:10
+msgid "Please contact an administrator."
+msgstr "Contatta un amministratore."
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:52
+msgid "Please start a subscription before sending your first campaign."
+msgstr "Attiva una sottoscrizione prima di inviare la tua prima campagna."
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:163
+#: lib/keila_web/templates/campaign/_markdown_editor.html.heex:27
+#: lib/keila_web/templates/campaign/_mjml_editor.html.heex:21
+#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:103
+msgid "Preview"
+msgstr "Anteprima"
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:100
+msgid "Ready to schedule your campaign?"
+msgstr "Sei pronto per pianificare la tua campagna?"
+
+#: lib/keila_web/templates/auth/registration_disabled.html.heex:7
+msgid "Registration disabled."
+msgstr "Registrazione disabilitata."
+
+#: lib/keila_web/templates/auth/reset.html.heex:32
+msgid "Remember your password again?"
+msgstr "Ricorda nuovamente la tua password?"
+
+#: lib/keila_web/templates/auth/reset.html.heex:22
+msgid "Request password reset"
+msgstr "Richiedi reimpostazione password"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:183
+msgid "Require"
+msgstr "Richiedi"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:113
+msgid "Require captcha"
+msgstr "Richiedi captcha"
+
+#: lib/keila_web/templates/auth/reset_change_password.html.heex:26
+msgid "Reset password now"
+msgstr "Reimposta password ora"
+
+#: lib/keila_web/templates/auth/reset.html.heex:9
+#: lib/keila_web/templates/auth/reset_change_password.html.heex:9
+msgid "Reset your password."
+msgstr "Reimposta la tua password."
+
+#: lib/keila_web/templates/api_key/new.html.heex:8
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:113
+#: lib/keila_web/templates/campaign/clone.html.heex:8
+#: lib/keila_web/templates/campaign/edit_live.html.heex:35
+#: lib/keila_web/templates/contact/edit.html.heex:38
+#: lib/keila_web/templates/form/edit_live.html.heex:30
+#: lib/keila_web/templates/project/edit.html.heex:28
+#: lib/keila_web/templates/project/new.html.heex:8
+#: lib/keila_web/templates/segment/edit_live.html.heex:32
+#: lib/keila_web/templates/segment/new.html.heex:8
+#: lib/keila_web/templates/sender/edit_live.html.heex:35
+#: lib/keila_web/templates/shared_sender_admin/edit.html.heex:34
+#: lib/keila_web/templates/template/clone.html.heex:8
+#: lib/keila_web/templates/template/edit_live.html.heex:30
+#: lib/keila_web/templates/template/new.html.heex:8
+#: lib/keila_web/templates/user_admin/new.html.heex:8
+msgid "Save"
+msgstr "Salva"
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:178
+#: lib/keila_web/templates/campaign/edit_live.html.heex:79
+#: lib/keila_web/templates/campaign/edit_live.html.heex:89
+msgid "Schedule"
+msgstr "Programma"
+
+#: lib/keila_web/templates/campaign/index.html.heex:38
+msgid "Scheduled for:"
+msgstr "Programmato per:"
+
+#: lib/keila_web/templates/component/file_manager_live.html.heex:12
+#: lib/keila_web/templates/contact/import_live.html.heex:28
+msgid "Select a file"
+msgstr "Seleziona un file"
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:59
+#: lib/keila_web/templates/campaign/edit_live.html.heex:65
+msgid "Send"
+msgstr "Invia"
+
+#: lib/keila_web/templates/sender/verification_failure.html.heex:4
+msgid "Sender verification not successful."
+msgstr "Verifica mittente fallita."
+
+#: lib/keila_web/templates/sender/verification_success.html.heex:4
+msgid "Sender verified!"
+msgstr "Mittente verificato!"
+
+#: lib/keila_web/templates/layout/_menu.html.heex:61
+#: lib/keila_web/templates/layout/_menu.html.heex:149
+#: lib/keila_web/templates/project/show.html.heex:92
+#: lib/keila_web/templates/sender/index.html.heex:4
+#: lib/keila_web/views/sender_view.ex:5
+msgid "Senders"
+msgstr "Mittenti"
+
+#: lib/keila_web/templates/account/edit.html.heex:157
+msgid "Sending Quota"
+msgstr "Quota Invio"
+
+#: lib/keila_web/templates/campaign/index.html.heex:30
+msgid "Sent at:"
+msgstr "Inviato a:"
+
+#: lib/keila_web/templates/auth/reset_change_password.html.heex:12
+msgid "Set a new secure password to keep using Keila."
+msgstr "Imposta una nuova password sicura per continuare ad usare Keila."
+
+#: lib/keila_web/templates/campaign/_settings_dialog.html.heex:28
+#: lib/keila_web/templates/campaign/edit_live.html.heex:43
+#: lib/keila_web/templates/campaign/edit_live.html.heex:104
+#: lib/keila_web/templates/form/edit_live.html.heex:53
+#: lib/keila_web/templates/form/edit_live.html.heex:83
+#: lib/keila_web/templates/project/show.html.heex:9
+#: lib/keila_web/templates/sender/index.html.heex:33
+#: lib/keila_web/templates/shared_sender_admin/index.html.heex:32
+#: lib/keila_web/templates/template/edit_live.html.heex:55
+msgid "Settings"
+msgstr "Impostazioni"
+
+#: lib/keila_web/templates/auth/register.html.heex:51
+#: lib/keila_web/templates/auth/registration_disabled.html.heex:14
+msgid "Sign in."
+msgstr "Accedi."
+
+#: lib/keila_web/templates/layout/_menu.html.heex:159
+msgid "Sign out"
+msgstr "Esci"
+
+#: lib/keila_web/templates/auth/register.html.heex:46
+msgid "Sign up now"
+msgstr "Iscriviti ora"
+
+#: lib/keila_web/templates/auth/reset.html.heex:28
+msgid "Sign up."
+msgstr "Iscriviti."
+
+#: lib/keila/templates/default_template.ex:81
+#: lib/keila_web/templates/template/edit_live.html.heex:74
+msgid "Signature"
+msgstr "Firma"
+
+#: lib/keila/templates/default_template.ex:90
+msgid "Signature links"
+msgstr "Link firma"
+
+#: lib/keila_web/templates/contact/import_live.html.heex:38
+msgid "Start Import"
+msgstr "Inizia Importazione"
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:272
+#: lib/keila_web/templates/campaign/stats_live.html.heex:59
+#: lib/keila_web/templates/form/edit_live.html.heex:496
+msgid "Start your subscription now"
+msgstr "Inizia la tua sottoscrizione ora"
+
+#: lib/keila_web/templates/campaign/index.html.heex:74
+msgid "Stats"
+msgstr "Statistiche"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:77
+#: lib/keila_web/templates/form/edit_live.html.heex:504
+#: lib/keila_web/templates/template/edit_live.html.heex:63
+#: lib/keila_web/templates/template/edit_live.html.heex:92
+msgid "Style"
+msgstr "Stile"
+
+#: lib/keila_web/templates/campaign/clone.html.heex:24
+#: lib/keila_web/templates/campaign/new.html.heex:57
+msgid "Subject"
+msgstr "Oggetto"
+
+#: lib/keila_web/views/public_form_view.ex:146
+msgid "Submit"
+msgstr "Invia"
+
+#: lib/keila_web/templates/account/edit.html.heex:100
+msgid "Subscribe now and start sending emails!"
+msgstr "Iscriviti ora e inizia ad inviare email!"
+
+#: lib/keila_web/templates/account/edit.html.heex:5
+msgid "Subscription"
+msgstr "Iscrizione"
+
+#: lib/keila_web/controllers/template_controller.ex:17
+#: lib/keila_web/templates/layout/_menu.html.heex:106
+#: lib/keila_web/templates/project/show.html.heex:79
+#: lib/keila_web/templates/template/index.html.heex:4
+msgid "Templates"
+msgstr "Modelli"
+
+#: lib/keila_web/views/template_view.ex:38
+msgid "Text color"
+msgstr "Colore testo"
+
+#: lib/keila_web/templates/campaign/_settings_dialog.html.heex:73
+msgid "Campaign Type"
+msgstr "Tipo Campagna"
+
+#: lib/keila_web/templates/campaign/_settings_dialog.html.heex:79
+msgid "Text only"
+msgstr "Solo testo"
+
+#: lib/keila/contacts/contacts.ex:273
+msgid "Thank you for signing up!"
+msgstr "Grazie per esserti iscritto!"
+
+#: lib/keila_web/templates/account/await_subscription_live.html.heex:22
+msgid "Thank you for subscribing to Keila!"
+msgstr "Grazie per esserti iscritto a Keila!"
+
+#: lib/keila_web/templates/sender/verification_success.html.heex:7
+msgid ""
+"Thank you for verifying your sender. You can now start sending emails with "
+"Keila."
+msgstr ""
+"Grazie per aver verificato il tuo mittente. Puoi ora iniziare ad inviare le "
+"email con Keila."
+
+#: lib/keila_web/templates/form/edit_live.html.heex:117
+msgid "Thank you message"
+msgstr "Messagio ringraziamento"
+
+#: lib/keila_web/views/public_form_view.ex:324
+msgid "Thank you!"
+msgstr "Grazie!"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:49
+#: lib/keila_web/templates/form/edit_live.html.heex:486
+msgid "Thanks for trying out Keila!"
+msgstr "Grazie per aver provato Keila!"
+
+#: lib/keila/contacts/import.ex:42
+msgid "The file you provided could not be processed."
+msgstr "Il file che hai fornito non può essere processato."
+
+#: lib/keila_web/templates/sender/_local_config.html.heex:2
+msgid ""
+"The local sender adapter is useful for testing during development. Inspect "
+"its mailbox at: %{url}"
+msgstr ""
+"L'adattatore mittente locale è utile per i test durante lo sviluppo. "
+"Ispeziona la sua casella mail a: %{url}"
+
+#: lib/keila_web/templates/contact/import_live.html.heex:82
+msgid "There was an error importing your contacts."
+msgstr "Si è verificato un errore importando i tuoi contatti."
+
+#: lib/keila_web/templates/account/edit.html.heex:33
+msgid ""
+"There was an error processing your payment. Please update your payment "
+"method to continue using Keila."
+msgstr ""
+"Si è verificato un errore processando il tuo pagamento. Aggiorna il tuo "
+"metodo di pagamento per continuare ad usare Keila."
+
+#: lib/keila_web/templates/campaign/edit_live.html.heex:113
+msgid "There was an error scheduling your campaign:"
+msgstr "Si è verificato un errore pianificando la tua campagna:"
+
+#: lib/keila_web/templates/sender/verification_failure.html.heex:7
+msgid ""
+"There was an error when trying to verify your sender. Please try again or "
+"contact an administrator."
+msgstr ""
+"Si è verificato un errore durante la verifica del tuo mittente. Riprova o "
+"contatta un amministratore."
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:42
+msgid ""
+"This campaign has already been scheduled. You can manually send it up to "
+"five minutes before the scheduled sending time."
+msgstr ""
+"La campagna è già stata pianificata. Puoi inviarla manualmente fino a cinque "
+"minuti prima dell'orario di invio pianificato."
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:104
+msgid ""
+"This campaign has already been scheduled. You can reschedule or cancel it up "
+"to five minutes before the scheduled sending time."
+msgstr ""
+"La campagna è già stata pianificata. Puoi pianificarla nuovamente o "
+"annullarla fino a cinque minuti prima l'orario di invio pianificato."
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:33
+msgid "This campaign has not yet been sent."
+msgstr "La campagna non è stata ancora inviata."
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:125
+msgid "This campaign is currently being prepared for sending."
+msgstr "La campagna è in preparazione per l'invio."
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:146
+msgid "This campaign is currently being sent out."
+msgstr "La campagna è in invio."
+
+#: lib/keila_web/templates/project/delete.html.heex:10
+msgid ""
+"This will delete all contacts, campaigns, and forms associated with this "
+"project."
+msgstr ""
+"Questo cancellerà tutti i contatti, campagne e moduli associati al progetto."
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:130
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:59
+msgid "Time"
+msgstr "Ora"
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:141
+#: lib/keila_web/templates/user_admin/show_credits.html.heex:71
+msgid "Timezone"
+msgstr "Zona oraria"
+
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:124
+msgid "Title"
+msgstr "Titolo"
+
+#: lib/keila_web/templates/auth/reset.html.heex:34
+msgid "Try signing in."
+msgstr "Prova ad accedere."
+
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:93
+#: lib/keila_web/templates/campaign/stats_live.html.heex:346
+msgid "URL"
+msgstr "URL"
+
+#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:32
+msgid "Unordered list"
+msgstr "Lista non ordinata"
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:167
+msgid "Unschedule"
+msgstr "Rimuovi pianificazione"
+
+#: lib/keila_web/controllers/public_form_controller.ex:169
+#: lib/keila_web/controllers/public_form_controller.ex:189
+msgid "Unsubscribe"
+msgstr "Disiscriviti"
+
+#: lib/keila_web/templates/account/edit.html.heex:211
+msgid "Update password"
+msgstr "Aggiorna password"
+
+#: lib/keila_web/templates/account/edit.html.heex:87
+msgid "Update payment method"
+msgstr "Aggiorna metodo di pagamento"
+
+#: lib/keila_web/templates/campaign/index.html.heex:45
+#: lib/keila_web/templates/form/index.html.heex:26
+#: lib/keila_web/templates/segment/index.html.heex:26
+#: lib/keila_web/templates/template/index.html.heex:26
+msgid "Updated at:"
+msgstr "Aggiornato alle:"
+
+#: lib/keila_web/templates/layout/_menu.html.heex:146
+msgid "Users"
+msgstr "Utenti"
+
+#: lib/keila_web/templates/project/index.html.heex:10
+msgid "Welcome to Keila!"
+msgstr "Benvenuto in Keila!"
+
+#: lib/keila_web/templates/account/await_subscription_live.html.heex:26
+msgid ""
+"We’re currently processing your subscription. This shouldn’t take longer "
+"than a minute …"
+msgstr ""
+"Stiamo attualmente processando la tua sottoscrizione. Non dovrebbe volerci "
+"più di un minuto …"
+
+#: lib/keila_web/templates/account/edit.html.heex:15
+msgid "You currently have an active subscription. Thanks for supporting Keila!"
+msgstr ""
+"Hai attualmente una sottoscrizione attiva. Grazie per supportare Keila!"
+
+#: lib/keila_web/views/public_form_view.ex:351
+msgid "You have been unsubscribed from this list."
+msgstr "Sei stato disiscritto da questa lista."
+
+#: lib/keila_web/templates/contact/import_live.html.heex:70
+msgid "You have successfully imported %{number} contacts!"
+msgstr "Hai correttamente importato %{number} contatti!"
+
+#: lib/keila_web/templates/sender/edit_live.html.heex:135
+#: lib/keila_web/templates/sender/edit_live.html.heex:164
+msgid "You, Inc"
+msgstr "Te, S.p.A."
+
+#: lib/keila_web/templates/campaign/edit_live.html.heex:132
+msgid "Your Campaign Subject"
+msgstr "Oggetto della tua Campagna"
+
+#: lib/keila_web/templates/project/index.html.heex:33
+msgid "Your Projects"
+msgstr "Il tuo Progetto"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:94
+msgid "Your email quota is not sufficient for sending this campaign."
+msgstr "La tua quota di email non è sufficiente per inviare questa campagna."
+
+#: lib/keila_web/templates/auth/reset_change_password_success.html.heex:4
+msgid "Your password was changed!"
+msgstr "La tua password è stata cambiata!"
+
+#: lib/keila_web/templates/account/edit.html.heex:42
+msgid ""
+"Your subscription has been cancelled. Please contact us if you want to start "
+"a new subscription."
+msgstr ""
+"La tua sottoscrizione è stata annullata. Contattaci se vuoi una nuova "
+"sottoscrizione."
+
+#: lib/keila_web/templates/account/edit.html.heex:24
+msgid ""
+"Your subscription is currently suspended. Please update your payment method "
+"to continue using Keila."
+msgstr ""
+"La tua sottoscrizione è stata sospesa. Aggiorna il tuo metodo di pagamento "
+"per continuare ad usare Keila."
+
+#: lib/keila_web/templates/sender/edit_live.html.heex:155
+msgid "hello@example.org"
+msgstr "ciao@esempio.org"
+
+#: lib/keila_web/views/template_view.ex:111
+msgid "italic"
+msgstr "corsivo"
+
+#: lib/keila_web/templates/sender/_smtp_config.html.heex:5
+msgid "mail.example.org"
+msgstr "mail.esempio.org"
+
+#: lib/keila_web/templates/sender/edit_live.html.heex:123
+msgid "newsletter@example.org"
+msgstr "newsletter@esempio.org"
+
+#: lib/keila_web/views/template_view.ex:125
+msgid "none"
+msgstr "nessuno"
+
+#: lib/keila_web/views/template_view.ex:110
+msgid "normal"
+msgstr "normale"
+
+#: lib/keila_web/templates/contact/edit.html.heex:64
+msgid "subscriber@example.com"
+msgstr "abbonato@esempio.com"
+
+#: lib/keila_web/views/template_view.ex:126
+msgid "underlined"
+msgstr "sottolineato"
+
+#: lib/keila/contacts/import.ex:226
+msgid "unknown data error"
+msgstr "errore dati sconosciuto"
+
+#: lib/keila_web/templates/account/edit.html.heex:81
+#: lib/keila_web/templates/account/edit.html.heex:134
+msgid "unlimited contacts"
+msgstr "contatti illimitati"
+
+#: lib/keila_web/templates/account/edit.html.heex:197
+#: lib/keila_web/templates/auth/login.html.heex:18
+#: lib/keila_web/templates/auth/register.html.heex:20
+#: lib/keila_web/templates/auth/reset.html.heex:17
+#: lib/keila_web/templates/user_admin/new.html.heex:28
+msgid "you@keila.io"
+msgstr "you@keila.io"
+
+#: lib/keila_web/templates/contact/import_live.html.heex:129
+msgid ""
+"1. Download the template.\n"
+"2. Fill in the template in the same way that the sample data is filled in.\n"
+"3. Click on *File*, then *Save as*.\n"
+"    Select _CSV UTF-8 (comma delimited) (*.csv)_ and save the file.\n"
+msgstr ""
+"1. Scarica il modello.\n"
+"2. Riempi il modello nello stesso modo in cui i dati di esempio sono stati "
+"riempiti.\n"
+"3. Clicca su \"File\", quindi \"Salva come\".\n"
+"    Selezione _CSV UTF-8 (separato da virgole) (*.csv)_ e salva il file.\n"
+
+#: lib/keila_web/templates/contact/import_live.html.heex:168
+msgid ""
+"1. Download the template.\n"
+"2. Fill in the template in the same way that the sample data is filled in.\n"
+"3. In order to successfully import contacts, your CSV file needs be RFC 4180 "
+"compliant:\n"
+"    - Comma-separated\n"
+"    - UTF-8 encoding\n"
+msgstr ""
+"1. Scarica il modello.\n"
+"2. Riempi il modello nello stesso modo in cui i dati di esempio sono stati "
+"riempiti.\n"
+"3. Per importare correttamente i contatti il tuo CSV deve rispettare RFC "
+"4180:\n"
+"   - Separato da virgole\n"
+"   - Codificato in UTF-(\n"
+"\n"
+
+#: lib/keila_web/templates/user_admin/index.html.heex:4
+msgid "Administer Users"
+msgstr "Amministra Utenti"
+
+#: lib/keila_web/templates/layout/_menu.html.heex:44
+msgid "Back to projects overview"
+msgstr "Indietro a panoramica progetti"
+
+#: lib/keila_web/templates/project/_empty_state_senders.html.heex:8
+msgid ""
+"Before you can get started, you need to create a *sender*.\n"
+"\n"
+"In the sender settings, you specify the email address\n"
+"and the name from which to send your emails.\n"
+msgstr ""
+"Prima che tu possa iniziare devi creare un \"mittente\".\n"
+"\n"
+"Nelle impostazioni del mittente specifichi l'indirizzo email\n"
+"e il nome da cui inviare le tue email.\n"
+
+#: lib/keila_web/templates/sender/_empty_state.html.heex:10
+msgid ""
+"Before you can send any emails, you need to create a *sender*.\n"
+"\n"
+"In the sender settings, you specify the email address\n"
+"and the name  from which you send your emails.\n"
+msgstr ""
+"Prima che tu possa inviare le email devi creare un \"mittente\".\n"
+"\n"
+"Nelle impostazioni del mittente specifichi l'indirizzo email\n"
+"e il nome da cui inviare le tue email.\n"
+
+#: lib/keila_web/templates/layout/_footer.html.heex:30
+msgid "Community"
+msgstr "Comunità"
+
+#: lib/keila_web/templates/layout/_footer.html.heex:15
+msgid "Docs"
+msgstr "Documentazione"
+
+#: lib/keila_web/templates/layout/_footer.html.heex:42
+msgid "Newsletter"
+msgstr "Newsletter"
+
+#: lib/keila_web/templates/layout/_footer.html.heex:10
+msgid "Open Source Newsletters"
+msgstr "Newsletter Open Source"
+
+#: lib/keila_web/templates/layout/_footer.html.heex:19
+msgid "Usage"
+msgstr "Utilizzo"
+
+#: lib/keila_web/templates/layout/_footer.html.heex:24
+msgid "Self-hosting"
+msgstr "Self-hosting"
+
+#: lib/keila_web/templates/contact/index.html.heex:19
+#: lib/keila_web/templates/sender/index.html.heex:9
+msgid "Create"
+msgstr "Crea"
+
+#: lib/keila_web/templates/project/_empty_state_templates_campaigns.html.heex:26
+msgid "Create a campaign"
+msgstr "Crea una campagna"
+
+#: lib/keila_web/templates/project/_empty_state_templates_campaigns.html.heex:6
+msgid "Create engaging designs and campaigns!"
+msgstr "Crea design coinvolgenti e campagne!"
+
+#: lib/keila_web/templates/layout/_menu.html.heex:100
+msgid "Create form"
+msgstr "Crea modulo"
+
+#: lib/keila_web/templates/campaign/index.html.heex:9
+msgid "Create new campaign"
+msgstr "Crea nuova campagna"
+
+#: lib/keila_web/templates/project/_empty_state_templates_campaigns.html.heex:19
+msgid "Create your own design"
+msgstr "Crea il tuo design"
+
+#: lib/keila_web/templates/project/_empty_state_forms_contacts.html.heex:6
+msgid "Grow your audience with Keila!"
+msgstr "Amplia il tuo pubblico con Keila!"
+
+#: lib/keila_web/templates/project/_empty_state_forms_contacts.html.heex:8
+msgid ""
+"If you already have an existing audience for your newsletter,\n"
+"you can use the *Import Contacts* feature or manually create a new contact.\n"
+"\n"
+"You can also invite new people to subscribe and create a\n"
+"sign-up *form*.\n"
+msgstr ""
+"Se hai già un pubblico per la tua newsletter\n"
+"puoi usare \"Importa contatti\" oppure creare manualmente un nuovo "
+"contatto.\n"
+"\n"
+"Puoi anche invitare nuove persone ad iscriversi e creare\n"
+"un \"modulo\" di iscrizione.\n"
+
+#: lib/keila_web/templates/contact/_empty_state.html.heex:10
+msgid ""
+"If you already have an existing audience for your newsletter,\n"
+"you can use the *Import Contacts* feature.\n"
+"\n"
+"If you just want to try things out, you can also manually add\n"
+"new contacts.\n"
+msgstr ""
+"Se hai già un pubblico per la tua newsletter\n"
+"puoi usare \"Importa contatti\".\n"
+"\n"
+"Se stai solo provando le cose, puoi anche aggiungere \n"
+"i contatti manualmente.\n"
+
+#: lib/keila_web/templates/contact/import_live.html.heex:11
+#: lib/keila_web/templates/contact/index.html.heex:15
+msgid "Import"
+msgstr "Importa"
+
+#: lib/keila_web/templates/template/_empty_state.html.heex:10
+msgid ""
+"Keila comes with a great default template so you don’t have\n"
+"to become a designer before you start sending emails.\n"
+"\n"
+"But if you want a more personalized look for your campaigns,\n"
+"create your own design with the template editor.\n"
+msgstr ""
+"Keila è fornito con un modello di default grandioso così non devi\n"
+"diventare un designer prima di iniziare ad inviare email.\n"
+"\n"
+"Ma se vuoi un aspetto più personalizzato per le tue campagne,\n"
+"crea il tuo design con l'editor modelli.\n"
+
+#: lib/keila_web/templates/project/index.html.heex:12
+msgid ""
+"Keila organizes contacts, forms, and campaigns in *projects*.\n"
+"\n"
+"You can create multiple projects, e.g. if you want\n"
+"to separate your gardening business newsletter from\n"
+"your chess club member list.\n"
+msgstr ""
+"Keila organizza i contatti, moduli e campagne nei \"progetti\".\n"
+"\n"
+"Puoi creare progetti multipli, es. se vuoi separare la tua newsletter \n"
+"sugli affari di giardinaggio dalla lista dei membri del tuo club di "
+"scacchi.\n"
+
+#: lib/keila_web/templates/project/_empty_state_senders.html.heex:6
+msgid "Let’s get started!"
+msgstr "Iniziamo!"
+
+#: lib/keila_web/templates/project/show.html.heex:86
+msgid "Manage Templates"
+msgstr "Gestisci Modelli"
+
+#: lib/keila_web/templates/contact/_empty_state.html.heex:30
+msgid "Manually create new contact"
+msgstr "Crea nuovi contatti manualmente"
+
+#: lib/keila_web/templates/auth/register.html.heex:29
+#: lib/keila_web/templates/auth/reset_change_password.html.heex:17
+msgid "Must have at least 10 characters."
+msgstr "Deve avere almeno 10 caratteri."
+
+#: lib/keila_web/templates/contact/import_live.html.heex:96
+msgid ""
+"Please follow the **exact** instructions on this page.\n"
+"Incorrectly formatted files can not be imported.\n"
+msgstr ""
+"Segui le **precise** istruzioni su questa pagina.\n"
+"File non formattati correttamente non possono essere importati.\n"
+
+#: lib/keila_web/templates/layout/_menu.html.heex:56
+#: lib/keila_web/templates/project/edit.html.heex:6
+msgid "Project settings"
+msgstr "Impostazioni progetto"
+
+#: lib/keila_web/templates/layout/_menu.html.heex:35
+msgid "Projects"
+msgstr "Progetti"
+
+#: lib/keila_web/templates/project/_empty_state_campaigns.html.heex:6
+msgid "Ready, set, send!"
+msgstr "Pronti, partenza, invia!"
+
+#: lib/keila_web/templates/campaign/_empty_state.html.heex:10
+msgid ""
+"Use the campaign editor to create, schedule, and send campaigns\n"
+"to your contacts.\n"
+msgstr ""
+"Usa l'editor campagna per creare, pianificare e inviare le campagne\n"
+"ai tuoi contatti.\n"
+
+#: lib/keila_web/templates/api_key/_empty_state.html.heex:8
+#: lib/keila_web/templates/campaign/_empty_state.html.heex:8
+#: lib/keila_web/templates/component/file_manager_live.html.heex:43
+#: lib/keila_web/templates/contact/_empty_state.html.heex:8
+#: lib/keila_web/templates/form/_empty_state.html.heex:8
+#: lib/keila_web/templates/segment/_empty_state.html.heex:8
+#: lib/keila_web/templates/sender/_empty_state.html.heex:8
+#: lib/keila_web/templates/template/_empty_state.html.heex:8
+msgid "Wow, such empty!"
+msgstr "Wow, che desolazione!"
+
+#: lib/keila_web/templates/contact/edit.html.heex:85
+msgid "You can add any JSON object as custom data to your contacts."
+msgstr ""
+"Puoi aggiungere ogni oggetto JSON come dati personalizzati ai tuoi contatti."
+
+#: lib/keila_web/templates/form/_empty_state.html.heex:10
+msgid ""
+"You can create one or multiple forms to let new contacts sign\n"
+"up to your newsletter.\n"
+"\n"
+"With the form editor, you can customize the look & feel of the\n"
+"forms and decide which input fields to include.\n"
+msgstr ""
+"Puoi creare uno o più moduli per permettere ai nuovi contatti di iscriversi\n"
+"alla tua newsletter.\n"
+"\n"
+"Con l'editor moduli puoi personalizzare l'aspetto dei moduli\n"
+"e decidere quali campi includere.\n"
+
+#: lib/keila_web/templates/project/_empty_state_templates_campaigns.html.heex:8
+msgid ""
+"You can get started sending campaigns with Keila’s default template now.\n"
+"\n"
+"To create your design, you can use the template editor.\n"
+msgstr ""
+"Puoi iniziare ad inviare campagne con il modello predefinito di Keila ora.\n"
+"\n"
+"Per creare il tuo design puoi usare l'editor modelli.\n"
+
+#: lib/keila_web/templates/project/_empty_state_campaigns.html.heex:8
+msgid "You’re ready to send your first campaign with Keila.\n"
+msgstr "Sei pronto per inviare la tua prima campagna con Keila.\n"
+
+#: lib/keila_web/templates/contact/_tabs.html.heex:9
+msgid "active subscribers"
+msgstr "abbonati attivi"
+
+#: lib/keila_web/templates/contact/edit.html.heex:83
+msgid "Data"
+msgstr "Dati"
+
+#: lib/keila_web/templates/contact/edit.html.heex:121
+msgid "Contact Activities"
+msgstr "Attività Contatto"
+
+#: lib/keila_web/templates/contact/edit.html.heex:171
+msgid "clicked campaign link"
+msgstr "link campagna cliccati"
+
+#: lib/keila_web/templates/contact/edit.html.heex:157
+msgid "created"
+msgstr "creato"
+
+#: lib/keila_web/templates/contact/edit.html.heex:159
+msgid "imported"
+msgstr "importato"
+
+#: lib/keila_web/templates/contact/edit.html.heex:169
+msgid "opened campaign"
+msgstr "campagna aperta"
+
+#: lib/keila_web/templates/contact/edit.html.heex:161
+msgid "subscribed"
+msgstr "abbonati"
+
+#: lib/keila_web/templates/contact/_tabs.html.heex:29
+msgid "unreachable contacts"
+msgstr "contatti irraggiungibili"
+
+#: lib/keila_web/templates/contact/edit.html.heex:173
+msgid "unsubscribed"
+msgstr "disiscritto"
+
+#: lib/keila_web/templates/contact/_tabs.html.heex:19
+msgid "unsubscribed contacts"
+msgstr "contatti disiscritti"
+
+#: lib/keila_web/templates/contact/edit.html.heex:163
+msgid "with captcha"
+msgstr "con captcha"
+
+#: lib/keila_web/templates/campaign/_settings_dialog.html.heex:139
+#: lib/keila_web/templates/campaign/new.html.heex:50
+msgid "All Contacts"
+msgstr "Tutti i Contatti"
+
+#: lib/keila_web/controllers/segment_controller.ex:69
+msgid "Confirm Segment Deletion"
+msgstr "Conferma Cancellazione Segmento"
+
+#: lib/keila_web/templates/segment/edit_live.html.heex:168
+msgid "Contacts in this segment (%{count})"
+msgstr "Contatti in questo segmento (%{count})"
+
+#: lib/keila_web/templates/segment/index.html.heex:9
+msgid "Create a new segment"
+msgstr "Crea un nuovo segmento"
+
+#: lib/keila_web/templates/segment/_empty_state.html.heex:22
+msgid "Create your first segment"
+msgstr "Crea il tuo primo segmento"
+
+#: lib/keila_web/live/segment_edit_live.ex:13
+msgid "Custom data"
+msgstr "Dati personalizzati"
+
+#: lib/keila_web/live/segment_edit_live.ex:8
+msgid "Date added"
+msgstr "Data aggiunta"
+
+#: lib/keila_web/templates/segment/delete.html.heex:3
+msgid "Delete Segments?"
+msgstr "Cancella Segmenti?"
+
+#: lib/keila_web/templates/segment/delete.html.heex:27
+msgid "Deleting a segment cannot be undone."
+msgstr "La cancellazione di un segmento non può essere annullata."
+
+#: lib/keila_web/templates/segment/delete.html.heex:10
+msgid "Do you really want to delete the following segments?"
+msgstr "Vuoi veramente cancellare i seguenti segmenti?"
+
+#: lib/keila_web/templates/segment/edit_live.html.heex:6
+msgid "Edit Segment"
+msgstr "Modifica Segmento"
+
+#: lib/keila_web/views/segment_view.ex:95
+msgid "Field:"
+msgstr "Campi:"
+
+#: lib/keila_web/templates/segment/edit_live.html.heex:57
+msgid "Filter"
+msgstr "Filtro"
+
+#: lib/keila_web/templates/segment/edit_live.html.heex:109
+msgid "Add AND condition"
+msgstr "Aggiungi condiziona E"
+
+#: lib/keila_web/templates/segment/edit_live.html.heex:116
+msgid "Add OR condition"
+msgstr "Aggiungi condizione O"
+
+#: lib/keila_web/templates/segment/edit_live.html.heex:159
+msgid "Invalid filter"
+msgstr "Filtro non valido"
+
+#: lib/keila_web/views/segment_view.ex:106
+msgid "Match:"
+msgstr "Corrispondenza:"
+
+#: lib/keila_web/templates/segment/new.html.heex:26
+msgid "My Contact Segment"
+msgstr "Il mio segmento contatti"
+
+#: lib/keila_web/templates/segment/new.html.heex:4
+msgid "New Segment"
+msgstr "Nuovo Segmento"
+
+#: lib/keila_web/templates/segment/new.html.heex:23
+msgid "Segment Name"
+msgstr "Nome Segmento"
+
+#: lib/keila_web/templates/segment/edit_live.html.heex:126
+msgid "Query"
+msgstr "Interrogazione"
+
+#: lib/keila_web/templates/layout/_menu.html.heex:91
+#: lib/keila_web/templates/project/show.html.heex:59
+#: lib/keila_web/templates/segment/index.html.heex:4
+msgid "Segments"
+msgstr "Segmenti"
+
+#: lib/keila_web/templates/segment/edit_live.html.heex:144
+msgid "This query can only be edited manually."
+msgstr "Questa interrogazione può essere modificata solo manualmente."
+
+#: lib/keila_web/templates/segment/_empty_state.html.heex:10
+msgid ""
+"You can create Segments to define subsets of your contacts.\n"
+"\n"
+"This allows you to send campaigns only to those contacts who\n"
+"fulfill certain criteria.\n"
+msgstr ""
+"Puoi creare Segmenti per definire sottoinsiemi dei tuoi contatti\n"
+"\n"
+"Questo ti permette di inviare campagne solo a quei contatti che \n"
+"soddisfano certi criteri.\n"
+
+#: lib/keila_web/templates/segment/edit_live.html.heex:135
+msgid "edit"
+msgstr "modifica"
+
+#: lib/keila_web/live/segment_edit_live.ex:23
+#: lib/keila_web/live/segment_edit_live.ex:39
+#: lib/keila_web/live/segment_edit_live.ex:47
+msgid "ends with"
+msgstr "finisce con"
+
+#: lib/keila_web/live/segment_edit_live.ex:24
+#: lib/keila_web/live/segment_edit_live.ex:40
+#: lib/keila_web/live/segment_edit_live.ex:48
+msgid "includes"
+msgstr "include"
+
+#: lib/keila_web/live/segment_edit_live.ex:28
+#: lib/keila_web/live/segment_edit_live.ex:32
+msgid "is after"
+msgstr "è dopo"
+
+#: lib/keila_web/live/segment_edit_live.ex:27
+#: lib/keila_web/live/segment_edit_live.ex:31
+msgid "is before"
+msgstr "è prima"
+
+#: lib/keila_web/live/segment_edit_live.ex:21
+#: lib/keila_web/live/segment_edit_live.ex:37
+#: lib/keila_web/live/segment_edit_live.ex:45
+msgid "is equal"
+msgstr "è uguale"
+
+#: lib/keila_web/live/segment_edit_live.ex:53
+msgid "matches"
+msgstr "corrisponde"
+
+#: lib/keila_web/live/segment_edit_live.ex:22
+#: lib/keila_web/live/segment_edit_live.ex:38
+#: lib/keila_web/live/segment_edit_live.ex:46
+msgid "starts with"
+msgstr "inizia con"
+
+#: lib/keila_web/templates/segment/edit_live.html.heex:138
+msgid "use filter editor"
+msgstr "usa l'editor filtro"
+
+#: lib/keila/contacts/import.ex:231
+msgid "Error importing contact in line %{line} (email: %{email}): %{message}"
+msgstr ""
+"Errore importazione contatto alla linea %{line} (email: %{email}): %{message}"
+
+#: lib/keila_web/templates/project/show.html.heex:63
+msgid "Manage Segments"
+msgstr "Gestisci Segmenti"
+
+#: lib/keila_web/templates/api_key/index.html.heex:9
+msgid "API Docs"
+msgstr "Documentazione API"
+
+#: lib/keila_web/templates/api_key/index.html.heex:4
+#: lib/keila_web/templates/layout/_menu.html.heex:138
+msgid "API Keys"
+msgstr "Chiavi API"
+
+#: lib/keila_web/templates/api_key/index.html.heex:13
+msgid "Create a new API Key"
+msgstr "Crea nuova Chiave API"
+
+#: lib/keila_web/templates/api_key/_empty_state.html.heex:20
+msgid "Create your first API key"
+msgstr "Crea la tua prima chiave API"
+
+#: lib/keila_web/templates/api_key/index.html.heex:39
+msgid ""
+"Important: The private API Key is displayed only once and cannot be "
+"recovered."
+msgstr ""
+"Importante: la chiave privata API è mostrata solo una volta e non può essere "
+"recuperata."
+
+#: lib/keila_web/templates/api_key/new.html.heex:24
+msgid "API Key Name"
+msgstr "Nome Chiave API"
+
+#: lib/keila_web/templates/api_key/new.html.heex:27
+msgid "My API Key"
+msgstr "La Mia Chiave API"
+
+#: lib/keila_web/templates/api_key/new.html.heex:4
+msgid "New API Key"
+msgstr "Nuova Chiave API"
+
+#: lib/keila_web/templates/api_key/index.html.heex:27
+msgid "New API key created:"
+msgstr "Nuova chiave API creata:"
+
+#: lib/keila_web/templates/campaign/_settings_dialog.html.heex:49
+#: lib/keila_web/templates/form/edit_live.html.heex:334
+msgid "Please select a sender"
+msgstr "Seleziona un mittente"
+
+#: lib/keila_web/templates/contact/import_live.html.heex:47
+msgid "Replace duplicates"
+msgstr "Sostituisci duplicati"
+
+#: lib/keila_web/templates/api_key/index.html.heex:95
+msgid "Revoke"
+msgstr "Revoca"
+
+#: lib/keila_web/templates/api_key/index.html.heex:36
+msgid "The following is your private API Key. Use it to authorize API calls."
+msgstr ""
+"La seguente è la tua Chiave API privata. Usala per autorizzare le chiamate "
+"API."
+
+#: lib/keila_web/templates/campaign/_settings_dialog.html.heex:155
+#: lib/keila_web/templates/campaign/new.html.heex:202
+msgid "You can add any JSON object as custom data to your campaign."
+msgstr ""
+"Puoi aggiungere qualunque oggetto JSON come dati personalizzati per la tua "
+"campagna."
+
+#: lib/keila_web/templates/campaign/edit_live.html.heex:99
+msgid "You must specify a sender before sending/scheduling a campaign."
+msgstr ""
+"Devi specificare un mittente prima di inviare/pianificare una campagna."
+
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:201
+msgid "Code"
+msgstr "Codice"
+
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:197
+#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:95
+msgid "Insert Code"
+msgstr "Inserisci Codice"
+
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:265
+msgid ""
+"Read more about [how to use Liquid in Keila](https://www.keila.io/docs/"
+"campaigns#liquid-templating)\n"
+"or about [custom contact data](https://www.keila.io/docs/contacts#contact-"
+"data).\n"
+msgstr ""
+"Leggi altro su [come usare Liquid in Keila](https://www.keila.io/docs/"
+"campaigns#liquid-templating)\n"
+"o su [dati contatto personalizzati](https://www.keila.io/docs/"
+"contacts#contact-data).\n"
+
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:226
+msgid ""
+"You can insert data from your contacts or your campaign\n"
+"using the [Liquid template language](https://shopify.github.io/liquid/basics/"
+"introduction/).\n"
+msgstr ""
+"Puoi inserire dati dai tuoi contatti o le tue campagne\n"
+"usando il [Linguaggio modello liquido](https://shopify.github.io/liquid/"
+"basics/introduction/).\n"
+
+#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:18
+msgid "Decrease indent"
+msgstr "Diminuisci indentazione"
+
+#: lib/keila_web/templates/campaign/_settings_dialog.html.heex:153
+#: lib/keila_web/templates/campaign/new.html.heex:200
+msgid "Campaign data"
+msgstr "Dati campagna"
+
+#: lib/keila_web/templates/campaign/_settings_dialog.html.heex:92
+#: lib/keila_web/templates/campaign/new.html.heex:147
+msgid "Enable rich text editor"
+msgstr "Abilita editor testo avanzato"
+
+#: lib/keila_web/templates/campaign/_settings_dialog.html.heex:133
+#: lib/keila_web/templates/campaign/new.html.heex:44
+msgid "Segment"
+msgstr "Segmento"
+
+#: lib/keila_web/templates/campaign/_settings_dialog.html.heex:41
+#: lib/keila_web/templates/campaign/new.html.heex:20
+msgid "Sender"
+msgstr "Mittente"
+
+#: lib/keila_web/templates/campaign/_settings_dialog.html.heex:99
+#: lib/keila_web/templates/campaign/new.html.heex:153
+#: lib/keila_web/templates/form/edit_live.html.heex:368
+msgid "Template"
+msgstr "Modello"
+
+#: lib/keila_web/templates/account/edit.html.heex:223
+msgid "Change Language"
+msgstr "Cambia Lingua"
+
+#: lib/keila_web/templates/account/edit.html.heex:229
+msgid "Language"
+msgstr "Lingua"
+
+#: lib/keila_web/templates/account/edit.html.heex:236
+msgid "Update language settings"
+msgstr "Aggiorna impostazioni lingua"
+
+#: lib/keila_web/views/template_view.ex:46
+msgid "Border color"
+msgstr "Colore bordo"
+
+#: lib/keila_web/views/template_view.ex:45
+msgid "Border style"
+msgstr "Stile bordo"
+
+#: lib/keila_web/templates/campaign/_settings_dialog.html.heex:148
+#: lib/keila_web/templates/campaign/new.html.heex:192
+msgid "Enable click/open tracking"
+msgstr "Abilita tracciamento click/aperture"
+
+#: lib/keila_web/templates/account/edit.html.heex:226
+msgid "Here you can change the language for the Keila interface."
+msgstr "Qui puoi cambiare la lingua dell'interfaccia di Keila."
+
+#: lib/keila_web/views/template_view.ex:48
+msgid "Margin"
+msgstr "Margine"
+
+#: lib/keila_web/templates/template/clone.html.heex:26
+msgid "My template name"
+msgstr "Il mio nome modello"
+
+#: lib/keila_web/templates/sender/_shared_local_config.html.heex:6
+msgid "No configuration is required for this sender."
+msgstr "Non è richiesta configurazione per questo mittente."
+
+#: lib/keila_web/views/template_view.ex:47
+msgid "Opacity"
+msgstr "Opacità"
+
+#: lib/keila/templates/default_template.ex:74
+#: lib/keila/templates/hybrid_template.ex:79
+#: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:88
+msgid "Spacer"
+msgstr "Distanziatore"
+
+#: lib/keila_web/templates/component/file_manager_live.html.heex:27
+msgid "Start Upload"
+msgstr "Inizia Caricamento"
+
+#: lib/keila_web/views/template_view.ex:49
+msgid "Text alignment"
+msgstr "Allineamento testo"
+
+#: lib/keila_web/templates/component/file_manager_live.html.heex:3
+msgid "Upload a new file"
+msgstr "Carica un nuovo file"
+
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:85
+msgid "Uploads"
+msgstr "Caricamenti"
+
+#: lib/keila_web/templates/component/file_manager_live.html.heex:45
+msgid "Use the upload form to upload your first image.\n"
+msgstr "Usa il modulo di caricamento per caricare la tua prima immagine.\n"
+
+#: lib/keila_web/templates/api_key/_empty_state.html.heex:10
+msgid ""
+"With API keys, you can use the Keila API to manage campaigns\n"
+"and contacts programmatically.\n"
+msgstr ""
+"Con le chiavi API puoi usare le API di Keila per gestire le campagne\n"
+"e i contatti programmaticamente.\n"
+
+#: lib/keila_web/views/template_view.ex:193
+msgid "centered"
+msgstr "centrato"
+
+#: lib/keila_web/views/template_view.ex:161
+msgid "dashed"
+msgstr "tratteggiato"
+
+#: lib/keila_web/views/template_view.ex:160
+msgid "dotted"
+msgstr "punteggiato"
+
+#: lib/keila_web/views/template_view.ex:191
+msgid "flush left"
+msgstr "a filo a sinistra"
+
+#: lib/keila_web/views/template_view.ex:192
+msgid "flush right"
+msgstr "a filo a destra"
+
+#: lib/keila_web/views/template_view.ex:194
+msgid "justified"
+msgstr "giustificato"
+
+#: lib/keila_web/views/template_view.ex:177
+msgid "large"
+msgstr "largo"
+
+#: lib/keila_web/views/template_view.ex:176
+msgid "medium"
+msgstr "medio"
+
+#: lib/keila_web/views/template_view.ex:175
+msgid "small"
+msgstr "piccolo"
+
+#: lib/keila_web/views/template_view.ex:159
+msgid "solid"
+msgstr "solido"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:329
+msgid "24-Hour Performance"
+msgstr "Prestazione 24 Ore"
+
+#: lib/keila_web/templates/api_key/index.html.heex:64
+msgid "API key copied to clipboard"
+msgstr "Chiave API copiata negli appunti"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:53
+msgid "Add content to this column here …"
+msgstr "Aggiunti contenuti a questa colonna qui …"
+
+#: lib/keila_web/templates/campaign/share.html.heex:11
+#: lib/keila_web/templates/campaign/stats_live.html.heex:11
+#: lib/keila_web/templates/campaign/view.html.heex:11
+msgid "Back"
+msgstr "Indietro"
+
+#: lib/keila_web/templates/campaign/new.html.heex:111
+msgid "Block"
+msgstr "Blocco"
+
+#: lib/keila_web/templates/campaign/_settings_dialog.html.heex:80
+msgid "Block Editor"
+msgstr "Editor Blocco"
+
+#: lib/keila/templates/hybrid_template.ex:63
+msgid "Buttons"
+msgstr "Pulsanti"
+
+#: lib/keila_web/templates/campaign/_settings_dialog.html.heex:124
+#: lib/keila_web/templates/campaign/new.html.heex:178
+msgid "Can you summarize your campaign in 50 characters?"
+msgstr "Puoi riassumere la tua campagna in 50 caratteri?"
+
+#: lib/keila_web/templates/campaign/new.html.heex:71
+msgid "Choose Your Editor"
+msgstr "Scegli il Tuo Editor"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:39
+msgid "Click here to select an image."
+msgstr "Clicca qui per selezionare una immagine."
+
+#: lib/keila_web/templates/api_key/index.html.heex:57
+msgid "Copy to clipboard"
+msgstr "Copia negli appunti"
+
+#: lib/keila_web/templates/campaign/new.html.heex:116
+msgid "Create stunning emails with multi-column layouts with the Block editor."
+msgstr ""
+"Crea fantastiche email con impaginazioni multi-colonna con l'editor Blocchi."
+
+#: lib/keila_web/templates/contact/index.html.heex:10
+#: lib/keila_web/templates/segment/edit_live.html.heex:179
+msgid "Download"
+msgstr "Scarica"
+
+#: lib/keila/templates/hybrid_template.ex:86
+msgid "Footer"
+msgstr "Piè di pagina"
+
+#: lib/keila/templates/hybrid_template.ex:95
+msgid "Footer links"
+msgstr "Collegamenti piè di pagina"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:44
+msgid "Image caption (optional)"
+msgstr "Didascalia immagine (opzionale)"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:47
+msgid "Link for this image (optional)"
+msgstr "Link per questa immagine (opzionale)"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:71
+msgid "Make centered"
+msgstr "Crea centrato"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:74
+msgid "Make full width"
+msgstr "Crea larghezza piena"
+
+#: lib/keila_web/live/campaign_stats_live.ex:67
+msgid "Opens"
+msgstr "Apre"
+
+#: lib/keila_web/templates/campaign/new.html.heex:79
+msgid "Plain Text"
+msgstr "Testo Semplice"
+
+#: lib/keila_web/templates/campaign/_settings_dialog.html.heex:115
+#: lib/keila_web/templates/campaign/new.html.heex:169
+msgid "Preview Text"
+msgstr "Anteprima Testo"
+
+#: lib/keila/templates/hybrid_template.ex:77
+msgid "Quote Attribution"
+msgstr "Attribuzione Citazione"
+
+#: lib/keila/templates/hybrid_template.ex:76
+msgid "Quote Text"
+msgstr "Testo Citazione"
+
+#: lib/keila/templates/hybrid_template.ex:74
+msgid "Quotes"
+msgstr "Citazioni"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:59
+msgid "Separator"
+msgstr "Separatore"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:50
+msgid "Start creating your newsletter here …"
+msgstr "Inizia a creare la tua newsletter qui …"
+
+#: lib/keila_web/views/template_view.ex:71
+msgid "System"
+msgstr "Sistema"
+
+#: lib/keila_web/templates/campaign/new.html.heex:84
+msgid ""
+"The simplest type of email. Text and nothing else. No images, no links, just "
+"text."
+msgstr ""
+"Il tipo più semplice di email. Testo e niente altro. Nessuna immagine o "
+"link, solo testo."
+
+#: lib/keila_web/controllers/contact_controller.ex:32
+#: lib/keila_web/controllers/contact_controller.ex:40
+msgid "Unsubscribed Contacts"
+msgstr "Contatti Disiscritti"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:268
+msgid "Untracked Campaign"
+msgstr "Campagna Non Tracciata"
+
+#: lib/keila_web/templates/campaign/new.html.heex:100
+msgid ""
+"Use the Markdown editor to create beautiful single-column hybrid emails."
+msgstr ""
+"Usa l'editor Markdown per creare bellissime emaill ibride a colonna singola."
+
+#: lib/keila_web/templates/campaign/_settings_dialog.html.heex:117
+#: lib/keila_web/templates/campaign/new.html.heex:171
+msgid ""
+"Users see this preview before they open your email. Use up to 50 characters."
+msgstr ""
+"Gli utenti vedono questa anteprima prima di aprire la tua email. Usa fino a "
+"50 caratteri."
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:270
+msgid ""
+"You have disabled tracking for this campaign. Thanks for respecting the "
+"privacy of your recipients!"
+msgstr ""
+"Hai disabilitato il tracciamento per questa campagna. Grazie per rispettare "
+"la privacy dei tuoi destinatari!"
+
+#: lib/keila_web/templates/template/edit_live.html.heex:76
+msgid ""
+"You may use Liquid and Markdown in the signature. Use `[Unsubscribe]"
+"({{ unsubscribe_link }})` to include the unsubscribe link."
+msgstr ""
+"Puoi usare Liquid e Markdown nella firma. Usa `[Disiscriviti]"
+"({{ unsubscribe_link }})` per includere il link di disiscrizione."
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:299
+msgid "bounces"
+msgstr "rimbalzi"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:315
+msgid "complaints"
+msgstr "reclami"
+
+#: lib/keila_web/templates/contact/edit.html.heex:175
+msgid "email bounced"
+msgstr "email rimbalzate"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:251
+msgid "emails clicked"
+msgstr "email cliccate"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:235
+msgid "emails opened"
+msgstr "email aperte"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:225
+msgid "emails sent"
+msgstr "email inviate"
+
+#: lib/keila_web/templates/contact/edit.html.heex:179
+msgid "filed a complaint"
+msgstr "ha presentato un reclamo"
+
+#: lib/keila_web/templates/contact/edit.html.heex:186
+msgid "from campaign"
+msgstr "dalla campagna"
+
+#: lib/keila_web/templates/contact/edit.html.heex:177
+msgid "permanently unreachable"
+msgstr "permanentemente non raggiungibile"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:283
+msgid "unsubscribes"
+msgstr "annulla l'iscrizione"
+
+#: lib/keila_web/templates/sender/_smtp_config.html.heex:56
+msgid "None"
+msgstr "Nessuno"
+
+#: lib/keila_web/templates/sender/_smtp_config.html.heex:54
+msgid "SSL/TLS"
+msgstr "SSL/TLS"
+
+#: lib/keila_web/templates/sender/_smtp_config.html.heex:55
+msgid "STARTTLS"
+msgstr "STARTTLS"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:350
+msgid ""
+"**Important:** You must create and select a sender here. Otherwise, no opt-"
+"in emails will be sent."
+msgstr ""
+"**Importante:** devi creare e selezionare un mittente qui. Altrimenti "
+"nessuna email di adesione sarà inviata."
+
+#: lib/keila_web/templates/form/edit_live.html.heex:69
+#: lib/keila_web/templates/form/edit_live.html.heex:311
+msgid "Double Opt-in"
+msgstr "Doppia Adesione"
+
+#: lib/keila_web/live/segment_edit_live.ex:12
+msgid "Double opt-in date"
+msgstr "Data doppia adesione"
+
+#: lib/keila/mailings/send_double_opt_in_mail_worker.ex:75
+#: lib/keila_web/templates/form/edit_live.html.heex:409
+msgid ""
+"Please click here to confirm your subscription:\n"
+"\n"
+"### [Confirm subscription]({{ double_opt_in_link }})\n"
+msgstr ""
+"Clicca qui per confermare la tua iscrizione:\n"
+"\n"
+"### [Conferma iscrizione]({{ double_opt_in_link }})\n"
+
+#: lib/keila_web/views/public_form_view.ex:335
+msgid "Please confirm your email"
+msgstr "Conferma la tua email"
+
+#: lib/keila/mailings/send_double_opt_in_mail_worker.ex:71
+#: lib/keila_web/templates/form/edit_live.html.heex:387
+msgid "Please confirm your email address"
+msgstr "Conferma il tuo indirizzo email"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:321
+msgid "Require double opt-in"
+msgstr "Richiesta doppia adesione"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:490
+msgid ""
+"To prevent abuse by spammers, the double opt-in feature is currently only "
+"available if you have a subscription. Sorry for the inconvenience!"
+msgstr ""
+"Per prevenire abusi dagli spammers la caratteristica di doppia adesione è "
+"disponibile solo se hai una sottoscrizione. Spiacenti per l'inconveniente!"
+
+#: lib/keila_web/views/public_form_view.ex:338
+msgid ""
+"We’ve just sent an email to %{email}. Please click the link in that email to "
+"confirm your subscription."
+msgstr ""
+"Abbiamo appena inviato una email a %{email}. Clicca il link nella email per "
+"confermare la tua iscrizione."
+
+#: lib/keila_web/templates/public_form/double_opt_in_cancelled.html.heex:7
+msgid "You will not be subscribed to this list."
+msgstr "Non sarai iscritto a questa lista."
+
+#: lib/keila_web/templates/public_form/double_opt_in_cancelled.html.heex:4
+msgid "Your data has been deleted."
+msgstr "I tuoi dati sono stati cancellati."
+
+#: lib/keila_web/templates/contact/edit.html.heex:166
+msgid "with double opt-in"
+msgstr "con doppia adesione"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:439
+msgid ""
+"  Custom URL to which users are redirected when they submit the form and "
+"double opt-in\n"
+"  is required.\n"
+msgstr ""
+"  URL personalizzato a cui gli utenti saranno reindirizzati quanto "
+"invieranno il modulo e la doppia adesione\n"
+"è richiesta.\n"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:424
+msgid ""
+"  Custom message that is shown when a user submits the form and double opt-"
+"in\n"
+"  is required.\n"
+msgstr ""
+"  Messaggio personalizzato che sarà mostrato quando un utente invia il "
+"modulo e la doppia adesione\n"
+"è richiesta\n"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:397
+msgid ""
+"  You may use Liquid and Markdown in the email body.\n"
+"\n"
+"  Use `[Confirm]({{ double_opt_in_link }})` to include the opt-in link.\n"
+msgstr ""
+"  Puoi usare Liquid e Markdown nel corpo della email.\n"
+"\n"
+"  Usa `[Conferma]({{ double_opt_in_link }})` per includere il link di "
+"adesione.\n"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:299
+msgid "Add custom field"
+msgstr "Aggiungi campo personalizzato"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:275
+msgid "Add option"
+msgstr "Aggiungi opzione"
+
+#: lib/keila_web/templates/user_admin/index.html.heex:8
+msgid "Add user"
+msgstr "Aggiungi utente"
+
+#: lib/keila_web/templates/contact/_list.html.heex:52
+#: lib/keila_web/templates/contact/delete.html.heex:27
+#: lib/keila_web/templates/segment/edit_live.html.heex:187
+msgid "Added"
+msgstr "Aggiunto"
+
+#: lib/keila_web/templates/campaign/new.html.heex:136
+msgid "Build fully customized responsive email layouts with MJML."
+msgstr ""
+"Costruisci impaginazioni email pienamente responsive e personalizzate con "
+"MJML."
+
+#: lib/keila_web/templates/form/edit_live.html.heex:198
+msgid "Checkbox"
+msgstr "Casella di controllo"
+
+#: lib/keila_web/controllers/user_admin_controller.ex:58
+msgid "Could not create user"
+msgstr "Non ho potuto creare utente"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:173
+msgid "Custom field: data.%{key}"
+msgstr "Campo personalizzato: dati. %{key}"
+
+#: lib/keila_web/templates/campaign/_preview_dialog.html.heex:14
+#: lib/keila_web/templates/campaign/view.html.heex:47
+msgid "Desktop preview"
+msgstr "Anteprima desktop"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:421
+msgid "Double Opt-in Info Message"
+msgstr "Messaggio Informativo Doppia Adesione"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:436
+msgid "Double Opt-in Info Redirect URL"
+msgstr "URL Reindirizzamento Doppia Adesione"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:199
+msgid "Dropdown"
+msgstr "Menu a discesa"
+
+#: lib/keila/mailings/builder/mjml.ex:37
+msgid "Error compiling Liquid: %{reason}"
+msgstr "Errore compilando Liquid: %{reason}"
+
+#: lib/keila/mailings/builder/mjml.ex:27
+msgid "Error compiling MJML: %{reason}"
+msgstr "Errore compilando MJML: %{reason}"
+
+#: lib/keila_web/templates/campaign/_mjml_editor.html.heex:11
+msgid "Expand editor"
+msgstr "Espandi editor"
+
+#: lib/keila_web/templates/campaign/_mjml_editor.html.heex:4
+msgid "Insert image"
+msgstr "Inserisci immagine"
+
+#: lib/keila_web/templates/campaign/_settings_dialog.html.heex:81
+#: lib/keila_web/templates/campaign/new.html.heex:131
+msgid "MJML"
+msgstr "MJML"
+
+#: lib/keila_web/templates/campaign/_preview_dialog.html.heex:22
+#: lib/keila_web/templates/campaign/view.html.heex:55
+msgid "Mobile preview"
+msgstr "Anteprima mobile"
+
+#: lib/keila_web/live/form_edit_live.ex:57
+msgid "My Custom Field"
+msgstr "Il Mio Campo Personalizzato"
+
+#: lib/keila_web/live/form_edit_live.ex:95
+msgid "My Custom Option"
+msgstr "La Mia Opzione Personalizzata"
+
+#: lib/keila_web/templates/user_admin/new.html.heex:4
+msgid "New User"
+msgstr "Nuovo Utente"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:197
+msgid "Number"
+msgstr "Numero"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:290
+msgid "Remove field"
+msgstr "Rimuovi campo"
+
+#: lib/keila_web/templates/contact/_search.html.heex:19
+msgid "Search"
+msgstr "Cerca"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:200
+msgid "Tags"
+msgstr "Tag"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:195
+msgid "Text"
+msgstr "Testo"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:508
+msgid "Body background"
+msgstr "Sfondo corpo"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:383
+msgid "Custom email subject"
+msgstr "Oggetto email personalizzato"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:395
+msgid "Custom email text"
+msgstr "Testo email personalizzato"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:206
+msgid "Data Key"
+msgstr "Chiave Dati"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:514
+msgid "Form background"
+msgstr "Sfondo modulo"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:520
+msgid "Form text color"
+msgstr "Colore testo modulo"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:526
+msgid "Input background"
+msgstr "Sfondo campo"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:538
+msgid "Input border color"
+msgstr "Colore bordo campo"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:532
+msgid "Input text color"
+msgstr "Colore testo campo"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:224
+msgid "Label"
+msgstr "Etichetta"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:240
+msgid "Options"
+msgstr "Opzioni"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:233
+msgid "Placeholder"
+msgstr "Segnaposto"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:544
+msgid "Submit button background"
+msgstr "Sfondo pulsante invia"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:550
+msgid "Submit text color"
+msgstr "Colore testo invia"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:123
+msgid "Thank you redirect URL"
+msgstr "URL reindirizzamento di ringraziamento"
+
+#: lib/keila_web/controllers/user_admin_controller.ex:53
+msgid "User created successfully"
+msgstr "Utente creato correttamente"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:211
+msgid ""
+"You can use data from this field as\n"
+"`{{ contact.data.%{key} }}` in your emails or segments.\n"
+msgstr ""
+"Puoi usare i dati da questo campo come\n"
+"`{{ contact.data.%{key} }}` nelle tue email o segmenti.\n"
+
+#: lib/keila_web/templates/project/edit.html.heex:45
+#: lib/keila_web/templates/project/new.html.heex:23
+msgid "Project name"
+msgstr "Nome progetto"
+
+#: lib/keila_web/templates/sender/edit_live.html.heex:105
+msgid "Sender name"
+msgstr "Nome mittente"
+
+#: lib/keila_web/templates/sender/edit_live.html.heex:120
+msgid "From address"
+msgstr "Indirizzo mittente"
+
+#: lib/keila_web/templates/sender/edit_live.html.heex:133
+msgid "From name"
+msgstr "Nome mittente"
+
+#: lib/keila_web/templates/sender/edit_live.html.heex:152
+msgid "Reply-to address"
+msgstr "Indirizzo risposte"
+
+#: lib/keila_web/templates/sender/edit_live.html.heex:161
+msgid "Reply-to name"
+msgstr "Nome risposte"
+
+#: lib/keila_web/templates/sender/_smtp_config.html.heex:2
+msgid "Server"
+msgstr "Server"
+
+#: lib/keila_web/templates/sender/_smtp_config.html.heex:11
+msgid "Username"
+msgstr "Nome utente"
+
+#: lib/keila_web/templates/sender/_smtp_config.html.heex:47
+msgid "Connection security"
+msgstr "Sicurezza connessione"
+
+#: lib/keila_web/templates/sender/_smtp_config.html.heex:68
+msgid "Port"
+msgstr "Porta"
+
+#: lib/keila_web/templates/sender/_config_edit.html.heex:12
+#: lib/keila_web/templates/sender/_config_new.html.heex:48
+msgid "Rate limit per second"
+msgstr "Limite frequenza per secondo"
+
+#: lib/keila_web/templates/sender/_config_edit.html.heex:18
+#: lib/keila_web/templates/sender/_config_new.html.heex:54
+msgid "Rate limit per minute"
+msgstr "Limite frequenza per minuto"
+
+#: lib/keila_web/templates/sender/_config_edit.html.heex:24
+#: lib/keila_web/templates/sender/_config_new.html.heex:60
+msgid "Rate limit per hour"
+msgstr "Limite frequenza per ora"
+
+#: lib/keila_web/templates/sender/_mailgun_config.html.heex:9
+msgid "Base URL"
+msgstr "URL Base"
+
+#: lib/keila_web/templates/sender/_mailgun_config.html.heex:2
+msgid "Domain"
+msgstr "Dominio"
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:5
+msgid "US East (Ohio)"
+msgstr "US Est (Ohio)"
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:6
+msgid "US East (N. Virginia)"
+msgstr "US Est (N. Virginia)"
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:7
+msgid "US West (N. California)"
+msgstr "US Ovest (N. California)"
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:8
+msgid "US West (Oregon)"
+msgstr "US Ovest (Oregon)"
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:9
+msgid "Asia Pacific (Mumbai)"
+msgstr "Asia Pacifico (Mumbai)"
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:10
+msgid "Asia Pacific (Seoul)"
+msgstr "Asia Pacifico (Seoul)"
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:11
+msgid "Asia Pacific (Singapore)"
+msgstr "Asia Pacifico (Singapore)"
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:12
+msgid "Asia Pacific (Sydney)"
+msgstr "Asia Pacifico (Sydney)"
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:13
+msgid "Asia Pacific (Tokyo)"
+msgstr "Asia Pacifico (Tokyo)"
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:14
+msgid "Canada (Central)"
+msgstr "Canada (Centrale)"
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:15
+msgid "Europe (Frankfurt)"
+msgstr "Europa (Francoforte)"
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:16
+msgid "Europe (Ireland)"
+msgstr "Europa (Irlanda)"
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:17
+msgid "Europe (London)"
+msgstr "Europa (Londra)"
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:18
+msgid "Europe (Paris)"
+msgstr "Europa (Parigi)"
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:19
+msgid "Europe (Stockholm)"
+msgstr "Europa (Stoccolma)"
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:20
+msgid "South America (São Paulo)"
+msgstr "America del Sud (São Paulo)"
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:25
+msgid "Access Key"
+msgstr "Chiave Accesso"
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:33
+#: lib/keila_web/templates/sender/_ses_config.html.heex:45
+msgid "Secret"
+msgstr "Segreto"
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:61
+msgid "Configuration Set"
+msgstr "Set di configurazione"
+
+#: lib/keila/mailings/sender_adapters/shared_ses.ex:60
+msgid "Verify Your Email for Keila"
+msgstr "Verifica la Tua Email per Keila"
+
+#: lib/keila/mailings/sender_adapters/shared_ses.ex:63
+msgid ""
+"Please click on the following link to verify your email address %{email} for "
+"use with Keila."
+msgstr ""
+"Clicca il seguente link per verificare il tuo indirizzo email %{email} per "
+"l'uso con Keila."
+
+#: lib/keila_web/templates/sender/_shared_ses_config.html.heex:7
+msgid ""
+"You have verified your email address and can now send emails with this "
+"sender."
+msgstr ""
+"Hai verificato il tuo indirizzo email e puoi ora inviare email con questo "
+"mittente."
+
+#: lib/keila_web/templates/sender/_shared_ses_config.html.heex:17
+msgid ""
+"You need to verify your email address before you can send emails with this "
+"sender."
+msgstr ""
+"Devi verificare il tuo indirizzo email prima di poter inviare email con "
+"questo mittente."
+
+#: lib/keila_web/templates/sender/_shared_ses_config.html.heex:21
+msgid ""
+"After creating this sender, you will receive an email to verify your email "
+"address."
+msgstr ""
+"Dopo aver creato questo mittente, riceverai una email per verificare il tuo "
+"indirizzo email."
+
+#: lib/keila_web/templates/sender/_ses_config.html.heex:2
+msgid "Region"
+msgstr "Regione"
+
+#: lib/keila_web/templates/account/edit.html.heex:145
+msgid "Get started"
+msgstr "Iniziamo"
+
+#: lib/keila_web/views/template_view.ex:95
+msgctxt "font"
+msgid "bold"
+msgstr "grassetto"
+
+#: lib/keila_web/views/template_view.ex:96
+msgctxt "font"
+msgid "light"
+msgstr "leggero"
+
+#: lib/keila_web/views/template_view.ex:94
+msgctxt "font"
+msgid "normal"
+msgstr "normale"
+
+#: lib/keila_web/views/template_view.ex:144
+msgctxt "opacity"
+msgid "almost opaque"
+msgstr "quasi opaco"
+
+#: lib/keila_web/views/template_view.ex:140
+msgctxt "opacity"
+msgid "invisible"
+msgstr "invisibile"
+
+#: lib/keila_web/views/template_view.ex:142
+msgctxt "opacity"
+msgid "light"
+msgstr "leggero"
+
+#: lib/keila_web/views/template_view.ex:143
+msgctxt "opacity"
+msgid "medium"
+msgstr "medio"
+
+#: lib/keila_web/views/template_view.ex:145
+msgctxt "opacity"
+msgid "opaque"
+msgstr "opaco"
+
+#: lib/keila_web/views/template_view.ex:141
+msgctxt "opacity"
+msgid "very light"
+msgstr "molto leggero"
+
+#: lib/keila_web/templates/component/file_manager_live.html.heex:79
+msgid "Click to delete"
+msgstr "Click per cancellare"
+
+#: lib/keila_web/templates/component/file_manager_live.html.heex:100
+msgid ""
+"This file can’t be deleted because it’s already in use in the following "
+"campaigns:"
+msgstr ""
+"Questo file non può essere cancellato perché è già in uso nelle seguenti "
+"campagne:"
+
+#: lib/keila_web/templates/component/file_manager_live.html.heex:98
+msgid "draft"
+msgstr "bozza"
+
+#: lib/keila_web/templates/component/file_manager_live.html.heex:98
+msgid "sent"
+msgstr "inviato"
+
+#: lib/keila_web/templates/contact/edit.html.heex:110
+msgid "920207"
+msgstr "920207"
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:218
+msgid "Campaign Preview"
+msgstr "Anteprima Campagna"
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:289
+msgid ""
+"Enter up to five email addresses (separated with commas). If they exist in "
+"your contacts list, contact data will be used."
+msgstr ""
+"Inserisci fino a cinque indirizzi email (separati da virgola). Se esistono "
+"nella tua lista contatti i dati di contatto saranno usati."
+
+#: lib/keila_web/templates/contact/edit.html.heex:102
+msgid "External ID"
+msgstr "ID Esterno"
+
+#: lib/keila_web/live/campaign_edit_live.ex:240
+msgid "Insufficient credits."
+msgstr "Crediti insufficienti."
+
+#: lib/keila_web/live/campaign_edit_live.ex:210
+msgid "Invalid campaign settings."
+msgstr "Impostazioni campagna non valide."
+
+#: lib/keila_web/live/campaign_edit_live.ex:201
+msgid "No valid email addresses entered."
+msgstr "Non hai inserito un indirizzo email valido."
+
+#: lib/keila_web/live/campaign_edit_live.ex:202
+msgid "Please enter no more than five addresses."
+msgstr "Non inserire più di cinque indirizzi."
+
+#: lib/keila_web/live/campaign_edit_live.ex:260
+msgid "[Preview] %{subject}"
+msgstr "[Anteprima] %{subject}"
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:295
+msgid "Recipients"
+msgstr "Destinatari"
+
+#: lib/keila_web/templates/auth/register.html.heex:12
+msgid ""
+"Register your Keila account now and start your newsletter project within "
+"minutes."
+msgstr ""
+"Registra il tuo account Keila ora e inizia i tuoi progetti newsletter in "
+"pochi minuti."
+
+#: lib/keila_web/templates/campaign/edit_live.html.heex:52
+msgid "Send & Schedule"
+msgstr "Invia & Pianifica"
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:315
+#: lib/keila_web/templates/campaign/edit_live.html.heex:72
+msgid "Send preview"
+msgstr "Invia anteprima"
+
+#: lib/keila_web/templates/auth/register.html.heex:9
+msgid "Start sending emails with Keila now"
+msgstr "Inizia ad inviare email con Keila ora"
+
+#: lib/keila_web/templates/contact/edit.html.heex:104
+msgid ""
+"The external ID allows updating the contact profile from an external source "
+"even if its email address changes."
+msgstr ""
+"L'ID esterno ti permette di aggiornare il profilo contatto da una sorgente "
+"esterna anche se il suo indirizzo email cambia."
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:276
+msgid "There was an error sending the preview campaign."
+msgstr "Si è verificato un errore inviando l'anteprima della campagna."
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:251
+msgid ""
+"To prevent abuse by spammers, sending emails is only possible if you have an "
+"active subscription."
+msgstr ""
+"Per prevenire l'abuso degli spammer l'invio delle email è possibile solo se "
+"hai una sottoscrizione attiva."
+
+#: lib/keila_web/live/campaign_edit_live.ex:216
+msgid "You must select a sender first."
+msgstr "Devi selezionare un mittente prima."
+
+#: lib/keila/contacts/import.ex:220
+msgid "duplicate entry"
+msgstr "voce duplicata"
+
+#: lib/keila_web/templates/campaign/share.html.heex:81
+msgid "Address copied to clipboard."
+msgstr "Indirizzo copiato negli appunti"
+
+#: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:50
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:56
+#: extra/keila_cloud_web/templates/cloud_account/_user_name.html.heex:38
+#: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:146
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:92
+msgid "Continue"
+msgstr "Continua"
+
+#: lib/keila_web/templates/campaign/share.html.heex:61
+msgid "Disable public link"
+msgstr "Disabilita link pubblico"
+
+#: lib/keila_web/templates/campaign/share.html.heex:70
+msgid "Enable public link"
+msgstr "Abilita link pubblico"
+
+#: lib/keila_web/templates/sender/_postmark_config.html.heex:32
+msgid "Message Stream"
+msgstr "Flusso Messaggi"
+
+#: lib/keila_web/templates/campaign/share.html.heex:32
+#: lib/keila_web/templates/campaign/stats_live.html.heex:216
+#: lib/keila_web/templates/campaign/view.html.heex:32
+msgid "Share"
+msgstr "Condividi"
+
+#: lib/keila_web/templates/campaign/share.html.heex:23
+#: lib/keila_web/templates/campaign/stats_live.html.heex:205
+#: lib/keila_web/templates/campaign/view.html.heex:23
+msgid "Statistics"
+msgstr "Statistiche"
+
+#: lib/keila_web/templates/campaign/share.html.heex:41
+msgid "Use the following link to share your campaign with other people:"
+msgstr "Ua il seguente link per condividere la tua campagna con altre persone:"
+
+#: lib/keila_web/templates/campaign/share.html.heex:29
+#: lib/keila_web/templates/campaign/stats_live.html.heex:210
+#: lib/keila_web/templates/campaign/view.html.heex:26
+msgid "View"
+msgstr "Vista"
+
+#: lib/keila_web/templates/campaign/share.html.heex:64
+msgid ""
+"You can enable a public link to share your campaign with others. Your "
+"campaign will be accessible to anyone who has the link.\n"
+"\n"
+"You can disable the public link later if you want.\n"
+msgstr ""
+"Puoi abilitare un link pubblico per condividere la tua campagna con altri. "
+"La tua campagna sarà accessibile a chiunque abbia il link.\n"
+"\n"
+"Puoi disabilitare il link pubblico più avanti se lo vorrai.\n"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:110
+msgid "Add"
+msgstr "Aggiungi"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:116
+msgid "Add %{network} Profile"
+msgstr "Aggiuni Profilo %{network}"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:122
+msgid "Add Custom Social Network"
+msgstr "Aggiungi Social Network Personalizzato"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:80
+msgid "Add Social Media Icon"
+msgstr "Aggiungi Icona Social Media"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:143
+msgid "Align center"
+msgstr "Allinea al centro"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:140
+msgid "Align left"
+msgstr "Allinea a sinistra"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:146
+msgid "Align right"
+msgstr "Allinea a destra"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:98
+msgid "Background Color"
+msgstr "Colore Sfondo"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:104
+msgid "Black"
+msgstr "Nero"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:89
+msgid "Choose Social Network"
+msgstr "Scegli Social Network"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:119
+msgid "Edit %{network} Profile"
+msgstr "Modifica Profilo %{network}"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:125
+msgid "Edit Custom Social Network"
+msgstr "Modifica Social Network Personalizzato"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:101
+msgid "Icon Color"
+msgstr "Colore Icona"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:134
+msgid "Icon URL (e.g. https://example.com/icon.png)"
+msgstr "URL icona (es.https://example.com/icon.png)"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:155
+msgid "Large"
+msgstr "Grande"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:152
+msgid "Medium"
+msgstr "Medio"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:86
+msgid "Other (Custom)"
+msgstr "Altro (Personalizzato)"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:131
+msgid "Platform name (e.g. Mastodon)"
+msgstr "Nome piattaforma (es. Mastodon)"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:137
+msgid "Profile URL (e.g., https://example.com/yourprofile)"
+msgstr "URL profilo (es. https://example.com/yourprofile)"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:83
+msgid "Select a site..."
+msgstr "Seleziona un sito..."
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:149
+msgid "Small"
+msgstr "Piccolo"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:77
+msgid "Social Icons"
+msgstr "Icone Social"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:107
+msgid "White"
+msgstr "Bianco"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:128
+msgid "https://example.com/yourprofile"
+msgstr "https://example.com/yourprofile"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:469
+msgid ""
+"  Custom URL to which users are redirected when a double opt-in link\n"
+"  has expired or has already been used.\n"
+msgstr ""
+"  URL personalizzato a cui saranno reindirizzati gli utenti quando un link "
+"di doppia adesione\n"
+"  è scaduto o è già stato usato.\n"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:454
+msgid ""
+"  Custom message that is shown when a double opt-in link has expired or\n"
+"  has already been used.\n"
+msgstr ""
+"  Messaggio personalizzato che viene mostrato quando un link di doppia "
+"adesione è scaduto o\n"
+"  è già stato usato.\n"
+
+#: lib/keila_web/views/segment_view.ex:132
+msgid "Any campaign"
+msgstr "Ogni campagna"
+
+#: lib/keila_web/templates/public_form/double_opt_in_failure.html.heex:15
+msgid "Back to form"
+msgstr "Indietro al modulo"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:451
+msgid "Double Opt-in Failure Message"
+msgstr "Messaggio Fallimento Doppia Adesione"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:466
+msgid "Double Opt-in Failure Redirect URL"
+msgstr "URL Reindirizzamento Fallimento Doppia Adesione"
+
+#: lib/keila_web/templates/sender/edit_live.html.heex:84
+msgid "Email verified"
+msgstr "Email verificata"
+
+#: lib/keila_web/templates/sender/edit_live.html.heex:147
+msgid ""
+"If you want replies to your newsletters to go to a different address than "
+"the one specified above, you can configure an alternative email address and "
+"name here."
+msgstr ""
+"Se vuoi che le risposte alla tua newsletter vadano ad un indirizzo "
+"differente da quello specificato sopra puoi configurare un indirizzo email e "
+"nome alternativo qui."
+
+#: lib/keila_web/live/segment_edit_live.ex:14
+msgid "Messages"
+msgstr "Messaggi"
+
+#: lib/keila_web/templates/public_form/double_opt_in_failure.html.heex:11
+msgid "Please submit the form again to receive a new confirmation link."
+msgstr "Invia il modulo ancora per ricevere un nuovo link di conferma."
+
+#: lib/keila_web/templates/sender/edit_live.html.heex:144
+msgid "Reply-to settings"
+msgstr "Impostazioni risposte"
+
+#: lib/keila_web/templates/public_form/double_opt_in_failure.html.heex:7
+msgid "This confirmation link has expired or has already been used."
+msgstr "Questo link di conferma è scaduto o è già stato usato."
+
+#: lib/keila_web/templates/sender/edit_live.html.heex:128
+msgid "This is the email address from which your emails will be sent."
+msgstr "Questo è l'indirizzo email a cui le tue email saranno inviate."
+
+#: lib/keila_web/templates/sender/edit_live.html.heex:113
+msgid ""
+"This is the internal name of your sender. It is not shown to your recipients."
+msgstr ""
+"Questo è il nome interno del tuo mittente. Non sarà mostrato ai tuoi "
+"destinatari."
+
+#: lib/keila_web/templates/sender/edit_live.html.heex:138
+msgid "This is the name that will show up in the inbox of your recipients."
+msgstr ""
+"Questo è il nome che sarà mostrato nella posta in arrivo dei tuoi "
+"destinatari."
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:223
+msgid ""
+"To prevent abuse by spammers, sending emails is only possible once your "
+"onboarding has been completed."
+msgstr ""
+"Per prevenire abusi dagli spammer l'invio di email è possibile solo dopo che "
+"l'onboarding sarà completato."
+
+#: lib/keila_web/live/segment_edit_live.ex:64
+msgid "bounced"
+msgstr "rimbalzato"
+
+#: lib/keila_web/live/segment_edit_live.ex:62
+msgid "clicked"
+msgstr "cliccato"
+
+#: lib/keila_web/live/segment_edit_live.ex:66
+msgid "complaint received"
+msgstr "reclamo ricevuto"
+
+#: lib/keila_web/live/segment_edit_live.ex:33
+#: lib/keila_web/live/segment_edit_live.ex:41
+#: lib/keila_web/live/segment_edit_live.ex:49
+#: lib/keila_web/live/segment_edit_live.ex:54
+msgid "is empty"
+msgstr "è vuoto"
+
+#: lib/keila_web/live/segment_edit_live.ex:34
+#: lib/keila_web/live/segment_edit_live.ex:42
+#: lib/keila_web/live/segment_edit_live.ex:50
+#: lib/keila_web/live/segment_edit_live.ex:55
+msgid "is not empty"
+msgstr "non è vuoto"
+
+#: lib/keila_web/live/segment_edit_live.ex:67
+msgid "no complaint received"
+msgstr "nessun reclamo ricevuto"
+
+#: lib/keila_web/live/segment_edit_live.ex:65
+msgid "not bounced"
+msgstr "non rimbalzato"
+
+#: lib/keila_web/live/segment_edit_live.ex:63
+msgid "not clicked"
+msgstr "non cliccato"
+
+#: lib/keila_web/live/segment_edit_live.ex:61
+msgid "not opened"
+msgstr "non aperto"
+
+#: lib/keila_web/live/segment_edit_live.ex:59
+msgid "not received"
+msgstr "non ricevuto"
+
+#: lib/keila_web/live/segment_edit_live.ex:60
+msgid "opened"
+msgstr "aperto"
+
+#: lib/keila_web/live/segment_edit_live.ex:58
+msgid "received"
+msgstr "ricevuto"
+
+#: lib/keila_web/templates/contact/import_live.html.heex:147
+msgid ""
+"1. Download the template.\n"
+"2. Fill in the template in the same way that the sample data is filled in.\n"
+"3. Click on *File*, then *Save as*. Select *Text CSV (.csv)* and save the "
+"file.\n"
+"    In the following dialogue pick:\n"
+"    - **Character set:** *Unicode (UTF-8)*\n"
+"    - **Field delimiter:** *, (Comma)*\n"
+"    - **String delimiter:** *\" (Double Quote)*\n"
+msgstr ""
+"1. Scarica il modello.\n"
+"2. Riempi il modello nello stesso modo in cui sono stati riempiti i dati di "
+"esempio.\n"
+"3. Clicca su *File*, quindi *Salva come*. Seleziona *Testo CSV (.csv)* e "
+"salva il file.\n"
+"    Nella seguente finestra di dialogo scegli\n"
+"    - **Set caratteri:** *Unicode (UTF-8)*\n"
+"    - **Delimitatori di campo:** *, (Virgola)*\n"
+"    - **Delimitatori stringa:** *\" (Doppio apice)*\n"
+
+#: lib/keila_web/templates/sender/edit_live.html.heex:72
+msgid "Resend email"
+msgstr "Invia nuovamente mail"
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:245
+msgid "Review account information"
+msgstr "Verifica informazioni account"
+
+#: lib/keila_web/templates/sender/edit_live.html.heex:53
+msgid ""
+"We have sent you an email to *%{email}*. \\nPlease click on the link in the "
+"email to verify your email address.\n"
+msgstr ""
+"Ti abbiamo inviato una email a *%{email}*.\\nClicca sul link nella email per "
+"verificare il tuo indirizzo email.\n"

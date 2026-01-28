@@ -1,0 +1,446 @@
+# # This file is a PO Template file.
+# #
+# # "msgid"s here are often extracted from source code.
+# # Add new translations manually only if they're dynamic
+# # translations that can't be statically extracted.
+# #
+# # Run "mix gettext.extract" to bring this file up to
+# # date. Leave "msgstr"s empty as changing them here has no
+# # effect: edit them in PO (.po) files instead.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: extra/keila_cloud_web/templates/cloud_account/onboarding.html.heex:10
+msgid "Account Verification"
+msgstr "Verifica Account"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:173
+msgid "Account not activated"
+msgstr "Account non attivato"
+
+#: lib/keila_web/templates/user_admin/index.html.heex:64
+msgid "Account status"
+msgstr "Stato account"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:38
+msgid "Address line 1"
+msgstr "Linea indirizzo 1"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:41
+msgid "Address line 2"
+msgstr "Linea indirizzo 2"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:44
+msgid "Address line 3"
+msgstr "Linea indirizzo 3"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:91
+msgid "Apt 1"
+msgstr "Appartamento 1"
+
+#: extra/keila_cloud_web/templates/cloud_account/_completed.html.heex:15
+msgid "Back to project list"
+msgstr "Indietro alla lista progetti"
+
+#: lib/keila_web/templates/layout/app.html.heex:41
+msgid ""
+"Before you can start sending emails, we need some more information about "
+"your account."
+msgstr ""
+"Prima che tu possa inviare email abbiamo bisogno altre informazioni circa il "
+"tuo account."
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:29
+msgid "Business/organization name"
+msgstr "Nome azienda/organizzazione"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:290
+msgid "Check Domain"
+msgstr "Controlla Dominio"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:113
+msgid "Check status"
+msgstr "Controlla stato"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:69
+msgid "City"
+msgstr "Città"
+
+#: lib/keila_web/templates/layout/app.html.heex:45
+msgid "Complete information"
+msgstr "Completa informazioni"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:61
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:109
+msgid "Country"
+msgstr "Stato"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:62
+msgid "County"
+msgstr "Provincia"
+
+#: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:91
+msgid "Custom"
+msgstr "Personalizzato"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:60
+msgid "Department"
+msgstr "Dipartimento"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:64
+msgid "District"
+msgstr "Distretto"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:74
+msgid "Domain verified"
+msgstr "Dominio verificato"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:54
+msgid "Emirate"
+msgstr "Emirati"
+
+#: extra/keila_cloud_web/templates/cloud_account/onboarding.html.heex:13
+msgid ""
+"Every new account has to undergo a quick manual review.\n"
+"Please share some information about you to help with this process.\n"
+msgstr ""
+"Ogni nuovo account deve sottostare ad una veloce revisione manuale.\n"
+"Condividi qualche informazione su di te per aiutare in questo processo.\n"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:93
+msgid "Finalizing your sender ..."
+msgstr "Finalizzazione del tuo mittente ..."
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:32
+msgid "First name"
+msgstr "Nome"
+
+#: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:29
+msgid "I don’t have an existing contact list yet."
+msgstr "Non ho ancora una lista contatti."
+
+#: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:25
+msgid "I have an existing contact list that I want to import into Keila."
+msgstr "Ho una lista contatti che voglio importare in Keila."
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:45
+msgid ""
+"If you don’t have a website yet, you can also enter the link to a social "
+"media profile or some other public online presence."
+msgstr ""
+"Se non hai ancora un sito puoi anche inserire il link ad un profilo social o "
+"qualche altra forma di presenza pubblica online."
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:55
+msgid "Island"
+msgstr "Isola"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:295
+msgid "Last checked at:"
+msgstr "Ultima verifica il:"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:35
+msgid "Last name"
+msgstr "Cognome"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:127
+msgid "Legacy Settings"
+msgstr "Impostazioni Legacy"
+
+#: extra/keila_cloud_web/templates/cloud_account/_user_name.html.heex:9
+msgid "Let’s get to know each other!"
+msgstr "Conosciamoci l'un l'altro!"
+
+#: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:93
+msgid ""
+"Leverage your existing email infrastructure and send emails with SMTP, or "
+"via Mailgun, Sendgrid, SES, or Postmark."
+msgstr ""
+"Sfrutta la tua infrastruttura di posta elettronica ed invia email con SMTP, "
+"Mailgun, Sendgrid, SES o Postmark."
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:85
+msgid "Main Street 1"
+msgstr "Via Roma 1"
+
+#: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:29
+msgid "My Newsletter"
+msgstr "Mia Newsletter"
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:9
+msgid "Nice to meet you, %{given_name}!"
+msgstr "Piacere di conoscerti, %{given_name}!"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:176
+msgid ""
+"Once you have provided the necessary details, we will perform a manual "
+"review of your account. This usually takes less than one working day.\n"
+"\n"
+"If you have any questions, please reach out to our support at [%"
+"{support_email}](mailto:%{support_email}).\n"
+msgstr ""
+"Quando avrai fornito i dettagli necessari effettueremo una verifica manuale "
+"del tuo account. Questo normalmente richiede meno di un giorno lavorativo.\n"
+"\n"
+"Se hai qualunque domanda contatta il nostro supporto a [%{support_email}]"
+"(mailto:%{support_email}).\n"
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:26
+msgid "Organization/business name"
+msgstr "Nome organizzazione/azienda"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:58
+msgid "Parish"
+msgstr "Parrocchia"
+
+#: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:37
+msgid ""
+"Please describe the origin of your contact list and how you've obtained "
+"consent from your existing contacts."
+msgstr ""
+"Descrivi l'origine della tua lista contatti e come hai ottenuto il consenso "
+"dai tuoi contatti esistenti."
+
+#: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:12
+msgid ""
+"Please describe the type of content and the purpose of the emails you are "
+"planning to send with Keila."
+msgstr ""
+"Descrivi il tipo di consenso e lo scopo delle email che stai pianificando di "
+"inviare con Keila."
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:112
+msgid "Please select a country"
+msgstr "Seleziona una nazione"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:49
+msgid "Postal code"
+msgstr "Codice postale"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:63
+msgid "Prefecture"
+msgstr "Prefettura"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:57
+msgid "Province"
+msgstr "Provincia"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:59
+msgid "Region"
+msgstr "Regione"
+
+#: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:3
+msgid "Review account for %{email}"
+msgstr "Verifica account per %{email}"
+
+#: lib/keila_web/templates/layout/app.html.heex:33
+msgid "Select plan"
+msgstr "Seleziona piano"
+
+#: lib/keila_web/views/sender_view.ex:33
+msgid "Send With Keila"
+msgstr "Invia Con Keila"
+
+#: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:68
+msgid "Send with Keila"
+msgstr "Invia con Keila"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:197
+msgid "Show DNS Records"
+msgstr "Mostra Record DNS"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:56
+msgid "State"
+msgstr "Stato"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:65
+msgid "State/Province"
+msgstr "Stato/Provincia"
+
+#: lib/keila_web/templates/layout/app.html.heex:71
+msgid "Status page"
+msgstr "Pagina stato"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:203
+msgid "Subdomain"
+msgstr "Sottodominio"
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:17
+msgid "This account is for a business/organization"
+msgstr "Questo account è per una azienda/organizzazione"
+
+#: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:50
+msgid ""
+"This email will show up as the *From email* in the inbox of your recipients."
+msgstr ""
+"Questa email sarà mostrata come *Email mittente* nella posta in arrivo dei "
+"tuoi destinatari."
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:21
+msgid "This is a private account"
+msgstr "Questo è un account privato"
+
+#: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:34
+msgid ""
+"This name will show up as the *From name* in the inbox of your recipients."
+msgstr ""
+"Questo nome sarà mostrato come *Nome mittente* nella posta in arrivo dei "
+"tuoi destinatari."
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:9
+msgid "To comply with anti-spam regulations, we need to know your address."
+msgstr ""
+"Per ottemperare alle normative anti-spam, abbiamo bisogno del tuo indirizzo."
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:50
+msgid ""
+"To ensure good deliverability of your emails, you need to verify your domain "
+"by adding DNS records. [Read more](https://www.keila.io/docs/managed-dmarc)"
+"{:target=\"_blank\"}"
+msgstr ""
+"Per assicurarci la buona recapitabilità delle tue email devi verificare il "
+"tuo dominio aggiungendo dei record al DNS [Leggi altro](https://www.keila.io/"
+"docs/managed-dmarc){:target=\"_blank\"}"
+
+#: extra/keila_cloud_web/templates/cloud_account/_user_name.html.heex:13
+msgid ""
+"To make sure Keila is only used to send legitimate emails, we need to review "
+"every new account.\n"
+"\n"
+"Thank you for helping us fight spam!\n"
+msgstr ""
+"Per assicurarci che Keila sia usato per inviare email legittime dobbiamo "
+"verificare ogni nuovo account.\n"
+"\n"
+"Grazie per aiutare a combattere lo spam!\n"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:204
+msgid "Type"
+msgstr "Tipo"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:56
+msgid ""
+"Until you have verified your domain, emails for this sender will be sent "
+"from *%{fallback_email}*. Replies will go to *%{from_email}*."
+msgstr ""
+"Finchè non avrai verificato il tuo dominio le email da questo mittente "
+"saranno inviate da *%{fallback_email}*. Le risposte andranno a *%{from_email}"
+"*."
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:192
+#: lib/keila_web/templates/layout/app.html.heex:58
+msgid "Update account information"
+msgstr "Aggiorna informazioni account"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:148
+msgid "Update to new settings"
+msgstr "Aggiorna alle nuove impostazioni"
+
+#: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:70
+msgid ""
+"Use our reliable European email infrastructure for excellent deliverability "
+"and automatic bounce handling."
+msgstr ""
+"Usa la nostra affidabile infrastruttura Europea per una eccellente "
+"recapitabilità e gestione automatica dei rimbalzi."
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:205
+msgid "Value"
+msgstr "Valore"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:48
+msgid "Waiting for domain verification ..."
+msgstr "Attesa per la verifica del dominio ..."
+
+#: extra/keila_cloud_web/templates/cloud_account/_completed.html.heex:2
+msgid ""
+"We will now perform a manual review of your data. This usually doesn't take "
+"longer than one working day.\n"
+"\n"
+"In the meantime, you can continue to use Keila. Sending emails will be "
+"enabled for your account\n"
+"once the review has been completed.\n"
+msgstr ""
+"Effettueremo ora una verifica manuale dei tuoi dati. Questo normalmente non "
+"impiega più di un giorno lavorativo.\n"
+"\n"
+"Nel frattempo puoi continuare ad usare Keila. L'invio delle email sarà "
+"abilitato per il tuo account\n"
+"quando la verifica sarà stata completata.\n"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:96
+msgid ""
+"We're currently finalizing the setup of your sender. This may take a few "
+"minutes."
+msgstr ""
+"Stiamo ora finalizzando la configurazione del tuo mittente. Questo potrà "
+"impoegare alcuni minuti."
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:37
+msgid "Website"
+msgstr "Sito web"
+
+#: lib/keila_web/templates/layout/app.html.heex:29
+msgid ""
+"Welcome to Keila, have a look around! To start sending emails, please choose "
+"a subscription."
+msgstr ""
+"Benvenuto a Keila, dai un occhio in giro! Per inizare ad inviare email "
+"scegli un abbonamento."
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:131
+msgid ""
+"You are currently using legacy email settings. We recommend updating to the "
+"new settings for better performance and reliability."
+msgstr ""
+"Stai correntemente usando le impostazioni email legacy. Raccomandiamo di "
+"aggiornarle alle nuove impostazioni per una migliore prestazione e "
+"affidabilità."
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:29
+msgid "Your Company, Inc."
+msgstr "Tua Azienda S.p.A."
+
+#: lib/keila_web/templates/layout/app.html.heex:53
+msgid ""
+"Your account is currently under review. Sending emails will be enabled once "
+"the review has been completed."
+msgstr ""
+"Il tuo account è correntemente in verifica. L'invio di email sarà abilitato "
+"quando la verifica sarà stata completata."
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:30
+msgid ""
+"You’re using a shared domain. Emails will be sent from *%{fallback_email}*. "
+"Replies will go to *%{from_email}*. [Read more](https://www.keila.io/docs/"
+"shared-domains){:target=\"_blank\"}"
+msgstr ""
+"Stai usando un dominio condiviso. Le email saranno inviate da *%"
+"{fallback_email}*. Le risposte andranno a *%{from_email}*. [Leggi altro]"
+"(https://www.keila.io/docs/shared-domains){:target=\"_blank\"}"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:263
+msgid "current value:"
+msgstr "valore corrente:"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:260
+msgid "empty"
+msgstr "vuoto"
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:40
+msgid "https://example.com"
+msgstr "http://esempio.com"
+
+#: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:45
+msgid "newsletter@example.com"
+msgstr "newsletter@esempio.com"
