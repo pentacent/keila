@@ -83,7 +83,7 @@ defmodule Keila.Mailings.Worker do
 
   defp ensure_valid_email(email) do
     if Enum.find(email.headers, fn {name, _} -> name == "X-Keila-Invalid" end) do
-      {:error, :invalid_email}
+      {:error, :rendering_error}
     else
       :ok
     end
@@ -106,19 +106,15 @@ defmodule Keila.Mailings.Worker do
   # Email was already sent
   defp handle_result({:error, :already_sent}, _), do: {:cancel, :already_sent}
 
-  # Email is invalid
-  defp handle_result({:error, :invalid_email}, recipient) do
+  # Rendering error
+  defp handle_result({:error, :rendering_error}, recipient) do
     Repo.transaction(fn ->
       recipient
       |> set_recipient_failed_query()
       |> Repo.update_all([])
-
-      recipient
-      |> set_contact_unreachable_query()
-      |> Repo.update_all([])
     end)
 
-    {:cancel, :invalid_email}
+    {:cancel, :rendering_error}
   end
 
   # Invalid contact (e.g. unsubscribed or deleted)
@@ -134,6 +130,24 @@ defmodule Keila.Mailings.Worker do
     end)
 
     {:cancel, :invalid_contact}
+  end
+
+  # Invalid email address (returned by Swoosh/gen_smtp)
+  defp handle_result(
+         {:error, %MatchError{term: {:error, {_, :smtp_rfc5322_parse, _}}}},
+         recipient
+       ) do
+    Repo.transaction(fn ->
+      recipient
+      |> set_recipient_failed_query()
+      |> Repo.update_all([])
+
+      recipient
+      |> set_contact_unreachable_query()
+      |> Repo.update_all([])
+    end)
+
+    {:cancel, :invalid_email}
   end
 
   # Another error occurred. Sending is not retried.
