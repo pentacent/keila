@@ -5,7 +5,7 @@ defmodule KeilaWeb.PublicFormView do
 
   import KeilaWeb.PublicFormLayoutView, only: [build_styles: 1]
 
-  @form_classes "contact-form container bg-white rounded py-4 md:py-8 flex flex-col gap-4"
+  @form_classes "contact-form container bg-white rounded py-4 pb-8 md:py-8 flex flex-col gap-4"
 
   # defp keila_form(form, changeset \\ Ecto.Changeset.change(%Contact{}), mode, content) do
   #   assigns = %{
