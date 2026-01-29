@@ -11,11 +11,7 @@ defmodule KeilaWeb.PublicFormControllerDoubleOptInTest do
     test "submits form with double opt-in and sends opt-in email", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
 
-      form =
-        insert!(:contacts_form,
-          project_id: project.id,
-          settings: %{captcha_required: false, double_opt_in_required: true}
-        )
+      form = insert_doi_form(project.id)
 
       params = params(:contact) |> Map.delete(:project_id)
       conn = post(conn, Routes.public_form_path(conn, :show, form.id), contact: params)
@@ -35,11 +31,7 @@ defmodule KeilaWeb.PublicFormControllerDoubleOptInTest do
 
       contact = insert!(:contact, project_id: project.id, email: "existing@example.com")
 
-      form =
-        insert!(:contacts_form,
-          project_id: project.id,
-          settings: %{captcha_required: false, double_opt_in_required: true}
-        )
+      form = insert_doi_form(project.id)
 
       params = params(:contact, email: contact.email)
       conn = post(conn, Routes.public_form_path(conn, :show, form.id), contact: params)
@@ -57,16 +49,7 @@ defmodule KeilaWeb.PublicFormControllerDoubleOptInTest do
 
     test "redirects to double_opt_in_url if set", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
-
-      form =
-        insert!(:contacts_form,
-          project_id: project.id,
-          settings: %{
-            captcha_required: false,
-            double_opt_in_required: true,
-            double_opt_in_url: "https://example.com"
-          }
-        )
+      form = insert_doi_form(project.id, %{double_opt_in_url: "https://example.com"})
 
       params = params(:contact) |> Map.delete(:project_id)
       conn = post(conn, Routes.public_form_path(conn, :show, form.id), contact: params)
@@ -76,24 +59,67 @@ defmodule KeilaWeb.PublicFormControllerDoubleOptInTest do
 
   describe "GET /double-opt-in" do
     @describetag :double_opt_in
-    test "creates Contact from FormParams", %{conn: conn} do
+    test "shows confirmation page when form_params is recent", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
 
-      form =
-        insert!(:contacts_form,
-          project_id: project.id,
-          settings: %{captcha_required: false, double_opt_in_required: true}
-        )
+      form = insert_doi_form(project.id)
 
       email = "test@example.com"
       {:ok, form_params} = Contacts.create_form_params(form.id, %{email: email})
+
+      form_params =
+        form_params
+        |> Ecto.Changeset.change(%{inserted_at: now()})
+        |> Keila.Repo.update!()
+
+      hmac = Contacts.double_opt_in_hmac(form.id, form_params.id)
+
+      conn =
+        get(conn, Routes.public_form_path(conn, :double_opt_in, form.id, form_params.id, hmac))
+
+      assert html_response(conn, 200) =~ "Confirming ..."
+      assert [] = Contacts.get_project_contacts(project.id)
+    end
+
+    test "immediately creates contact when form_params is not recent", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+      form = insert_doi_form(project.id)
+
+      email = "test@example.com"
+      {:ok, form_params} = Contacts.create_form_params(form.id, %{email: email})
+
+      form_params =
+        form_params
+        |> Ecto.Changeset.change(%{inserted_at: ten_minutes_ago()})
+        |> Keila.Repo.update!()
+
       hmac = Contacts.double_opt_in_hmac(form.id, form_params.id)
 
       conn =
         get(conn, Routes.public_form_path(conn, :double_opt_in, form.id, form_params.id, hmac))
 
       assert html_response(conn, 200)
+      assert [contact = %Contact{email: ^email}] = Contacts.get_project_contacts(project.id)
+      assert contact.double_opt_in_at
+    end
+  end
 
+  describe "POST /double-opt-in" do
+    @describetag :double_opt_in
+    test "creates Contact from FormParams", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+      form = insert_doi_form(project.id)
+
+      email = "test@example.com"
+      {:ok, form_params} = Contacts.create_form_params(form.id, %{email: email})
+      hmac = Contacts.double_opt_in_hmac(form.id, form_params.id)
+
+      conn =
+        post(conn, Routes.public_form_path(conn, :double_opt_in, form.id, form_params.id, hmac),
+          hmac: hmac
+        )
+
+      assert html_response(conn, 200)
       assert [contact = %Contact{email: ^email}] = Contacts.get_project_contacts(project.id)
       assert contact.double_opt_in_at
     end
@@ -127,7 +153,9 @@ defmodule KeilaWeb.PublicFormControllerDoubleOptInTest do
       hmac = Contacts.double_opt_in_hmac(form.id, form_params.id)
 
       conn =
-        get(conn, Routes.public_form_path(conn, :double_opt_in, form.id, form_params.id, hmac))
+        post(conn, Routes.public_form_path(conn, :double_opt_in, form.id, form_params.id, hmac),
+          hmac: hmac
+        )
 
       assert html_response(conn, 200)
 
@@ -139,22 +167,15 @@ defmodule KeilaWeb.PublicFormControllerDoubleOptInTest do
 
     test "success_url supports Liquid", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
-
-      form =
-        insert!(:contacts_form,
-          project_id: project.id,
-          settings: %{
-            captcha_required: false,
-            double_opt_in_required: true,
-            success_url: "https://example.com/{{ contact.id }}"
-          }
-        )
+      form = insert_doi_form(project.id, %{success_url: "https://example.com/{{ contact.id }}"})
 
       {:ok, form_params} = Contacts.create_form_params(form.id, %{email: "test@example.com"})
       hmac = Contacts.double_opt_in_hmac(form.id, form_params.id)
 
       conn =
-        get(conn, Routes.public_form_path(conn, :double_opt_in, form.id, form_params.id, hmac))
+        post(conn, Routes.public_form_path(conn, :double_opt_in, form.id, form_params.id, hmac),
+          hmac: hmac
+        )
 
       contact = Repo.one(Contact)
       assert redirected_to(conn, 302) == "https://example.com/#{contact.id}"
@@ -164,20 +185,15 @@ defmodule KeilaWeb.PublicFormControllerDoubleOptInTest do
       {conn, project} = with_login_and_project(conn)
 
       form =
-        insert!(:contacts_form,
-          project_id: project.id,
-          settings: %{
-            captcha_required: false,
-            double_opt_in_required: true,
-            success_url: "https://example.com/{{{ invalid_liquid }}"
-          }
-        )
+        insert_doi_form(project.id, %{success_url: "https://example.com/{{{ invalid_liquid }}"})
 
       {:ok, form_params} = Contacts.create_form_params(form.id, %{email: "test@example.com"})
       hmac = Contacts.double_opt_in_hmac(form.id, form_params.id)
 
       conn =
-        get(conn, Routes.public_form_path(conn, :double_opt_in, form.id, form_params.id, hmac))
+        post(conn, Routes.public_form_path(conn, :double_opt_in, form.id, form_params.id, hmac),
+          hmac: hmac
+        )
 
       assert redirected_to(conn, 302) == form.settings.success_url
     end
@@ -185,17 +201,7 @@ defmodule KeilaWeb.PublicFormControllerDoubleOptInTest do
     @invalid_form_params_id Keila.Contacts.FormParams.Id.encode(0) |> elem(1)
     test "redirects to failure_url when form_params not found", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
-
-      form =
-        insert!(:contacts_form,
-          project_id: project.id,
-          settings: %{
-            captcha_required: false,
-            double_opt_in_required: true,
-            failure_url: "https://example.com/failure"
-          }
-        )
-
+      form = insert_doi_form(project.id, %{failure_url: "https://example.com/failure"})
       hmac = Contacts.double_opt_in_hmac(form.id, @invalid_form_params_id)
 
       conn =
@@ -215,17 +221,7 @@ defmodule KeilaWeb.PublicFormControllerDoubleOptInTest do
 
     test "shows failure_text when form_params not found and no failure_url", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
-
-      form =
-        insert!(:contacts_form,
-          project_id: project.id,
-          settings: %{
-            captcha_required: false,
-            double_opt_in_required: true,
-            failure_text: "Custom failure message"
-          }
-        )
-
+      form = insert_doi_form(project.id, %{failure_text: "Custom failure message"})
       hmac = Contacts.double_opt_in_hmac(form.id, @invalid_form_params_id)
 
       conn =
@@ -246,16 +242,7 @@ defmodule KeilaWeb.PublicFormControllerDoubleOptInTest do
 
     test "shows default message when form_params not found and no custom settings", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
-
-      form =
-        insert!(:contacts_form,
-          project_id: project.id,
-          settings: %{
-            captcha_required: false,
-            double_opt_in_required: true
-          }
-        )
-
+      form = insert_doi_form(project.id)
       hmac = Contacts.double_opt_in_hmac(form.id, @invalid_form_params_id)
 
       conn =
@@ -279,14 +266,9 @@ defmodule KeilaWeb.PublicFormControllerDoubleOptInTest do
 
   describe "GET /double-opt-in/cancel" do
     @describetag :double_opt_in
-    test "deletes FormParams", %{conn: conn} do
+    test "shows confirmation page when form_params is recent", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
-
-      form =
-        insert!(:contacts_form,
-          project_id: project.id,
-          settings: %{captcha_required: false, double_opt_in_required: true}
-        )
+      form = insert_doi_form(project.id)
 
       email = "test@example.com"
       {:ok, form_params} = Contacts.create_form_params(form.id, %{email: email})
@@ -298,10 +280,47 @@ defmodule KeilaWeb.PublicFormControllerDoubleOptInTest do
           Routes.public_form_path(conn, :cancel_double_opt_in, form.id, form_params.id, hmac)
         )
 
+      assert html_response(conn, 200) =~ "Unsubscribing ..."
+      assert Repo.reload(form_params)
+    end
+  end
+
+  describe "POST /double-opt-in/cancel" do
+    @describetag :double_opt_in
+    test "deletes FormParams", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+      form = insert_doi_form(project.id)
+
+      email = "test@example.com"
+      {:ok, form_params} = Contacts.create_form_params(form.id, %{email: email})
+      hmac = Contacts.double_opt_in_hmac(form.id, form_params.id)
+
+      conn =
+        post(
+          conn,
+          Routes.public_form_path(conn, :cancel_double_opt_in, form.id, form_params.id, hmac),
+          hmac: hmac
+        )
+
       assert html_response(conn, 200) =~ "You will not be subscribed to this list."
 
       assert [] = Contacts.get_project_contacts(project.id)
       assert nil == Repo.reload(form_params)
     end
+  end
+
+  defp insert_doi_form(project_id, settings \\ %{}) do
+    insert!(:contacts_form,
+      project_id: project_id,
+      settings: Map.merge(%{captcha_required: false, double_opt_in_required: true}, settings)
+    )
+  end
+
+  defp now() do
+    DateTime.utc_now(:second)
+  end
+
+  defp ten_minutes_ago() do
+    DateTime.utc_now(:second) |> DateTime.add(-600, :second)
   end
 end

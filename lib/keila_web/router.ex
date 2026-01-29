@@ -178,10 +178,15 @@ defmodule KeilaWeb.Router do
     get "/unsubscribe/:project_id/:recipient_id/:hmac", PublicFormController, :unsubscribe
     post "/unsubscribe/:project_id/:recipient_id/:hmac", PublicFormController, :unsubscribe
     get "/double-opt-in/:form_id/:form_params_id/:hmac", PublicFormController, :double_opt_in
+    post "/double-opt-in/:form_id/:form_params_id/:hmac", PublicFormController, :double_opt_in
 
     get "/double-opt-in/:form_id/:form_params_id/:hmac/cancel",
         PublicFormController,
         :cancel_double_opt_in
+
+    post "/double-opt-in/:form_id/:form_params_id/:hmac/cancel",
+         PublicFormController,
+         :cancel_double_opt_in
 
     get "/r/:encoded_url/:recipient_id/:hmac", TrackingController, :track_open
     get "/c/:encoded_url/:recipient_id/:link_id/:hmac", TrackingController, :track_click
