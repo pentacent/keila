@@ -118,7 +118,7 @@ msgstr "Anmeldung"
 msgid "Type in the shared sender name to confirm its deletion:"
 msgstr "Gib den Namen des gemeinsamen Absenders ein, um seine Löschung zu bestätigen:"
 
-#: lib/keila_web/templates/user_admin/index.html.heex:78
+#: lib/keila_web/templates/user_admin/index.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "Login as"
 msgstr "Anmelden als"
@@ -133,7 +133,7 @@ msgstr "Eine neue Version von Keila ist verfügbar."
 msgid "Read more"
 msgstr "Mehr erfahren"
 
-#: lib/keila_web/templates/layout/_menu.html.heex:155
+#: lib/keila_web/templates/layout/_menu.html.heex:153
 #, elixir-autogen, elixir-format
 msgid "System Info"
 msgstr "Systeminfo"

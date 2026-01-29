@@ -118,7 +118,7 @@ msgstr ""
 msgid "Type in the shared sender name to confirm its deletion:"
 msgstr ""
 
-#: lib/keila_web/templates/user_admin/index.html.heex:78
+#: lib/keila_web/templates/user_admin/index.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "Login as"
 msgstr ""
@@ -133,7 +133,7 @@ msgstr ""
 msgid "Read more"
 msgstr ""
 
-#: lib/keila_web/templates/layout/_menu.html.heex:155
+#: lib/keila_web/templates/layout/_menu.html.heex:153
 #, elixir-autogen, elixir-format
 msgid "System Info"
 msgstr ""

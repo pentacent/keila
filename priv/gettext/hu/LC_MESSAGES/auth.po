@@ -12,7 +12,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-
 #: lib/keila_web/controllers/auth_controller.ex:78
 #, elixir-autogen, elixir-format
 msgid "Activation required"
@@ -47,14 +46,7 @@ msgstr "Kezdés!"
 
 #: lib/keila/auth/emails.ex:46
 #, elixir-autogen, elixir-format
-msgid ""
-"Hey there,\n"
-"\n"
-"please confirm your new email address by visiting the following link:\n"
-"\n"
-"%{url}\n"
-"\n"
-"If you weren’t trying to change your email address, simply ignore this message.\n"
+msgid "Hey there,\n\nplease confirm your new email address by visiting the following link:\n\n%{url}\n\nIf you weren’t trying to change your email address, simply ignore this message.\n"
 msgstr ""
 "Üdvözöljük!\n"
 "\n"
@@ -66,14 +58,7 @@ msgstr ""
 
 #: lib/keila/auth/emails.ex:95
 #, elixir-autogen, elixir-format
-msgid ""
-"Hey there,\n"
-"\n"
-"you can login to Keila with the following link:\n"
-"\n"
-"%{url}\n"
-"\n"
-"If you haven’t requested a login, simply ignore this message.\n"
+msgid "Hey there,\n\nyou can login to Keila with the following link:\n\n%{url}\n\nIf you haven’t requested a login, simply ignore this message.\n"
 msgstr ""
 "Üdvözöljük!\n"
 "\n"
@@ -85,16 +70,7 @@ msgstr ""
 
 #: lib/keila/auth/emails.ex:70
 #, elixir-autogen, elixir-format
-msgid ""
-"Hey there,\n"
-"\n"
-"you have requested a password reset for your Keila account.\n"
-"\n"
-"You can set a new password by visiting the following link:\n"
-"\n"
-"%{url}\n"
-"\n"
-"If you weren’t trying to reset your password, simply ignore this message.\n"
+msgid "Hey there,\n\nyou have requested a password reset for your Keila account.\n\nYou can set a new password by visiting the following link:\n\n%{url}\n\nIf you weren’t trying to reset your password, simply ignore this message.\n"
 msgstr ""
 "Üdvözöljük!\n"
 "\n"
@@ -108,8 +84,7 @@ msgstr ""
 
 #: lib/keila_web/templates/auth/reset_success.html.heex:7
 #, elixir-autogen, elixir-format
-msgid ""
-"If you have an account, we’ve sent you a verification link to %{email}."
+msgid "If you have an account, we’ve sent you a verification link to %{email}."
 msgstr "Ha van fiókja, elküldtünk egy ellenőrző linket a(z) %{email} címre."
 
 #: lib/keila_web/templates/auth/404.html.heex:7
@@ -117,12 +92,12 @@ msgstr "Ha van fiókja, elküldtünk egy ellenőrző linket a(z) %{email} címre
 msgid "It seems like your link has expired or is invalid."
 msgstr "Úgy tűnik, a linkje lejárt vagy érvénytelen."
 
-#: lib/keila_web/controllers/account_controller.ex:46
+#: lib/keila_web/controllers/account_controller.ex:42
 #, elixir-autogen, elixir-format
 msgid "Manage Account"
 msgstr "Fiók kezelése"
 
-#: lib/keila_web/controllers/account_controller.ex:19
+#: lib/keila_web/controllers/account_controller.ex:18
 #, elixir-autogen, elixir-format
 msgid "New password saved."
 msgstr "Az új jelszó mentve."
@@ -160,7 +135,7 @@ msgid "Please activate your account first."
 msgstr "Kérjük, először aktiválja fiókját."
 
 #: lib/keila_web/controllers/auth_controller.ex:42
-#: lib/keila_web/controllers/public_form_controller.ex:62
+#: lib/keila_web/controllers/public_form_controller.ex:64
 #, elixir-autogen, elixir-format
 msgid "Please complete the captcha."
 msgstr "Kérjük, töltse ki a captchát."
@@ -223,14 +198,7 @@ msgstr "Üdvözöljük a Keilában!"
 
 #: lib/keila/auth/emails.ex:22
 #, elixir-autogen, elixir-format
-msgid ""
-"Welcome to Keila,\n"
-"\n"
-"please confirm your new account by visiting the following link:\n"
-"\n"
-"%{url}\n"
-"\n"
-"If you weren’t trying to create an account, simply ignore this message.\n"
+msgid "Welcome to Keila,\n\nplease confirm your new account by visiting the following link:\n\n%{url}\n\nIf you weren’t trying to create an account, simply ignore this message.\n"
 msgstr ""
 "Üdvözöljük a Keilában!\n"
 "\n"
@@ -257,9 +225,7 @@ msgstr "Most már folytathatja a Keila használatát."
 
 #: lib/keila_web/templates/auth/activate_required.html.heex:7
 #, elixir-autogen, elixir-format
-msgid ""
-"You need to verify your email before you can use Keila. Please check your "
-"inbox."
+msgid "You need to verify your email before you can use Keila. Please check your inbox."
 msgstr ""
 "A Keila használatához előbb meg kell erősítenie e-mail címét. Kérjük, "
 "ellenőrizze beérkező leveleit."
@@ -281,15 +247,7 @@ msgstr "Jelentkezzen be új jelszavával"
 
 #: lib/keila/auth/emails.ex:119
 #, elixir-autogen, elixir-format
-msgid ""
-"Hey there,\n"
-"\n"
-"please verify your sender email address by visiting the following link:\n"
-"\n"
-"%{url}\n"
-"\n"
-"If you didn't request this verification, please ignore this message and\n"
-"do not click on the link.\n"
+msgid "Hey there,\n\nplease verify your sender email address by visiting the following link:\n\n%{url}\n\nIf you didn't request this verification, please ignore this message and\ndo not click on the link.\n"
 msgstr ""
 "Üdvözöljük!\n"
 "\n"

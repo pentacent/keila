@@ -26,22 +26,22 @@ msgstr "Акаунтът не е активиран"
 msgid "Account status"
 msgstr "Статус на акаунта"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:38
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "Address line 1"
 msgstr "Адрес ред 1"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:41
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Address line 2"
 msgstr "Адрес ред 2"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:44
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "Address line 3"
 msgstr "Адрес ред 3"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:91
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:95
 #, elixir-autogen, elixir-format
 msgid "Apt 1"
 msgstr "Апт. 1"
@@ -56,12 +56,12 @@ msgstr "Обратно към списъка с проекти"
 msgid "Before you can start sending emails, we need some more information about your account."
 msgstr "За да изпращате имейли, е нужно да предоставите още информация за акаунта си."
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:29
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Business/organization name"
 msgstr "Име на бизнеса/организацията"
 
-#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:290
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:299
 #, elixir-autogen, elixir-format
 msgid "Check Domain"
 msgstr "Проверка на домейн"
@@ -71,7 +71,7 @@ msgstr "Проверка на домейн"
 msgid "Check status"
 msgstr "Проверка на статуса"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:69
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:73
 #, elixir-autogen, elixir-format
 msgid "City"
 msgstr "Град"
@@ -81,13 +81,13 @@ msgstr "Град"
 msgid "Complete information"
 msgstr "Пълна информация"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:61
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:109
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:65
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:113
 #, elixir-autogen, elixir-format
 msgid "Country"
 msgstr "Държава"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:62
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:66
 #, elixir-autogen, elixir-format
 msgid "County"
 msgstr "Окръг"
@@ -97,12 +97,12 @@ msgstr "Окръг"
 msgid "Custom"
 msgstr "Персонализиран"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:60
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "Department"
 msgstr "Департамент"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:64
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "District"
 msgstr "Район"
@@ -112,7 +112,7 @@ msgstr "Район"
 msgid "Domain verified"
 msgstr "Домейнът е проверен"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:54
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Emirate"
 msgstr "Емирство"
@@ -127,7 +127,7 @@ msgstr "Всеки нов акаунт трябва да премине през
 msgid "Finalizing your sender ..."
 msgstr "Финализиране на вашия подател ..."
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:32
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "First name"
 msgstr "Име"
@@ -147,17 +147,17 @@ msgstr "Имам съществуващ списък с контакти, кой
 msgid "If you don’t have a website yet, you can also enter the link to a social media profile or some other public online presence."
 msgstr "Ако все още нямате уебсайт, можете също да въведете връзка към профил в социална мрежа или друг вид публично онлайн присъствие."
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:55
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Island"
 msgstr "Остров"
 
-#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:295
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:304
 #, elixir-autogen, elixir-format
 msgid "Last checked at:"
 msgstr "Последна проверка на:"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:35
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Last name"
 msgstr "Фамилия"
@@ -177,7 +177,7 @@ msgstr "Хайде да се запознаем!"
 msgid "Leverage your existing email infrastructure and send emails with SMTP, or via Mailgun, Sendgrid, SES, or Postmark."
 msgstr "Използвайте собствената си имейл инфраструктура и изпращайте имейли с SMTP или чрез Mailgun, Sendgrid, SES или Postmark."
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:85
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:89
 #, elixir-autogen, elixir-format
 msgid "Main Street 1"
 msgstr "Главна улица 1"
@@ -187,6 +187,7 @@ msgstr "Главна улица 1"
 msgid "My Newsletter"
 msgstr "Мой бюлетин"
 
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:8
 #: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Nice to meet you, %{given_name}!"
@@ -202,7 +203,7 @@ msgstr "След като ни предоставите необходимите
 msgid "Organization/business name"
 msgstr "Име на организация/бизнес"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:58
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "Parish"
 msgstr "Oбщина"
@@ -217,27 +218,27 @@ msgstr "Моля, опишете произхода на списъка с ко�
 msgid "Please describe the type of content and the purpose of the emails you are planning to send with Keila."
 msgstr "Моля, опишете типа съдържание и целта на имейлите, които планирате да изпращате с Keila."
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:112
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:116
 #, elixir-autogen, elixir-format
 msgid "Please select a country"
 msgstr "Моля, изберете държава"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:49
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "Postal code"
 msgstr "Пощенски код"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:63
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "Prefecture"
 msgstr "Префектура"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:57
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "Province"
 msgstr "Провинция"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:59
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "Region"
 msgstr "Регион"
@@ -262,17 +263,17 @@ msgstr "Изпратете с Keila"
 msgid "Send with Keila"
 msgstr "Изпратете с Keila"
 
-#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:197
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:205
 #, elixir-autogen, elixir-format
 msgid "Show DNS Records"
 msgstr "Покажи DNS данни"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:56
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "State"
 msgstr "Щат"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:65
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "State/Province"
 msgstr "Щат/Провинция"
@@ -282,7 +283,7 @@ msgstr "Щат/Провинция"
 msgid "Status page"
 msgstr "Страница с статус"
 
-#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:203
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:211
 #, elixir-autogen, elixir-format
 msgid "Subdomain"
 msgstr "Субдомен"
@@ -307,7 +308,7 @@ msgstr "Това е личен акаунт"
 msgid "This name will show up as the *From name* in the inbox of your recipients."
 msgstr "Това име бъде обозначено като *От име* в кутията за получаване на вашите получатели."
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:9
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "To comply with anti-spam regulations, we need to know your address."
 msgstr "За да се съобразяваме с противospam разпорежданията, ни е необходим вашият адрес."
@@ -322,7 +323,7 @@ msgstr "За да гарантирате добра доставяемост н�
 msgid "To make sure Keila is only used to send legitimate emails, we need to review every new account.\n\nThank you for helping us fight spam!\n"
 msgstr "За да се уверим, че Keila се използва само за изпращане на легитимни имейли, трябва да прегледаме всеки нов акаунт.\n\nБлагодарим ви, че ни помагате да се борим със спама!\n"
 
-#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:204
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:212
 #, elixir-autogen, elixir-format
 msgid "Type"
 msgstr "Тип"
@@ -348,7 +349,7 @@ msgstr "Обновете към нови настройки"
 msgid "Use our reliable European email infrastructure for excellent deliverability and automatic bounce handling."
 msgstr "Използвайте нашата надеждна европейска имейл инфраструктура за отлична доставяемост и автоматично обработване на връщания."
 
-#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:205
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:213
 #, elixir-autogen, elixir-format
 msgid "Value"
 msgstr "Стойност"
@@ -398,12 +399,12 @@ msgstr "Вашият акаунт се прегледа в момента. Ще 
 msgid "You’re using a shared domain. Emails will be sent from *%{fallback_email}*. Replies will go to *%{from_email}*. [Read more](https://www.keila.io/docs/shared-domains){:target=\"_blank\"}"
 msgstr "Използвате общ домейн. Имейлите ще бъдат изпращани от *%{fallback_email}*. Отговорите ще отиват на *%{from_email}*. [Прочетете повече](https://www.keila.io/docs/shared-domains){:target=\"_blank\"}"
 
-#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:263
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:271
 #, elixir-autogen, elixir-format
 msgid "current value:"
 msgstr "текуща стойност:"
 
-#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:260
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:268
 #, elixir-autogen, elixir-format
 msgid "empty"
 msgstr "празно"
@@ -417,3 +418,13 @@ msgstr "https://example.com"
 #, elixir-autogen, elixir-format
 msgid "newsletter@example.com"
 msgstr "newsletter@example.com"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:122
+#, elixir-autogen, elixir-format
+msgid "Subscribe for a year and get one month for free!"
+msgstr ""
+
+#: extra/keila_cloud_web/controllers/cloud_account_controller.ex:34
+#, elixir-autogen, elixir-format
+msgid "Subscription still active"
+msgstr ""
