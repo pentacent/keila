@@ -7,6 +7,8 @@ defmodule KeilaWeb.PublicFormController do
   import Ecto.Changeset
   import Keila.Mailings.Builder.LiquidRenderer, only: [render_liquid: 2, process_assigns: 1]
 
+  @confirmation_delay 3 * 60
+
   plug :fetch when action in [:show, :submit]
   plug :fetch_form_params when action in [:double_opt_in, :cancel_double_opt_in]
 
@@ -77,6 +79,20 @@ defmodule KeilaWeb.PublicFormController do
     form = conn.assigns.form
     form_params = conn.assigns.form_params
 
+    if requires_confirmation?(conn, form_params.inserted_at) do
+      conn
+      |> assign(:form, form)
+      |> assign(:confirmation_message, gettext("Confirming ..."))
+      |> assign(:confirmation_action_message, gettext("Please confirm your subscription."))
+      |> assign(:confirmation_action_cta, gettext("Confirm Subscription"))
+      |> put_meta(:title, gettext("Confirming ..."))
+      |> render_confirmation()
+    else
+      perform_double_opt_in(conn, form, form_params, hmac)
+    end
+  end
+
+  defp perform_double_opt_in(conn, form, form_params, hmac) do
     params =
       form_params.params
       |> Map.put("form_params_id", form_params.id)
@@ -144,10 +160,29 @@ defmodule KeilaWeb.PublicFormController do
     form = conn.assigns.form
     form_params = conn.assigns.form_params
 
+    if requires_confirmation?(conn, form_params.inserted_at) do
+      conn
+      |> assign(:form, form)
+      |> assign(:confirmation_message, gettext("Unsubscribing ..."))
+      |> assign(
+        :confirmation_action_message,
+        gettext("Please confirm that you want to unsubscribe.")
+      )
+      |> assign(:confirmation_action_cta, gettext("Cancel Subscription"))
+      |> put_meta(:title, gettext("Unsubscribing ..."))
+      |> render_confirmation()
+    else
+      perform_cancel_double_opt_in(conn, form, form_params, hmac)
+    end
+  end
+
+  defp perform_cancel_double_opt_in(conn, form, form_params, hmac) do
     if Contacts.valid_double_opt_in_hmac?(hmac, form.id, form_params.id) do
       :ok = Contacts.delete_form_params(form_params.id)
 
-      render(conn, "double_opt_in_cancelled.html")
+      conn
+      |> assign(:form, form)
+      |> render("double_opt_in_cancelled.html")
     else
       conn |> redirect(to: Routes.public_form_path(conn, :show, form.id))
     end
@@ -160,18 +195,23 @@ defmodule KeilaWeb.PublicFormController do
         "recipient_id" => recipient_id,
         "hmac" => hmac
       }) do
-    if Mailings.valid_unsubscribe_hmac?(project_id, recipient_id, hmac) do
-      Keila.Mailings.unsubscribe_recipient(recipient_id)
+    recipient = Mailings.get_recipient(recipient_id)
+    sent_at = if recipient, do: recipient.sent_at
+    form = Contacts.get_project_forms(project_id) |> List.first() || @default_unsubscribe_form
 
-      form = Contacts.get_project_forms(project_id) |> List.first() || @default_unsubscribe_form
-
+    if requires_confirmation?(conn, sent_at) do
       conn
-      |> put_meta(:title, gettext("Unsubscribe"))
       |> assign(:form, form)
-      |> assign(:mode, :full)
-      |> render("unsubscribe.html")
+      |> assign(:confirmation_message, gettext("Unsubscribing ..."))
+      |> assign(
+        :confirmation_action_message,
+        gettext("Please confirm that you want to unsubscribe.")
+      )
+      |> assign(:confirmation_action_cta, gettext("Unsubscribe"))
+      |> put_meta(:title, gettext("Unsubscribing ..."))
+      |> render_confirmation()
     else
-      conn |> put_status(404) |> halt()
+      perform_recipient_unsubscribe(conn, form, project_id, recipient, hmac)
     end
   end
 
@@ -180,16 +220,59 @@ defmodule KeilaWeb.PublicFormController do
     form = Contacts.get_project_forms(project_id) |> List.first() || @default_unsubscribe_form
     contact = Contacts.get_project_contact(project_id, contact_id)
 
+    if requires_confirmation?(conn, nil) do
+      conn
+      |> assign(:form, form)
+      |> assign(:confirmation_message, gettext("Unsubscribing ..."))
+      |> assign(
+        :confirmation_action_message,
+        gettext("Please confirm that you want to unsubscribe.")
+      )
+      |> assign(:confirmation_action_cta, gettext("Unsubscribe"))
+      |> put_meta(:title, gettext("Unsubscribing ..."))
+      |> render_confirmation()
+    else
+      perform_contact_unsubscribe(conn, form, contact)
+    end
+  end
+
+  defp perform_recipient_unsubscribe(conn, form, project_id, recipient, hmac) do
+    if Mailings.valid_unsubscribe_hmac?(project_id, recipient.id, hmac) do
+      Keila.Mailings.unsubscribe_recipient(recipient.id)
+
+      conn
+      |> assign(:form, form)
+      |> assign(:mode, :full)
+      |> put_meta(:title, gettext("Unsubscribing ..."))
+      |> render("unsubscribe.html")
+    else
+      conn |> put_status(:not_found) |> halt()
+    end
+  end
+
+  defp perform_contact_unsubscribe(conn, form, contact) do
     if contact && contact.status != :unsubscribed do
-      Keila.Contacts.update_contact_status(contact_id, :unsubscribed)
-      Keila.Tracking.log_event("unsubscribe", contact_id, %{})
+      Keila.Contacts.update_contact_status(contact.id, :unsubscribed)
+      Keila.Tracking.log_event("unsubscribe", contact.id, %{})
     end
 
     conn
-    |> put_meta(:title, gettext("Unsubscribe"))
     |> assign(:form, form)
     |> assign(:mode, :full)
+    |> put_meta(:title, gettext("Unsubscribing ..."))
     |> render("unsubscribe.html")
+  end
+
+  defp requires_confirmation?(conn, datetime) do
+    conn.method == "GET" &&
+      (is_nil(datetime) ||
+         DateTime.diff(DateTime.utc_now(), datetime) < @confirmation_delay)
+  end
+
+  defp render_confirmation(conn) do
+    conn
+    |> assign(:mode, :full)
+    |> render("confirm.html")
   end
 
   defp fetch(conn, _) do

@@ -1,4 +1,7 @@
-<div>
+<div
+  class="contact-form container bg-white rounded py-4 md:py-8 flex flex-col gap-4"
+  style={build_form_styles(@form)}
+>
   {render_h1(@form)}
   <h2 class="text-xl">
     <%= if @form.settings.failure_text && @form.settings.failure_text != "" do %>

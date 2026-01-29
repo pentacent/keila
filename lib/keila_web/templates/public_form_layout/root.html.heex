@@ -30,6 +30,11 @@
       src={Routes.static_path(@conn_or_socket, "/js/app.js")}
     >
     </script>
+    <style>
+      button, .button {
+        <%= build_styles(%{"background-color" => @form.settings.submit_bg_color, "color" => @form.settings.submit_text_color}) %>;
+      }
+    </style>
   </head>
   <body
     class="flex flex-col min-h-screen p-4 md:p-8"
