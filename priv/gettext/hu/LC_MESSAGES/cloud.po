@@ -467,12 +467,112 @@ msgstr "https://example.com"
 msgid "newsletter@example.com"
 msgstr "newsletter@example.com"
 
-#: extra/keila_cloud_web/components/subscription_status.ex:122
+#: extra/keila_cloud_web/components/subscription_status.ex:120
 #, elixir-autogen, elixir-format
 msgid "Subscribe for a year and get one month for free!"
-msgstr ""
+msgstr "Fizessen elő egy évre, és kapjon egy hónapot ingyen!"
 
 #: extra/keila_cloud_web/controllers/cloud_account_controller.ex:34
 #, elixir-autogen, elixir-format
 msgid "Subscription still active"
-msgstr ""
+msgstr "Előfizetés még aktív"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:269
+#, elixir-autogen, elixir-format
+msgid "Cancel subscription"
+msgstr "Előfizetés lemondása"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:234
+#, elixir-autogen, elixir-format
+msgid "%{monthly_emails} emails"
+msgstr "%{monthly_emails} e-mail"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:250
+#, elixir-autogen, elixir-format
+msgid "%{monthly_emails} emails/month"
+msgstr "%{monthly_emails} e-mail/hónap"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:282
+#, elixir-autogen, elixir-format
+msgid "Get started"
+msgstr "Kezdés"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:87
+#, elixir-autogen, elixir-format
+msgid "Start new subscription"
+msgstr "Új előfizetés indítása"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:63
+#, elixir-autogen, elixir-format
+msgid "There was an error processing your payment. Please update your payment method to continue using Keila."
+msgstr "Hiba történt a fizetés feldolgozása közben. Kérjük, frissítse fizetési módját a Keila további használatához."
+
+#: extra/keila_cloud_web/components/subscription_status.ex:264
+#, elixir-autogen, elixir-format
+msgid "Update payment method"
+msgstr "Fizetési mód frissítése"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:76
+#, elixir-autogen, elixir-format
+msgid "You can continue using your subscription until:"
+msgstr "Az előfizetését a következő időpontig használhatja:"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:72
+#, elixir-autogen, elixir-format
+msgid "Your subscription has been cancelled."
+msgstr "Az előfizetése lemondásra került."
+
+#: extra/keila_cloud_web/components/subscription_status.ex:56
+#, elixir-autogen, elixir-format
+msgid "Your subscription is currently suspended. Please update your payment method to continue using Keila."
+msgstr "Az előfizetése jelenleg fel van függesztve. Kérjük, frissítse fizetési módját a Keila további használatához."
+
+#: extra/keila_cloud_web/components/subscription_status.ex:244
+#, elixir-autogen, elixir-format
+msgid "no subscription"
+msgstr "nincs előfizetés"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:257
+#, elixir-autogen, elixir-format
+msgid "unlimited contacts"
+msgstr "korlátlan számú kontakt"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:240
+#, elixir-autogen, elixir-format
+msgid "valid for one year"
+msgstr "egy évig érvényes"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:214
+#, elixir-autogen, elixir-format
+msgid "%{price} / month"
+msgstr "%{price} / hónap"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:205
+#, elixir-autogen, elixir-format
+msgid "%{price} one time"
+msgstr "%{price} egyszeri"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:223
+#, elixir-autogen, elixir-format
+msgid "(%{price} incl. tax)"
+msgstr "(%{price} adóval együtt)"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:105
+#, elixir-autogen, elixir-format
+msgid "Subscribe now and start sending emails!"
+msgstr "Iratkozzon fel most, és kezdjen e-maileket küldeni!"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:39
+#, elixir-autogen, elixir-format
+msgid "Subscription"
+msgstr "Előfizetés"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:49
+#, elixir-autogen, elixir-format
+msgid "You currently have an active subscription. Thanks for supporting Keila!"
+msgstr "Jelenleg aktív előfizetése van. Köszönjük, hogy támogatja a Keilát!"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:198
+#, elixir-autogen, elixir-format
+msgid "billed annually"
+msgstr "éves számlázás"

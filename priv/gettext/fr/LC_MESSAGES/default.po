@@ -20,25 +20,10 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 "X-Generator: Poedit 3.8\n"
 
-#: extra/keila_cloud_web/components/subscription_status.ex:252
-#, elixir-autogen, elixir-format
-msgid "%{monthly_emails} emails/month"
-msgstr "%{monthly_emails} e-mails/mois"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:216
-#, elixir-autogen, elixir-format
-msgid "%{price} / month"
-msgstr "%{price} / mois"
-
 #: lib/keila_web/templates/account/edit.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "%{remaining} / %{total} emails remaining"
 msgstr "%{remaining} / %{total} e-mails restants"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:225
-#, elixir-autogen, elixir-format
-msgid "(%{price} incl. tax)"
-msgstr "(%{price} taxe inclue )"
 
 #: lib/keila_web/views/public_form_view.ex:198
 #: lib/keila_web/views/public_form_view.ex:242
@@ -206,11 +191,6 @@ msgstr "Les campagnes associées à cet expéditeur ne seront pas supprimées."
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "Annuler"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:271
-#, elixir-autogen, elixir-format
-msgid "Cancel subscription"
-msgstr "Annuler l’abonnement"
 
 #: lib/keila_web/templates/sender/_mailgun_config.html.heex:40
 #: lib/keila_web/templates/sender/_postmark_config.html.heex:19
@@ -1203,16 +1183,6 @@ msgstr "Sujet"
 msgid "Submit"
 msgstr "Soumettre"
 
-#: extra/keila_cloud_web/components/subscription_status.ex:107
-#, elixir-autogen, elixir-format
-msgid "Subscribe now and start sending emails!"
-msgstr "Abonnez-vous maintenant et commencez à envoyer des e-mails!"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:39
-#, elixir-autogen, elixir-format
-msgid "Subscription"
-msgstr "Abonnement"
-
 #: lib/keila_web/controllers/template_controller.ex:17
 #: lib/keila_web/templates/layout/_menu.html.heex:106
 #: lib/keila_web/templates/project/show.html.heex:79
@@ -1282,11 +1252,6 @@ msgstr "L’adaptateur d’expéditeur local est utile pour tester pendant le d�
 #, elixir-autogen, elixir-format
 msgid "There was an error importing your contacts."
 msgstr "Une erreur est survenue lors de l’import des contacts."
-
-#: extra/keila_cloud_web/components/subscription_status.ex:65
-#, elixir-autogen, elixir-format
-msgid "There was an error processing your payment. Please update your payment method to continue using Keila."
-msgstr "Une erreur est survenue lors du traitement de votre paiement. Veuillez mettre à jour votre méthode de paiement pour continuer à utiliser Keila."
 
 #: lib/keila_web/templates/campaign/edit_live.html.heex:116
 #, elixir-autogen, elixir-format
@@ -1377,11 +1342,6 @@ msgstr "Se désabonner"
 msgid "Update password"
 msgstr "Mettre à jour le mot de passe"
 
-#: extra/keila_cloud_web/components/subscription_status.ex:266
-#, elixir-autogen, elixir-format
-msgid "Update payment method"
-msgstr "Mettre à jour la méthode de paiement"
-
 #: lib/keila_web/templates/campaign/index.html.heex:45
 #: lib/keila_web/templates/form/index.html.heex:26
 #: lib/keila_web/templates/segment/index.html.heex:26
@@ -1404,11 +1364,6 @@ msgstr "Bienvenue à Keila!"
 #, elixir-autogen, elixir-format
 msgid "We’re currently processing your subscription. This shouldn’t take longer than a minute …"
 msgstr "Nous traitons actuellement votre abonnement. Cela devrait prendre moins d’une minute …"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:49
-#, elixir-autogen, elixir-format
-msgid "You currently have an active subscription. Thanks for supporting Keila!"
-msgstr "Vous avez actuellement un abonnement actif. Merci de soutenir Keila!"
 
 #: lib/keila_web/views/public_form_view.ex:351
 #, elixir-autogen, elixir-format
@@ -1440,11 +1395,6 @@ msgstr "Vos projets"
 #, elixir-autogen, elixir-format
 msgid "Your password was changed!"
 msgstr "Votre mot de passe a été changé!"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:56
-#, elixir-autogen, elixir-format
-msgid "Your subscription is currently suspended. Please update your payment method to continue using Keila."
-msgstr "Votre abonnement est actuellement suspendu. Veuillez mettre à jour votre mode de paiement pour continuer à utiliser Keila."
 
 #: lib/keila_web/templates/sender/edit_live.html.heex:155
 #, elixir-autogen, elixir-format
@@ -1490,11 +1440,6 @@ msgstr "souligné"
 #, elixir-autogen, elixir-format
 msgid "unknown data error"
 msgstr "erreur de donnée inconnue"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:259
-#, elixir-autogen, elixir-format
-msgid "unlimited contacts"
-msgstr "contacts illimités"
 
 #: lib/keila_web/templates/account/edit.html.heex:49
 #: lib/keila_web/templates/auth/login.html.heex:18
@@ -3008,11 +2953,6 @@ msgstr "Après la création de cet expéditeur, vous allez recevoir un e-mail po
 msgid "Region"
 msgstr "Région"
 
-#: extra/keila_cloud_web/components/subscription_status.ex:284
-#, elixir-autogen, elixir-format
-msgid "Get started"
-msgstr "C’est parti!"
-
 #: lib/keila_web/views/template_view.ex:95
 #, elixir-autogen, elixir-format
 msgctxt "font"
@@ -3624,16 +3564,6 @@ msgstr ""
 "\n"
 "  Utilisez `[Confirmer]({{ double_opt_in_link }})` pour inclure le lien d’opt-in.\n"
 
-#: extra/keila_cloud_web/components/subscription_status.ex:236
-#, elixir-autogen, elixir-format, fuzzy
-msgid "%{monthly_emails} emails"
-msgstr "%{monthly_emails} e-mails/mois"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:207
-#, elixir-autogen, elixir-format, fuzzy
-msgid "%{price} one time"
-msgstr "%{price} / mois"
-
 #: lib/keila_web/controllers/public_form_controller.ex:171
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Cancel Subscription"
@@ -3667,11 +3597,6 @@ msgstr ""
 msgid "Please confirm your subscription."
 msgstr "Veuillez confirmer votre adresse e-mail"
 
-#: extra/keila_cloud_web/components/subscription_status.ex:89
-#, elixir-autogen, elixir-format
-msgid "Start new subscription"
-msgstr ""
-
 #: lib/keila_web/controllers/public_form_controller.ex:166
 #: lib/keila_web/controllers/public_form_controller.ex:172
 #: lib/keila_web/controllers/public_form_controller.ex:205
@@ -3687,29 +3612,4 @@ msgstr "Se désabonner"
 #: lib/keila_web/templates/sender/edit_live.html.heex:53
 #, elixir-autogen, elixir-format, fuzzy
 msgid "We have sent you an email to *%{email}*. \\\nPlease click on the link in the email to verify your email address.\n"
-msgstr ""
-
-#: extra/keila_cloud_web/components/subscription_status.ex:78
-#, elixir-autogen, elixir-format
-msgid "You can continue using your subscription until:"
-msgstr ""
-
-#: extra/keila_cloud_web/components/subscription_status.ex:74
-#, elixir-autogen, elixir-format
-msgid "Your subscription has been cancelled."
-msgstr ""
-
-#: extra/keila_cloud_web/components/subscription_status.ex:200
-#, elixir-autogen, elixir-format
-msgid "billed annually"
-msgstr ""
-
-#: extra/keila_cloud_web/components/subscription_status.ex:246
-#, elixir-autogen, elixir-format, fuzzy
-msgid "no subscription"
-msgstr "Abonnement"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:242
-#, elixir-autogen, elixir-format
-msgid "valid for one year"
 msgstr ""

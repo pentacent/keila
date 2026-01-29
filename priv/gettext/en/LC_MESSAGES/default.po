@@ -11,24 +11,9 @@ msgstr ""
 "Language: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: extra/keila_cloud_web/components/subscription_status.ex:252
-#, elixir-autogen, elixir-format
-msgid "%{monthly_emails} emails/month"
-msgstr ""
-
-#: extra/keila_cloud_web/components/subscription_status.ex:216
-#, elixir-autogen, elixir-format
-msgid "%{price} / month"
-msgstr ""
-
 #: lib/keila_web/templates/account/edit.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "%{remaining} / %{total} emails remaining"
-msgstr ""
-
-#: extra/keila_cloud_web/components/subscription_status.ex:225
-#, elixir-autogen, elixir-format
-msgid "(%{price} incl. tax)"
 msgstr ""
 
 #: lib/keila_web/views/public_form_view.ex:198
@@ -196,11 +181,6 @@ msgstr ""
 #: lib/keila_web/templates/user_admin/delete.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Cancel"
-msgstr ""
-
-#: extra/keila_cloud_web/components/subscription_status.ex:271
-#, elixir-autogen, elixir-format
-msgid "Cancel subscription"
 msgstr ""
 
 #: lib/keila_web/templates/sender/_mailgun_config.html.heex:40
@@ -1194,16 +1174,6 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: extra/keila_cloud_web/components/subscription_status.ex:107
-#, elixir-autogen, elixir-format
-msgid "Subscribe now and start sending emails!"
-msgstr ""
-
-#: extra/keila_cloud_web/components/subscription_status.ex:39
-#, elixir-autogen, elixir-format
-msgid "Subscription"
-msgstr ""
-
 #: lib/keila_web/controllers/template_controller.ex:17
 #: lib/keila_web/templates/layout/_menu.html.heex:106
 #: lib/keila_web/templates/project/show.html.heex:79
@@ -1272,11 +1242,6 @@ msgstr ""
 #: lib/keila_web/templates/contact/import_live.html.heex:83
 #, elixir-autogen, elixir-format
 msgid "There was an error importing your contacts."
-msgstr ""
-
-#: extra/keila_cloud_web/components/subscription_status.ex:65
-#, elixir-autogen, elixir-format
-msgid "There was an error processing your payment. Please update your payment method to continue using Keila."
 msgstr ""
 
 #: lib/keila_web/templates/campaign/edit_live.html.heex:116
@@ -1368,11 +1333,6 @@ msgstr ""
 msgid "Update password"
 msgstr ""
 
-#: extra/keila_cloud_web/components/subscription_status.ex:266
-#, elixir-autogen, elixir-format
-msgid "Update payment method"
-msgstr ""
-
 #: lib/keila_web/templates/campaign/index.html.heex:45
 #: lib/keila_web/templates/form/index.html.heex:26
 #: lib/keila_web/templates/segment/index.html.heex:26
@@ -1394,11 +1354,6 @@ msgstr ""
 #: extra/keila_cloud_web/templates/cloud_account/await_subscription_live.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "We’re currently processing your subscription. This shouldn’t take longer than a minute …"
-msgstr ""
-
-#: extra/keila_cloud_web/components/subscription_status.ex:49
-#, elixir-autogen, elixir-format
-msgid "You currently have an active subscription. Thanks for supporting Keila!"
 msgstr ""
 
 #: lib/keila_web/views/public_form_view.ex:351
@@ -1430,11 +1385,6 @@ msgstr ""
 #: lib/keila_web/templates/auth/reset_change_password_success.html.heex:4
 #, elixir-autogen, elixir-format
 msgid "Your password was changed!"
-msgstr ""
-
-#: extra/keila_cloud_web/components/subscription_status.ex:56
-#, elixir-autogen, elixir-format
-msgid "Your subscription is currently suspended. Please update your payment method to continue using Keila."
 msgstr ""
 
 #: lib/keila_web/templates/sender/edit_live.html.heex:155
@@ -1480,11 +1430,6 @@ msgstr ""
 #: lib/keila/contacts/import.ex:226
 #, elixir-autogen, elixir-format
 msgid "unknown data error"
-msgstr ""
-
-#: extra/keila_cloud_web/components/subscription_status.ex:259
-#, elixir-autogen, elixir-format
-msgid "unlimited contacts"
 msgstr ""
 
 #: lib/keila_web/templates/account/edit.html.heex:49
@@ -2947,11 +2892,6 @@ msgstr ""
 msgid "Region"
 msgstr ""
 
-#: extra/keila_cloud_web/components/subscription_status.ex:284
-#, elixir-autogen, elixir-format
-msgid "Get started"
-msgstr ""
-
 #: lib/keila_web/views/template_view.ex:95
 #, elixir-autogen, elixir-format, fuzzy
 msgctxt "font"
@@ -3553,16 +3493,6 @@ msgstr ""
 msgid "You may use Liquid and Markdown in the email body.\n\nUse `[Confirm]({{ double_opt_in_link }})` to include the opt-in link.\n"
 msgstr ""
 
-#: extra/keila_cloud_web/components/subscription_status.ex:236
-#, elixir-autogen, elixir-format, fuzzy
-msgid "%{monthly_emails} emails"
-msgstr ""
-
-#: extra/keila_cloud_web/components/subscription_status.ex:207
-#, elixir-autogen, elixir-format, fuzzy
-msgid "%{price} one time"
-msgstr ""
-
 #: lib/keila_web/controllers/public_form_controller.ex:171
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Cancel Subscription"
@@ -3596,11 +3526,6 @@ msgstr ""
 msgid "Please confirm your subscription."
 msgstr ""
 
-#: extra/keila_cloud_web/components/subscription_status.ex:89
-#, elixir-autogen, elixir-format
-msgid "Start new subscription"
-msgstr ""
-
 #: lib/keila_web/controllers/public_form_controller.ex:166
 #: lib/keila_web/controllers/public_form_controller.ex:172
 #: lib/keila_web/controllers/public_form_controller.ex:205
@@ -3616,29 +3541,4 @@ msgstr ""
 #: lib/keila_web/templates/sender/edit_live.html.heex:53
 #, elixir-autogen, elixir-format, fuzzy
 msgid "We have sent you an email to *%{email}*. \\\nPlease click on the link in the email to verify your email address.\n"
-msgstr ""
-
-#: extra/keila_cloud_web/components/subscription_status.ex:78
-#, elixir-autogen, elixir-format
-msgid "You can continue using your subscription until:"
-msgstr ""
-
-#: extra/keila_cloud_web/components/subscription_status.ex:74
-#, elixir-autogen, elixir-format
-msgid "Your subscription has been cancelled."
-msgstr ""
-
-#: extra/keila_cloud_web/components/subscription_status.ex:200
-#, elixir-autogen, elixir-format
-msgid "billed annually"
-msgstr ""
-
-#: extra/keila_cloud_web/components/subscription_status.ex:246
-#, elixir-autogen, elixir-format, fuzzy
-msgid "no subscription"
-msgstr ""
-
-#: extra/keila_cloud_web/components/subscription_status.ex:242
-#, elixir-autogen, elixir-format
-msgid "valid for one year"
 msgstr ""

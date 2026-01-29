@@ -419,12 +419,112 @@ msgstr "https://example.com"
 msgid "newsletter@example.com"
 msgstr "newsletter@example.com"
 
-#: extra/keila_cloud_web/components/subscription_status.ex:122
+#: extra/keila_cloud_web/components/subscription_status.ex:120
 #, elixir-autogen, elixir-format
 msgid "Subscribe for a year and get one month for free!"
-msgstr ""
+msgstr "Абонирайте се за една година и получете един месец безплатно!"
 
 #: extra/keila_cloud_web/controllers/cloud_account_controller.ex:34
 #, elixir-autogen, elixir-format
 msgid "Subscription still active"
-msgstr ""
+msgstr "Абонаментът все още е активен"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:269
+#, elixir-autogen, elixir-format
+msgid "Cancel subscription"
+msgstr "Отказ на абонамента"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:234
+#, elixir-autogen, elixir-format
+msgid "%{monthly_emails} emails"
+msgstr "%{monthly_emails} имейла"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:250
+#, elixir-autogen, elixir-format
+msgid "%{monthly_emails} emails/month"
+msgstr "%{monthly_emails} имейла/месец"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:282
+#, elixir-autogen, elixir-format
+msgid "Get started"
+msgstr "Започнете"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:87
+#, elixir-autogen, elixir-format
+msgid "Start new subscription"
+msgstr "Започнете нов абонамент"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:63
+#, elixir-autogen, elixir-format
+msgid "There was an error processing your payment. Please update your payment method to continue using Keila."
+msgstr "Възникна грешка при обработката на плащането ви. Моля, обновете метода си за плащане, за да продължите да използвате Keila."
+
+#: extra/keila_cloud_web/components/subscription_status.ex:264
+#, elixir-autogen, elixir-format
+msgid "Update payment method"
+msgstr "Обнови метод за плащане"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:76
+#, elixir-autogen, elixir-format
+msgid "You can continue using your subscription until:"
+msgstr "Можете да продължите да използвате абонамента си до:"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:72
+#, elixir-autogen, elixir-format
+msgid "Your subscription has been cancelled."
+msgstr "Вашият абонамент е отменен."
+
+#: extra/keila_cloud_web/components/subscription_status.ex:56
+#, elixir-autogen, elixir-format
+msgid "Your subscription is currently suspended. Please update your payment method to continue using Keila."
+msgstr "Вашето абонамент е временно спряно. Моля, обновете метода си за плащане, за да продължите да използвате Keila."
+
+#: extra/keila_cloud_web/components/subscription_status.ex:244
+#, elixir-autogen, elixir-format
+msgid "no subscription"
+msgstr "без абонамент"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:257
+#, elixir-autogen, elixir-format
+msgid "unlimited contacts"
+msgstr "неограничени брой контакти"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:240
+#, elixir-autogen, elixir-format
+msgid "valid for one year"
+msgstr "валидно за една година"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:214
+#, elixir-autogen, elixir-format
+msgid "%{price} / month"
+msgstr "%{price} / месец"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:205
+#, elixir-autogen, elixir-format
+msgid "%{price} one time"
+msgstr "%{price} еднократно"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:223
+#, elixir-autogen, elixir-format
+msgid "(%{price} incl. tax)"
+msgstr "(%{price} включ. данък)"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:105
+#, elixir-autogen, elixir-format
+msgid "Subscribe now and start sending emails!"
+msgstr "Абонирайте се сега и започнете да изпращате имейли!"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:39
+#, elixir-autogen, elixir-format
+msgid "Subscription"
+msgstr "Абонамент"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:49
+#, elixir-autogen, elixir-format
+msgid "You currently have an active subscription. Thanks for supporting Keila!"
+msgstr "В момента разполагате с активен абонамент. Благодаря ви, че подкрепяте Keila!"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:198
+#, elixir-autogen, elixir-format
+msgid "billed annually"
+msgstr "годишно таксуване"

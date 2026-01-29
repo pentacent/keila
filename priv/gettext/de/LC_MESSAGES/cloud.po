@@ -144,7 +144,7 @@ msgid "First name"
 msgstr "Vorname"
 
 #: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:29
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "I don’t have an existing contact list yet."
 msgstr "Ich habe noch keine bestehende Kontaktliste."
 
@@ -154,7 +154,7 @@ msgid "I have an existing contact list that I want to import into Keila."
 msgstr "Ich habe eine bestehende Kontaktliste, die ich in Keila importieren möchte."
 
 #: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:45
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "If you don’t have a website yet, you can also enter the link to a social media profile or some other public online presence."
 msgstr "Falls du noch keine Website hast, kannst du auch den Link zu einem Social-Media-Profil oder einer anderen öffentlichen Online-Präsenz angeben."
 
@@ -440,12 +440,112 @@ msgstr "https://example.com"
 msgid "newsletter@example.com"
 msgstr "newsletter@example.com"
 
-#: extra/keila_cloud_web/components/subscription_status.ex:122
+#: extra/keila_cloud_web/components/subscription_status.ex:120
 #, elixir-autogen, elixir-format
 msgid "Subscribe for a year and get one month for free!"
-msgstr ""
+msgstr "Bei einem Jahres-Abo erhältst du einen Monat kostenlos!"
 
 #: extra/keila_cloud_web/controllers/cloud_account_controller.ex:34
 #, elixir-autogen, elixir-format
 msgid "Subscription still active"
-msgstr ""
+msgstr "Abo noch aktiv"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:269
+#, elixir-autogen, elixir-format
+msgid "Cancel subscription"
+msgstr "Abo kündigen"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:234
+#, elixir-autogen, elixir-format
+msgid "%{monthly_emails} emails"
+msgstr "%{monthly_emails} E-Mails"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:250
+#, elixir-autogen, elixir-format
+msgid "%{monthly_emails} emails/month"
+msgstr "%{monthly_emails} E-Mails/Monat"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:282
+#, elixir-autogen, elixir-format
+msgid "Get started"
+msgstr "Los geht’s"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:87
+#, elixir-autogen, elixir-format
+msgid "Start new subscription"
+msgstr "Neues Abo starten"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:63
+#, elixir-autogen, elixir-format
+msgid "There was an error processing your payment. Please update your payment method to continue using Keila."
+msgstr "Zahlung fehlgeschlagen. Bitte aktualisiere deine Zahlungsmethode."
+
+#: extra/keila_cloud_web/components/subscription_status.ex:264
+#, elixir-autogen, elixir-format
+msgid "Update payment method"
+msgstr "Zahlungsmethode aktualisieren"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:76
+#, elixir-autogen, elixir-format
+msgid "You can continue using your subscription until:"
+msgstr "Du kannst das Abo weiter nutzen bis:"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:72
+#, elixir-autogen, elixir-format
+msgid "Your subscription has been cancelled."
+msgstr "Dein Abo wurde gekündigt."
+
+#: extra/keila_cloud_web/components/subscription_status.ex:56
+#, elixir-autogen, elixir-format
+msgid "Your subscription is currently suspended. Please update your payment method to continue using Keila."
+msgstr "Dein Abo ist derzeit ausgesetzt. Bitte aktualisiere deine Zahlungsdaten, um Keila weiter zu nutzen."
+
+#: extra/keila_cloud_web/components/subscription_status.ex:244
+#, elixir-autogen, elixir-format
+msgid "no subscription"
+msgstr "kein Abo"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:257
+#, elixir-autogen, elixir-format
+msgid "unlimited contacts"
+msgstr "unbegrenzte Kontakte"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:240
+#, elixir-autogen, elixir-format
+msgid "valid for one year"
+msgstr "gültig für ein Jahr"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:214
+#, elixir-autogen, elixir-format
+msgid "%{price} / month"
+msgstr "%{price} / Monat"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:205
+#, elixir-autogen, elixir-format
+msgid "%{price} one time"
+msgstr "%{price} einmalig"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:223
+#, elixir-autogen, elixir-format
+msgid "(%{price} incl. tax)"
+msgstr "(%{price} inkl. MwSt)"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:105
+#, elixir-autogen, elixir-format
+msgid "Subscribe now and start sending emails!"
+msgstr "Wähle jetzt ein Abo und sende E-Mails mit Keila!"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:39
+#, elixir-autogen, elixir-format
+msgid "Subscription"
+msgstr "Abo"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:49
+#, elixir-autogen, elixir-format
+msgid "You currently have an active subscription. Thanks for supporting Keila!"
+msgstr "Du hast ein aktives Abo. Danke dass du Keila unterstützt!"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:198
+#, elixir-autogen, elixir-format
+msgid "billed annually"
+msgstr "jährliche Abrechnung"

@@ -21,25 +21,10 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.8\n"
 
-#: extra/keila_cloud_web/components/subscription_status.ex:252
-#, elixir-autogen, elixir-format
-msgid "%{monthly_emails} emails/month"
-msgstr "%{monthly_emails} E-Mails/Monat"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:216
-#, elixir-autogen, elixir-format
-msgid "%{price} / month"
-msgstr "%{price} / Monat"
-
 #: lib/keila_web/templates/account/edit.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "%{remaining} / %{total} emails remaining"
 msgstr "%{remaining} / %{total} E-Mails verbleibend"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:225
-#, elixir-autogen, elixir-format
-msgid "(%{price} incl. tax)"
-msgstr "(%{price} inkl. MwSt)"
 
 #: lib/keila_web/views/public_form_view.ex:198
 #: lib/keila_web/views/public_form_view.ex:242
@@ -207,11 +192,6 @@ msgstr "Kampagnen, die mit diesem Sender verknüpft sind, werden nicht gelöscht
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "Abbrechen"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:271
-#, elixir-autogen, elixir-format
-msgid "Cancel subscription"
-msgstr "Abo kündigen"
 
 #: lib/keila_web/templates/sender/_mailgun_config.html.heex:40
 #: lib/keila_web/templates/sender/_postmark_config.html.heex:19
@@ -1204,16 +1184,6 @@ msgstr "Betreff"
 msgid "Submit"
 msgstr "Absenden"
 
-#: extra/keila_cloud_web/components/subscription_status.ex:107
-#, elixir-autogen, elixir-format
-msgid "Subscribe now and start sending emails!"
-msgstr "Wähle jetzt ein Abo und sende E-Mails mit Keila!"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:39
-#, elixir-autogen, elixir-format
-msgid "Subscription"
-msgstr "Abo"
-
 #: lib/keila_web/controllers/template_controller.ex:17
 #: lib/keila_web/templates/layout/_menu.html.heex:106
 #: lib/keila_web/templates/project/show.html.heex:79
@@ -1283,11 +1253,6 @@ msgstr "Der lokale Sender-Adapter ist für Entwicklungszwecke nützlich. Du kann
 #, elixir-autogen, elixir-format
 msgid "There was an error importing your contacts."
 msgstr "Beim Importieren der Kontakte ist ein Fehler aufgetreten."
-
-#: extra/keila_cloud_web/components/subscription_status.ex:65
-#, elixir-autogen, elixir-format
-msgid "There was an error processing your payment. Please update your payment method to continue using Keila."
-msgstr "Beim Verarbeiten der Zahlung ist ein Fehler aufgetreten. Bitte aktualisiere deine Zahlungsmethode, um Keila weiterhin nutzen zu können."
 
 #: lib/keila_web/templates/campaign/edit_live.html.heex:116
 #, elixir-autogen, elixir-format
@@ -1378,11 +1343,6 @@ msgstr "Abmelden"
 msgid "Update password"
 msgstr "Passwort aktualisieren"
 
-#: extra/keila_cloud_web/components/subscription_status.ex:266
-#, elixir-autogen, elixir-format
-msgid "Update payment method"
-msgstr "Zahlungsmethode aktualisieren"
-
 #: lib/keila_web/templates/campaign/index.html.heex:45
 #: lib/keila_web/templates/form/index.html.heex:26
 #: lib/keila_web/templates/segment/index.html.heex:26
@@ -1405,11 +1365,6 @@ msgstr "Willkommen bei Keila!"
 #, elixir-autogen, elixir-format
 msgid "We’re currently processing your subscription. This shouldn’t take longer than a minute …"
 msgstr "Wir verarbeiten gerade dein Abo. Dieser Vorgang sollte nicht länger als eine Minute dauern …"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:49
-#, elixir-autogen, elixir-format
-msgid "You currently have an active subscription. Thanks for supporting Keila!"
-msgstr "Du hast ein aktives Abo. Danke dass du Keila unterstützt!"
 
 #: lib/keila_web/views/public_form_view.ex:351
 #, elixir-autogen, elixir-format
@@ -1441,11 +1396,6 @@ msgstr "Meine Projekte"
 #, elixir-autogen, elixir-format
 msgid "Your password was changed!"
 msgstr "Passwort erfolgreich geändert!"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:56
-#, elixir-autogen, elixir-format
-msgid "Your subscription is currently suspended. Please update your payment method to continue using Keila."
-msgstr "Dein Abo ist derzeit ausgesetzt. Bitte aktualisiere deine Zahlungsmethode, um Keila weiterhin nutzen zu können."
 
 #: lib/keila_web/templates/sender/edit_live.html.heex:155
 #, elixir-autogen, elixir-format
@@ -1491,11 +1441,6 @@ msgstr "unterstrichen"
 #, elixir-autogen, elixir-format
 msgid "unknown data error"
 msgstr "Unbekannter Datenfehler"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:259
-#, elixir-autogen, elixir-format
-msgid "unlimited contacts"
-msgstr "Unbegrenzte Kontakte"
 
 #: lib/keila_web/templates/account/edit.html.heex:49
 #: lib/keila_web/templates/auth/login.html.heex:18
@@ -2789,7 +2734,7 @@ msgstr "Button-Text"
 #: lib/keila_web/templates/form/edit_live.html.heex:146
 #, elixir-autogen, elixir-format
 msgid "Thank you redirect URL"
-msgstr ""
+msgstr "Danke Weiterleitungs-URL"
 
 #: lib/keila_web/controllers/user_admin_controller.ex:54
 #, elixir-autogen, elixir-format
@@ -2850,7 +2795,7 @@ msgstr "Verbindungssicherheit"
 #: lib/keila_web/templates/sender/_smtp_config.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "Port"
-msgstr ""
+msgstr "Port"
 
 #: lib/keila_web/templates/sender/_config_edit.html.heex:12
 #: lib/keila_web/templates/sender/_config_new.html.heex:49
@@ -2878,7 +2823,7 @@ msgstr "Basis-URL"
 #: lib/keila_web/templates/sender/_mailgun_config.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Domain"
-msgstr ""
+msgstr "Domain"
 
 #: lib/keila_web/templates/sender/_ses_config.html.heex:5
 #, elixir-autogen, elixir-format
@@ -3004,12 +2949,7 @@ msgstr "Nach der Erstellung dieses Senders erhältst du eine E-Mail, um die ange
 #: lib/keila_web/templates/sender/_ses_config.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Region"
-msgstr ""
-
-#: extra/keila_cloud_web/components/subscription_status.ex:284
-#, elixir-autogen, elixir-format
-msgid "Get started"
-msgstr "Los geht’s"
+msgstr "Region"
 
 #: lib/keila_web/views/template_view.ex:95
 #, elixir-autogen, elixir-format
@@ -3068,7 +3008,7 @@ msgstr "stark durchsichtig"
 #: lib/keila_web/templates/component/file_manager_live.html.heex:79
 #, elixir-autogen, elixir-format
 msgid "Click to delete"
-msgstr ""
+msgstr "Zum Löschen klicken"
 
 #: lib/keila_web/templates/component/file_manager_live.html.heex:100
 #, elixir-autogen, elixir-format
@@ -3098,9 +3038,7 @@ msgstr "Kampagnen-Vorschau"
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:289
 #, elixir-autogen, elixir-format
 msgid "Enter up to five email addresses (separated with commas). If they exist in your contacts list, contact data will be used."
-msgstr ""
-"Zum Versenden der Vorschau können kommagetrennt bis zu fünf E-Mail-Adressen angegeben werden. Wenn die Adressen als Kontakte des Projekts existieren, werden deren "
-"Datenfelder benutzt."
+msgstr "Zum Versenden der Vorschau können kommagetrennt bis zu fünf E-Mail-Adressen angegeben werden. Wenn die Adressen als Kontakte des Projekts existieren, werden deren Datenfelder benutzt."
 
 #: lib/keila_web/templates/contact/edit.html.heex:108
 #, elixir-autogen, elixir-format
@@ -3115,7 +3053,7 @@ msgstr "Unzureichendes E-Mail-Kontingent."
 #: lib/keila_web/live/campaign_edit_live.ex:211
 #, elixir-autogen, elixir-format
 msgid "Invalid campaign settings."
-msgstr "Fehlerhafte Kampagnen-Einstellungen"
+msgstr "Fehlerhafte Kampagnen-Einstellungen."
 
 #: lib/keila_web/live/campaign_edit_live.ex:202
 #, elixir-autogen, elixir-format
@@ -3181,7 +3119,7 @@ msgstr "Erst muss ein Sender ausgewählt werden."
 #: lib/keila/contacts/import.ex:220
 #, elixir-autogen, elixir-format
 msgid "duplicate entry"
-msgstr ""
+msgstr "Doppelter Eintrag"
 
 #: lib/keila_web/templates/campaign/share.html.heex:81
 #, elixir-autogen, elixir-format
@@ -3371,12 +3309,12 @@ msgstr "https://example.com/dein-profil"
 #: lib/keila_web/views/segment_view.ex:142
 #, elixir-autogen, elixir-format
 msgid "Any campaign"
-msgstr ""
+msgstr "Jede Kampagne"
 
 #: lib/keila_web/templates/public_form/double_opt_in_failure.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Back to form"
-msgstr ""
+msgstr "Zurück zum Formular"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:480
 #, elixir-autogen, elixir-format
@@ -3396,8 +3334,7 @@ msgstr "E-Mail bestätigt"
 #: lib/keila_web/templates/sender/edit_live.html.heex:147
 #, elixir-autogen, elixir-format
 msgid "If you want replies to your newsletters to go to a different address than the one specified above, you can configure an alternative email address and name here."
-msgstr ""
-"Wenn Antworten auf deine Newsletter zu einer anderen Adresse gehen sollen als oben angegeben, kannst du hier eine alternative Antwort-Adresse konfiguriert werden."
+msgstr "Wenn Antworten auf deine Newsletter zu einer anderen Adresse gehen sollen als oben angegeben, kannst du hier eine alternative Antwort-Adresse konfiguriert werden."
 
 #: lib/keila_web/live/segment_edit_live.ex:14
 #, elixir-autogen, elixir-format
@@ -3473,7 +3410,7 @@ msgstr "ist nicht leer"
 #: lib/keila_web/live/segment_edit_live.ex:67
 #, elixir-autogen, elixir-format
 msgid "no complaint received"
-msgstr "keine Beschwerde erhalten "
+msgstr "keine Beschwerde erhalten"
 
 #: lib/keila_web/live/segment_edit_live.ex:65
 #, elixir-autogen, elixir-format
@@ -3483,12 +3420,12 @@ msgstr "nicht unzustellbar"
 #: lib/keila_web/live/segment_edit_live.ex:63
 #, elixir-autogen, elixir-format
 msgid "not clicked"
-msgstr "nicht geklickt "
+msgstr "nicht geklickt"
 
 #: lib/keila_web/live/segment_edit_live.ex:61
 #, elixir-autogen, elixir-format
 msgid "not opened"
-msgstr "nicht geöffnet "
+msgstr "nicht geöffnet"
 
 #: lib/keila_web/live/segment_edit_live.ex:59
 #, elixir-autogen, elixir-format
@@ -3530,12 +3467,20 @@ msgstr "Kontoinformationen überprüfen"
 #: lib/keila/mailings/double_opt_in_email_builder.ex:74
 #, elixir-autogen, elixir-format
 msgid "# Email Confirmation\n\nPlease click here to confirm your subscription:\n\n#### [Confirm subscription]({{ double_opt_in_link }})\n"
-msgstr "# E-Mail-Bestätigung\n\nBitte klicke hier, um dein Abonnement zu bestätigen:\n\n#### [Abonnement bestätigen]({{ double_opt_in_link }})\n"
+msgstr ""
+"# E-Mail-Bestätigung\n"
+"\n"
+"Bitte klicke hier, um dein Abonnement zu bestätigen:\n"
+"\n"
+"#### [Abonnement bestätigen]({{ double_opt_in_link }})\n"
 
 #: lib/keila/mailings/welcome_email_builder.ex:65
 #, elixir-autogen, elixir-format
 msgid "# Welcome!\n\nThank you for subscribing to this newsletter.\n"
-msgstr "# Willkommen!\n\nVielen Dank für dein Abonnement dieses Newsletters.\n"
+msgstr ""
+"# Willkommen!\n"
+"\n"
+"Vielen Dank für dein Abonnement dieses Newsletters.\n"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:388
 #: lib/keila_web/templates/form/edit_live.html.heex:597
@@ -3598,83 +3543,79 @@ msgstr "Wenn aktiviert, wird eine Willkommens-E-Mail an neue Kontakte nach der A
 #: lib/keila_web/templates/form/edit_live.html.heex:640
 #, elixir-autogen, elixir-format
 msgid "You may use Liquid and Markdown in the email body.\n\nAvailable variables: `{{ contact.email }}`, `{{ contact.first_name }}`, `{{ contact.last_name }}`, `{{ contact.data.* }}`\n"
-msgstr "Du kannst Liquid und Markdown im E-Mail-Text verwenden.\n\nVerfügbare Variablen: `{{ contact.email }}`, `{{ contact.first_name }}`, `{{ contact.last_name }}`, `{{ contact.data.* }}`\n"
+msgstr ""
+"Du kannst Liquid und Markdown im E-Mail-Text verwenden.\n"
+"\n"
+"Verfügbare Variablen: `{{ contact.email }}`, `{{ contact.first_name }}`, `{{ contact.last_name }}`, `{{ contact.data.* }}`\n"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:498
 #, elixir-autogen, elixir-format
 msgid "Custom URL to which users are redirected when a double opt-in link\nhas expired or has already been used.\n"
-msgstr "Eigene URL, zu der Nutzer weitergeleitet werden, wenn ein Double-Opt-In-Link\nabgelaufen ist oder bereits verwendet wurde.\n"
+msgstr ""
+"Eigene URL, zu der Nutzer weitergeleitet werden, wenn ein Double-Opt-In-Link\n"
+"abgelaufen ist oder bereits verwendet wurde.\n"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:468
 #, elixir-autogen, elixir-format
 msgid "Custom URL to which users are redirected when they submit the form and double opt-in\nis required.\n"
-msgstr "Eigene URL, zu der Nutzer nach dem Absenden des Formulars weitergeleitet werden,\nwenn Double-Opt-In aktiviert ist.\n"
+msgstr ""
+"Eigene URL, zu der Nutzer nach dem Absenden des Formulars weitergeleitet werden,\n"
+"wenn Double-Opt-In aktiviert ist.\n"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:483
 #, elixir-autogen, elixir-format
 msgid "Custom message that is shown when a double opt-in link has expired or\nhas already been used.\n"
-msgstr "Eigene Nachricht, die angezeigt wird, wenn ein Double-Opt-In-Link\nabgelaufen ist oder bereits verwendet wurde.\n"
+msgstr ""
+"Eigene Nachricht, die angezeigt wird, wenn ein Double-Opt-In-Link\n"
+"abgelaufen ist oder bereits verwendet wurde.\n"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:453
 #, elixir-autogen, elixir-format
 msgid "Custom message that is shown when a user submits the form and double opt-in\nis required.\n"
-msgstr "Eigene Nachricht, die nach dem Absenden des Formulars angezeigt wird,\nwenn Double-Opt-In aktiviert ist.\n"
+msgstr ""
+"Eigene Nachricht, die nach dem Absenden des Formulars angezeigt wird,\n"
+"wenn Double-Opt-In aktiviert ist.\n"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:431
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "You may use Liquid and Markdown in the email body.\n\nUse `[Confirm]({{ double_opt_in_link }})` to include the opt-in link.\n"
 msgstr ""
 "Du kannst Liquid und Markdown für den E-Mail-Inhalt verwenden.\n"
 "\n"
 "Verwende `[Bestätigen]({{ double_opt_in_link }})`, um den Double-Opt-In-Link einzufügen.\n"
 
-#: extra/keila_cloud_web/components/subscription_status.ex:236
-#, elixir-autogen, elixir-format, fuzzy
-msgid "%{monthly_emails} emails"
-msgstr "%{monthly_emails} E-Mails/Monat"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:207
-#, elixir-autogen, elixir-format, fuzzy
-msgid "%{price} one time"
-msgstr "%{price} / Monat"
-
 #: lib/keila_web/controllers/public_form_controller.ex:171
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Cancel Subscription"
-msgstr "Abo kündigen"
+msgstr "Abbestellen"
 
 #: lib/keila_web/controllers/public_form_controller.ex:87
 #, elixir-autogen, elixir-format
 msgid "Confirm Subscription"
-msgstr ""
+msgstr "Bestätigen"
 
 #: lib/keila_web/controllers/public_form_controller.ex:85
 #: lib/keila_web/controllers/public_form_controller.ex:88
 #, elixir-autogen, elixir-format
 msgid "Confirming ..."
-msgstr ""
+msgstr "Bestätigen …"
 
 #: lib/keila_web/templates/form/index.html.heex:33
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Open"
-msgstr "Geöffnet"
+msgstr "Öffnen"
 
 #: lib/keila_web/controllers/public_form_controller.ex:169
 #: lib/keila_web/controllers/public_form_controller.ex:208
 #: lib/keila_web/controllers/public_form_controller.ex:229
 #, elixir-autogen, elixir-format
 msgid "Please confirm that you want to unsubscribe."
-msgstr ""
+msgstr "Bitte bestätige, dass du den Newsletter abbestellen willst."
 
 #: lib/keila_web/controllers/public_form_controller.ex:86
-#, elixir-autogen, elixir-format, fuzzy
-msgid "Please confirm your subscription."
-msgstr "E-Mail-Bestätigung"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:89
 #, elixir-autogen, elixir-format
-msgid "Start new subscription"
-msgstr ""
+msgid "Please confirm your subscription."
+msgstr "Bitte bestätige dein Abo."
 
 #: lib/keila_web/controllers/public_form_controller.ex:166
 #: lib/keila_web/controllers/public_form_controller.ex:172
@@ -3684,38 +3625,13 @@ msgstr ""
 #: lib/keila_web/controllers/public_form_controller.ex:232
 #: lib/keila_web/controllers/public_form_controller.ex:246
 #: lib/keila_web/controllers/public_form_controller.ex:262
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Unsubscribing ..."
-msgstr "Abmelden"
+msgstr "Abmelden …"
 
 #: lib/keila_web/templates/sender/edit_live.html.heex:53
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "We have sent you an email to *%{email}*. \\\nPlease click on the link in the email to verify your email address.\n"
 msgstr ""
-"Es wurde eine E-Mail an *%{email}* versendet. \n"
+"Es wurde eine E-Mail an *%{email}* versendet.\\\n"
 "Bitte klicke auf den Link in der E-Mail, um diese Adresse zu bestätigen.\n"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:78
-#, elixir-autogen, elixir-format
-msgid "You can continue using your subscription until:"
-msgstr ""
-
-#: extra/keila_cloud_web/components/subscription_status.ex:74
-#, elixir-autogen, elixir-format
-msgid "Your subscription has been cancelled."
-msgstr ""
-
-#: extra/keila_cloud_web/components/subscription_status.ex:200
-#, elixir-autogen, elixir-format
-msgid "billed annually"
-msgstr ""
-
-#: extra/keila_cloud_web/components/subscription_status.ex:246
-#, elixir-autogen, elixir-format, fuzzy
-msgid "no subscription"
-msgstr "Abo"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:242
-#, elixir-autogen, elixir-format
-msgid "valid for one year"
-msgstr ""
