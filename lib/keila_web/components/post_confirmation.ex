@@ -35,7 +35,7 @@ defmodule KeilaWeb.PostConfirmation do
         style="display: none;"
       >
         <div class="flex flex-row items-center">
-          <div class="w-12 h-12 flex animate-spin mr-4" style="animation-duration: 3000ms;">
+          <div class="w-8 h-8 flex animate-spin mr-4" style="animation-duration: 3000ms;">
             {render_icon(:spinner)}
           </div>
           <p class="text-lg">{@message}</p>
@@ -57,7 +57,7 @@ defmodule KeilaWeb.PostConfirmation do
         (function() {
           const form = document.getElementById("<%= @form_id %>")
           const timeout = parseInt(form.dataset.timeout, 10)
-          setTimeout(form.submit, timeout)
+          setTimeout(() => form.submit(), timeout)
 
           form.querySelectorAll('[data-jsonly-display]').forEach(function(element) {
             element.style.display = element.dataset.jsonlyDisplay
