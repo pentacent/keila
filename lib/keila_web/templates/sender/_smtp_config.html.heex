@@ -7,10 +7,27 @@
     )}
   <% end %>
 </div>
+
 <div class="form-row">
   {label(@form, :smtp_username, gettext("Username"))}
   <%= with_validation(@form, :smtp_username) do %>
     {text_input(@form, :smtp_username, class: "text-black")}
+  <% end %>
+</div>
+
+<div class="form-row">
+  {label(@form, :smtp_auth_method, gettext("Authentication"))}
+  <%= with_validation(@form, :smtp_auth_method) do %>
+    {select(
+      @form,
+      :smtp_auth_method,
+      [
+        {gettext("Password"), "password"},
+        {gettext("None"), "none"}
+      ],
+      selected: @form.data.smtp_auth_method || @form.params["smtp_auth_method"] || "password",
+      class: "text-black"
+    )}
   <% end %>
 </div>
 
