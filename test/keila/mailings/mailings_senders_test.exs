@@ -232,6 +232,48 @@ defmodule Keila.Mailings.SenderTest do
     end
   end
 
+  describe "Testing smtp senders authorization method" do
+    @describetag :mailings
+    test "allows smtp_auth_method none without username/password" do
+      group = insert!(:group)
+      project = insert!(:project, group: group)
+
+      params =
+        params(:mailings_sender)
+        |> update_in(["config"], fn config ->
+          config
+          |> Map.put(:smtp_auth_method, "none")
+          |> Map.delete(:smtp_username)
+          |> Map.delete(:smtp_password)
+        end)
+
+      {:ok, sender} = Mailings.create_sender(project.id, params)
+
+      assert sender.config.smtp_auth_method == "none"
+      assert sender.config.smtp_username == nil
+      assert sender.config.smtp_password == nil
+    end
+
+    test "requires smtp username/password when smtp_auth_method is password" do
+      group = insert!(:group)
+      project = insert!(:project, group: group)
+
+      params =
+        params(:mailings_sender)
+        |> update_in(["config"], fn config ->
+          config
+          |> Map.put(:smtp_auth_method, "password")
+          |> Map.delete(:smtp_username)
+          |> Map.delete(:smtp_password)
+        end)
+
+      assert {:error, changeset} = Mailings.create_sender(project.id, params)
+      errors = errors_on(changeset)
+      assert "can't be blank" in errors.config.smtp_username
+      assert "can't be blank" in errors.config.smtp_password
+    end
+  end
+
   defp capture_and_return_token(agent_pid) do
     fn token ->
       :ok = Agent.update(agent_pid, fn _ -> token end)

@@ -12,6 +12,7 @@ defmodule Keila.Mailings.SenderAdapters.SMTP do
       smtp_password: :string,
       smtp_tls_mode: :string,
       smtp_port: :integer,
+      smtp_auth_method: :string,
       # deprecated:
       smtp_tls: :boolean
     ]
@@ -20,8 +21,27 @@ defmodule Keila.Mailings.SenderAdapters.SMTP do
   @impl true
   def changeset(changeset, params) do
     changeset
-    |> cast(params, [:smtp_relay, :smtp_username, :smtp_password, :smtp_tls_mode, :smtp_port])
-    |> validate_required([:smtp_relay, :smtp_username, :smtp_password])
+    |> cast(params, [
+      :smtp_relay,
+      :smtp_username,
+      :smtp_password,
+      :smtp_tls_mode,
+      :smtp_port,
+      :smtp_auth_method
+    ])
+    |> validate_required([:smtp_relay])
+    |> validate_inclusion(:smtp_auth_method, ["password", "none", ""])
+    |> maybe_require_smtp_auth()
+  end
+
+  defp maybe_require_smtp_auth(changeset) do
+    case get_field(changeset, :smtp_auth_method) do
+      "password" ->
+        validate_required(changeset, [:smtp_username, :smtp_password])
+
+      _ ->
+        changeset
+    end
   end
 
   @impl true
@@ -31,9 +51,9 @@ defmodule Keila.Mailings.SenderAdapters.SMTP do
       relay: config.smtp_relay,
       username: config.smtp_username,
       password: config.smtp_password,
-      auth: :always,
       port: config.smtp_port
     ]
+    |> maybe_put_auth(config)
     |> maybe_put_tls_opts(config)
   end
 
@@ -57,6 +77,14 @@ defmodule Keila.Mailings.SenderAdapters.SMTP do
 
       true ->
         opts
+    end
+  end
+
+  defp maybe_put_auth(opts, config) do
+    case config.smtp_auth_method do
+      "password" -> Keyword.put(opts, :auth, :always)
+      "none" -> Keyword.put(opts, :auth, :never)
+      _ -> opts
     end
   end
 end
