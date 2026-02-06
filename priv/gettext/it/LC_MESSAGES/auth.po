@@ -1,0 +1,275 @@
+# # This file is a PO Template file.
+# #
+# # "msgid"s here are often extracted from source code.
+# # Add new translations manually only if they're dynamic
+# # translations that can't be statically extracted.
+# #
+# # Run "mix gettext.extract" to bring this file up to
+# # date. Leave "msgstr"s empty as changing them here as no
+# # effect: edit them in PO (.po) files instead.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: lib/keila_web/controllers/auth_controller.ex:78
+msgid "Activation required"
+msgstr "Attivazione richiesta"
+
+#: lib/keila_web/controllers/auth_controller.ex:66
+msgid "Activation successful"
+msgstr "Attivazione completata"
+
+#: lib/keila_web/templates/auth/activate_resend_success.html.heex:4
+#: lib/keila_web/templates/auth/register_success.html.heex:4
+#: lib/keila_web/templates/auth/reset_success.html.heex:4
+msgid "Check your inbox!"
+msgstr "Controlla la tua posta in arrivo!"
+
+#: lib/keila_web/templates/auth/login.html.heex:34
+msgid "Don’t have an account?"
+msgstr "Non hai un account?"
+
+#: lib/keila_web/templates/auth/login.html.heex:40
+msgid "Forgot your password?"
+msgstr "Dimenticato la password?"
+
+#: lib/keila_web/templates/auth/activate_success.html.heex:12
+msgid "Get started!"
+msgstr "Inizia!"
+
+#: lib/keila/auth/emails.ex:46
+msgid ""
+"Hey there,\n"
+"\n"
+"please confirm your new email address by visiting the following link:\n"
+"\n"
+"%{url}\n"
+"\n"
+"If you weren’t trying to change your email address, simply ignore this "
+"message.\n"
+msgstr ""
+"Ciao,\n"
+"\n"
+"conferma il tuo nuovo indirizzo email visitando il seguente link:\n"
+"\n"
+"%{url}\n"
+"\n"
+"Se non stavi cercando di cambiare il tuo indirizzo email semplicemente "
+"ignora questo messaggio.\n"
+
+#: lib/keila/auth/emails.ex:95
+msgid ""
+"Hey there,\n"
+"\n"
+"you can login to Keila with the following link:\n"
+"\n"
+"%{url}\n"
+"\n"
+"If you haven’t requested a login, simply ignore this message.\n"
+msgstr ""
+"Ciao,\n"
+"\n"
+"puoi effettuare il login a Keila con il seguente link:\n"
+"\n"
+"%{url}\n"
+"\n"
+"Se non hai richiesto l'accesso semplicemente ignora questo messaggio.\n"
+
+#: lib/keila/auth/emails.ex:70
+msgid ""
+"Hey there,\n"
+"\n"
+"you have requested a password reset for your Keila account.\n"
+"\n"
+"You can set a new password by visiting the following link:\n"
+"\n"
+"%{url}\n"
+"\n"
+"If you weren’t trying to reset your password, simply ignore this message.\n"
+msgstr ""
+"Ciao,\n"
+"\n"
+"hai richiesto la reimpostazione della password per il tuo account Keila.\n"
+"\n"
+"Puoi impostare una nuova password visitando il seguente link:\n"
+"\n"
+"%{url}\n"
+"\n"
+"Se non stavi cercando di reimpostare la tua password semplicemente ignora "
+"questo messaggio.\n"
+
+#: lib/keila_web/templates/auth/reset_success.html.heex:7
+msgid "If you have an account, we’ve sent you a verification link to %{email}."
+msgstr "Se hai un account ti abbiamo inviato un link di verifica a %{email}."
+
+#: lib/keila_web/templates/auth/404.html.heex:7
+msgid "It seems like your link has expired or is invalid."
+msgstr "Sembra che il tuo link è scaduto o non è valido."
+
+#: lib/keila_web/controllers/account_controller.ex:46
+msgid "Manage Account"
+msgstr "Gestisci Account"
+
+#: lib/keila_web/controllers/account_controller.ex:19
+msgid "New password saved."
+msgstr "Nuova password salvata."
+
+#: lib/keila_web/controllers/auth_controller.ex:205
+msgid "Not found"
+msgstr "Non trovato"
+
+#: lib/keila_web/controllers/auth_controller.ex:116
+#: lib/keila_web/controllers/auth_controller.ex:129
+#: lib/keila_web/controllers/auth_controller.ex:162
+msgid "Password reset"
+msgstr "Reimposta password"
+
+#: lib/keila_web/controllers/auth_controller.ex:149
+msgid "Password reset successful"
+msgstr "Reimpostazione password riuscita"
+
+#: lib/keila/auth/emails.ex:19
+msgid "Please Verify Your Account"
+msgstr "Verifica il tuo account"
+
+#: lib/keila/auth/emails.ex:43
+msgid "Please Verify Your Email"
+msgstr "Verifica la tua Email"
+
+#: lib/keila_web/templates/auth/activate_required.html.heex:4
+msgid "Please activate your account first."
+msgstr "Attiva il tuo account prima."
+
+#: lib/keila_web/controllers/auth_controller.ex:42
+#: lib/keila_web/controllers/public_form_controller.ex:62
+msgid "Please complete the captcha."
+msgstr "Completa il captcha."
+
+#: lib/keila_web/templates/auth/activate_required.html.heex:15
+msgid "Resend activation link"
+msgstr "Invia nuovamente link di attivazione"
+
+#: lib/keila_web/templates/auth/login.html.heex:42
+msgid "Reset your password."
+msgstr "Reimposta la tua password."
+
+#: lib/keila_web/controllers/auth_controller.ex:185
+#: lib/keila_web/templates/auth/login.html.heex:30
+msgid "Sign in"
+msgstr "Accedi"
+
+#: lib/keila_web/templates/auth/login.html.heex:13
+msgid "Sign in with your email address and password here."
+msgstr "Accedi con il tuo indirizzo email e password qui."
+
+#: lib/keila_web/templates/auth/login.html.heex:10
+msgid "Sign in."
+msgstr "Accesso."
+
+#: lib/keila_web/controllers/auth_controller.ex:56
+msgid "Sign up"
+msgstr "Iscriviti"
+
+#: lib/keila_web/controllers/auth_controller.ex:31
+msgid "Sign up successful"
+msgstr "Iscrizione completata"
+
+#: lib/keila_web/templates/auth/login.html.heex:36
+msgid "Sign up."
+msgstr "Iscrizione."
+
+#: lib/keila_web/templates/auth/activate_success.html.heex:7
+msgid "Thanks for verifying your email."
+msgstr "Grazie per aver verificato la tua email."
+
+#: lib/keila_web/templates/auth/404.html.heex:4
+msgid "That didn’t work :-("
+msgstr "Non ha funzionato :-("
+
+#: lib/keila_web/templates/auth/activate_success.html.heex:4
+msgid "Welcome to Keila!"
+msgstr "Benvenuto in Keila!"
+
+#: lib/keila/auth/emails.ex:22
+msgid ""
+"Welcome to Keila,\n"
+"\n"
+"please confirm your new account by visiting the following link:\n"
+"\n"
+"%{url}\n"
+"\n"
+"If you weren’t trying to create an account, simply ignore this message.\n"
+msgstr ""
+"Benvenuto in Keila,\n"
+"\n"
+"conferma il tuo nuovo account visitando il seguente link:\n"
+"\n"
+"%{url}\n"
+"\n"
+"Se non stavi cercando di creare un account semplicemente ignora questo "
+"messaggio.\n"
+
+#: lib/keila_web/templates/auth/activate_resend_success.html.heex:7
+msgid "We’ve resent your verification link to %{email}."
+msgstr "Ti abbiamo nuovamente inviato un link di verifica a %{email}."
+
+#: lib/keila_web/templates/auth/register_success.html.heex:7
+msgid "We’ve sent you a verification link to %{email}."
+msgstr "Ti abbiamo inviato un link di verifica a %{email}."
+
+#: lib/keila_web/templates/auth/reset_change_password_success.html.heex:7
+msgid "You can now continue using Keila."
+msgstr "Puoi ora continuare ad usare Keila."
+
+#: lib/keila_web/templates/auth/activate_required.html.heex:7
+msgid ""
+"You need to verify your email before you can use Keila. Please check your "
+"inbox."
+msgstr ""
+"Devi verificare la tua email prima di poter usare Keila. Controlla la tua "
+"posta in arrivo."
+
+#: lib/keila/auth/emails.ex:66
+msgid "Your Account Reset Link"
+msgstr "Il tuo link di reimpostazione account"
+
+#: lib/keila/auth/emails.ex:91
+msgid "Your Login Link"
+msgstr "Il tuo link di accesso"
+
+#: lib/keila_web/templates/auth/reset_change_password_success.html.heex:12
+msgid "Log in with your new password"
+msgstr "Accedi con la tua nuova password"
+
+#: lib/keila/auth/emails.ex:119
+msgid ""
+"Hey there,\n"
+"\n"
+"please verify your sender email address by visiting the following link:\n"
+"\n"
+"%{url}\n"
+"\n"
+"If you didn't request this verification, please ignore this message and\n"
+"do not click on the link.\n"
+msgstr ""
+"Ciao,\n"
+"\n"
+"conferma il tuo indirizzo email mittente visitando il seguente link:\n"
+"\n"
+"%{url}\n"
+"\n"
+"Se non hai richiesto questa verifica ignora questo messaggio e non cliccare "
+"sul link.\n"
+
+#: lib/keila/auth/emails.ex:115
+msgid "Please Verify Your Email for Keila"
+msgstr "Verifica la tua Email per Keila"
