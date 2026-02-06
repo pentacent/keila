@@ -22,7 +22,7 @@ Keila.if_cloud do
     """
     @spec feature_available?(Project.id(), feature) :: boolean()
     def feature_available?(project_id, feature) when feature in @features do
-      if Billing.billing_enabled?() do
+      if Billing.billing_enabled?() and Keila.Accounts.credits_enabled?() do
         account = Accounts.get_project_account(project_id)
         do_feature_available?(account, feature)
       else

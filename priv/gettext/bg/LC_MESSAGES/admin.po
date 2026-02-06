@@ -118,7 +118,7 @@ msgstr "Регистрация"
 msgid "Type in the shared sender name to confirm its deletion:"
 msgstr "Въведете името на общия подател, за да потвърдите изтриването му:"
 
-#: lib/keila_web/templates/user_admin/index.html.heex:78
+#: lib/keila_web/templates/user_admin/index.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "Login as"
 msgstr "Вход като"
@@ -133,7 +133,7 @@ msgstr "Налична е нова версия на Keila."
 msgid "Read more"
 msgstr "Прочетете още"
 
-#: lib/keila_web/templates/layout/_menu.html.heex:155
+#: lib/keila_web/templates/layout/_menu.html.heex:153
 #, elixir-autogen, elixir-format
 msgid "System Info"
 msgstr "Системна информация"

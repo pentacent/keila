@@ -12,7 +12,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-
 #: lib/keila_web/templates/user_admin/show_credits.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "%{remaining} / %{total} credits"
@@ -122,7 +121,7 @@ msgstr "Regisztráció"
 msgid "Type in the shared sender name to confirm its deletion:"
 msgstr "A törlés megerősítéséhez írja be a megosztott feladó nevét:"
 
-#: lib/keila_web/templates/user_admin/index.html.heex:78
+#: lib/keila_web/templates/user_admin/index.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "Login as"
 msgstr "Bejelentkezés mint"
@@ -137,7 +136,7 @@ msgstr "A Keila új verziója elérhető."
 msgid "Read more"
 msgstr "További információ"
 
-#: lib/keila_web/templates/layout/_menu.html.heex:155
+#: lib/keila_web/templates/layout/_menu.html.heex:153
 #, elixir-autogen, elixir-format
 msgid "System Info"
 msgstr "Rendszerinformáció"

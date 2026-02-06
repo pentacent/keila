@@ -36,7 +36,7 @@ Keila.if_cloud do
       ~H"""
       <div class="rounded shadow p-8 mt-8 max-w-5xl mx-auto flex flex-col gap-4 bg-gray-900 text-gray-50">
         <h2 class="text-3xl font-bold">
-          {gettext("Subscription")}
+          {dgettext("cloud", "Subscription")}
         </h2>
 
         <%= if @subscription do %>
@@ -46,14 +46,18 @@ Keila.if_cloud do
                 <span class="flex h-2 w-8 items-center text-emerald-500">
                   {render_icon(:check)}
                 </span>
-                {gettext("You currently have an active subscription. Thanks for supporting Keila!")}
+                {dgettext(
+                  "cloud",
+                  "You currently have an active subscription. Thanks for supporting Keila!"
+                )}
               </p>
             <% :paused -> %>
               <p class="flex gap-4 items-center">
                 <span class="flex h-2 w-8 items-center text-red-500">
                   {render_icon(:information_circle)}
                 </span>
-                {gettext(
+                {dgettext(
+                  "cloud",
                   "Your subscription is currently suspended. Please update your payment method to continue using Keila."
                 )}
               </p>
@@ -62,7 +66,8 @@ Keila.if_cloud do
                 <span class="flex h-2 w-8 items-center text-red-500">
                   {render_icon(:information_circle)}
                 </span>
-                {gettext(
+                {dgettext(
+                  "cloud",
                   "There was an error processing your payment. Please update your payment method to continue using Keila."
                 )}
               </p>
@@ -71,11 +76,11 @@ Keila.if_cloud do
                 <span class="flex h-2 w-8 items-center text-red-500">
                   {render_icon(:information_circle)}
                 </span>
-                {gettext("Your subscription has been cancelled.")}
+                {dgettext("cloud", "Your subscription has been cancelled.")}
               </p>
               <%= if @subscription_expiry_date do %>
                 <p class="text-gray-300">
-                  {gettext("You can continue using your subscription until:")}
+                  {dgettext("cloud", "You can continue using your subscription until:")}
                   {local_date_tag(@subscription_expiry_date)}.
                 </p>
               <% end %>
@@ -86,7 +91,7 @@ Keila.if_cloud do
                 <input type="hidden" name="_method" value="delete" />
                 <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
                 <button type="submit" class="button button--cta">
-                  {gettext("Start new subscription")}
+                  {dgettext("cloud", "Start new subscription")}
                 </button>
               </form>
           <% end %>
@@ -104,7 +109,7 @@ Keila.if_cloud do
             </div>
           <% end %>
         <% else %>
-          {gettext("Subscribe now and start sending emails!")}
+          {dgettext("cloud", "Subscribe now and start sending emails!")}
 
           <div x-data="{annual: false}" class="my-8">
             <label class="flex gap-2 cursor-pointer items-center justify-center">
@@ -197,14 +202,14 @@ Keila.if_cloud do
 
           <%= if @plan.billing_interval == :year do %>
             <span class="block text-xs -mt-1 mb-2">
-              {gettext("billed annually")}
+              {dgettext("cloud", "billed annually")}
             </span>
           <% end %>
 
           <%= if @plan.billing_interval == :one_time do %>
             <span class="block -mt-1 text-sm text-emerald-100 font-bold">
               {raw(
-                gettext("%{price} one time",
+                dgettext("cloud", "%{price} one time",
                   price:
                     ~s{<span class="price price-net price-#{@plan.billing_interval}" data-product="#{@plan.paddle_id}"></span>}
                 )
@@ -213,7 +218,7 @@ Keila.if_cloud do
           <% else %>
             <span class="block -mt-1 text-sm text-emerald-100 font-bold">
               {raw(
-                gettext("%{price} / month",
+                dgettext("cloud", "%{price} / month",
                   price:
                     ~s{<span class="price price-net price-#{@plan.billing_interval}" data-product="#{@plan.paddle_id}"></span>}
                 )
@@ -222,7 +227,7 @@ Keila.if_cloud do
           <% end %>
           <span class="block text-xs text-emerald-300">
             {raw(
-              gettext("(%{price} incl. tax)",
+              dgettext("cloud", "(%{price} incl. tax)",
                 price:
                   ~s{<span class="price price-gross price-#{@plan.billing_interval}" data-product="#{@plan.paddle_id}"></span>}
               )
@@ -233,42 +238,40 @@ Keila.if_cloud do
           <%= if @plan.billing_interval == :one_time do %>
             <li class="flex items-center gap-1">
               <span class="inline-flex w-4 h-4">{render_icon(:check)}</span>
-              {gettext("%{monthly_emails} emails",
-                monthly_emails: @plan.monthly_credits
-              )}
+              {dgettext("cloud", "%{monthly_emails} emails", monthly_emails: @plan.monthly_credits)}
             </li>
             <li class="flex items-center gap-1">
               <span class="inline-flex w-4 h-4">{render_icon(:check)}</span>
-              {gettext("valid for one year")}
+              {dgettext("cloud", "valid for one year")}
             </li>
             <li class="flex items-center gap-1">
               <span class="inline-flex w-4 h-4">{render_icon(:check)}</span>
-              {gettext("no subscription")}
+              {dgettext("cloud", "no subscription")}
             </li>
           <% else %>
             <li class="flex items-center gap-1">
               <span class="inline-flex w-4 h-4">{render_icon(:check)}</span>
 
-              {gettext("%{monthly_emails} emails/month",
+              {dgettext("cloud", "%{monthly_emails} emails/month",
                 monthly_emails: @plan.monthly_credits
               )}
             </li>
           <% end %>
           <li class="flex items-center gap-1">
             <span class="inline-flex w-4 h-4">{render_icon(:check)}</span>
-            {gettext("unlimited contacts")}
+            {dgettext("cloud", "unlimited contacts")}
           </li>
         </ul>
         <%= if assigns[:subscription] && @subscription.paddle_plan_id == @plan.paddle_id do %>
           <div class="flex gap-4">
             <%= if @subscription.update_url do %>
               <a class="button" target="_blank" href={@subscription.update_url}>
-                {gettext("Update payment method")}
+                {dgettext("cloud", "Update payment method")}
               </a>
             <% end %>
             <%= if @subscription.cancel_url do %>
               <a class="button" target="_blank" href={@subscription.cancel_url}>
-                {gettext("Cancel subscription")}
+                {dgettext("cloud", "Cancel subscription")}
               </a>
             <% end %>
           </div>
@@ -281,7 +284,7 @@ Keila.if_cloud do
             data-theme="none"
             data-success={Routes.cloud_account_url(KeilaWeb.Endpoint, :await_subscription)}
           >
-            {gettext("Get started")}
+            {dgettext("cloud", "Get started")}
           </button>
         <% end %>
       </div>

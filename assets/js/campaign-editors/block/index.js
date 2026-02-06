@@ -7,7 +7,9 @@ import Image from "./blocks/image"
 import Layout from "./blocks/layout"
 import Separator from "./blocks/separator"
 import SocialIcons from "./blocks/social-icons"
+import Alignment from "./tools/alignment"
 import TextColor from "./tools/text-color"
+import AlignmentTune from "./tunes/alignment"
 
 export default class BlockEditor {
   constructor(place, source) {
@@ -20,23 +22,43 @@ export default class BlockEditor {
         textColor: {
           class: TextColor
         },
+        alignment: {
+          class: AlignmentTune
+        },
+        alignmentInline: {
+          class: Alignment
+        },
         header: {
           class: Header,
           inlineToolbar: true,
           config: {
-            levels: [1, 2, 3]
-          }
+            levels: [1, 2, 2]
+          },
+          tunes: ["alignment"]
+        },
+        paragraph: {
+          tunes: ["alignment"]
         },
         layout: {
           class: Layout,
           config: {
             tools: {
+              alignment: {
+                class: AlignmentTune
+              },
+              alignmentInline: {
+                class: Alignment
+              },
               header: {
                 class: Header,
                 inlineToolbar: true,
                 config: {
                   levels: [1, 2, 3]
-                }
+                },
+                tunes: ["alignment"]
+              },
+              paragraph: {
+                tunes: ["alignment"]
               },
               button: Button,
               image: {

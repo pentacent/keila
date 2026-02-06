@@ -1,6 +1,7 @@
 defmodule KeilaWeb.PublicFormControllerTest do
   use KeilaWeb.ConnCase
   alias Keila.Contacts
+  alias Keila.Mailings
   @endpoint KeilaWeb.Endpoint
 
   describe "GET /forms/:id" do
@@ -89,12 +90,23 @@ defmodule KeilaWeb.PublicFormControllerTest do
     end
   end
 
-  describe "GET /unsubscribe/:p_id/:c_id" do
+  describe "Deprecated: GET /unsubscribe/:p_id/:c_id" do
+    @describetag :public_form_controller
+
+    test "always shows delay message", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+      contact = insert!(:contact, project_id: project.id)
+      conn = get(conn, Routes.public_form_path(conn, :unsubscribe, project.id, contact.id))
+      assert html_response(conn, 200) =~ "Unsubscribing ..."
+    end
+  end
+
+  describe "Deprecated: POST /unsubscribe/:p_id/:c_id" do
     @describetag :public_form_controller
     test "unsubscribes contact", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
       contact = insert!(:contact, project_id: project.id)
-      conn = get(conn, Routes.public_form_path(conn, :unsubscribe, project.id, contact.id))
+      conn = post(conn, Routes.public_form_path(conn, :unsubscribe, project.id, contact.id))
       assert html_response(conn, 200) =~ "You have been unsubscribed"
       assert %{status: :unsubscribed} = Contacts.get_contact(contact.id)
     end
@@ -103,7 +115,7 @@ defmodule KeilaWeb.PublicFormControllerTest do
       {conn, project} = with_login_and_project(conn)
 
       conn =
-        get(
+        post(
           conn,
           Routes.public_form_path(
             conn,
@@ -115,5 +127,68 @@ defmodule KeilaWeb.PublicFormControllerTest do
 
       assert html_response(conn, 200) =~ "You have been unsubscribed"
     end
+  end
+
+  describe "GET /unsubscribe/:project_id/:recipient_id/:hmac" do
+    @describetag :public_form_controller
+    test "shows confirmation page when recipient sent_at is recent", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+      contact = insert!(:contact, project_id: project.id)
+      campaign = insert!(:mailings_campaign, project_id: project.id)
+
+      recipient =
+        insert!(:mailings_recipient, campaign: campaign, contact: contact, sent_at: now())
+
+      unsubscribe_link = Mailings.get_unsubscribe_link(project.id, recipient.id)
+      conn = get(conn, unsubscribe_link)
+
+      assert html_response(conn, 200) =~ "Unsubscribing ..."
+      assert %{status: :active} = Contacts.get_contact(contact.id)
+    end
+
+    test "unsubscribes immediately when sent_at is not recent", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+      contact = insert!(:contact, project_id: project.id)
+      campaign = insert!(:mailings_campaign, project_id: project.id)
+
+      recipient =
+        insert!(:mailings_recipient,
+          campaign: campaign,
+          contact: contact,
+          sent_at: ten_minutes_ago()
+        )
+
+      unsubscribe_link = Mailings.get_unsubscribe_link(project.id, recipient.id)
+      conn = get(conn, unsubscribe_link)
+
+      assert html_response(conn, 200) =~ "You have been unsubscribed"
+      assert %{status: :unsubscribed} = Contacts.get_contact(contact.id)
+    end
+  end
+
+  describe "POST /unsubscribe/:project_id/:recipient_id/:hmac" do
+    @describetag :public_form_controller
+    test "unsubscribes contact via POST", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+      contact = insert!(:contact, project_id: project.id)
+      campaign = insert!(:mailings_campaign, project_id: project.id)
+
+      recipient =
+        insert!(:mailings_recipient, campaign: campaign, contact: contact, sent_at: now())
+
+      unsubscribe_link = Mailings.get_unsubscribe_link(project.id, recipient.id)
+      conn = post(conn, unsubscribe_link, hmac: "ignored")
+
+      assert html_response(conn, 200) =~ "You have been unsubscribed"
+      assert %{status: :unsubscribed} = Contacts.get_contact(contact.id)
+    end
+  end
+
+  defp now() do
+    DateTime.utc_now(:second)
+  end
+
+  defp ten_minutes_ago() do
+    DateTime.utc_now(:second) |> DateTime.add(-600, :second)
   end
 end

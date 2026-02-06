@@ -259,6 +259,22 @@ Block Editor Styles
     .ce-block.ce-block--type-separator > * > :last-child {
         padding-bottom: 0px;
     }
+
+    .ce-tune-alignment--left {
+        text-align: left;
+    }
+
+    .ce-tune-alignment--center {
+        text-align: center;
+    }
+
+    .ce-tune-alignment--right {
+        text-align: right;
+    }
+
+    .ce-tune-alignment--justify {
+        text-align: justify;
+    }
 }
 
 .codex-editor {
@@ -321,6 +337,10 @@ Block Editor Styles
 .ce-inline-toolbar {
     z-index: 1;
     @apply text-gray-800;
+}
+
+.ce-inline-tool--open-dropdown {
+    background-color: #eff2f5;
 }
 
 .ce-popover--opened {

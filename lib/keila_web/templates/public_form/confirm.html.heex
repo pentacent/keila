@@ -3,11 +3,12 @@
   style={build_form_styles(@form)}
 >
   {render_h1(@form)}
-  <h2 class="text-xl">
-    {gettext("Your data has been deleted.")}
-  </h2>
-  <p>
-    {gettext("You will not be subscribed to this list.")}
-  </p>
+
+  <KeilaWeb.PostConfirmation.post_confirmation
+    message={@confirmation_message}
+    action_message={@confirmation_action_message}
+    action_cta={@confirmation_action_cta}
+  />
+
   {render_fine_print(@form)}
 </div>

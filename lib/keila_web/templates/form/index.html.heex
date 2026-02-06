@@ -28,6 +28,10 @@
       <br />
 
       <div class="flex flex-row gap-4 justify-end">
+        <a href={Routes.public_form_path(@conn, :show, form.id)} class="button" target="_blank">
+          {render_icon(:external_link)}
+          {gettext("Open")}
+        </a>
         <a href={Routes.form_path(@conn, :edit, @current_project.id, form.id)} class="button">
           {render_icon(:pencil_alt)}
           {gettext("Edit")}

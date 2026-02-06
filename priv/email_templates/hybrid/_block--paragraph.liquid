@@ -1,5 +1,10 @@
+{% assign style = "" %}
+{% if block.tunes.alignment %}
+{% assign style = "text-align: " | append: block.tunes.alignment.alignment %}
+{% endif %}
+
 <tr class="block block--paragraph">
     <td>
-        <p>{{block.data.text }}</p>
+        <p style="{{style}}">{{block.data.text }}</p>
     </td>
 </tr>

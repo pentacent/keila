@@ -67,12 +67,12 @@ msgstr "Si tienes una cuenta, te hemos enviado un enlace de verificación a %{em
 msgid "It seems like your link has expired or is invalid."
 msgstr "Parece que tu enlace ha caducado o no es válido."
 
-#: lib/keila_web/controllers/account_controller.ex:46
+#: lib/keila_web/controllers/account_controller.ex:42
 #, elixir-autogen, elixir-format
 msgid "Manage Account"
 msgstr "Gestionar cuenta"
 
-#: lib/keila_web/controllers/account_controller.ex:19
+#: lib/keila_web/controllers/account_controller.ex:18
 #, elixir-autogen, elixir-format
 msgid "New password saved."
 msgstr "Nueva contraseña guardada."
@@ -110,7 +110,7 @@ msgid "Please activate your account first."
 msgstr "Por favor, activa primero tu cuenta."
 
 #: lib/keila_web/controllers/auth_controller.ex:42
-#: lib/keila_web/controllers/public_form_controller.ex:62
+#: lib/keila_web/controllers/public_form_controller.ex:64
 #, elixir-autogen, elixir-format
 msgid "Please complete the captcha."
 msgstr "Por favor, completa el captcha."
