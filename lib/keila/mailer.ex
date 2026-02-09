@@ -16,6 +16,8 @@ defmodule Keila.Mailer do
       |> adapter.to_swoosh_config()
       |> Enum.filter(fn {_, v} -> not is_nil(v) end)
 
+    # Swoosh may return an error or send an exit signal for different types of
+    # invalid recipient email addresses
     try do
       email
       |> put_from(sender, adapter)
@@ -23,7 +25,18 @@ defmodule Keila.Mailer do
       |> adapter.put_provider_options(sender)
       |> deliver(config)
     rescue
-      e -> {:error, e}
+      e in MatchError ->
+        if match?({:error, {_, :smtp_rfc5322_parse, _}}, e.term) do
+          {:error, :invalid_email}
+        else
+          {:error, e}
+        end
+
+      e ->
+        {:error, e}
+    catch
+      :exit, {:bad_label, _reason} ->
+        {:error, :invalid_email}
     end
   end
 
