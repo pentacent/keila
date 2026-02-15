@@ -1,0 +1,51 @@
+<%= inputs_for @form, :config, fn fc -> %>
+  <% tab = input_value(fc, :type) || List.first(@sender_adapters) %>
+  <% tab_data = "{ tab: '#{tab}', senderType: $el.querySelector('#shared_sender_config_type').value }" %>
+
+  <div
+    class="tabs"
+    x-data={tab_data}
+    x-init="$nextTick(() => { if (! $el.querySelector('button.tab-label.active')) {$el.querySelector('button.tab-label').click()} })"
+  >
+    {select(fc, :type, @sender_adapters, id: "shared_sender_config_type", x_model: "senderType", class: "hidden")}
+
+    <%= for adapter <- @sender_adapters do %>
+      <% class = "{ 'active': tab === '#{adapter}' }"
+      prevent = "senderType = '#{adapter}'; tab = '#{adapter}'" %>
+      <button class="tab-label" x-bind:class={class} @click.prevent={prevent}>
+        {sender_adapter_name(adapter)}
+      </button>
+    <% end %>
+
+    <%= for adapter <- @sender_adapters do %>
+      <% x_if = "tab === '#{adapter}'" %>
+      <template x-if={x_if}>
+        <div class="tab-content">
+          {render_shared_sender_adapter_form(fc, adapter)}
+
+          <div class="form-row">
+            <% id = "rate_limit_per_second_#{adapter}" %>
+            {label(fc, :rate_limit_per_second, gettext("Rate limit per second"), for: id)}
+            <%= with_validation(fc, :rate_limit_per_second) do %>
+              {number_input(fc, :rate_limit_per_second, id: id, class: "text-black", min: 0)}
+            <% end %>
+          </div>
+          <div class="form-row">
+            <% id = "rate_limit_per_minute_#{adapter}" %>
+            {label(fc, :rate_limit_per_minute, gettext("Rate limit per minute"), for: id)}
+            <%= with_validation(fc, :rate_limit_per_minute) do %>
+              {number_input(fc, :rate_limit_per_minute, id: id, class: "text-black", min: 0)}
+            <% end %>
+          </div>
+          <div class="form-row">
+            <% id = "rate_limit_per_hour_#{adapter}" %>
+            {label(fc, :rate_limit_per_hour, gettext("Rate limit per hour"), for: id)}
+            <%= with_validation(fc, :rate_limit_per_hour) do %>
+              {number_input(fc, :rate_limit_per_hour, id: id, class: "text-black", min: 0)}
+            <% end %>
+          </div>
+        </div>
+      </template>
+    <% end %>
+  </div>
+<% end %>
