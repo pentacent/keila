@@ -1,13 +1,18 @@
 <%= inputs_for @form, :config, fn fc -> %>
   <% tab = input_value(fc, :type) || List.first(@sender_adapters) %>
-  <% tab_data = "{ tab: '#{tab}', senderType: $el.querySelector('#shared_sender_config_type').value }" %>
+  <% tab_data =
+    "{ tab: '#{tab}', senderType: $el.querySelector('#shared_sender_config_type').value }" %>
 
   <div
     class="tabs"
     x-data={tab_data}
     x-init="$nextTick(() => { if (! $el.querySelector('button.tab-label.active')) {$el.querySelector('button.tab-label').click()} })"
   >
-    {select(fc, :type, @sender_adapters, id: "shared_sender_config_type", x_model: "senderType", class: "hidden")}
+    {select(fc, :type, @sender_adapters,
+      id: "shared_sender_config_type",
+      x_model: "senderType",
+      class: "hidden"
+    )}
 
     <%= for adapter <- @sender_adapters do %>
       <% class = "{ 'active': tab === '#{adapter}' }"
