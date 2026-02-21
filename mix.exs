@@ -86,7 +86,7 @@ defmodule Keila.MixProject do
       {:nimble_csv, "~> 1.3"},
       {:nimble_parsec, "~> 1.4"},
       {:oban, "~> 2.20"},
-      {:solid, git: "https://github.com/pentacent/solid.git"},
+      {:solid, "~> 1.2.2"},
       {:earmark, "~> 1.4"},
       {:tzdata, "~> 1.1"},
       {:ex_aws, "~> 2.6.0"},
