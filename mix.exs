@@ -4,15 +4,15 @@ defmodule Keila.MixProject do
   def project do
     [
       app: :keila,
-      version: "0.18.0",
-      elixir: "~> 1.15",
+      version: "0.19.0",
+      elixir: "~> 1.18",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix_live_view] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
       name: "Keila",
-      homepage_url: "https://keila.io",
+      homepage_url: "https://www.keila.io",
       docs: docs()
     ]
   end
