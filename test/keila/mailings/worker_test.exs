@@ -15,10 +15,41 @@ defmodule Keila.Mailings.WorkerTest do
 
   describe "perform/1" do
     @tag :mailings_worker
+    @invalid_emails ["invalid-email", "foo@-invalid-domain", "foo@invalid.com;", " "]
     test "sets failed_at and contact status to unreachable for invalid email address", %{
       project: project
     } do
-      contact = insert!(:contact, project_id: project.id, email: "invalid-email")
+      contacts =
+        for email <- @invalid_emails, do: insert!(:contact, project_id: project.id, email: email)
+
+      n = length(contacts)
+
+      # Use the SMTP adapter because the test adapter doesn't parse the email address.
+      sender =
+        insert!(:mailings_sender,
+          config: %Mailings.Sender.Config{type: "smtp", smtp_relay: "localhost"}
+        )
+
+      campaign = insert!(:mailings_campaign, project_id: project.id, sender_id: sender.id)
+
+      assert :ok = Mailings.deliver_campaign(campaign.id)
+      assert %{success: 1} = Oban.drain_queue(queue: :mailer_scheduler)
+      assert %{cancelled: ^n} = Oban.drain_queue(queue: :mailer, with_scheduled: true)
+
+      for contact <- contacts do
+        recipient = get_recipient_for_contact(campaign.id, contact.id)
+        assert recipient.failed_at
+
+        contact = Repo.reload(contact)
+        assert contact.status == :unreachable
+      end
+    end
+
+    @tag :mailings_worker
+    test "sets failed_at and contact status to unreachable forx invalid email address", %{
+      project: project
+    } do
+      contact = insert!(:contact, project_id: project.id, email: "foo@-invalid-domain")
 
       # Use the SMTP adapter because the test adapter doesn't parse the email address.
       sender =

@@ -88,7 +88,7 @@ defmodule Keila.Contacts.Import do
 
   defp determine_parser(first_line) do
     cond do
-      String.split(first_line, ";") |> Enum.count() == 3 ->
+      String.split(first_line, ";") |> Enum.count() >= 3 ->
         Keila.Contacts.Import.ExcelCSV
 
       true ->

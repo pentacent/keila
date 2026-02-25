@@ -4,15 +4,15 @@ defmodule Keila.MixProject do
   def project do
     [
       app: :keila,
-      version: "0.18.0",
-      elixir: "~> 1.15",
+      version: "0.19.0",
+      elixir: "~> 1.18",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix_live_view] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
       name: "Keila",
-      homepage_url: "https://keila.io",
+      homepage_url: "https://www.keila.io",
       docs: docs()
     ]
   end
@@ -56,7 +56,7 @@ defmodule Keila.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.7"},
+      {:phoenix, "~> 1.7.21"},
       {:phoenix_ecto, "~> 4.7"},
       {:ecto, "~> 3.7"},
       {:ecto_sql, "~> 3.13"},
@@ -86,7 +86,7 @@ defmodule Keila.MixProject do
       {:nimble_csv, "~> 1.3"},
       {:nimble_parsec, "~> 1.4"},
       {:oban, "~> 2.20"},
-      {:solid, git: "https://github.com/pentacent/solid.git"},
+      {:solid, "~> 1.2.2"},
       {:earmark, "~> 1.4"},
       {:tzdata, "~> 1.1"},
       {:ex_aws, "~> 2.6.0"},
