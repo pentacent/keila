@@ -1,5 +1,10 @@
+{% assign style = "" %}
+{% if block.tunes.alignment %}
+{% assign style = "text-align: " | append: block.tunes.alignment.alignment %}
+{% endif %}
+
 <tr class="block block--heading">
     <td>
-        <h{{ block.data.level }}>{{ block.data.text }}</h{{ block.data.level }}>
+        <h{{ block.data.level }} style="{{style}}">{{ block.data.text }}</h{{ block.data.level }}>
     </td>
 </tr>

@@ -77,7 +77,7 @@ defmodule KeilaWeb.ContactImportLive do
   def handle_info({reference, :ok}, socket) when is_reference(reference) do
     File.rm(socket.assigns.csv_filename)
 
-    {:noreply, socket}
+    {:noreply, assign(socket, :import_total, socket.assigns.import_progress)}
   end
 
   def handle_info({:DOWN, reference, :process, _, :normal}, socket)

@@ -132,11 +132,8 @@ defmodule Keila.Mailings.Worker do
     {:cancel, :invalid_contact}
   end
 
-  # Invalid email address (returned by Swoosh/gen_smtp)
-  defp handle_result(
-         {:error, %MatchError{term: {:error, {_, :smtp_rfc5322_parse, _}}}},
-         recipient
-       ) do
+  # Invalid email address (returned by Keila.Mailer)
+  defp handle_result({:error, :invalid_email}, recipient) do
     Repo.transaction(fn ->
       recipient
       |> set_recipient_failed_query()
