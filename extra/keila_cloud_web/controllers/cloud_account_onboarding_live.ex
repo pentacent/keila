@@ -154,7 +154,7 @@ Keila.if_cloud do
              params
            ) do
         {:ok, account} ->
-          if account.status in [:default, :onboarding_required] do
+          if account.status == :onboarding_required do
             {:ok, _account} = KeilaCloud.Accounts.update_account_status(account.id, :under_review)
           end
 
