@@ -1,17 +1,34 @@
 {% assign url = block.data.url | strip %}
 {% assign caption = block.data.caption | strip %}
+{% assign width = block.data.width | strip | default: "100%" %}
+{% assign alignment = nil %}
+{% if block.data.width %}
+  {% if block.data.tunes.alignment %}
+    {% assign alignment = block.data.tunes.alignment %}
+  {% else %}
+    {% assign alignment = "center" %}
+  {% endif %}
+{% endif %}
+{% assign img_margin = "" %}
+{% if alignment == "center" %}
+  {% assign img_margin = " margin-left: auto; margin-right: auto;" %}
+{% elsif alignment == "right" %}
+  {% assign img_margin = " margin-left: auto;" %}
+{% elsif alignment == "left" %}
+  {% assign img_margin = " margin-right: auto;" %}
+{% endif %}
 <tr class="block block--image {% if block.data.flush %}block--image--flush{% endif %}">
     <td>
         {% if url != null and url != "" %}
         <a href="{{ url }}" target="_blank">
         {% endif %}
-        <img src="{{ block.data.image.src }}" width="100%" alt="{{ block.data.image.alt }}" title="{{ block.data.image.title }}" border="0" style="display:block; max-width:100%!important; height: auto!important;" class="g-img" />
+        <img src="{{ block.data.image.src }}" width="{{ width }}" alt="{{ block.data.image.alt }}" title="{{ block.data.image.title }}" border="0" style="display:block; max-width:100%!important; height: auto!important;{{ img_margin }}" class="g-img" />
         {% if url != null and url != "" %}
         </a>
         {% endif %}
         {% if caption != null and caption != "" %}
         <br>
-        <div>
+        <div{% if alignment %} style="text-align: {{ alignment }}"{% endif %}>
             {{ caption }}
         </div>
         {% endif %}

@@ -120,7 +120,8 @@ export const schema = new Schema({
       attrs: {
         src: {},
         alt: { default: null },
-        title: { default: null }
+        title: { default: null },
+        width: { default: null }
       },
       group: "inline",
       draggable: true,
@@ -130,7 +131,8 @@ export const schema = new Schema({
           return {
             src: dom.getAttribute("src"),
             title: dom.getAttribute("title"),
-            alt: dom.getAttribute("alt")
+            alt: dom.getAttribute("alt"),
+            width: dom.getAttribute("width") || null
           }
         }
       }],

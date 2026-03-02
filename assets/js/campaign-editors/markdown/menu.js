@@ -103,6 +103,7 @@ export function buildDefaultMenu() {
         detail.src = node.attrs.src
         detail.alt = node.attrs.alt
         detail.title = node.attrs.title
+        detail.width = node.attrs.width
         detail.tab = "url"
       }
 

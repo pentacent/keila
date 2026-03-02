@@ -128,6 +128,19 @@
                 class="bg-white hover:bg-emerald-100 text-black"
               />
             </div>
+            <div class="flex flex-col">
+              <label class="font-bold">{gettext("Width")}</label>
+              <p class="text-sm italic mb-2">
+                {gettext("Width of the image in pixels (optional)")}
+              </p>
+              <input
+                x-model="image.width"
+                type="number"
+                min="1"
+                class="bg-white hover:bg-emerald-100 text-black"
+                placeholder="600"
+              />
+            </div>
           </div>
         </div>
         <br />
