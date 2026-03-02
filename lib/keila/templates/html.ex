@@ -217,7 +217,7 @@ defmodule Keila.Templates.Html do
      [
        {"tr", [{"class", "block--image"}],
         [
-          {"td", [],
+          {"td", [{"style", "padding: 0;"}],
            [
              {"img",
               img_attrs ++
