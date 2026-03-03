@@ -46,7 +46,14 @@ export default class Image {
   }
 
   drawView() {
-    this.wrapper.innerHTML = ""
+    if (this.isEmpty() || !this.img) {
+      this.wrapper.innerHTML = ""
+
+      this.imgContainer = null
+      this.img = null
+      this.captionEditor = null
+      this.linkEditor = null
+    }
     this.wrapper.className = "image-block"
 
     const alignment = this.data.tunes.alignment || "left"
@@ -61,7 +68,7 @@ export default class Image {
       this.wrapper.appendChild(placeholder)
       this.addClickHandler(placeholder)
     } else {
-      const imgContainer = document.createElement("div")
+      const imgContainer = this.imgContainer || document.createElement("div")
       imgContainer.style.overflow = "hidden"
       imgContainer.style.resize = "horizontal"
       imgContainer.style.maxWidth = "100%"
@@ -69,19 +76,24 @@ export default class Image {
       if (this.data.width) {
         imgContainer.style.width = this.data.width + "px"
       }
-      this.setupResizeObserver(imgContainer)
+      if (!imgContainer.isConnected) {
+        this.wrapper.appendChild(imgContainer)
+        this.setupResizeObserver(imgContainer)
+      }
+      this.imgContainer = imgContainer
 
-      const img = document.createElement("img")
+      const img = this.img || document.createElement("img")
       img.src = this.data.image.src
       img.style.display = "block"
       img.style.width = "100%"
       img.style.cursor = "pointer"
-      this.addClickHandler(img)
+      if (!img.isConnected) {
+        imgContainer.appendChild(img)
+        this.addClickHandler(img)
+      }
+      this.img = img
 
-      imgContainer.appendChild(img)
-      this.wrapper.appendChild(imgContainer)
-
-      const captionEditor = document.createElement("div")
+      const captionEditor = this.captionEditor || document.createElement("div")
       this.captionEditor = captionEditor
       captionEditor.dataset.placeholder =
         document.querySelector("#block-container-assets .image-caption-placeholder").innerText
@@ -89,21 +101,26 @@ export default class Image {
       captionEditor.innerHTML = this.data.caption
       captionEditor.className = "mt-2 w-full"
       captionEditor.style.textAlign = alignment
-      captionEditor.addEventListener("focusout", () => {
-        if (captionEditor.innerText.trim() === "") {
-          captionEditor.innerHTML = ""
-        }
-      })
-      this.wrapper.appendChild(captionEditor)
+      if (!captionEditor.isConnected) {
+        this.wrapper.appendChild(captionEditor)
+        captionEditor.addEventListener("focusout", () => {
+          if (captionEditor.innerText.trim() === "") {
+            captionEditor.innerHTML = ""
+          }
+        })
+      }
+      this.captionEditor = captionEditor
 
-      const linkEditor = document.createElement("input")
-      this.linkEditor = linkEditor
+      const linkEditor = this.linkEditor || document.createElement("input")
       linkEditor.setAttribute("type", "url")
       const linkEditorPlaceholder = document.querySelector("#block-container-assets .image-url-placeholder").innerText
       linkEditor.setAttribute("placeholder", linkEditorPlaceholder)
       linkEditor.className = "text-xs mt-1 w-full bg-transparent border-1 border-gray-500 border-dashed"
       linkEditor.value = this.data.url || ""
-      this.wrapper.appendChild(linkEditor)
+      if (!linkEditor.isConnected) {
+        this.wrapper.appendChild(linkEditor)
+      }
+      this.linkEditor = linkEditor
     }
 
     return this.wrapper
