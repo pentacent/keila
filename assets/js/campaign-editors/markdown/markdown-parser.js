@@ -1,12 +1,14 @@
 import markdownit from "markdown-it"
 import { MarkdownParser } from "prosemirror-markdown"
 import { markdownItLiquid } from "./markdown-it-liquid"
+import { markdownItImageWidth } from "./markdown-it/image-width"
 import { markdownItLinkWithLiquid } from "./markdown-it/link-with-liquid"
 import { schema } from "./markdown-schema"
 
 const md = markdownit("commonmark", { html: false })
   .use(markdownItLiquid)
   .use(markdownItLinkWithLiquid)
+  .use(markdownItImageWidth)
 
 // Markdown parser based on Prosemirror’s defaultMarkdownParser
 // Extended with Liquid tag
@@ -48,7 +50,8 @@ export const markdownParser = new MarkdownParser(schema, md, {
     getAttrs: tok => ({
       src: tok.attrGet("src"),
       title: tok.attrGet("title") || null,
-      alt: tok.children[0] && tok.children[0].content || null
+      alt: tok.children[0] && tok.children[0].content || null,
+      width: tok.attrGet("width") ? Number(tok.attrGet("width")) : null
     })
   },
   hardbreak: { node: "hard_break" },

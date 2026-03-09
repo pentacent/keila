@@ -301,6 +301,9 @@ Block Editor Styles
 }
 
 .image-block {
+    img:not([width]) {
+        width: 100%;
+    }
     caption {
         width: 100%;
     }

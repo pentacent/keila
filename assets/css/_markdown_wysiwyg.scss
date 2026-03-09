@@ -2,7 +2,7 @@
     .ProseMirror, .ce-block__content {
         @apply p-5 bg-white text-black;
 
-        max-width: 600px;
+        max-width: 640px;
         margin: 0 auto;
         outline: none;
         white-space: pre-wrap;
@@ -305,8 +305,14 @@
         }
 
         img {
-            width: 100%;
             max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 5px;
+        }
+
+        img:not([width]) {
+            width: 100%;
         }
     }
 
