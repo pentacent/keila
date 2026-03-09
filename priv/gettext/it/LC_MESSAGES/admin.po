@@ -124,7 +124,7 @@ msgstr "Informazioni sistema"
 
 #: lib/keila_web/templates/instance_admin/show.html.heex:4
 msgid "You are currently running Keila %{version} on %{host}."
-msgstr "Stai eseguendo Keila %{version} su %{host}."
+msgstr "Stai attualmente eseguendo Keila %{version} su %{host}."
 
 #: lib/keila_web/templates/instance_admin/show.html.heex:19
 msgid "There are updates available for your Keila instance!"

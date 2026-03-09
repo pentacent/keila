@@ -52,7 +52,7 @@ msgstr "(opzionale)"
 #: lib/keila_web/templates/sender/_sendgrid_config.html.heex:4
 #: lib/keila_web/templates/sender/_sendgrid_config.html.heex:16
 msgid "API Key"
-msgstr "Chiavi API"
+msgstr "Chiave API"
 
 #: lib/keila_web/templates/layout/_menu.html.heex:144
 msgid "Account"
@@ -190,7 +190,7 @@ msgstr "Annulla"
 
 #: lib/keila_web/templates/account/edit.html.heex:92
 msgid "Cancel subscription"
-msgstr "Annulla abbonamento"
+msgstr "Annulla iscrizione"
 
 #: lib/keila_web/templates/sender/_mailgun_config.html.heex:40
 #: lib/keila_web/templates/sender/_postmark_config.html.heex:19
@@ -238,11 +238,11 @@ msgstr "Clona Modello"
 
 #: lib/keila_web/templates/layout/_menu.html.heex:21
 msgid "Close menu"
-msgstr "Clona menu"
+msgstr "Chiudi menu"
 
 #: lib/keila_web/templates/campaign/_preview_dialog.html.heex:34
 msgid "Close preview"
-msgstr "Clona anteprima"
+msgstr "Chiudi anteprima"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:608
 msgid "Code copied to clipboard."
@@ -332,7 +332,7 @@ msgstr "Crea il tuo primo progetto"
 #: lib/keila_web/templates/project/_empty_state_senders.html.heex:20
 #: lib/keila_web/templates/sender/_empty_state.html.heex:22
 msgid "Create your first sender"
-msgstr "Crea il tuo primo invio"
+msgstr "Crea il tuo primo mittente"
 
 #: lib/keila_web/templates/template/_empty_state.html.heex:23
 msgid "Create your first template"
@@ -853,7 +853,7 @@ msgstr "Contatta un amministratore."
 
 #: lib/keila_web/templates/campaign/stats_live.html.heex:52
 msgid "Please start a subscription before sending your first campaign."
-msgstr "Attiva una sottoscrizione prima di inviare la tua prima campagna."
+msgstr "Attiva un abbonamento prima di inviare la tua prima campagna."
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:163
 #: lib/keila_web/templates/campaign/_markdown_editor.html.heex:27
@@ -956,7 +956,7 @@ msgstr "Quota Invio"
 
 #: lib/keila_web/templates/campaign/index.html.heex:30
 msgid "Sent at:"
-msgstr "Inviato a:"
+msgstr "Inviato:"
 
 #: lib/keila_web/templates/auth/reset_change_password.html.heex:12
 msgid "Set a new secure password to keep using Keila."
@@ -1008,7 +1008,7 @@ msgstr "Inizia Importazione"
 #: lib/keila_web/templates/campaign/stats_live.html.heex:59
 #: lib/keila_web/templates/form/edit_live.html.heex:496
 msgid "Start your subscription now"
-msgstr "Inizia la tua sottoscrizione ora"
+msgstr "Inizia il tuo abbonamento ora"
 
 #: lib/keila_web/templates/campaign/index.html.heex:74
 msgid "Stats"
@@ -1036,7 +1036,7 @@ msgstr "Iscriviti ora e inizia ad inviare email!"
 
 #: lib/keila_web/templates/account/edit.html.heex:5
 msgid "Subscription"
-msgstr "Iscrizione"
+msgstr "Abbonamento"
 
 #: lib/keila_web/controllers/template_controller.ex:17
 #: lib/keila_web/templates/layout/_menu.html.heex:106
@@ -1075,7 +1075,7 @@ msgstr ""
 
 #: lib/keila_web/templates/form/edit_live.html.heex:117
 msgid "Thank you message"
-msgstr "Messagio ringraziamento"
+msgstr "Messaggio ringraziamento"
 
 #: lib/keila_web/views/public_form_view.ex:324
 msgid "Thank you!"
@@ -1144,11 +1144,11 @@ msgstr "La campagna non è stata ancora inviata."
 
 #: lib/keila_web/templates/campaign/stats_live.html.heex:125
 msgid "This campaign is currently being prepared for sending."
-msgstr "La campagna è in preparazione per l'invio."
+msgstr "La campagna è attualmente in preparazione per l'invio."
 
 #: lib/keila_web/templates/campaign/stats_live.html.heex:146
 msgid "This campaign is currently being sent out."
-msgstr "La campagna è in invio."
+msgstr "La campagna è attualmente in invio."
 
 #: lib/keila_web/templates/project/delete.html.heex:10
 msgid ""
@@ -1221,13 +1221,12 @@ msgid ""
 "We’re currently processing your subscription. This shouldn’t take longer "
 "than a minute …"
 msgstr ""
-"Stiamo attualmente processando la tua sottoscrizione. Non dovrebbe volerci "
-"più di un minuto …"
+"Stiamo attualmente processando il tuo abbonamento. Non dovrebbe volerci più "
+"di un minuto …"
 
 #: lib/keila_web/templates/account/edit.html.heex:15
 msgid "You currently have an active subscription. Thanks for supporting Keila!"
-msgstr ""
-"Hai attualmente una sottoscrizione attiva. Grazie per supportare Keila!"
+msgstr "Hai attualmente un abbonamento attivo. Grazie per supportare Keila!"
 
 #: lib/keila_web/views/public_form_view.ex:351
 msgid "You have been unsubscribed from this list."
@@ -1248,7 +1247,7 @@ msgstr "Oggetto della tua Campagna"
 
 #: lib/keila_web/templates/project/index.html.heex:33
 msgid "Your Projects"
-msgstr "Il tuo Progetto"
+msgstr "I tuoi progetti"
 
 #: lib/keila_web/templates/campaign/stats_live.html.heex:94
 msgid "Your email quota is not sufficient for sending this campaign."
@@ -1263,7 +1262,7 @@ msgid ""
 "Your subscription has been cancelled. Please contact us if you want to start "
 "a new subscription."
 msgstr ""
-"La tua sottoscrizione è stata annullata. Contattaci se vuoi una nuova "
+"Il tuo abbonamento è stato annullato. Contattaci se vuoi una nuova "
 "sottoscrizione."
 
 #: lib/keila_web/templates/account/edit.html.heex:24
@@ -1271,8 +1270,8 @@ msgid ""
 "Your subscription is currently suspended. Please update your payment method "
 "to continue using Keila."
 msgstr ""
-"La tua sottoscrizione è stata sospesa. Aggiorna il tuo metodo di pagamento "
-"per continuare ad usare Keila."
+"Il tuo abbonamento è attualmente sospeso. Aggiorna il tuo metodo di "
+"pagamento per continuare ad usare Keila."
 
 #: lib/keila_web/templates/sender/edit_live.html.heex:155
 msgid "hello@example.org"
@@ -1334,7 +1333,7 @@ msgstr ""
 "2. Riempi il modello nello stesso modo in cui i dati di esempio sono stati "
 "riempiti.\n"
 "3. Clicca su \"File\", quindi \"Salva come\".\n"
-"    Selezione _CSV UTF-8 (separato da virgole) (*.csv)_ e salva il file.\n"
+"    Seleziona _CSV UTF-8 (separato da virgole) (*.csv)_ e salva il file.\n"
 
 #: lib/keila_web/templates/contact/import_live.html.heex:168
 msgid ""
@@ -1351,7 +1350,7 @@ msgstr ""
 "3. Per importare correttamente i contatti il tuo CSV deve rispettare RFC "
 "4180:\n"
 "   - Separato da virgole\n"
-"   - Codificato in UTF-(\n"
+"   - Codificato in UTF-8\n"
 "\n"
 
 #: lib/keila_web/templates/user_admin/index.html.heex:4
@@ -1686,7 +1685,7 @@ msgstr "Modifica Segmento"
 
 #: lib/keila_web/views/segment_view.ex:95
 msgid "Field:"
-msgstr "Campi:"
+msgstr "Campo:"
 
 #: lib/keila_web/templates/segment/edit_live.html.heex:57
 msgid "Filter"
@@ -1694,7 +1693,7 @@ msgstr "Filtro"
 
 #: lib/keila_web/templates/segment/edit_live.html.heex:109
 msgid "Add AND condition"
-msgstr "Aggiungi condiziona E"
+msgstr "Aggiungi condizione E"
 
 #: lib/keila_web/templates/segment/edit_live.html.heex:116
 msgid "Add OR condition"
@@ -2063,7 +2062,7 @@ msgstr "Chiave API copiata negli appunti"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:53
 msgid "Add content to this column here …"
-msgstr "Aggiunti contenuti a questa colonna qui …"
+msgstr "Aggiungi contenuti a questa colonna qui …"
 
 #: lib/keila_web/templates/campaign/share.html.heex:11
 #: lib/keila_web/templates/campaign/stats_live.html.heex:11
@@ -2136,7 +2135,7 @@ msgstr "Crea larghezza piena"
 
 #: lib/keila_web/live/campaign_stats_live.ex:67
 msgid "Opens"
-msgstr "Apre"
+msgstr "Aperture"
 
 #: lib/keila_web/templates/campaign/new.html.heex:79
 msgid "Plain Text"
@@ -2192,7 +2191,7 @@ msgstr "Campagna Non Tracciata"
 msgid ""
 "Use the Markdown editor to create beautiful single-column hybrid emails."
 msgstr ""
-"Usa l'editor Markdown per creare bellissime emaill ibride a colonna singola."
+"Usa l'editor Markdown per creare bellissime email ibride a colonna singola."
 
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:117
 #: lib/keila_web/templates/campaign/new.html.heex:171
@@ -2316,8 +2315,9 @@ msgid ""
 "To prevent abuse by spammers, the double opt-in feature is currently only "
 "available if you have a subscription. Sorry for the inconvenience!"
 msgstr ""
-"Per prevenire abusi dagli spammers la caratteristica di doppia adesione è "
-"disponibile solo se hai una sottoscrizione. Spiacenti per l'inconveniente!"
+"Per prevenire abusi dagli spammers, la caratteristica di doppia adesione è "
+"attualmente disponibile solo se hai un abbonamento. Spiacenti per "
+"l'inconveniente!"
 
 #: lib/keila_web/views/public_form_view.ex:338
 msgid ""
@@ -2886,7 +2886,7 @@ msgid ""
 "active subscription."
 msgstr ""
 "Per prevenire l'abuso degli spammer l'invio delle email è possibile solo se "
-"hai una sottoscrizione attiva."
+"hai un abbonamento attivo."
 
 #: lib/keila_web/live/campaign_edit_live.ex:216
 msgid "You must select a sender first."
@@ -2934,7 +2934,8 @@ msgstr "Statistiche"
 
 #: lib/keila_web/templates/campaign/share.html.heex:41
 msgid "Use the following link to share your campaign with other people:"
-msgstr "Ua il seguente link per condividere la tua campagna con altre persone:"
+msgstr ""
+"Usa il seguente link per condividere la tua campagna con altre persone:"
 
 #: lib/keila_web/templates/campaign/share.html.heex:29
 #: lib/keila_web/templates/campaign/stats_live.html.heex:210
@@ -2960,7 +2961,7 @@ msgstr "Aggiungi"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:116
 msgid "Add %{network} Profile"
-msgstr "Aggiuni Profilo %{network}"
+msgstr "Aggiungi Profilo %{network}"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:122
 msgid "Add Custom Social Network"
@@ -3008,7 +3009,7 @@ msgstr "Colore Icona"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:134
 msgid "Icon URL (e.g. https://example.com/icon.png)"
-msgstr "URL icona (es.https://example.com/icon.png)"
+msgstr "URL icona (es.https://esempio.com/icona.png)"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:155
 msgid "Large"
@@ -3028,7 +3029,7 @@ msgstr "Nome piattaforma (es. Mastodon)"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:137
 msgid "Profile URL (e.g., https://example.com/yourprofile)"
-msgstr "URL profilo (es. https://example.com/yourprofile)"
+msgstr "URL profilo (es. https://esempio.com/tuoprofilo)"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:83
 msgid "Select a site..."
@@ -3048,7 +3049,7 @@ msgstr "Bianco"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:128
 msgid "https://example.com/yourprofile"
-msgstr "https://example.com/yourprofile"
+msgstr "https://esempio.com/tuoprofilo"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:469
 msgid ""
@@ -3116,7 +3117,7 @@ msgstr "Questo link di conferma è scaduto o è già stato usato."
 
 #: lib/keila_web/templates/sender/edit_live.html.heex:128
 msgid "This is the email address from which your emails will be sent."
-msgstr "Questo è l'indirizzo email a cui le tue email saranno inviate."
+msgstr "Questo è l'indirizzo email da cui le tue email saranno inviate."
 
 #: lib/keila_web/templates/sender/edit_live.html.heex:113
 msgid ""
