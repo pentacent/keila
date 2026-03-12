@@ -1,254 +1,219 @@
 defmodule Keila.Mailings.RateLimiter do
   @moduledoc """
-  Module for enforcing Sender-based rate limits and scheduling sending emails.
-  """
+  Module for enforcing Sender-based and Adapter-based rate limits implemented
+  using the token bucket algorithm.
 
-  use GenServer
+  The module supports persisting and restoring its state to/from the database.
+  Restoring the persisted state does not take into account time that may have
+  passed since the state was last persisted. This means that the token refill
+  timers will resume from the moment the state was last persisted.
+  """
 
   require Logger
-  alias Keila.Mailings.{Sender, SenderAdapters}
-
-  def start_link(_opts) do
-    GenServer.start_link(__MODULE__, nil, name: __MODULE__)
-  end
+  alias Keila.Mailings.{Sender, RateLimiterState}
 
   @type unit :: :second | :minute | :hour
-  @type rate_limit :: {unit(), limit :: integer()}
-  @type rate_limit_entry :: {key :: term(), unit(), limit :: integer()}
-  @type schedule_at_result ::
-          {schedule_at :: DateTime.t(), scheduling_requested_at :: DateTime.t()}
+  @type rate_limit :: {unit(), capacity :: integer()}
+  @type tokens :: integer() | :infinity
+  @type table :: :ets.table()
 
   @doc """
-  Checks the rate limit for the given sender. Returns `:ok` if the rate limit has not been exceeded
-  and else an `:error` tuple with a `schedule_at_result()` tuple.
+  Creates a new ETS table for rate limiter buckets.
   """
-  @spec check_sender_rate_limit(Sender.t(), DateTime.t() | nil) ::
-          :ok | {:error, schedule_at_result()}
-  def check_sender_rate_limit(sender, scheduling_requested_at \\ nil) do
-    sender = sender.shared_sender || sender
-    rate_limit_entries = get_rate_limit_entries(sender)
-    GenServer.call(__MODULE__, {:check_rate_limit, rate_limit_entries, scheduling_requested_at})
+  @spec new_table() :: table()
+  def new_table() do
+    :ets.new(:rate_limiter_buckets, [:set, :public])
   end
 
   @doc """
-  Returns a timestamp for when capacity is going to be available for the given Sender in the future.
+  Deletes the given ETS table.
   """
-  @spec get_sender_schedule_at(Sender.t()) :: schedule_at_result()
-  def get_sender_schedule_at(sender) do
-    sender = sender.shared_sender || sender
-    rate_limit_entries = get_rate_limit_entries(sender)
-    GenServer.call(__MODULE__, {:get_schedule_at, rate_limit_entries})
+  @spec delete_table(table()) :: :ok
+  def delete_table(table) do
+    :ets.delete(table)
+    :ok
   end
 
   @doc """
-  Resets all rate limit buckets.
+  Clears all rate limit buckets.
   """
-  def reset() do
-    GenServer.call(__MODULE__, :reset)
+  @spec reset(table()) :: :ok
+  def reset(table) do
+    :ets.delete_all_objects(table)
+    :ok
   end
 
-  # Get all rate limit entries as {key, unit, limit} tuples
-  # ordered by unit from smallest to largest.
-  defp get_rate_limit_entries(sender) do
-    adapter = SenderAdapters.get_adapter(sender.config.type)
-
-    sender_entries = get_sender_limit_entries(sender, adapter)
-    adapter_entries = get_adapter_limit_entries(sender, adapter)
-
-    (sender_entries ++ adapter_entries)
-    |> Enum.sort_by(fn {_, unit, _} -> scale(unit) end)
+  @doc """
+  Returns the number of tokens available for the given sender.
+  """
+  @spec get_sender_tokens(table(), Sender.t()) :: tokens()
+  def get_sender_tokens(table, sender) do
+    id = get_id(sender)
+    limits = get_sender_limits(sender)
+    get_tokens(table, id, limits) |> Enum.min()
   end
 
-  defp get_sender_limit_entries(sender, adapter) do
-    key = {:sender, sender.id}
+  @doc """
+  Consumes the given number of tokens for the given sender.
+  """
+  @spec consume_sender_tokens(table(), Sender.t(), amount :: integer()) :: :ok | :error
+  def consume_sender_tokens(table, sender, amount \\ 1) do
+    id = get_id(sender)
+    limits = get_sender_limits(sender)
+    consume_tokens(table, id, limits, amount)
+  end
 
-    if adapter && function_exported?(adapter, :rate_limit, 1) do
-      adapter.rate_limit(sender)
-    else
-      [
-        {:second, sender.config.rate_limit_per_second},
-        {:minute, sender.config.rate_limit_per_minute},
-        {:hour, sender.config.rate_limit_per_hour}
-      ]
+  @doc """
+  Returns the number of tokens available for the given adapter module.
+  """
+  @spec get_adapter_tokens(table(), adapter :: atom()) :: tokens()
+  def get_adapter_tokens(table, adapter) do
+    id = get_id(adapter)
+    limits = get_adapter_limits(adapter)
+    get_tokens(table, id, limits) |> Enum.min()
+  end
+
+  @doc """
+  Consumes the given number of tokens for the given adapter module.
+  """
+  @spec consume_adapter_tokens(table(), adapter :: atom(), amount :: integer()) :: :ok | :error
+  def consume_adapter_tokens(table, adapter, amount \\ 1) do
+    id = get_id(adapter)
+    limits = get_adapter_limits(adapter)
+    consume_tokens(table, id, limits, amount)
+  end
+
+  @doc """
+  Persists the current rate limiter state to the database.
+
+  Converts monotonic timestamps to relative ages so the data is portable
+  across VM restarts.
+  """
+  @spec persist(table()) :: :ok | :error
+  def persist(table) do
+    now = now()
+
+    entries =
+      :ets.tab2list(table)
+      |> Enum.map(fn {key, tokens, updated_at} ->
+        {key, tokens, now - updated_at}
+      end)
+
+    data = :erlang.term_to_binary(entries)
+
+    RateLimiterState.changeset(%{id: 1, data: data})
+    |> Keila.Repo.insert(
+      on_conflict: {:replace, [:data, :updated_at]},
+      conflict_target: :id
+    )
+    |> case do
+      {:ok, _} ->
+        Logger.debug("RateLimiter: persisted state to database")
+        :ok
+
+      {:error, reason} ->
+        Logger.warning("RateLimiter: failed to persist state: #{inspect(reason)}")
+        :error
     end
-    |> Enum.reject(fn {_unit, limit} -> is_nil(limit) end)
-    |> Enum.map(fn {unit, limit} -> {key, unit, limit} end)
   end
 
-  defp get_adapter_limit_entries(sender, adapter) do
-    if adapter && function_exported?(adapter, :adapter_rate_limit, 0) do
-      key = {:adapter, sender.config.type}
+  @doc """
+  Restores the rate limiter state from the database.
+  """
+  @spec restore(table()) :: :ok
+  def restore(table) do
+    case Keila.Repo.get(RateLimiterState, 1) do
+      %RateLimiterState{data: data} when not is_nil(data) ->
+        now = now()
+        entries = :erlang.binary_to_term(data)
 
+        Enum.each(entries, fn {key, tokens, age_ms} ->
+          :ets.insert(table, {key, tokens, now - age_ms})
+        end)
+
+        Logger.info("RateLimiter: restored #{length(entries)} bucket(s) from database")
+
+      _ ->
+        Logger.debug("RateLimiter: no persisted state found")
+        :ok
+    end
+  end
+
+  defp get_id(%{id: id}) when not is_nil(id), do: get_id(id)
+  defp get_id(term), do: :erlang.phash2(term)
+
+  defp get_sender_limits(%Sender{config: config}) do
+    [
+      {:hour, config.rate_limit_per_hour},
+      {:minute, config.rate_limit_per_minute},
+      {:second, config.rate_limit_per_second}
+    ]
+    |> Enum.reject(fn {_unit, limit} -> is_nil(limit) end)
+    |> then(fn
+      [] -> [{:second, :infinity}]
+      limits -> limits
+    end)
+  end
+
+  defp get_adapter_limits(adapter) do
+    if function_exported?(adapter, :adapter_rate_limit, 0) do
       adapter.adapter_rate_limit()
-      |> Enum.reject(fn {_unit, limit} -> is_nil(limit) end)
-      |> Enum.map(fn {unit, limit} -> {key, unit, limit} end)
     else
       []
     end
+    |> Enum.reject(fn {_unit, limit} -> is_nil(limit) end)
+    |> then(fn
+      [] -> [{:second, :infinity}]
+      limits -> limits
+    end)
   end
 
-  # GenServer implementation
+  defp get_tokens(table, id, limits) do
+    now = now()
 
-  @impl true
-  def init(_) do
-    ets_table = :ets.new(:rate_limiter_schedule, [:set, :protected])
+    Enum.map(limits, fn
+      {_, :infinity} ->
+        :infinity
 
-    {:ok, %{ets_table: ets_table}}
-  end
-
-  @impl true
-  def handle_call({:check_rate_limit, rate_limit_entries, scheduling_requested_at}, _from, state) do
-    ets_table = state.ets_table
-
-    with :ok <- precheck_rate_limits(rate_limit_entries),
-         :ok <- check_rate_limits(rate_limit_entries) do
-      rate_limit_entries
-      |> keys()
-      |> Enum.each(fn key ->
-        if not was_scheduled?(ets_table, key, scheduling_requested_at) do
-          update_counter(ets_table, key)
+      {unit, capacity} ->
+        if :ets.insert_new(table, {{id, unit}, capacity, now}) do
+          capacity
+        else
+          [{_, tokens, updated_at}] = :ets.lookup(table, {id, unit})
+          refilled_tokens(unit, capacity, tokens, updated_at, now)
         end
+    end)
+  end
+
+  defp consume_tokens(table, id, limits, amount) do
+    tokens = get_tokens(table, id, limits)
+
+    if Enum.all?(tokens, &(&1 >= amount)) do
+      now = now()
+
+      Enum.zip(limits, tokens)
+      |> Enum.each(fn
+        {{_unit, :infinity}, _tokens} ->
+          :ok
+
+        {{unit, _capacity}, tokens} ->
+          :ets.update_element(table, {id, unit}, [{2, tokens - amount}, {3, now}])
       end)
-
-      {:reply, :ok, state}
     else
-      :error ->
-        {:reply, {:error, get_schedule_at(ets_table, rate_limit_entries)}, state}
+      :error
     end
   end
 
-  def handle_call({:get_schedule_at, rate_limit_entries}, _from, state) do
-    ets_table = state.ets_table
-    {:reply, get_schedule_at(ets_table, rate_limit_entries), state}
+  defp refilled_tokens(unit, capacity, current_tokens, updated_at, now) do
+    unit_ms = unit_to_ms(unit)
+    potential_tokens = (now - updated_at) |> div(unit_ms) |> Kernel.*(capacity)
+
+    min(capacity, current_tokens + potential_tokens)
   end
 
-  def handle_call(:reset, _from, state) do
-    :ets.delete_all_objects(state.ets_table)
-    {:reply, :ok, state}
-  end
+  defp unit_to_ms(:second), do: 1_000
+  defp unit_to_ms(:minute), do: 60_000
+  defp unit_to_ms(:hour), do: 3_600_000
 
-  defp get_schedule_at(ets_table, rate_limit_entries) do
-    now = DateTime.utc_now(:second)
-
-    # Group by key to calculate schedule for each unique key
-    entries_by_key =
-      rate_limit_entries
-      |> Enum.group_by(fn {key, _, _} -> key end)
-
-    schedules =
-      entries_by_key
-      |> Enum.map(fn {key, entries} ->
-        limits = Enum.map(entries, fn {_, unit, limit} -> {unit, limit} end)
-        do_get_schedule_at(ets_table, key, limits)
-      end)
-      |> Enum.filter(& &1)
-
-    case schedules do
-      [] ->
-        {now, now}
-
-      _ ->
-        # Return the most restrictive (latest) schedule
-        Enum.max_by(schedules, fn {schedule_at, _} -> schedule_at end, DateTime)
-    end
-  end
-
-  # Inspect buckets to see if any have already been exhausted
-  defp precheck_rate_limits(rate_limit_entries) do
-    rate_limit_entries
-    |> Enum.reduce_while(:ok, fn {key, unit, limit}, :ok ->
-      bucket = bucket_name(key, unit)
-      scale = scale(unit)
-
-      case ExRated.inspect_bucket(bucket, scale, limit) do
-        {count, _count_remaining, _ms_to_next_bucket, _created_at, _updated_at}
-        when count >= limit ->
-          {:halt, :error}
-
-        _ ->
-          {:cont, :ok}
-      end
-    end)
-  end
-
-  # Check rate limits in reverse order (starting with smallest scales)
-  defp check_rate_limits(rate_limit_entries) do
-    rate_limit_entries
-    |> Enum.reverse()
-    |> Enum.reduce_while(:ok, fn entry, :ok ->
-      case do_check_rate_limit(entry) do
-        :ok -> {:cont, :ok}
-        :error -> {:halt, :error}
-      end
-    end)
-  end
-
-  defp do_check_rate_limit({key, unit, limit}) do
-    bucket = bucket_name(key, unit)
-    scale = scale(unit)
-
-    case ExRated.check_rate(bucket, scale, limit) do
-      {:ok, _} -> :ok
-      {:error, _} -> :error
-    end
-  end
-
-  defp keys(rate_limit_entries) do
-    rate_limit_entries
-    |> Enum.map(fn {key, _, _} -> key end)
-    |> Enum.uniq()
-  end
-
-  defp was_scheduled?(ets_table, key, scheduling_requested_at)
-
-  defp was_scheduled?(_ets_table, _key, nil), do: false
-
-  defp was_scheduled?(ets_table, key, scheduling_requested_at) do
-    exists? = :ets.member(ets_table, key)
-    schedule_start = exists? && :ets.lookup_element(ets_table, key, 3)
-
-    exists? and not DateTime.before?(scheduling_requested_at, schedule_start)
-  end
-
-  defp bucket_name(key, unit) do
-    "#{inspect(key)}:#{unit}"
-  end
-
-  defp update_counter(ets_table, key) do
-    start_datetime = DateTime.utc_now(:second) |> DateTime.add(1, :second)
-
-    if :ets.insert_new(ets_table, {key, 0, start_datetime}) do
-      0
-    else
-      :ets.update_counter(ets_table, key, {2, 1})
-    end
-  end
-
-  def do_get_schedule_at(ets_table, key, rate_limits) do
-    i = update_counter(ets_table, key)
-    start_datetime = :ets.lookup_element(ets_table, key, 3)
-
-    rate_limits
-    |> Enum.filter(fn {_, limit} -> is_number(limit) && limit > 0 end)
-    |> Enum.map(fn {scale_name, limit} ->
-      scale(scale_name) * div(i, limit)
-    end)
-    |> Enum.sum()
-    |> then(fn ms ->
-      schedule_at = DateTime.add(start_datetime, div(ms, 1000))
-      now = DateTime.utc_now(:second)
-
-      if DateTime.diff(schedule_at, now) >= 0 do
-        {schedule_at, now}
-      else
-        :ets.delete(ets_table, key)
-        do_get_schedule_at(ets_table, key, rate_limits)
-      end
-    end)
-  end
-
-  defp scale(scale_name)
-  defp scale(:second), do: 1_000
-  defp scale(:minute), do: 60_000
-  defp scale(:hour), do: 3_600_000
+  defp now(), do: System.monotonic_time(:millisecond)
 end

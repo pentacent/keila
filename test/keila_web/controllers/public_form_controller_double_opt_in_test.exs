@@ -1,9 +1,10 @@
 defmodule KeilaWeb.PublicFormControllerDoubleOptInTest do
-  use KeilaWeb.ConnCase, async: false
-  use Oban.Testing, repo: Keila.Repo
+  use KeilaWeb.ConnCase
   alias Keila.Contacts
   alias Keila.Contacts.Contact
+  alias Keila.Mailings.Message
   alias Keila.Repo
+  import Ecto.Query
   @endpoint KeilaWeb.Endpoint
 
   describe "POST /forms/:id" do
@@ -20,10 +21,10 @@ defmodule KeilaWeb.PublicFormControllerDoubleOptInTest do
       assert form_params = Repo.one(Contacts.FormParams)
       assert form_params.params["email"] == params["email"]
 
-      assert_enqueued(
-        worker: Keila.Mailings.SendDoubleOptInMailWorker,
-        args: %{"form_params_id" => form_params.id}
-      )
+      assert Repo.one(
+               from m in Message,
+                 where: m.form_params_id == ^form_params.id and m.status == :ready
+             )
     end
 
     test "DOI is also required for existing contacts", %{conn: conn} do
@@ -41,10 +42,10 @@ defmodule KeilaWeb.PublicFormControllerDoubleOptInTest do
       assert form_params = Repo.one(Contacts.FormParams)
       assert form_params.params["email"] == contact.email
 
-      assert_enqueued(
-        worker: Keila.Mailings.SendDoubleOptInMailWorker,
-        args: %{"form_params_id" => form_params.id}
-      )
+      assert Repo.one(
+               from m in Message,
+                 where: m.form_params_id == ^form_params.id and m.status == :ready
+             )
     end
 
     test "redirects to double_opt_in_url if set", %{conn: conn} do
@@ -312,6 +313,7 @@ defmodule KeilaWeb.PublicFormControllerDoubleOptInTest do
   defp insert_doi_form(project_id, settings \\ %{}) do
     insert!(:contacts_form,
       project_id: project_id,
+      sender: build(:mailings_sender),
       settings: Map.merge(%{captcha_required: false, double_opt_in_required: true}, settings)
     )
   end

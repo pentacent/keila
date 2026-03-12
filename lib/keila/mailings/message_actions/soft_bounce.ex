@@ -1,22 +1,22 @@
-defmodule Keila.Mailings.RecipientActions.SoftBounce do
+defmodule Keila.Mailings.MessageActions.SoftBounce do
   use Keila.Repo
   import Keila.PipeHelpers
-  alias Keila.Mailings.Recipient
+  alias Keila.Mailings.Message
 
   @doc """
-  Runs side-effects associated with receiving a soft bounce from a recipient.
+  Runs side-effects associated with receiving a soft bounce for a message.
   """
-  @spec handle(Recipient.id(), map()) :: :ok
-  def handle(recipient_id, data \\ %{}) do
-    recipient_id
-    |> maybe_update_recipient()
+  @spec handle(Message.id(), map()) :: :ok
+  def handle(message_id, data \\ %{}) do
+    message_id
+    |> maybe_update_message()
     |> tap_if_not_nil(&maybe_update_contact(&1))
     |> tap_if_not_nil(&log_event(&1, data))
   end
 
-  defp maybe_update_recipient(recipient_id) do
-    from(r in Recipient,
-      where: r.id == ^recipient_id and is_nil(r.soft_bounce_received_at),
+  defp maybe_update_message(message_id) do
+    from(r in Message,
+      where: r.id == ^message_id and is_nil(r.soft_bounce_received_at),
       select: struct(r, [:id, :contact_id, :campaign_id]),
       update: [set: [soft_bounce_received_at: fragment("now()")]]
     )
@@ -25,7 +25,7 @@ defmodule Keila.Mailings.RecipientActions.SoftBounce do
 
   defp maybe_update_contact(%{contact_id: contact_id}) do
     recent_soft_bounces =
-      from(r in Recipient,
+      from(r in Message,
         where: r.contact_id == ^contact_id and not is_nil(r.sent_at),
         order_by: r.sent_at,
         limit: 5
@@ -37,7 +37,7 @@ defmodule Keila.Mailings.RecipientActions.SoftBounce do
     end
   end
 
-  defp log_event(%Recipient{id: recipient_id, contact_id: contact_id}, data) do
-    Keila.Tracking.log_event("soft_bounce", contact_id, recipient_id, data)
+  defp log_event(%Message{id: message_id, contact_id: contact_id}, data) do
+    Keila.Tracking.log_event("soft_bounce", contact_id, message_id, data)
   end
 end

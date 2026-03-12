@@ -330,6 +330,14 @@ if config_env() == :prod do
     config(:keila, Keila.Mailings, enable_precedence_header: false)
   end
 
+  # Message body retention
+  message_retention_days =
+    System.get_env("MESSAGE_RETENTION_DAYS") |> maybe_to_int.()
+
+  if message_retention_days do
+    config :keila, Keila.Mailings, message_retention_days: message_retention_days
+  end
+
   # Default to info messages in production
   case System.get_env("LOG_LEVEL") do
     level when level in ["info", "error", "debug"] ->

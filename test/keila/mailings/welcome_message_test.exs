@@ -1,6 +1,7 @@
-defmodule Keila.Mailings.SendWelcomeEmailWorkerTest do
+defmodule Keila.Mailings.WelcomeMessageTest do
   use Keila.DataCase, async: true
-  alias Keila.Mailings.SendWelcomeEmailWorker
+  alias Keila.Mailings.WelcomeMessage
+  alias Keila.Mailings.Message
   require Keila
 
   setup do
@@ -12,11 +13,11 @@ defmodule Keila.Mailings.SendWelcomeEmailWorkerTest do
     %{project: project}
   end
 
-  describe "perform/1" do
+  describe "deliver/2" do
     @describetag :welcome_email
     @email "test@example.com"
 
-    test "sends welcome email when enabled", %{project: project} do
+    test "creates a ready message for welcome email", %{project: project} do
       sender =
         insert!(:mailings_sender,
           project_id: project.id,
@@ -45,28 +46,31 @@ defmodule Keila.Mailings.SendWelcomeEmailWorkerTest do
 
       Keila.if_cloud do
         # Account needs to be active
-        assert {:cancel, _} =
-                 %Oban.Job{args: %{"contact_id" => contact.id, "form_id" => form.id}}
-                 |> SendWelcomeEmailWorker.perform()
+        assert {:error, _} = WelcomeMessage.deliver(contact.id, form.id)
 
         account = Keila.Repo.one(Keila.Accounts.Account)
         KeilaCloud.Accounts.update_account_status(account.id, :active)
 
-        assert {:ok, _} =
-                 %Oban.Job{args: %{"contact_id" => contact.id, "form_id" => form.id}}
-                 |> SendWelcomeEmailWorker.perform()
+        assert {:ok, message} = WelcomeMessage.deliver(contact.id, form.id)
       else
-        assert {:ok, _} =
-                 %Oban.Job{args: %{"contact_id" => contact.id, "form_id" => form.id}}
-                 |> SendWelcomeEmailWorker.perform()
+        assert {:ok, message} = WelcomeMessage.deliver(contact.id, form.id)
       end
 
-      {:email, email} = assert_received({:email, %{to: [{"", @email}]}})
-      assert email.subject == "Welcome to our newsletter!"
-      assert email.text_body =~ "Thank you for subscribing"
+      message = Keila.Repo.get!(Message, message.id)
+
+      assert message.status == :ready
+      assert message.priority == 10
+      assert message.recipient_email == @email
+      assert message.project_id == project.id
+      assert message.sender_id == sender.id
+      assert message.contact_id == contact.id
+      assert message.form_id == form.id
+      assert message.subject == "Welcome to our newsletter!"
+      assert message.html_body =~ "Thank you for subscribing"
+      assert message.text_body =~ "Thank you for subscribing"
     end
 
-    test "cancels job when welcome email is disabled", %{project: project} do
+    test "returns error when welcome email is disabled", %{project: project} do
       sender =
         insert!(:mailings_sender,
           project_id: project.id,
@@ -94,11 +98,9 @@ defmodule Keila.Mailings.SendWelcomeEmailWorkerTest do
         KeilaCloud.Accounts.update_account_status(account.id, :active)
       end
 
-      assert {:cancel, _} =
-               %Oban.Job{args: %{"contact_id" => contact.id, "form_id" => form.id}}
-               |> SendWelcomeEmailWorker.perform()
+      assert {:error, _} = WelcomeMessage.deliver(contact.id, form.id)
 
-      refute_received({:email, _})
+      assert is_nil(Keila.Repo.one(Message))
     end
 
     test "uses default subject and body when not configured", %{project: project} do
@@ -129,15 +131,12 @@ defmodule Keila.Mailings.SendWelcomeEmailWorkerTest do
         KeilaCloud.Accounts.update_account_status(account.id, :active)
       end
 
-      assert {:ok, _} =
-               %Oban.Job{args: %{"contact_id" => contact.id, "form_id" => form.id}}
-               |> SendWelcomeEmailWorker.perform()
+      assert {:ok, message} = WelcomeMessage.deliver(contact.id, form.id)
 
-      {:email, email} = assert_received({:email, %{to: [{"", @email}]}})
+      message = Keila.Repo.get!(Message, message.id)
 
-      # Default subject
-      assert email.subject =~ "Welcome!"
-      assert email.html_body =~ "Thank you for subscribing"
+      assert message.subject =~ "Welcome!"
+      assert message.html_body =~ "Thank you for subscribing"
     end
   end
 end
