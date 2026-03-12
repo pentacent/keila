@@ -5,7 +5,7 @@ defmodule Keila.Tracking do
 
   use Keila.Repo
   alias __MODULE__.{Link, Click, Event}
-  alias Keila.Mailings.{Campaign, Recipient}
+  alias Keila.Mailings.{Campaign, Message}
   alias KeilaWeb.Router.Helpers, as: Routes
 
   @doc """
@@ -59,22 +59,22 @@ defmodule Keila.Tracking do
   """
   def get_tracking_url(conn, :click, %{
         campaign_id: campaign_id,
-        recipient_id: recipient_id,
+        message_id: message_id,
         url: url
       }) do
-    {encoded_url, link_id, hmac} = tracking_path_params(:click, campaign_id, recipient_id, url)
+    {encoded_url, link_id, hmac} = tracking_path_params(:click, campaign_id, message_id, url)
 
-    Routes.tracking_url(conn, :track_click, encoded_url, recipient_id, link_id, hmac)
+    Routes.tracking_url(conn, :track_click, encoded_url, message_id, link_id, hmac)
   end
 
   def get_tracking_url(conn, :open, %{
         campaign_id: campaign_id,
-        recipient_id: recipient_id,
+        message_id: message_id,
         url: url
       }) do
-    {encoded_url, hmac} = tracking_path_params(:open, campaign_id, recipient_id, url)
+    {encoded_url, hmac} = tracking_path_params(:open, campaign_id, message_id, url)
 
-    Routes.tracking_url(conn, :track_open, encoded_url, recipient_id, hmac)
+    Routes.tracking_url(conn, :track_open, encoded_url, message_id, hmac)
   end
 
   @doc """
@@ -89,35 +89,35 @@ defmodule Keila.Tracking do
   """
   def get_tracking_path(conn, :click, %{
         campaign_id: campaign_id,
-        recipient_id: recipient_id,
+        message_id: message_id,
         url: url
       }) do
-    {encoded_url, link_id, hmac} = tracking_path_params(:click, campaign_id, recipient_id, url)
+    {encoded_url, link_id, hmac} = tracking_path_params(:click, campaign_id, message_id, url)
 
-    Routes.tracking_path(conn, :track_click, encoded_url, recipient_id, link_id, hmac)
+    Routes.tracking_path(conn, :track_click, encoded_url, message_id, link_id, hmac)
   end
 
   def get_tracking_path(conn, :open, %{
         campaign_id: campaign_id,
-        recipient_id: recipient_id,
+        message_id: message_id,
         url: url
       }) do
-    {encoded_url, hmac} = tracking_path_params(:open, campaign_id, recipient_id, url)
+    {encoded_url, hmac} = tracking_path_params(:open, campaign_id, message_id, url)
 
-    Routes.tracking_path(conn, :track_open, encoded_url, recipient_id, hmac)
+    Routes.tracking_path(conn, :track_open, encoded_url, message_id, hmac)
   end
 
-  defp tracking_path_params(:click, campaign_id, recipient_id, url) do
+  defp tracking_path_params(:click, campaign_id, message_id, url) do
     encoded_url = URI.encode_www_form(url)
     %Link{id: link_id} = get_or_register_link(url, campaign_id)
-    hmac = create_hmac(encoded_url, recipient_id, link_id)
+    hmac = create_hmac(encoded_url, message_id, link_id)
 
     {encoded_url, link_id, hmac}
   end
 
-  defp tracking_path_params(:open, _campaign_id, recipient_id, url) do
+  defp tracking_path_params(:open, _campaign_id, message_id, url) do
     encoded_url = URI.encode_www_form(url)
-    hmac = create_hmac(encoded_url, recipient_id)
+    hmac = create_hmac(encoded_url, message_id)
 
     {encoded_url, hmac}
   end
@@ -125,15 +125,15 @@ defmodule Keila.Tracking do
   @doc """
   Tracks the click on a registered link and returns the decoded URL.
   """
-  @spec track_click_and_get_link(String.t(), Recipient.id(), Link.id(), String.t(), Keyword.t()) ::
+  @spec track_click_and_get_link(String.t(), Message.id(), Link.id(), String.t(), Keyword.t()) ::
           {:ok, url :: String.t()} | :error
-  def track_click_and_get_link(encoded_url, recipient_id, link_id, hmac, opts \\ []) do
-    if valid_hmac?(hmac, encoded_url, recipient_id, link_id) do
+  def track_click_and_get_link(encoded_url, message_id, link_id, hmac, opts \\ []) do
+    if valid_hmac?(hmac, encoded_url, message_id, link_id) do
       unless is_bot?(opts[:user_agent]) do
-        Click.changeset(%{recipient_id: recipient_id, link_id: link_id})
+        Click.changeset(%{message_id: message_id, link_id: link_id})
         |> Repo.insert!()
 
-        Keila.Mailings.handle_recipient_click(recipient_id)
+        Keila.Mailings.handle_message_click(message_id)
       end
 
       {:ok, URI.decode_www_form(encoded_url)}
@@ -145,12 +145,12 @@ defmodule Keila.Tracking do
   @doc """
   Tracks a campaign open event and returns the decoded URL.
   """
-  @spec track_open_and_get_link(String.t(), Recipient.id(), String.t(), Keyword.t()) ::
+  @spec track_open_and_get_link(String.t(), Message.id(), String.t(), Keyword.t()) ::
           {:ok, url :: String.t()} | :error
-  def track_open_and_get_link(encoded_url, recipient_id, hmac, opts \\ []) do
-    if valid_hmac?(hmac, encoded_url, recipient_id) do
+  def track_open_and_get_link(encoded_url, message_id, hmac, opts \\ []) do
+    if valid_hmac?(hmac, encoded_url, message_id) do
       unless is_bot?(opts[:user_agent]) do
-        Keila.Mailings.handle_recipient_open(recipient_id)
+        Keila.Mailings.handle_message_open(message_id)
       end
 
       {:ok, URI.decode_www_form(encoded_url)}
@@ -159,17 +159,17 @@ defmodule Keila.Tracking do
     end
   end
 
-  defp valid_hmac?(hmac, encoded_url, recipient_id, link_id \\ nil) do
-    case create_hmac(encoded_url, recipient_id, link_id) do
+  defp valid_hmac?(hmac, encoded_url, message_id, link_id \\ nil) do
+    case create_hmac(encoded_url, message_id, link_id) do
       ^hmac -> true
       _other -> false
     end
   end
 
-  @spec log_event(type :: String.t() | atom(), Contact.id(), Recipient.id() | nil, map()) ::
+  @spec log_event(type :: String.t() | atom(), Contact.id(), Message.id() | nil, map()) ::
           {:ok, Event.t()}
-  def log_event(type, contact_id, recipient_id \\ nil, data) do
-    %{type: type, contact_id: contact_id, recipient_id: recipient_id, data: data}
+  def log_event(type, contact_id, message_id \\ nil, data) do
+    %{type: type, contact_id: contact_id, message_id: message_id, data: data}
     |> Event.changeset()
     |> Repo.insert()
   end
@@ -183,7 +183,7 @@ defmodule Keila.Tracking do
     from(e in Event,
       where: e.contact_id == ^contact_id,
       order_by: [desc: e.inserted_at],
-      preload: [recipient: :campaign]
+      preload: [message: :campaign]
     )
     |> Repo.all()
   end
@@ -202,9 +202,9 @@ defmodule Keila.Tracking do
     |> Enum.map(&List.to_tuple/1)
   end
 
-  defp create_hmac(encoded_url, recipient_id, link_id \\ nil) do
+  defp create_hmac(encoded_url, message_id, link_id \\ nil) do
     key = Application.get_env(:keila, KeilaWeb.Endpoint) |> Keyword.fetch!(:secret_key_base)
-    message = :erlang.term_to_binary({encoded_url, recipient_id, link_id})
+    message = :erlang.term_to_binary({encoded_url, message_id, link_id})
 
     :crypto.mac(:hmac, :sha256, key, message)
     |> Base.url_encode64(padding: false)

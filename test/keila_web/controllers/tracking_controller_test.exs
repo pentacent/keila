@@ -8,7 +8,7 @@ defmodule KeilaWeb.TrackingControllerTest do
 
   test "track opens", %{conn: conn} do
     campaign = insert!(:mailings_campaign)
-    recipient = insert!(:mailings_recipient, campaign: campaign)
+    message = insert!(:message, campaign: campaign)
 
     assert link = %Link{} = Tracking.register_link(@url, campaign.id)
     assert link == Tracking.get_or_register_link(@url, campaign.id)
@@ -17,7 +17,7 @@ defmodule KeilaWeb.TrackingControllerTest do
     path =
       Tracking.get_tracking_path(conn, :open, %{
         campaign_id: campaign.id,
-        recipient_id: recipient.id,
+        message_id: message.id,
         url: @url
       })
 
@@ -31,14 +31,14 @@ defmodule KeilaWeb.TrackingControllerTest do
 
     assert conn.status == 302
 
-    updated_recipient = Keila.Repo.get(Keila.Mailings.Recipient, recipient.id)
-    assert not is_nil(updated_recipient.opened_at)
-    assert is_nil(updated_recipient.clicked_at)
+    updated_message = Keila.Repo.get(Keila.Mailings.Message, message.id)
+    assert not is_nil(updated_message.opened_at)
+    assert is_nil(updated_message.clicked_at)
   end
 
   test "dont track open if user-agent is considered a bot", %{conn: conn} do
     campaign = insert!(:mailings_campaign)
-    recipient = insert!(:mailings_recipient, campaign: campaign)
+    message = insert!(:message, campaign: campaign)
 
     assert link = %Link{} = Tracking.register_link(@url, campaign.id)
     assert link == Tracking.get_or_register_link(@url, campaign.id)
@@ -47,7 +47,7 @@ defmodule KeilaWeb.TrackingControllerTest do
     path =
       Tracking.get_tracking_path(conn, :open, %{
         campaign_id: campaign.id,
-        recipient_id: recipient.id,
+        message_id: message.id,
         url: @url
       })
 
@@ -61,14 +61,14 @@ defmodule KeilaWeb.TrackingControllerTest do
 
     assert conn.status == 302
 
-    updated_recipient = Keila.Repo.get(Keila.Mailings.Recipient, recipient.id)
-    assert is_nil(updated_recipient.opened_at)
-    assert is_nil(updated_recipient.clicked_at)
+    updated_message = Keila.Repo.get(Keila.Mailings.Message, message.id)
+    assert is_nil(updated_message.opened_at)
+    assert is_nil(updated_message.clicked_at)
   end
 
   test "track clicks", %{conn: conn} do
     campaign = insert!(:mailings_campaign)
-    recipient = insert!(:mailings_recipient, campaign: campaign)
+    message = insert!(:message, campaign: campaign)
 
     assert link = %Link{} = Tracking.register_link(@url, campaign.id)
     assert link == Tracking.get_or_register_link(@url, campaign.id)
@@ -77,15 +77,15 @@ defmodule KeilaWeb.TrackingControllerTest do
     path =
       Tracking.get_tracking_path(conn, :click, %{
         campaign_id: campaign.id,
-        recipient_id: recipient.id,
+        message_id: message.id,
         url: @url
       })
 
     conn = get(conn, path)
     assert conn.status == 302
 
-    updated_recipient = Keila.Repo.get(Keila.Mailings.Recipient, recipient.id)
-    assert not is_nil(updated_recipient.opened_at)
-    assert not is_nil(updated_recipient.clicked_at)
+    updated_message = Keila.Repo.get(Keila.Mailings.Message, message.id)
+    assert not is_nil(updated_message.opened_at)
+    assert not is_nil(updated_message.clicked_at)
   end
 end

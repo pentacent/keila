@@ -1,15 +1,16 @@
 defmodule KeilaWeb.ApiFormControllerTest do
-  use KeilaWeb.ApiCase, async: false
-  use Oban.Testing, repo: Keila.Repo
+  use KeilaWeb.ApiCase, async: true
+  use Keila.Repo
 
   alias Keila.Contacts
+  alias Keila.Mailings.Message
+  import Ecto.Query
 
   describe "GET /api/v1/forms" do
     @tag :api_form_controller
     test "lists forms", %{authorized_conn: conn, project: project} do
       n = 10
       insert_n!(:contacts_form, n, fn _n -> %{project_id: project.id} end)
-
       conn = get(conn, Routes.api_form_path(conn, :index))
 
       assert %{"data" => forms} = json_response(conn, 200)
@@ -171,19 +172,22 @@ defmodule KeilaWeb.ApiFormControllerTest do
 
     @tag :api_form_controller
     test "creates FormParams if DOI required", %{authorized_conn: conn, project: project} do
+      %{id: sender_id} = insert!(:mailings_sender, project_id: project.id)
+
       form =
-        insert!(:contacts_form, project_id: project.id, settings: %{double_opt_in_required: true})
+        insert!(:contacts_form,
+          project_id: project.id,
+          sender_id: sender_id,
+          settings: %{double_opt_in_required: true}
+        )
 
       email = "test@example.com"
       body = %{"data" => %{"email" => email}}
       conn = post_json(conn, Routes.api_form_path(conn, :submit, form.id), body)
       assert %{"double_opt_in_required" => true} == json_response(conn, 202)["data"]
-      assert %{id: id, params: %{"email" => ^email}} = Keila.Repo.one(Keila.Contacts.FormParams)
+      assert %{id: id, params: %{"email" => ^email}} = Repo.one(Keila.Contacts.FormParams)
 
-      assert_enqueued(
-        worker: Keila.Mailings.SendDoubleOptInMailWorker,
-        args: %{"form_params_id" => id}
-      )
+      assert Repo.one(from m in Message, where: m.form_params_id == ^id and m.status == :ready)
     end
   end
 end
