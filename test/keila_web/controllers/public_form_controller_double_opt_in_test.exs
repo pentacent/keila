@@ -1,5 +1,7 @@
 defmodule KeilaWeb.PublicFormControllerDoubleOptInTest do
   use KeilaWeb.ConnCase
+  require Keila
+
   alias Keila.Contacts
   alias Keila.Contacts.Contact
   alias Keila.Mailings.Message
@@ -10,7 +12,7 @@ defmodule KeilaWeb.PublicFormControllerDoubleOptInTest do
   describe "POST /forms/:id" do
     @describetag :double_opt_in
     test "submits form with double opt-in and sends opt-in email", %{conn: conn} do
-      {conn, project} = with_login_and_project(conn)
+      {conn, project} = with_login_and_project(conn, cloud_activate: true)
 
       form = insert_doi_form(project.id)
 
@@ -28,7 +30,7 @@ defmodule KeilaWeb.PublicFormControllerDoubleOptInTest do
     end
 
     test "DOI is also required for existing contacts", %{conn: conn} do
-      {conn, project} = with_login_and_project(conn)
+      {conn, project} = with_login_and_project(conn, cloud_activate: true)
 
       contact = insert!(:contact, project_id: project.id, email: "existing@example.com")
 
