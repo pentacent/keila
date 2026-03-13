@@ -1,6 +1,7 @@
 defmodule KeilaWeb.ApiFormControllerTest do
   use KeilaWeb.ApiCase, async: true
   use Keila.Repo
+  require Keila
 
   alias Keila.Contacts
   alias Keila.Mailings.Message
@@ -171,7 +172,11 @@ defmodule KeilaWeb.ApiFormControllerTest do
     end
 
     @tag :api_form_controller
-    test "creates FormParams if DOI required", %{authorized_conn: conn, project: project} do
+    test "creates FormParams if DOI required", %{
+      authorized_conn: conn,
+      project: project,
+      user: user
+    } do
       %{id: sender_id} = insert!(:mailings_sender, project_id: project.id)
 
       form =
@@ -187,7 +192,22 @@ defmodule KeilaWeb.ApiFormControllerTest do
       assert %{"double_opt_in_required" => true} == json_response(conn, 202)["data"]
       assert %{id: id, params: %{"email" => ^email}} = Repo.one(Keila.Contacts.FormParams)
 
-      assert Repo.one(from m in Message, where: m.form_params_id == ^id and m.status == :ready)
+      Keila.if_cloud do
+        # DOI mail is not sent if account is not active
+        refute Repo.one(from m in Message, where: m.form_params_id == ^id and m.status == :ready)
+
+        # TODO: Maybe no FormParams should be created if account is not active
+        Keila.Repo.delete_all(Keila.Contacts.FormParams)
+
+        account = Keila.Accounts.get_user_account(user.id)
+        KeilaCloud.Accounts.update_account_status(account.id, :active)
+        conn = post_json(recycle(conn), Routes.api_form_path(conn, :submit, form.id), body)
+        assert %{"double_opt_in_required" => true} == json_response(conn, 202)["data"]
+        assert %{id: id, params: %{"email" => ^email}} = Repo.one(Keila.Contacts.FormParams)
+        assert Repo.one(from m in Message, where: m.form_params_id == ^id and m.status == :ready)
+      else
+        assert Repo.one(from m in Message, where: m.form_params_id == ^id and m.status == :ready)
+      end
     end
   end
 end
