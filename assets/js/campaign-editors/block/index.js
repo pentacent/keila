@@ -32,7 +32,7 @@ export default class BlockEditor {
           class: Header,
           inlineToolbar: true,
           config: {
-            levels: [1, 2, 2]
+            levels: [1, 2, 3]
           },
           tunes: ["alignment"]
         },
