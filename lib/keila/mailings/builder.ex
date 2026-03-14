@@ -5,7 +5,7 @@ defmodule Keila.Mailings.Builder do
   TODO: Refactor to move building for all campaign types to separate modules.
   """
 
-  alias Keila.Mailings.{Campaign, Recipient}
+  alias Keila.Mailings.{Campaign, Message}
   alias Keila.Contacts.Contact
   alias Swoosh.Email
   alias KeilaWeb.Router.Helpers, as: Routes
@@ -21,7 +21,7 @@ defmodule Keila.Mailings.Builder do
     data: %{"tags" => ["rocket-scientist"]}
   }
 
-  @placeholder_recipient_id "00000000-0000-4000-0000-000000000000"
+  @placeholder_message_id "00000000-0000-4000-0000-000000000000"
 
   @doc """
   Builds a `Swoosh.Email` struct from a Campaign, Contact, and assigns.
@@ -34,17 +34,17 @@ defmodule Keila.Mailings.Builder do
   Adds `X-Keila-Invalid` header if there was an error creating the email.
   Such emails should not be delivered.
   """
-  @spec build(Campaign.t(), Recipient.t() | Contact.t(), map()) :: Swoosh.Email.t()
-  def build(campaign, recipient_or_contact \\ @default_contact, assigns) do
-    {recipient, contact} =
-      case recipient_or_contact do
-        recipient = %Recipient{} -> {recipient, recipient.contact}
-        contact = %Contact{} -> {%Recipient{id: @placeholder_recipient_id}, contact}
+  @spec build(Campaign.t(), Message.t() | Contact.t(), map()) :: Swoosh.Email.t()
+  def build(campaign, message_or_contact \\ @default_contact, assigns) do
+    {message, contact} =
+      case message_or_contact do
+        message = %Message{} -> {message, message.contact}
+        contact = %Contact{} -> {%Message{id: @placeholder_message_id}, contact}
       end
 
     unsubscribe_link =
       Map.get_lazy(assigns, "unsubscribe_link", fn ->
-        Keila.Mailings.get_unsubscribe_link(campaign.project_id, recipient.id)
+        Keila.Mailings.get_unsubscribe_link(campaign.project_id, message.id)
       end)
 
     assigns =
@@ -66,7 +66,7 @@ defmodule Keila.Mailings.Builder do
     |> put_body(campaign, assigns)
     |> put_unsubscribe_header(unsubscribe_link)
     |> maybe_put_precedence_header()
-    |> maybe_put_tracking(campaign, recipient)
+    |> maybe_put_tracking(campaign, message)
   end
 
   @default_contact %Keila.Contacts.Contact{
@@ -114,7 +114,12 @@ defmodule Keila.Mailings.Builder do
       |> Enum.join(" ")
       |> String.trim()
 
-    to(email, [{name, contact.email}])
+    if is_nil(contact.email) do
+      email
+      |> header("X-Keila-Invalid", "Missing contact email")
+    else
+      to(email, [{name, contact.email}])
+    end
   end
 
   defp put_body(email, campaign, assigns)
@@ -303,30 +308,30 @@ defmodule Keila.Mailings.Builder do
   end
 
   # TODO add contact settings for disabling/configuring tracking
-  defp maybe_put_tracking(email, campaign, recipient)
+  defp maybe_put_tracking(email, campaign, message)
 
-  defp maybe_put_tracking(%{html_body: nil} = email, _campaign, _recipient), do: email
+  defp maybe_put_tracking(%{html_body: nil} = email, _campaign, _message), do: email
 
-  defp maybe_put_tracking(email, %{settings: %{do_not_track: true}}, _recipient), do: email
+  defp maybe_put_tracking(email, %{settings: %{do_not_track: true}}, _message), do: email
 
-  defp maybe_put_tracking(email, %{id: nil}, _recipient), do: email
+  defp maybe_put_tracking(email, %{id: nil}, _message), do: email
 
-  defp maybe_put_tracking(email, _campaign, %{id: @placeholder_recipient_id}), do: email
+  defp maybe_put_tracking(email, _campaign, %{id: @placeholder_message_id}), do: email
 
-  defp maybe_put_tracking(email, campaign, recipient) do
+  defp maybe_put_tracking(email, campaign, message) do
     html =
       email.html_body
       |> Floki.parse_document!()
-      |> put_click_tracking(campaign, recipient)
-      |> put_open_tracking(campaign, recipient)
-      |> put_tracking_pixel(campaign, recipient)
+      |> put_click_tracking(campaign, message)
+      |> put_open_tracking(campaign, message)
+      |> put_tracking_pixel(campaign, message)
       |> Floki.raw_html()
 
     %{email | html_body: html}
   end
 
   @tracking_click_selector "a[href^=\"https://\"], a[href^=\"http://\"]"
-  defp put_click_tracking(html, campaign, recipient) do
+  defp put_click_tracking(html, campaign, message) do
     Floki.find_and_update(html, @tracking_click_selector, fn {tag, attributes} ->
       href = List.keyfind(attributes, "href", 0) |> elem(1)
       # if not Keila link
@@ -338,7 +343,7 @@ defmodule Keila.Mailings.Builder do
         params = %{
           url: href,
           campaign_id: campaign.id,
-          recipient_id: recipient.id,
+          message_id: message.id,
           link_id: link.id
         }
 
@@ -350,14 +355,14 @@ defmodule Keila.Mailings.Builder do
   end
 
   @tracking_open_selector "img[src^=\"https://\"], img[src^=\"http://\"]"
-  defp put_open_tracking(html, campaign, recipient) do
+  defp put_open_tracking(html, campaign, message) do
     Floki.find_and_update(html, @tracking_open_selector, fn {tag, attributes} ->
       src = List.keyfind(attributes, "src", 0) |> elem(1)
 
       if String.starts_with?(src, KeilaWeb.Endpoint.url()) do
         {tag, attributes}
       else
-        params = %{url: src, campaign_id: campaign.id, recipient_id: recipient.id}
+        params = %{url: src, campaign_id: campaign.id, message_id: message.id}
         url = Keila.Tracking.get_tracking_url(KeilaWeb.Endpoint, :open, params)
 
         {tag, List.keyreplace(attributes, "src", 0, {"src", url})}
@@ -373,9 +378,9 @@ defmodule Keila.Mailings.Builder do
 
   defp maybe_put_public_link(assigns, _campaign), do: assigns
 
-  defp put_tracking_pixel(html, campaign, recipient) do
+  defp put_tracking_pixel(html, campaign, message) do
     pixel_url = Routes.static_url(KeilaWeb.Endpoint, "/images/pixel.gif")
-    params = %{url: pixel_url, campaign_id: campaign.id, recipient_id: recipient.id}
+    params = %{url: pixel_url, campaign_id: campaign.id, message_id: message.id}
     url = Keila.Tracking.get_tracking_url(KeilaWeb.Endpoint, :open, params)
 
     img = {"img", [{"src", url}], []}

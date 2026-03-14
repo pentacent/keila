@@ -27,6 +27,7 @@ defmodule Keila.DataCase do
       import Swoosh.TestAssertions
       import Keila.Factory
       import Keila.SeedHelper
+      import Keila.MailingsSchedulerTestHelper
     end
   end
 

@@ -1,6 +1,6 @@
 defmodule Keila.Instance.UpdateCronWorker do
   use Oban.Worker,
-    queue: :updater,
+    queue: :system,
     unique: [
       period: :infinity,
       states: [:available, :scheduled, :executing]

@@ -2,8 +2,9 @@ defmodule Keila.Mailings do
   require Keila
   use Keila.Repo
   alias Keila.Project
-  alias __MODULE__.{Sender, SenderAdapters, SharedSender, Campaign, Recipient, RecipientActions}
+  alias __MODULE__.{Sender, SenderAdapters, SharedSender, Campaign, Message, MessageActions}
   alias KeilaWeb.Router.Helpers, as: Routes
+  require Logger
 
   @moduledoc """
   Context for all functionalities related to sending email campaigns.
@@ -573,33 +574,38 @@ defmodule Keila.Mailings do
     Keila.Contacts.stream_project_contacts(campaign.project_id, filter: filter)
     |> Stream.chunk_every(5000)
     |> Stream.map(fn contacts ->
-      insert_recipients(contacts, campaign)
+      insert_messages(contacts, campaign)
     end)
     |> Enum.sum()
     |> tap(&maybe_consume_credits(&1, campaign))
-    |> tap(&insert_scheduling_job/1)
+    |> tap(&insert_rendering_job(&1, campaign))
     |> tap(&ensure_not_empty/1)
   end
 
-  defp insert_recipients(contacts, campaign) do
+  defp insert_messages(contacts, campaign) do
     {:ok, campaign_id} = Keila.Mailings.Campaign.Id.dump(campaign.id)
+    {:ok, sender_id} = Keila.Mailings.Sender.Id.dump(campaign.sender_id)
+    Logger.info("Inserting messages for campaign #{campaign_id} with sender #{sender_id}")
+    unrendered_status = Ecto.Enum.mappings(Message, :status)[:unrendered]
 
-    recipient_params =
+    # Inserting entries like this is about 1/3 more performant than constructing structs first
+    contact_ids =
       Enum.map(contacts, fn contact ->
         {:ok, id} = Keila.Contacts.Contact.Id.dump(contact.id)
         %{id: id}
       end)
 
-    # Inserting entries like this is about 1/3 more performant than constructing structs first
     {count, _} =
       Repo.insert_all(
-        Recipient,
-        from(r in values(recipient_params, %{id: :integer}),
+        Message,
+        from(c in values(contact_ids, %{id: :integer}),
           select: %{
-            contact_id: r.id,
+            contact_id: c.id,
             campaign_id: ^campaign_id,
+            sender_id: ^sender_id,
             inserted_at: fragment("now()"),
-            updated_at: fragment("now()")
+            updated_at: fragment("now()"),
+            status: ^unrendered_status
           }
         )
       )
@@ -607,7 +613,7 @@ defmodule Keila.Mailings do
     count
   end
 
-  defp maybe_consume_credits(recipients_count, _campaign = %{project_id: project_id}) do
+  defp maybe_consume_credits(messages_count, _campaign = %{project_id: project_id}) do
     if Keila.Accounts.credits_enabled?() do
       account = Keila.Accounts.get_project_account(project_id)
 
@@ -617,7 +623,7 @@ defmodule Keila.Mailings do
         end
       end
 
-      if Keila.Accounts.consume_credits(account.id, recipients_count) == :error do
+      if Keila.Accounts.consume_credits(account.id, messages_count) == :error do
         Repo.rollback(:insufficient_credits)
       end
     end
@@ -625,8 +631,10 @@ defmodule Keila.Mailings do
     :ok
   end
 
-  defp insert_scheduling_job(0), do: :ok
-  defp insert_scheduling_job(_), do: Keila.Mailings.ScheduleWorker.new(%{}) |> Oban.insert()
+  defp insert_rendering_job(0, _campaign), do: :ok
+
+  defp insert_rendering_job(_, campaign),
+    do: Keila.Mailings.CampaignRenderWorker.new(%{"campaign_id" => campaign.id}) |> Oban.insert()
 
   defp ensure_not_empty(0), do: Repo.rollback(:no_recipients)
   defp ensure_not_empty(_), do: :ok
@@ -665,10 +673,10 @@ defmodule Keila.Mailings do
     time_series_end = if campaign.sent_at, do: campaign.sent_at |> DateTime.add(24, :hour)
 
     opened_at_series =
-      recipient_time_series(campaign.id, :opened_at, campaign.sent_at, time_series_end)
+      message_time_series(campaign.id, :opened_at, campaign.sent_at, time_series_end)
 
     clicked_at_series =
-      recipient_time_series(campaign.id, :clicked_at, campaign.sent_at, time_series_end)
+      message_time_series(campaign.id, :clicked_at, campaign.sent_at, time_series_end)
 
     insufficient_credits? =
       if Keila.Accounts.credits_enabled?() do
@@ -710,10 +718,9 @@ defmodule Keila.Mailings do
   end
 
   defp recipient_stats(campaign_id) do
-    from(r in Recipient, where: r.campaign_id == ^campaign_id)
-    |> where([r], r.campaign_id == ^campaign_id)
+    from(m in Message, where: m.campaign_id == ^campaign_id)
     |> select(
-      [r],
+      [m],
       %{
         recipients_count: count(),
         sent_count: sum(fragment("CASE WHEN sent_at IS NOT NULL THEN 1 ELSE 0 END")),
@@ -736,11 +743,11 @@ defmodule Keila.Mailings do
     |> Enum.into(%{})
   end
 
-  defp recipient_time_series(_campaign_id, _field, nil = _start_time, _end_time), do: []
+  defp message_time_series(_campaign_id, _field, nil = _start_time, _end_time), do: []
 
-  defp recipient_time_series(campaign_id, field, start_time, end_time) do
+  defp message_time_series(campaign_id, field, start_time, end_time) do
     from(
-      r in Recipient,
+      m in Message,
       right_join:
         series in fragment(
           "select generate_series(date_trunc('hour', ?::timestamp), date_trunc('hour', ?::timestamp), '1h') as h",
@@ -748,110 +755,109 @@ defmodule Keila.Mailings do
           ^end_time
         ),
       on:
-        series.h == fragment("date_trunc('hour', ?)", field(r, ^field)) and
-          r.campaign_id == ^campaign_id and not is_nil(field(r, ^field)),
+        series.h == fragment("date_trunc('hour', ?)", field(m, ^field)) and
+          m.campaign_id == ^campaign_id and not is_nil(field(m, ^field)),
       group_by: series.h,
       order_by: series.h,
-      select: {series.h, count(r.id)}
+      select: {series.h, count(m.id)}
     )
     |> Repo.all()
   end
 
   @doc """
-  Retrieves a Recipient with Contact preloaded.
+  Retrieves a Message with Contact preloaded.
   """
-  @spec get_recipient(Recipient.id()) :: Recipient.t() | nil
-  def get_recipient(recipient_id) do
-    from(r in Recipient,
-      where: r.id == ^recipient_id,
+  @spec get_message(Message.id()) :: Message.t() | nil
+  def get_message(message_id) do
+    from(r in Message,
+      where: r.id == ^message_id,
       preload: [:contact]
     )
     |> Repo.one()
   end
 
   @doc """
-  Returns a signed unsubscribe link for the given project id and recipient.
+  Returns a signed unsubscribe link for the given project id and message.
   """
-  @spec get_unsubscribe_link(Project.id(), Recipient.id()) :: String.t()
-  def get_unsubscribe_link(project_id, recipient_id) do
-    hmac = unsubscribe_hmac(project_id, recipient_id)
+  @spec get_unsubscribe_link(Project.id(), Message.id()) :: String.t()
+  def get_unsubscribe_link(project_id, message_id) do
+    hmac = unsubscribe_hmac(project_id, message_id)
 
-    Routes.public_form_url(KeilaWeb.Endpoint, :unsubscribe, project_id, recipient_id, hmac)
+    Routes.public_form_url(KeilaWeb.Endpoint, :unsubscribe, project_id, message_id, hmac)
   end
 
   @doc """
-  Returns `true` if project id and recipient id evaluate to the given HMAC.
+  Returns `true` if project id and message id evaluate to the given HMAC.
   Else returns `false`
   """
-  @spec valid_unsubscribe_hmac?(Project.id(), Recipient.id(), String.t()) :: boolean()
-  def valid_unsubscribe_hmac?(project_id, recipient_id, hmac) do
-    case unsubscribe_hmac(project_id, recipient_id) do
+  @spec valid_unsubscribe_hmac?(Project.id(), Message.id(), String.t()) :: boolean()
+  def valid_unsubscribe_hmac?(project_id, message_id, hmac) do
+    case unsubscribe_hmac(project_id, message_id) do
       ^hmac -> true
       _other -> false
     end
   end
 
-  defp unsubscribe_hmac(project_id, recipient_id) do
+  defp unsubscribe_hmac(project_id, message_id) do
     key = Application.get_env(:keila, KeilaWeb.Endpoint) |> Keyword.fetch!(:secret_key_base)
-    message = "unsubscribe:" <> project_id <> ":" <> recipient_id
+    message = "unsubscribe:" <> project_id <> ":" <> message_id
 
     :crypto.mac(:hmac, :sha256, key, message)
     |> Base.url_encode64(padding: false)
   end
 
   @doc """
-  Unsubscribes the contact associated with a recipient from a project and logs
+  Unsubscribes the contact associated with a message from a project and logs
   the event.
   """
-  @spec unsubscribe_recipient(Recipient.id()) :: :ok
-  def unsubscribe_recipient(recipient_id) do
-    RecipientActions.Unsubscription.handle(recipient_id)
+  @spec unsubscribe_from_message(Message.id()) :: :ok
+  def unsubscribe_from_message(message_id) do
+    MessageActions.Unsubscription.handle(message_id)
   end
 
   @doc """
-  Updates a recipient after they opened an email in a campaign for the first
-  time and logs the event.
+  Updates a message it was opened for the first time and logs the event.
   """
-  @spec handle_recipient_open(Recipient.id()) :: :ok
-  def handle_recipient_open(recipient_id) do
-    RecipientActions.Open.handle(recipient_id)
+  @spec handle_message_open(Message.id(), Keyword.t()) :: :ok
+  def handle_message_open(message_id, opts \\ []) do
+    MessageActions.Open.handle(message_id, opts)
   end
 
   @doc """
-  Updates a recipient after they clicked a link in a campaign for the first time
+  Updates a message after a link in it was clicked for the first time
   and logs the event.
   """
-  @spec handle_recipient_click(Recipient.id()) :: :ok
-  def handle_recipient_click(recipient_id) do
-    RecipientActions.Click.handle(recipient_id)
+  @spec handle_message_click(Message.id(), Keyword.t()) :: :ok
+  def handle_message_click(message_id, opts \\ []) do
+    MessageActions.Click.handle(message_id, opts)
   end
 
   @doc """
-  Unsubscribes a recipient after a complaint was received and logs the event.
+  Unsubscribes a message after a complaint was received and logs the event.
   The `data` parameter is passed to the logging system.
   """
-  @spec handle_recipient_complaint(Recipient.id(), map()) :: :ok
-  def handle_recipient_complaint(recipient_id, data) do
-    RecipientActions.Complaint.handle(recipient_id, data)
+  @spec handle_message_complaint(Message.id(), map()) :: :ok
+  def handle_message_complaint(message_id, data) do
+    MessageActions.Complaint.handle(message_id, data)
   end
 
   @doc """
-  Handles a soft bounce for a recipient and logs the event.
+  Handles a soft bounce for a message and logs the event.
   The `data` parameter is passed to the logging system.
   """
-  @spec handle_recipient_soft_bounce(Recipient.id(), map()) :: :ok
-  def handle_recipient_soft_bounce(recipient_id, data) do
-    RecipientActions.SoftBounce.handle(recipient_id, data)
+  @spec handle_message_soft_bounce(Message.id(), map()) :: :ok
+  def handle_message_soft_bounce(message_id, data) do
+    MessageActions.SoftBounce.handle(message_id, data)
   end
 
   @doc """
-  Marks the contact associated with a recipient as unreachable after receiving
+  Marks the contact associated with a message as unreachable after receiving
   hard bounce and logs the event.
   The `data` parameter is passed to the logging system.
   """
-  @spec handle_recipient_hard_bounce(Recipient.id(), map()) :: :ok
-  def handle_recipient_hard_bounce(recipient_id, data) do
-    RecipientActions.HardBounce.handle(recipient_id, data)
+  @spec handle_message_hard_bounce(Message.id(), map()) :: :ok
+  def handle_message_hard_bounce(message_id, data) do
+    MessageActions.HardBounce.handle(message_id, data)
   end
 
   @doc """
@@ -889,5 +895,27 @@ defmodule Keila.Mailings do
   @spec get_public_campaign_link(campaign_id :: Campaign.id()) :: String.t()
   def get_public_campaign_link(campaign_id) do
     Routes.public_campaign_url(KeilaWeb.Endpoint, :show, campaign_id)
+  end
+
+  @doc """
+  Prunes `html_body` and `text_body` from messages with status `:sent` or
+  `:failed` if they are older than the pruning threshold.
+
+  The threshold can be configured via the `MESSAGE_RETENTION_DAYS` environment
+  variable.
+  """
+  @spec prune_messages() :: {non_neg_integer(), nil}
+  def prune_messages() do
+    retention_days =
+      Application.get_env(:keila, __MODULE__) |> Keyword.fetch!(:message_retention_days)
+
+    cutoff = DateTime.utc_now() |> DateTime.add(-retention_days, :day)
+
+    from(m in Keila.Mailings.Message,
+      where: m.status in [:sent, :failed],
+      where: m.inserted_at < ^cutoff,
+      where: not is_nil(m.html_body) or not is_nil(m.text_body)
+    )
+    |> Repo.update_all(set: [html_body: nil, text_body: nil])
   end
 end

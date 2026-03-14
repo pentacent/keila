@@ -348,7 +348,7 @@
                 <%= with_validation(fs, :double_opt_in_subject) do %>
                   {text_input(fs, :double_opt_in_subject,
                     class: "text-black",
-                    placeholder: Keila.Mailings.DoubleOptInEmailBuilder.default_subject()
+                    placeholder: Keila.Mailings.DoubleOptInMessage.default_subject()
                   )}
                 <% end %>
               </div>
@@ -439,7 +439,7 @@
                   {textarea(fs, :double_opt_in_markdown_body,
                     class: "text-black",
                     rows: 8,
-                    placeholder: Keila.Mailings.DoubleOptInEmailBuilder.default_markdown_body()
+                    placeholder: Keila.Mailings.DoubleOptInMessage.default_markdown_body()
                   )}
                 <% end %>
               </div>
@@ -557,7 +557,7 @@
                 <%= with_validation(fs, :welcome_subject) do %>
                   {text_input(fs, :welcome_subject,
                     class: "text-black",
-                    placeholder: Keila.Mailings.WelcomeEmailBuilder.default_subject()
+                    placeholder: Keila.Mailings.WelcomeMessage.default_subject()
                   )}
                 <% end %>
               </div>
@@ -648,7 +648,7 @@
                   {textarea(fs, :welcome_markdown_body,
                     class: "text-black",
                     rows: 8,
-                    placeholder: Keila.Mailings.WelcomeEmailBuilder.default_markdown_body()
+                    placeholder: Keila.Mailings.WelcomeMessage.default_markdown_body()
                   )}
                 <% end %>
               </div>
