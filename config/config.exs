@@ -57,7 +57,9 @@ config :keila, Keila.Mailings,
   # Minimum offset in seconds between current time and allowed scheduling time
   min_campaign_schedule_offset: 300,
   # Set Precedence: Bulk header
-  enable_precedence_header: true
+  enable_precedence_header: true,
+  # Message bodies are retained for 30 days by default
+  message_retention_days: 30
 
 config :keila, Keila.Mailings.SenderAdapters,
   adapters: [
@@ -93,8 +95,9 @@ config :phoenix, :json_library, Jason
 config :keila, Oban,
   queues: [
     mailer: 50,
-    mailer_scheduler: 1,
-    updater: 1
+    campaign_renderer: 1,
+    campaign_scheduler: 1,
+    system: 1
   ],
   repo: Keila.Repo,
   plugins: [
@@ -103,7 +106,8 @@ config :keila, Oban,
      crontab: [
        {"* * * * *", Keila.Mailings.DeliverScheduledCampaignsWorker},
        {"* * * * *", Keila.Mailings.ScheduleWorker},
-       {"0 0 * * *", Keila.Instance.UpdateCronWorker}
+       {"1 0 * * *", Keila.Instance.UpdateCronWorker},
+       {"0 0 * * *", Keila.Mailings.MessagePruner}
      ]}
   ]
 

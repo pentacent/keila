@@ -3,7 +3,7 @@ defmodule KeilaWeb.SESWebhookController do
   use Keila.Repo
   require Logger
   alias Keila.Mailings
-  alias Keila.Mailings.Recipient
+  alias Keila.Mailings.Message
 
   plug Plug.Parsers,
     parsers: [{KeilaWeb.PlainTextJSONParser, json_decoder: Jason}]
@@ -12,24 +12,24 @@ defmodule KeilaWeb.SESWebhookController do
   plug :put_resource
 
   @spec webhook(Plug.Conn.t(), map()) :: Plug.Conn.t()
-  def webhook(conn = %{assigns: %{message: %{"bounce" => %{"bounceType" => "Permanent"}}}}, _) do
-    bounce_subtype = get_in(conn.assigns.message, ["bounce", "bounceSubType"])
+  def webhook(conn = %{assigns: %{ses_message: %{"bounce" => %{"bounceType" => "Permanent"}}}}, _) do
+    bounce_subtype = get_in(conn.assigns.ses_message, ["bounce", "bounceSubType"])
     data = %{"type" => "ses", "ses_bounce_subtype" => bounce_subtype}
-    Mailings.handle_recipient_hard_bounce(conn.assigns.recipient.id, data)
+    Mailings.handle_message_hard_bounce(conn.assigns.message.id, data)
 
     conn |> send_resp(200, "")
   end
 
-  def webhook(conn = %{assigns: %{message: %{"bounce" => %{"bounceType" => "Transient"}}}}, _) do
-    bounce_subtype = get_in(conn.assigns.message, ["bounce", "bounceSubType"])
+  def webhook(conn = %{assigns: %{ses_message: %{"bounce" => %{"bounceType" => "Transient"}}}}, _) do
+    bounce_subtype = get_in(conn.assigns.ses_message, ["bounce", "bounceSubType"])
     data = %{"type" => "ses", "ses_bounce_subtype" => bounce_subtype}
-    Mailings.handle_recipient_soft_bounce(conn.assigns.recipient.id, data)
+    Mailings.handle_message_soft_bounce(conn.assigns.message.id, data)
 
     conn |> send_resp(200, "")
   end
 
-  def webhook(conn = %{assigns: %{message: %{"complaint" => %{}}}}, _) do
-    Mailings.handle_recipient_complaint(conn.assigns.recipient.id, %{})
+  def webhook(conn = %{assigns: %{ses_message: %{"complaint" => %{}}}}, _) do
+    Mailings.handle_message_complaint(conn.assigns.message.id, %{})
 
     conn |> send_resp(200, "")
   end
@@ -63,13 +63,14 @@ defmodule KeilaWeb.SESWebhookController do
         conn
 
       "Notification" ->
-        with {:ok, raw_message} = Map.fetch(conn.body_params, "Message"),
-             {:ok, message} <- Jason.decode(raw_message),
-             message_id when is_binary(message_id) <- get_in(message, ["mail", "messageId"]),
-             recipient = %Recipient{} <- Repo.get_by(Recipient, receipt: message_id) do
+        with {:ok, raw_ses_message} = Map.fetch(conn.body_params, "Message"),
+             {:ok, ses_message} <- Jason.decode(raw_ses_message),
+             ses_message_id when is_binary(ses_message_id) <-
+               get_in(ses_message, ["mail", "messageId"]),
+             message = %Message{} <- Repo.get_by(Message, receipt: ses_message_id) do
           conn
+          |> assign(:ses_message, ses_message)
           |> assign(:message, message)
-          |> assign(:recipient, recipient)
         else
           _ ->
             conn |> send_resp(404, "") |> halt()

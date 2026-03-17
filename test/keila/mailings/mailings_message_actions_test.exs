@@ -1,70 +1,70 @@
-defmodule Keila.Mailings.MailingsRecipientActionsTest do
+defmodule Keila.Mailings.MailingsMessageActionsTest do
   use Keila.DataCase, async: true
   alias Keila.Mailings
   alias Keila.Contacts
 
   @tag :mailings
-  test "Handle recipient actions" do
+  test "Handle message actions" do
     group = insert!(:group)
     project = insert!(:project, group: group)
     campaign = insert!(:mailings_campaign, project_id: project.id)
 
     contact = insert!(:contact, project_id: project.id)
-    recipient = insert!(:mailings_recipient, contact_id: contact.id, campaign_id: campaign.id)
+    message = insert!(:message, contact_id: contact.id, campaign_id: campaign.id)
 
-    Mailings.handle_recipient_open(recipient.id)
-    assert Mailings.get_recipient(recipient.id).opened_at
+    Mailings.handle_message_open(message.id)
+    assert Mailings.get_message(message.id).opened_at
 
-    Mailings.handle_recipient_click(recipient.id)
-    assert Mailings.get_recipient(recipient.id).clicked_at
+    Mailings.handle_message_click(message.id)
+    assert Mailings.get_message(message.id).clicked_at
 
-    Mailings.handle_recipient_soft_bounce(recipient.id, %{})
-    assert Mailings.get_recipient(recipient.id).soft_bounce_received_at
+    Mailings.handle_message_soft_bounce(message.id, %{})
+    assert Mailings.get_message(message.id).soft_bounce_received_at
 
-    Mailings.handle_recipient_hard_bounce(recipient.id, %{})
-    assert Mailings.get_recipient(recipient.id).hard_bounce_received_at
+    Mailings.handle_message_hard_bounce(message.id, %{})
+    assert Mailings.get_message(message.id).hard_bounce_received_at
     assert Contacts.get_contact(contact.id).status == :unreachable
 
-    Mailings.unsubscribe_recipient(recipient.id)
-    assert Mailings.get_recipient(recipient.id).unsubscribed_at
+    Mailings.unsubscribe_from_message(message.id)
+    assert Mailings.get_message(message.id).unsubscribed_at
     assert Contacts.get_contact(contact.id).status == :unsubscribed
   end
 
-  test "Three soft bounces in the last five recipients mark contact as unreachable" do
+  test "Three soft bounces in the last five messages mark contact as unreachable" do
     group = insert!(:group)
     project = insert!(:project, group: group)
     campaign = insert!(:mailings_campaign, project_id: project.id)
 
     contact = insert!(:contact, project_id: project.id)
 
-    recipient =
-      insert!(:mailings_recipient,
+    message =
+      insert!(:message,
         contact_id: contact.id,
         campaign_id: campaign.id,
         sent_at: mins_ago(5)
       )
 
-    Mailings.handle_recipient_soft_bounce(recipient.id, %{})
+    Mailings.handle_message_soft_bounce(message.id, %{})
     assert %{status: :active} = Repo.reload(contact)
 
-    recipient =
-      insert!(:mailings_recipient,
+    message =
+      insert!(:message,
         contact_id: contact.id,
         campaign_id: campaign.id,
         sent_at: mins_ago(4)
       )
 
-    Mailings.handle_recipient_soft_bounce(recipient.id, %{})
+    Mailings.handle_message_soft_bounce(message.id, %{})
     assert %{status: :active} = Repo.reload(contact)
 
-    recipient =
-      insert!(:mailings_recipient,
+    message =
+      insert!(:message,
         contact_id: contact.id,
         campaign_id: campaign.id,
         sent_at: mins_ago(3)
       )
 
-    Mailings.handle_recipient_soft_bounce(recipient.id, %{})
+    Mailings.handle_message_soft_bounce(message.id, %{})
     assert %{status: :unreachable} = Repo.reload(contact)
   end
 

@@ -5,12 +5,12 @@ defmodule KeilaWeb.TrackingController do
   @spec track_open(Conn.t(), map()) :: Conn.t()
   def track_open(conn, %{
         "encoded_url" => encoded_url,
-        "recipient_id" => recipient_id,
+        "message_id" => message_id,
         "hmac" => hmac
       }) do
     opts = [user_agent: conn |> get_req_header("user-agent") |> List.first()]
 
-    case Tracking.track_open_and_get_link(encoded_url, recipient_id, hmac, opts) do
+    case Tracking.track_open_and_get_link(encoded_url, message_id, hmac, opts) do
       {:ok, url} -> redirect(conn, external: url)
       :error -> put_status(conn, 404) |> halt()
     end
@@ -21,14 +21,14 @@ defmodule KeilaWeb.TrackingController do
         conn,
         %{
           "encoded_url" => encoded_url,
-          "recipient_id" => recipient_id,
+          "message_id" => message_id,
           "hmac" => hmac,
           "link_id" => link_id
         }
       ) do
     opts = [user_agent: conn |> get_req_header("user-agent") |> List.first()]
 
-    case Tracking.track_click_and_get_link(encoded_url, recipient_id, link_id, hmac, opts) do
+    case Tracking.track_click_and_get_link(encoded_url, message_id, link_id, hmac, opts) do
       {:ok, url} -> redirect(conn, external: url)
       :error -> put_status(conn, 404) |> halt()
     end

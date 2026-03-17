@@ -1,6 +1,7 @@
-defmodule Keila.Mailings.SendDoubleOptInMailWorkerTest do
+defmodule Keila.Mailings.DoubleOptInMessageTest do
   use Keila.DataCase, async: true
-  alias Keila.Mailings.SendDoubleOptInMailWorker
+  alias Keila.Mailings.DoubleOptInMessage
+  alias Keila.Mailings.Message
   require Keila
 
   setup do
@@ -9,13 +10,13 @@ defmodule Keila.Mailings.SendDoubleOptInMailWorkerTest do
     Keila.Accounts.set_user_account(user.id, account.id)
     {:ok, project} = Keila.Projects.create_project(user.id, %{name: "DOI Test"})
 
-    %{project: project}
+    %{project: project, account: account}
   end
 
-  describe "perform/1" do
+  describe "deliver/1" do
     @describetag :double_opt_in
     @email "test@example.com"
-    test "sends double-opt-in email", %{project: project} do
+    test "creates a ready message for double-opt-in email", %{project: project} do
       sender =
         insert!(:mailings_sender,
           project_id: project.id,
@@ -38,27 +39,32 @@ defmodule Keila.Mailings.SendDoubleOptInMailWorkerTest do
 
       Keila.if_cloud do
         # Account needs to be active
-        assert {:cancel, _} =
-                 %Oban.Job{args: %{"form_params_id" => form_params.id}}
-                 |> SendDoubleOptInMailWorker.perform()
+        assert {:error, _} = DoubleOptInMessage.deliver(form_params.id)
 
         account = Keila.Repo.one(Keila.Accounts.Account)
         KeilaCloud.Accounts.update_account_status(account.id, :active)
 
-        assert {:ok, _} =
-                 %Oban.Job{args: %{"form_params_id" => form_params.id}}
-                 |> SendDoubleOptInMailWorker.perform()
+        assert {:ok, message} = DoubleOptInMessage.deliver(form_params.id)
       else
-        assert {:ok, _} =
-                 %Oban.Job{args: %{"form_params_id" => form_params.id}}
-                 |> SendDoubleOptInMailWorker.perform()
+        assert {:ok, message} = DoubleOptInMessage.deliver(form_params.id)
       end
+
+      message = Keila.Repo.get!(Message, message.id)
+
+      assert message.status == :ready
+      assert message.priority == 10
+      assert message.recipient_email == @email
+      assert message.project_id == project.id
+      assert message.sender_id == sender.id
+      assert message.form_id == form.id
+      assert message.form_params_id == form_params.id
+      assert message.subject
+      assert message.html_body
+      assert message.text_body
 
       hmac = Keila.Contacts.double_opt_in_hmac(form.id, form_params.id)
 
-      {:email, email} = assert_received({:email, %{to: [{"", @email}]}})
-
-      assert email.text_body =~
+      assert message.text_body =~
                KeilaWeb.Router.Helpers.public_form_url(
                  KeilaWeb.Endpoint,
                  :double_opt_in,

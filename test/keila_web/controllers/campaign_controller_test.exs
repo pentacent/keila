@@ -284,6 +284,9 @@ defmodule KeilaWeb.CampaignControllerTest do
   describe "LV /projects/:p_id/campaigns/:id/stats" do
     @tag :campaign_controller
     test "shows delivery progress and success message", %{conn: conn} do
+      {:ok, scheduler} = Keila.Mailings.Scheduler.start_link(name: nil)
+      Ecto.Adapters.SQL.Sandbox.allow(Keila.Repo, self(), scheduler)
+
       {conn, project} = with_login_and_project(conn)
 
       campaign =
@@ -299,8 +302,9 @@ defmodule KeilaWeb.CampaignControllerTest do
       {:ok, lv, html} = live(conn)
       assert html =~ "This campaign is currently being sent out."
 
-      Oban.drain_queue(queue: :mailer_scheduler)
-      Oban.drain_queue(queue: :mailer, with_scheduled: true)
+      Oban.drain_queue(queue: :campaign_renderer)
+      Mailings.Scheduler.schedule(scheduler)
+      Oban.drain_queue(queue: :mailer)
       :timer.sleep(1500)
 
       assert render(lv) =~

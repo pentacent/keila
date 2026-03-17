@@ -175,8 +175,8 @@ defmodule KeilaWeb.Router do
 
     get "/forms/:id", PublicFormController, :show
     post "/forms/:id", PublicFormController, :submit
-    get "/unsubscribe/:project_id/:recipient_id/:hmac", PublicFormController, :unsubscribe
-    post "/unsubscribe/:project_id/:recipient_id/:hmac", PublicFormController, :unsubscribe
+    get "/unsubscribe/:project_id/:message_id/:hmac", PublicFormController, :unsubscribe
+    post "/unsubscribe/:project_id/:message_id/:hmac", PublicFormController, :unsubscribe
     get "/double-opt-in/:form_id/:form_params_id/:hmac", PublicFormController, :double_opt_in
     post "/double-opt-in/:form_id/:form_params_id/:hmac", PublicFormController, :double_opt_in
 
@@ -188,8 +188,8 @@ defmodule KeilaWeb.Router do
          PublicFormController,
          :cancel_double_opt_in
 
-    get "/r/:encoded_url/:recipient_id/:hmac", TrackingController, :track_open
-    get "/c/:encoded_url/:recipient_id/:link_id/:hmac", TrackingController, :track_click
+    get "/r/:encoded_url/:message_id/:hmac", TrackingController, :track_open
+    get "/c/:encoded_url/:message_id/:link_id/:hmac", TrackingController, :track_click
 
     get "/archive/:id", PublicCampaignController, :show
 
