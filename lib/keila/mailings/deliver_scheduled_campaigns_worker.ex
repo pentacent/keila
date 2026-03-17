@@ -1,4 +1,4 @@
-defmodule Keila.Mailings.CampaignSchedulerWorker do
+defmodule Keila.Mailings.DeliverScheduledCampaignsWorker do
   use Oban.Worker, queue: :campaign_scheduler
   alias Keila.Mailings
 
