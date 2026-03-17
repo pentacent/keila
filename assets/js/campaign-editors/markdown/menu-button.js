@@ -1,5 +1,3 @@
-import { toggleClass } from "./helpers"
-
 /** Class for handling editor buttons. */
 export class MenuButton {
   /**
@@ -26,16 +24,19 @@ export class MenuButton {
   }
 
   update(editorState) {
+    // NOTE: This function gets called on every keystroke.
+    // It needs to be fast. Maybe debounce it in the future.
+
     const isActive = this.isActive(editorState)
-    toggleClass(this.dom, "bg-emerald-300", isActive)
+    this.dom.classList.toggle("bg-emerald-300", isActive)
 
     const isEnabled = this.isEnabled(editorState)
-    toggleClass(this.dom, "bg-gray-100", !isEnabled)
-    toggleClass(this.dom, "text-gray-400", !isEnabled)
-    toggleClass(this.dom, "pointer-events-none", !isEnabled)
+    this.dom.classList.toggle("bg-gray-100", !isEnabled)
+    this.dom.classList.toggle("text-gray-400", !isEnabled)
+    this.dom.classList.toggle("pointer-events-none", !isEnabled)
 
     const isVisible = this.isVisible(editorState)
-    toggleClass(this.dom, "hidden", !isVisible)
+    this.dom.classList.toggle("hidden", !isVisible)
   }
 
   exec(editorView) {
