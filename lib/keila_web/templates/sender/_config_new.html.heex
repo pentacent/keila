@@ -44,7 +44,7 @@
         <div class="tab-content">
           {render_sender_adapter_form(fc, adapter)}
 
-          <div class="form-row">
+          <div class="form-row mt-5">
             <% id = "rate_limit_per_second_#{adapter}" %>
             {label(fc, :rate_limit_per_second, gettext("Rate limit per second"), for: id)}
             <%= with_validation(fc, :rate_limit_per_second) do %>

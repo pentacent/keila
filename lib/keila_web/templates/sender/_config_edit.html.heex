@@ -8,7 +8,7 @@
     render_sender_adapter_form(fc, @sender.config.type)
   end}
 
-  <div class="form-row">
+  <div class="form-row mt-5">
     {label(fc, :rate_limit_per_second, gettext("Rate limit per second"))}
     <%= with_validation(fc, :rate_limit_per_second) do %>
       {number_input(fc, :rate_limit_per_second, class: "text-black", min: 0)}
