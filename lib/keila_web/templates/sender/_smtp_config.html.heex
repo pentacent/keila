@@ -1,14 +1,17 @@
-<div class="form-row">
-  {label(@form, :smtp_relay, gettext("Server"))}
-  <%= with_validation(@form, :smtp_relay) do %>
-    {text_input(@form, :smtp_relay,
-      placeholder: gettext("mail.example.org"),
-      class: "text-black"
-    )}
-  <% end %>
-</div>
+<div
+  x-data={"{ smtpAuthMethod: '#{input_value(@form, :smtp_auth_method) || "password"}', showPasswordField: false, port: '#{input_value(@form, :smtp_port) || "465"}' }"}
+  x-init="$watch('showPasswordField', showPasswordField => { $nextTick(() => { if (showPasswordField) $refs.password.focus() }) })"
+>
+  <div class="form-row">
+    {label(@form, :smtp_relay, gettext("Server"))}
+    <%= with_validation(@form, :smtp_relay) do %>
+      {text_input(@form, :smtp_relay,
+        placeholder: gettext("mail.example.org"),
+        class: "text-black"
+      )}
+    <% end %>
+  </div>
 
-<div x-data={"{ smtpAuthMethod: '#{input_value(@form, :smtp_auth_method) || "password"}' }"}>
   <div class="form-row">
     {label(@form, :smtp_auth_method, gettext("Authentication"))}
     <%= with_validation(@form, :smtp_auth_method) do %>
@@ -46,69 +49,70 @@
             @form,
             :smtp_password,
             class: "text-black",
-            phx_update: :ignore,
-            "x-bind:disabled": "smtpAuthMethod !== 'password'"
+            phx_update: "ignore"
           )}
         <% end %>
       </div>
     <% else %>
-      <div
-        x-data="{ show: false }"
-        x-init="$watch('show', show => { $nextTick(() => { if (show) $refs.password.focus() }) })"
-        class="form-row"
-      >
+      <div class="form-row mt-2">
         <div class="flex gap-5">
           {label(@form, :smtp_password, gettext("Password"))}
           <label>
             <input
+              id="show-password-checkbox"
               type="checkbox"
-              x-model="show"
-              x-bind:disabled="smtpAuthMethod !== 'password'"
+              x-model="showPasswordField"
+              phx-update="ignore"
             />
             {gettext("Change")}
           </label>
         </div>
 
-        <template x-if="show">
+        <template x-if="showPasswordField">
           <%= with_validation(@form, :smtp_password) do %>
-            {password_input(
-              @form,
-              :smtp_password,
-              class: "text-black",
-              x_ref: "password",
-              "x-bind:disabled": "smtpAuthMethod !== 'password'"
-            )}
+            <div id="test" phx_update="ignore">
+              {password_input(
+                @form,
+                :smtp_password,
+                class: "text-black",
+                x_ref: "password",
+                phx_update: "ignore"
+              )}
+            </div>
           <% end %>
         </template>
       </div>
     <% end %>
   </div>
-</div>
 
-<div class="form-row">
-  {label(@form, :smtp_tls_mode, gettext("Connection security"))}
-  <%= with_validation(@form, :smtp_tls_mode) do %>
-    <%= label(@form, :smtp_tls_mode) do %>
-      {select(
-        @form,
-        :smtp_tls_mode,
-        [
-          {gettext("SSL/TLS"), "tls"},
-          {gettext("STARTTLS"), "starttls"},
-          {gettext("None"), "none"}
-        ],
-        phx_update: :ignore,
-        "x-ref": "smtpTlsMode",
-        "x-on:change":
-          "switch ($refs.smtpTlsMode.value) {case 'tls': $refs.smtpPort.value = '465';break; case 'starttls': $refs.smtpPort.value = '587';break}"
-      )}
+  <div class="form-row mt-5">
+    {label(@form, :smtp_tls_mode, gettext("Connection security"))}
+    <%= with_validation(@form, :smtp_tls_mode) do %>
+      <%= label(@form, :smtp_tls_mode) do %>
+        {select(
+          @form,
+          :smtp_tls_mode,
+          [
+            {gettext("SSL/TLS"), "tls"},
+            {gettext("STARTTLS"), "starttls"},
+            {gettext("None"), "none"}
+          ],
+          "x-ref": "smtpTlsMode",
+          "x-on:change":
+            "switch ($refs.smtpTlsMode.value) {case 'tls': port = '465'; break; case 'starttls': port = '587'; break}"
+        )}
+      <% end %>
     <% end %>
-  <% end %>
-</div>
 
-<div class="form-row">
-  {label(@form, :smtp_port, gettext("Port"))}
-  <%= with_validation(@form, :smtp_port) do %>
-    {number_input(@form, :smtp_port, class: "text-black", "x-ref": "smtpPort")}
-  <% end %>
+    <div class="form-row">
+      {label(@form, :smtp_port, gettext("Port"))}
+      <%= with_validation(@form, :smtp_port) do %>
+        {number_input(@form, :smtp_port,
+          class: "text-black",
+          "x-model": "port",
+          phx_update: "ignore"
+        )}
+      <% end %>
+    </div>
+  </div>
 </div>
