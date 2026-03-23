@@ -208,17 +208,22 @@ defmodule Keila.Templates.Html do
   end
 
   defp do_apply_email_markup({"img", img_attrs, _}) do
+    img_attrs =
+      Map.new(img_attrs)
+      |> Map.put_new("width", "100%")
+      |> Map.to_list()
+
     {"table", [{"style", "width: 100%"}],
      [
        {"tr", [{"class", "block--image"}],
         [
-          {"td", [],
+          {"td", [{"style", "padding: 0;"}],
            [
              {"img",
               img_attrs ++
                 [
-                  {"width", "100%"},
-                  {"style", "display:block; max-width:100%!important; height: auto!important;"},
+                  {"style",
+                   "display:block; max-width:100%!important; height: auto!important; margin: auto"},
                   {"class", "g-img"}
                 ], []}
            ]}

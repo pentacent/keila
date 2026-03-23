@@ -1,18 +1,6 @@
 import { setBlockType } from "prosemirror-commands"
 import { schema } from "./markdown-schema"
 
-/** Toggles a DOM class. This function operates on plain DOM, not ProseMirror. */
-export function toggleClass(dom, className, enabled) {
-  if (enabled) {
-    const classNames = dom.className.split(" ")
-    if (!classNames.find(name => name == classNames)) {
-      dom.className = dom.className + " " + className
-    }
-  } else {
-    dom.className = dom.className.split(" ").filter(name => name != className).join(" ")
-  }
-}
-
 /**
  * Toggle ProseMirror node types for selected text blocks.
  * Reverts to paragraph type if type is already active.
