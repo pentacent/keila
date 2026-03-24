@@ -208,10 +208,6 @@ msgstr "Cambia Password"
 msgid "Check your sending quota now"
 msgstr "Controlla la tua quota di invio ora"
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:81
-msgid "Check your subscription now"
-msgstr "Controlla il tuo abbonamento ora"
-
 #: lib/keila_web/templates/campaign/stats_live.html.heex:352
 msgid "Click rate"
 msgstr "Tasso di click"
@@ -673,11 +669,6 @@ msgid "It looks like you don’t yet have any contacts to receive this campaign.
 msgstr ""
 "Sembra che tu non abbia ancora nessun contatto che riceva questa campagna."
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:72
-msgid ""
-"It looks like you’ve already used up the email quota from your subscription."
-msgstr "Sembra che tu abbia usato tutta la quota di email del tuo abbonamento."
-
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:11
 msgid "Italics"
 msgstr "Corsivo"
@@ -851,10 +842,6 @@ msgstr "Password"
 msgid "Please contact an administrator."
 msgstr "Contatta un amministratore."
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:52
-msgid "Please start a subscription before sending your first campaign."
-msgstr "Attiva un abbonamento prima di inviare la tua prima campagna."
-
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:163
 #: lib/keila_web/templates/campaign/_markdown_editor.html.heex:27
 #: lib/keila_web/templates/campaign/_mjml_editor.html.heex:21
@@ -1004,12 +991,6 @@ msgstr "Link firma"
 msgid "Start Import"
 msgstr "Inizia Importazione"
 
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:272
-#: lib/keila_web/templates/campaign/stats_live.html.heex:59
-#: lib/keila_web/templates/form/edit_live.html.heex:496
-msgid "Start your subscription now"
-msgstr "Inizia il tuo abbonamento ora"
-
 #: lib/keila_web/templates/campaign/index.html.heex:74
 msgid "Stats"
 msgstr "Statistiche"
@@ -1060,10 +1041,6 @@ msgstr "Solo testo"
 #: lib/keila/contacts/contacts.ex:273
 msgid "Thank you for signing up!"
 msgstr "Grazie per esserti iscritto!"
-
-#: lib/keila_web/templates/account/await_subscription_live.html.heex:22
-msgid "Thank you for subscribing to Keila!"
-msgstr "Grazie per esserti iscritto a Keila!"
 
 #: lib/keila_web/templates/sender/verification_success.html.heex:7
 msgid ""
@@ -1215,14 +1192,6 @@ msgstr "Utenti"
 #: lib/keila_web/templates/project/index.html.heex:10
 msgid "Welcome to Keila!"
 msgstr "Benvenuto in Keila!"
-
-#: lib/keila_web/templates/account/await_subscription_live.html.heex:26
-msgid ""
-"We’re currently processing your subscription. This shouldn’t take longer "
-"than a minute …"
-msgstr ""
-"Stiamo attualmente processando il tuo abbonamento. Non dovrebbe volerci più "
-"di un minuto …"
 
 #: lib/keila_web/templates/account/edit.html.heex:15
 msgid "You currently have an active subscription. Thanks for supporting Keila!"
@@ -2310,15 +2279,6 @@ msgstr "Conferma il tuo indirizzo email"
 msgid "Require double opt-in"
 msgstr "Richiesta doppia adesione"
 
-#: lib/keila_web/templates/form/edit_live.html.heex:490
-msgid ""
-"To prevent abuse by spammers, the double opt-in feature is currently only "
-"available if you have a subscription. Sorry for the inconvenience!"
-msgstr ""
-"Per prevenire abusi dagli spammers, la caratteristica di doppia adesione è "
-"attualmente disponibile solo se hai un abbonamento. Spiacenti per "
-"l'inconveniente!"
-
 #: lib/keila_web/views/public_form_view.ex:338
 msgid ""
 "We’ve just sent an email to %{email}. Please click the link in that email to "
@@ -2880,14 +2840,6 @@ msgstr ""
 msgid "There was an error sending the preview campaign."
 msgstr "Si è verificato un errore inviando l'anteprima della campagna."
 
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:251
-msgid ""
-"To prevent abuse by spammers, sending emails is only possible if you have an "
-"active subscription."
-msgstr ""
-"Per prevenire l'abuso degli spammer l'invio delle email è possibile solo se "
-"hai un abbonamento attivo."
-
 #: lib/keila_web/live/campaign_edit_live.ex:216
 msgid "You must select a sender first."
 msgstr "Devi selezionare un mittente prima."
@@ -3132,14 +3084,6 @@ msgstr ""
 "Questo è il nome che sarà mostrato nella posta in arrivo dei tuoi "
 "destinatari."
 
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:223
-msgid ""
-"To prevent abuse by spammers, sending emails is only possible once your "
-"onboarding has been completed."
-msgstr ""
-"Per prevenire abusi dagli spammer l'invio di email è possibile solo dopo che "
-"l'onboarding sarà completato."
-
 #: lib/keila_web/live/segment_edit_live.ex:64
 msgid "bounced"
 msgstr "rimbalzato"
@@ -3218,10 +3162,6 @@ msgstr ""
 #: lib/keila_web/templates/sender/edit_live.html.heex:72
 msgid "Resend email"
 msgstr "Invia nuovamente mail"
-
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:245
-msgid "Review account information"
-msgstr "Verifica informazioni account"
 
 #: lib/keila_web/templates/sender/edit_live.html.heex:53
 msgid ""

@@ -196,11 +196,6 @@ msgstr "Cambiar"
 msgid "Change Password"
 msgstr "Cambiar contraseña"
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:80
-#, elixir-autogen, elixir-format
-msgid "Check your subscription now"
-msgstr "Comprueba ahora tu suscripción"
-
 #: lib/keila_web/templates/campaign/stats_live.html.heex:352
 #, elixir-autogen, elixir-format
 msgid "Click rate"
@@ -749,11 +744,6 @@ msgstr "Texto de introducción"
 msgid "It looks like you don’t yet have any contacts to receive this campaign."
 msgstr "Parece que aún no tienes contactos para recibir esta campaña."
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:71
-#, elixir-autogen, elixir-format
-msgid "It looks like you’ve already used up the email quota from your subscription."
-msgstr "Parece que ya has agotado la cuota de correo de tu suscripción."
-
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "Italics"
@@ -961,11 +951,6 @@ msgstr "Contraseña"
 msgid "Please contact an administrator."
 msgstr "Por favor contacta a un administrador."
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:51
-#, elixir-autogen, elixir-format
-msgid "Please start a subscription before sending your first campaign."
-msgstr "Por favor inicia una suscripción antes de enviar tu primera campaña."
-
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:163
 #: lib/keila_web/templates/campaign/_markdown_editor.html.heex:25
 #: lib/keila_web/templates/campaign/_mjml_editor.html.heex:21
@@ -1142,14 +1127,6 @@ msgstr "Enlaces de firma"
 msgid "Start Import"
 msgstr "Iniciar importación"
 
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:272
-#: lib/keila_web/templates/campaign/stats_live.html.heex:58
-#: lib/keila_web/templates/form/edit_live.html.heex:525
-#: lib/keila_web/templates/form/edit_live.html.heex:674
-#, elixir-autogen, elixir-format
-msgid "Start your subscription now"
-msgstr "Inicia tu suscripción ahora"
-
 #: lib/keila_web/templates/campaign/index.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "Stats"
@@ -1200,11 +1177,6 @@ msgstr "Solo texto"
 #, elixir-autogen, elixir-format
 msgid "Thank you for signing up!"
 msgstr "¡Gracias por registrarte!"
-
-#: extra/keila_cloud_web/templates/cloud_account/await_subscription_live.html.heex:22
-#, elixir-autogen, elixir-format
-msgid "Thank you for subscribing to Keila!"
-msgstr "¡Gracias por suscribirte a Keila!"
 
 #: lib/keila_web/templates/sender/verification_success.html.heex:7
 #, elixir-autogen, elixir-format
@@ -1349,11 +1321,6 @@ msgstr "Usuarios"
 #, elixir-autogen, elixir-format
 msgid "Welcome to Keila!"
 msgstr "¡Bienvenido a Keila!"
-
-#: extra/keila_cloud_web/templates/cloud_account/await_subscription_live.html.heex:26
-#, elixir-autogen, elixir-format
-msgid "We’re currently processing your subscription. This shouldn’t take longer than a minute …"
-msgstr "Estamos procesando tu suscripción. Esto no debería tomar más de un minuto…"
 
 #: lib/keila_web/views/public_form_view.ex:351
 #, elixir-autogen, elixir-format
@@ -2441,11 +2408,6 @@ msgstr "Por favor confirma tu dirección de correo electrónico"
 msgid "Require double opt-in"
 msgstr "Requerir doble opt-in"
 
-#: lib/keila_web/templates/form/edit_live.html.heex:519
-#, elixir-autogen, elixir-format
-msgid "To prevent abuse by spammers, the double opt-in feature is currently only available if you have a subscription. Sorry for the inconvenience!"
-msgstr "Para prevenir abusos de spammers, la función de doble opt-in está disponible actualmente solo si tienes una suscripción. ¡Disculpa las molestias!"
-
 #: lib/keila_web/views/public_form_view.ex:338
 #, elixir-autogen, elixir-format
 msgid "We’ve just sent an email to %{email}. Please click the link in that email to confirm your subscription."
@@ -3046,11 +3008,6 @@ msgstr "El ID externo permite actualizar el perfil del contacto desde una fuente
 msgid "There was an error sending the preview campaign."
 msgstr "Hubo un error al enviar la campaña de vista previa."
 
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:251
-#, elixir-autogen, elixir-format
-msgid "To prevent abuse by spammers, sending emails is only possible if you have an active subscription."
-msgstr "Para prevenir abusos de spammers, el envío de correos solo es posible si tienes una suscripción activa."
-
 #: lib/keila_web/live/campaign_edit_live.ex:217
 #, elixir-autogen, elixir-format
 msgid "You must select a sender first."
@@ -3308,11 +3265,6 @@ msgstr "Este es el nombre interno de tu remitente. No se muestra a tus destinata
 msgid "This is the name that will show up in the inbox of your recipients."
 msgstr "Este es el nombre que aparecerá en la bandeja de entrada de tus destinatarios."
 
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:223
-#, elixir-autogen, elixir-format
-msgid "To prevent abuse by spammers, sending emails is only possible once your onboarding has been completed."
-msgstr "Para prevenir abusos de spammers, el envío de correos solo es posible una vez que se haya completado tu proceso de incorporación."
-
 #: lib/keila_web/live/segment_edit_live.ex:64
 #, elixir-autogen, elixir-format
 msgid "bounced"
@@ -3389,11 +3341,6 @@ msgstr "1. Descarga la plantilla.\n2. Completa la plantilla de la misma manera q
 msgid "Resend email"
 msgstr "Reenviar correo electrónico"
 
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:245
-#, elixir-autogen, elixir-format
-msgid "Review account information"
-msgstr "Revisar información de la cuenta"
-
 #: lib/keila/mailings/double_opt_in_email_builder.ex:74
 #, elixir-autogen, elixir-format
 msgid "# Email Confirmation\n\nPlease click here to confirm your subscription:\n\n#### [Confirm subscription]({{ double_opt_in_link }})\n"
@@ -3436,11 +3383,6 @@ msgstr "Enviar correo de bienvenida"
 #, elixir-autogen, elixir-format
 msgid "This will allow anyone who has the public link to access your campaign after it's been sent."
 msgstr "Esto permitirá que cualquier persona con el enlace público pueda acceder a tu campaña después de que se haya enviado."
-
-#: lib/keila_web/templates/form/edit_live.html.heex:668
-#, elixir-autogen, elixir-format
-msgid "To prevent abuse by spammers, the welcome email feature is currently only available if you have a subscription. Sorry for the inconvenience!"
-msgstr "Para prevenir abusos de spammers, la función de correo de bienvenida está disponible actualmente solo si tienes una suscripción. ¡Disculpa las molestias!"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:103
 #, elixir-autogen, elixir-format

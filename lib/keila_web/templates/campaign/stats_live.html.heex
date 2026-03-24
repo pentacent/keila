@@ -48,14 +48,17 @@
                     {gettext("Thanks for trying out Keila!")}
                   </p>
                   <p>
-                    {gettext("Please start a subscription before sending your first campaign.")}
+                    {dgettext(
+                      "cloud",
+                      "Please start a subscription before sending your first campaign."
+                    )}
                   </p>
                   <p class="mt-4">
                     <a
                       href={Routes.account_path(@socket, :edit)}
                       class="button button--large button--cta"
                     >
-                      {gettext("Start your subscription now")}
+                      {dgettext("cloud", "Start your subscription now")}
                     </a>
                   </p>
                 </div>
@@ -68,8 +71,9 @@
                     {gettext("Insufficient email quota.")}
                   </p>
                   <p>
-                    {gettext(
-                      "It looks like you’ve already used up the email quota from your subscription."
+                    {dgettext(
+                      "cloud",
+                      "It looks like you've already used up the email quota from your subscription."
                     )}
                   </p>
                   <p class="mt-4">
@@ -77,7 +81,7 @@
                       href={Routes.account_path(@socket, :edit)}
                       class="button button--large button--cta"
                     >
-                      {gettext("Check your subscription now")}
+                      {dgettext("cloud", "Check your subscription now")}
                     </a>
                   </p>
                 </div>

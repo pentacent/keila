@@ -516,13 +516,14 @@
           </p>
         </div>
         <p>
-          {gettext(
+          {dgettext(
+            "cloud",
             "To prevent abuse by spammers, the double opt-in feature is currently only available if you have a subscription. Sorry for the inconvenience!"
           )}
         </p>
         <p>
           <a href={Routes.account_path(@socket, :edit)} class="button button--large button--cta">
-            {gettext("Start your subscription now")}
+            {dgettext("cloud", "Start your subscription now")}
           </a>
         </p>
       <% end %>
@@ -665,13 +666,14 @@
           </p>
         </div>
         <p>
-          {gettext(
+          {dgettext(
+            "cloud",
             "To prevent abuse by spammers, the welcome email feature is currently only available if you have a subscription. Sorry for the inconvenience!"
           )}
         </p>
         <p>
           <a href={Routes.account_path(@socket, :edit)} class="button button--large button--cta">
-            {gettext("Start your subscription now")}
+            {dgettext("cloud", "Start your subscription now")}
           </a>
         </p>
       <% end %>

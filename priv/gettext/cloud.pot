@@ -15,7 +15,7 @@ msgstr ""
 msgid "Account Verification"
 msgstr ""
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:173
+#: lib/keila_web/templates/campaign/stats_live.html.heex:177
 #, elixir-autogen, elixir-format
 msgid "Account not activated"
 msgstr ""
@@ -192,7 +192,7 @@ msgstr ""
 msgid "Nice to meet you, %{given_name}!"
 msgstr ""
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:176
+#: lib/keila_web/templates/campaign/stats_live.html.heex:180
 #, elixir-autogen, elixir-format
 msgid "Once you have provided the necessary details, we will perform a manual review of your account. This usually takes less than one working day.\n\nIf you have any questions, please reach out to our support at [%{support_email}](mailto:%{support_email}).\n"
 msgstr ""
@@ -332,7 +332,7 @@ msgstr ""
 msgid "Until you have verified your domain, emails for this sender will be sent from *%{fallback_email}*. Replies will go to *%{from_email}*."
 msgstr ""
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:192
+#: lib/keila_web/templates/campaign/stats_live.html.heex:196
 #: lib/keila_web/templates/layout/app.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Update account information"
@@ -526,4 +526,62 @@ msgstr ""
 #: extra/keila_cloud_web/components/subscription_status.ex:205
 #, elixir-autogen, elixir-format
 msgid "billed annually"
+msgstr ""
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:84
+#, elixir-autogen, elixir-format
+msgid "Check your subscription now"
+msgstr ""
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:74
+#, elixir-autogen, elixir-format
+msgid "It looks like you've already used up the email quota from your subscription."
+msgstr ""
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Please start a subscription before sending your first campaign."
+msgstr ""
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:274
+#: lib/keila_web/templates/campaign/stats_live.html.heex:61
+#: lib/keila_web/templates/form/edit_live.html.heex:526
+#: lib/keila_web/templates/form/edit_live.html.heex:676
+#, elixir-autogen, elixir-format
+msgid "Start your subscription now"
+msgstr ""
+
+#: extra/keila_cloud_web/templates/cloud_account/await_subscription_live.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Thank you for subscribing to Keila!"
+msgstr ""
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:252
+#, elixir-autogen, elixir-format
+msgid "To prevent abuse by spammers, sending emails is only possible if you have an active subscription."
+msgstr ""
+
+#: lib/keila_web/templates/form/edit_live.html.heex:519
+#, elixir-autogen, elixir-format
+msgid "To prevent abuse by spammers, the double opt-in feature is currently only available if you have a subscription. Sorry for the inconvenience!"
+msgstr ""
+
+#: lib/keila_web/templates/form/edit_live.html.heex:669
+#, elixir-autogen, elixir-format
+msgid "To prevent abuse by spammers, the welcome email feature is currently only available if you have a subscription. Sorry for the inconvenience!"
+msgstr ""
+
+#: extra/keila_cloud_web/templates/cloud_account/await_subscription_live.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "We're currently processing your subscription. This shouldn't take longer than a minute …"
+msgstr ""
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:246
+#, elixir-autogen, elixir-format
+msgid "Review account information"
+msgstr ""
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:223
+#, elixir-autogen, elixir-format
+msgid "To prevent abuse by spammers, sending emails is only possible once your onboarding has been completed."
 msgstr ""

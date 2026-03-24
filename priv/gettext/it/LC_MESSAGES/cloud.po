@@ -444,3 +444,63 @@ msgstr "http://esempio.com"
 #: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:45
 msgid "newsletter@example.com"
 msgstr "newsletter@esempio.com"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:81
+msgid "Check your subscription now"
+msgstr "Controlla il tuo abbonamento ora"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:72
+msgid ""
+"It looks like you’ve already used up the email quota from your subscription."
+msgstr "Sembra che tu abbia usato tutta la quota di email del tuo abbonamento."
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:52
+msgid "Please start a subscription before sending your first campaign."
+msgstr "Attiva un abbonamento prima di inviare la tua prima campagna."
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:272
+#: lib/keila_web/templates/campaign/stats_live.html.heex:59
+#: lib/keila_web/templates/form/edit_live.html.heex:496
+msgid "Start your subscription now"
+msgstr "Inizia il tuo abbonamento ora"
+
+#: lib/keila_web/templates/account/await_subscription_live.html.heex:22
+msgid "Thank you for subscribing to Keila!"
+msgstr "Grazie per esserti iscritto a Keila!"
+
+#: lib/keila_web/templates/account/await_subscription_live.html.heex:26
+msgid ""
+"We’re currently processing your subscription. This shouldn’t take longer "
+"than a minute …"
+msgstr ""
+"Stiamo attualmente processando il tuo abbonamento. Non dovrebbe volerci più "
+"di un minuto …"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:490
+msgid ""
+"To prevent abuse by spammers, the double opt-in feature is currently only "
+"available if you have a subscription. Sorry for the inconvenience!"
+msgstr ""
+"Per prevenire abusi dagli spammers, la caratteristica di doppia adesione è "
+"attualmente disponibile solo se hai un abbonamento. Spiacenti per "
+"l'inconveniente!"
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:251
+msgid ""
+"To prevent abuse by spammers, sending emails is only possible if you have an "
+"active subscription."
+msgstr ""
+"Per prevenire l'abuso degli spammer l'invio delle email è possibile solo se "
+"hai un abbonamento attivo."
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:223
+msgid ""
+"To prevent abuse by spammers, sending emails is only possible once your "
+"onboarding has been completed."
+msgstr ""
+"Per prevenire abusi dagli spammer l'invio di email è possibile solo dopo che "
+"l'onboarding sarà completato."
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:245
+msgid "Review account information"
+msgstr "Verifica informazioni account"

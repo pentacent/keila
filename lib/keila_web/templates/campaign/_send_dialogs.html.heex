@@ -220,7 +220,8 @@
       <%= cond do %>
         <% @onboarding_required -> %>
           <p>
-            {gettext(
+            {dgettext(
+              "cloud",
               "To prevent abuse by spammers, sending emails is only possible once your onboarding has been completed."
             )}
           </p>
@@ -242,13 +243,14 @@
                 @click="$dispatch('x-cancel')"
                 target="_blank"
               >
-                {gettext("Review account information")}
+                {dgettext("cloud", "Review account information")}
               </a>
             <% end %>
           </div>
         <% @subscription_required -> %>
           <p>
-            {gettext(
+            {dgettext(
+              "cloud",
               "To prevent abuse by spammers, sending emails is only possible if you have an active subscription."
             )}
           </p>
@@ -269,7 +271,7 @@
               @click="$dispatch('x-cancel')"
               target="_blank"
             >
-              {gettext("Start your subscription now")}
+              {dgettext("cloud", "Start your subscription now")}
             </a>
           </div>
         <% not is_nil(@send_preview_error) -> %>

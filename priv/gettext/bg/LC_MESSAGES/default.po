@@ -197,11 +197,6 @@ msgstr "Промяна"
 msgid "Change Password"
 msgstr "Промяна на парола"
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:80
-#, elixir-autogen, elixir-format
-msgid "Check your subscription now"
-msgstr "Проверете абонамента си"
-
 #: lib/keila_web/templates/campaign/stats_live.html.heex:352
 #, elixir-autogen, elixir-format
 msgid "Click rate"
@@ -750,11 +745,6 @@ msgstr "Уводен текст"
 msgid "It looks like you don’t yet have any contacts to receive this campaign."
 msgstr "Изглежда, че все още нямате контакти, който да получат тази кампания."
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:71
-#, elixir-autogen, elixir-format
-msgid "It looks like you’ve already used up the email quota from your subscription."
-msgstr "Изглежда, че сте изчерпали имейл квотата от вашия абонамент."
-
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "Italics"
@@ -962,11 +952,6 @@ msgstr "Парола"
 msgid "Please contact an administrator."
 msgstr "Моля, свържете се с администратор."
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:51
-#, elixir-autogen, elixir-format
-msgid "Please start a subscription before sending your first campaign."
-msgstr "Моля, започнете абонамент, преди да изпратите първата си кампания."
-
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:163
 #: lib/keila_web/templates/campaign/_markdown_editor.html.heex:25
 #: lib/keila_web/templates/campaign/_mjml_editor.html.heex:21
@@ -1143,14 +1128,6 @@ msgstr "Връзки за подпис"
 msgid "Start Import"
 msgstr "Импортиране"
 
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:272
-#: lib/keila_web/templates/campaign/stats_live.html.heex:58
-#: lib/keila_web/templates/form/edit_live.html.heex:525
-#: lib/keila_web/templates/form/edit_live.html.heex:674
-#, elixir-autogen, elixir-format
-msgid "Start your subscription now"
-msgstr "Започнете абонамента си сега"
-
 #: lib/keila_web/templates/campaign/index.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "Stats"
@@ -1201,11 +1178,6 @@ msgstr "Само тескст"
 #, elixir-autogen, elixir-format
 msgid "Thank you for signing up!"
 msgstr "Благодарим ви за регистрацията!"
-
-#: extra/keila_cloud_web/templates/cloud_account/await_subscription_live.html.heex:22
-#, elixir-autogen, elixir-format
-msgid "Thank you for subscribing to Keila!"
-msgstr "Благодарим ви за абонирането за Keila!"
 
 #: lib/keila_web/templates/sender/verification_success.html.heex:7
 #, elixir-autogen, elixir-format
@@ -1350,11 +1322,6 @@ msgstr "Потребители"
 #, elixir-autogen, elixir-format
 msgid "Welcome to Keila!"
 msgstr "Добре дошли в Keila!"
-
-#: extra/keila_cloud_web/templates/cloud_account/await_subscription_live.html.heex:26
-#, elixir-autogen, elixir-format
-msgid "We’re currently processing your subscription. This shouldn’t take longer than a minute …"
-msgstr "В момента обработваме вашата абонаментна поръчка. Това не трябва да отнеме повече от минута …"
 
 #: lib/keila_web/views/public_form_view.ex:351
 #, elixir-autogen, elixir-format
@@ -2442,11 +2409,6 @@ msgstr "Моля, потвърдете имейл адреса си"
 msgid "Require double opt-in"
 msgstr "Изискване на двойно потвърждение"
 
-#: lib/keila_web/templates/form/edit_live.html.heex:519
-#, elixir-autogen, elixir-format
-msgid "To prevent abuse by spammers, the double opt-in feature is currently only available if you have a subscription. Sorry for the inconvenience!"
-msgstr "За да предотвратим злоупотребата от спамъри, функцията за двойно потвърждение в момента е достъпна само при наличие на абонамент. Съжаляваме за неудобството!"
-
 #: lib/keila_web/views/public_form_view.ex:338
 #, elixir-autogen, elixir-format
 msgid "We’ve just sent an email to %{email}. Please click the link in that email to confirm your subscription."
@@ -3047,11 +3009,6 @@ msgstr "Външният идентификатор позволява обно�
 msgid "There was an error sending the preview campaign."
 msgstr "Възникна грешка при изпращане на кампанията за преглед."
 
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:251
-#, elixir-autogen, elixir-format
-msgid "To prevent abuse by spammers, sending emails is only possible if you have an active subscription."
-msgstr "За да предотвратим злоупотребата от спамъри, изпращането на имейли е възможно само при наличие на активен абонамент."
-
 #: lib/keila_web/live/campaign_edit_live.ex:217
 #, elixir-autogen, elixir-format
 msgid "You must select a sender first."
@@ -3309,11 +3266,6 @@ msgstr "Това е имейл адресът, от който ще бъдат �
 msgid "This is the name that will show up in the inbox of your recipients."
 msgstr "Това е внутренното име на подателя. То не се показва на получателите."
 
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:223
-#, elixir-autogen, elixir-format
-msgid "To prevent abuse by spammers, sending emails is only possible once your onboarding has been completed."
-msgstr "Това е името, което ще се показва в пощенската кутия на получателите."
-
 #: lib/keila_web/live/segment_edit_live.ex:64
 #, elixir-autogen, elixir-format
 msgid "bounced"
@@ -3390,11 +3342,6 @@ msgstr "1. Изтеглете шаблона.\n2. Попълнете шабло�
 msgid "Resend email"
 msgstr "Изпрати имейл повторно"
 
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:245
-#, elixir-autogen, elixir-format
-msgid "Review account information"
-msgstr "Прегледайте информацията за акаунта си"
-
 #: lib/keila/mailings/double_opt_in_email_builder.ex:74
 #, elixir-autogen, elixir-format
 msgid "# Email Confirmation\n\nPlease click here to confirm your subscription:\n\n#### [Confirm subscription]({{ double_opt_in_link }})\n"
@@ -3437,11 +3384,6 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "This will allow anyone who has the public link to access your campaign after it's been sent."
 msgstr "Това ще позволи на всеки, който има публичния линк, да получи достъп до вашата кампания, след като е изпратена."
-
-#: lib/keila_web/templates/form/edit_live.html.heex:668
-#, elixir-autogen, elixir-format, fuzzy
-msgid "To prevent abuse by spammers, the welcome email feature is currently only available if you have a subscription. Sorry for the inconvenience!"
-msgstr "За да предотвратим злоупотребата от спамъри, функцията за двойно потвърждение в момента е достъпна само при наличие на абонамент. Съжаляваме за неудобството!"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:103
 #, elixir-autogen, elixir-format
