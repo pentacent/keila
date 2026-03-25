@@ -43,7 +43,7 @@ msgstr "Акаунт"
 msgid "Allow embedding as HTML"
 msgstr "Разреши вграждане като HTML"
 
-#: lib/keila_web/templates/form/edit_live.html.heex:814
+#: lib/keila_web/templates/form/edit_live.html.heex:816
 #, elixir-autogen, elixir-format
 msgid "Form HTML"
 msgstr "Форма HTML"
@@ -59,27 +59,27 @@ msgstr "Вече имате ли акаунт?"
 msgid "Alt Text"
 msgstr "Алтернативен текст"
 
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:222
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:235
 #, elixir-autogen, elixir-format
 msgid "How does this work?"
 msgstr "Как работи това?"
 
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:248
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:261
 #, elixir-autogen, elixir-format
 msgid "Contact email address"
 msgstr "Имейл адрес за контакта"
 
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:240
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:253
 #, elixir-autogen, elixir-format
 msgid "Contact first name"
 msgstr "Първо име на контакта"
 
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:256
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:269
 #, elixir-autogen, elixir-format
 msgid "Greeting with first name"
 msgstr "Поздрав с първо име"
 
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:233
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:246
 #, elixir-autogen, elixir-format
 msgid "You can get started by trying one of these examples:"
 msgstr "Можете да започнете, като опитате един от тези примери:"
@@ -115,19 +115,19 @@ msgid "Bold"
 msgstr "Удебелен"
 
 #: lib/keila/templates/default_template.ex:63
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:68
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:69
 #: lib/keila_web/templates/campaign/_markdown_editor.html.heex:17
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:81
 #, elixir-autogen, elixir-format
 msgid "Button"
 msgstr "Бутон"
 
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:167
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:180
 #, elixir-autogen, elixir-format
 msgid "Button Text"
 msgstr "Текст на бутона"
 
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:159
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:172
 #, elixir-autogen, elixir-format
 msgid "Button URL"
 msgstr "URL на бутона"
@@ -150,18 +150,18 @@ msgstr "Кампании"
 msgid "Campaigns associated with this sender will not be deleted."
 msgstr "Кампаниите, свързани с този подател, няма да бъдат изтрити."
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:95
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:96
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:50
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:156
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:235
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:263
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:284
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:311
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:236
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:265
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:286
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:313
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:184
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:55
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:136
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:178
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:213
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:149
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:191
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:226
 #: lib/keila_web/templates/campaign/delete.html.heex:35
 #: lib/keila_web/templates/campaign/edit_live.html.heex:16
 #: lib/keila_web/templates/contact/delete.html.heex:55
@@ -187,7 +187,7 @@ msgstr "Отказ"
 #: lib/keila_web/templates/sender/_postmark_config.html.heex:19
 #: lib/keila_web/templates/sender/_sendgrid_config.html.heex:19
 #: lib/keila_web/templates/sender/_ses_config.html.heex:48
-#: lib/keila_web/templates/sender/_smtp_config.html.heex:34
+#: lib/keila_web/templates/sender/_smtp_config.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "Change"
 msgstr "Промяна"
@@ -197,13 +197,13 @@ msgstr "Промяна"
 msgid "Change Password"
 msgstr "Промяна на парола"
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:352
+#: lib/keila_web/templates/campaign/stats_live.html.heex:356
 #, elixir-autogen, elixir-format
 msgid "Click rate"
 msgstr "Коeфициент на кликвания"
 
 #: lib/keila_web/live/campaign_stats_live.ex:78
-#: lib/keila_web/templates/campaign/stats_live.html.heex:349
+#: lib/keila_web/templates/campaign/stats_live.html.heex:353
 #, elixir-autogen, elixir-format
 msgid "Clicks"
 msgstr "Кликвания"
@@ -236,7 +236,7 @@ msgstr "Затвори менюто"
 msgid "Close preview"
 msgstr "Затвори прегледа"
 
-#: lib/keila_web/templates/form/edit_live.html.heex:832
+#: lib/keila_web/templates/form/edit_live.html.heex:834
 #, elixir-autogen, elixir-format
 msgid "Code copied to clipboard."
 msgstr "Кодът е копиран в клипборда."
@@ -281,8 +281,8 @@ msgid "Content"
 msgstr "Съдържание"
 
 #: lib/keila_web/templates/campaign/share.html.heex:54
-#: lib/keila_web/templates/form/edit_live.html.heex:810
-#: lib/keila_web/templates/form/edit_live.html.heex:821
+#: lib/keila_web/templates/form/edit_live.html.heex:812
+#: lib/keila_web/templates/form/edit_live.html.heex:823
 #, elixir-autogen, elixir-format
 msgid "Copy"
 msgstr "Копиране"
@@ -339,7 +339,7 @@ msgstr "Създайте първия си проект"
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:65
 #: lib/keila_web/templates/campaign/new.html.heex:37
 #: lib/keila_web/templates/form/edit_live.html.heex:396
-#: lib/keila_web/templates/form/edit_live.html.heex:605
+#: lib/keila_web/templates/form/edit_live.html.heex:606
 #: lib/keila_web/templates/project/_empty_state_senders.html.heex:20
 #: lib/keila_web/templates/sender/_empty_state.html.heex:22
 #, elixir-autogen, elixir-format
@@ -365,7 +365,7 @@ msgstr "Декорация"
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:105
 #: lib/keila_web/templates/campaign/new.html.heex:155
 #: lib/keila_web/templates/form/edit_live.html.heex:411
-#: lib/keila_web/templates/form/edit_live.html.heex:620
+#: lib/keila_web/templates/form/edit_live.html.heex:621
 #: lib/keila_web/views/template_view.ex:70
 #, elixir-autogen, elixir-format
 msgid "Default"
@@ -527,9 +527,9 @@ msgstr "Нямате ли акаунт?"
 msgid "Download template"
 msgstr "Изтеглете шаблона"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:65
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:66
 #: lib/keila_web/templates/campaign/index.html.heex:66
-#: lib/keila_web/templates/form/index.html.heex:37
+#: lib/keila_web/templates/form/index.html.heex:41
 #: lib/keila_web/templates/segment/index.html.heex:32
 #: lib/keila_web/templates/template/index.html.heex:42
 #, elixir-autogen, elixir-format
@@ -679,7 +679,7 @@ msgstr "Аз съм човек."
 msgid "If you’ve forgotten your password, you can request an email to reset it here."
 msgstr "Ако сте забрвилив паролата си, можете да поискате имейл за възстановяване тук."
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:62
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:63
 #: lib/keila_web/templates/campaign/_markdown_editor.html.heex:10
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:74
 #: lib/keila_web/views/template_view.ex:40
@@ -709,7 +709,7 @@ msgstr "Импортиране на контакти"
 msgid "Increase indent"
 msgstr "Увеличи отстъпа"
 
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:155
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:168
 #, elixir-autogen, elixir-format
 msgid "Insert Button"
 msgstr "Добави бутон"
@@ -729,7 +729,7 @@ msgstr "Добави линк"
 msgid "Instructions"
 msgstr "Инструкции"
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:68
+#: lib/keila_web/templates/campaign/stats_live.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "Insufficient email quota."
 msgstr "Недостатъчна имейл квота."
@@ -769,7 +769,7 @@ msgstr "Фамилия"
 
 #: lib/keila/templates/default_template.ex:23
 #: lib/keila/templates/hybrid_template.ex:24
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:56
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "Layout"
 msgstr "Оформление"
@@ -790,14 +790,14 @@ msgstr "Заглавие на препратката"
 msgid "Link URL"
 msgstr "URL на препратката"
 
-#: lib/keila_web/templates/form/edit_live.html.heex:797
+#: lib/keila_web/templates/form/edit_live.html.heex:799
 #, elixir-autogen, elixir-format
 msgid "Link to this form"
 msgstr "Линк към тази форма"
 
 #: lib/keila/templates/default_template.ex:58
 #: lib/keila/templates/hybrid_template.ex:58
-#: lib/keila_web/templates/campaign/stats_live.html.heex:342
+#: lib/keila_web/templates/campaign/stats_live.html.heex:346
 #, elixir-autogen, elixir-format
 msgid "Links"
 msgstr "Препратки"
@@ -914,9 +914,9 @@ msgstr "Няма контакти, няма кампания."
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:197
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:187
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:58
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:139
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:181
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:216
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:152
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:194
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:229
 #: lib/keila_web/templates/component/file_manager_live.html.heex:119
 #, elixir-autogen, elixir-format
 msgid "Ok"
@@ -940,8 +940,9 @@ msgstr "Подреден списък"
 
 #: lib/keila_web/templates/auth/register.html.heex:27
 #: lib/keila_web/templates/auth/reset_change_password.html.heex:15
-#: lib/keila_web/templates/sender/_smtp_config.html.heex:19
-#: lib/keila_web/templates/sender/_smtp_config.html.heex:31
+#: lib/keila_web/templates/sender/_smtp_config.html.heex:22
+#: lib/keila_web/templates/sender/_smtp_config.html.heex:46
+#: lib/keila_web/templates/sender/_smtp_config.html.heex:59
 #: lib/keila_web/templates/user_admin/new.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Password"
@@ -952,7 +953,7 @@ msgstr "Парола"
 msgid "Please contact an administrator."
 msgstr "Моля, свържете се с администратор."
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:163
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:176
 #: lib/keila_web/templates/campaign/_markdown_editor.html.heex:25
 #: lib/keila_web/templates/campaign/_mjml_editor.html.heex:21
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:103
@@ -1002,7 +1003,7 @@ msgid "Reset your password."
 msgstr "Възстановявете паролата си."
 
 #: lib/keila_web/templates/api_key/new.html.heex:8
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:113
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:114
 #: lib/keila_web/templates/campaign/clone.html.heex:8
 #: lib/keila_web/templates/campaign/edit_live.html.heex:38
 #: lib/keila_web/templates/contact/edit.html.heex:44
@@ -1196,7 +1197,7 @@ msgstr "Благодарим ви!"
 
 #: lib/keila_web/templates/campaign/stats_live.html.heex:48
 #: lib/keila_web/templates/form/edit_live.html.heex:515
-#: lib/keila_web/templates/form/edit_live.html.heex:664
+#: lib/keila_web/templates/form/edit_live.html.heex:665
 #, elixir-autogen, elixir-format
 msgid "Thanks for trying out Keila!"
 msgstr "Благодарим ви, че изпробвахе Keila!"
@@ -1241,12 +1242,12 @@ msgstr "Тази кампания вече е планирана. Можете �
 msgid "This campaign has not yet been sent."
 msgstr "Тази кампания все още не е изпращана."
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:125
+#: lib/keila_web/templates/campaign/stats_live.html.heex:129
 #, elixir-autogen, elixir-format
 msgid "This campaign is currently being prepared for sending."
 msgstr "Тази кампания се подготвя за изпращане."
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:146
+#: lib/keila_web/templates/campaign/stats_live.html.heex:150
 #, elixir-autogen, elixir-format
 msgid "This campaign is currently being sent out."
 msgstr "Тази кампания се изпраща в момента."
@@ -1279,7 +1280,7 @@ msgid "Try signing in."
 msgstr "Опитайте да влезете."
 
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:93
-#: lib/keila_web/templates/campaign/stats_live.html.heex:346
+#: lib/keila_web/templates/campaign/stats_live.html.heex:350
 #, elixir-autogen, elixir-format
 msgid "URL"
 msgstr "URL"
@@ -1364,7 +1365,7 @@ msgstr "hello@example.org"
 msgid "italic"
 msgstr "курсивен"
 
-#: lib/keila_web/templates/sender/_smtp_config.html.heex:5
+#: lib/keila_web/templates/sender/_smtp_config.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "mail.example.org"
 msgstr "mail.example.org"
@@ -1934,23 +1935,23 @@ msgstr "Можете да добавите всеки JSON обект като �
 msgid "You must specify a sender before sending/scheduling a campaign."
 msgstr "Трябва да посочите подател преди изпращане/планиране на кампания"
 
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:201
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:214
 #, elixir-autogen, elixir-format
 msgid "Code"
 msgstr "Код"
 
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:197
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:210
 #: lib/keila_web/templates/campaign/_wysiwyg_editor.html.heex:95
 #, elixir-autogen, elixir-format
 msgid "Insert Code"
 msgstr "Вмъкни код"
 
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:265
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:278
 #, elixir-autogen, elixir-format
 msgid "Read more about [how to use Liquid in Keila](https://www.keila.io/docs/campaigns#liquid-templating)\nor about [custom contact data](https://www.keila.io/docs/contacts#contact-data).\n"
 msgstr "Прочетете повече за [как да използвате Liquid в Keila](https://www.keila.io/docs/campaigns#liquid-templating) или за [персонализирани данни за контакти](https://www.keila.io/docs/contacts#contact-data).\n"
 
-#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:226
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:239
 #, elixir-autogen, elixir-format
 msgid "You can insert data from your contacts or your campaign\nusing the [Liquid template language](https://shopify.github.io/liquid/basics/introduction/).\n"
 msgstr "Можете да вмъкнете данни от вашите контакти или от вашата кампания, използвайки [езика за шаблони Liquid](https://shopify.github.io/liquid/basics/introduction/).\n"
@@ -1981,7 +1982,7 @@ msgstr "Сегмент"
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:41
 #: lib/keila_web/templates/campaign/new.html.heex:20
 #: lib/keila_web/templates/form/edit_live.html.heex:359
-#: lib/keila_web/templates/form/edit_live.html.heex:568
+#: lib/keila_web/templates/form/edit_live.html.heex:569
 #, elixir-autogen, elixir-format
 msgid "Sender"
 msgstr "Подател"
@@ -1989,7 +1990,7 @@ msgstr "Подател"
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:99
 #: lib/keila_web/templates/campaign/new.html.heex:149
 #: lib/keila_web/templates/form/edit_live.html.heex:406
-#: lib/keila_web/templates/form/edit_live.html.heex:615
+#: lib/keila_web/templates/form/edit_live.html.heex:616
 #, elixir-autogen, elixir-format
 msgid "Template"
 msgstr "Шаблон"
@@ -2137,7 +2138,7 @@ msgstr "малък"
 msgid "solid"
 msgstr "плътна линия"
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:329
+#: lib/keila_web/templates/campaign/stats_live.html.heex:333
 #, elixir-autogen, elixir-format
 msgid "24-Hour Performance"
 msgstr "24-часова ефективност"
@@ -2147,7 +2148,7 @@ msgstr "24-часова ефективност"
 msgid "API key copied to clipboard"
 msgstr "API ключът е копиран в клипборда"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:53
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "Add content to this column here …"
 msgstr "Добавете съдържание в тази колона тук..."
@@ -2185,7 +2186,7 @@ msgstr "Можете ли да обобщите кампанията си в 50 
 msgid "Choose Your Editor"
 msgstr "Изберете редактор"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:39
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Click here to select an image."
 msgstr "Кликнете тук, за да изберете снимка."
@@ -2216,22 +2217,22 @@ msgstr "Футер"
 msgid "Footer links"
 msgstr "Линкове във футера"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:44
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Image caption (optional)"
 msgstr "Подпис на снимката (по избор)"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:47
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "Link for this image (optional)"
 msgstr "Линк за тази снимка (по избор)"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:71
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "Make centered"
 msgstr "Центрирай"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:74
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "Make full width"
 msgstr "Направи на цял екран"
@@ -2267,12 +2268,12 @@ msgstr "Текст на цитата"
 msgid "Quotes"
 msgstr "Цитати"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:59
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "Separator"
 msgstr "Разделител"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:50
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Start creating your newsletter here …"
 msgstr "Започнете да създавате бюлетина си тук …"
@@ -2293,7 +2294,7 @@ msgstr "Най-простият тип имейл. Само текст и нищ
 msgid "Unsubscribed Contacts"
 msgstr "Отписани контакти"
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:268
+#: lib/keila_web/templates/campaign/stats_live.html.heex:272
 #, elixir-autogen, elixir-format
 msgid "Untracked Campaign"
 msgstr "Непроследена кампания"
@@ -2309,7 +2310,7 @@ msgstr "Използвайте редактора Markdown, за да създа
 msgid "Users see this preview before they open your email. Use up to 50 characters."
 msgstr "Потребителите виждат този предговор преди да отворят имейла ви. Използвайте до 50 символа."
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:270
+#: lib/keila_web/templates/campaign/stats_live.html.heex:274
 #, elixir-autogen, elixir-format
 msgid "You have disabled tracking for this campaign. Thanks for respecting the privacy of your recipients!"
 msgstr "Вие сте деактивирали проследяването за тази кампания. Благодаря, че уважавате личната информация на получателите си!"
@@ -2319,12 +2320,12 @@ msgstr "Вие сте деактивирали проследяването за
 msgid "You may use Liquid and Markdown in the signature. Use `[Unsubscribe]({{ unsubscribe_link }})` to include the unsubscribe link."
 msgstr "Можете да използвате Liquid и Markdown в подписа. Използвайте `[Unsubscribe]({{ unsubscribe_link }})`, за да включите линка за отписване."
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:299
+#: lib/keila_web/templates/campaign/stats_live.html.heex:303
 #, elixir-autogen, elixir-format
 msgid "bounces"
 msgstr "връщания"
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:315
+#: lib/keila_web/templates/campaign/stats_live.html.heex:319
 #, elixir-autogen, elixir-format
 msgid "complaints"
 msgstr "оплаквания"
@@ -2334,17 +2335,17 @@ msgstr "оплаквания"
 msgid "email bounced"
 msgstr "имейлът се върна"
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:251
+#: lib/keila_web/templates/campaign/stats_live.html.heex:255
 #, elixir-autogen, elixir-format
 msgid "emails clicked"
 msgstr "имейли с кликнати линкове"
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:235
+#: lib/keila_web/templates/campaign/stats_live.html.heex:239
 #, elixir-autogen, elixir-format
 msgid "emails opened"
 msgstr "отворени имейли"
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:225
+#: lib/keila_web/templates/campaign/stats_live.html.heex:229
 #, elixir-autogen, elixir-format
 msgid "emails sent"
 msgstr "изпратени имейли"
@@ -2364,22 +2365,23 @@ msgstr "от кампания"
 msgid "permanently unreachable"
 msgstr "перманентно недостъпен"
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:283
+#: lib/keila_web/templates/campaign/stats_live.html.heex:287
 #, elixir-autogen, elixir-format
 msgid "unsubscribes"
 msgstr "отписи"
 
-#: lib/keila_web/templates/sender/_smtp_config.html.heex:56
+#: lib/keila_web/templates/sender/_smtp_config.html.heex:23
+#: lib/keila_web/templates/sender/_smtp_config.html.heex:98
 #, elixir-autogen, elixir-format
 msgid "None"
 msgstr "Няма"
 
-#: lib/keila_web/templates/sender/_smtp_config.html.heex:54
+#: lib/keila_web/templates/sender/_smtp_config.html.heex:96
 #, elixir-autogen, elixir-format
 msgid "SSL/TLS"
 msgstr "SSL/TLS"
 
-#: lib/keila_web/templates/sender/_smtp_config.html.heex:55
+#: lib/keila_web/templates/sender/_smtp_config.html.heex:97
 #, elixir-autogen, elixir-format
 msgid "STARTTLS"
 msgstr "STARTTLS"
@@ -2564,7 +2566,7 @@ msgstr "Етикети"
 msgid "Text"
 msgstr "Текст"
 
-#: lib/keila_web/templates/form/edit_live.html.heex:683
+#: lib/keila_web/templates/form/edit_live.html.heex:685
 #, elixir-autogen, elixir-format
 msgid "Body background"
 msgstr "Фон на тялото"
@@ -2584,27 +2586,27 @@ msgstr "Персонализиран текст на имейла"
 msgid "Data Key"
 msgstr "Ключ на данните"
 
-#: lib/keila_web/templates/form/edit_live.html.heex:689
+#: lib/keila_web/templates/form/edit_live.html.heex:691
 #, elixir-autogen, elixir-format
 msgid "Form background"
 msgstr "Фон на формуляра"
 
-#: lib/keila_web/templates/form/edit_live.html.heex:695
+#: lib/keila_web/templates/form/edit_live.html.heex:697
 #, elixir-autogen, elixir-format
 msgid "Form text color"
 msgstr "Цвят на текста на формуляра"
 
-#: lib/keila_web/templates/form/edit_live.html.heex:701
+#: lib/keila_web/templates/form/edit_live.html.heex:703
 #, elixir-autogen, elixir-format
 msgid "Input background"
 msgstr "Фон на входното поле"
 
-#: lib/keila_web/templates/form/edit_live.html.heex:713
+#: lib/keila_web/templates/form/edit_live.html.heex:715
 #, elixir-autogen, elixir-format
 msgid "Input border color"
 msgstr "Цвят на рамката на входното поле"
 
-#: lib/keila_web/templates/form/edit_live.html.heex:707
+#: lib/keila_web/templates/form/edit_live.html.heex:709
 #, elixir-autogen, elixir-format
 msgid "Input text color"
 msgstr "Цвят на текста на входното поле"
@@ -2624,12 +2626,12 @@ msgstr "Опции"
 msgid "Placeholder"
 msgstr "Пример"
 
-#: lib/keila_web/templates/form/edit_live.html.heex:719
+#: lib/keila_web/templates/form/edit_live.html.heex:721
 #, elixir-autogen, elixir-format
 msgid "Submit button background"
 msgstr "Фон на бутона за изпращане"
 
-#: lib/keila_web/templates/form/edit_live.html.heex:725
+#: lib/keila_web/templates/form/edit_live.html.heex:727
 #, elixir-autogen, elixir-format
 msgid "Submit text color"
 msgstr "Цвят на текста на бутона за изпращане"
@@ -2680,22 +2682,22 @@ msgstr "Reply-to адрес"
 msgid "Reply-to name"
 msgstr "Reply-to име"
 
-#: lib/keila_web/templates/sender/_smtp_config.html.heex:2
+#: lib/keila_web/templates/sender/_smtp_config.html.heex:6
 #, elixir-autogen, elixir-format
 msgid "Server"
 msgstr "Сървър"
 
-#: lib/keila_web/templates/sender/_smtp_config.html.heex:11
+#: lib/keila_web/templates/sender/_smtp_config.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Username"
 msgstr "Потребителско име"
 
-#: lib/keila_web/templates/sender/_smtp_config.html.heex:47
+#: lib/keila_web/templates/sender/_smtp_config.html.heex:89
 #, elixir-autogen, elixir-format
 msgid "Connection security"
 msgstr "Сигурност на връзката"
 
-#: lib/keila_web/templates/sender/_smtp_config.html.heex:68
+#: lib/keila_web/templates/sender/_smtp_config.html.heex:108
 #, elixir-autogen, elixir-format
 msgid "Port"
 msgstr "Порт"
@@ -2938,7 +2940,7 @@ msgstr ""
 msgid "Campaign Preview"
 msgstr "Преглед на кампанията"
 
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:289
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:291
 #, elixir-autogen, elixir-format
 msgid "Enter up to five email addresses (separated with commas). If they exist in your contacts list, contact data will be used."
 msgstr "Въведете до пет имейл адреса (разделени с запетая). Ако съществуват в списъка ви с контакти, ще бъдат използвани данни за контакти."
@@ -2973,7 +2975,7 @@ msgstr "Моля, въведете не повече от пет адреса."
 msgid "[Preview] %{subject}"
 msgstr "[Преглед] %{subject}"
 
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:295
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:297
 #, elixir-autogen, elixir-format
 msgid "Recipients"
 msgstr "Получатели"
@@ -2988,7 +2990,7 @@ msgstr "Регистрирайте сега акаунта си в Keila и за
 msgid "Send & Schedule"
 msgstr "Изпрати & Планирай"
 
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:315
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:317
 #: lib/keila_web/templates/campaign/edit_live.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "Send preview"
@@ -3004,7 +3006,7 @@ msgstr "Започнете да изпращате имейли с Keila сег�
 msgid "The external ID allows updating the contact profile from an external source even if its email address changes."
 msgstr "Външният идентификатор позволява обновяването на профила на контакта от външен източник, дори ако имейл адресът му се промени."
 
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:276
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:278
 #, elixir-autogen, elixir-format
 msgid "There was an error sending the preview campaign."
 msgstr "Възникна грешка при изпращане на кампанията за преглед."
@@ -3028,7 +3030,7 @@ msgstr "Адресът е копиран в клипборда."
 #: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:56
 #: extra/keila_cloud_web/templates/cloud_account/_user_name.html.heex:38
 #: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:146
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:92
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:93
 #, elixir-autogen, elixir-format
 msgid "Continue"
 msgstr "Продължи"
@@ -3051,14 +3053,14 @@ msgid "Message Stream"
 msgstr "Поток от съобщения"
 
 #: lib/keila_web/templates/campaign/share.html.heex:32
-#: lib/keila_web/templates/campaign/stats_live.html.heex:216
+#: lib/keila_web/templates/campaign/stats_live.html.heex:220
 #: lib/keila_web/templates/campaign/view.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Share"
 msgstr "Сподели"
 
 #: lib/keila_web/templates/campaign/share.html.heex:23
-#: lib/keila_web/templates/campaign/stats_live.html.heex:205
+#: lib/keila_web/templates/campaign/stats_live.html.heex:209
 #: lib/keila_web/templates/campaign/view.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Statistics"
@@ -3070,7 +3072,7 @@ msgid "Use the following link to share your campaign with other people:"
 msgstr "Използвайте следния линк, за да споделите кампанията си с други хора:"
 
 #: lib/keila_web/templates/campaign/share.html.heex:29
-#: lib/keila_web/templates/campaign/stats_live.html.heex:210
+#: lib/keila_web/templates/campaign/stats_live.html.heex:214
 #: lib/keila_web/templates/campaign/view.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "View"
@@ -3081,122 +3083,122 @@ msgstr "Преглед"
 msgid "You can enable a public link to share your campaign with others. Your campaign will be accessible to anyone who has the link.\n\nYou can disable the public link later if you want.\n"
 msgstr "Можете да активирате обществен линк, за да споделите кампанията си с други. Кампанията ви ще е достъпна за всеки, който притежава линка.\n\nМожете да деактивирате обществения линк по-късно, ако желаете.\n"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:110
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:111
 #, elixir-autogen, elixir-format
 msgid "Add"
 msgstr "Добави"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:116
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:117
 #, elixir-autogen, elixir-format
 msgid "Add %{network} Profile"
 msgstr "Добави %{network} профил"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:122
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:123
 #, elixir-autogen, elixir-format
 msgid "Add Custom Social Network"
 msgstr "Добави социална мрежа"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:80
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:81
 #, elixir-autogen, elixir-format
 msgid "Add Social Media Icon"
 msgstr "Добави икона на социална мрежа"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:143
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:144
 #, elixir-autogen, elixir-format
 msgid "Align center"
 msgstr "Центрирай"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:140
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:141
 #, elixir-autogen, elixir-format
 msgid "Align left"
 msgstr "Подравни наляво"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:146
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:147
 #, elixir-autogen, elixir-format
 msgid "Align right"
 msgstr "Подравни надясно"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:98
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:99
 #, elixir-autogen, elixir-format
 msgid "Background Color"
 msgstr "Цвят на фона"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:104
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:105
 #, elixir-autogen, elixir-format
 msgid "Black"
 msgstr "Черно"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:89
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:90
 #, elixir-autogen, elixir-format
 msgid "Choose Social Network"
 msgstr "Избери социална мрежа"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:119
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:120
 #, elixir-autogen, elixir-format
 msgid "Edit %{network} Profile"
 msgstr "Редактирай %{network} профил"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:125
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:126
 #, elixir-autogen, elixir-format
 msgid "Edit Custom Social Network"
 msgstr "Редактирай социална мрежа"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:101
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:102
 #, elixir-autogen, elixir-format
 msgid "Icon Color"
 msgstr "Цвят на иконата"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:134
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:135
 #, elixir-autogen, elixir-format
 msgid "Icon URL (e.g. https://example.com/icon.png)"
 msgstr "URL на иконата (напр. https://example.com/icon.png)"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:155
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:156
 #, elixir-autogen, elixir-format
 msgid "Large"
 msgstr "Голямо"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:152
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:153
 #, elixir-autogen, elixir-format
 msgid "Medium"
 msgstr "Средно"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:86
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:87
 #, elixir-autogen, elixir-format
 msgid "Other (Custom)"
 msgstr "Друго (персонализирано)"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:131
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:132
 #, elixir-autogen, elixir-format
 msgid "Platform name (e.g. Mastodon)"
 msgstr "Име на платформа (напр. Mastodon)"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:137
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:138
 #, elixir-autogen, elixir-format
 msgid "Profile URL (e.g., https://example.com/yourprofile)"
 msgstr "URL на профила (напр., https://example.com/yourprofile)"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:83
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:84
 #, elixir-autogen, elixir-format
 msgid "Select a site..."
 msgstr "Изберете сайт..."
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:149
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:150
 #, elixir-autogen, elixir-format
 msgid "Small"
 msgstr "Малко"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:77
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:78
 #, elixir-autogen, elixir-format
 msgid "Social Icons"
 msgstr "Икони на социални мрежи"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:107
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:108
 #, elixir-autogen, elixir-format
 msgid "White"
 msgstr "Бяло"
 
-#: lib/keila_web/templates/campaign/_block_editor.html.heex:128
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:129
 #, elixir-autogen, elixir-format
 msgid "https://example.com/yourprofile"
 msgstr "https://example.com/yourprofile"
@@ -3353,28 +3355,28 @@ msgid "# Welcome!\n\nThank you for subscribing to this newsletter.\n"
 msgstr "# Добре дошли!\n\nБлагодарим ви, че се абонирахте за бюлетина ни!\n"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:388
-#: lib/keila_web/templates/form/edit_live.html.heex:597
+#: lib/keila_web/templates/form/edit_live.html.heex:598
 #, elixir-autogen, elixir-format, fuzzy
 msgid "**Important:** You must create and select a sender to send emails."
 msgstr "**Вaжно:** Трябва да създадете и изберете подател тук. В противен случай, няма да бъдат изпращани имейли за потвърждение."
 
-#: lib/keila_web/templates/form/edit_live.html.heex:556
+#: lib/keila_web/templates/form/edit_live.html.heex:557
 #, elixir-autogen, elixir-format
 msgid "Email subject"
 msgstr ""
 
-#: lib/keila_web/templates/form/edit_live.html.heex:638
+#: lib/keila_web/templates/form/edit_live.html.heex:639
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Email text"
 msgstr "Имейл"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:365
-#: lib/keila_web/templates/form/edit_live.html.heex:574
+#: lib/keila_web/templates/form/edit_live.html.heex:575
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Select a sender"
 msgstr "Изберете файл"
 
-#: lib/keila_web/templates/form/edit_live.html.heex:550
+#: lib/keila_web/templates/form/edit_live.html.heex:551
 #, elixir-autogen, elixir-format
 msgid "Send welcome email"
 msgstr ""
@@ -3400,12 +3402,12 @@ msgstr ""
 msgid "When enabled, a confirmation email will be sent to new contacts after they submit the form. The contact is only added to your contact list after they open the confirmation link."
 msgstr ""
 
-#: lib/keila_web/templates/form/edit_live.html.heex:538
+#: lib/keila_web/templates/form/edit_live.html.heex:539
 #, elixir-autogen, elixir-format
 msgid "When enabled, a welcome email will be sent to new contacts after they subscribe. If double opt-in is enabled, the email will be sent after the contact confirms their email."
 msgstr ""
 
-#: lib/keila_web/templates/form/edit_live.html.heex:640
+#: lib/keila_web/templates/form/edit_live.html.heex:641
 #, elixir-autogen, elixir-format
 msgid "You may use Liquid and Markdown in the email body.\n\nAvailable variables: `{{ contact.email }}`, `{{ contact.first_name }}`, `{{ contact.last_name }}`, `{{ contact.data.* }}`\n"
 msgstr ""
@@ -3451,7 +3453,7 @@ msgstr ""
 msgid "Confirming ..."
 msgstr ""
 
-#: lib/keila_web/templates/form/index.html.heex:33
+#: lib/keila_web/templates/form/index.html.heex:37
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Open"
 msgstr "Отваря"
@@ -3484,3 +3486,42 @@ msgstr "Отпиши се"
 #, elixir-autogen, elixir-format, fuzzy
 msgid "We have sent you an email to *%{email}*. \\\nPlease click on the link in the email to verify your email address.\n"
 msgstr "Изпратихме ви имейл на *%{email}*. \nМоля, кликнете върху линка в имейла, за да потвърдите имейл адреса си.\n"
+
+#: lib/keila_web/templates/sender/_smtp_config.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Authentication"
+msgstr ""
+
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:132
+#, elixir-autogen, elixir-format
+msgid "Width"
+msgstr ""
+
+#: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:134
+#, elixir-autogen, elixir-format
+msgid "Width of the image in pixels (optional)"
+msgstr ""
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:162
+#, elixir-autogen, elixir-format, fuzzy
+msgctxt "text-alignment"
+msgid "Centered"
+msgstr "центриран"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:168
+#, elixir-autogen, elixir-format, fuzzy
+msgctxt "text-alignment"
+msgid "Justified"
+msgstr "подравнен"
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:159
+#, elixir-autogen, elixir-format
+msgctxt "text-alignment"
+msgid "Left"
+msgstr ""
+
+#: lib/keila_web/templates/campaign/_block_editor.html.heex:165
+#, elixir-autogen, elixir-format, fuzzy
+msgctxt "text-alignment"
+msgid "Right"
+msgstr "нормално"
