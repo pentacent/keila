@@ -10,8 +10,9 @@ defmodule KeilaWeb.Gettext do
     [
       {"English", "en"},
       {"Deutsch", "de"},
-      {"Français", "fr"},
       {"Español", "es"},
+      {"Français", "fr"},
+      {"Italiano", "it"},
       {"Magyar", "hu"},
       {"Български", "bg"}
     ]
