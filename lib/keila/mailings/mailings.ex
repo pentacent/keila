@@ -698,7 +698,7 @@ defmodule Keila.Mailings do
 
     Keila.if_cloud do
       status =
-        if is_nil(campaign.sent_at) and account.status != :active,
+        if is_nil(campaign.sent_at) and account.status == :onboarding_required,
           do: :account_not_active,
           else: status
     end
