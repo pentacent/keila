@@ -1,0 +1,30 @@
+<.form
+  :let={f}
+  for={@cloud_data_changeset}
+  phx-change="update_referral_source"
+  phx-submit="submit_referral_source"
+  class="flex flex-col gap-2"
+>
+  <h2 class="text-3xl mb-2">{dgettext("cloud", "Almost done!")}</h2>
+
+  <div class="form-row">
+    <%= label(f, :self_reported_source) do %>
+      {dgettext("cloud", "How did you hear about Keila?")}
+    <% end %>
+    <%= with_validation(f, :self_reported_source) do %>
+      {text_input(f, :self_reported_source,
+        class: "text-black",
+        placeholder: dgettext("cloud", "e.g. a friend, blog post, Google, …")
+      )}
+    <% end %>
+    <p class="text-sm">
+      {dgettext("cloud", "This is optional, but it's really useful for us!")}
+    </p>
+  </div>
+
+  <div class="mt-4">
+    <button class="button button--cta button--large">
+      {gettext("Continue")}
+    </button>
+  </div>
+</.form>

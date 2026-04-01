@@ -3,6 +3,7 @@ require Keila
 Keila.if_cloud do
   defmodule KeilaCloud.Accounts do
     use Keila.Repo
+    alias KeilaCloud.Accounts.Account.CloudData
     alias KeilaCloud.Accounts.Account.ContactData
     alias KeilaCloud.Accounts.Account.OnboardingReviewData
 
@@ -24,6 +25,16 @@ Keila.if_cloud do
 
       account
       |> change(%{onboarding_review_data: changeset})
+      |> Repo.update()
+    end
+
+    def update_account_cloud_data(account_id, params) do
+      account = Keila.Accounts.get_account(account_id)
+      cloud_data = account.cloud_data || %CloudData{}
+      changeset = CloudData.changeset(cloud_data, params)
+
+      account
+      |> change(%{cloud_data: changeset})
       |> Repo.update()
     end
 

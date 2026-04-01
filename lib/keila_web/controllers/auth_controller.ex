@@ -1,6 +1,7 @@
 defmodule KeilaWeb.AuthController do
   use KeilaWeb, :controller
   alias Keila.Auth
+  require Keila
 
   @spec register(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def register(conn, _params) do
@@ -26,6 +27,8 @@ defmodule KeilaWeb.AuthController do
     if captcha_valid?(captcha_response) do
       case Auth.create_user(user_params, url_fn: &Routes.auth_url(conn, :activate, &1)) do
         {:ok, user} ->
+          maybe_set_cloud_data(user, params["account"])
+
           conn
           |> assign(:user, user)
           |> put_meta(:title, dgettext("auth", "Sign up successful"))
@@ -56,6 +59,15 @@ defmodule KeilaWeb.AuthController do
     |> put_meta(:title, dgettext("auth", "Sign up"))
     |> render("register.html")
   end
+
+  Keila.if_cloud do
+    defp maybe_set_cloud_data(user, params) when is_map(params) do
+      account = Keila.Accounts.get_user_account(user.id)
+      KeilaCloud.Accounts.update_account_cloud_data(account.id, params)
+    end
+  end
+
+  defp maybe_set_cloud_data(_user, _params), do: :ok
 
   @spec activate(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def activate(conn, %{"token" => token}) do

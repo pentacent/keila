@@ -4,6 +4,7 @@ Keila.if_cloud do
   defmodule KeilaWeb.CloudAccountOnboardingLive do
     use KeilaWeb, :live_view
 
+    alias KeilaCloud.Accounts.Account.CloudData
     alias KeilaCloud.Accounts.Account.ContactData
     alias KeilaCloud.Accounts.Account.OnboardingReviewData
     alias KeilaCloud.Countries
@@ -23,7 +24,8 @@ Keila.if_cloud do
        |> assign(:step, :user_name)
        |> put_user_changeset()
        |> put_contact_data_changeset()
-       |> put_onboarding_review_data_changeset()}
+       |> put_onboarding_review_data_changeset()
+       |> put_cloud_data_changeset()}
     end
 
     defp put_user_changeset(socket, params \\ %{}) do
@@ -47,6 +49,16 @@ Keila.if_cloud do
         socket,
         :contact_data_changeset,
         ContactData.changeset(contact_data, params, required_fields)
+      )
+    end
+
+    defp put_cloud_data_changeset(socket, params \\ %{}) do
+      cloud_data = socket.assigns.current_account.cloud_data || %CloudData{}
+
+      assign(
+        socket,
+        :cloud_data_changeset,
+        CloudData.changeset(cloud_data, params)
       )
     end
 
@@ -128,7 +140,7 @@ Keila.if_cloud do
           {:noreply,
            socket
            |> assign(:current_account, account)
-           |> assign(:step, :onboarding_review_data)
+           |> assign(:step, :referral_source)
            |> put_contact_data_changeset()}
 
         {:error, changeset} ->
@@ -171,6 +183,29 @@ Keila.if_cloud do
              :onboarding_review_data_changeset,
              changeset.changes[:onboarding_review_data]
            )}
+      end
+    end
+
+    def handle_event("update_referral_source", %{"cloud_data" => params}, socket) do
+      {:noreply, socket |> put_cloud_data_changeset(params)}
+    end
+
+    def handle_event("submit_referral_source", %{"cloud_data" => params}, socket) do
+      case KeilaCloud.Accounts.update_account_cloud_data(
+             socket.assigns.current_account.id,
+             params
+           ) do
+        {:ok, account} ->
+          {:noreply,
+           socket
+           |> assign(:current_account, account)
+           |> assign(:step, :onboarding_review_data)
+           |> put_cloud_data_changeset()}
+
+        {:error, changeset} ->
+          {:noreply,
+           socket
+           |> assign(:cloud_data_changeset, changeset.changes[:cloud_data])}
       end
     end
   end

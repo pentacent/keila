@@ -28,6 +28,15 @@
     </div>
   <% end %>
 
+  <%= if @account.cloud_data do %>
+    <h2 class="text-2xl font-light mt-4">
+      Other
+    </h2>
+    <div class="whitespace-pre">
+      {Jason.encode!(Map.from_struct(@account.cloud_data), pretty: true)}
+    </div>
+  <% end %>
+
   <.form
     :let={f}
     method="POST"

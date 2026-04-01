@@ -11,6 +11,8 @@ Keila.if_cloud do
           KeilaCloud.Accounts.Account.OnboardingReviewData
         )
 
+        embeds_one(:cloud_data, KeilaCloud.Accounts.Account.CloudData)
+
         field :status, Ecto.Enum,
           values: [
             default: 0,
