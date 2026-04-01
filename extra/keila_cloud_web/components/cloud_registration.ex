@@ -23,7 +23,7 @@ Keila.if_cloud do
       <input type="hidden" name="account[utm_campaign]" id="account_utm_campaign" />
       <script>
         (function() {
-          const params = new URLSearchParams(window.location.search)
+          const params = new URLSearchParams(window.location.search);
           ["ref", "utm_source", "utm_campaign"].forEach((key) => {
             const value = params.get(key)
             if (value) {
