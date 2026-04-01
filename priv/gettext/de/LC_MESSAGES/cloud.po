@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.8\n"
+"X-Generator: Poedit 3.9\n"
 
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:274
 #: lib/keila_web/templates/campaign/stats_live.html.heex:61
@@ -106,7 +106,7 @@ msgstr "Adresszeile 3"
 #: extra/keila_cloud_web/templates/cloud_account/_referral_source.html.heex:8
 #, elixir-autogen, elixir-format
 msgid "Almost done!"
-msgstr ""
+msgstr "Fast fertig!"
 
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:95
 #, elixir-autogen, elixir-format
@@ -131,7 +131,7 @@ msgstr "Name der Firma/Organisation"
 #: extra/keila_cloud_web/components/cloud_registration.ex:11
 #, elixir-autogen, elixir-format
 msgid "By creating an account, you agree to our [terms of service](%{tos_link}). Please also acknowledge our [privacy policy](%{pp_link})."
-msgstr ""
+msgstr "Mit dem Erstellen eines Kontos stimmst du unseren [AGB](%{tos_link}) zu. Bitte beachte auch unsere [Datenschutzerkllärung](%{pp_link})."
 
 #: extra/keila_cloud_web/components/subscription_status.ex:274
 #, elixir-autogen, elixir-format
@@ -224,7 +224,7 @@ msgstr "Los geht’s"
 #: extra/keila_cloud_web/templates/cloud_account/_referral_source.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "How did you hear about Keila?"
-msgstr ""
+msgstr "Wie hast du von Keila erfahren?"
 
 #: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:29
 #, elixir-autogen, elixir-format
@@ -247,7 +247,7 @@ msgid "Island"
 msgstr "Insel"
 
 #: lib/keila_web/templates/campaign/stats_live.html.heex:74
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "It looks like you've already used up the email quota from your subscription."
 msgstr "Du hast das E-Mail-Kontingent deines Abos bereits aufgebraucht."
 
@@ -453,7 +453,7 @@ msgstr "Dies ist ein privates Konto"
 #: extra/keila_cloud_web/templates/cloud_account/_referral_source.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "This is optional, but it's really useful for us!"
-msgstr ""
+msgstr "Die Angabe ist optional, aber sehr nützlich für uns!"
 
 #: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:34
 #, elixir-autogen, elixir-format
@@ -534,7 +534,7 @@ msgid "We're currently finalizing the setup of your sender. This may take a few 
 msgstr "Wir finalisieren gerade die Einrichtung deines Senders. Dies kann einige Minuten dauern."
 
 #: extra/keila_cloud_web/templates/cloud_account/await_subscription_live.html.heex:26
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "We're currently processing your subscription. This shouldn't take longer than a minute …"
 msgstr "Wir verarbeiten gerade dein Abo. Dieser Vorgang sollte nicht länger als eine Minute dauern …"
 
@@ -601,7 +601,7 @@ msgstr "aktueller Wert:"
 #: extra/keila_cloud_web/templates/cloud_account/_referral_source.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "e.g. a friend, blog post, Google, …"
-msgstr ""
+msgstr "z. B. von einem Freund, einem Blogpost, Google, …"
 
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:268
 #, elixir-autogen, elixir-format
