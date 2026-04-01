@@ -161,12 +161,12 @@ msgstr "A frissítésellenőrzések le vannak tiltva."
 msgid "You seem to be running the most recent version of Keila!"
 msgstr "Úgy tűnik, a Keila legfrissebb verzióját futtatja!"
 
-#: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:38
+#: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Állapot"
 
-#: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:43
+#: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "Update status"
 msgstr "Frissítési állapot"

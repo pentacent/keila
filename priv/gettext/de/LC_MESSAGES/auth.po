@@ -20,12 +20,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.0.1\n"
 
-#: lib/keila_web/controllers/auth_controller.ex:78
+#: lib/keila_web/controllers/auth_controller.ex:90
 #, elixir-autogen, elixir-format
 msgid "Activation required"
 msgstr "Aktivierung erforderlich"
 
-#: lib/keila_web/controllers/auth_controller.ex:66
+#: lib/keila_web/controllers/auth_controller.ex:78
 #, elixir-autogen, elixir-format
 msgid "Activation successful"
 msgstr "Aktivierung erfolgreich"
@@ -109,19 +109,19 @@ msgstr "Account verwalten"
 msgid "New password saved."
 msgstr "Neues Passwort gespeichert."
 
-#: lib/keila_web/controllers/auth_controller.ex:205
+#: lib/keila_web/controllers/auth_controller.ex:217
 #, elixir-autogen, elixir-format
 msgid "Not found"
 msgstr "Nicht gefunden"
 
-#: lib/keila_web/controllers/auth_controller.ex:116
-#: lib/keila_web/controllers/auth_controller.ex:129
-#: lib/keila_web/controllers/auth_controller.ex:162
+#: lib/keila_web/controllers/auth_controller.ex:128
+#: lib/keila_web/controllers/auth_controller.ex:141
+#: lib/keila_web/controllers/auth_controller.ex:174
 #, elixir-autogen, elixir-format
 msgid "Password reset"
 msgstr "Passwort-Zurücksetzung"
 
-#: lib/keila_web/controllers/auth_controller.ex:149
+#: lib/keila_web/controllers/auth_controller.ex:161
 #, elixir-autogen, elixir-format
 msgid "Password reset successful"
 msgstr "Passwort erfolgreich zurückgesetzt"
@@ -141,7 +141,7 @@ msgstr "Bitte bestätige deine E-Mail"
 msgid "Please activate your account first."
 msgstr "Bitte aktiviere erst noch deinen Account"
 
-#: lib/keila_web/controllers/auth_controller.ex:42
+#: lib/keila_web/controllers/auth_controller.ex:45
 #: lib/keila_web/controllers/public_form_controller.ex:64
 #, elixir-autogen, elixir-format
 msgid "Please complete the captcha."
@@ -157,7 +157,7 @@ msgstr "Aktivierungs-Link erneut senden"
 msgid "Reset your password."
 msgstr "Setze dein Passwort zurück."
 
-#: lib/keila_web/controllers/auth_controller.ex:185
+#: lib/keila_web/controllers/auth_controller.ex:197
 #: lib/keila_web/templates/auth/login.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Sign in"
@@ -173,12 +173,12 @@ msgstr "Logge dich hier mit deiner E-Mail-Adresse und deinem Passwort ein."
 msgid "Sign in."
 msgstr "Einloggen."
 
-#: lib/keila_web/controllers/auth_controller.ex:56
+#: lib/keila_web/controllers/auth_controller.ex:59
 #, elixir-autogen, elixir-format
 msgid "Sign up"
 msgstr "Registrieren"
 
-#: lib/keila_web/controllers/auth_controller.ex:31
+#: lib/keila_web/controllers/auth_controller.ex:34
 #, elixir-autogen, elixir-format
 msgid "Sign up successful"
 msgstr "Registrierung erfolgreich"

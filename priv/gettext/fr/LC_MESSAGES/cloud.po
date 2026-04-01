@@ -11,6 +11,59 @@ msgstr ""
 "Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:274
+#: lib/keila_web/templates/campaign/stats_live.html.heex:61
+#: lib/keila_web/templates/form/edit_live.html.heex:526
+#: lib/keila_web/templates/form/edit_live.html.heex:676
+#, elixir-autogen, elixir-format
+msgid "Start your subscription now"
+msgstr "Démarrez votre abonnement maintenant"
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:252
+#, elixir-autogen, elixir-format
+msgid "To prevent abuse by spammers, sending emails is only possible if you have an active subscription."
+msgstr "Pour éviter les abus des spammeurs, l'envoi n'est possible que si vous avez un abonnement actif."
+
+#: lib/keila_web/templates/form/edit_live.html.heex:519
+#, elixir-autogen, elixir-format
+msgid "To prevent abuse by spammers, the double opt-in feature is currently only available if you have a subscription. Sorry for the inconvenience!"
+msgstr "Pour éviter les abus par les spammeurs, la fonctionnalité de double opt-in n’est actuellement disponible que si vous avez un abonnement. Désolé pour le désagrément!"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:669
+#, elixir-autogen, elixir-format
+msgid "To prevent abuse by spammers, the welcome email feature is currently only available if you have a subscription. Sorry for the inconvenience!"
+msgstr "Pour éviter les abus par les spammeurs, la fonctionnalité d'e-mail de bienvenue n'est actuellement disponible que si vous avez un abonnement. Désolé pour le désagrément !"
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:223
+#, elixir-autogen, elixir-format, fuzzy
+msgid "To prevent abuse by spammers, sending emails is only possible once your onboarding has been completed."
+msgstr "Pour éviter les abus des spammeurs, l'envoi n'est possible que si vous avez un abonnement actif."
+
+#: extra/keila_cloud_web/components/subscription_status.ex:241
+#, elixir-autogen, elixir-format
+msgid "%{monthly_emails} emails"
+msgstr "%{monthly_emails} e-mails"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:255
+#, elixir-autogen, elixir-format
+msgid "%{monthly_emails} emails/month"
+msgstr "%{monthly_emails} e-mails/mois"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:221
+#, elixir-autogen, elixir-format
+msgid "%{price} / month"
+msgstr "%{price} / mois"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:212
+#, elixir-autogen, elixir-format
+msgid "%{price} one time"
+msgstr "%{price} paiement unique"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:230
+#, elixir-autogen, elixir-format
+msgid "(%{price} incl. tax)"
+msgstr "(%{price} taxe inclue )"
+
 #: extra/keila_cloud_web/templates/cloud_account/onboarding.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Account Verification"
@@ -41,6 +94,11 @@ msgstr ""
 msgid "Address line 3"
 msgstr ""
 
+#: extra/keila_cloud_web/templates/cloud_account/_referral_source.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Almost done!"
+msgstr ""
+
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:95
 #, elixir-autogen, elixir-format
 msgid "Apt 1"
@@ -61,6 +119,16 @@ msgstr ""
 msgid "Business/organization name"
 msgstr ""
 
+#: extra/keila_cloud_web/components/cloud_registration.ex:11
+#, elixir-autogen, elixir-format
+msgid "By creating an account, you agree to our [terms of service](%{tos_link}). Please also acknowledge our [privacy policy](%{pp_link})."
+msgstr ""
+
+#: extra/keila_cloud_web/components/subscription_status.ex:274
+#, elixir-autogen, elixir-format
+msgid "Cancel subscription"
+msgstr "Annuler l’abonnement"
+
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:299
 #, elixir-autogen, elixir-format
 msgid "Check Domain"
@@ -70,6 +138,11 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Check status"
 msgstr ""
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:84
+#, elixir-autogen, elixir-format
+msgid "Check your subscription now"
+msgstr "Vérifiez votre abonnement dès maintenant"
 
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:73
 #, elixir-autogen, elixir-format
@@ -132,6 +205,16 @@ msgstr ""
 msgid "First name"
 msgstr "Prénom"
 
+#: extra/keila_cloud_web/components/subscription_status.ex:287
+#, elixir-autogen, elixir-format
+msgid "Get started"
+msgstr "C’est parti!"
+
+#: extra/keila_cloud_web/templates/cloud_account/_referral_source.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "How did you hear about Keila?"
+msgstr ""
+
 #: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "I don’t have an existing contact list yet."
@@ -151,6 +234,11 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Island"
 msgstr ""
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:74
+#, elixir-autogen, elixir-format, fuzzy
+msgid "It looks like you've already used up the email quota from your subscription."
+msgstr "Il semble que vous ayez déjà utilisé le quota d’e-mails de votre abonnement."
 
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:304
 #, elixir-autogen, elixir-format
@@ -223,6 +311,11 @@ msgstr ""
 msgid "Please select a country"
 msgstr ""
 
+#: lib/keila_web/templates/campaign/stats_live.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Please start a subscription before sending your first campaign."
+msgstr "Veuillez démarrer un abonnement avant d’envoyer votre première campagne."
+
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "Postal code"
@@ -248,6 +341,11 @@ msgstr "Région"
 msgid "Review account for %{email}"
 msgstr ""
 
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:246
+#, elixir-autogen, elixir-format
+msgid "Review account information"
+msgstr "Vérifier les informations du compte"
+
 #: lib/keila_web/templates/layout/app.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Select plan"
@@ -267,6 +365,11 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Show DNS Records"
 msgstr ""
+
+#: extra/keila_cloud_web/components/subscription_status.ex:94
+#, elixir-autogen, elixir-format
+msgid "Start new subscription"
+msgstr "Nouvel abonnement"
 
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:60
 #, elixir-autogen, elixir-format
@@ -288,6 +391,36 @@ msgstr ""
 msgid "Subdomain"
 msgstr ""
 
+#: extra/keila_cloud_web/components/subscription_status.ex:127
+#, elixir-autogen, elixir-format
+msgid "Subscribe for a year and get one month for free!"
+msgstr "Abonnez-vous pour un an et obtenez un mois gratuit!"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:112
+#, elixir-autogen, elixir-format
+msgid "Subscribe now and start sending emails!"
+msgstr "Abonnez-vous maintenant et commencez à envoyer des e-mails!"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:39
+#, elixir-autogen, elixir-format
+msgid "Subscription"
+msgstr "Abonnement"
+
+#: extra/keila_cloud_web/controllers/cloud_account_controller.ex:34
+#, elixir-autogen, elixir-format
+msgid "Subscription still active"
+msgstr "Abonnement toujours actif"
+
+#: extra/keila_cloud_web/templates/cloud_account/await_subscription_live.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Thank you for subscribing to Keila!"
+msgstr "Merci de vous être abonné à Keila!"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:69
+#, elixir-autogen, elixir-format
+msgid "There was an error processing your payment. Please update your payment method to continue using Keila."
+msgstr "Une erreur est survenue lors du traitement de votre paiement. Veuillez mettre à jour votre méthode de paiement pour continuer à utiliser Keila."
+
 #: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "This account is for a business/organization"
@@ -301,6 +434,11 @@ msgstr ""
 #: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "This is a private account"
+msgstr ""
+
+#: extra/keila_cloud_web/templates/cloud_account/_referral_source.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "This is optional, but it's really useful for us!"
 msgstr ""
 
 #: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:34
@@ -339,6 +477,11 @@ msgstr ""
 msgid "Update account information"
 msgstr ""
 
+#: extra/keila_cloud_web/components/subscription_status.ex:269
+#, elixir-autogen, elixir-format
+msgid "Update payment method"
+msgstr "Mettre à jour la méthode de paiement"
+
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:148
 #, elixir-autogen, elixir-format
 msgid "Update to new settings"
@@ -369,6 +512,11 @@ msgstr ""
 msgid "We're currently finalizing the setup of your sender. This may take a few minutes."
 msgstr ""
 
+#: extra/keila_cloud_web/templates/cloud_account/await_subscription_live.html.heex:26
+#, elixir-autogen, elixir-format, fuzzy
+msgid "We're currently processing your subscription. This shouldn't take longer than a minute …"
+msgstr "Nous traitons actuellement votre abonnement. Cela devrait prendre moins d’une minute …"
+
 #: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Website"
@@ -384,6 +532,16 @@ msgstr ""
 msgid "You are currently using legacy email settings. We recommend updating to the new settings for better performance and reliability."
 msgstr ""
 
+#: extra/keila_cloud_web/components/subscription_status.ex:83
+#, elixir-autogen, elixir-format
+msgid "You can continue using your subscription until:"
+msgstr "Vous pouvez continuer à utiliser votre abonnement jusqu'au:"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:49
+#, elixir-autogen, elixir-format
+msgid "You currently have an active subscription. Thanks for supporting Keila!"
+msgstr "Vous avez actuellement un abonnement actif. Merci de soutenir Keila!"
+
 #: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Your Company, Inc."
@@ -394,14 +552,34 @@ msgstr ""
 msgid "Your account is currently under review. Sending emails will be enabled once the review has been completed."
 msgstr ""
 
+#: extra/keila_cloud_web/components/subscription_status.ex:79
+#, elixir-autogen, elixir-format
+msgid "Your subscription has been cancelled."
+msgstr "Votre abonnement a été annulé."
+
+#: extra/keila_cloud_web/components/subscription_status.ex:59
+#, elixir-autogen, elixir-format
+msgid "Your subscription is currently suspended. Please update your payment method to continue using Keila."
+msgstr "Votre abonnement est actuellement suspendu. Veuillez mettre à jour votre mode de paiement pour continuer à utiliser Keila."
+
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:30
 #, elixir-autogen, elixir-format
 msgid "You’re using a shared domain. Emails will be sent from *%{fallback_email}*. Replies will go to *%{from_email}*. [Read more](https://www.keila.io/docs/shared-domains){:target=\"_blank\"}"
 msgstr ""
 
+#: extra/keila_cloud_web/components/subscription_status.ex:205
+#, elixir-autogen, elixir-format
+msgid "billed annually"
+msgstr "facturé annuellement"
+
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:271
 #, elixir-autogen, elixir-format
 msgid "current value:"
+msgstr ""
+
+#: extra/keila_cloud_web/templates/cloud_account/_referral_source.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "e.g. a friend, blog post, Google, …"
 msgstr ""
 
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:268
@@ -419,66 +597,6 @@ msgstr ""
 msgid "newsletter@example.com"
 msgstr ""
 
-#: extra/keila_cloud_web/components/subscription_status.ex:127
-#, elixir-autogen, elixir-format
-msgid "Subscribe for a year and get one month for free!"
-msgstr "Abonnez-vous pour un an et obtenez un mois gratuit!"
-
-#: extra/keila_cloud_web/controllers/cloud_account_controller.ex:34
-#, elixir-autogen, elixir-format
-msgid "Subscription still active"
-msgstr "Abonnement toujours actif"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:274
-#, elixir-autogen, elixir-format
-msgid "Cancel subscription"
-msgstr "Annuler l’abonnement"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:241
-#, elixir-autogen, elixir-format
-msgid "%{monthly_emails} emails"
-msgstr "%{monthly_emails} e-mails"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:255
-#, elixir-autogen, elixir-format
-msgid "%{monthly_emails} emails/month"
-msgstr "%{monthly_emails} e-mails/mois"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:287
-#, elixir-autogen, elixir-format
-msgid "Get started"
-msgstr "C’est parti!"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:94
-#, elixir-autogen, elixir-format
-msgid "Start new subscription"
-msgstr "Nouvel abonnement"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:69
-#, elixir-autogen, elixir-format
-msgid "There was an error processing your payment. Please update your payment method to continue using Keila."
-msgstr "Une erreur est survenue lors du traitement de votre paiement. Veuillez mettre à jour votre méthode de paiement pour continuer à utiliser Keila."
-
-#: extra/keila_cloud_web/components/subscription_status.ex:269
-#, elixir-autogen, elixir-format
-msgid "Update payment method"
-msgstr "Mettre à jour la méthode de paiement"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:83
-#, elixir-autogen, elixir-format
-msgid "You can continue using your subscription until:"
-msgstr "Vous pouvez continuer à utiliser votre abonnement jusqu'au:"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:79
-#, elixir-autogen, elixir-format
-msgid "Your subscription has been cancelled."
-msgstr "Votre abonnement a été annulé."
-
-#: extra/keila_cloud_web/components/subscription_status.ex:59
-#, elixir-autogen, elixir-format
-msgid "Your subscription is currently suspended. Please update your payment method to continue using Keila."
-msgstr "Votre abonnement est actuellement suspendu. Veuillez mettre à jour votre mode de paiement pour continuer à utiliser Keila."
-
 #: extra/keila_cloud_web/components/subscription_status.ex:249
 #, elixir-autogen, elixir-format
 msgid "no subscription"
@@ -493,96 +611,3 @@ msgstr "contacts illimités"
 #, elixir-autogen, elixir-format
 msgid "valid for one year"
 msgstr "valable un an"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:221
-#, elixir-autogen, elixir-format
-msgid "%{price} / month"
-msgstr "%{price} / mois"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:212
-#, elixir-autogen, elixir-format
-msgid "%{price} one time"
-msgstr "%{price} paiement unique"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:230
-#, elixir-autogen, elixir-format
-msgid "(%{price} incl. tax)"
-msgstr "(%{price} taxe inclue )"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:112
-#, elixir-autogen, elixir-format
-msgid "Subscribe now and start sending emails!"
-msgstr "Abonnez-vous maintenant et commencez à envoyer des e-mails!"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:39
-#, elixir-autogen, elixir-format
-msgid "Subscription"
-msgstr "Abonnement"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:49
-#, elixir-autogen, elixir-format
-msgid "You currently have an active subscription. Thanks for supporting Keila!"
-msgstr "Vous avez actuellement un abonnement actif. Merci de soutenir Keila!"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:205
-#, elixir-autogen, elixir-format
-msgid "billed annually"
-msgstr "facturé annuellement"
-
-#: lib/keila_web/templates/campaign/stats_live.html.heex:84
-#, elixir-autogen, elixir-format
-msgid "Check your subscription now"
-msgstr "Vérifiez votre abonnement dès maintenant"
-
-#: lib/keila_web/templates/campaign/stats_live.html.heex:74
-#, elixir-autogen, elixir-format, fuzzy
-msgid "It looks like you've already used up the email quota from your subscription."
-msgstr "Il semble que vous ayez déjà utilisé le quota d’e-mails de votre abonnement."
-
-#: lib/keila_web/templates/campaign/stats_live.html.heex:51
-#, elixir-autogen, elixir-format
-msgid "Please start a subscription before sending your first campaign."
-msgstr "Veuillez démarrer un abonnement avant d’envoyer votre première campagne."
-
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:274
-#: lib/keila_web/templates/campaign/stats_live.html.heex:61
-#: lib/keila_web/templates/form/edit_live.html.heex:526
-#: lib/keila_web/templates/form/edit_live.html.heex:676
-#, elixir-autogen, elixir-format
-msgid "Start your subscription now"
-msgstr "Démarrez votre abonnement maintenant"
-
-#: extra/keila_cloud_web/templates/cloud_account/await_subscription_live.html.heex:22
-#, elixir-autogen, elixir-format
-msgid "Thank you for subscribing to Keila!"
-msgstr "Merci de vous être abonné à Keila!"
-
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:252
-#, elixir-autogen, elixir-format
-msgid "To prevent abuse by spammers, sending emails is only possible if you have an active subscription."
-msgstr "Pour éviter les abus des spammeurs, l'envoi n'est possible que si vous avez un abonnement actif."
-
-#: lib/keila_web/templates/form/edit_live.html.heex:519
-#, elixir-autogen, elixir-format
-msgid "To prevent abuse by spammers, the double opt-in feature is currently only available if you have a subscription. Sorry for the inconvenience!"
-msgstr "Pour éviter les abus par les spammeurs, la fonctionnalité de double opt-in n’est actuellement disponible que si vous avez un abonnement. Désolé pour le désagrément!"
-
-#: lib/keila_web/templates/form/edit_live.html.heex:669
-#, elixir-autogen, elixir-format
-msgid "To prevent abuse by spammers, the welcome email feature is currently only available if you have a subscription. Sorry for the inconvenience!"
-msgstr "Pour éviter les abus par les spammeurs, la fonctionnalité d'e-mail de bienvenue n'est actuellement disponible que si vous avez un abonnement. Désolé pour le désagrément !"
-
-#: extra/keila_cloud_web/templates/cloud_account/await_subscription_live.html.heex:26
-#, elixir-autogen, elixir-format, fuzzy
-msgid "We're currently processing your subscription. This shouldn't take longer than a minute …"
-msgstr "Nous traitons actuellement votre abonnement. Cela devrait prendre moins d’une minute …"
-
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:246
-#, elixir-autogen, elixir-format
-msgid "Review account information"
-msgstr "Vérifier les informations du compte"
-
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:223
-#, elixir-autogen, elixir-format, fuzzy
-msgid "To prevent abuse by spammers, sending emails is only possible once your onboarding has been completed."
-msgstr "Pour éviter les abus des spammeurs, l'envoi n'est possible que si vous avez un abonnement actif."

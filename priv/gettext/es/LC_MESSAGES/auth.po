@@ -10,12 +10,12 @@
 msgid ""
 msgstr ""
 
-#: lib/keila_web/controllers/auth_controller.ex:78
+#: lib/keila_web/controllers/auth_controller.ex:90
 #, elixir-autogen, elixir-format
 msgid "Activation required"
 msgstr "Se requiere activación"
 
-#: lib/keila_web/controllers/auth_controller.ex:66
+#: lib/keila_web/controllers/auth_controller.ex:78
 #, elixir-autogen, elixir-format
 msgid "Activation successful"
 msgstr "Activación correcta"
@@ -77,19 +77,19 @@ msgstr "Gestionar cuenta"
 msgid "New password saved."
 msgstr "Nueva contraseña guardada."
 
-#: lib/keila_web/controllers/auth_controller.ex:205
+#: lib/keila_web/controllers/auth_controller.ex:217
 #, elixir-autogen, elixir-format
 msgid "Not found"
 msgstr "No encontrado"
 
-#: lib/keila_web/controllers/auth_controller.ex:116
-#: lib/keila_web/controllers/auth_controller.ex:129
-#: lib/keila_web/controllers/auth_controller.ex:162
+#: lib/keila_web/controllers/auth_controller.ex:128
+#: lib/keila_web/controllers/auth_controller.ex:141
+#: lib/keila_web/controllers/auth_controller.ex:174
 #, elixir-autogen, elixir-format
 msgid "Password reset"
 msgstr "Restablecer contraseña"
 
-#: lib/keila_web/controllers/auth_controller.ex:149
+#: lib/keila_web/controllers/auth_controller.ex:161
 #, elixir-autogen, elixir-format
 msgid "Password reset successful"
 msgstr "Restablecimiento de contraseña correcto"
@@ -109,7 +109,7 @@ msgstr "Por favor, verifica tu correo electrónico"
 msgid "Please activate your account first."
 msgstr "Por favor, activa primero tu cuenta."
 
-#: lib/keila_web/controllers/auth_controller.ex:42
+#: lib/keila_web/controllers/auth_controller.ex:45
 #: lib/keila_web/controllers/public_form_controller.ex:64
 #, elixir-autogen, elixir-format
 msgid "Please complete the captcha."
@@ -125,7 +125,7 @@ msgstr "Reenviar enlace de activación"
 msgid "Reset your password."
 msgstr "Restablece tu contraseña."
 
-#: lib/keila_web/controllers/auth_controller.ex:185
+#: lib/keila_web/controllers/auth_controller.ex:197
 #: lib/keila_web/templates/auth/login.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Sign in"
@@ -141,12 +141,12 @@ msgstr "Inicia sesión aquí con tu correo electrónico y contraseña."
 msgid "Sign in."
 msgstr "Inicia sesión."
 
-#: lib/keila_web/controllers/auth_controller.ex:56
+#: lib/keila_web/controllers/auth_controller.ex:59
 #, elixir-autogen, elixir-format
 msgid "Sign up"
 msgstr "Crear cuenta"
 
-#: lib/keila_web/controllers/auth_controller.ex:31
+#: lib/keila_web/controllers/auth_controller.ex:34
 #, elixir-autogen, elixir-format
 msgid "Sign up successful"
 msgstr "Registro correcto"

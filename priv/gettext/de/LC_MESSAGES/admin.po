@@ -158,12 +158,12 @@ msgstr "Update-Prüfungen sind deaktiviert."
 msgid "You seem to be running the most recent version of Keila!"
 msgstr "Du scheinst die aktuellste Version von Keila zu verwenden!"
 
-#: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:38
+#: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Status"
 
-#: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:43
+#: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "Update status"
 msgstr "Status aktualisieren"

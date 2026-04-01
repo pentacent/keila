@@ -57,7 +57,7 @@ msgstr "Permettre l’intégration HTML"
 msgid "Form HTML"
 msgstr "Code de l’intégration HTML du formulaire"
 
-#: lib/keila_web/templates/auth/register.html.heex:50
+#: lib/keila_web/templates/auth/register.html.heex:53
 #: lib/keila_web/templates/auth/registration_disabled.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Already have an account?"
@@ -1101,7 +1101,7 @@ msgstr "Définissez un nouveau mot de passe sécurisé pour continuer à utilise
 msgid "Settings"
 msgstr "Paramètres"
 
-#: lib/keila_web/templates/auth/register.html.heex:51
+#: lib/keila_web/templates/auth/register.html.heex:54
 #: lib/keila_web/templates/auth/registration_disabled.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Sign in."
@@ -1112,7 +1112,7 @@ msgstr "Connectez vous."
 msgid "Sign out"
 msgstr "Se déconnecter"
 
-#: lib/keila_web/templates/auth/register.html.heex:46
+#: lib/keila_web/templates/auth/register.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "Sign up now"
 msgstr "Inscrivez-vous maintenant"
@@ -3089,6 +3089,7 @@ msgstr "Code copié dans le presse-papier."
 
 #: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:50
 #: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:56
+#: extra/keila_cloud_web/templates/cloud_account/_referral_source.html.heex:27
 #: extra/keila_cloud_web/templates/cloud_account/_user_name.html.heex:38
 #: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:146
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:93

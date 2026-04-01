@@ -47,7 +47,7 @@ msgstr "Permitir incrustación como HTML"
 msgid "Form HTML"
 msgstr "Formulario HTML"
 
-#: lib/keila_web/templates/auth/register.html.heex:50
+#: lib/keila_web/templates/auth/register.html.heex:53
 #: lib/keila_web/templates/auth/registration_disabled.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Already have an account?"
@@ -1091,7 +1091,7 @@ msgstr "Establece una nueva contraseña segura para seguir usando Keila."
 msgid "Settings"
 msgstr "Ajustes"
 
-#: lib/keila_web/templates/auth/register.html.heex:51
+#: lib/keila_web/templates/auth/register.html.heex:54
 #: lib/keila_web/templates/auth/registration_disabled.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Sign in."
@@ -1102,7 +1102,7 @@ msgstr "Iniciar sesión."
 msgid "Sign out"
 msgstr "Cerrar sesión"
 
-#: lib/keila_web/templates/auth/register.html.heex:46
+#: lib/keila_web/templates/auth/register.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "Sign up now"
 msgstr "Regístrate ahora"
@@ -3027,6 +3027,7 @@ msgstr "Dirección copiada al portapapeles."
 
 #: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:50
 #: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:56
+#: extra/keila_cloud_web/templates/cloud_account/_referral_source.html.heex:27
 #: extra/keila_cloud_web/templates/cloud_account/_user_name.html.heex:38
 #: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:146
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:93

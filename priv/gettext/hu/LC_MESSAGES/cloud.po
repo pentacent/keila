@@ -12,6 +12,69 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:274
+#: lib/keila_web/templates/campaign/stats_live.html.heex:61
+#: lib/keila_web/templates/form/edit_live.html.heex:526
+#: lib/keila_web/templates/form/edit_live.html.heex:676
+#, elixir-autogen, elixir-format
+msgid "Start your subscription now"
+msgstr "Indítsa el előfizetését most"
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:252
+#, elixir-autogen, elixir-format
+msgid "To prevent abuse by spammers, sending emails is only possible if you have an active subscription."
+msgstr ""
+"A spammerek általi visszaélések megelőzése érdekében e-mailek küldése csak "
+"aktív előfizetés esetén lehetséges."
+
+#: lib/keila_web/templates/form/edit_live.html.heex:519
+#, elixir-autogen, elixir-format
+msgid "To prevent abuse by spammers, the double opt-in feature is currently only available if you have a subscription. Sorry for the inconvenience!"
+msgstr ""
+"A spammerek visszaéléseinek megelőzése érdekében a kettős opt-in funkció "
+"jelenleg csak akkor érhető el, ha van előfizetésed. Elnézést a "
+"kellemetlenségért!"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:669
+#, elixir-autogen, elixir-format
+msgid "To prevent abuse by spammers, the welcome email feature is currently only available if you have a subscription. Sorry for the inconvenience!"
+msgstr ""
+"A spammerekkel való visszaélések megelőzése érdekében az üdvözlő e-mail "
+"funkció jelenleg csak előfizetés esetén érhető el. Elnézést a "
+"kellemetlenségért!"
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:223
+#, elixir-autogen, elixir-format
+msgid "To prevent abuse by spammers, sending emails is only possible once your onboarding has been completed."
+msgstr ""
+"A spammerekkel való visszaélések megelőzése érdekében e-mailek küldése csak "
+"az onboarding befejezése után lehetséges."
+
+#: extra/keila_cloud_web/components/subscription_status.ex:241
+#, elixir-autogen, elixir-format
+msgid "%{monthly_emails} emails"
+msgstr "%{monthly_emails} e-mail"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:255
+#, elixir-autogen, elixir-format
+msgid "%{monthly_emails} emails/month"
+msgstr "%{monthly_emails} e-mail/hónap"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:221
+#, elixir-autogen, elixir-format
+msgid "%{price} / month"
+msgstr "%{price} / hónap"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:212
+#, elixir-autogen, elixir-format
+msgid "%{price} one time"
+msgstr "%{price} egyszeri"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:230
+#, elixir-autogen, elixir-format
+msgid "(%{price} incl. tax)"
+msgstr "(%{price} adóval együtt)"
+
 #: extra/keila_cloud_web/templates/cloud_account/onboarding.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Account Verification"
@@ -42,6 +105,11 @@ msgstr "Cím 2. sora"
 msgid "Address line 3"
 msgstr "Cím 3. sora"
 
+#: extra/keila_cloud_web/templates/cloud_account/_referral_source.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Almost done!"
+msgstr ""
+
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:95
 #, elixir-autogen, elixir-format
 msgid "Apt 1"
@@ -64,6 +132,16 @@ msgstr ""
 msgid "Business/organization name"
 msgstr "Vállalkozás/szervezet neve"
 
+#: extra/keila_cloud_web/components/cloud_registration.ex:11
+#, elixir-autogen, elixir-format
+msgid "By creating an account, you agree to our [terms of service](%{tos_link}). Please also acknowledge our [privacy policy](%{pp_link})."
+msgstr ""
+
+#: extra/keila_cloud_web/components/subscription_status.ex:274
+#, elixir-autogen, elixir-format
+msgid "Cancel subscription"
+msgstr "Előfizetés lemondása"
+
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:299
 #, elixir-autogen, elixir-format
 msgid "Check Domain"
@@ -73,6 +151,11 @@ msgstr "Domain ellenőrzése"
 #, elixir-autogen, elixir-format
 msgid "Check status"
 msgstr "Állapot ellenőrzése"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:84
+#, elixir-autogen, elixir-format
+msgid "Check your subscription now"
+msgstr "Ellenőrizze most az előfizetését"
 
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:73
 #, elixir-autogen, elixir-format
@@ -137,6 +220,16 @@ msgstr "Küldő véglegesítése ..."
 msgid "First name"
 msgstr "Keresztnév"
 
+#: extra/keila_cloud_web/components/subscription_status.ex:287
+#, elixir-autogen, elixir-format
+msgid "Get started"
+msgstr "Kezdés"
+
+#: extra/keila_cloud_web/templates/cloud_account/_referral_source.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "How did you hear about Keila?"
+msgstr ""
+
 #: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "I don’t have an existing contact list yet."
@@ -159,6 +252,12 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Island"
 msgstr "Sziget"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:74
+#, elixir-autogen, elixir-format, fuzzy
+msgid "It looks like you've already used up the email quota from your subscription."
+msgstr ""
+"Úgy tűnik, már felhasználta az előfizetéséhez tartozó e-mail kvótát."
 
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:304
 #, elixir-autogen, elixir-format
@@ -240,6 +339,11 @@ msgstr ""
 msgid "Please select a country"
 msgstr "Kérjük, válasszon országot"
 
+#: lib/keila_web/templates/campaign/stats_live.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Please start a subscription before sending your first campaign."
+msgstr "Kérjük, indítson előfizetést, mielőtt elküldi az első kampányát."
+
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "Postal code"
@@ -265,6 +369,11 @@ msgstr "Régió"
 msgid "Review account for %{email}"
 msgstr "%{email} fiók felülvizsgálata"
 
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:246
+#, elixir-autogen, elixir-format
+msgid "Review account information"
+msgstr "Fiókadatok áttekintése"
+
 #: lib/keila_web/templates/layout/app.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Select plan"
@@ -284,6 +393,11 @@ msgstr "Küldés a Keilával"
 #, elixir-autogen, elixir-format
 msgid "Show DNS Records"
 msgstr "DNS-rekordok megjelenítése"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:94
+#, elixir-autogen, elixir-format
+msgid "Start new subscription"
+msgstr "Új előfizetés indítása"
 
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:60
 #, elixir-autogen, elixir-format
@@ -305,6 +419,36 @@ msgstr "Állapot oldal"
 msgid "Subdomain"
 msgstr "Aldomain"
 
+#: extra/keila_cloud_web/components/subscription_status.ex:127
+#, elixir-autogen, elixir-format
+msgid "Subscribe for a year and get one month for free!"
+msgstr "Fizessen elő egy évre, és kapjon egy hónapot ingyen!"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:112
+#, elixir-autogen, elixir-format
+msgid "Subscribe now and start sending emails!"
+msgstr "Iratkozzon fel most, és kezdjen e-maileket küldeni!"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:39
+#, elixir-autogen, elixir-format
+msgid "Subscription"
+msgstr "Előfizetés"
+
+#: extra/keila_cloud_web/controllers/cloud_account_controller.ex:34
+#, elixir-autogen, elixir-format
+msgid "Subscription still active"
+msgstr "Előfizetés még aktív"
+
+#: extra/keila_cloud_web/templates/cloud_account/await_subscription_live.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Thank you for subscribing to Keila!"
+msgstr "Köszönjük, hogy feliratkozott a Keilára!"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:69
+#, elixir-autogen, elixir-format
+msgid "There was an error processing your payment. Please update your payment method to continue using Keila."
+msgstr "Hiba történt a fizetés feldolgozása közben. Kérjük, frissítse fizetési módját a Keila további használatához."
+
 #: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "This account is for a business/organization"
@@ -321,6 +465,11 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "This is a private account"
 msgstr "Ez egy privát fiók"
+
+#: extra/keila_cloud_web/templates/cloud_account/_referral_source.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "This is optional, but it's really useful for us!"
+msgstr ""
 
 #: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:34
 #, elixir-autogen, elixir-format
@@ -370,6 +519,11 @@ msgstr ""
 msgid "Update account information"
 msgstr "Fiókinformációk frissítése"
 
+#: extra/keila_cloud_web/components/subscription_status.ex:269
+#, elixir-autogen, elixir-format
+msgid "Update payment method"
+msgstr "Fizetési mód frissítése"
+
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:148
 #, elixir-autogen, elixir-format
 msgid "Update to new settings"
@@ -408,6 +562,12 @@ msgstr ""
 "Jelenleg a feladója beállításainak véglegesítésén dolgozunk. Ez eltarthat "
 "néhány percig."
 
+#: extra/keila_cloud_web/templates/cloud_account/await_subscription_live.html.heex:26
+#, elixir-autogen, elixir-format, fuzzy
+msgid "We're currently processing your subscription. This shouldn't take longer than a minute …"
+msgstr ""
+"Jelenleg feldolgozzuk az előfizetésedet. Ez nem tarthat tovább egy percnél …"
+
 #: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Website"
@@ -427,6 +587,16 @@ msgstr ""
 "Jelenleg régi e-mail beállításokat használ. A jobb teljesítmény és "
 "megbízhatóság érdekében javasoljuk az új beállításokra való frissítést."
 
+#: extra/keila_cloud_web/components/subscription_status.ex:83
+#, elixir-autogen, elixir-format
+msgid "You can continue using your subscription until:"
+msgstr "Az előfizetését a következő időpontig használhatja:"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:49
+#, elixir-autogen, elixir-format
+msgid "You currently have an active subscription. Thanks for supporting Keila!"
+msgstr "Jelenleg aktív előfizetése van. Köszönjük, hogy támogatja a Keilát!"
+
 #: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Your Company, Inc."
@@ -439,6 +609,16 @@ msgstr ""
 "A fiókja jelenleg felülvizsgálat alatt áll. Az e-mailek küldése a "
 "felülvizsgálat befejezése után lesz engedélyezve."
 
+#: extra/keila_cloud_web/components/subscription_status.ex:79
+#, elixir-autogen, elixir-format
+msgid "Your subscription has been cancelled."
+msgstr "Az előfizetése lemondásra került."
+
+#: extra/keila_cloud_web/components/subscription_status.ex:59
+#, elixir-autogen, elixir-format
+msgid "Your subscription is currently suspended. Please update your payment method to continue using Keila."
+msgstr "Az előfizetése jelenleg fel van függesztve. Kérjük, frissítse fizetési módját a Keila további használatához."
+
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:30
 #, elixir-autogen, elixir-format
 msgid "You’re using a shared domain. Emails will be sent from *%{fallback_email}*. Replies will go to *%{from_email}*. [Read more](https://www.keila.io/docs/shared-domains){:target=\"_blank\"}"
@@ -447,10 +627,20 @@ msgstr ""
 " elküldve. A válaszok a *%{from_email}* címre mennek. [További "
 "információ](https://www.keila.io/docs/shared-domains){:target=\"_blank\"}"
 
+#: extra/keila_cloud_web/components/subscription_status.ex:205
+#, elixir-autogen, elixir-format
+msgid "billed annually"
+msgstr "éves számlázás"
+
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:271
 #, elixir-autogen, elixir-format
 msgid "current value:"
 msgstr "jelenlegi érték:"
+
+#: extra/keila_cloud_web/templates/cloud_account/_referral_source.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "e.g. a friend, blog post, Google, …"
+msgstr ""
 
 #: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:268
 #, elixir-autogen, elixir-format
@@ -467,66 +657,6 @@ msgstr "https://example.com"
 msgid "newsletter@example.com"
 msgstr "newsletter@example.com"
 
-#: extra/keila_cloud_web/components/subscription_status.ex:127
-#, elixir-autogen, elixir-format
-msgid "Subscribe for a year and get one month for free!"
-msgstr "Fizessen elő egy évre, és kapjon egy hónapot ingyen!"
-
-#: extra/keila_cloud_web/controllers/cloud_account_controller.ex:34
-#, elixir-autogen, elixir-format
-msgid "Subscription still active"
-msgstr "Előfizetés még aktív"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:274
-#, elixir-autogen, elixir-format
-msgid "Cancel subscription"
-msgstr "Előfizetés lemondása"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:241
-#, elixir-autogen, elixir-format
-msgid "%{monthly_emails} emails"
-msgstr "%{monthly_emails} e-mail"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:255
-#, elixir-autogen, elixir-format
-msgid "%{monthly_emails} emails/month"
-msgstr "%{monthly_emails} e-mail/hónap"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:287
-#, elixir-autogen, elixir-format
-msgid "Get started"
-msgstr "Kezdés"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:94
-#, elixir-autogen, elixir-format
-msgid "Start new subscription"
-msgstr "Új előfizetés indítása"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:69
-#, elixir-autogen, elixir-format
-msgid "There was an error processing your payment. Please update your payment method to continue using Keila."
-msgstr "Hiba történt a fizetés feldolgozása közben. Kérjük, frissítse fizetési módját a Keila további használatához."
-
-#: extra/keila_cloud_web/components/subscription_status.ex:269
-#, elixir-autogen, elixir-format
-msgid "Update payment method"
-msgstr "Fizetési mód frissítése"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:83
-#, elixir-autogen, elixir-format
-msgid "You can continue using your subscription until:"
-msgstr "Az előfizetését a következő időpontig használhatja:"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:79
-#, elixir-autogen, elixir-format
-msgid "Your subscription has been cancelled."
-msgstr "Az előfizetése lemondásra került."
-
-#: extra/keila_cloud_web/components/subscription_status.ex:59
-#, elixir-autogen, elixir-format
-msgid "Your subscription is currently suspended. Please update your payment method to continue using Keila."
-msgstr "Az előfizetése jelenleg fel van függesztve. Kérjük, frissítse fizetési módját a Keila további használatához."
-
 #: extra/keila_cloud_web/components/subscription_status.ex:249
 #, elixir-autogen, elixir-format
 msgid "no subscription"
@@ -541,108 +671,3 @@ msgstr "korlátlan számú kontakt"
 #, elixir-autogen, elixir-format
 msgid "valid for one year"
 msgstr "egy évig érvényes"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:221
-#, elixir-autogen, elixir-format
-msgid "%{price} / month"
-msgstr "%{price} / hónap"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:212
-#, elixir-autogen, elixir-format
-msgid "%{price} one time"
-msgstr "%{price} egyszeri"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:230
-#, elixir-autogen, elixir-format
-msgid "(%{price} incl. tax)"
-msgstr "(%{price} adóval együtt)"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:112
-#, elixir-autogen, elixir-format
-msgid "Subscribe now and start sending emails!"
-msgstr "Iratkozzon fel most, és kezdjen e-maileket küldeni!"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:39
-#, elixir-autogen, elixir-format
-msgid "Subscription"
-msgstr "Előfizetés"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:49
-#, elixir-autogen, elixir-format
-msgid "You currently have an active subscription. Thanks for supporting Keila!"
-msgstr "Jelenleg aktív előfizetése van. Köszönjük, hogy támogatja a Keilát!"
-
-#: extra/keila_cloud_web/components/subscription_status.ex:205
-#, elixir-autogen, elixir-format
-msgid "billed annually"
-msgstr "éves számlázás"
-
-#: lib/keila_web/templates/campaign/stats_live.html.heex:84
-#, elixir-autogen, elixir-format
-msgid "Check your subscription now"
-msgstr "Ellenőrizze most az előfizetését"
-
-#: lib/keila_web/templates/campaign/stats_live.html.heex:74
-#, elixir-autogen, elixir-format, fuzzy
-msgid "It looks like you've already used up the email quota from your subscription."
-msgstr ""
-"Úgy tűnik, már felhasználta az előfizetéséhez tartozó e-mail kvótát."
-
-#: lib/keila_web/templates/campaign/stats_live.html.heex:51
-#, elixir-autogen, elixir-format
-msgid "Please start a subscription before sending your first campaign."
-msgstr "Kérjük, indítson előfizetést, mielőtt elküldi az első kampányát."
-
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:274
-#: lib/keila_web/templates/campaign/stats_live.html.heex:61
-#: lib/keila_web/templates/form/edit_live.html.heex:526
-#: lib/keila_web/templates/form/edit_live.html.heex:676
-#, elixir-autogen, elixir-format
-msgid "Start your subscription now"
-msgstr "Indítsa el előfizetését most"
-
-#: extra/keila_cloud_web/templates/cloud_account/await_subscription_live.html.heex:22
-#, elixir-autogen, elixir-format
-msgid "Thank you for subscribing to Keila!"
-msgstr "Köszönjük, hogy feliratkozott a Keilára!"
-
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:252
-#, elixir-autogen, elixir-format
-msgid "To prevent abuse by spammers, sending emails is only possible if you have an active subscription."
-msgstr ""
-"A spammerek általi visszaélések megelőzése érdekében e-mailek küldése csak "
-"aktív előfizetés esetén lehetséges."
-
-#: lib/keila_web/templates/form/edit_live.html.heex:519
-#, elixir-autogen, elixir-format
-msgid "To prevent abuse by spammers, the double opt-in feature is currently only available if you have a subscription. Sorry for the inconvenience!"
-msgstr ""
-"A spammerek visszaéléseinek megelőzése érdekében a kettős opt-in funkció "
-"jelenleg csak akkor érhető el, ha van előfizetésed. Elnézést a "
-"kellemetlenségért!"
-
-#: lib/keila_web/templates/form/edit_live.html.heex:669
-#, elixir-autogen, elixir-format
-msgid "To prevent abuse by spammers, the welcome email feature is currently only available if you have a subscription. Sorry for the inconvenience!"
-msgstr ""
-"A spammerekkel való visszaélések megelőzése érdekében az üdvözlő e-mail "
-"funkció jelenleg csak előfizetés esetén érhető el. Elnézést a "
-"kellemetlenségért!"
-
-#: extra/keila_cloud_web/templates/cloud_account/await_subscription_live.html.heex:26
-#, elixir-autogen, elixir-format, fuzzy
-msgid "We're currently processing your subscription. This shouldn't take longer than a minute …"
-msgstr ""
-"Jelenleg feldolgozzuk az előfizetésedet. Ez nem tarthat tovább egy percnél …"
-
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:246
-#, elixir-autogen, elixir-format
-msgid "Review account information"
-msgstr "Fiókadatok áttekintése"
-
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:223
-#, elixir-autogen, elixir-format
-msgid "To prevent abuse by spammers, sending emails is only possible once your onboarding has been completed."
-msgstr ""
-"A spammerekkel való visszaélések megelőzése érdekében e-mailek küldése csak "
-"az onboarding befejezése után lehetséges."

@@ -12,12 +12,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: lib/keila_web/controllers/auth_controller.ex:78
+#: lib/keila_web/controllers/auth_controller.ex:90
 #, elixir-autogen, elixir-format
 msgid "Activation required"
 msgstr "Aktiválás szükséges"
 
-#: lib/keila_web/controllers/auth_controller.ex:66
+#: lib/keila_web/controllers/auth_controller.ex:78
 #, elixir-autogen, elixir-format
 msgid "Activation successful"
 msgstr "Aktiválás sikeres"
@@ -102,19 +102,19 @@ msgstr "Fiók kezelése"
 msgid "New password saved."
 msgstr "Az új jelszó mentve."
 
-#: lib/keila_web/controllers/auth_controller.ex:205
+#: lib/keila_web/controllers/auth_controller.ex:217
 #, elixir-autogen, elixir-format
 msgid "Not found"
 msgstr "Nem található"
 
-#: lib/keila_web/controllers/auth_controller.ex:116
-#: lib/keila_web/controllers/auth_controller.ex:129
-#: lib/keila_web/controllers/auth_controller.ex:162
+#: lib/keila_web/controllers/auth_controller.ex:128
+#: lib/keila_web/controllers/auth_controller.ex:141
+#: lib/keila_web/controllers/auth_controller.ex:174
 #, elixir-autogen, elixir-format
 msgid "Password reset"
 msgstr "Jelszó visszaállítása"
 
-#: lib/keila_web/controllers/auth_controller.ex:149
+#: lib/keila_web/controllers/auth_controller.ex:161
 #, elixir-autogen, elixir-format
 msgid "Password reset successful"
 msgstr "Jelszó-visszaállítás sikeres"
@@ -134,7 +134,7 @@ msgstr "Kérjük, erősítse meg e-mail címét"
 msgid "Please activate your account first."
 msgstr "Kérjük, először aktiválja fiókját."
 
-#: lib/keila_web/controllers/auth_controller.ex:42
+#: lib/keila_web/controllers/auth_controller.ex:45
 #: lib/keila_web/controllers/public_form_controller.ex:64
 #, elixir-autogen, elixir-format
 msgid "Please complete the captcha."
@@ -150,7 +150,7 @@ msgstr "Aktiválási link újraküldése"
 msgid "Reset your password."
 msgstr "Állítsa vissza a jelszavát."
 
-#: lib/keila_web/controllers/auth_controller.ex:185
+#: lib/keila_web/controllers/auth_controller.ex:197
 #: lib/keila_web/templates/auth/login.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Sign in"
@@ -166,12 +166,12 @@ msgstr "Itt jelentkezhet be e-mail címével és jelszavával."
 msgid "Sign in."
 msgstr "Bejelentkezés."
 
-#: lib/keila_web/controllers/auth_controller.ex:56
+#: lib/keila_web/controllers/auth_controller.ex:59
 #, elixir-autogen, elixir-format
 msgid "Sign up"
 msgstr "Regisztráció"
 
-#: lib/keila_web/controllers/auth_controller.ex:31
+#: lib/keila_web/controllers/auth_controller.ex:34
 #, elixir-autogen, elixir-format
 msgid "Sign up successful"
 msgstr "Sikeres regisztráció"
