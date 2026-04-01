@@ -3,6 +3,6 @@ defmodule KeilaWeb.AuthView do
   require Keila
 
   Keila.if_cloud do
-    import KeilaCloudWeb.Components.RegistrationCloudData
+    import KeilaCloudWeb.Components.CloudRegistration
   end
 end

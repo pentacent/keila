@@ -38,7 +38,7 @@
       <% end %>
     </div>
     <%= Keila.if_cloud do %>
-      <.registration_cloud_data />
+      <.cloud_registration />
     <% end %>
     <div class="hidden">
       {hidden_input(f, :locale, value: Gettext.get_locale())}
