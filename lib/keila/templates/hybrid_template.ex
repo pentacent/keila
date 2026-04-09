@@ -121,6 +121,36 @@ defmodule Keila.Templates.HybridTemplate do
     [".email-bg"]
   end
 
+  @doc """
+  Applies style aliases, copying properties from source selectors to target
+  selectors.
+  """
+  @spec apply_style_aliases(Css.t()) :: Css.t()
+  def apply_style_aliases(styles) do
+    aliases()
+    |> Enum.reduce(styles, fn
+      {source, target, properties}, styles ->
+        case List.keyfind(styles, source, 0) do
+          {^source, source_properties} ->
+            filtered = Enum.filter(source_properties, fn {prop, _} -> prop in properties end)
+            Css.merge(styles, [{target, filtered}])
+
+          nil ->
+            styles
+        end
+
+      {source, target}, styles ->
+        case List.keyfind(styles, source, 0) do
+          {^source, properties} -> Css.merge(styles, [{target, properties}])
+          nil -> styles
+        end
+    end)
+  end
+
+  defp aliases do
+    [{"#content", ".stack-column > table", ["color", "font-family"]}]
+  end
+
   @spec html_template() :: %Solid.Template{}
   def html_template() do
     @html_body

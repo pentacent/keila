@@ -190,17 +190,22 @@ defmodule Keila.Mailings.Builder do
   defp fetch_styles(%Campaign{template: %Template{styles: styles}}) when is_list(styles) do
     default_styles = HybridTemplate.styles()
     template_styles = styles
+
     Css.merge(default_styles, template_styles)
+    |> HybridTemplate.apply_style_aliases()
   end
 
   defp fetch_styles(%Campaign{template: %Template{styles: styles}}) when is_binary(styles) do
     default_styles = HybridTemplate.styles()
     template_styles = Css.parse!(styles)
+
     Css.merge(default_styles, template_styles)
+    |> HybridTemplate.apply_style_aliases()
   end
 
   defp fetch_styles(_) do
     HybridTemplate.styles()
+    |> HybridTemplate.apply_style_aliases()
   end
 
   defp put_signature(email, assigns) do
