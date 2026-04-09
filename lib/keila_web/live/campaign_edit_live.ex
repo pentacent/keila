@@ -39,6 +39,7 @@ defmodule KeilaWeb.CampaignEditLive do
   defp put_campaign_preview(socket) do
     campaign = Ecto.Changeset.apply_changes(socket.assigns.changeset)
     template = Enum.find(socket.assigns.templates, &(&1.id == campaign.template_id))
+    campaign = %{campaign | template: template}
 
     email = Mailings.Builder.build_preview(campaign)
     preview = email.html_body || KeilaWeb.CampaignView.plain_text_preview(email.text_body)
