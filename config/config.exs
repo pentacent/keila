@@ -105,7 +105,6 @@ config :keila, Oban,
     {Oban.Plugins.Cron,
      crontab: [
        {"* * * * *", Keila.Mailings.DeliverScheduledCampaignsWorker},
-       {"* * * * *", Keila.Mailings.ScheduleWorker},
        {"1 0 * * *", Keila.Instance.UpdateCronWorker},
        {"0 0 * * *", Keila.Mailings.MessagePruner}
      ]}
