@@ -875,7 +875,8 @@ defmodule Keila.Mailings do
   @spec get_public_campaign(campaign_id :: Campaign.id()) :: Campaign.t() | nil
   def get_public_campaign(campaign_id) do
     from(c in Campaign,
-      where: c.id == ^campaign_id and c.public_link_enabled == true and not is_nil(c.sent_at)
+      where: c.id == ^campaign_id and c.public_link_enabled == true and not is_nil(c.sent_at),
+      preload: [:template]
     )
     |> Repo.one()
   end
