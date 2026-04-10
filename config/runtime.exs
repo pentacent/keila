@@ -340,6 +340,10 @@ if config_env() == :prod do
   end
 end
 
+if System.get_env("TZDATA_AUTOUPDATE") in ["disabled", "false", "0"] do
+  config :tzdata, :autoupdate, :disabled
+end
+
 if config_env() == :test do
   db_url = System.get_env("DB_URL")
 
