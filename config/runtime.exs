@@ -325,6 +325,11 @@ if config_env() == :prod do
          :update_checks_enabled,
          System.get_env("DISABLE_UPDATE_CHECKS") not in [1, "1", "true", "TRUE"]
 
+  # Disable tzdata auto-update check
+  if System.get_env("DISABLE_TZDATA_UPDATES") in [1, "1", "true", "TRUE"] do
+    config :tzdata, :autoupdate, :disabled
+  end
+
   # Precedence Bulk Header
   if System.get_env("DISABLE_PRECEDENCE_HEADER") in [1, "1", "true", "TRUE"] do
     config(:keila, Keila.Mailings, enable_precedence_header: false)
