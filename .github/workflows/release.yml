@@ -5,6 +5,9 @@ on:
     tags:
       - "v*"
 
+permissions:
+  contents: read
+
 jobs:
   test-agplv3:
     uses: ./.github/workflows/test.yml
@@ -16,7 +19,8 @@ jobs:
 
   test-cloud:
     uses: ./.github/workflows/test.yml
-    secrets: inherit
+    secrets:
+      KEILA_CLOUD_LICENSE: ${{ secrets.KEILA_CLOUD_LICENSE }}
     with:
       with_extra: "1"
       keila_cloud: "1"
@@ -29,30 +33,28 @@ jobs:
       - test-cloud
     runs-on: ubuntu-latest
     environment: build
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: docker/setup-buildx-action@v3
-      - uses: actions/cache@v4
+      - uses: actions/checkout@v6
         with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx--${{ github.sha }}
-      - uses: docker/login-action@v2
+          persist-credentials: false
+      - uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v4
+      - uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4
         with:
           username: ${{ secrets.DOCKER_HUB_USER }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
       - id: meta
         run: |
-          VERSION=`echo ${{ github.ref }} | grep -oE "([0-9]+)\.([0-9]+)\.([0-9]+)"`
-          MINOR_VERSION=`echo $VERSION | grep -oE "^([0-9]+)\.([0-9]+)"`
-          MAJOR_VERSION=`echo $VERSION | grep -oE "^([0-9]+)"`
-          echo "::set-output name=version::${VERSION}"
-          echo "::set-output name=minor_version::${MINOR_VERSION}"
-          echo "::set-output name=major_version::${MAJOR_VERSION}"
-          awk -v version="${VERSION}" '/## Version\s/ {printit = $3 == version}; printit;' "$2" CHANGELOG.md > __CHANGELOG__.md
+          VERSION=$(echo "${GITHUB_REF}" | grep -oE "([0-9]+)\.([0-9]+)\.([0-9]+)")
+          MINOR_VERSION=$(echo "${VERSION}" | grep -oE "^([0-9]+)\.([0-9]+)")
+          MAJOR_VERSION=$(echo "${VERSION}" | grep -oE "^([0-9]+)")
+          echo "version=${VERSION}" >> "${GITHUB_OUTPUT}"
+          echo "minor_version=${MINOR_VERSION}" >> "${GITHUB_OUTPUT}"
+          echo "major_version=${MAJOR_VERSION}" >> "${GITHUB_OUTPUT}"
+          awk -v version="${VERSION}" '/## Version / {printit = $3 == version}; printit;' CHANGELOG.md > __CHANGELOG__.md
           cat __CHANGELOG__.md
-      - uses: docker/build-push-action@v3
+      - uses: docker/build-push-action@0a97817b6ade9f46837855d676c4cca3a2471fc9 # v4
         with:
           context: .
           file: ./ops/Dockerfile
@@ -66,14 +68,13 @@ jobs:
           labels: |
             service=keila
           push: true
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,mode=max,dest=/tmp/.buildx-cache
-      - uses: actions/create-release@v1
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Create GitHub Release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.meta.outputs.version }}
-          body_path: __CHANGELOG__.md
-          release_name: Keila v${{ steps.meta.outputs.version }}
-          draft: false
-          prerelease: false
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_VERSION: ${{ steps.meta.outputs.version }}
+        run: |
+          gh release create "v${RELEASE_VERSION}" \
+            --title "Keila v${RELEASE_VERSION}" \
+            --notes-file __CHANGELOG__.md

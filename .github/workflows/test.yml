@@ -18,6 +18,13 @@ on:
         required: false
         type: string
         default: "1.18-otp-27"
+    secrets:
+      KEILA_CLOUD_LICENSE:
+        description: "License key for Keila Cloud tests"
+        required: false
+
+permissions:
+  contents: read
 
 jobs:
   test:
@@ -47,7 +54,9 @@ jobs:
           echo "$KEILA_CLOUD_LICENSE" | sha256sum
       - name: install system packages
         run: apk add build-base git tar curl cmake
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - uses: actions/cache@v4
         with:
           path: |
