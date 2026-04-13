@@ -12,6 +12,8 @@ defmodule Keila.Mailings.MessageActions.Unsubscription do
     |> maybe_update_message()
     |> tap_if_not_nil(&update_contact/1)
     |> tap_if_not_nil(&log_event/1)
+
+    :ok
   end
 
   defp maybe_update_message(message_id) do

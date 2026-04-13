@@ -12,6 +12,8 @@ defmodule Keila.Mailings.MessageActions.SoftBounce do
     |> maybe_update_message()
     |> tap_if_not_nil(&maybe_update_contact(&1))
     |> tap_if_not_nil(&log_event(&1, data))
+
+    :ok
   end
 
   defp maybe_update_message(message_id) do
@@ -22,6 +24,8 @@ defmodule Keila.Mailings.MessageActions.SoftBounce do
     )
     |> Repo.update_one([])
   end
+
+  defp maybe_update_contact(%{contact_id: nil}), do: :ok
 
   defp maybe_update_contact(%{contact_id: contact_id}) do
     recent_soft_bounces =
@@ -36,6 +40,8 @@ defmodule Keila.Mailings.MessageActions.SoftBounce do
       Keila.Contacts.update_contact_status(contact_id, :unreachable)
     end
   end
+
+  defp log_event(%Message{contact_id: nil}, _data), do: :ok
 
   defp log_event(%Message{id: message_id, contact_id: contact_id}, data) do
     Keila.Tracking.log_event("soft_bounce", contact_id, message_id, data)

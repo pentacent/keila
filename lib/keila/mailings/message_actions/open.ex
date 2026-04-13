@@ -16,6 +16,8 @@ defmodule Keila.Mailings.MessageActions.Open do
     message_id
     |> maybe_update_message(min_delay)
     |> tap_if_not_nil(&log_event/1)
+
+    :ok
   end
 
   defp maybe_update_message(message_id, min_delay) do

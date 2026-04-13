@@ -68,6 +68,31 @@ defmodule Keila.Mailings.MailingsMessageActionsTest do
     assert %{status: :unreachable} = Repo.reload(contact)
   end
 
+  @tag :mailings
+  test "Bounces and complaints on messages without a contact also work" do
+    group = insert!(:group)
+    project = insert!(:project, group: group)
+    sender = insert!(:mailings_sender, project: project)
+
+    message =
+      insert!(:message,
+        contact_id: nil,
+        campaign_id: nil,
+        sender_id: sender.id,
+        project_id: project.id,
+        sent_at: DateTime.utc_now(:second)
+      )
+
+    assert :ok = Mailings.handle_message_hard_bounce(message.id, %{})
+    assert Repo.reload(message).hard_bounce_received_at
+
+    assert :ok = Mailings.handle_message_soft_bounce(message.id, %{})
+    assert Repo.reload(message).soft_bounce_received_at
+
+    assert :ok = Mailings.handle_message_complaint(message.id, %{})
+    assert Repo.reload(message).complaint_received_at
+  end
+
   defp mins_ago(n) do
     DateTime.utc_now(:second) |> DateTime.add(-5 * n, :minute)
   end
