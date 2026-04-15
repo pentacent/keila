@@ -29,6 +29,15 @@ defmodule Keila.Mailings.DeliveryWorker do
       Keila.Mailer.deliver_with_sender(email, message.sender)
     end
     |> then(fn result -> handle_result(result, message) end)
+  rescue
+    e ->
+      %Message{id: id} |> set_message_failed_query() |> Repo.update_all([])
+
+      Logger.error(
+        "DeliveryWorker: Unhandled exception for message #{id}: #{Exception.message(e)}"
+      )
+
+      {:cancel, :exception}
   end
 
   defp ensure_message(%Message{}), do: :ok
@@ -90,6 +99,12 @@ defmodule Keila.Mailings.DeliveryWorker do
     {:cancel, :invalid_email}
   end
 
+  # Message not found (e.g. deleted or already processed)
+  defp handle_result({:error, :not_found}, nil), do: {:cancel, :not_found}
+
+  # Sender not found
+  defp handle_result({:error, :no_sender}, nil), do: {:cancel, :no_sender}
+
   # Another error occurred. Sending is not retried.
   defp handle_result({:error, reason}, message) do
     Logger.warning(
@@ -122,6 +137,7 @@ defmodule Keila.Mailings.DeliveryWorker do
       where: m.id == ^message.id,
       update: [
         set: [
+          status: :failed,
           failed_at: fragment("NOW()"),
           updated_at: fragment("NOW()")
         ]
