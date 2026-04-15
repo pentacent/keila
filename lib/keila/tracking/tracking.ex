@@ -15,7 +15,11 @@ defmodule Keila.Tracking do
   @spec register_link(String.t(), Campaign.id()) :: Link.t()
   def register_link(url, campaign_id) do
     Link.changeset(%{url: url, campaign_id: campaign_id})
-    |> Repo.insert!()
+    |> Repo.insert_or_update!(on_conflict: :nothing)
+    |> case do
+      %{id: nil} -> find_link_by_url(url, campaign_id)
+      link -> link
+    end
   end
 
   @doc """
@@ -133,7 +137,7 @@ defmodule Keila.Tracking do
         Click.changeset(%{message_id: message_id, link_id: link_id})
         |> Repo.insert!()
 
-        Keila.Mailings.handle_message_click(message_id)
+        Keila.Mailings.handle_message_click(message_id, min_delay: opts[:min_delay])
       end
 
       {:ok, URI.decode_www_form(encoded_url)}
@@ -150,7 +154,7 @@ defmodule Keila.Tracking do
   def track_open_and_get_link(encoded_url, message_id, hmac, opts \\ []) do
     if valid_hmac?(hmac, encoded_url, message_id) do
       unless is_bot?(opts[:user_agent]) do
-        Keila.Mailings.handle_message_open(message_id)
+        Keila.Mailings.handle_message_open(message_id, min_delay: opts[:min_delay])
       end
 
       {:ok, URI.decode_www_form(encoded_url)}
