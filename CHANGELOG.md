@@ -2,6 +2,28 @@
 
 ## Unreleased
 
+## Version 0.19.1
+
+> 🇮🇹 Italian translation, better Markdown performance, SMTP without auth, and many fixes
+
+### Added
+- Added Italian translation (thanks @energywave)
+- Support for SMTP without password auth. Implements #491 (thanks @ghost1ndshell)
+- Added `DISABLE_TZDATA_UPDATES` option to disable tzdata updates (thanks @sachabertschibfs)
+- Image resizing in Block Editor & Markdown Editor
+
+### Improved
+- Significantly improved performance in Markdown editor. (thanks @roadriverrail for reporting)
+- Campaign preview now updates when changing template in campaign settings
+- Public archive pages are now rendered with campaign template
+
+### Fixed
+- Fixed some layout issues with column padding and font styles in Block Editor
+- Fixed flickering images in Block Editor
+- Fixed regression: Restored level 3 headings in Block Editor
+- Fixed regression: Fixed error when creating shared senders (thanks @aj-foster)
+
+
 ## Version 0.19.0
 
 > 👋 Welcome emails, Phoenix 1.7/LiveView 1.x upgrade, protected unsubscribe links, Bulgarian and Hungarian translations
