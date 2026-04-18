@@ -22,51 +22,117 @@ defmodule Keila.Mailings.CampaignRenderWorker do
   def perform(%Oban.Job{args: %{"campaign_id" => campaign_id}}) do
     campaign = Keila.Mailings.get_campaign(campaign_id)
 
+    if is_nil(campaign) do
+      {:cancel, :campaign_not_found}
+    else
+      render_messages(campaign)
+    end
+  end
+
+  defp render_messages(campaign) do
     from(m in Message,
-      where: m.campaign_id == ^campaign_id and m.status == :unrendered,
+      where: m.campaign_id == ^campaign.id and m.status == :unrendered,
       left_join: c in assoc(m, :contact),
       select: %{m | contact: c},
       limit: @batch_size
     )
     |> Repo.all()
-    |> Enum.map(&render_and_save_message(&1, campaign))
-    |> then(fn updated_messages ->
-      if length(updated_messages) == @batch_size do
-        %{"campaign_id" => campaign_id}
-        |> __MODULE__.new()
-        |> Oban.insert()
+    |> Task.async_stream(&render_message(&1, campaign))
+    |> Enum.map(fn {:ok, result} -> result end)
+    |> tap(&update_rendered_messages/1)
+    |> tap(&update_failed_messages/1)
+    |> tap(fn results ->
+      unless length(results) < @batch_size do
+        Oban.insert(new(%{"campaign_id" => campaign.id}))
       end
     end)
 
     :ok
   end
 
-  defp render_and_save_message(message, campaign) do
+  defp render_message(message, campaign) do
     with email = Builder.build(campaign, message, %{}),
          :ok <- ensure_valid_email(email),
-         [{recipient_name, recipient_email}] <- email.to do
-      update_message(message, %{
-        status: :ready,
-        subject: email.subject,
-        text_body: email.text_body,
-        html_body: email.html_body,
-        recipient_email: recipient_email,
-        recipient_name: recipient_name
-      })
+         [{_, _}] <- email.to do
+      {message, {:ok, email}}
     else
       {:error, :rendering_error} ->
-        update_message(message, %{status: :failed, failed_at: DateTime.utc_now()})
+        {message, :error}
 
       other ->
         Logger.warning("CampaignRenderWorker: unexpected error: #{inspect(other)}")
-        update_message(message, %{status: :failed, failed_at: DateTime.utc_now()})
+        {message, :error}
+    end
+  rescue
+    e ->
+      Logger.error(
+        "CampaignRenderWorker: exception rendering message #{message.id}: #{Exception.message(e)}"
+      )
+
+      {message, :error}
+  end
+
+  @message_update_types %{
+    message_id: Message.Id,
+    subject: :string,
+    html_body: :string,
+    text_body: :string,
+    recipient_email: :string,
+    recipient_name: :string
+  }
+
+  defp update_rendered_messages(results) do
+    message_updates =
+      results
+      |> Enum.filter(fn {_message, result} -> match?({:ok, _}, result) end)
+      |> Enum.map(fn {message, {:ok, email}} ->
+        [{recipient_name, recipient_email}] = email.to
+
+        %{
+          message_id: message.id,
+          subject: email.subject,
+          html_body: email.html_body,
+          text_body: email.text_body,
+          recipient_email: recipient_email,
+          recipient_name: recipient_name
+        }
+      end)
+
+    if Enum.any?(message_updates) do
+      from(m in Message,
+        join: mu in values(message_updates, @message_update_types),
+        on: m.id == mu.message_id,
+        update: [
+          set: [
+            status: :ready,
+            subject: mu.subject,
+            html_body: mu.html_body,
+            text_body: mu.text_body,
+            recipient_email: mu.recipient_email,
+            recipient_name: mu.recipient_name,
+            updated_at: fragment("NOW()")
+          ]
+        ]
+      )
+      |> Repo.update_all([])
     end
   end
 
-  defp update_message(message, params) do
-    message
-    |> Message.changeset(params)
-    |> Repo.update()
+  defp update_failed_messages(results) do
+    message_ids =
+      results
+      |> Enum.filter(fn {_message, result} -> result == :error end)
+      |> Enum.map(fn {message, _} -> message.id end)
+
+    if Enum.any?(message_ids) do
+      from(m in Message,
+        where: m.id in ^message_ids,
+        update: [
+          set: [status: :failed, failed_at: fragment("NOW()"), updated_at: fragment("NOW()")]
+        ]
+      )
+      |> Repo.update_all([])
+    end
   end
 
   defp ensure_valid_email(email) do
