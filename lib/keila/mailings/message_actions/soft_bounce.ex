@@ -31,10 +31,13 @@ defmodule Keila.Mailings.MessageActions.SoftBounce do
     recent_soft_bounces =
       from(r in Message,
         where: r.contact_id == ^contact_id and not is_nil(r.sent_at),
-        order_by: r.sent_at,
-        limit: 5
+        order_by: [desc: r.sent_at],
+        limit: 5,
+        select: not is_nil(r.soft_bounce_received_at)
       )
-      |> Repo.aggregate(:count, :id)
+      |> Repo.all()
+      |> Enum.filter(& &1)
+      |> Enum.count()
 
     if recent_soft_bounces >= 3 do
       Keila.Contacts.update_contact_status(contact_id, :unreachable)

@@ -37,6 +37,14 @@ defmodule Keila.Mailings.MailingsMessageActionsTest do
 
     contact = insert!(:contact, project_id: project.id)
 
+    for n <- 1..5 do
+      insert!(:message,
+        contact_id: contact.id,
+        campaign_id: campaign.id,
+        sent_at: mins_ago(10 - n)
+      )
+    end
+
     message =
       insert!(:message,
         contact_id: contact.id,
