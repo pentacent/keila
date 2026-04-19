@@ -29,8 +29,8 @@ defmodule KeilaWeb.SESWebhookControllerTest do
     contact = insert!(:contact, project_id: project.id)
     campaign = insert!(:mailings_campaign, project_id: project.id)
 
-    recipient =
-      insert!(:mailings_recipient,
+    message =
+      insert!(:message,
         contact_id: contact.id,
         campaign_id: campaign.id,
         receipt: @message_id
@@ -45,7 +45,7 @@ defmodule KeilaWeb.SESWebhookControllerTest do
 
     assert 200 == conn.status
 
-    assert %{status: :unreachable} = Keila.Repo.get(Keila.Contacts.Contact, recipient.contact_id)
+    assert %{status: :unreachable} = Keila.Repo.get(Keila.Contacts.Contact, message.contact_id)
   end
 
   @tag :ses_webhook_controller

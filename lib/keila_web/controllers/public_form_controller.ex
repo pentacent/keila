@@ -192,11 +192,11 @@ defmodule KeilaWeb.PublicFormController do
   @spec unsubscribe(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def unsubscribe(conn, %{
         "project_id" => project_id,
-        "recipient_id" => recipient_id,
+        "message_id" => message_id,
         "hmac" => hmac
       }) do
-    recipient = Mailings.get_recipient(recipient_id)
-    sent_at = if recipient, do: recipient.sent_at
+    message = Mailings.get_message(message_id)
+    sent_at = if message, do: message.sent_at
     form = Contacts.get_project_forms(project_id) |> List.first() || @default_unsubscribe_form
 
     if requires_confirmation?(conn, sent_at) do
@@ -211,7 +211,7 @@ defmodule KeilaWeb.PublicFormController do
       |> put_meta(:title, gettext("Unsubscribing ..."))
       |> render_confirmation()
     else
-      perform_recipient_unsubscribe(conn, form, project_id, recipient, hmac)
+      unsubscribe_from_message(conn, form, project_id, message, hmac)
     end
   end
 
@@ -236,9 +236,9 @@ defmodule KeilaWeb.PublicFormController do
     end
   end
 
-  defp perform_recipient_unsubscribe(conn, form, project_id, recipient, hmac) do
-    if Mailings.valid_unsubscribe_hmac?(project_id, recipient.id, hmac) do
-      Keila.Mailings.unsubscribe_recipient(recipient.id)
+  defp unsubscribe_from_message(conn, form, project_id, message, hmac) do
+    if Mailings.valid_unsubscribe_hmac?(project_id, message.id, hmac) do
+      Keila.Mailings.unsubscribe_from_message(message.id)
 
       conn
       |> assign(:form, form)

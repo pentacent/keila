@@ -89,8 +89,8 @@ defmodule Keila.Factory do
     }
   end
 
-  defp do_build(:mailings_recipient) do
-    %Keila.Mailings.Recipient{}
+  defp do_build(:message) do
+    %Keila.Mailings.Message{}
   end
 
   defp do_build(:template) do

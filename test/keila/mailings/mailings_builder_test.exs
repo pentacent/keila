@@ -68,7 +68,7 @@ defmodule Keila.Mailings.BuilderTest do
     group = insert!(:group)
     project = insert!(:project, group: group)
     contact = insert!(:contact, project_id: project.id)
-    recipient = insert!(:mailings_recipient, contact: contact, project_id: project.id)
+    message = insert!(:message, contact: contact, project_id: project.id)
     sender = build(:mailings_sender)
 
     campaign =
@@ -84,7 +84,7 @@ defmodule Keila.Mailings.BuilderTest do
         }
       )
 
-    email = %Swoosh.Email{} = Mailings.Builder.build(campaign, recipient, %{})
+    email = %Swoosh.Email{} = Mailings.Builder.build(campaign, message, %{})
     {:ok, document} = Floki.parse_document(email.html_body)
     # When tracking is enabled, the original link is not present
     assert "https://maybe-track.example.com" not in Floki.attribute(document, "a", "href")
@@ -92,7 +92,7 @@ defmodule Keila.Mailings.BuilderTest do
     campaign =
       Map.update!(campaign, :settings, fn settings -> %{settings | do_not_track: true} end)
 
-    email = %Swoosh.Email{} = Mailings.Builder.build(campaign, recipient, %{})
+    email = %Swoosh.Email{} = Mailings.Builder.build(campaign, message, %{})
     {:ok, document} = Floki.parse_document(email.html_body)
     assert "https://maybe-track.example.com" in Floki.attribute(document, "a", "href")
   end

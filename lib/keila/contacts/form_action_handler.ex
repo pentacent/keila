@@ -8,8 +8,8 @@ defmodule Keila.Contacts.FormActionHandler do
   alias Keila.Contacts.Contact
   alias Keila.Contacts.EctoStringMap
   alias Keila.Contacts.FormParams
-  alias Keila.Mailings.SendDoubleOptInMailWorker
-  alias Keila.Mailings.SendWelcomeEmailWorker
+  alias Keila.Mailings.DoubleOptInMessage
+  alias Keila.Mailings.WelcomeMessage
 
   @doc """
   Creates a new Contact within the given Project with dynamic casts and
@@ -60,8 +60,7 @@ defmodule Keila.Contacts.FormActionHandler do
     attrs = changeset.changes |> Map.put(:email, get_field(changeset, :email))
     {:ok, form_params} = Contacts.create_form_params(form.id, attrs)
 
-    SendDoubleOptInMailWorker.new(%{"form_params_id" => form_params.id})
-    |> Oban.insert()
+    DoubleOptInMessage.deliver(form_params.id)
 
     {:ok, form_params}
   end
@@ -92,8 +91,7 @@ defmodule Keila.Contacts.FormActionHandler do
 
   defp maybe_send_welcome_email(contact, form) do
     if form.settings.welcome_enabled && form.sender_id do
-      SendWelcomeEmailWorker.new(%{"contact_id" => contact.id, "form_id" => form.id})
-      |> Oban.insert()
+      WelcomeMessage.deliver(contact.id, form.id)
     end
   end
 end

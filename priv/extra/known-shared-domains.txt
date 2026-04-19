@@ -12,6 +12,7 @@ charter.net
 comcast.net
 cox.net
 earthlink.net
+etik.com
 fastmail.ca
 fastmail.cn
 fastmail.co.uk
@@ -35,6 +36,7 @@ freenet.de
 gmail.com
 gmx.at
 gmx.ch
+gmx.com
 gmx.de
 gmx.net
 hey.com
@@ -91,6 +93,8 @@ hotmail.nl
 hotmail.ro
 icloud.com
 ig.com.br
+ik.me
+ikmail.com
 juno.com
 libero.it
 live.com

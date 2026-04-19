@@ -28,6 +28,8 @@ defmodule KeilaWeb.ConnCase do
 
   using do
     quote do
+      require Keila
+
       # Import conveniences for testing with connections
       import Plug.Conn
       import Phoenix.ConnTest
@@ -67,9 +69,17 @@ defmodule KeilaWeb.ConnCase do
 
       defp with_login_and_project(conn, opts \\ []) do
         conn = with_login(conn, opts)
+        current_user = conn.assigns.current_user
 
         {:ok, project} =
-          Keila.Projects.create_project(conn.assigns.current_user.id, %{name: "Foo Bar"})
+          Keila.Projects.create_project(current_user.id, %{name: "Foo Bar"})
+
+        Keila.if_cloud do
+          if opts[:cloud_activate] do
+            account = Keila.Accounts.get_user_account(current_user.id)
+            KeilaCloud.Accounts.update_account_status(account.id, :active)
+          end
+        end
 
         {conn, project}
       end
