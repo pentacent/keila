@@ -27,6 +27,11 @@ defmodule Keila.Repo.Migrations.ChangeRecipientsToMessages do
              name: :messages_ready_for_delivery
            )
 
+    create index(:messages, [:sender_id],
+             where: "status = 2",
+             name: :queued_messages
+           )
+
     create index(:messages, [:status, :updated_at],
              where: "html_body is not null or text_body is not null",
              name: :messages_with_body
