@@ -634,7 +634,7 @@ defmodule Keila.Mailings do
   defp insert_rendering_job(0, _campaign), do: :ok
 
   defp insert_rendering_job(_, campaign),
-    do: Keila.Mailings.CampaignRenderWorker.new(%{"campaign_id" => campaign.id}) |> Oban.insert()
+    do: Keila.Mailings.CampaignRenderWorker.new(%{"campaign_id" => campaign.id}) |> Oban.insert!()
 
   defp ensure_not_empty(0), do: Repo.rollback(:no_recipients)
   defp ensure_not_empty(_), do: :ok
