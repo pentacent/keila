@@ -70,7 +70,7 @@ defmodule Keila.Mailings.CampaignRenderWorker do
 
       {:exit, {message, :timeout}} ->
         Logger.warning("CampaignRenderWorker: render timeout for message #{message.id}")
-        {:message, :error}
+        {message, :error}
     end)
   end
 
