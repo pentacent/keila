@@ -213,30 +213,30 @@ defmodule Keila.Mailings.Scheduler do
       from(m in Message,
         where: m.sender_id == ^sender.id and m.status == :ready,
         order_by: [desc: :priority, asc: :inserted_at],
-        limit: 1
+        limit: 1,
+        lock: "FOR UPDATE SKIP LOCKED",
+        select: m.id
       )
-      |> Keila.Repo.one()
 
-    case message do
-      nil ->
+    from(m in Message,
+      where: m.id in subquery(message),
+      update: [
+        set: [status: :queued, queued_at: fragment("NOW()"), updated_at: fragment("NOW()")]
+      ],
+      select: m.id
+    )
+    |> Keila.Repo.update_all([])
+    |> case do
+      {0, _} ->
         Logger.debug("No message ready for sender #{sender.id}")
         :error
 
-      message ->
-        from(m in Message,
-          where: m.id == ^message.id and m.status == :ready,
-          update: [
-            set: [status: :queued, queued_at: fragment("NOW()"), updated_at: fragment("NOW()")]
-          ]
-        )
-        |> Keila.Repo.update_all([])
-
-        Keila.Mailings.DeliveryWorker.new(%{"message_id" => message.id})
+      {1, [message_id]} ->
+        Keila.Mailings.DeliveryWorker.new(%{"message_id" => message_id})
         |> Oban.insert!()
 
-        Logger.debug(
-          "Inserted delivery job for sender #{sender.id}. #{message.subject} to #{message.recipient_email}"
-        )
+        Logger.debug("Inserted delivery job for sender #{sender.id}: message #{message_id}")
+        :ok
     end
   end
 
