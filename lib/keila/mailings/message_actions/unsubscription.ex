@@ -25,9 +25,13 @@ defmodule Keila.Mailings.MessageActions.Unsubscription do
     |> Repo.update_one([])
   end
 
+  def update_contact(%Message{contact_id: nil}), do: :ok
+
   def update_contact(%Message{contact_id: contact_id}) do
     Keila.Contacts.update_contact_status(contact_id, :unsubscribed)
   end
+
+  defp log_event(%Message{contact_id: nil}), do: :ok
 
   defp log_event(%Message{id: message_id, contact_id: contact_id}) do
     Keila.Tracking.log_event("unsubscribe", contact_id, message_id, %{})
