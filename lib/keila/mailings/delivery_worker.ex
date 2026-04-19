@@ -31,7 +31,7 @@ defmodule Keila.Mailings.DeliveryWorker do
     |> then(fn result -> handle_result(result, message) end)
   rescue
     e ->
-      %Message{id: id} |> set_message_failed_query() |> Repo.update_all([])
+      set_message_failed(%Message{id: id})
 
       Logger.error(
         "DeliveryWorker: Unhandled exception for message #{id}: #{Exception.message(e)}"
@@ -61,10 +61,7 @@ defmodule Keila.Mailings.DeliveryWorker do
   # Email was sent successfully
   defp handle_result({:ok, raw_receipt}, message) do
     receipt = get_receipt(raw_receipt)
-
-    message
-    |> set_message_sent_query(receipt)
-    |> Repo.update_all([])
+    set_message_sent(message, receipt)
 
     :ok
   end
@@ -73,12 +70,8 @@ defmodule Keila.Mailings.DeliveryWorker do
   defp handle_result({:error, :invalid_contact}, message) do
     Repo.transaction(fn ->
       message
-      |> set_message_failed_query()
-      |> Repo.update_all([])
-
-      message
-      |> set_contact_unreachable_query()
-      |> Repo.update_all([])
+      |> tap(&set_message_failed/1)
+      |> tap(&maybe_set_contact_unreachable/1)
     end)
 
     {:cancel, :invalid_contact}
@@ -88,12 +81,8 @@ defmodule Keila.Mailings.DeliveryWorker do
   defp handle_result({:error, :invalid_email}, message) do
     Repo.transaction(fn ->
       message
-      |> set_message_failed_query()
-      |> Repo.update_all([])
-
-      message
-      |> set_contact_unreachable_query()
-      |> Repo.update_all([])
+      |> tap(&set_message_failed/1)
+      |> tap(&maybe_set_contact_unreachable/1)
     end)
 
     {:cancel, :invalid_email}
@@ -111,14 +100,12 @@ defmodule Keila.Mailings.DeliveryWorker do
       "DeliveryWorker: Failed sending email to #{message.recipient_email} for campaign #{message.campaign_id}: #{inspect(reason)}"
     )
 
-    message
-    |> set_message_failed_query()
-    |> Repo.update_all([])
+    set_message_failed(message)
 
     {:cancel, reason}
   end
 
-  defp set_message_sent_query(message, receipt) do
+  defp set_message_sent(message, receipt) do
     from(m in Message,
       where: m.id == ^message.id,
       update: [
@@ -130,9 +117,10 @@ defmodule Keila.Mailings.DeliveryWorker do
         ]
       ]
     )
+    |> Repo.update_all([])
   end
 
-  defp set_message_failed_query(message) do
+  defp set_message_failed(message) do
     from(m in Message,
       where: m.id == ^message.id,
       update: [
@@ -143,9 +131,10 @@ defmodule Keila.Mailings.DeliveryWorker do
         ]
       ]
     )
+    |> Repo.update_all([])
   end
 
-  defp set_contact_unreachable_query(%{contact_id: contact_id}) when not is_nil(contact_id) do
+  defp maybe_set_contact_unreachable(%{contact_id: contact_id}) when not is_nil(contact_id) do
     from(c in Contact,
       where: c.id == ^contact_id,
       update: [
@@ -155,9 +144,10 @@ defmodule Keila.Mailings.DeliveryWorker do
         ]
       ]
     )
+    |> Repo.update_all([])
   end
 
-  defp set_contact_unreachable_query(_other), do: :ok
+  defp maybe_set_contact_unreachable(_other), do: :ok
 
   defp get_receipt(%{id: receipt}), do: receipt
   defp get_receipt(receipt) when is_binary(receipt), do: receipt

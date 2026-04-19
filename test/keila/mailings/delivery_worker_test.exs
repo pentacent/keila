@@ -38,7 +38,7 @@ defmodule Keila.Mailings.DeliveryWorkerTest do
         Keila.Repo.all(from(j in Oban.Job, where: j.queue == "mailer"))
 
       for job <- jobs do
-        assert {:cancel, _} = Keila.Mailings.DeliveryWorker.perform(job)
+        assert {:cancel, :invalid_email} = Keila.Mailings.DeliveryWorker.perform(job)
       end
 
       for contact <- contacts do
