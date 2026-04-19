@@ -10,13 +10,21 @@ defmodule Keila.Mailings.CampaignRenderWorker do
   re-enqueues itself to process the next batch.
   """
 
-  use Oban.Worker, queue: :campaign_renderer
+  use Oban.Worker,
+    queue: :campaign_renderer,
+    unique: [
+      period: :infinity,
+      states: [:available, :scheduled, :retryable],
+      keys: [:campaign_id]
+    ]
+
   use Keila.Repo
   require Logger
   alias Keila.Mailings.Message
   alias Keila.Mailings.Builder
 
   @batch_size 500
+  @render_timeout 1_000
 
   @impl true
   def perform(%Oban.Job{args: %{"campaign_id" => campaign_id}}) do
@@ -37,17 +45,33 @@ defmodule Keila.Mailings.CampaignRenderWorker do
       limit: @batch_size
     )
     |> Repo.all()
-    |> Task.async_stream(&render_message(&1, campaign))
-    |> Enum.map(fn {:ok, result} -> result end)
+    |> async_render_messages(campaign)
     |> tap(&update_rendered_messages/1)
     |> tap(&update_failed_messages/1)
     |> tap(fn results ->
       unless length(results) < @batch_size do
-        Oban.insert(new(%{"campaign_id" => campaign.id}))
+        Oban.insert!(new(%{"campaign_id" => campaign.id}))
       end
     end)
 
     :ok
+  end
+
+  defp async_render_messages(messages, campaign) do
+    messages
+    |> Task.async_stream(&render_message(&1, campaign),
+      timeout: @render_timeout,
+      on_timeout: :kill_task,
+      zip_input_on_exit: true
+    )
+    |> Enum.map(fn
+      {:ok, result} ->
+        result
+
+      {:exit, {message, :timeout}} ->
+        Logger.warning("CampaignRenderWorker: render timeout for message #{message.id}")
+        {:message, :error}
+    end)
   end
 
   defp render_message(message, campaign) do
@@ -102,6 +126,7 @@ defmodule Keila.Mailings.CampaignRenderWorker do
       from(m in Message,
         join: mu in values(message_updates, @message_update_types),
         on: m.id == mu.message_id,
+        where: m.status == :unrendered,
         update: [
           set: [
             status: :ready,
@@ -126,7 +151,7 @@ defmodule Keila.Mailings.CampaignRenderWorker do
 
     if Enum.any?(message_ids) do
       from(m in Message,
-        where: m.id in ^message_ids,
+        where: m.id in ^message_ids and m.status == :unrendered,
         update: [
           set: [status: :failed, failed_at: fragment("NOW()"), updated_at: fragment("NOW()")]
         ]
