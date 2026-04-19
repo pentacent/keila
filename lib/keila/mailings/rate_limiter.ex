@@ -74,6 +74,30 @@ defmodule Keila.Mailings.RateLimiter do
   end
 
   @doc """
+  Returns the bucket capacity configured for the given sender.
+
+  Returns `:infinity` if the sender has no rate limits configured.
+  """
+  @spec get_sender_capacity(Sender.t()) :: tokens()
+  def get_sender_capacity(sender) do
+    get_sender_limits(sender)
+    |> Enum.map(fn {_unit, capacity} -> capacity end)
+    |> Enum.min()
+  end
+
+  @doc """
+  Returns the bucket capacity configured for the given adapter module.
+
+  Returns `:infinity` if the adapter has no rate limits configured.
+  """
+  @spec get_adapter_capacity(adapter :: atom()) :: tokens()
+  def get_adapter_capacity(adapter) do
+    get_adapter_limits(adapter)
+    |> Enum.map(fn {_unit, capacity} -> capacity end)
+    |> Enum.min()
+  end
+
+  @doc """
   Consumes the given number of tokens for the given adapter module.
   """
   @spec consume_adapter_tokens(table(), adapter :: atom(), amount :: integer()) :: :ok | :error

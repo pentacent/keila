@@ -20,9 +20,9 @@ defmodule Keila.Mailings.Scheduler do
   alias Keila.Mailings.RateLimiter
 
   @lock_id 3114
-  @max_partition_tokens 50
+  @max_partition_tokens 500
+  @max_sender_tokens 500
   @tick_interval 1_000
-  @fetch_partitions_interval 5_000
   @leadership_check_interval 10_000
 
   @doc """
@@ -55,7 +55,6 @@ defmodule Keila.Mailings.Scheduler do
     if leading?, do: Logger.info("Scheduler: acquired leadership")
 
     schedule_tick()
-    schedule_fetch_partitions()
     schedule_leadership_check()
 
     {:ok,
@@ -63,7 +62,6 @@ defmodule Keila.Mailings.Scheduler do
        conn: conn,
        leading?: leading?,
        table: table,
-       partitions: %{},
        rr_offset: 0
      }, {:continue, :restore_rate_limiter}}
   end
@@ -99,16 +97,6 @@ defmodule Keila.Mailings.Scheduler do
     {:noreply, state}
   end
 
-  def handle_info(:fetch_partitions, %{leading?: false} = state) do
-    schedule_fetch_partitions()
-    {:noreply, state}
-  end
-
-  def handle_info(:fetch_partitions, state) do
-    schedule_fetch_partitions()
-    {:noreply, %{state | partitions: fetch_partitions()}}
-  end
-
   def handle_info(:check_leadership, %{leading?: true} = state) do
     schedule_leadership_check()
 
@@ -138,17 +126,12 @@ defmodule Keila.Mailings.Scheduler do
 
   @impl true
   def handle_call(:schedule, _from, state) do
-    state = %{state | partitions: fetch_partitions()}
     tick(state)
     {:reply, :ok, state}
   end
 
   defp schedule_tick() do
     Process.send_after(self(), :tick, @tick_interval)
-  end
-
-  defp schedule_fetch_partitions() do
-    Process.send_after(self(), :fetch_partitions, @fetch_partitions_interval)
   end
 
   defp schedule_leadership_check() do
@@ -176,7 +159,9 @@ defmodule Keila.Mailings.Scheduler do
     rr_offset = state.rr_offset + 1
     Logger.debug("Scheduler: tick offset #{rr_offset}")
 
-    for {adapter, senders} <- state.partitions do
+    partitions = fetch_partitions()
+
+    for {adapter, senders} <- partitions do
       schedule_partition_messages(state.table, adapter, senders, rr_offset)
     end
 
@@ -238,9 +223,13 @@ defmodule Keila.Mailings.Scheduler do
         :error
 
       message ->
-        message
-        |> Ecto.Changeset.change(%{status: :queued, queued_at: DateTime.utc_now(:second)})
-        |> Keila.Repo.update!()
+        from(m in Message,
+          where: m.id == ^message.id and m.status == :ready,
+          update: [
+            set: [status: :queued, queued_at: fragment("NOW()"), updated_at: fragment("NOW()")]
+          ]
+        )
+        |> Keila.Repo.update_all([])
 
         Keila.Mailings.DeliveryWorker.new(%{"message_id" => message.id})
         |> Oban.insert!()
@@ -255,11 +244,57 @@ defmodule Keila.Mailings.Scheduler do
     messages_ready =
       from(m in Message, where: m.sender_id == parent_as(:sender).id and m.status == :ready)
 
-    from(s in Sender, as: :sender, where: exists(messages_ready))
-    |> Keila.Repo.all()
+    senders =
+      from(s in Sender,
+        as: :sender,
+        where: exists(messages_ready)
+      )
+      |> Keila.Repo.all()
+
+    senders
+    |> reject_senders_above_capacity()
     |> Enum.reduce(%{}, fn sender, partitions ->
       adapter = SenderAdapters.get_adapter(sender.config.type)
       Map.update(partitions, adapter, [sender], &[sender | &1])
     end)
+  end
+
+  defp reject_senders_above_capacity([]), do: []
+
+  defp reject_senders_above_capacity(senders) do
+    sender_capacities =
+      Enum.map(senders, fn sender ->
+        %{sender_id: sender.id, capacity: sender_capacity(sender)}
+      end)
+
+    too_many_queued =
+      from(m in Message,
+        where: m.sender_id == parent_as(:sc).sender_id and m.status == :queued,
+        offset: parent_as(:sc).capacity - 1,
+        limit: 1
+      )
+
+    senders_above_capacity =
+      from(c in values(sender_capacities, %{sender_id: Sender.Id, capacity: :integer}),
+        as: :sc,
+        where: exists(too_many_queued),
+        select: c.sender_id
+      )
+      |> Keila.Repo.all()
+      |> MapSet.new()
+
+    Enum.reject(senders, fn sender -> sender.id in senders_above_capacity end)
+  end
+
+  defp sender_capacity(sender) do
+    adapter = SenderAdapters.get_adapter(sender.config.type)
+
+    [
+      RateLimiter.get_sender_capacity(sender),
+      RateLimiter.get_adapter_capacity(adapter),
+      @max_sender_tokens
+    ]
+    |> Enum.reject(&(&1 == :infinity))
+    |> Enum.min()
   end
 end
