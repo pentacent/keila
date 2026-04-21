@@ -132,11 +132,16 @@ defmodule Keila.Mailings.Scheduler do
     schedule_persist()
 
     if state.leading? do
-      Logger.info("Scheduler: persisting rate limiter state")
+      Logger.debug("Scheduler: persisting rate limiter state")
       RateLimiter.persist(state.table)
     end
 
     {:noreply, state}
+  end
+
+  def handle_info({:EXIT, conn, reason}, %{conn: conn} = state) do
+    Logger.warning("Scheduler: connection exited: #{inspect(reason)}")
+    {:stop, reason, state}
   end
 
   @impl true
