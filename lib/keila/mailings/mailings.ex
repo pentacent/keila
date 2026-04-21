@@ -902,20 +902,29 @@ defmodule Keila.Mailings do
   Prunes `html_body` and `text_body` from messages with status `:sent` or
   `:failed` if they are older than the pruning threshold.
 
+  Prunes at most 1000 messages by default unless a different limit is specified.
+
   The threshold can be configured via the `MESSAGE_RETENTION_DAYS` environment
   variable.
   """
-  @spec prune_messages() :: {non_neg_integer(), nil}
-  def prune_messages() do
+  @spec prune_messages(limit :: non_neg_integer()) :: {non_neg_integer(), nil}
+  def prune_messages(limit \\ 10000) do
     retention_days =
       Application.get_env(:keila, __MODULE__) |> Keyword.fetch!(:message_retention_days)
 
     cutoff = DateTime.utc_now() |> DateTime.add(-retention_days, :day)
 
     from(m in Keila.Mailings.Message,
-      where: m.status in [:sent, :failed],
-      where: m.inserted_at < ^cutoff,
-      where: not is_nil(m.html_body) or not is_nil(m.text_body)
+      where:
+        m.id in subquery(
+          from(m in Message,
+            where: m.status in [:sent, :failed],
+            where: m.inserted_at < ^cutoff,
+            where: not is_nil(m.html_body) or not is_nil(m.text_body),
+            limit: ^limit,
+            select: m.id
+          )
+        )
     )
     |> Repo.update_all(set: [html_body: nil, text_body: nil])
   end
