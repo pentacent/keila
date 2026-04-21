@@ -1,5 +1,5 @@
 defmodule Keila.Mailings.RateLimiterState do
-  use Keila.Schema
+  use Keila.Schema, manual_id: true
 
   schema "rate_limiter_state" do
     field :data, :binary
@@ -8,7 +8,8 @@ defmodule Keila.Mailings.RateLimiterState do
 
   def changeset(struct \\ %__MODULE__{}, attrs) do
     struct
-    |> cast(attrs, [:data])
-    |> validate_required([:data])
+    |> cast(attrs, [:id, :data])
+    |> validate_required([:id, :data])
+    |> check_constraint(:id, name: :singleton)
   end
 end
