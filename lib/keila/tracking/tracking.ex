@@ -15,7 +15,7 @@ defmodule Keila.Tracking do
   @spec register_link(String.t(), Campaign.id()) :: Link.t()
   def register_link(url, campaign_id) do
     Link.changeset(%{url: url, campaign_id: campaign_id})
-    |> Repo.insert_or_update!(on_conflict: :nothing)
+    |> Repo.insert_or_update!(on_conflict: :nothing, conflict_target: [:url, :campaign_id])
     |> case do
       %{id: nil} -> find_link_by_url(url, campaign_id)
       link -> link

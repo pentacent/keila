@@ -32,6 +32,7 @@ defmodule Keila.Mailings.WelcomeMessage do
     with :ok <- ensure_feature_available(project_id),
          :ok <- ensure_account_active(project_id),
          :ok <- ensure_welcome_enabled(form),
+         :ok <- ensure_sender(sender),
          email <- build(contact, form),
          :ok <- ensure_valid_email(email),
          [{recipient_name, recipient_email}] <- email.to do
@@ -190,4 +191,7 @@ defmodule Keila.Mailings.WelcomeMessage do
     defp ensure_feature_available(_project_id), do: :ok
     defp ensure_account_active(_project_id), do: :ok
   end
+
+  defp ensure_sender(%Keila.Mailings.Sender{}), do: :ok
+  defp ensure_sender(_), do: {:error, :no_sender}
 end
