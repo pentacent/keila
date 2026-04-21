@@ -24,6 +24,7 @@ defmodule Keila.Mailings.Scheduler do
   @max_sender_tokens 500
   @tick_interval 1_000
   @leadership_check_interval 10_000
+  @persist_interval 60_000
 
   @doc """
   Starts the Scheduler GenServer.
@@ -46,6 +47,8 @@ defmodule Keila.Mailings.Scheduler do
 
   @impl true
   def init(_opts) do
+    Process.flag(:trap_exit, true)
+
     Logger.debug("Scheduler: starting")
 
     {:ok, conn} = checkout_postgres_connection()
@@ -56,6 +59,7 @@ defmodule Keila.Mailings.Scheduler do
 
     schedule_tick()
     schedule_leadership_check()
+    schedule_persist()
 
     {:ok,
      %{
@@ -76,8 +80,8 @@ defmodule Keila.Mailings.Scheduler do
   @impl true
   def terminate(_reason, state) do
     if state.leading? do
-      Logger.info("Scheduler: persisting rate limiter state before shutdown")
       RateLimiter.persist(state.table)
+      Logger.info("Scheduler: rate limiter state persisted")
     end
 
     RateLimiter.delete_table(state.table)
@@ -124,6 +128,17 @@ defmodule Keila.Mailings.Scheduler do
     end
   end
 
+  def handle_info(:persist, state) do
+    schedule_persist()
+
+    if state.leading? do
+      Logger.info("Scheduler: persisting rate limiter state")
+      RateLimiter.persist(state.table)
+    end
+
+    {:noreply, state}
+  end
+
   @impl true
   def handle_call(:schedule, _from, state) do
     tick(state)
@@ -136,6 +151,10 @@ defmodule Keila.Mailings.Scheduler do
 
   defp schedule_leadership_check() do
     Process.send_after(self(), :check_leadership, @leadership_check_interval)
+  end
+
+  defp schedule_persist() do
+    Process.send_after(self(), :persist, @persist_interval)
   end
 
   defp checkout_postgres_connection() do
