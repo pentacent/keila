@@ -25,9 +25,9 @@ defmodule Keila.Mailings.MessageActions.Complaint do
     |> Repo.update_one([])
   end
 
-  def update_contact(%Message{contact_id: nil}), do: :ok
+  defp update_contact(%Message{contact_id: nil}), do: :ok
 
-  def update_contact(%Message{contact_id: contact_id}) do
+  defp update_contact(%Message{contact_id: contact_id}) do
     Keila.Contacts.update_contact_status(contact_id, :unsubscribed)
   end
 

@@ -94,8 +94,8 @@ config :phoenix, :json_library, Jason
 
 config :keila, Oban,
   queues: [
-    mailer: 50,
-    campaign_renderer: 1,
+    mailer: 100,
+    campaign_renderer: 3,
     campaign_scheduler: 1,
     system: 1
   ],

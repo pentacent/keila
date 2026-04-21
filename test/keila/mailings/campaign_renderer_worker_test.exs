@@ -14,6 +14,31 @@ defmodule Keila.Mailings.CampaignRendererWorkerTest do
   end
 
   @tag :mailings_worker
+  test "renders campaign messages and updates status to :ready", %{
+    project: project
+  } do
+    contact = insert!(:contact, project_id: project.id)
+    sender = insert!(:mailings_sender, config: %Mailings.Sender.Config{type: "test"})
+
+    campaign =
+      insert!(:mailings_campaign,
+        project_id: project.id,
+        sender_id: sender.id,
+        text_body: "Hello {{ contact.first_name }}",
+        settings: %Mailings.Campaign.Settings{type: :text}
+      )
+
+    assert :ok = Mailings.deliver_campaign(campaign.id)
+
+    # Rendering job completes successfully
+    assert %{success: 1} = Oban.drain_queue(queue: :campaign_renderer)
+
+    # Message is marked as ready
+    message = get_message_for_contact(campaign.id, contact.id)
+    assert message.status == :ready
+  end
+
+  @tag :mailings_worker
   test "sets failed_at but does not change contact status for template rendering error", %{
     project: project
   } do
@@ -36,6 +61,7 @@ defmodule Keila.Mailings.CampaignRendererWorkerTest do
     # Message is marked as failed
     message = get_message_for_contact(campaign.id, contact.id)
     assert message.failed_at
+    assert message.status == :failed
 
     # Verify contact status did not change
     contact = Repo.reload(contact)

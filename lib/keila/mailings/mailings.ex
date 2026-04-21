@@ -582,11 +582,11 @@ defmodule Keila.Mailings do
     |> tap(&ensure_not_empty/1)
   end
 
+  @unrendered_status Ecto.Enum.mappings(Message, :status)[:unrendered]
   defp insert_messages(contacts, campaign) do
     {:ok, campaign_id} = Keila.Mailings.Campaign.Id.dump(campaign.id)
     {:ok, sender_id} = Keila.Mailings.Sender.Id.dump(campaign.sender_id)
     Logger.info("Inserting messages for campaign #{campaign_id} with sender #{sender_id}")
-    unrendered_status = Ecto.Enum.mappings(Message, :status)[:unrendered]
 
     # Inserting entries like this is about 1/3 more performant than constructing structs first
     contact_ids =
@@ -605,7 +605,7 @@ defmodule Keila.Mailings do
             sender_id: ^sender_id,
             inserted_at: fragment("now()"),
             updated_at: fragment("now()"),
-            status: ^unrendered_status
+            status: @unrendered_status
           }
         )
       )
