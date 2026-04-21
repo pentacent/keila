@@ -38,7 +38,7 @@ defmodule Keila.Mailings.Scheduler do
 
   @doc """
   Forces the scheduler to fetch partitions and schedule messages.
-  Useful for testing.
+  Bypasses leadership check. Useful for testing.
   """
   def schedule(pid \\ __MODULE__) do
     GenServer.call(pid, :schedule)

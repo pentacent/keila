@@ -67,15 +67,16 @@ defmodule Keila.Mailings.MessagePrunerTest do
     assert Repo.reload(queued).html_body == "queued"
   end
 
-  test "prunes messages in batches for 10,000 and re-enqueues itself", %{threshold: threshold} do
-    insert_n!(:message, 10_100, fn _n ->
+  test "prunes messages in batches and re-enqueues itself", %{threshold: threshold} do
+    batch_size = MessagePruner.batch_size()
+    insert_n!(:message, batch_size + 1, fn _n ->
       [status: :sent, html_body: "sent", text_body: "sent", inserted_at: days_ago(threshold + 1)]
     end)
 
     MessagePruner.perform(%Oban.Job{})
-    assert from(m in Message, where: is_nil(m.text_body)) |> Repo.aggregate(:count, :id) == 10_000
+    assert from(m in Message, where: is_nil(m.text_body)) |> Repo.aggregate(:count, :id) == batch_size
     assert %{success: 1} = Oban.drain_queue(queue: :system)
-    assert from(m in Message, where: is_nil(m.text_body)) |> Repo.aggregate(:count, :id) == 10_100
+    assert from(m in Message, where: is_nil(m.text_body)) |> Repo.aggregate(:count, :id) == batch_size + 1
     assert %{success: 0} = Oban.drain_queue(queue: :system)
   end
 

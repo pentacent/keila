@@ -907,8 +907,8 @@ defmodule Keila.Mailings do
   The threshold can be configured via the `MESSAGE_RETENTION_DAYS` environment
   variable.
   """
-  @spec prune_messages(limit :: non_neg_integer()) :: {non_neg_integer(), nil}
-  def prune_messages(limit \\ 10000) do
+  @spec prune_messages(limit :: non_neg_integer() | :infinity) :: {non_neg_integer(), nil}
+  def prune_messages(limit \\ :infinity) do
     retention_days =
       Application.get_env(:keila, __MODULE__) |> Keyword.fetch!(:message_retention_days)
 
@@ -921,9 +921,14 @@ defmodule Keila.Mailings do
             where: m.status in [:sent, :failed],
             where: m.inserted_at < ^cutoff,
             where: not is_nil(m.html_body) or not is_nil(m.text_body),
-            limit: ^limit,
             select: m.id
           )
+          |> then(fn query ->
+            case limit do
+              limit when is_integer(limit) -> limit(query, ^limit)
+              _ -> query
+            end
+          end)
         )
     )
     |> Repo.update_all(set: [html_body: nil, text_body: nil])

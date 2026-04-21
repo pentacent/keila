@@ -24,4 +24,9 @@ defmodule Keila.Mailings.MessagePruner do
         :ok
     end
   end
+
+  @doc """
+  Returns the batch size used by the worker.
+  """
+  def batch_size(), do: @batch_size
 end
