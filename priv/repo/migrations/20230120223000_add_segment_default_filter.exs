@@ -6,7 +6,8 @@ defmodule Keila.Repo.Migrations.AddSegmentDefaultFilter do
   end
 
   defp execute_up() do
-    repo().query!("UPDATE contacts_segments SET filter='{}' WHERE filter IS NULL")
+    prefix = repo().config()[:migration_default_prefix] || "public"
+    repo().query!("UPDATE #{prefix}.contacts_segments SET filter='{}' WHERE filter IS NULL")
 
     alter table("contacts_segments") do
       modify :filter, :jsonb, default: %{}
