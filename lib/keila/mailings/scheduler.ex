@@ -91,15 +91,16 @@ defmodule Keila.Mailings.Scheduler do
 
   @impl true
   def terminate(_reason, state) do
-    IO.puts("HAIIXII")
-
     if state.leading? and state.mode == :default do
-      IO.puts("PERSISTO")
       RateLimiter.persist(state.table)
       Logger.info("Scheduler: rate limiter state persisted")
     end
 
     RateLimiter.delete_table(state.table)
+
+    if Process.alive?(state.conn) do
+      GenServer.stop(state.conn, :normal, 5000)
+    end
 
     :ok
   end

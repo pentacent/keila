@@ -21,11 +21,10 @@ defmodule Keila.Mailings.SchedulerTest do
 
   defp start_scheduler!() do
     {:ok, scheduler} = Scheduler.start_link(name: nil)
-    Ecto.Adapters.SQL.Sandbox.allow(Keila.Repo, self(), scheduler)
 
     on_exit(fn ->
       if Process.alive?(scheduler) do
-        Process.exit(scheduler, :kill)
+        GenServer.stop(scheduler, :normal)
       end
     end)
 
@@ -256,5 +255,45 @@ defmodule Keila.Mailings.SchedulerTest do
 
       assert length(other_queued) == 1
     end
+  end
+
+  test "persists rate limiter state when terminated", %{project: project} do
+    sender =
+      insert!(:mailings_sender,
+        project_id: project.id,
+        config: %Mailings.Sender.Config{
+          type: "test",
+          rate_limit_per_hour: 3
+        }
+      )
+
+    for i <- 1..10 do
+      insert_ready_message!(%{
+        project_id: project.id,
+        sender_id: sender.id,
+        subject: "Message #{i}",
+        html_body: "<p>Hello</p>",
+        text_body: "Hello"
+      })
+    end
+
+    scheduler = start_scheduler!()
+    Scheduler.schedule(scheduler)
+
+    queued = Repo.all(from m in Message, where: m.status == :queued)
+
+    assert length(queued) == 3
+    Oban.drain_queue(queue: :mailer)
+
+    queued = Repo.all(from m in Message, where: m.status == :queued)
+    assert length(queued) == 0
+
+    GenServer.stop(scheduler, :normal)
+
+    scheduler = start_scheduler!()
+    Scheduler.schedule(scheduler)
+
+    queued = Repo.all(from m in Message, where: m.status == :queued)
+    assert length(queued) == 0
   end
 end
