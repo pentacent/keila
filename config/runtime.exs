@@ -357,15 +357,3 @@ end
 Keila.if_cloud do
   use KeilaCloud.RuntimeConfig
 end
-
-# db schema
-db_schema = System.get_env("DB_SCHEMA")
-if db_schema not in [nil, ""] do
-  repo_config = Application.get_env(:keila, Keila.Repo, [])
-  new_repo_config =
-    repo_config
-    |> Keyword.put(:migration_default_prefix, db_schema)
-    |> Keyword.put(:after_connect, {Postgrex, :query!, ["SET search_path TO #{db_schema}", []]})
-  config :keila, Keila.Repo, new_repo_config
-  config :keila, Oban, prefix: db_schema
-end
