@@ -22,6 +22,13 @@ defmodule Keila.Mailings.SchedulerTest do
   defp start_scheduler!() do
     {:ok, scheduler} = Scheduler.start_link(name: nil)
     Ecto.Adapters.SQL.Sandbox.allow(Keila.Repo, self(), scheduler)
+
+    on_exit(fn ->
+      if Process.alive?(scheduler) do
+        Process.exit(scheduler, :kill)
+      end
+    end)
+
     scheduler
   end
 

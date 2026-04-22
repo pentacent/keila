@@ -29,12 +29,16 @@ defmodule Keila.Mailings.Scheduler do
   @doc """
   Starts the Scheduler GenServer.
 
-  Options (passed to `GenServer.start_link`):
+  Options:
+  - `:mode` - defaults to `:default` (pass `:manual` to disable scheduling and state persistence)
+
+  Options (all options other than `:mode` are passed to `GenServer.start_link`):
   - `:name` - defaults to `__MODULE__` (pass `nil` to disable setting a name)
   """
   def start_link(opts) do
-    opts = Keyword.put_new(opts, :name, __MODULE__)
-    GenServer.start_link(__MODULE__, nil, opts)
+    {init_opts, gen_server_opts} = Keyword.split(opts, [:mode])
+    gen_server_opts = Keyword.put_new(gen_server_opts, :name, __MODULE__)
+    GenServer.start_link(__MODULE__, init_opts, gen_server_opts)
   end
 
   @doc """
@@ -46,10 +50,11 @@ defmodule Keila.Mailings.Scheduler do
   end
 
   @impl true
-  def init(_opts) do
+  def init(opts) do
     Process.flag(:trap_exit, true)
-
     Logger.debug("Scheduler: starting")
+
+    mode = opts[:mode] || :default
 
     {:ok, conn} = checkout_postgres_connection()
     leading? = leading?(conn)
@@ -57,17 +62,24 @@ defmodule Keila.Mailings.Scheduler do
 
     if leading?, do: Logger.info("Scheduler: acquired leadership")
 
-    schedule_tick()
-    schedule_leadership_check()
-    schedule_persist()
+    state = %{
+      conn: conn,
+      leading?: leading?,
+      table: table,
+      rr_offset: 0,
+      mode: mode
+    }
 
-    {:ok,
-     %{
-       conn: conn,
-       leading?: leading?,
-       table: table,
-       rr_offset: 0
-     }, {:continue, :restore_rate_limiter}}
+    case mode do
+      :default ->
+        schedule_tick()
+        schedule_leadership_check()
+        schedule_persist()
+        {:ok, state, {:continue, :restore_rate_limiter}}
+
+      :manual ->
+        {:ok, state}
+    end
   end
 
   @impl true
@@ -79,7 +91,10 @@ defmodule Keila.Mailings.Scheduler do
 
   @impl true
   def terminate(_reason, state) do
-    if state.leading? do
+    IO.puts("HAIIXII")
+
+    if state.leading? and state.mode == :default do
+      IO.puts("PERSISTO")
       RateLimiter.persist(state.table)
       Logger.info("Scheduler: rate limiter state persisted")
     end
