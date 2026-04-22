@@ -90,7 +90,10 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+db_schema = System.get_env("DB_SCHEMA")
+prefix = if db_schema in [nil, ""], do: "public", else: db_schema
 config :keila, Oban,
+  prefix: prefix,
   queues: [
     mailer: 50,
     mailer_scheduler: 1,
