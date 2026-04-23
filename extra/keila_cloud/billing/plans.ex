@@ -16,7 +16,7 @@ Keila.if_cloud do
         Plan.new("660931", "XXL", 250_000, :month, true),
         Plan.new("920819", "XS", 2000, :year, true),
         Plan.new("920820", "S", 5000, :year, true),
-        Plan.new("920821", "M", 15000, :year, true),
+        Plan.new("924267", "M", 15000, :year, true),
         Plan.new("920822", "L", 50000, :year, true)
       ]
     else
