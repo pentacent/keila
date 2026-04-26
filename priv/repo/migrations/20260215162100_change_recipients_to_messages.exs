@@ -22,6 +22,8 @@ defmodule Keila.Repo.Migrations.ChangeRecipientsToMessages do
 
     create index(:messages, :contact_id)
 
+    create index(:messages, :project_id)
+
     create index(:messages, [:sender_id, :priority, :inserted_at],
              where: "status = 1",
              name: :messages_ready_for_delivery
@@ -48,6 +50,18 @@ defmodule Keila.Repo.Migrations.ChangeRecipientsToMessages do
 
     execute(
       "UPDATE messages SET status = -1 WHERE failed_at IS NOT NULL",
+      ""
+    )
+
+    # This sets the project_id of messages based on their campaign_id.
+    execute(
+      """
+      UPDATE messages
+      SET project_id = mailings_campaigns.project_id
+      FROM mailings_campaigns
+      WHERE messages.campaign_id = mailings_campaigns.id
+        AND messages.project_id IS NULL
+      """,
       ""
     )
   end
