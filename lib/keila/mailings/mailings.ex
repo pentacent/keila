@@ -595,6 +595,8 @@ defmodule Keila.Mailings do
         %{id: id}
       end)
 
+    {:ok, project_id} = Keila.Projects.Project.Id.dump(campaign.project_id)
+
     {count, _} =
       Repo.insert_all(
         Message,
@@ -605,7 +607,8 @@ defmodule Keila.Mailings do
             sender_id: ^sender_id,
             inserted_at: fragment("now()"),
             updated_at: fragment("now()"),
-            status: @unrendered_status
+            status: @unrendered_status,
+            project_id: ^project_id
           }
         )
       )
@@ -919,7 +922,7 @@ defmodule Keila.Mailings do
         m.id in subquery(
           from(m in Message,
             where: m.status in [:sent, :failed],
-            where: m.inserted_at < ^cutoff,
+            where: m.updated_at < ^cutoff,
             where: not is_nil(m.html_body) or not is_nil(m.text_body),
             select: m.id
           )

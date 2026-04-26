@@ -20,7 +20,7 @@ defmodule Keila.Mailings.MessagePrunerTest do
         status: :sent,
         html_body: "sent",
         text_body: "sent",
-        inserted_at: days_ago(threshold + 1)
+        updated_at: days_ago(threshold + 1)
       )
 
     failed =
@@ -28,7 +28,7 @@ defmodule Keila.Mailings.MessagePrunerTest do
         status: :failed,
         html_body: "failed",
         text_body: "failed",
-        inserted_at: days_ago(threshold + 1)
+        updated_at: days_ago(threshold + 1)
       )
 
     MessagePruner.perform(%Oban.Job{})
@@ -44,7 +44,7 @@ defmodule Keila.Mailings.MessagePrunerTest do
 
   test "preserves recent messages", %{threshold: threshold} do
     recent =
-      insert!(:message, status: :sent, html_body: "recent", inserted_at: days_ago(threshold - 1))
+      insert!(:message, status: :sent, html_body: "recent", updated_at: days_ago(threshold - 1))
 
     MessagePruner.perform(%Oban.Job{})
     recent = Repo.reload(recent)
@@ -53,13 +53,13 @@ defmodule Keila.Mailings.MessagePrunerTest do
 
   test "does not touch :ready or :queued messages regardless of age", %{threshold: threshold} do
     ready =
-      insert!(:message, status: :ready, html_body: "ready", inserted_at: days_ago(threshold + 5))
+      insert!(:message, status: :ready, html_body: "ready", updated_at: days_ago(threshold + 5))
 
     queued =
       insert!(:message,
         status: :queued,
         html_body: "queued",
-        inserted_at: days_ago(threshold + 5)
+        updated_at: days_ago(threshold + 5)
       )
 
     MessagePruner.perform(%Oban.Job{})
@@ -71,7 +71,7 @@ defmodule Keila.Mailings.MessagePrunerTest do
     batch_size = MessagePruner.batch_size()
 
     insert_n!(:message, batch_size + 1, fn _n ->
-      [status: :sent, html_body: "sent", text_body: "sent", inserted_at: days_ago(threshold + 1)]
+      [status: :sent, html_body: "sent", text_body: "sent", updated_at: days_ago(threshold + 1)]
     end)
 
     MessagePruner.perform(%Oban.Job{})
