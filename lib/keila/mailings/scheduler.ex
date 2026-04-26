@@ -249,35 +249,47 @@ defmodule Keila.Mailings.Scheduler do
   end
 
   defp insert_delivery_job(sender) do
-    message =
-      from(m in Message,
-        where: m.sender_id == ^sender.id and m.status == :ready,
-        order_by: [desc: :priority, asc: :inserted_at],
-        limit: 1,
-        lock: "FOR UPDATE SKIP LOCKED",
-        select: m.id
-      )
+    Keila.Repo.transact(fn ->
+      case set_next_message_queued(sender) do
+        {0, _} ->
+          Logger.debug("No message ready for sender #{sender.id}")
+          {:error, :error}
+
+        {1, [message_id]} ->
+          Keila.Mailings.DeliveryWorker.new(%{"message_id" => message_id})
+          |> Oban.insert!()
+
+          Logger.debug("Inserted delivery job for sender #{sender.id}: message #{message_id}")
+          {:ok, message_id}
+      end
+    end)
+    |> case do
+      {:ok, _message_id} -> :ok
+      {:error, _} -> :error
+    end
+  end
+
+  defp set_next_message_queued(sender) do
+    message_id = next_message_id_query(sender)
 
     from(m in Message,
-      where: m.id in subquery(message),
+      where: m.id in subquery(message_id),
       update: [
         set: [status: :queued, queued_at: fragment("NOW()"), updated_at: fragment("NOW()")]
       ],
       select: m.id
     )
-    |> Keila.Repo.update_all([])
-    |> case do
-      {0, _} ->
-        Logger.debug("No message ready for sender #{sender.id}")
-        :error
+    |> Repo.update_all([])
+  end
 
-      {1, [message_id]} ->
-        Keila.Mailings.DeliveryWorker.new(%{"message_id" => message_id})
-        |> Oban.insert!()
-
-        Logger.debug("Inserted delivery job for sender #{sender.id}: message #{message_id}")
-        :ok
-    end
+  defp next_message_id_query(sender) do
+    from(m in Message,
+      where: m.sender_id == ^sender.id and m.status == :ready,
+      order_by: [desc: :priority, asc: :inserted_at],
+      limit: 1,
+      lock: "FOR UPDATE SKIP LOCKED",
+      select: m.id
+    )
   end
 
   defp fetch_partitions() do
