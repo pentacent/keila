@@ -24,7 +24,7 @@ defmodule Keila.Mailings.SchedulerTest do
 
     on_exit(fn ->
       if Process.alive?(scheduler) do
-        GenServer.stop(scheduler, :normal)
+        Process.exit(scheduler, :kill)
       end
     end)
 
