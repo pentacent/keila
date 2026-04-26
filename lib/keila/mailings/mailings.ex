@@ -700,8 +700,8 @@ defmodule Keila.Mailings do
         is_nil(campaign.sent_at) and insufficient_credits? -> :insufficient_credits
         locked? and recipients_count == 0 -> :preparing
         is_nil(campaign.sent_at) -> :unsent
-        recipient_stats[:sent_count] != recipients_count -> :sending
-        recipient_stats[:sent_count] == recipients_count -> :sent
+        recipient_stats[:sent_count] + recipient_stats[:failed_count] >= recipients_count -> :sent
+        true -> :sending
       end
 
     Keila.if_cloud do
