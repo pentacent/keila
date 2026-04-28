@@ -8,7 +8,7 @@ defmodule KeilaWeb.ContactsCsvExport do
   @chunk_size Application.compile_env!(:keila, KeilaWeb.ContactsCsvExport)[:chunk_size]
 
   def stream_csv_response(conn, filename, project_id, stream_opts \\ []) do
-    stream_opts = Keyword.merge(stream_opts, max_rown: @chunk_size)
+    stream_opts = Keyword.merge(stream_opts, max_rows: @chunk_size)
 
     conn =
       conn
