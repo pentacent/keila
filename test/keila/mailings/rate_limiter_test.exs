@@ -79,6 +79,23 @@ defmodule Keila.Mailings.RateLimiterTest do
       assert RateLimiter.consume_sender_tokens(table, sender, 6) == :error
       assert RateLimiter.consume_sender_tokens(table, sender, 5) == :ok
     end
+
+    test "tokens are refilled correctly", %{table: table} do
+      sender = %Keila.Mailings.Sender{
+        id: Ecto.UUID.generate(),
+        config: %Keila.Mailings.Sender.Config{
+          rate_limit_per_second: 5
+        },
+        shared_sender: nil
+      }
+
+      for _n <- 1..5 do
+        assert RateLimiter.consume_sender_tokens(table, sender, 1)
+        :timer.sleep(200)
+      end
+
+      assert RateLimiter.get_sender_tokens(table, sender) == 5
+    end
   end
 
   describe "get_adapter_tokens/2" do

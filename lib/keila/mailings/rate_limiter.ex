@@ -50,7 +50,7 @@ defmodule Keila.Mailings.RateLimiter do
   def get_sender_tokens(table, sender) do
     id = get_id(sender)
     limits = get_sender_limits(sender)
-    get_tokens(table, id, limits) |> Enum.min()
+    get_tokens(table, id, limits) |> Enum.map(&elem(&1, 0)) |> Enum.min()
   end
 
   @doc """
@@ -70,7 +70,7 @@ defmodule Keila.Mailings.RateLimiter do
   def get_adapter_tokens(table, adapter) do
     id = get_id(adapter)
     limits = get_adapter_limits(adapter)
-    get_tokens(table, id, limits) |> Enum.min()
+    get_tokens(table, id, limits) |> Enum.map(&elem(&1, 0)) |> Enum.min()
   end
 
   @doc """
@@ -150,6 +150,7 @@ defmodule Keila.Mailings.RateLimiter do
       %RateLimiterState{data: data} when not is_nil(data) ->
         now = now()
         entries = :erlang.binary_to_term(data)
+        reset(table)
 
         Enum.each(entries, fn {key, tokens, age_ms} ->
           :ets.insert(table, {key, tokens, now - age_ms})
@@ -197,11 +198,11 @@ defmodule Keila.Mailings.RateLimiter do
 
     Enum.map(limits, fn
       {_, :infinity} ->
-        :infinity
+        {:infinity, now}
 
       {unit, capacity} ->
         if :ets.insert_new(table, {{id, unit}, capacity, now}) do
-          capacity
+          {capacity, now}
         else
           [{_, tokens, updated_at}] = :ets.lookup(table, {id, unit})
           refilled_tokens(unit, capacity, tokens, updated_at, now)
@@ -212,16 +213,14 @@ defmodule Keila.Mailings.RateLimiter do
   defp consume_tokens(table, id, limits, amount) do
     tokens = get_tokens(table, id, limits)
 
-    if Enum.all?(tokens, &(&1 >= amount)) do
-      now = now()
-
+    if Enum.all?(tokens, &(elem(&1, 0) >= amount)) do
       Enum.zip(limits, tokens)
       |> Enum.each(fn
-        {{_unit, :infinity}, _tokens} ->
+        {{_unit, :infinity}, _} ->
           :ok
 
-        {{unit, _capacity}, tokens} ->
-          :ets.update_element(table, {id, unit}, [{2, tokens - amount}, {3, now}])
+        {{unit, _capacity}, {tokens, updated_at}} ->
+          :ets.update_element(table, {id, unit}, [{2, tokens - amount}, {3, updated_at}])
       end)
     else
       :error
@@ -230,9 +229,11 @@ defmodule Keila.Mailings.RateLimiter do
 
   defp refilled_tokens(unit, capacity, current_tokens, updated_at, now) do
     unit_ms = unit_to_ms(unit)
-    potential_tokens = (now - updated_at) |> div(unit_ms) |> Kernel.*(capacity)
+    ticks = div(now - updated_at, unit_ms)
+    tokens = min(capacity, current_tokens + ticks * capacity)
+    updated_at = updated_at + ticks * unit_ms
 
-    min(capacity, current_tokens + potential_tokens)
+    {tokens, updated_at}
   end
 
   defp unit_to_ms(:second), do: 1_000
