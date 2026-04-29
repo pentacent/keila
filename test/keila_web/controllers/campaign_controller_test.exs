@@ -1,6 +1,7 @@
 defmodule KeilaWeb.CampaignControllerTest do
   use KeilaWeb.ConnCase, async: true
   import Phoenix.LiveViewTest
+  import Keila.MailingsSchedulerTestHelper
   alias Keila.Mailings
   @endpoint KeilaWeb.Endpoint
 
@@ -284,9 +285,6 @@ defmodule KeilaWeb.CampaignControllerTest do
   describe "LV /projects/:p_id/campaigns/:id/stats" do
     @tag :campaign_controller
     test "shows delivery progress and success message", %{conn: conn} do
-      {:ok, scheduler} = Keila.Mailings.Scheduler.start_link(name: nil)
-      Ecto.Adapters.SQL.Sandbox.allow(Keila.Repo, self(), scheduler)
-
       {conn, project} = with_login_and_project(conn)
 
       campaign =
@@ -303,7 +301,7 @@ defmodule KeilaWeb.CampaignControllerTest do
       assert html =~ "This campaign is currently being sent out."
 
       Oban.drain_queue(queue: :campaign_renderer)
-      Mailings.Scheduler.schedule(scheduler)
+      schedule_messages()
       Oban.drain_queue(queue: :mailer)
       :timer.sleep(1500)
 

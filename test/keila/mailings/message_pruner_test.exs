@@ -9,14 +9,19 @@ defmodule Keila.Mailings.MessagePrunerTest do
     threshold =
       Application.get_env(:keila, Keila.Mailings) |> Keyword.fetch!(:message_retention_days)
 
-    %{threshold: threshold}
+    group = insert!(:group)
+    project = insert!(:project, group: group)
+
+    %{threshold: threshold, project: project}
   end
 
   test "prunes bodies from :sent and :failed messages older than threshold", %{
-    threshold: threshold
+    threshold: threshold,
+    project: project
   } do
     sent =
       insert!(:message,
+        project: project,
         status: :sent,
         html_body: "sent",
         text_body: "sent",
@@ -25,6 +30,7 @@ defmodule Keila.Mailings.MessagePrunerTest do
 
     failed =
       insert!(:message,
+        project: project,
         status: :failed,
         html_body: "failed",
         text_body: "failed",
@@ -42,21 +48,36 @@ defmodule Keila.Mailings.MessagePrunerTest do
     assert is_nil(failed.text_body)
   end
 
-  test "preserves recent messages", %{threshold: threshold} do
+  test "preserves recent messages", %{threshold: threshold, project: project} do
     recent =
-      insert!(:message, status: :sent, html_body: "recent", updated_at: days_ago(threshold - 1))
+      insert!(:message,
+        project: project,
+        status: :sent,
+        html_body: "recent",
+        updated_at: days_ago(threshold - 1)
+      )
 
     MessagePruner.perform(%Oban.Job{})
     recent = Repo.reload(recent)
     assert recent.html_body == "recent"
   end
 
-  test "does not touch :ready or :queued messages regardless of age", %{threshold: threshold} do
+  test "does not touch :ready or :queued messages regardless of age", %{
+    threshold: threshold,
+    project: project
+  } do
     ready =
-      insert!(:message, status: :ready, html_body: "ready", updated_at: days_ago(threshold + 5))
+      insert!(:message,
+        project: project,
+        status: :ready,
+        html_body: "ready",
+        updated_at: days_ago(threshold + 5),
+        project: project
+      )
 
     queued =
       insert!(:message,
+        project: project,
         status: :queued,
         html_body: "queued",
         updated_at: days_ago(threshold + 5)
@@ -67,11 +88,20 @@ defmodule Keila.Mailings.MessagePrunerTest do
     assert Repo.reload(queued).html_body == "queued"
   end
 
-  test "prunes messages in batches and re-enqueues itself", %{threshold: threshold} do
+  test "prunes messages in batches and re-enqueues itself", %{
+    threshold: threshold,
+    project: project
+  } do
     batch_size = MessagePruner.batch_size()
 
     insert_n!(:message, batch_size + 1, fn _n ->
-      [status: :sent, html_body: "sent", text_body: "sent", updated_at: days_ago(threshold + 1)]
+      [
+        project: project,
+        status: :sent,
+        html_body: "sent",
+        text_body: "sent",
+        updated_at: days_ago(threshold + 1)
+      ]
     end)
 
     MessagePruner.perform(%Oban.Job{})

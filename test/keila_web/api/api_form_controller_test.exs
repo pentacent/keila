@@ -207,6 +207,9 @@ defmodule KeilaWeb.ApiFormControllerTest do
         assert Repo.one(from m in Message, where: m.form_params_id == ^id and m.status == :ready)
       else
         assert Repo.one(from m in Message, where: m.form_params_id == ^id and m.status == :ready)
+
+        # This is to avoid a compile warning about an unused variable
+        assert user
       end
     end
   end

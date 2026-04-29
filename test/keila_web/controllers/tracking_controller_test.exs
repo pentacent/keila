@@ -6,9 +6,15 @@ defmodule KeilaWeb.TrackingControllerTest do
   @url "https://example.com/?query=foo&bar=#foobar"
   @moduletag :tracking_controller
 
-  test "track opens", %{conn: conn} do
-    campaign = insert!(:mailings_campaign)
-    message = insert!(:message, campaign: campaign)
+  setup do
+    group = insert!(:group)
+    project = insert!(:project, group: group)
+    %{project: project}
+  end
+
+  test "track opens", %{conn: conn, project: project} do
+    campaign = insert!(:mailings_campaign, project: project)
+    message = insert!(:message, project: project, campaign: campaign)
 
     assert link = %Link{} = Tracking.register_link(@url, campaign.id)
     assert link == Tracking.get_or_register_link(@url, campaign.id)
@@ -36,9 +42,9 @@ defmodule KeilaWeb.TrackingControllerTest do
     assert is_nil(updated_message.clicked_at)
   end
 
-  test "dont track open if user-agent is considered a bot", %{conn: conn} do
-    campaign = insert!(:mailings_campaign)
-    message = insert!(:message, campaign: campaign)
+  test "dont track open if user-agent is considered a bot", %{conn: conn, project: project} do
+    campaign = insert!(:mailings_campaign, project: project)
+    message = insert!(:message, project: project, campaign: campaign)
 
     assert link = %Link{} = Tracking.register_link(@url, campaign.id)
     assert link == Tracking.get_or_register_link(@url, campaign.id)
@@ -66,9 +72,9 @@ defmodule KeilaWeb.TrackingControllerTest do
     assert is_nil(updated_message.clicked_at)
   end
 
-  test "track clicks", %{conn: conn} do
-    campaign = insert!(:mailings_campaign)
-    message = insert!(:message, campaign: campaign)
+  test "track clicks", %{conn: conn, project: project} do
+    campaign = insert!(:mailings_campaign, project: project)
+    message = insert!(:message, project: project, campaign: campaign)
 
     assert link = %Link{} = Tracking.register_link(@url, campaign.id)
     assert link == Tracking.get_or_register_link(@url, campaign.id)

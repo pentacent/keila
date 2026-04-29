@@ -252,7 +252,7 @@ defmodule Keila.ContactsQueryTest do
     campaign2 = insert!(:mailings_campaign, %{project_id: project.id})
 
     assert [] = filter_contacts(%{"messages" => %{"campaign_id" => campaign1.id}})
-    insert!(:message, %{contact_id: c.id, campaign_id: campaign1.id})
+    insert!(:message, %{project: project, contact_id: c.id, campaign_id: campaign1.id})
     assert [^c] = filter_contacts(%{"messages" => %{"campaign_id" => campaign1.id}})
     assert [] = filter_contacts(%{"messages" => %{"campaign_id" => campaign2.id}})
   end
@@ -262,7 +262,7 @@ defmodule Keila.ContactsQueryTest do
     c = insert!(:contact, %{project_id: project.id})
     campaign1 = insert!(:mailings_campaign, %{project_id: project.id})
     campaign2 = insert!(:mailings_campaign, %{project_id: project.id})
-    r1 = insert!(:message, %{contact_id: c.id, campaign_id: campaign1.id})
+    r1 = insert!(:message, %{project: project, contact_id: c.id, campaign_id: campaign1.id})
 
     assert [] =
              filter_contacts(%{
@@ -290,7 +290,7 @@ defmodule Keila.ContactsQueryTest do
   test "filter for contact with the messages.bounced_at alias", %{project: project} do
     c = insert!(:contact, %{project_id: project.id})
     campaign = insert!(:mailings_campaign, %{project_id: project.id})
-    r = insert!(:message, %{contact_id: c.id, campaign_id: campaign.id})
+    r = insert!(:message, %{project: project, contact_id: c.id, campaign_id: campaign.id})
 
     assert [] =
              filter_contacts(%{
@@ -331,12 +331,18 @@ defmodule Keila.ContactsQueryTest do
 
     _r1 =
       insert!(:message, %{
+        project: project,
         contact_id: c.id,
         campaign_id: campaign1.id,
         clicked_at: now()
       })
 
-    _r2 = insert!(:message, %{contact_id: c.id, campaign_id: campaign2.id})
+    _r2 =
+      insert!(:message, %{
+        project: project,
+        contact_id: c.id,
+        campaign_id: campaign2.id
+      })
 
     assert [] =
              filter_contacts(%{

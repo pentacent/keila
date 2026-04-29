@@ -10,7 +10,9 @@ defmodule Keila.Mailings.MailingsMessageActionsTest do
     campaign = insert!(:mailings_campaign, project_id: project.id)
 
     contact = insert!(:contact, project_id: project.id)
-    message = insert!(:message, contact_id: contact.id, campaign_id: campaign.id)
+
+    message =
+      insert!(:message, project: project, contact_id: contact.id, campaign_id: campaign.id)
 
     Mailings.handle_message_open(message.id)
     assert Mailings.get_message(message.id).opened_at
@@ -39,6 +41,7 @@ defmodule Keila.Mailings.MailingsMessageActionsTest do
 
     for n <- 1..5 do
       insert!(:message,
+        project: project,
         contact_id: contact.id,
         campaign_id: campaign.id,
         sent_at: mins_ago(10 - n)
@@ -47,6 +50,7 @@ defmodule Keila.Mailings.MailingsMessageActionsTest do
 
     message =
       insert!(:message,
+        project: project,
         contact_id: contact.id,
         campaign_id: campaign.id,
         sent_at: mins_ago(5)
@@ -57,6 +61,7 @@ defmodule Keila.Mailings.MailingsMessageActionsTest do
 
     message =
       insert!(:message,
+        project: project,
         contact_id: contact.id,
         campaign_id: campaign.id,
         sent_at: mins_ago(4)
@@ -67,6 +72,7 @@ defmodule Keila.Mailings.MailingsMessageActionsTest do
 
     message =
       insert!(:message,
+        project: project,
         contact_id: contact.id,
         campaign_id: campaign.id,
         sent_at: mins_ago(3)
@@ -84,6 +90,7 @@ defmodule Keila.Mailings.MailingsMessageActionsTest do
 
     message =
       insert!(:message,
+        project: project,
         contact_id: nil,
         campaign_id: nil,
         sender_id: sender.id,

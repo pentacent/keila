@@ -137,7 +137,7 @@ defmodule KeilaWeb.PublicFormControllerTest do
       campaign = insert!(:mailings_campaign, project_id: project.id)
 
       message =
-        insert!(:message, campaign: campaign, contact: contact, sent_at: now())
+        insert!(:message, project: project, campaign: campaign, contact: contact, sent_at: now())
 
       unsubscribe_link = Mailings.get_unsubscribe_link(project.id, message.id)
       conn = get(conn, unsubscribe_link)
@@ -153,6 +153,7 @@ defmodule KeilaWeb.PublicFormControllerTest do
 
       message =
         insert!(:message,
+          project: project,
           campaign: campaign,
           contact: contact,
           sent_at: ten_minutes_ago()
@@ -174,7 +175,7 @@ defmodule KeilaWeb.PublicFormControllerTest do
       campaign = insert!(:mailings_campaign, project_id: project.id)
 
       message =
-        insert!(:message, campaign: campaign, contact: contact, sent_at: now())
+        insert!(:message, project: project, campaign: campaign, contact: contact, sent_at: now())
 
       unsubscribe_link = Mailings.get_unsubscribe_link(project.id, message.id)
       conn = post(conn, unsubscribe_link, hmac: "ignored")

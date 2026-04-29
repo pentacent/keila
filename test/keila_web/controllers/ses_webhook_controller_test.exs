@@ -31,6 +31,7 @@ defmodule KeilaWeb.SESWebhookControllerTest do
 
     message =
       insert!(:message,
+        project: project,
         contact_id: contact.id,
         campaign_id: campaign.id,
         receipt: @message_id

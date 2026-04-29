@@ -64,5 +64,11 @@ defmodule Keila.Repo.Migrations.ChangeRecipientsToMessages do
       """,
       ""
     )
+
+    alter table("messages") do
+      modify :project_id, references("projects", on_delete: :delete_all),
+        null: false,
+        from: {references("projects", on_delete: :delete_all), null: true}
+    end
   end
 end
