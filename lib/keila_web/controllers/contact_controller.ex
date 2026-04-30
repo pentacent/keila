@@ -188,6 +188,7 @@ defmodule KeilaWeb.ContactController do
       |> change()
 
     events = Keila.Tracking.get_contact_events(conn.assigns.contact.id)
+    messages = Keila.Mailings.get_messages_for_contact(conn.assigns.contact.id)
 
     data =
       case get_field(changeset, :data) do
@@ -197,6 +198,7 @@ defmodule KeilaWeb.ContactController do
 
     conn
     |> assign(:events, events)
+    |> assign(:messages, messages)
     |> assign(:data, data)
     |> render_edit(changeset)
   end

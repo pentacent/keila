@@ -780,6 +780,20 @@ defmodule Keila.Mailings do
   end
 
   @doc """
+  Returns a paginated list of messages for the given contact.
+  """
+  @spec get_messages_for_contact(Contact.id(), page: integer(), page_size: integer()) ::
+          Keila.Pagination.t(Message.t())
+  def get_messages_for_contact(contact_id, pagination_opts \\ []) do
+    from(m in Message,
+      where: m.contact_id == ^contact_id and m.status in [:sent, :failed],
+      preload: [:campaign, :form],
+      order_by: [desc: m.inserted_at]
+    )
+    |> Keila.Pagination.paginate(pagination_opts)
+  end
+
+  @doc """
   Returns a signed unsubscribe link for the given project id and message.
   """
   @spec get_unsubscribe_link(Project.id(), Message.id()) :: String.t()

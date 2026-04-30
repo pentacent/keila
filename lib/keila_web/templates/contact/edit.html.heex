@@ -122,92 +122,109 @@
     </.form>
   </div>
 
-  <%= if assigns[:events] && not Enum.empty?(@events) do %>
-    <div class="flex flex-col">
-      <h2 class="text-xl font-bold mb-4">{gettext("Contact Activities")}</h2>
-      <div class="grid grid-cols-1 gap-4">
-        <%= for event <- @events do %>
-          <div class="flex gap-4">
-            <div class="inline-flex h-8 w-8">
-              <%= case event.type do %>
-                <% :create -> %>
-                  {render_icon(:sparkles)}
-                <% :import -> %>
-                  {render_icon(:sparkles)}
-                <% :subscribe -> %>
-                  {render_icon(:sparkles)}
-                <% :open -> %>
-                  {render_icon(:mail_open)}
-                <% :click -> %>
-                  {render_icon(:cursor_click)}
-                <% :unsubscribe -> %>
-                  {render_icon(:thumb_down)}
-                <% :soft_bounce -> %>
-                  {render_icon(:arrow_uturn_left)}
-                <% :hard_bounce -> %>
-                  {render_icon(:arrow_uturn_left)}
-                <% :complaint -> %>
-                  {render_icon(:exclamation_circle)}
-                <% _other -> %>
-                  {render_icon(:plus)}
-              <% end %>
-            </div>
-            <div>
-              <span class="text-sm">
-                {local_datetime_tag(event.inserted_at)}
-              </span>
-              <br />
-              <span class="font-bold">
+  <div class="flex flex-col gap-12">
+    <%= if assigns[:events] && not Enum.empty?(@events) do %>
+      <div>
+        <h2 class="text-xl font-bold mb-4">{gettext("Contact Activities")}</h2>
+        <div class="grid grid-cols-1 gap-4">
+          <%= for event <- @events do %>
+            <div class="flex gap-4">
+              <div class="inline-flex h-8 w-8">
                 <%= case event.type do %>
                   <% :create -> %>
-                    {gettext("created")}
+                    {render_icon(:sparkles)}
                   <% :import -> %>
-                    {gettext("imported")}
+                    {render_icon(:sparkles)}
                   <% :subscribe -> %>
-                    {gettext("subscribed")}
-                    <%= if get_in(event.data, ["captcha"]) do %>
-                      {gettext("with captcha")}
-                    <% end %>
-                    <%= if get_in(event.data, ["double_opt_in"]) do %>
-                      {gettext("with double opt-in")}
-                    <% end %>
+                    {render_icon(:sparkles)}
                   <% :open -> %>
-                    {gettext("opened campaign")}
+                    {render_icon(:mail_open)}
                   <% :click -> %>
-                    {gettext("clicked campaign link")}
+                    {render_icon(:cursor_click)}
                   <% :unsubscribe -> %>
-                    {gettext("unsubscribed")}
+                    {render_icon(:thumb_down)}
                   <% :soft_bounce -> %>
-                    {gettext("email bounced")}
+                    {render_icon(:arrow_uturn_left)}
                   <% :hard_bounce -> %>
-                    {gettext("permanently unreachable")}
+                    {render_icon(:arrow_uturn_left)}
                   <% :complaint -> %>
-                    {gettext("filed a complaint")}
-                  <% other -> %>
-                    {Atom.to_string(other)}
+                    {render_icon(:exclamation_circle)}
+                  <% _other -> %>
+                    {render_icon(:plus)}
                 <% end %>
-              </span>
-              <%= if event.recipient && event.recipient.campaign do %>
+              </div>
+              <div>
+                <span class="text-sm">
+                  {local_datetime_tag(event.inserted_at)}
+                </span>
                 <br />
-                {gettext("from campaign")}
-                <a
-                  class="underline"
-                  href={
-                    Routes.campaign_path(
-                      @conn,
-                      :stats,
-                      @current_project.id,
-                      event.recipient.campaign.id
-                    )
-                  }
-                >
-                  {event.recipient.campaign.subject}
-                </a>
-              <% end %>
+                <span class="font-bold">
+                  <%= case event.type do %>
+                    <% :create -> %>
+                      {gettext("created")}
+                    <% :import -> %>
+                      {gettext("imported")}
+                    <% :subscribe -> %>
+                      {gettext("subscribed")}
+                      <%= if get_in(event.data, ["captcha"]) do %>
+                        {gettext("with captcha")}
+                      <% end %>
+                      <%= if get_in(event.data, ["double_opt_in"]) do %>
+                        {gettext("with double opt-in")}
+                      <% end %>
+                    <% :open -> %>
+                      {gettext("opened campaign")}
+                    <% :click -> %>
+                      {gettext("clicked campaign link")}
+                    <% :unsubscribe -> %>
+                      {gettext("unsubscribed")}
+                    <% :soft_bounce -> %>
+                      {gettext("email bounced")}
+                    <% :hard_bounce -> %>
+                      {gettext("permanently unreachable")}
+                    <% :complaint -> %>
+                      {gettext("filed a complaint")}
+                    <% other -> %>
+                      {Atom.to_string(other)}
+                  <% end %>
+                </span>
+                <%= if event.message && event.message.campaign do %>
+                  <br />
+                  {gettext("from campaign")}
+                  <a
+                    class="underline"
+                    href={
+                      Routes.campaign_path(
+                        @conn,
+                        :stats,
+                        @current_project.id,
+                        event.message.campaign.id
+                      )
+                    }
+                  >
+                    {event.message.campaign.subject}
+                  </a>
+                <% end %>
+              </div>
             </div>
-          </div>
-        <% end %>
+          <% end %>
+        </div>
       </div>
-    </div>
-  <% end %>
+    <% end %>
+    <%= if assigns[:messages] && not Enum.empty?(@messages.data) do %>
+      <div>
+        <h2 class="text-xl font-bold mb-4">{gettext("Messages")}</h2>
+        <div class="grid grid-cols-1 gap-4">
+          <%= for message <- @messages.data do %>
+            <div class="flex flex-col">
+              <span class="text-sm">
+                {local_datetime_tag(message.sent_at || message.failed_at)}
+              </span>
+              <span>{message.subject}</span>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>
