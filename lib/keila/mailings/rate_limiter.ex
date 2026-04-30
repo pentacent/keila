@@ -164,7 +164,7 @@ defmodule Keila.Mailings.RateLimiter do
     end
   end
 
-  defp get_id(%{id: id}) when not is_nil(id), do: get_id(id)
+  defp get_id(%{id: id}) when not is_nil(id), do: id
   defp get_id(term), do: :erlang.phash2(term)
 
   defp get_sender_limits(%Sender{config: config}) do
