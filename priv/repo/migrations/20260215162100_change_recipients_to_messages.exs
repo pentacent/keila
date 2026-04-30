@@ -17,7 +17,7 @@ defmodule Keila.Repo.Migrations.ChangeRecipientsToMessages do
       add :text_body, :text
 
       add :status, :smallint, default: 0
-      add :priority, :smallint, default: 0
+      add :priority, :smallint, default: 100
     end
 
     create index(:messages, :contact_id)

@@ -130,7 +130,7 @@ defmodule Keila.Mailings.SchedulerTest do
           project_id: project.id,
           sender_id: sender.id,
           subject: "Low priority",
-          priority: 0,
+          priority: 100,
           html_body: "<p>Low</p>",
           text_body: "Low"
         })

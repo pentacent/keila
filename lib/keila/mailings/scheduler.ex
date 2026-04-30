@@ -285,7 +285,7 @@ defmodule Keila.Mailings.Scheduler do
   defp next_message_id_query(sender) do
     from(m in Message,
       where: m.sender_id == ^sender.id and m.status == :ready,
-      order_by: [desc: :priority, asc: :inserted_at],
+      order_by: [asc: :priority, asc: :inserted_at],
       limit: 1,
       lock: "FOR UPDATE SKIP LOCKED",
       select: m.id
