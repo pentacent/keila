@@ -1,5 +1,5 @@
 defmodule Keila.Mailings.RateLimiterTest do
-  use ExUnit.Case, async: true
+  use Keila.DataCase, async: true
   alias Keila.Mailings.RateLimiter
 
   setup_all do
@@ -129,6 +129,31 @@ defmodule Keila.Mailings.RateLimiterTest do
       RateLimiter.reset(table)
 
       assert RateLimiter.get_sender_tokens(table, sender) == 5
+    end
+  end
+
+  describe "persist/1 and restore/1" do
+    test "stores and cleans + restores rate limiter state" do
+      sender1 = %Keila.Mailings.Sender{
+        id: Ecto.UUID.generate(),
+        config: %Keila.Mailings.Sender.Config{rate_limit_per_minute: 5}
+      }
+
+      sender2 = %Keila.Mailings.Sender{
+        id: Ecto.UUID.generate(),
+        config: %Keila.Mailings.Sender.Config{rate_limit_per_minute: 5}
+      }
+
+      table1 = RateLimiter.new_table()
+      assert RateLimiter.consume_sender_tokens(table1, sender1, 5) == :ok
+      assert RateLimiter.persist(table1) == :ok
+
+      table2 = RateLimiter.new_table()
+      assert RateLimiter.consume_sender_tokens(table2, sender2, 5) == :ok
+      assert RateLimiter.restore(table2) == :ok
+
+      assert RateLimiter.get_sender_tokens(table2, sender1) == 0
+      assert RateLimiter.get_sender_tokens(table2, sender2) == 5
     end
   end
 end
