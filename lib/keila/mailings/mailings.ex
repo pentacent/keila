@@ -527,8 +527,16 @@ defmodule Keila.Mailings do
         :ok
 
       {:error, reason} ->
-        schedule_campaign(id, %{scheduled_for: nil})
+        maybe_unschedule_campaign_after_failed_delivery(id)
         {:error, reason}
+    end
+  end
+
+  defp maybe_unschedule_campaign_after_failed_delivery(campaign_id) do
+    campaign = get_campaign(campaign_id)
+
+    if campaign && campaign.scheduled_for do
+      campaign |> Campaign.unschedule_after_failed_delivery_changeset() |> Repo.update()
     end
   end
 

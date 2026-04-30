@@ -270,6 +270,15 @@ defmodule Keila.MailingsCampaignTest do
   end
 
   @tag :mailings_campaign
+  test "campaigns are unscheduled when delivery fails", %{project: project} do
+    one_hour_ago = DateTime.utc_now(:second) |> DateTime.add(-3600, :second)
+    campaign = insert!(:mailings_campaign, project_id: project.id, scheduled_for: one_hour_ago)
+
+    assert {:error, :no_sender} = Mailings.deliver_campaign(campaign.id)
+    assert %{scheduled_for: nil} = Mailings.get_campaign(campaign.id)
+  end
+
+  @tag :mailings_campaign
   test "campaigns are sent to contact segments", %{project: project} do
     contact1 = insert!(:contact, project_id: project.id, email: "foo-segment@example.com")
     _contact2 = insert!(:contact, project_id: project.id, email: "bar-segment@example.com")

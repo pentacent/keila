@@ -90,6 +90,10 @@ defmodule Keila.Mailings.Campaign do
     |> validate_change(:scheduled_for, &maybe_validate_new_scheduled_for/2)
   end
 
+  def unschedule_after_failed_delivery_changeset(struct = %__MODULE__{}) do
+    change(struct, scheduled_for: nil)
+  end
+
   defp maybe_validate_old_scheduled_for(changeset = %{data: %__MODULE__{scheduled_for: nil}}),
     do: changeset
 
