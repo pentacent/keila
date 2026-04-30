@@ -1,6 +1,7 @@
 defmodule KeilaWeb.CampaignControllerTest do
   use KeilaWeb.ConnCase, async: true
   import Phoenix.LiveViewTest
+  import Keila.MailingsSchedulerTestHelper
   alias Keila.Mailings
   @endpoint KeilaWeb.Endpoint
 
@@ -299,8 +300,9 @@ defmodule KeilaWeb.CampaignControllerTest do
       {:ok, lv, html} = live(conn)
       assert html =~ "This campaign is currently being sent out."
 
-      Oban.drain_queue(queue: :mailer_scheduler)
-      Oban.drain_queue(queue: :mailer, with_scheduled: true)
+      Oban.drain_queue(queue: :campaign_renderer)
+      schedule_messages()
+      Oban.drain_queue(queue: :mailer)
       :timer.sleep(1500)
 
       assert render(lv) =~

@@ -99,9 +99,9 @@ defmodule Keila.MailingsCampaignTest do
     campaign = insert!(:mailings_campaign, project_id: project.id, sender_id: sender.id)
 
     assert :ok = Mailings.deliver_campaign(campaign.id)
-
-    assert %{success: 1} = Oban.drain_queue(queue: :mailer_scheduler)
-    assert %{success: ^n, failure: 0} = Oban.drain_queue(queue: :mailer, with_scheduled: true)
+    assert %{success: 1} = Oban.drain_queue(queue: :campaign_renderer)
+    assert :ok = schedule_messages()
+    assert %{success: ^n, failure: 0} = Oban.drain_queue(queue: :mailer)
 
     for _ <- 1..n do
       assert_email_sent()
@@ -115,7 +115,7 @@ defmodule Keila.MailingsCampaignTest do
     rate_limit_per_minute = 10
     n = @emails_to_deliver
     n_expected_sent = rate_limit_per_minute
-    n_expected_snoozed = abs(n - rate_limit_per_minute)
+    n_expected_not_sent = abs(n - rate_limit_per_minute)
 
     now = DateTime.utc_now() |> DateTime.truncate(:second)
 
@@ -138,54 +138,19 @@ defmodule Keila.MailingsCampaignTest do
     assert rate_limit_per_minute == sender.config.rate_limit_per_minute
 
     assert :ok = Mailings.deliver_campaign(campaign.id)
-
-    assert %{success: 1} = Oban.drain_queue(queue: :mailer_scheduler)
-
-    assert %{success: ^n_expected_sent, failure: 0, snoozed: ^n_expected_snoozed} =
-             Oban.drain_queue(queue: :mailer, with_scheduled: true)
+    assert %{success: 1} = Oban.drain_queue(queue: :campaign_renderer)
+    assert :ok = schedule_messages()
+    assert %{success: ^rate_limit_per_minute, failure: 0} = Oban.drain_queue(queue: :mailer)
 
     for _ <- 1..n_expected_sent do
       assert_email_sent()
     end
 
     refute_email_sent()
-  end
 
-  @tag :mailings_campaign
-  test "deliver campaign will not snooze senders if don't needed", %{project: project} do
-    rate_limit_per_minute = @emails_to_deliver
-    n = @emails_to_deliver
-
-    now = DateTime.utc_now() |> DateTime.truncate(:second)
-
-    build_n(:contact, n, fn _ -> %{project_id: project.id} end)
-    |> Enum.map(&Map.take(&1, [:name, :project_id, :email, :first_name, :last_name, :status]))
-    |> Enum.map(&Map.merge(&1, %{updated_at: now, inserted_at: now}))
-    |> Enum.chunk_every(10_000)
-    |> Enum.each(fn params -> Repo.insert_all(Contacts.Contact, params) |> elem(1) end)
-
-    sender =
-      insert!(:mailings_sender,
-        config: %Mailings.Sender.Config{
-          type: "test",
-          rate_limit_per_minute: rate_limit_per_minute
-        }
-      )
-
-    campaign = insert!(:mailings_campaign, project_id: project.id, sender_id: sender.id)
-
-    assert rate_limit_per_minute == sender.config.rate_limit_per_minute
-
-    assert :ok = Mailings.deliver_campaign(campaign.id)
-
-    assert %{success: 1} = Oban.drain_queue(queue: :mailer_scheduler)
-    assert %{success: ^n, failure: 0} = Oban.drain_queue(queue: :mailer, with_scheduled: true)
-
-    for _ <- 1..n do
-      assert_email_sent()
-    end
-
-    refute_email_sent()
+    messages = Repo.all(Mailings.Message)
+    assert Enum.count(messages, fn m -> m.status == :sent end) == n_expected_sent
+    assert Enum.count(messages, fn m -> m.status == :ready end) == n_expected_not_sent
   end
 
   @tag :mailings_campaign
@@ -202,8 +167,8 @@ defmodule Keila.MailingsCampaignTest do
     campaign = insert!(:mailings_campaign, project_id: project.id, sender_id: sender.id)
 
     assert :ok = Mailings.deliver_campaign(campaign.id)
-
-    assert %{success: 1} = Oban.drain_queue(queue: :mailer_scheduler)
+    assert %{success: 1} = Oban.drain_queue(queue: :campaign_renderer)
+    assert :ok = schedule_messages()
     assert %{success: ^n, failure: 0} = Oban.drain_queue(queue: :mailer, with_scheduled: true)
 
     for _ <- 1..n do
@@ -325,8 +290,9 @@ defmodule Keila.MailingsCampaignTest do
       )
 
     assert :ok = Mailings.deliver_campaign(campaign.id)
-    assert %{success: 1} = Oban.drain_queue(queue: :mailer_scheduler)
-    assert %{success: 1, failure: 0} = Oban.drain_queue(queue: :mailer, with_scheduled: true)
+    assert %{success: 1} = Oban.drain_queue(queue: :campaign_renderer)
+    assert :ok = schedule_messages()
+    assert %{success: 1, failure: 0} = Oban.drain_queue(queue: :mailer)
 
     receive do
       {:email, %{to: [{_, email}]}} ->
@@ -351,7 +317,9 @@ defmodule Keila.MailingsCampaignTest do
   end
 
   @tag :mailings_campaign
-  test "failing to send to a recipient doesn't affect delivery of campaign", %{project: project} do
+  test "failing to send to a recipient doesn't affect delivery of campaign", %{
+    project: project
+  } do
     insert!(:contact, project_id: project.id)
     insert!(:contact, project_id: project.id, email: nil)
 
@@ -359,9 +327,13 @@ defmodule Keila.MailingsCampaignTest do
     campaign = insert!(:mailings_campaign, project_id: project.id, sender_id: sender.id)
 
     assert :ok = Mailings.deliver_campaign(campaign.id)
-
-    assert %{success: 1} = Oban.drain_queue(queue: :mailer_scheduler)
-    assert %{success: 1, cancelled: 1} = Oban.drain_queue(queue: :mailer, with_scheduled: true)
+    assert %{success: 1} = Oban.drain_queue(queue: :campaign_renderer)
+    assert :ok = schedule_messages()
+    assert %{success: 1} = Oban.drain_queue(queue: :mailer)
     assert %{status: :sent} = Mailings.get_campaign_stats(campaign.id)
+
+    messages = Repo.all(Mailings.Message)
+    assert Enum.count(messages, fn m -> m.status == :sent end) == 1
+    assert Enum.count(messages, fn m -> m.status == :failed end) == 1
   end
 end

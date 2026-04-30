@@ -27,7 +27,7 @@ defmodule Keila.Contacts.Query do
   - `"$like"` - queries if the field matches using the SQL `ILIKE` statement.
      `%{"email" => %{"$like" => "%keila.io"}}`
 
-  # Filtering on received messages (recipients)
+  # Filtering on received messages (messages)
   A `messages` map can be defined to filter contacts based on their received messages.
   All status fields (like `"opened_at"`) can be defined, as well as `"campaign_id"`.
   For convenience purposes, `"bounced_at"` can be defined to filter based on bounces
@@ -49,7 +49,7 @@ defmodule Keila.Contacts.Query do
   @type opts :: {:filter, map()} | {:sort, map()}
 
   @fields ["id", "email", "inserted_at", "first_name", "last_name", "status", "double_opt_in_at"]
-  @recipient_fields [
+  @message_fields [
     "campaign_id",
     "sent_at",
     "opened_at",
@@ -176,51 +176,51 @@ defmodule Keila.Contacts.Query do
   end
 
   defp build_condition("messages", input) do
-    dynamic(exists(from r in Keila.Mailings.Recipient, where: ^build_recipient_conditions(input)))
+    dynamic(exists(from m in Keila.Mailings.Message, where: ^build_message_conditions(input)))
   end
 
   defp build_condition(field, value),
     do: raise(~s{Unsupported filter "#{field}": "#{inspect(value)}"})
 
-  defp build_recipient_conditions(input) do
-    base_condition = dynamic([r], r.contact_id == parent_as(:contact).id)
+  defp build_message_conditions(input) do
+    base_condition = dynamic([m], m.contact_id == parent_as(:contact).id)
 
-    @recipient_fields
+    @message_fields
     |> Enum.filter(&Map.has_key?(input, &1))
     |> Enum.reduce(base_condition, fn field_name, conditions ->
       field = String.to_existing_atom(field_name)
       value = Map.get(input, field_name)
-      condition = build_recipient_condition(field, value)
+      condition = build_message_condition(field, value)
       dynamic([], ^condition and ^conditions)
     end)
   end
 
-  defp build_recipient_condition(:bounced_at, value) do
-    hard_bounce_condition = build_recipient_condition(:hard_bounce_received_at, value)
-    soft_bounce_condition = build_recipient_condition(:soft_bounce_received_at, value)
+  defp build_message_condition(:bounced_at, value) do
+    hard_bounce_condition = build_message_condition(:hard_bounce_received_at, value)
+    soft_bounce_condition = build_message_condition(:soft_bounce_received_at, value)
 
     dynamic([], ^hard_bounce_condition or ^soft_bounce_condition)
   end
 
-  defp build_recipient_condition(field, %{"$gt" => value}),
+  defp build_message_condition(field, %{"$gt" => value}),
     do: dynamic([r], field(r, ^field) > ^value)
 
-  defp build_recipient_condition(field, %{"$gte" => value}),
+  defp build_message_condition(field, %{"$gte" => value}),
     do: dynamic([r], field(r, ^field) >= ^value)
 
-  defp build_recipient_condition(field, %{"$lt" => value}),
+  defp build_message_condition(field, %{"$lt" => value}),
     do: dynamic([r], field(r, ^field) < ^value)
 
-  defp build_recipient_condition(field, %{"$lte" => value}),
+  defp build_message_condition(field, %{"$lte" => value}),
     do: dynamic([r], field(r, ^field) <= ^value)
 
-  defp build_recipient_condition(field, %{"$empty" => empty?}),
+  defp build_message_condition(field, %{"$empty" => empty?}),
     do: dynamic([r], ^empty? == is_nil(field(r, ^field)))
 
-  defp build_recipient_condition(field, nil),
+  defp build_message_condition(field, nil),
     do: dynamic([r], is_nil(field(r, ^field)))
 
-  defp build_recipient_condition(field, value) when is_binary(value) or is_number(value),
+  defp build_message_condition(field, value) when is_binary(value) or is_number(value),
     do: dynamic([r], field(r, ^field) == ^value)
 
   defp build_data_condition(path, input)

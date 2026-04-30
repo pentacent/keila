@@ -129,17 +129,17 @@ defmodule KeilaWeb.PublicFormControllerTest do
     end
   end
 
-  describe "GET /unsubscribe/:project_id/:recipient_id/:hmac" do
+  describe "GET /unsubscribe/:project_id/:message_id/:hmac" do
     @describetag :public_form_controller
-    test "shows confirmation page when recipient sent_at is recent", %{conn: conn} do
+    test "shows confirmation page when message sent_at is recent", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
       contact = insert!(:contact, project_id: project.id)
       campaign = insert!(:mailings_campaign, project_id: project.id)
 
-      recipient =
-        insert!(:mailings_recipient, campaign: campaign, contact: contact, sent_at: now())
+      message =
+        insert!(:message, project: project, campaign: campaign, contact: contact, sent_at: now())
 
-      unsubscribe_link = Mailings.get_unsubscribe_link(project.id, recipient.id)
+      unsubscribe_link = Mailings.get_unsubscribe_link(project.id, message.id)
       conn = get(conn, unsubscribe_link)
 
       assert html_response(conn, 200) =~ "Unsubscribing ..."
@@ -151,14 +151,15 @@ defmodule KeilaWeb.PublicFormControllerTest do
       contact = insert!(:contact, project_id: project.id)
       campaign = insert!(:mailings_campaign, project_id: project.id)
 
-      recipient =
-        insert!(:mailings_recipient,
+      message =
+        insert!(:message,
+          project: project,
           campaign: campaign,
           contact: contact,
           sent_at: ten_minutes_ago()
         )
 
-      unsubscribe_link = Mailings.get_unsubscribe_link(project.id, recipient.id)
+      unsubscribe_link = Mailings.get_unsubscribe_link(project.id, message.id)
       conn = get(conn, unsubscribe_link)
 
       assert html_response(conn, 200) =~ "You have been unsubscribed"
@@ -166,17 +167,17 @@ defmodule KeilaWeb.PublicFormControllerTest do
     end
   end
 
-  describe "POST /unsubscribe/:project_id/:recipient_id/:hmac" do
+  describe "POST /unsubscribe/:project_id/:message_id/:hmac" do
     @describetag :public_form_controller
     test "unsubscribes contact via POST", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
       contact = insert!(:contact, project_id: project.id)
       campaign = insert!(:mailings_campaign, project_id: project.id)
 
-      recipient =
-        insert!(:mailings_recipient, campaign: campaign, contact: contact, sent_at: now())
+      message =
+        insert!(:message, project: project, campaign: campaign, contact: contact, sent_at: now())
 
-      unsubscribe_link = Mailings.get_unsubscribe_link(project.id, recipient.id)
+      unsubscribe_link = Mailings.get_unsubscribe_link(project.id, message.id)
       conn = post(conn, unsubscribe_link, hmac: "ignored")
 
       assert html_response(conn, 200) =~ "You have been unsubscribed"

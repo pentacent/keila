@@ -4,32 +4,31 @@ defmodule Keila.Application do
   @moduledoc false
 
   use Application
+  @env Mix.env()
 
   def start(_type, _args) do
     maybe_run_migrations()
 
-    children = [
-      # Start the Ecto repository
-      Keila.Repo,
-      # Start the Telemetry supervisor
-      KeilaWeb.Telemetry,
-      # Start the PubSub system
-      {Phoenix.PubSub, name: Keila.PubSub},
-      # Start the Endpoint (http/https)
-      KeilaWeb.Endpoint,
-      # Start Oban
-      {Oban, oban_config()},
-      # Keila Task Supervisor
-      {Task.Supervisor, name: Keila.TaskSupervisor},
-      # Keila Hashid Config cache
-      %{
-        id: Keila.Id.Cache,
-        start: {Agent, :start_link, [&Keila.Id.hashid_config/0, [name: Keila.Id.Cache]]}
-      },
-      {Keila.Mailings.RateLimiter, []}
-      # Start a worker by calling: Keila.Worker.start_link(arg)
-      # {Keila.Worker, arg}
-    ]
+    children =
+      [
+        # Start the Ecto repository
+        Keila.Repo,
+        # Start the Telemetry supervisor
+        KeilaWeb.Telemetry,
+        # Start the PubSub system
+        {Phoenix.PubSub, name: Keila.PubSub},
+        # Start the Endpoint (http/https)
+        KeilaWeb.Endpoint,
+        # Start Oban
+        {Oban, oban_config()},
+        # Keila Task Supervisor
+        {Task.Supervisor, name: Keila.TaskSupervisor},
+        # Keila Hashid Config cache
+        %{
+          id: Keila.Id.Cache,
+          start: {Agent, :start_link, [&Keila.Id.hashid_config/0, [name: Keila.Id.Cache]]}
+        }
+      ] ++ scheduler_spec()
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
@@ -58,7 +57,14 @@ defmodule Keila.Application do
     end
   end
 
-  @env Mix.env()
+  defp scheduler_spec() do
+    if @env == :test do
+      []
+    else
+      [{Keila.Mailings.Scheduler, []}]
+    end
+  end
+
   defp maybe_fetch_updates() do
     unless @env == :test do
       :ok = Application.ensure_started(:oban)

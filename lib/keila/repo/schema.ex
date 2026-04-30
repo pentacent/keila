@@ -29,11 +29,17 @@ defmodule Keila.Schema do
       use Ecto.Schema
       alias Ecto.Repo
 
-      if Keyword.get(unquote(opts), :uuid) == true do
-        @primary_key {:uuid, :binary_id, autogenerate: false}
-        @type id :: Ecto.UUID.t()
-      else
-        use Keila.Id, unquote(opts)
+      cond do
+        Keyword.get(unquote(opts), :uuid) == true ->
+          @primary_key {:uuid, :binary_id, autogenerate: false}
+          @type id :: Ecto.UUID.t()
+
+        Keyword.get(unquote(opts), :manual_id) == true ->
+          @primary_key {:id, :id, autogenerate: false}
+          @type id :: integer()
+
+        true ->
+          use Keila.Id, unquote(opts)
       end
 
       @timestamps_opts [type: :utc_datetime]

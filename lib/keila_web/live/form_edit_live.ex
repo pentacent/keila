@@ -1,8 +1,8 @@
 defmodule KeilaWeb.FormEditLive do
   use KeilaWeb, :live_view
 
-  alias Keila.Mailings.DoubleOptInEmailBuilder
-  alias Keila.Mailings.WelcomeEmailBuilder
+  alias Keila.Mailings.DoubleOptInMessage
+  alias Keila.Mailings.WelcomeMessage
 
   @impl true
   def mount(_params, session, socket) do
@@ -164,11 +164,11 @@ defmodule KeilaWeb.FormEditLive do
         double_opt_in_preview =
           if form.settings.double_opt_in_required &&
                socket.assigns.current_tab == "double-opt-in",
-             do: DoubleOptInEmailBuilder.build_preview(form).html_body
+             do: DoubleOptInMessage.preview(form).html_body
 
         welcome_email_preview =
           if form.settings.welcome_enabled && socket.assigns.current_tab == "welcome-email",
-            do: WelcomeEmailBuilder.build_preview(form).html_body
+            do: WelcomeMessage.preview(form).html_body
 
         socket
         |> assign(:form_preview, form)

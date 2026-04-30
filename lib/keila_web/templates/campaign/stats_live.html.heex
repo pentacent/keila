@@ -1,3 +1,19 @@
+<%= Keila.if_cloud do %>
+  <%= if @stats.failed_count > 0 do %>
+    <div class="bg-gradient-to-b from-orange-200 to-orange-300 text-black" role="alert">
+      <p class="container py-5 my-0">
+        <a href="mailto:support@keila.io">
+          {dgettext(
+            "cloud",
+            "Some emails could not be delivered."
+          )}
+          <span class="underline">{dgettext("cloud", "Contact Support")}</span>
+        </a>
+      </p>
+    </div>
+  <% end %>
+<% end %>
+
 <div class="container flex py-8 sm:py-11 sm:mb-2">
   <div class="flex-grow gap-4 flex flex-col-reverse sm:flex-row sm:items-center">
     <h1 class="text-2xl md:text-3xl text-gray-100">
@@ -190,7 +206,6 @@
               <p class="mt-4">
                 <a
                   href={Routes.cloud_account_path(@socket, :onboarding)}
-                  }
                   class="button button--large button--cta"
                 >
                   {dgettext("cloud", "Update account information")}
@@ -230,6 +245,19 @@
           <div class="text-3xl">{@stats.sent_count}</div>
         </div>
       </div>
+      <%= if @stats.failed_count > 0 do %>
+        <div class="flex flex-col gap-4 xl:gap-0">
+          <div class="flex flex-row gap-4 xl:p-4">
+            <div class="flex h-14 w-14 p-4 bg-orange-800 rounded-full text-white">
+              {render_icon(:exclamation_triangle)}
+            </div>
+            <div class="flex flex-col">
+              <div class="text-sm">{gettext("emails failed")}</div>
+              <div class="text-3xl">{@stats.failed_count}</div>
+            </div>
+          </div>
+        </div>
+      <% end %>
       <%= if !@campaign.settings.do_not_track do %>
         <div class="flex flex-row gap-4 xl:p-4">
           <div class="flex h-14 w-14 p-4 bg-cyan-800 rounded-full text-white">
