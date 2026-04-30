@@ -691,7 +691,7 @@ defmodule Keila.Mailings do
         not Keila.Accounts.has_credits?(account.id, contacts_count)
       end
 
-    recipients_count = recipient_stats[:recipients_count] - recipient_stats[:failed_count]
+    recipients_count = recipient_stats[:recipients_count]
 
     locked? =
       !Repo.exists?(
