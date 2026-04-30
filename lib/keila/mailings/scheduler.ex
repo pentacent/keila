@@ -113,8 +113,7 @@ defmodule Keila.Mailings.Scheduler do
 
   def handle_info(:tick, state) do
     schedule_tick()
-    tick(state)
-    {:noreply, state}
+    {:noreply, tick(state)}
   end
 
   def handle_info(:check_leadership, %{leading?: true} = state) do
@@ -162,8 +161,7 @@ defmodule Keila.Mailings.Scheduler do
 
   @impl true
   def handle_call(:schedule, _from, state) do
-    tick(state)
-    {:reply, :ok, state}
+    {:reply, :ok, tick(state)}
   end
 
   defp schedule_tick() do
