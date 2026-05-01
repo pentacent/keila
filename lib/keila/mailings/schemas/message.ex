@@ -15,6 +15,7 @@ defmodule Keila.Mailings.Message do
     field(:text_body, :string)
 
     field(:priority, :integer, default: 100)
+    field(:render_attempt, :integer, default: 0)
     field(:status, Ecto.Enum, values: [unrendered: 0, ready: 1, queued: 2, sent: 10, failed: -1])
 
     field(:receipt, :string)

@@ -25,6 +25,7 @@ defmodule Keila.Mailings.CampaignRenderWorker do
 
   @batch_size 500
   @render_timeout 1_000
+  @max_attempts 5
 
   @impl true
   def perform(%Oban.Job{args: %{"campaign_id" => campaign_id}}) do
@@ -48,6 +49,7 @@ defmodule Keila.Mailings.CampaignRenderWorker do
     |> async_render_messages(campaign)
     |> tap(&update_rendered_messages/1)
     |> tap(&update_failed_messages/1)
+    |> tap(&update_messages_for_retry/1)
     |> tap(fn results ->
       unless length(results) < @batch_size do
         Oban.insert!(new(%{"campaign_id" => campaign.id}))
@@ -70,7 +72,7 @@ defmodule Keila.Mailings.CampaignRenderWorker do
 
       {:exit, {message, :timeout}} ->
         Logger.warning("CampaignRenderWorker: render timeout for message #{message.id}")
-        {message, :error}
+        {message, :timeout}
     end)
   end
 
@@ -81,6 +83,7 @@ defmodule Keila.Mailings.CampaignRenderWorker do
       {message, {:ok, email}}
     else
       {:error, :rendering_error} ->
+        Logger.warning("CampaignRenderWorker: render error for message #{message.id}")
         {message, :error}
 
       other ->
@@ -146,7 +149,9 @@ defmodule Keila.Mailings.CampaignRenderWorker do
   defp update_failed_messages(results) do
     message_ids =
       results
-      |> Enum.filter(fn {_message, result} -> result == :error end)
+      |> Enum.filter(fn {message, result} ->
+        result == :error or (result == :timeout and message.render_attempt >= @max_attempts)
+      end)
       |> Enum.map(fn {message, _} -> message.id end)
 
     if Enum.any?(message_ids) do
@@ -154,6 +159,40 @@ defmodule Keila.Mailings.CampaignRenderWorker do
         where: m.id in ^message_ids and m.status == :unrendered,
         update: [
           set: [status: :failed, failed_at: fragment("NOW()"), updated_at: fragment("NOW()")]
+        ]
+      )
+      |> Repo.update_all([])
+    end
+  end
+
+  @message_retry_update_types %{
+    message_id: Message.Id,
+    render_attempt: :integer
+  }
+
+  defp update_messages_for_retry(results) do
+    message_updates =
+      results
+      |> Enum.filter(fn {message, result} ->
+        result == :timeout and message.render_attempt < @max_attempts
+      end)
+      |> Enum.map(fn {message, _} ->
+        %{
+          message_id: message.id,
+          render_attempt: message.render_attempt + 1
+        }
+      end)
+
+    if Enum.any?(message_updates) do
+      from(m in Message,
+        join: mu in values(message_updates, @message_retry_update_types),
+        on: m.id == mu.message_id,
+        where: m.status == :unrendered,
+        update: [
+          set: [
+            render_attempt: mu.render_attempt,
+            updated_at: fragment("NOW()")
+          ]
         ]
       )
       |> Repo.update_all([])
