@@ -337,7 +337,8 @@ defmodule Keila.Mailings do
   """
   @spec get_campaign(Campaign.id()) :: Campaign.t() | nil
   def get_campaign(id) when is_id(id) do
-    Repo.get(Campaign, id, preload: [:template, :segment])
+    from(c in Campaign, where: c.id == ^id, preload: [:template, :segment])
+    |> Repo.one()
   end
 
   @doc """

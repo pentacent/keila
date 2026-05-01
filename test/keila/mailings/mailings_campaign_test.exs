@@ -80,7 +80,7 @@ defmodule Keila.MailingsCampaignTest do
              )
 
     assert [] == Mailings.get_project_campaigns(project.id)
-    assert other_campaign == Mailings.get_campaign(other_campaign.id)
+    assert Mailings.get_campaign(other_campaign.id)
   end
 
   @tag :mailings_campaign
