@@ -3,7 +3,7 @@ defmodule Keila.Repo.Migrations.AddMessageRenderRetries do
 
   def change do
     alter table(:messages) do
-      add :render_attempt, :integer, default: 0
+      add :render_attempt, :integer, default: 0, null: false
     end
   end
 end

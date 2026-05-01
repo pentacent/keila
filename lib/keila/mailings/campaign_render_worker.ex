@@ -14,7 +14,7 @@ defmodule Keila.Mailings.CampaignRenderWorker do
     queue: :campaign_renderer,
     unique: [
       period: :infinity,
-      states: [:available, :scheduled, :retryable],
+      states: [:available, :scheduled, :retryable, :executing],
       keys: [:campaign_id]
     ]
 
@@ -51,7 +51,7 @@ defmodule Keila.Mailings.CampaignRenderWorker do
     |> tap(&update_failed_messages/1)
     |> tap(&update_messages_for_retry/1)
     |> tap(fn results ->
-      unless length(results) < @batch_size do
+      if length(results) == @batch_size or Enum.any?(results, &retryable?/1) do
         Oban.insert!(new(%{"campaign_id" => campaign.id}))
       end
     end)
@@ -173,9 +173,7 @@ defmodule Keila.Mailings.CampaignRenderWorker do
   defp update_messages_for_retry(results) do
     message_updates =
       results
-      |> Enum.filter(fn {message, result} ->
-        result == :timeout and message.render_attempt < @max_attempts
-      end)
+      |> Enum.filter(&retryable?/1)
       |> Enum.map(fn {message, _} ->
         %{
           message_id: message.id,
@@ -205,5 +203,9 @@ defmodule Keila.Mailings.CampaignRenderWorker do
     else
       :ok
     end
+  end
+
+  defp retryable?({message, result}) do
+    result == :timeout and message.render_attempt < @max_attempts
   end
 end
