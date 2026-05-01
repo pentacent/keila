@@ -14,7 +14,7 @@ defmodule Keila.Mailings.CampaignRenderWorker do
     queue: :campaign_renderer,
     unique: [
       period: :infinity,
-      states: [:available, :scheduled, :retryable],
+      states: [:available, :scheduled, :retryable, :executing],
       keys: [:campaign_id]
     ]
 
@@ -25,6 +25,7 @@ defmodule Keila.Mailings.CampaignRenderWorker do
 
   @batch_size 500
   @render_timeout 1_000
+  @max_attempts 5
 
   @impl true
   def perform(%Oban.Job{args: %{"campaign_id" => campaign_id}}) do
@@ -48,8 +49,9 @@ defmodule Keila.Mailings.CampaignRenderWorker do
     |> async_render_messages(campaign)
     |> tap(&update_rendered_messages/1)
     |> tap(&update_failed_messages/1)
+    |> tap(&update_messages_for_retry/1)
     |> tap(fn results ->
-      unless length(results) < @batch_size do
+      if length(results) == @batch_size or Enum.any?(results, &retryable?/1) do
         Oban.insert!(new(%{"campaign_id" => campaign.id}))
       end
     end)
@@ -70,7 +72,7 @@ defmodule Keila.Mailings.CampaignRenderWorker do
 
       {:exit, {message, :timeout}} ->
         Logger.warning("CampaignRenderWorker: render timeout for message #{message.id}")
-        {message, :error}
+        {message, :timeout}
     end)
   end
 
@@ -81,6 +83,7 @@ defmodule Keila.Mailings.CampaignRenderWorker do
       {message, {:ok, email}}
     else
       {:error, :rendering_error} ->
+        Logger.warning("CampaignRenderWorker: render error for message #{message.id}")
         {message, :error}
 
       other ->
@@ -146,7 +149,9 @@ defmodule Keila.Mailings.CampaignRenderWorker do
   defp update_failed_messages(results) do
     message_ids =
       results
-      |> Enum.filter(fn {_message, result} -> result == :error end)
+      |> Enum.filter(fn {message, result} ->
+        result == :error or (result == :timeout and message.render_attempt >= @max_attempts)
+      end)
       |> Enum.map(fn {message, _} -> message.id end)
 
     if Enum.any?(message_ids) do
@@ -160,11 +165,47 @@ defmodule Keila.Mailings.CampaignRenderWorker do
     end
   end
 
+  @message_retry_update_types %{
+    message_id: Message.Id,
+    render_attempt: :integer
+  }
+
+  defp update_messages_for_retry(results) do
+    message_updates =
+      results
+      |> Enum.filter(&retryable?/1)
+      |> Enum.map(fn {message, _} ->
+        %{
+          message_id: message.id,
+          render_attempt: message.render_attempt + 1
+        }
+      end)
+
+    if Enum.any?(message_updates) do
+      from(m in Message,
+        join: mu in values(message_updates, @message_retry_update_types),
+        on: m.id == mu.message_id,
+        where: m.status == :unrendered,
+        update: [
+          set: [
+            render_attempt: mu.render_attempt,
+            updated_at: fragment("NOW()")
+          ]
+        ]
+      )
+      |> Repo.update_all([])
+    end
+  end
+
   defp ensure_valid_email(email) do
     if Enum.find(email.headers, fn {name, _} -> name == "X-Keila-Invalid" end) do
       {:error, :rendering_error}
     else
       :ok
     end
+  end
+
+  defp retryable?({message, result}) do
+    result == :timeout and message.render_attempt < @max_attempts
   end
 end
