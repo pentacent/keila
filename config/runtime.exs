@@ -55,6 +55,16 @@ if config_env() == :prod do
         end
       end)
 
+    # Database prefix
+    db_schema = System.get_env("DB_SCHEMA")
+    if db_schema not in [nil, ""] do
+      config :keila, Keila.Repo,
+        migration_default_prefix: db_schema,
+        parameters: [search_path: db_schema]
+
+      config :keila, Oban, prefix: db_schema
+    end
+
     config :keila, Keila.Repo,
       url: db_url,
       ssl: ssl,

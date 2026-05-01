@@ -2,10 +2,12 @@ defmodule Keila.Repo.Migrations.UpgradeObanJobsToV11 do
   use Ecto.Migration
 
   def up do
-    Oban.Migrations.up(version: 11)
+    prefix = repo().config()[:migration_default_prefix] || "public"
+    Oban.Migrations.up(prefix: prefix, version: 11)
   end
 
   def down do
-    Oban.Migrations.down(version: 11)
+    prefix = repo().config()[:migration_default_prefix] || "public"
+    Oban.Migrations.down(prefix: prefix, version: 11)
   end
 end
