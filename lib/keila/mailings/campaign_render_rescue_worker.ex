@@ -3,7 +3,7 @@ defmodule Keila.Mailings.CampaignRenderRescueWorker do
   This worker looks for unrendered campaign messages and enqueues a `CampaignRenderWorker` for the associated campaigns.
   """
 
-  use Oban.Worker, queue: :cron
+  use Oban.Worker, queue: :system
   require Logger
   import Ecto.Query
   alias Keila.Mailings.Message
