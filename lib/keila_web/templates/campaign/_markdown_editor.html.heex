@@ -29,11 +29,19 @@
     {render_icon(:eye)}
   </button>
 </div>
-<div class="flex gap-4">
+<div
+  class="flex gap-4"
+  x-data="{}"
+  x-init="$refs.textarea.style.height = $refs.textarea.scrollHeight + 'px'"
+>
   <.form :let={f} for={@changeset}>
     {textarea(f, :text_body,
       rows: 20,
-      class: "bg-gray-900 border-none appearance-none resize-y flex-grow w-1/2"
+      class:
+        "bg-gray-900 border-none appearance-none resize-y flex-grow w-1/2 max-h-[calc(100vh-190px)]",
+      x_ref: "textarea",
+      phx_update: "ignore",
+      "x-on:input": "$refs.textarea.style.height = $refs.textarea.scrollHeight + 'px'"
     )}
   </.form>
   <div
