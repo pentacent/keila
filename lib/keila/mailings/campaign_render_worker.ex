@@ -14,7 +14,7 @@ defmodule Keila.Mailings.CampaignRenderWorker do
     queue: :campaign_renderer,
     unique: [
       period: :infinity,
-      states: [:available, :scheduled, :retryable, :executing],
+      states: [:available, :scheduled, :retryable],
       keys: [:campaign_id]
     ]
 
@@ -24,7 +24,7 @@ defmodule Keila.Mailings.CampaignRenderWorker do
   alias Keila.Mailings.Builder
 
   @batch_size 500
-  @render_timeout 1_000
+  @render_timeout 5_000
   @max_attempts 5
 
   @impl true
