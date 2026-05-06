@@ -14,6 +14,7 @@ defmodule KeilaWeb.Gettext do
       {"Français", "fr"},
       {"Italiano", "it"},
       {"Magyar", "hu"},
+      {"Português (Brasil)", "pt_BR"},
       {"Български", "bg"}
     ]
   end
