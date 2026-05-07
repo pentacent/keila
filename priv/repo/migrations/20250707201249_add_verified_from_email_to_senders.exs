@@ -8,6 +8,7 @@ defmodule Keila.Repo.Migrations.AddVerifiedFromEmailToSenders do
 
     # Data migration to set verified_from_email based on sender type
     prefix = repo().config()[:migration_default_prefix] || "public"
+
     execute """
     UPDATE #{prefix}.mailings_senders
     SET verified_from_email = config->>'shared_ses_verification_requested_for'

@@ -22,6 +22,7 @@ defmodule Keila.Repo.Migrations.AccountsCredits do
 
   defp execute_up() do
     prefix = repo().config()[:migration_default_prefix] || "public"
+
     repo().query!("SELECT id FROM #{prefix}.users")
     |> Map.fetch!(:rows)
     |> Enum.map(fn [user_id] ->

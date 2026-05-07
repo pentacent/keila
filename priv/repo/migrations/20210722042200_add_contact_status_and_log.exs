@@ -19,6 +19,7 @@ defmodule Keila.Repo.Migrations.AddContactSoftDelete do
 
   defp execute_up() do
     prefix = repo().config()[:migration_default_prefix] || "public"
+
     repo().query!(
       "UPDATE #{prefix}.contacts SET status=$1",
       [1]

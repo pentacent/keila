@@ -14,7 +14,14 @@ defmodule Keila.Repo.Migrations.MigrateToHybridTemplateStyles do
 
   def up do
     prefix = repo().config()[:migration_default_prefix] || "public"
-    Repo.all(from(t in "templates", prefix: ^prefix, where: not is_nil(t.styles), select: {t.id, t.styles}))
+
+    Repo.all(
+      from(t in "templates",
+        prefix: ^prefix,
+        where: not is_nil(t.styles),
+        select: {t.id, t.styles}
+      )
+    )
     |> Enum.filter(fn {_id, styles} ->
       String.contains?(styles, "body, #center-wrapper, #table-wrapper")
     end)
@@ -33,7 +40,11 @@ defmodule Keila.Repo.Migrations.MigrateToHybridTemplateStyles do
     |> Enum.each(fn {id, updated_styles} ->
       Logger.info("Updating styles for Template #{id}")
 
-      from(t in "templates", prefix: ^prefix, where: t.id == ^id, update: [set: [styles: ^updated_styles]])
+      from(t in "templates",
+        prefix: ^prefix,
+        where: t.id == ^id,
+        update: [set: [styles: ^updated_styles]]
+      )
       |> Repo.update_all([])
     end)
   end

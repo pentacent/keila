@@ -11,6 +11,7 @@ defmodule Keila.Repo.Migrations.DefaultContactStatus do
 
   defp execute_up() do
     prefix = repo().config()[:migration_default_prefix] || "public"
+
     repo().query!(
       "UPDATE #{prefix}.contacts SET status=$1",
       [0]

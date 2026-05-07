@@ -57,6 +57,7 @@ if config_env() == :prod do
 
     # Database prefix
     db_schema = System.get_env("DB_SCHEMA")
+
     if db_schema not in [nil, ""] do
       config :keila, Keila.Repo,
         migration_default_prefix: db_schema,

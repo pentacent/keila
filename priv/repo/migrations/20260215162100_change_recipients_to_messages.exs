@@ -49,7 +49,7 @@ defmodule Keila.Repo.Migrations.ChangeRecipientsToMessages do
     )
 
     execute(
-      "UPDATE messages SET status = -1 WHERE failed_at IS NOT NULL",
+      "UPDATE messages SET status = -1 WHERE sent_at IS NULL",
       ""
     )
 
