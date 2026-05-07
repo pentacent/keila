@@ -10,6 +10,7 @@ defmodule Keila.Repo.Migrations.AddRecipientQueuedAt do
   end
 
   defp execute_up() do
-    repo().query!("UPDATE mailings_recipients SET queued_at=inserted_at")
+    prefix = repo().config()[:migration_default_prefix] || "public"
+    repo().query!("UPDATE #{prefix}.mailings_recipients SET queued_at=inserted_at")
   end
 end

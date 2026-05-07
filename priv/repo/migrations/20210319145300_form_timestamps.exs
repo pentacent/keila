@@ -10,7 +10,8 @@ defmodule Keila.Repo.Migrations.FormTimestamps do
   end
 
   defp execute_up() do
-    repo().query!("UPDATE contacts_forms SET updated_at=NOW(), inserted_at=NOW()")
+    prefix = repo().config()[:migration_default_prefix] || "public"
+    repo().query!("UPDATE #{prefix}.contacts_forms SET updated_at=NOW(), inserted_at=NOW()")
 
     alter table("contacts_forms") do
       modify :inserted_at, :naive_datetime, null: false

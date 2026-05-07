@@ -21,7 +21,8 @@ defmodule Keila.Repo.Migrations.AccountsCredits do
   end
 
   defp execute_up() do
-    repo().query!("SELECT id FROM users")
+    prefix = repo().config()[:migration_default_prefix] || "public"
+    repo().query!("SELECT id FROM #{prefix}.users")
     |> Map.fetch!(:rows)
     |> Enum.map(fn [user_id] ->
       {:ok, account} = Keila.Accounts.create_account()
@@ -30,11 +31,12 @@ defmodule Keila.Repo.Migrations.AccountsCredits do
   end
 
   defp execute_down() do
+    prefix = repo().config()[:migration_default_prefix] || "public"
     root_group = Keila.Auth.root_group()
     {:ok, root_group_id} = Keila.Auth.Group.Id.decode(root_group.id)
 
     repo().query!(
-      "UPDATE groups SET parent_id=$1 WHERE parent_id IN (SELECT group_id FROM accounts)",
+      "UPDATE #{prefix}.groups SET parent_id=$1 WHERE parent_id IN (SELECT group_id FROM #{prefix}.accounts)",
       [root_group_id]
     )
   end
