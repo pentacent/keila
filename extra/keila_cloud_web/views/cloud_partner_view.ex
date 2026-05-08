@@ -19,6 +19,5 @@ Keila.if_cloud do
     import KeilaWeb.ErrorHelpers
     import KeilaWeb.IconHelper
     import KeilaWeb.PaginationHelpers
-    import KeilaWeb.DateTimeHelpers
   end
 end

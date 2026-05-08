@@ -17,8 +17,10 @@ Keila.if_cloud do
     describe "create_child_account_user/3" do
       test "creates an active, activated user as a child of the partner",
            %{partner: partner} do
-        params = %{"email" => "child-#{System.unique_integer([:positive])}@example.com",
-                   "password" => "BatteryHorseStaple"}
+        params = %{
+          "email" => "child-#{System.unique_integer([:positive])}@example.com",
+          "password" => "BatteryHorseStaple"
+        }
 
         assert {:ok, %{user: user, account: account}} =
                  Partners.create_child_account_user(partner.id, params)
@@ -32,8 +34,11 @@ Keila.if_cloud do
       test "fails when a user with the same email already exists",
            %{partner: partner} do
         email = "dupe-#{System.unique_integer([:positive])}@example.com"
-        {:ok, _} = Auth.create_user(%{"email" => email, "password" => "BatteryHorseStaple"},
-                                    skip_activation_email: true)
+
+        {:ok, _} =
+          Auth.create_user(%{"email" => email, "password" => "BatteryHorseStaple"},
+            skip_activation_email: true
+          )
 
         assert {:error, %Ecto.Changeset{}} =
                  Partners.create_child_account_user(partner.id, %{

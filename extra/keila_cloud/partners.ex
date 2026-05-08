@@ -24,7 +24,7 @@ Keila.if_cloud do
     Creates a new User and Account, makes the Account a child of the partner,
     and marks the User as activated and the Account as `:active`.
     """
-    def create_child_account_user(partner_account_id, params, opts \\ []) do
+    def create_child_account_user(partner_account_id, params) do
       Repo.transaction(fn ->
         with {:ok, user} <- Auth.create_user(params, skip_activation_email: true),
              {:ok, user} <- Auth.activate_user(user.id),
@@ -103,17 +103,26 @@ Keila.if_cloud do
     """
     def transfer_credits(partner_account_id, child_account_id, amount) do
       with :ok <- check_account_managed_by_partner(partner_account_id, child_account_id) do
-        from(c in CreditTransaction,
-          where: c.account_id == ^partner_account_id,
-          where: c.expires_at >= fragment("NOW()"),
-          where: is_nil(c.valid_from) or c.valid_from <= fragment("NOW()"),
-          group_by: c.expires_at,
-          order_by: c.expires_at,
-          select: {c.expires_at, sum(c.amount)}
-        )
-        |> Repo.all()
-        |> build_transfer_transactions(partner_account_id, child_account_id, amount)
-        |> maybe_insert_transfer_transactions()
+        Repo.transact(fn ->
+          from(a in Account, where: a.id == ^partner_account_id, lock: "FOR UPDATE")
+          |> Repo.one()
+
+          from(c in CreditTransaction,
+            where: c.account_id == ^partner_account_id,
+            where: c.expires_at >= fragment("NOW()"),
+            where: is_nil(c.valid_from) or c.valid_from <= fragment("NOW()"),
+            group_by: c.expires_at,
+            order_by: c.expires_at,
+            select: {c.expires_at, sum(c.amount)}
+          )
+          |> Repo.all()
+          |> build_transfer_transactions(partner_account_id, child_account_id, amount)
+          |> maybe_insert_transfer_transactions()
+        end)
+        |> case do
+          {:ok, _} -> :ok
+          {:error, reason} -> {:error, reason}
+        end
       end
     end
 
@@ -135,8 +144,18 @@ Keila.if_cloud do
       now = DateTime.utc_now() |> DateTime.truncate(:second)
 
       new_transactions = [
-        %{account_id: partner_account_id, amount: -transfer_amount, expires_at: expires_at, inserted_at: now},
-        %{account_id: child_account_id, amount: transfer_amount, expires_at: expires_at, inserted_at: now}
+        %{
+          account_id: partner_account_id,
+          amount: -transfer_amount,
+          expires_at: expires_at,
+          inserted_at: now
+        },
+        %{
+          account_id: child_account_id,
+          amount: transfer_amount,
+          expires_at: expires_at,
+          inserted_at: now
+        }
       ]
 
       case remaining_amount - transfer_amount do
@@ -147,7 +166,10 @@ Keila.if_cloud do
 
     defp maybe_insert_transfer_transactions({0, transactions}) do
       Repo.insert_all(CreditTransaction, transactions)
-      :ok
+      |> case do
+        {n, _} when is_integer(n) -> {:ok, n}
+        other -> other
+      end
     end
 
     defp maybe_insert_transfer_transactions(_), do: {:error, :insufficient_credits}
