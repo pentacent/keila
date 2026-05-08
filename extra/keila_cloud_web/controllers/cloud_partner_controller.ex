@@ -113,25 +113,29 @@ Keila.if_cloud do
       end
     end
 
-    def update_password(conn, %{"id" => child_user_id, "user" => %{"password" => password}}) do
+    def update_password(conn, %{
+          "id" => child_user_id,
+          "user" => %{"password" => password} = params
+        }) do
       partner_account = conn.assigns.current_account
-
-      flash =
-        case Partners.update_child_account_user_password(
-               partner_account.id,
-               child_user_id,
-               %{"password" => password}
-             ) do
-          {:ok, _user} -> {:info, dgettext("cloud", "Password updated.")}
-          {:error, :not_a_child} -> {:error, dgettext("cloud", "User not found.")}
-          {:error, %Ecto.Changeset{}} -> {:error, dgettext("cloud", "Password is too short.")}
-        end
-
       child_account = Accounts.get_user_account(child_user_id)
 
-      conn
-      |> put_flash(elem(flash, 0), elem(flash, 1))
-      |> redirect(to: ~p"/partner/accounts/#{child_account.id}/credits")
+      case Partners.update_child_account_user_password(partner_account.id, child_user_id, params) do
+        {:ok, _user} ->
+          conn
+          |> put_flash(:info, dgettext("cloud", "Password updated."))
+          |> redirect(to: ~p"/partner/accounts/#{child_account.id}/credits")
+
+        {:error, :not_a_child} ->
+          conn
+          |> put_flash(:error, dgettext("cloud", "Not found."))
+          |> redirect(to: ~p"/partner")
+
+        {:error, %Ecto.Changeset{}} ->
+          conn
+          |> put_flash(:error, dgettext("cloud", "Password change not accepted."))
+          |> redirect(to: ~p"/partner/accounts/#{child_account.id}/credits")
+      end
     end
 
     def login_as(conn, %{"id" => user_id}) do
