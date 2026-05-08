@@ -93,11 +93,13 @@ Keila.if_cloud do
 
     defp maybe_add_credits({:ok, subscription}, true) do
       plan = get_plan(subscription.paddle_plan_id)
+      account_id = subscription.account_id
 
       case plan.billing_interval do
         :month ->
           expires_at = DateTime.new!(subscription.next_billed_on, ~T[23:59:00], "Etc/UTC")
-          Keila.Accounts.add_credits(subscription.account_id, plan.monthly_credits, expires_at)
+          Keila.Accounts.add_credits(account_id, plan.monthly_credits, expires_at)
+          KeilaCloud.Partners.distribute_partner_transaction_credits(account_id, expires_at)
 
         :year ->
           today = Date.utc_today()
@@ -108,9 +110,10 @@ Keila.if_cloud do
             expires_at =
               today |> Date.shift(month: n + 1) |> DateTime.new!(~T[00:00:00], "Etc/UTC")
 
-            Keila.Accounts.add_credits(
-              subscription.account_id,
-              plan.monthly_credits,
+            Keila.Accounts.add_credits(account_id, plan.monthly_credits, expires_at, valid_from)
+
+            KeilaCloud.Partners.distribute_partner_transaction_credits(
+              account_id,
               expires_at,
               valid_from
             )

@@ -32,6 +32,16 @@ Keila.if_cloud do
       |> render("user_account_status.html")
     end
 
+    def update_user_partner_mode(conn, %{"id" => user_id} = params) do
+      user = Keila.Auth.get_user(user_id)
+      account = Keila.Accounts.get_user_account(user.id)
+      is_partner? = get_in(params, ["account", "is_partner"]) == "true"
+
+      {:ok, _account} = KeilaCloud.Partners.set_is_partner(account.id, is_partner?)
+
+      redirect(conn, to: Routes.cloud_admin_path(conn, :show_user_account_status, user.id))
+    end
+
     defp authorize(conn, _) do
       case conn.assigns.is_admin? do
         true -> conn

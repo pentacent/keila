@@ -52,4 +52,30 @@
       {dgettext("admin", "Update status")}
     </button>
   </.form>
+
+  <.form
+    :let={_f}
+    method="POST"
+    for={@conn}
+    as="account"
+    action={Routes.cloud_admin_path(@conn, :update_user_partner_mode, @user.id)}
+    class="mt-8"
+  >
+    <h2 class="text-2xl font-light">
+      {dgettext("cloud", "Partner mode")}
+    </h2>
+    <label class="inline-flex items-center gap-2 mt-2">
+      <input type="hidden" name="account[is_partner]" value="false" />
+      <input
+        type="checkbox"
+        name="account[is_partner]"
+        value="true"
+        checked={@account.is_partner}
+      />
+      <span>{dgettext("cloud", "Enable partner mode")}</span>
+    </label>
+    <button class="button button--large button--cta mt-4">
+      {dgettext("cloud", "Update partner mode")}
+    </button>
+  </.form>
 </div>

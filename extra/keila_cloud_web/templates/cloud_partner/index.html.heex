@@ -1,0 +1,111 @@
+<div class="container flex py-8 sm:py-11 mb-4">
+  <div class="flex-grow gap-4 flex flex-col sm:flex-row sm:items-center">
+    <h1 class="text-2xl sm:text-3xl text-gray-100">
+      {dgettext("cloud", "Partner Area")}
+    </h1>
+    <div class="flex-grow flex flex-row-reverse justify-end gap-4 sm:flex-row">
+      <a href={~p"/partner/new"} class="button">
+        {render_icon(:plus)} {dgettext("cloud", "Add child account")}
+      </a>
+    </div>
+  </div>
+</div>
+
+<%= if @projection do %>
+  <div class="container mb-8">
+    <h2 class="text-3xl font-bold">
+      {gettext("Monthly allocated quota")}
+    </h2>
+
+    <div class="h-3 relative w-full rounded-full overflow-hidden mt-4">
+      <div class="w-full h-full bg-gray-200 absolute"></div>
+      <div
+        class="h-full bg-emerald-500 absolute"
+        style={
+          "width:#{@projection.allocated / case @projection.total do
+            0 -> 1
+            other -> other
+          end * 100}%"
+        }
+      >
+      </div>
+    </div>
+
+    {dgettext("cloud", "%{allocated} / %{total} emails allocated",
+      allocated: @projection.allocated,
+      total: @projection.total
+    )}
+  </div>
+<% end %>
+
+<%= if @child_accounts.page_count > 0 do %>
+  <div class="container">
+    <h2 class="text-2xl font-light mb-4">
+      {dgettext("cloud", "Child accounts")}
+    </h2>
+    <table class="w-full bg-gray-800">
+      <tr class="text-left">
+        <th class="p-2">{dgettext("cloud", "Email")}</th>
+        <th class="p-2">{dgettext("cloud", "Credits")}</th>
+        <th class="p-2">{dgettext("cloud", "Monthly allocation")}</th>
+        <th class="p-2"></th>
+      </tr>
+      <%= for child <- @child_accounts.data do %>
+        <tr class="even:bg-gray-700">
+          <td class="p-2">
+            <%= if user = @child_users[child.id] do %>
+              <a
+                href={~p"/partner/accounts/#{child.id}/credits"}
+                title={dgettext("cloud", "Manage credits")}
+                class="button button--text"
+              >
+                {user.email}
+              </a>
+            <% else %>
+              <span class="text-gray-400">{child.id}</span>
+            <% end %>
+          </td>
+          <td class="p-2">
+            <%= if @child_credits do %>
+              {@child_credits[child.id] |> elem(1)}/{@child_credits[child.id] |> elem(0)}
+            <% end %>
+          </td>
+          <td class="p-2">
+            {Map.get(@allocations, child.id, 0)}
+          </td>
+          <td class="p-2 flex flex-row gap-1 justify-end">
+            <a
+              href={~p"/partner/accounts/#{child.id}/credits"}
+              title={dgettext("cloud", "Manage credits")}
+              class="button button--text"
+            >
+              {render_icon(:plus_circle)}
+            </a>
+            <%= if user = @child_users[child.id] do %>
+              <a
+                href={~p"/partner/users/#{user.id}/login"}
+                title={dgettext("cloud", "Log in as")}
+                class="button button--text"
+              >
+                {render_icon(:login)}
+              </a>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+
+    <%= if @child_accounts.page_count > 1 do %>
+      <div class="flex gap-3 justify-center py-8">
+        <.pagination_nav
+          pagination={@child_accounts}
+          href={&~p"/partner?page=#{&1 + 1}"}
+        />
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div class="container">
+    <p>{dgettext("cloud", "You have no child accounts yet.")}</p>
+  </div>
+<% end %>
