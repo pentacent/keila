@@ -167,7 +167,7 @@ Keila.if_cloud do
 
         allocations ->
           Repo.transaction(fn ->
-            delete_partner_credit_distribution(partner_account_id, expires_at, valid_from)
+            clear_partner_credit_distribution(partner_account_id, expires_at, valid_from)
 
             total = allocations |> Map.values() |> Enum.sum()
 
@@ -192,28 +192,30 @@ Keila.if_cloud do
       end
     end
 
-    defp delete_partner_credit_distribution(partner_account_id, expires_at, valid_from) do
-      expires_at = DateTime.truncate(expires_at, :second)
+    defp clear_partner_credit_distribution(_partner_account_id, _expires_at, nil), do: :ok
 
-      query =
+    defp clear_partner_credit_distribution(partner_account_id, expires_at, valid_from) do
+      expires_at = DateTime.truncate(expires_at, :second)
+      valid_from = DateTime.truncate(valid_from, :second)
+
+      child_query =
         from c in CreditTransaction,
           join: a in Account,
           on: a.id == c.account_id,
           where: a.parent_id == ^partner_account_id,
           where: c.expires_at == ^expires_at,
+          where: c.valid_from == ^valid_from,
           where: c.amount > 0
 
-      query =
-        case valid_from do
-          nil ->
-            from [c, _] in query, where: is_nil(c.valid_from)
+      partner_query =
+        from c in CreditTransaction,
+          where: c.account_id == ^partner_account_id,
+          where: c.expires_at == ^expires_at,
+          where: c.valid_from == ^valid_from,
+          where: c.amount < 0
 
-          valid_from ->
-            from [c, _] in query,
-              where: c.valid_from == ^DateTime.truncate(valid_from, :second)
-        end
-
-      Repo.delete_all(query)
+      Repo.delete_all(child_query)
+      Repo.delete_all(partner_query)
     end
 
     defp distribute_partner_credit_allocation(_, _, amount, _, _) when amount <= 0, do: :ok

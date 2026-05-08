@@ -192,6 +192,38 @@ Keila.if_cloud do
         assert length(list_credit_transactions(child2.id)) == 0
       end
 
+      test "is idempotent — re-running does not double-debit the partner's future cycles",
+           %{partner: partner, child1: child1} do
+        {:ok, _} =
+          Partners.update_partner_settings(partner.id, %{
+            "credit_allocations" => %{child1.id => 100}
+          })
+
+        valid_from = in_days(15)
+        expires_at = in_days(45)
+        :ok = Accounts.add_credits(partner.id, 1000, expires_at, valid_from)
+
+        :ok = Partners.distribute_partner_credits(partner.id)
+        :ok = Partners.distribute_partner_credits(partner.id)
+        :ok = Partners.distribute_partner_credits(partner.id)
+
+        partner_cycle_balance =
+          partner.id
+          |> list_credit_transactions()
+          |> Enum.filter(&(&1.valid_from == DateTime.truncate(valid_from, :second)))
+          |> Enum.map(& &1.amount)
+          |> Enum.sum()
+
+        assert partner_cycle_balance == 900
+
+        child_cycle_rows =
+          child1.id
+          |> list_credit_transactions()
+          |> Enum.filter(&(&1.valid_from == DateTime.truncate(valid_from, :second)))
+
+        assert [%{amount: 100}] = child_cycle_rows
+      end
+
       test "manual current-cycle transfer survives reconciler",
            %{partner: partner, child1: child1} do
         {:ok, _} =
