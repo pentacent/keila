@@ -1,6 +1,8 @@
 <div class="container mt-8" x-data x-init="Hooks.RememberUnsaved.mounted.call({el: $el})">
   <%= Keila.if_cloud do %>
-    <.subscription_status account={@account} current_user={@current_user} />
+    <%= if is_nil(@account.parent_id) do %>
+      <.subscription_status account={@account} current_user={@current_user} />
+    <% end %>
   <% end %>
 
   <%= if Keila.Accounts.credits_enabled?() do %>
@@ -17,7 +19,7 @@
             "width:#{elem(@credits, 1) / case elem(@credits, 0) do
               0 -> 1
               other -> other
-            end * 100}"
+            end * 100}%"
           }
         >
         </div>

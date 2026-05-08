@@ -4,8 +4,8 @@
       <p class="container py-5 my-0">{Phoenix.Flash.get(@flash, :info)}</p>
     </div>
   <% end %>
-  <%= if Phoenix.Flash.get(@flash, :errors) do %>
-    <div class="bg-yellow-200" role="alert">
+  <%= if Phoenix.Flash.get(@flash, :error) do %>
+    <div class="bg-yellow-200 text-black" role="alert">
       <p class="container py-5 my-0">{Phoenix.Flash.get(@flash, :error)}</p>
     </div>
   <% end %>
