@@ -1,0 +1,117 @@
+<div class="container flex py-8 sm:py-11 mb-4">
+  <h1 class="text-2xl sm:text-3xl text-gray-100">
+    {dgettext("cloud", "Credits for %{email}",
+      email: (@child_user && @child_user.email) || @child_account.id
+    )}
+  </h1>
+</div>
+
+<div class="container">
+  <p>
+    {dgettext("cloud", "%{remaining} / %{total} credits",
+      total: elem(@child_credits, 0),
+      remaining: elem(@child_credits, 1)
+    )}
+  </p>
+  <%= if @partner_credits do %>
+    <p class="mt-2 text-gray-400">
+      {dgettext("cloud", "Your balance: %{remaining} / %{total}",
+        total: elem(@partner_credits, 0),
+        remaining: elem(@partner_credits, 1)
+      )}
+    </p>
+  <% end %>
+
+  <.form
+    :let={_f}
+    for={@conn}
+    as="allocation"
+    action={~p"/partner/accounts/#{@child_account.id}/allocation"}
+    class="w-1/2 mt-8"
+  >
+    <h2 class="text-2xl font-light">
+      {dgettext("cloud", "Monthly allocation")}
+    </h2>
+    <p class="text-gray-400">
+      {dgettext(
+        "cloud",
+        "This is the amount of credits automatically added to this account in future billing cycles."
+      )}
+    </p>
+    <div class="flex flex-col mt-4">
+      <label class="font-bold">{dgettext("cloud", "Credits per cycle")}</label>
+      <input
+        name="allocation[credits]"
+        class="bg-white hover:bg-emerald-100 text-black"
+        type="number"
+        step="1"
+        min="0"
+        value={@allocation || 0}
+      />
+    </div>
+    <button class="button button--cta mt-4">
+      {dgettext("cloud", "Save allocation")}
+    </button>
+  </.form>
+
+  <.form
+    :let={_f}
+    for={@conn}
+    as="credits"
+    action={~p"/partner/accounts/#{@child_account.id}/credits"}
+    class="w-1/2 mt-12"
+  >
+    <h2 class="text-2xl font-light">
+      {dgettext("cloud", "Transfer credits now")}
+    </h2>
+    <p class="text-gray-400">
+      {dgettext(
+        "cloud",
+        "Move credits from your current billing cycle balance to this child."
+      )}
+    </p>
+    <div class="flex flex-col mt-4">
+      <label class="font-bold">{dgettext("cloud", "Amount")}</label>
+      <input
+        name="credits[amount]"
+        class="bg-white hover:bg-emerald-100 text-black"
+        type="number"
+        step="1"
+        min="1"
+      />
+    </div>
+    <button class="button button--cta mt-4">
+      {dgettext("cloud", "Transfer credits")}
+    </button>
+  </.form>
+
+  <%= if @child_user do %>
+    <.form
+      :let={_f}
+      for={@conn}
+      as="user"
+      action={~p"/partner/users/#{@child_user.id}/password"}
+      class="w-1/2 mt-12"
+    >
+      <h2 class="text-2xl font-light">
+        {dgettext("cloud", "Change password")}
+      </h2>
+      <p class="text-gray-400">
+        {dgettext("cloud", "Set a new password for this child user.")}
+      </p>
+      <div class="flex flex-col mt-4">
+        <label class="font-bold">{dgettext("cloud", "New password")}</label>
+        <input
+          name="user[password]"
+          class="bg-white hover:bg-emerald-100 text-black"
+          type="password"
+          minlength="10"
+          autocomplete="new-password"
+        />
+      </div>
+      <button class="button button--cta mt-4">
+        {dgettext("cloud", "Update password")}
+      </button>
+    </.form>
+  <% end %>
+</div>

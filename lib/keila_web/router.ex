@@ -86,6 +86,19 @@ defmodule KeilaWeb.Router do
     Keila.if_cloud do
       get "/admin/users/:id/status", CloudAdminController, :show_user_account_status
       post "/admin/users/:id/status", CloudAdminController, :update_user_account_status
+      post "/admin/users/:id/partner", CloudAdminController, :update_user_partner_mode
+
+      get "/partner", CloudPartnerController, :index
+      get "/partner/new", CloudPartnerController, :new
+      post "/partner", CloudPartnerController, :create
+      get "/partner/users/:id/login", CloudPartnerController, :login_as
+      post "/partner/users/:id/password", CloudPartnerController, :update_password
+      get "/partner/accounts/:id/credits", CloudPartnerController, :show_credits
+      post "/partner/accounts/:id/credits", CloudPartnerController, :create_credits
+
+      post "/partner/accounts/:id/allocation",
+           CloudPartnerController,
+           :update_credit_allocation
     end
 
     resources "/admin/shared-senders", SharedSenderAdminController

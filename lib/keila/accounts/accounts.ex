@@ -13,6 +13,7 @@ defmodule Keila.Accounts do
   """
 
   use Keila.Repo
+  require Keila
   alias __MODULE__.{Account, CreditTransaction}
   alias Keila.Auth
 
@@ -188,12 +189,18 @@ defmodule Keila.Accounts do
     from(c in CreditTransaction,
       where:
         c.account_id == ^account_id or
-          c.account_id in subquery(
-            from a in Account, where: a.id == ^account_id, select: a.parent_id
-          ),
+          c.account_id in subquery(parent_credit_account_id_query(account_id)),
       where: c.expires_at >= fragment("NOW()"),
       where: is_nil(c.valid_from) or c.valid_from <= fragment("NOW()")
     )
+  end
+
+  Keila.if_cloud do
+    defdelegate parent_credit_account_id_query(account_id), to: KeilaCloud.Partners
+  else
+    defp parent_credit_account_id_query(account_id) do
+      from a in Account, where: a.id == ^account_id, select: a.parent_id
+    end
   end
 
   @doc """

@@ -142,6 +142,16 @@
         <% end %>
         <div class="hidden sm:block sm:flex-grow"></div>
         {menu_link(@conn, Routes.account_path(@conn, :edit), gettext("Account"), icon: :user)}
+        {Keila.if_cloud do
+          if assigns[:current_account] && assigns.current_account.is_partner do
+            menu_link(
+              @conn,
+              ~p"/partner",
+              dgettext("cloud", "Partner"),
+              icon: :user_group
+            )
+          end
+        end}
         <%= if assigns[:is_admin?] do %>
           {menu_link(@conn, Routes.user_admin_path(@conn, :index), gettext("Users"), icon: :users)}
           {menu_link(@conn, Routes.shared_sender_admin_path(@conn, :index), gettext("Senders"),

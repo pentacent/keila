@@ -47,7 +47,7 @@
               {@user_credits[user.id] |> elem(1)}/{@user_credits[user.id] |> elem(0)}
             </td>
           <% end %>
-          <td>
+          <td class="p-2 flex flex-row gap-1 justify-end">
             {if @user_credits do
               content_tag(:a,
                 href: Routes.user_admin_path(@conn, :show_credits, user.id),
