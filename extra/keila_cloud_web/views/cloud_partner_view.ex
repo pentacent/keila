@@ -15,7 +15,6 @@ Keila.if_cloud do
       statics: KeilaWeb.static_paths()
 
     import Phoenix.Component
-    import Phoenix.HTML
     import KeilaWeb.ErrorHelpers
     import KeilaWeb.IconHelper
     import KeilaWeb.PaginationHelpers

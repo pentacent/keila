@@ -113,10 +113,7 @@ Keila.if_cloud do
       end
     end
 
-    def update_password(conn, %{
-          "id" => child_user_id,
-          "user" => %{"password" => password} = params
-        }) do
+    def update_password(conn, %{"id" => child_user_id, "user" => params}) do
       partner_account = conn.assigns.current_account
       child_account = Accounts.get_user_account(child_user_id)
 
