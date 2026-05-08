@@ -2,6 +2,25 @@
 
 ## Unreleased
 
+## Version 0.20.0
+
+> 📮 New Email scheduler
+
+### Added
+- This version introduces a new email scheduler and migrates the `recipients` schema to
+  a more generic `messages`schema. This change makes sending large campaigns more performant
+  and will allow the introduction of transaction emails because records of sent messages no
+  longer have to be tied to a campaign or an existing contact.
+
+### Improved
+- When sending a message to the recipient of a campaign has failed, the number of failed
+  messages is now shown on the campaign analytics page
+- Added Infomaniak and GMX to the list of known shared domains
+
+### Fixed
+- Fixed an issue where contacts could be marked as unreachable after a single soft bounce
+
+
 ## Version 0.19.1
 
 > 🇮🇹 Italian translation, better Markdown performance, SMTP without auth, and many fixes
