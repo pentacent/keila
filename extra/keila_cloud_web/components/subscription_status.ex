@@ -108,6 +108,15 @@ Keila.if_cloud do
               </div>
             </div>
           <% end %>
+
+          <%= @subscription.paddle_subscription_id  do %>
+            <div class="flex justify-start">
+              <a href={Routes.cloud_billing_path(KeilaWeb.Endpoint, :index)} class="button">
+                {render_icon(:document_text)}
+                {dgettext("cloud", "View invoices")}
+              </a>
+            </div>
+          <% end %>
         <% else %>
           {dgettext("cloud", "Subscribe now and start sending emails!")}
 
