@@ -34,9 +34,9 @@
           <tr class="even:bg-gray-700">
             <td class="p-2">{local_date_tag(transaction.payout_date)}</td>
             <td class="p-2">{transaction.id}</td>
-            <td class="p-2">{transaction.amount}</td>
+            <td class="p-2 text-right">{transaction.amount}</td>
             <td class="p-2">{transaction.currency}</td>
-            <td class="p-2 flex flex-row gap-1 justify-end">
+            <td class="p-2 pl-8 flex flex-row">
               <%= if transaction.receipt_url do %>
                 <a href={transaction.receipt_url} target="_blank" class="button">
                   {dgettext("cloud", "View invoice")}
