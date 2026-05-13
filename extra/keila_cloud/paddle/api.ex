@@ -49,7 +49,7 @@ Keila.if_cloud do
     defp build_pagination(payments, response, page, page_size) do
       transactions = Enum.map(payments, &Transaction.from_api/1)
       total = response["total"]
-      page_count = if total > 0, do: div(total - 1, page_size) + 1, else: 0
+      page_count = ceil(total / page_size)
 
       %Keila.Pagination{
         page: page,
