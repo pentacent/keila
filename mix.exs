@@ -83,6 +83,7 @@ defmodule Keila.MixProject do
       {:hashids, "~> 2.1"},
       {:argon2_elixir, "~> 2.3"},
       {:httpoison, "~> 1.8"},
+      {:req, "~> 0.5"},
       {:nimble_csv, "~> 1.3"},
       {:nimble_parsec, "~> 1.4"},
       {:oban, "~> 2.20"},

@@ -69,6 +69,8 @@ defmodule KeilaWeb.Router do
       get "/account/onboarding", CloudAccountController, :onboarding
       get "/account/await-subscription", CloudAccountController, :await_subscription
       delete "/account/subscription", CloudAccountController, :delete_subscription
+
+      get "/account/billing", CloudBillingController, :index
     end
 
     get "/", ProjectController, :index
