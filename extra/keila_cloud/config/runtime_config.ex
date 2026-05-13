@@ -30,6 +30,11 @@ Keila.if_cloud do
         if paddle_environment not in [nil, ""],
           do: config(:keila, KeilaCloud.Billing, paddle_environment: paddle_environment)
 
+        paddle_api_key = System.get_env("PADDLE_API_KEY")
+
+        if paddle_api_key not in [nil, ""],
+          do: config(:keila, KeilaCloud.Billing, paddle_api_key: paddle_api_key)
+
         config(:keila, KeilaCloud.Mailings.SendWithKeila.Mx2,
           access_key: System.get_env("SWK_SES_ACCESS_KEY"),
           secret: System.get_env("SWK_SES_SECRET"),
