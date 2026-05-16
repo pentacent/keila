@@ -330,7 +330,7 @@ defmodule Keila.Mailings.Builder do
       |> put_click_tracking(campaign, message)
       |> put_open_tracking(campaign, message)
       |> put_tracking_pixel(campaign, message)
-      |> Floki.raw_html()
+      |> Keila.Templates.Html.to_document()
 
     %{email | html_body: html}
   end

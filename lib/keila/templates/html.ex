@@ -207,6 +207,10 @@ defmodule Keila.Templates.Html do
     build_img_with_link(a_attrs, img_attrs)
   end
 
+  defp do_apply_email_markup({"p", _, [{"img", img_attrs, _}]}) do
+    do_apply_email_markup({"img", img_attrs, []})
+  end
+
   defp do_apply_email_markup({"img", img_attrs, _}) do
     img_attrs =
       Map.new(img_attrs)
@@ -215,17 +219,20 @@ defmodule Keila.Templates.Html do
 
     {"table", [{"style", "width: 100%"}],
      [
-       {"tr", [{"class", "block--image"}],
+       {"tbody", [],
         [
-          {"td", [{"style", "padding: 0;"}],
+          {"tr", [{"class", "block--image"}],
            [
-             {"img",
-              img_attrs ++
-                [
-                  {"style",
-                   "display:block; max-width:100%!important; height: auto!important; margin: auto"},
-                  {"class", "g-img"}
-                ], []}
+             {"td", [{"style", "padding: 0;"}],
+              [
+                {"img",
+                 img_attrs ++
+                   [
+                     {"style",
+                      "display:block; max-width:100%!important; height: auto!important; margin: auto"},
+                     {"class", "g-img"}
+                   ], []}
+              ]}
            ]}
         ]}
      ]}
