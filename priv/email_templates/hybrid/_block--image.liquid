@@ -18,7 +18,7 @@
   {% assign img_margin = " margin-right: auto;" %}
 {% endif %}
 <tr class="block block--image {% if block.data.flush %}block--image--flush{% endif %}">
-    <td>
+    <td{% if alignment %} align="{{ alignment }}"{% endif %}>
         {% if url != null and url != "" %}
         <a href="{{ url }}" target="_blank">
         {% endif %}
