@@ -165,8 +165,8 @@ body.keila--markdown-campaign .email-container {
 }
 
 .block--layout > td {
-    padding-left: 0;
-    padding-right: 0;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .block--separator > td {
@@ -192,15 +192,12 @@ h1, h2, h3, h4, h5 {
 }
 
 .block--layout.cols-2 .col-1 .block > td,
-.block--layout.cols-3 .col-1 .block > td,
-.block--layout.cols-3 .col-2 .block > td {
-    padding-right: 10px;
-}
-
 .block--layout.cols-2 .col-2 .block > td,
+.block--layout.cols-3 .col-1 .block > td,
 .block--layout.cols-3 .col-2 .block > td,
 .block--layout.cols-3 .col-3 .block > td {
     padding-left: 10px;
+    padding-right: 10px;
 }
 
 .block--paragraph p {
