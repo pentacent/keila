@@ -68,12 +68,12 @@ export default class Layout {
       let maybeOpen = false
 
       editorPlace.addEventListener("mouseenter", () => {
-        if (!maybeOpen) editor.toolbar.open()
+        if (editor && editor.toolbar && !maybeOpen) editor.toolbar.open()
         maybeOpen = true
       })
 
       editorPlace.addEventListener("mouseleave", () => {
-        editor.toolbar.close()
+        if (editor && editor.toolbar) editor.toolbar.close()
         maybeOpen = false
       })
 
