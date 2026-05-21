@@ -329,7 +329,8 @@ defmodule KeilaWeb.SegmentEditLive do
             {field, condition, "custom"}
 
           {field, _} ->
-            {field, condition, fields()[field][:type] || "string"}
+            type = fields()[field][:type] || raise "Unsupported field: #{field}"
+            {field, condition, type}
         end
 
       form_data =
