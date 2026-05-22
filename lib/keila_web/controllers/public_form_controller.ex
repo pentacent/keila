@@ -16,9 +16,9 @@ defmodule KeilaWeb.PublicFormController do
        when action in [:show, :submit, :double_opt_in, :cancel_double_opt_in]
 
   @spec show(Plug.Conn.t(), map()) :: Plug.Conn.t()
-  def show(conn, _params) do
+  def show(conn, params) do
     form = conn.assigns.form
-    changeset = Keila.Contacts.Contact.changeset_from_form(%{}, form)
+    changeset = Keila.Contacts.Contact.changeset_from_form(params, form)
 
     render_form(conn, changeset, form)
   end
