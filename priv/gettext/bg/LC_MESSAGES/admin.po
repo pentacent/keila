@@ -133,7 +133,7 @@ msgstr "Налична е нова версия на Keila."
 msgid "Read more"
 msgstr "Прочетете още"
 
-#: lib/keila_web/templates/layout/_menu.html.heex:153
+#: lib/keila_web/templates/layout/_menu.html.heex:163
 #, elixir-autogen, elixir-format
 msgid "System Info"
 msgstr "Системна информация"

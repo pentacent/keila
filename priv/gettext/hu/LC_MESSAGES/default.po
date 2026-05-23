@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: lib/keila_web/templates/account/edit.html.heex:26
+#: lib/keila_web/templates/account/edit.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "%{remaining} / %{total} emails remaining"
 msgstr "%{remaining} / %{total} e-mail van hátra"
@@ -161,7 +161,7 @@ msgstr "Az ehhez a feladóhoz társított kampányok nem lesznek törölve."
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:236
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:265
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:286
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:313
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:314
 #: lib/keila_web/templates/campaign/_settings_dialog.html.heex:184
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:55
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:149
@@ -197,18 +197,18 @@ msgstr "Mégse"
 msgid "Change"
 msgstr "Módosítás"
 
-#: lib/keila_web/templates/account/edit.html.heex:40
+#: lib/keila_web/templates/account/edit.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "Change Password"
 msgstr "Jelszó módosítása"
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:356
+#: lib/keila_web/templates/campaign/stats_live.html.heex:384
 #, elixir-autogen, elixir-format
 msgid "Click rate"
 msgstr "Kattintási arány"
 
 #: lib/keila_web/live/campaign_stats_live.ex:78
-#: lib/keila_web/templates/campaign/stats_live.html.heex:353
+#: lib/keila_web/templates/campaign/stats_live.html.heex:381
 #, elixir-autogen, elixir-format
 msgid "Clicks"
 msgstr "Kattintások"
@@ -378,7 +378,7 @@ msgstr "Alapértelmezett"
 
 #: lib/keila_web/templates/campaign/delete.html.heex:38
 #: lib/keila_web/templates/campaign/edit_live.html.heex:29
-#: lib/keila_web/templates/campaign/stats_live.html.heex:20
+#: lib/keila_web/templates/campaign/stats_live.html.heex:36
 #: lib/keila_web/templates/component/file_manager_live.html.heex:68
 #: lib/keila_web/templates/contact/delete.html.heex:58
 #: lib/keila_web/templates/contact/edit.html.heex:36
@@ -553,7 +553,7 @@ msgstr "%{project_name} szerkesztése"
 msgid "Edit Campaign"
 msgstr "Kampány szerkesztése"
 
-#: lib/keila_web/controllers/contact_controller.ex:218
+#: lib/keila_web/controllers/contact_controller.ex:220
 #, elixir-autogen, elixir-format
 msgid "Edit Contact"
 msgstr "Kapcsolat szerkesztése"
@@ -573,15 +573,16 @@ msgstr "%{sender} feladó szerkesztése"
 msgid "Edit Template"
 msgstr "Sablon szerkesztése"
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:37
+#: lib/keila_web/templates/campaign/stats_live.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "Edit this campaign"
 msgstr "Kampány szerkesztése"
 
+#: extra/keila_cloud_web/templates/cloud_partner/new.html.heex:31
 #: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:42
 #: lib/keila/contacts/contacts.ex:278
 #: lib/keila_web/live/segment_edit_live.ex:9
-#: lib/keila_web/templates/account/edit.html.heex:46
+#: lib/keila_web/templates/account/edit.html.heex:48
 #: lib/keila_web/templates/auth/register.html.heex:17
 #: lib/keila_web/templates/auth/reset.html.heex:15
 #: lib/keila_web/templates/contact/_list.html.heex:22
@@ -671,7 +672,7 @@ msgstr "Címsor 2"
 msgid "Heading 3"
 msgstr "Címsor 3"
 
-#: lib/keila_web/templates/account/edit.html.heex:43
+#: lib/keila_web/templates/account/edit.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Here you can update your Keila password."
 msgstr "Itt frissítheti Keila-jelszavát."
@@ -737,7 +738,7 @@ msgstr "Hivatkozás beszúrása"
 msgid "Instructions"
 msgstr "Utasítások"
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:71
+#: lib/keila_web/templates/campaign/stats_live.html.heex:87
 #, elixir-autogen, elixir-format
 msgid "Insufficient email quota."
 msgstr "Elégtelen e-mail kvóta."
@@ -805,7 +806,7 @@ msgstr "Hivatkozás erre az űrlapra"
 
 #: lib/keila/templates/default_template.ex:58
 #: lib/keila/templates/hybrid_template.ex:58
-#: lib/keila_web/templates/campaign/stats_live.html.heex:346
+#: lib/keila_web/templates/campaign/stats_live.html.heex:374
 #, elixir-autogen, elixir-format
 msgid "Links"
 msgstr "Hivatkozások"
@@ -888,7 +889,7 @@ msgstr "Új kampány"
 msgid "New Contact"
 msgstr "Új kapcsolat"
 
-#: lib/keila_web/templates/account/edit.html.heex:56
+#: lib/keila_web/templates/account/edit.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "New Password"
 msgstr "Új jelszó"
@@ -946,6 +947,7 @@ msgstr "Menü megnyitása"
 msgid "Ordered list"
 msgstr "Rendezett lista"
 
+#: extra/keila_cloud_web/templates/cloud_partner/new.html.heex:42
 #: lib/keila_web/templates/auth/register.html.heex:27
 #: lib/keila_web/templates/auth/reset_change_password.html.heex:15
 #: lib/keila_web/templates/sender/_smtp_config.html.heex:22
@@ -1010,6 +1012,7 @@ msgstr "Jelszó visszaállítása most"
 msgid "Reset your password."
 msgstr "Állítsa vissza a jelszavát."
 
+#: extra/keila_cloud_web/templates/cloud_partner/new.html.heex:8
 #: lib/keila_web/templates/api_key/new.html.heex:8
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:114
 #: lib/keila_web/templates/campaign/clone.html.heex:8
@@ -1065,7 +1068,7 @@ msgid "Sender verified!"
 msgstr "Feladó ellenőrizve!"
 
 #: lib/keila_web/templates/layout/_menu.html.heex:61
-#: lib/keila_web/templates/layout/_menu.html.heex:147
+#: lib/keila_web/templates/layout/_menu.html.heex:157
 #: lib/keila_web/templates/project/show.html.heex:92
 #: lib/keila_web/templates/sender/index.html.heex:4
 #: lib/keila_web/views/sender_view.ex:5
@@ -1073,7 +1076,7 @@ msgstr "Feladó ellenőrizve!"
 msgid "Senders"
 msgstr "Feladók"
 
-#: lib/keila_web/templates/account/edit.html.heex:9
+#: lib/keila_web/templates/account/edit.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "Sending Quota"
 msgstr "Küldési kvóta"
@@ -1108,7 +1111,7 @@ msgstr "Beállítások"
 msgid "Sign in."
 msgstr "Bejelentkezés."
 
-#: lib/keila_web/templates/layout/_menu.html.heex:157
+#: lib/keila_web/templates/layout/_menu.html.heex:167
 #, elixir-autogen, elixir-format
 msgid "Sign out"
 msgstr "Kijelentkezés"
@@ -1207,7 +1210,7 @@ msgstr "Köszönő üzenet"
 msgid "Thank you!"
 msgstr "Köszönjük!"
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:48
+#: lib/keila_web/templates/campaign/stats_live.html.heex:64
 #: lib/keila_web/templates/form/edit_live.html.heex:515
 #: lib/keila_web/templates/form/edit_live.html.heex:665
 #, elixir-autogen, elixir-format
@@ -1257,17 +1260,17 @@ msgstr ""
 "Ez a kampány már ütemezve van. Átütemezheti vagy lemondhatja legfeljebb öt "
 "perccel az ütemezett küldési időpont előtt."
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:31
+#: lib/keila_web/templates/campaign/stats_live.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "This campaign has not yet been sent."
 msgstr "Ez a kampány még nem lett elküldve."
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:129
+#: lib/keila_web/templates/campaign/stats_live.html.heex:145
 #, elixir-autogen, elixir-format
 msgid "This campaign is currently being prepared for sending."
 msgstr "Ez a kampány jelenleg előkészítés alatt áll a küldéshez."
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:150
+#: lib/keila_web/templates/campaign/stats_live.html.heex:166
 #, elixir-autogen, elixir-format
 msgid "This campaign is currently being sent out."
 msgstr "Ez a kampány jelenleg kiküldés alatt áll."
@@ -1302,7 +1305,7 @@ msgid "Try signing in."
 msgstr "Próbáljon meg bejelentkezni."
 
 #: lib/keila_web/templates/campaign/_wysiwyg_dialogs.html.heex:93
-#: lib/keila_web/templates/campaign/stats_live.html.heex:350
+#: lib/keila_web/templates/campaign/stats_live.html.heex:378
 #, elixir-autogen, elixir-format
 msgid "URL"
 msgstr "URL"
@@ -1323,7 +1326,7 @@ msgstr "Ütemezés törlése"
 msgid "Unsubscribe"
 msgstr "Leiratkozás"
 
-#: lib/keila_web/templates/account/edit.html.heex:63
+#: lib/keila_web/templates/account/edit.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "Update password"
 msgstr "Jelszó frissítése"
@@ -1336,7 +1339,7 @@ msgstr "Jelszó frissítése"
 msgid "Updated at:"
 msgstr "Frissítve:"
 
-#: lib/keila_web/templates/layout/_menu.html.heex:146
+#: lib/keila_web/templates/layout/_menu.html.heex:156
 #, elixir-autogen, elixir-format
 msgid "Users"
 msgstr "Felhasználók"
@@ -1422,7 +1425,8 @@ msgstr "aláhúzott"
 msgid "unknown data error"
 msgstr "ismeretlen adathiba"
 
-#: lib/keila_web/templates/account/edit.html.heex:49
+#: extra/keila_cloud_web/templates/cloud_partner/new.html.heex:34
+#: lib/keila_web/templates/account/edit.html.heex:51
 #: lib/keila_web/templates/auth/login.html.heex:18
 #: lib/keila_web/templates/auth/register.html.heex:20
 #: lib/keila_web/templates/auth/reset.html.heex:17
@@ -1605,6 +1609,7 @@ msgstr "Sablonok kezelése"
 msgid "Manually create new contact"
 msgstr "Új kontakt manuális létrehozása"
 
+#: extra/keila_cloud_web/templates/cloud_partner/new.html.heex:44
 #: lib/keila_web/templates/auth/register.html.heex:29
 #: lib/keila_web/templates/auth/reset_change_password.html.heex:17
 #, elixir-autogen, elixir-format
@@ -1691,32 +1696,32 @@ msgstr "aktív feliratkozók"
 msgid "Data"
 msgstr "Adatok"
 
-#: lib/keila_web/templates/contact/edit.html.heex:127
+#: lib/keila_web/templates/contact/edit.html.heex:128
 #, elixir-autogen, elixir-format
 msgid "Contact Activities"
 msgstr "Kontakttevékenységek"
 
-#: lib/keila_web/templates/contact/edit.html.heex:177
+#: lib/keila_web/templates/contact/edit.html.heex:178
 #, elixir-autogen, elixir-format
 msgid "clicked campaign link"
 msgstr "kampánylinkre kattintott"
 
-#: lib/keila_web/templates/contact/edit.html.heex:163
+#: lib/keila_web/templates/contact/edit.html.heex:164
 #, elixir-autogen, elixir-format
 msgid "created"
 msgstr "létrehozva"
 
-#: lib/keila_web/templates/contact/edit.html.heex:165
+#: lib/keila_web/templates/contact/edit.html.heex:166
 #, elixir-autogen, elixir-format
 msgid "imported"
 msgstr "importálva"
 
-#: lib/keila_web/templates/contact/edit.html.heex:175
+#: lib/keila_web/templates/contact/edit.html.heex:176
 #, elixir-autogen, elixir-format
 msgid "opened campaign"
 msgstr "kampány megnyitva"
 
-#: lib/keila_web/templates/contact/edit.html.heex:167
+#: lib/keila_web/templates/contact/edit.html.heex:168
 #, elixir-autogen, elixir-format
 msgid "subscribed"
 msgstr "feliratkozott"
@@ -1726,7 +1731,7 @@ msgstr "feliratkozott"
 msgid "unreachable contacts"
 msgstr "elérhetetlen kapcsolatok"
 
-#: lib/keila_web/templates/contact/edit.html.heex:179
+#: lib/keila_web/templates/contact/edit.html.heex:180
 #, elixir-autogen, elixir-format
 msgid "unsubscribed"
 msgstr "leiratkozott"
@@ -1736,7 +1741,7 @@ msgstr "leiratkozott"
 msgid "unsubscribed contacts"
 msgstr "leiratkozott kapcsolatok"
 
-#: lib/keila_web/templates/contact/edit.html.heex:169
+#: lib/keila_web/templates/contact/edit.html.heex:170
 #, elixir-autogen, elixir-format
 msgid "with captcha"
 msgstr "captcha-val"
@@ -2080,17 +2085,17 @@ msgstr "Feladó"
 msgid "Template"
 msgstr "Sablon"
 
-#: lib/keila_web/templates/account/edit.html.heex:75
+#: lib/keila_web/templates/account/edit.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "Change Language"
 msgstr "Nyelv módosítása"
 
-#: lib/keila_web/templates/account/edit.html.heex:81
+#: lib/keila_web/templates/account/edit.html.heex:83
 #, elixir-autogen, elixir-format
 msgid "Language"
 msgstr "Nyelv"
 
-#: lib/keila_web/templates/account/edit.html.heex:88
+#: lib/keila_web/templates/account/edit.html.heex:90
 #, elixir-autogen, elixir-format
 msgid "Update language settings"
 msgstr "Nyelvi beállítások frissítése"
@@ -2111,7 +2116,7 @@ msgstr "Szegély stílusa"
 msgid "Enable click/open tracking"
 msgstr "Kattintás/megnyitás követésének engedélyezése"
 
-#: lib/keila_web/templates/account/edit.html.heex:78
+#: lib/keila_web/templates/account/edit.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "Here you can change the language for the Keila interface."
 msgstr "Itt módosíthatja a Keila felületének nyelvét."
@@ -2225,7 +2230,7 @@ msgstr "kicsi"
 msgid "solid"
 msgstr "folytonos"
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:333
+#: lib/keila_web/templates/campaign/stats_live.html.heex:361
 #, elixir-autogen, elixir-format
 msgid "24-Hour Performance"
 msgstr "24 órás teljesítmény"
@@ -2241,7 +2246,7 @@ msgid "Add content to this column here …"
 msgstr "Ide adj hozzá tartalmat ehhez az oszlophoz …"
 
 #: lib/keila_web/templates/campaign/share.html.heex:11
-#: lib/keila_web/templates/campaign/stats_live.html.heex:11
+#: lib/keila_web/templates/campaign/stats_live.html.heex:27
 #: lib/keila_web/templates/campaign/view.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "Back"
@@ -2385,7 +2390,7 @@ msgstr ""
 msgid "Unsubscribed Contacts"
 msgstr "Leiratkozott kapcsolatok"
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:272
+#: lib/keila_web/templates/campaign/stats_live.html.heex:300
 #, elixir-autogen, elixir-format
 msgid "Untracked Campaign"
 msgstr "Nem követett kampány"
@@ -2405,7 +2410,7 @@ msgstr ""
 "A felhasználók ezt az előnézetet látják, mielőtt megnyitják az e-mailed. "
 "Használj legfeljebb 50 karaktert."
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:274
+#: lib/keila_web/templates/campaign/stats_live.html.heex:302
 #, elixir-autogen, elixir-format
 msgid "You have disabled tracking for this campaign. Thanks for respecting the privacy of your recipients!"
 msgstr ""
@@ -2419,52 +2424,52 @@ msgstr ""
 "A Liquid és a Markdown használható az aláírásban. A leiratkozási hivatkozás "
 "beillesztéséhez használd ezt: `[Unsubscribe]({{ unsubscribe_link }})`."
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:303
+#: lib/keila_web/templates/campaign/stats_live.html.heex:331
 #, elixir-autogen, elixir-format
 msgid "bounces"
 msgstr "visszapattanások"
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:319
+#: lib/keila_web/templates/campaign/stats_live.html.heex:347
 #, elixir-autogen, elixir-format
 msgid "complaints"
 msgstr "panaszok"
 
-#: lib/keila_web/templates/contact/edit.html.heex:181
+#: lib/keila_web/templates/contact/edit.html.heex:182
 #, elixir-autogen, elixir-format
 msgid "email bounced"
 msgstr "e-mail visszapattant"
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:255
+#: lib/keila_web/templates/campaign/stats_live.html.heex:283
 #, elixir-autogen, elixir-format
 msgid "emails clicked"
 msgstr "e-mailekre kattintások"
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:239
+#: lib/keila_web/templates/campaign/stats_live.html.heex:267
 #, elixir-autogen, elixir-format
 msgid "emails opened"
 msgstr "e-mailek megnyitása"
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:229
+#: lib/keila_web/templates/campaign/stats_live.html.heex:244
 #, elixir-autogen, elixir-format
 msgid "emails sent"
 msgstr "elküldött e-mailek"
 
-#: lib/keila_web/templates/contact/edit.html.heex:185
+#: lib/keila_web/templates/contact/edit.html.heex:186
 #, elixir-autogen, elixir-format
 msgid "filed a complaint"
 msgstr "panaszt tett"
 
-#: lib/keila_web/templates/contact/edit.html.heex:192
+#: lib/keila_web/templates/contact/edit.html.heex:193
 #, elixir-autogen, elixir-format
 msgid "from campaign"
 msgstr "kampányból"
 
-#: lib/keila_web/templates/contact/edit.html.heex:183
+#: lib/keila_web/templates/contact/edit.html.heex:184
 #, elixir-autogen, elixir-format
 msgid "permanently unreachable"
 msgstr "véglegesen elérhetetlen"
 
-#: lib/keila_web/templates/campaign/stats_live.html.heex:287
+#: lib/keila_web/templates/campaign/stats_live.html.heex:315
 #, elixir-autogen, elixir-format
 msgid "unsubscribes"
 msgstr "leiratkozások"
@@ -2500,7 +2505,7 @@ msgstr "Kettős opt-in dátuma"
 msgid "Please confirm your email"
 msgstr "Kérjük, erősítse meg e-mail címét"
 
-#: lib/keila/mailings/double_opt_in_email_builder.ex:66
+#: lib/keila/mailings/double_opt_in_message.ex:85
 #, elixir-autogen, elixir-format
 msgid "Please confirm your email address"
 msgstr "Kérjük, erősítse meg e-mail címét"
@@ -2527,7 +2532,7 @@ msgstr "Nem leszel feliratkozva erre a listára."
 msgid "Your data has been deleted."
 msgstr "Az adataid törölve lettek."
 
-#: lib/keila_web/templates/contact/edit.html.heex:172
+#: lib/keila_web/templates/contact/edit.html.heex:173
 #, elixir-autogen, elixir-format
 msgid "with double opt-in"
 msgstr "kettős opt-innal"
@@ -3065,27 +3070,27 @@ msgstr ""
 msgid "External ID"
 msgstr "Külső azonosító"
 
-#: lib/keila_web/live/campaign_edit_live.ex:253
+#: lib/keila_web/live/campaign_edit_live.ex:254
 #, elixir-autogen, elixir-format
 msgid "Insufficient credits."
 msgstr "Nincs elegendő kredit."
 
-#: lib/keila_web/live/campaign_edit_live.ex:211
+#: lib/keila_web/live/campaign_edit_live.ex:212
 #, elixir-autogen, elixir-format
 msgid "Invalid campaign settings."
 msgstr "Érvénytelen kampánybeállítások."
 
-#: lib/keila_web/live/campaign_edit_live.ex:202
+#: lib/keila_web/live/campaign_edit_live.ex:203
 #, elixir-autogen, elixir-format
 msgid "No valid email addresses entered."
 msgstr "Nem adott meg érvényes e-mail címeket."
 
-#: lib/keila_web/live/campaign_edit_live.ex:203
+#: lib/keila_web/live/campaign_edit_live.ex:204
 #, elixir-autogen, elixir-format
 msgid "Please enter no more than five addresses."
 msgstr "Legfeljebb öt címet adjon meg."
 
-#: lib/keila_web/live/campaign_edit_live.ex:273
+#: lib/keila_web/live/campaign_edit_live.ex:274
 #, elixir-autogen, elixir-format
 msgid "[Preview] %{subject}"
 msgstr "[Előnézet] %{subject}"
@@ -3107,7 +3112,7 @@ msgstr ""
 msgid "Send & Schedule"
 msgstr "Küldés és ütemezés"
 
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:317
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:318
 #: lib/keila_web/templates/campaign/edit_live.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "Send preview"
@@ -3130,7 +3135,7 @@ msgstr ""
 msgid "There was an error sending the preview campaign."
 msgstr "Hiba történt az előnézeti kampány elküldésekor."
 
-#: lib/keila_web/live/campaign_edit_live.ex:217
+#: lib/keila_web/live/campaign_edit_live.ex:218
 #, elixir-autogen, elixir-format
 msgid "You must select a sender first."
 msgstr "Először ki kell választania egy feladót."
@@ -3173,14 +3178,14 @@ msgid "Message Stream"
 msgstr "Üzenetfolyam"
 
 #: lib/keila_web/templates/campaign/share.html.heex:32
-#: lib/keila_web/templates/campaign/stats_live.html.heex:220
+#: lib/keila_web/templates/campaign/stats_live.html.heex:235
 #: lib/keila_web/templates/campaign/view.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Share"
 msgstr "Megosztás"
 
 #: lib/keila_web/templates/campaign/share.html.heex:23
-#: lib/keila_web/templates/campaign/stats_live.html.heex:209
+#: lib/keila_web/templates/campaign/stats_live.html.heex:224
 #: lib/keila_web/templates/campaign/view.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Statistics"
@@ -3192,7 +3197,7 @@ msgid "Use the following link to share your campaign with other people:"
 msgstr "Használja a következő linket a kampány megosztásához másokkal:"
 
 #: lib/keila_web/templates/campaign/share.html.heex:29
-#: lib/keila_web/templates/campaign/stats_live.html.heex:214
+#: lib/keila_web/templates/campaign/stats_live.html.heex:229
 #: lib/keila_web/templates/campaign/view.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "View"
@@ -3360,6 +3365,7 @@ msgstr ""
 "nevet."
 
 #: lib/keila_web/live/segment_edit_live.ex:14
+#: lib/keila_web/templates/contact/edit.html.heex:216
 #, elixir-autogen, elixir-format
 msgid "Messages"
 msgstr "Üzenetek"
@@ -3477,7 +3483,7 @@ msgstr ""
 msgid "Resend email"
 msgstr "E-mail újraküldése"
 
-#: lib/keila/mailings/double_opt_in_email_builder.ex:74
+#: lib/keila/mailings/double_opt_in_message.ex:93
 #, elixir-autogen, elixir-format
 msgid "# Email Confirmation\n\nPlease click here to confirm your subscription:\n\n#### [Confirm subscription]({{ double_opt_in_link }})\n"
 msgstr ""
@@ -3487,7 +3493,7 @@ msgstr ""
 "\n"
 "#### [Feliratkozás megerősítése]({{ double_opt_in_link }})\n"
 
-#: lib/keila/mailings/welcome_email_builder.ex:65
+#: lib/keila/mailings/welcome_message.ex:88
 #, elixir-autogen, elixir-format
 msgid "# Welcome!\n\nThank you for subscribing to this newsletter.\n"
 msgstr ""
@@ -3537,7 +3543,7 @@ msgstr ""
 msgid "Welcome Email"
 msgstr "Üdvözlő e-mail"
 
-#: lib/keila/mailings/welcome_email_builder.ex:57
+#: lib/keila/mailings/welcome_message.ex:80
 #, elixir-autogen, elixir-format
 msgid "Welcome!"
 msgstr "Üdvözöljük!"
@@ -3692,3 +3698,13 @@ msgstr ""
 msgctxt "text-alignment"
 msgid "Right"
 msgstr "vékony"
+
+#: extra/keila_cloud_web/templates/cloud_partner/index.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Monthly allocated quota"
+msgstr ""
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:255
+#, elixir-autogen, elixir-format, fuzzy
+msgid "emails failed"
+msgstr "e-mailekre kattintások"

@@ -132,7 +132,7 @@ msgstr "Uma nova versão do Keila está disponível."
 msgid "Read more"
 msgstr "Leia mais"
 
-#: lib/keila_web/templates/layout/_menu.html.heex:153
+#: lib/keila_web/templates/layout/_menu.html.heex:163
 #, elixir-autogen, elixir-format
 msgid "System Info"
 msgstr "Informações do Sistema"
@@ -156,3 +156,13 @@ msgstr "A verificação de atualizações está desativada."
 #, elixir-autogen, elixir-format
 msgid "You seem to be running the most recent version of Keila!"
 msgstr "Parece que você está executando a versão mais recente do Keila!"
+
+#: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr ""
+
+#: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:52
+#, elixir-autogen, elixir-format
+msgid "Update status"
+msgstr ""

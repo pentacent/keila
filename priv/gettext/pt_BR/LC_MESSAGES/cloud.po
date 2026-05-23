@@ -11,6 +11,7 @@ msgid ""
 msgstr ""
 
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:274
+#: lib/keila_web/templates/campaign/stats_live.html.heex:77
 #: lib/keila_web/templates/form/edit_live.html.heex:526
 #: lib/keila_web/templates/form/edit_live.html.heex:676
 #, elixir-autogen, elixir-format
@@ -36,3 +37,844 @@ msgstr "Para evitar abusos por parte de spammers, o recurso de e-mail de boas-vi
 #, elixir-autogen, elixir-format
 msgid "To prevent abuse by spammers, sending emails is only possible once your onboarding has been completed."
 msgstr "Para evitar abusos por parte de spammers, o envio de e-mails só é possível após a conclusão do seu onboarding."
+
+#: extra/keila_cloud_web/components/subscription_status.ex:250
+#, elixir-autogen, elixir-format
+msgid "%{monthly_emails} emails"
+msgstr "%{monthly_emails} e-mails"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:264
+#, elixir-autogen, elixir-format
+msgid "%{monthly_emails} emails/month"
+msgstr "%{monthly_emails} e-mails/mês"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:230
+#, elixir-autogen, elixir-format
+msgid "%{price} / month"
+msgstr "%{price} / mês"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:221
+#, elixir-autogen, elixir-format
+msgid "%{price} one time"
+msgstr "%{price} pagamento único"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:239
+#, elixir-autogen, elixir-format
+msgid "(%{price} incl. tax)"
+msgstr "(%{price} com impostos)"
+
+#: extra/keila_cloud_web/templates/cloud_account/onboarding.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Account Verification"
+msgstr "Verificação de conta"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:193
+#, elixir-autogen, elixir-format
+msgid "Account not activated"
+msgstr "Conta não ativada"
+
+#: lib/keila_web/templates/user_admin/index.html.heex:64
+#, elixir-autogen, elixir-format
+msgid "Account status"
+msgstr "Status da conta"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "Address line 1"
+msgstr "Endereço linha 1"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Address line 2"
+msgstr "Endereço linha 2"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "Address line 3"
+msgstr "Endereço linha 3"
+
+#: extra/keila_cloud_web/templates/cloud_account/_referral_source.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Almost done!"
+msgstr "Quase pronto!"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:95
+#, elixir-autogen, elixir-format
+msgid "Apt 1"
+msgstr "Apto 1"
+
+#: extra/keila_cloud_web/templates/cloud_account/_completed.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Back to project list"
+msgstr "Voltar para a lista de projetos"
+
+#: lib/keila_web/templates/layout/app.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Before you can start sending emails, we need some more information about your account."
+msgstr "Antes que você possa começar a enviar e-mails, precisamos de mais algumas informações sobre a sua conta."
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "Business/organization name"
+msgstr "Nome da empresa/organização"
+
+#: extra/keila_cloud_web/components/cloud_registration.ex:11
+#, elixir-autogen, elixir-format
+msgid "By creating an account, you agree to our [terms of service](%{tos_link}). Please also acknowledge our [privacy policy](%{pp_link})."
+msgstr "Ao criar uma conta, você concorda com os nossos [termos de serviço](%{tos_link}). Por favor, leia também a nossa [política de privacidade](%{pp_link})."
+
+#: extra/keila_cloud_web/components/subscription_status.ex:283
+#, elixir-autogen, elixir-format
+msgid "Cancel subscription"
+msgstr "Cancelar assinatura"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:299
+#, elixir-autogen, elixir-format
+msgid "Check Domain"
+msgstr "Verificar domínio"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:113
+#, elixir-autogen, elixir-format
+msgid "Check status"
+msgstr "Verificar status"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:100
+#, elixir-autogen, elixir-format
+msgid "Check your subscription now"
+msgstr "Verifique sua assinatura agora"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:73
+#, elixir-autogen, elixir-format
+msgid "City"
+msgstr "Cidade"
+
+#: lib/keila_web/templates/layout/app.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Complete information"
+msgstr "Completar informações"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:65
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:113
+#, elixir-autogen, elixir-format
+msgid "Country"
+msgstr "País"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:66
+#, elixir-autogen, elixir-format
+msgid "County"
+msgstr "Município"
+
+#: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:91
+#, elixir-autogen, elixir-format
+msgid "Custom"
+msgstr "Personalizado"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:64
+#, elixir-autogen, elixir-format
+msgid "Department"
+msgstr "Departamento"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:68
+#, elixir-autogen, elixir-format
+msgid "District"
+msgstr "Distrito"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:74
+#, elixir-autogen, elixir-format
+msgid "Domain verified"
+msgstr "Domínio verificado"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "Emirate"
+msgstr "Emirado"
+
+#: extra/keila_cloud_web/templates/cloud_account/onboarding.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Every new account has to undergo a quick manual review.\nPlease share some information about you to help with this process.\n"
+msgstr "Toda nova conta precisa passar por uma rápida revisão manual.\nPor favor, compartilhe algumas informações sobre você para nos ajudar nesse processo.\n"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:93
+#, elixir-autogen, elixir-format
+msgid "Finalizing your sender ..."
+msgstr "Finalizando seu remetente ..."
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "First name"
+msgstr "Nome"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:296
+#, elixir-autogen, elixir-format
+msgid "Get started"
+msgstr "Começar"
+
+#: extra/keila_cloud_web/templates/cloud_account/_referral_source.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "How did you hear about Keila?"
+msgstr "Como você ficou sabendo do Keila?"
+
+#: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "I don’t have an existing contact list yet."
+msgstr "Eu ainda não tenho uma lista de contatos."
+
+#: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "I have an existing contact list that I want to import into Keila."
+msgstr "Eu já tenho uma lista de contatos que quero importar para o Keila."
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "If you don’t have a website yet, you can also enter the link to a social media profile or some other public online presence."
+msgstr "Se você ainda não tem um site, também pode inserir o link de um perfil de rede social ou de outra presença pública online."
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:59
+#, elixir-autogen, elixir-format
+msgid "Island"
+msgstr "Ilha"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:90
+#, elixir-autogen, elixir-format
+msgid "It looks like you've already used up the email quota from your subscription."
+msgstr "Parece que você já utilizou toda a cota de e-mails da sua assinatura."
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:304
+#, elixir-autogen, elixir-format
+msgid "Last checked at:"
+msgstr "Verificado pela última vez em:"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "Last name"
+msgstr "Sobrenome"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:127
+#, elixir-autogen, elixir-format
+msgid "Legacy Settings"
+msgstr "Configurações antigas"
+
+#: extra/keila_cloud_web/templates/cloud_account/_user_name.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Let’s get to know each other!"
+msgstr "Vamos nos conhecer!"
+
+#: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:93
+#, elixir-autogen, elixir-format
+msgid "Leverage your existing email infrastructure and send emails with SMTP, or via Mailgun, Sendgrid, SES, or Postmark."
+msgstr "Aproveite a sua infraestrutura de e-mail existente e envie e-mails por SMTP, ou via Mailgun, Sendgrid, SES ou Postmark."
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:89
+#, elixir-autogen, elixir-format
+msgid "Main Street 1"
+msgstr "Rua Principal, 1"
+
+#: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "My Newsletter"
+msgstr "Meu Boletim"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:8
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Nice to meet you, %{given_name}!"
+msgstr "Prazer em conhecer você, %{given_name}!"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:196
+#, elixir-autogen, elixir-format
+msgid "Once you have provided the necessary details, we will perform a manual review of your account. This usually takes less than one working day.\n\nIf you have any questions, please reach out to our support at [%{support_email}](mailto:%{support_email}).\n"
+msgstr "Após você fornecer as informações necessárias, faremos uma revisão manual da sua conta. Isso normalmente leva menos de um dia útil.\n\nSe tiver alguma dúvida, entre em contato com nosso suporte em [%{support_email}](mailto:%{support_email}).\n"
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Organization/business name"
+msgstr "Nome da organização/empresa"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:62
+#, elixir-autogen, elixir-format
+msgid "Parish"
+msgstr "Paróquia"
+
+#: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "Please describe the origin of your contact list and how you've obtained consent from your existing contacts."
+msgstr "Por favor, descreva a origem da sua lista de contatos e como você obteve o consentimento dos seus contatos atuais."
+
+#: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "Please describe the type of content and the purpose of the emails you are planning to send with Keila."
+msgstr "Por favor, descreva o tipo de conteúdo e a finalidade dos e-mails que você pretende enviar com o Keila."
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:116
+#, elixir-autogen, elixir-format
+msgid "Please select a country"
+msgstr "Por favor, selecione um país"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:67
+#, elixir-autogen, elixir-format
+msgid "Please start a subscription before sending your first campaign."
+msgstr "Por favor, inicie uma assinatura antes de enviar sua primeira campanha."
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "Postal code"
+msgstr "CEP"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:67
+#, elixir-autogen, elixir-format
+msgid "Prefecture"
+msgstr "Prefeitura"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:61
+#, elixir-autogen, elixir-format
+msgid "Province"
+msgstr "Província"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:63
+#, elixir-autogen, elixir-format
+msgid "Region"
+msgstr "Região"
+
+#: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:3
+#, elixir-autogen, elixir-format
+msgid "Review account for %{email}"
+msgstr "Revisar conta de %{email}"
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:246
+#, elixir-autogen, elixir-format
+msgid "Review account information"
+msgstr "Revisar informações da conta"
+
+#: lib/keila_web/templates/layout/app.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "Select plan"
+msgstr "Selecionar plano"
+
+#: lib/keila_web/views/sender_view.ex:33
+#, elixir-autogen, elixir-format
+msgid "Send With Keila"
+msgstr "Enviar com o Keila"
+
+#: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:68
+#, elixir-autogen, elixir-format
+msgid "Send with Keila"
+msgstr "Enviar com o Keila"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:205
+#, elixir-autogen, elixir-format
+msgid "Show DNS Records"
+msgstr "Mostrar registros DNS"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:94
+#, elixir-autogen, elixir-format
+msgid "Start new subscription"
+msgstr "Iniciar nova assinatura"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:60
+#, elixir-autogen, elixir-format
+msgid "State"
+msgstr "Estado"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:69
+#, elixir-autogen, elixir-format
+msgid "State/Province"
+msgstr "Estado/Província"
+
+#: lib/keila_web/templates/layout/app.html.heex:71
+#, elixir-autogen, elixir-format
+msgid "Status page"
+msgstr "Página de status"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:211
+#, elixir-autogen, elixir-format
+msgid "Subdomain"
+msgstr "Subdomínio"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:136
+#, elixir-autogen, elixir-format
+msgid "Subscribe for a year and get one month for free!"
+msgstr "Assine por um ano e ganhe um mês grátis!"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:121
+#, elixir-autogen, elixir-format
+msgid "Subscribe now and start sending emails!"
+msgstr "Assine agora e comece a enviar e-mails!"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:39
+#, elixir-autogen, elixir-format
+msgid "Subscription"
+msgstr "Assinatura"
+
+#: extra/keila_cloud_web/controllers/cloud_account_controller.ex:34
+#, elixir-autogen, elixir-format
+msgid "Subscription still active"
+msgstr "Assinatura ainda ativa"
+
+#: extra/keila_cloud_web/templates/cloud_account/await_subscription_live.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Thank you for subscribing to Keila!"
+msgstr "Obrigado por assinar o Keila!"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:69
+#, elixir-autogen, elixir-format
+msgid "There was an error processing your payment. Please update your payment method to continue using Keila."
+msgstr "Houve um erro ao processar seu pagamento. Por favor, atualize sua forma de pagamento para continuar usando o Keila."
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "This account is for a business/organization"
+msgstr "Esta conta é de uma empresa/organização"
+
+#: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:50
+#, elixir-autogen, elixir-format
+msgid "This email will show up as the *From email* in the inbox of your recipients."
+msgstr "Este e-mail aparecerá como o *e-mail do remetente (From)* na caixa de entrada dos seus destinatários."
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "This is a private account"
+msgstr "Esta é uma conta pessoal"
+
+#: extra/keila_cloud_web/templates/cloud_account/_referral_source.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "This is optional, but it's really useful for us!"
+msgstr "Isto é opcional, mas é muito útil para nós!"
+
+#: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "This name will show up as the *From name* in the inbox of your recipients."
+msgstr "Este nome aparecerá como o *nome do remetente (From)* na caixa de entrada dos seus destinatários."
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "To comply with anti-spam regulations, we need to know your address."
+msgstr "Para cumprir com as regulamentações antispam, precisamos saber o seu endereço."
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:50
+#, elixir-autogen, elixir-format
+msgid "To ensure good deliverability of your emails, you need to verify your domain by adding DNS records. [Read more](https://www.keila.io/docs/managed-dmarc){:target=\"_blank\"}"
+msgstr "Para garantir uma boa entregabilidade dos seus e-mails, você precisa verificar o seu domínio adicionando registros DNS. [Saiba mais](https://www.keila.io/docs/managed-dmarc){:target=\"_blank\"}"
+
+#: extra/keila_cloud_web/templates/cloud_account/_user_name.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "To make sure Keila is only used to send legitimate emails, we need to review every new account.\n\nThank you for helping us fight spam!\n"
+msgstr "Para garantir que o Keila seja usado apenas para enviar e-mails legítimos, precisamos revisar cada nova conta.\n\nObrigado por nos ajudar a combater o spam!\n"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:212
+#, elixir-autogen, elixir-format
+msgid "Type"
+msgstr "Tipo"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:56
+#, elixir-autogen, elixir-format
+msgid "Until you have verified your domain, emails for this sender will be sent from *%{fallback_email}*. Replies will go to *%{from_email}*."
+msgstr "Até você verificar o seu domínio, os e-mails deste remetente serão enviados a partir de *%{fallback_email}*. As respostas irão para *%{from_email}*."
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:211
+#: lib/keila_web/templates/layout/app.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "Update account information"
+msgstr "Atualizar informações da conta"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:278
+#, elixir-autogen, elixir-format
+msgid "Update payment method"
+msgstr "Atualizar forma de pagamento"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:148
+#, elixir-autogen, elixir-format
+msgid "Update to new settings"
+msgstr "Atualizar para as novas configurações"
+
+#: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:70
+#, elixir-autogen, elixir-format
+msgid "Use our reliable European email infrastructure for excellent deliverability and automatic bounce handling."
+msgstr "Use nossa confiável infraestrutura europeia de e-mail para excelente entregabilidade e tratamento automático de bounces."
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:213
+#, elixir-autogen, elixir-format
+msgid "Value"
+msgstr "Valor"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:48
+#, elixir-autogen, elixir-format
+msgid "Waiting for domain verification ..."
+msgstr "Aguardando verificação de domínio ..."
+
+#: extra/keila_cloud_web/templates/cloud_account/_completed.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "We will now perform a manual review of your data. This usually doesn't take longer than one working day.\n\nIn the meantime, you can continue to use Keila. Sending emails will be enabled for your account\nonce the review has been completed.\n"
+msgstr "Agora faremos uma revisão manual dos seus dados. Isso normalmente não leva mais do que um dia útil.\n\nEnquanto isso, você pode continuar usando o Keila. O envio de e-mails será habilitado para a sua conta\nassim que a revisão for concluída.\n"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:96
+#, elixir-autogen, elixir-format
+msgid "We're currently finalizing the setup of your sender. This may take a few minutes."
+msgstr "Estamos finalizando a configuração do seu remetente. Isso pode levar alguns minutos."
+
+#: extra/keila_cloud_web/templates/cloud_account/await_subscription_live.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "We're currently processing your subscription. This shouldn't take longer than a minute …"
+msgstr "Estamos processando a sua assinatura. Isso não deve levar mais de um minuto …"
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "Website"
+msgstr "Site"
+
+#: lib/keila_web/templates/layout/app.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Welcome to Keila, have a look around! To start sending emails, please choose a subscription."
+msgstr "Bem-vindo(a) ao Keila, fique à vontade para explorar! Para começar a enviar e-mails, por favor escolha uma assinatura."
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:131
+#, elixir-autogen, elixir-format
+msgid "You are currently using legacy email settings. We recommend updating to the new settings for better performance and reliability."
+msgstr "Você está usando configurações antigas de e-mail. Recomendamos atualizar para as novas configurações para melhor desempenho e confiabilidade."
+
+#: extra/keila_cloud_web/components/subscription_status.ex:83
+#, elixir-autogen, elixir-format
+msgid "You can continue using your subscription until:"
+msgstr "Você pode continuar usando sua assinatura até:"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:49
+#, elixir-autogen, elixir-format
+msgid "You currently have an active subscription. Thanks for supporting Keila!"
+msgstr "Você possui uma assinatura ativa no momento. Obrigado por apoiar o Keila!"
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Your Company, Inc."
+msgstr "Sua Empresa Ltda."
+
+#: lib/keila_web/templates/layout/app.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "Your account is currently under review. Sending emails will be enabled once the review has been completed."
+msgstr "Sua conta está em análise no momento. O envio de e-mails será habilitado assim que a análise for concluída."
+
+#: extra/keila_cloud_web/components/subscription_status.ex:79
+#, elixir-autogen, elixir-format
+msgid "Your subscription has been cancelled."
+msgstr "Sua assinatura foi cancelada."
+
+#: extra/keila_cloud_web/components/subscription_status.ex:59
+#, elixir-autogen, elixir-format
+msgid "Your subscription is currently suspended. Please update your payment method to continue using Keila."
+msgstr "Sua assinatura está suspensa no momento. Por favor, atualize sua forma de pagamento para continuar usando o Keila."
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:30
+#, elixir-autogen, elixir-format
+msgid "You’re using a shared domain. Emails will be sent from *%{fallback_email}*. Replies will go to *%{from_email}*. [Read more](https://www.keila.io/docs/shared-domains){:target=\"_blank\"}"
+msgstr "Você está usando um domínio compartilhado. Os e-mails serão enviados a partir de *%{fallback_email}*. As respostas irão para *%{from_email}*. [Saiba mais](https://www.keila.io/docs/shared-domains){:target=\"_blank\"}"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:214
+#, elixir-autogen, elixir-format
+msgid "billed annually"
+msgstr "cobrado anualmente"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:271
+#, elixir-autogen, elixir-format
+msgid "current value:"
+msgstr "valor atual:"
+
+#: extra/keila_cloud_web/templates/cloud_account/_referral_source.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "e.g. a friend, blog post, Google, …"
+msgstr "ex.: um amigo, um post de blog, Google, …"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:268
+#, elixir-autogen, elixir-format
+msgid "empty"
+msgstr "vazio"
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "https://example.com"
+msgstr "https://example.com"
+
+#: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "newsletter@example.com"
+msgstr "newsletter@example.com"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:258
+#, elixir-autogen, elixir-format
+msgid "no subscription"
+msgstr "sem assinatura"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:271
+#, elixir-autogen, elixir-format
+msgid "unlimited contacts"
+msgstr "contatos ilimitados"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:254
+#, elixir-autogen, elixir-format
+msgid "valid for one year"
+msgstr "válido por um ano"
+
+#: extra/keila_cloud_web/templates/cloud_partner/index.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "%{allocated} / %{total} emails allocated"
+msgstr "%{allocated} / %{total} e-mails alocados"
+
+#: extra/keila_cloud_web/templates/cloud_partner/show_credits.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "%{remaining} / %{total} credits"
+msgstr "%{remaining} / %{total} créditos"
+
+#: extra/keila_cloud_web/controllers/cloud_partner_controller.ex:94
+#: extra/keila_cloud_web/templates/cloud_partner/index.html.heex:8
+#: extra/keila_cloud_web/templates/cloud_partner/new.html.heex:4
+#, elixir-autogen, elixir-format
+msgid "Add child account"
+msgstr "Adicionar subconta"
+
+#: extra/keila_cloud_web/templates/cloud_billing/index.html.heex:29
+#: extra/keila_cloud_web/templates/cloud_partner/show_credits.html.heex:74
+#, elixir-autogen, elixir-format
+msgid "Amount"
+msgstr "Valor"
+
+#: extra/keila_cloud_web/controllers/cloud_billing_controller.ex:15
+#: extra/keila_cloud_web/templates/cloud_billing/index.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Billing"
+msgstr "Cobrança"
+
+#: extra/keila_cloud_web/templates/cloud_partner/show_credits.html.heex:97
+#, elixir-autogen, elixir-format
+msgid "Change password"
+msgstr "Alterar senha"
+
+#: extra/keila_cloud_web/controllers/cloud_partner_controller.ex:105
+#, elixir-autogen, elixir-format
+msgid "Child account created."
+msgstr "Subconta criada."
+
+#: extra/keila_cloud_web/templates/cloud_partner/index.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "Child accounts"
+msgstr "Subcontas"
+
+#: extra/keila_cloud_web/templates/cloud_billing/index.html.heex:6
+#: lib/keila_web/templates/campaign/stats_live.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Contact Support"
+msgstr "Contatar Suporte"
+
+#: extra/keila_cloud_web/controllers/cloud_partner_controller.ex:110
+#, elixir-autogen, elixir-format
+msgid "Could not create child account."
+msgstr "Não foi possível criar a subconta."
+
+#: extra/keila_cloud_web/templates/cloud_billing/index.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "Could not load invoices."
+msgstr "Não foi possível carregar as faturas."
+
+#: extra/keila_cloud_web/controllers/cloud_partner_controller.ex:158
+#, elixir-autogen, elixir-format
+msgid "Could not transfer credits."
+msgstr "Não foi possível transferir os créditos."
+
+#: extra/keila_cloud_web/controllers/cloud_partner_controller.ex:81
+#, elixir-autogen, elixir-format
+msgid "Could not update credit allocation."
+msgstr "Não foi possível atualizar a alocação de créditos."
+
+#: extra/keila_cloud_web/templates/cloud_partner/new.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Creates a new account with the given email and password. The account is activated immediately and added as your child."
+msgstr "Cria uma nova conta com o e-mail e a senha informados. A conta é ativada imediatamente e adicionada como sua subconta."
+
+#: extra/keila_cloud_web/templates/cloud_partner/index.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "Credits"
+msgstr "Créditos"
+
+#: extra/keila_cloud_web/templates/cloud_partner/show_credits.html.heex:3
+#, elixir-autogen, elixir-format
+msgid "Credits for %{email}"
+msgstr "Créditos de %{email}"
+
+#: extra/keila_cloud_web/templates/cloud_partner/show_credits.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "Credits per cycle"
+msgstr "Créditos por ciclo"
+
+#: extra/keila_cloud_web/controllers/cloud_partner_controller.ex:156
+#, elixir-autogen, elixir-format
+msgid "Credits transferred."
+msgstr "Créditos transferidos."
+
+#: extra/keila_cloud_web/templates/cloud_billing/index.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Currency"
+msgstr "Moeda"
+
+#: extra/keila_cloud_web/templates/cloud_billing/index.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "Date"
+msgstr "Data"
+
+#: extra/keila_cloud_web/templates/cloud_partner/index.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "Email"
+msgstr "E-mail"
+
+#: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:75
+#, elixir-autogen, elixir-format
+msgid "Enable partner mode"
+msgstr "Ativar modo parceiro"
+
+#: extra/keila_cloud_web/templates/cloud_billing/index.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Invoice"
+msgstr "Fatura"
+
+#: extra/keila_cloud_web/templates/cloud_partner/index.html.heex:87
+#, elixir-autogen, elixir-format
+msgid "Log in as"
+msgstr "Entrar como"
+
+#: extra/keila_cloud_web/controllers/cloud_partner_controller.ex:40
+#, elixir-autogen, elixir-format
+msgid "Manage child account credits"
+msgstr "Gerenciar créditos da subconta"
+
+#: extra/keila_cloud_web/templates/cloud_partner/index.html.heex:59
+#: extra/keila_cloud_web/templates/cloud_partner/index.html.heex:79
+#, elixir-autogen, elixir-format
+msgid "Manage credits"
+msgstr "Gerenciar créditos"
+
+#: extra/keila_cloud_web/templates/cloud_partner/index.html.heex:50
+#: extra/keila_cloud_web/templates/cloud_partner/show_credits.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "Monthly allocation"
+msgstr "Alocação mensal"
+
+#: extra/keila_cloud_web/controllers/cloud_partner_controller.ex:76
+#, elixir-autogen, elixir-format
+msgid "Monthly credit allocation updated."
+msgstr "Alocação mensal de créditos atualizada."
+
+#: extra/keila_cloud_web/templates/cloud_partner/show_credits.html.heex:68
+#, elixir-autogen, elixir-format
+msgid "Move credits from your current billing cycle balance to this child."
+msgstr "Transfira créditos do saldo do seu ciclo de cobrança atual para esta subconta."
+
+#: extra/keila_cloud_web/templates/cloud_partner/show_credits.html.heex:103
+#, elixir-autogen, elixir-format
+msgid "New password"
+msgstr "Nova senha"
+
+#: extra/keila_cloud_web/controllers/cloud_partner_controller.ex:157
+#, elixir-autogen, elixir-format
+msgid "Not enough credits."
+msgstr "Créditos insuficientes."
+
+#: extra/keila_cloud_web/controllers/cloud_partner_controller.ex:128
+#, elixir-autogen, elixir-format
+msgid "Not found."
+msgstr "Não encontrado."
+
+#: lib/keila_web/templates/layout/_menu.html.heex:150
+#, elixir-autogen, elixir-format
+msgid "Partner"
+msgstr "Parceiro"
+
+#: extra/keila_cloud_web/controllers/cloud_partner_controller.ex:24
+#: extra/keila_cloud_web/templates/cloud_partner/index.html.heex:4
+#, elixir-autogen, elixir-format
+msgid "Partner Area"
+msgstr "Área do Parceiro"
+
+#: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:65
+#, elixir-autogen, elixir-format
+msgid "Partner mode"
+msgstr "Modo parceiro"
+
+#: extra/keila_cloud_web/controllers/cloud_partner_controller.ex:133
+#, elixir-autogen, elixir-format
+msgid "Password change not accepted."
+msgstr "Alteração de senha não aceita."
+
+#: extra/keila_cloud_web/controllers/cloud_partner_controller.ex:123
+#, elixir-autogen, elixir-format
+msgid "Password updated."
+msgstr "Senha atualizada."
+
+#: extra/keila_cloud_web/controllers/cloud_partner_controller.ex:87
+#, elixir-autogen, elixir-format
+msgid "Please enter a non-negative number."
+msgstr "Por favor, insira um número não negativo."
+
+#: extra/keila_cloud_web/controllers/cloud_partner_controller.ex:58
+#, elixir-autogen, elixir-format
+msgid "Please enter a valid amount."
+msgstr "Por favor, insira um valor válido."
+
+#: extra/keila_cloud_web/templates/cloud_partner/show_credits.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "Save allocation"
+msgstr "Salvar alocação"
+
+#: extra/keila_cloud_web/templates/cloud_partner/show_credits.html.heex:100
+#, elixir-autogen, elixir-format
+msgid "Set a new password for this child user."
+msgstr "Defina uma nova senha para este usuário da subconta."
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:6
+#, elixir-autogen, elixir-format
+msgid "Some emails could not be delivered."
+msgstr "Alguns e-mails não puderam ser entregues."
+
+#: extra/keila_cloud_web/templates/cloud_billing/index.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "There are no invoices to display."
+msgstr "Não há faturas para exibir."
+
+#: extra/keila_cloud_web/templates/cloud_partner/show_credits.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "This is the amount of credits automatically added to this account in future billing cycles."
+msgstr "Esta é a quantidade de créditos que será adicionada automaticamente a esta conta nos próximos ciclos de cobrança."
+
+#: extra/keila_cloud_web/templates/cloud_partner/show_credits.html.heex:84
+#, elixir-autogen, elixir-format
+msgid "Transfer credits"
+msgstr "Transferir créditos"
+
+#: extra/keila_cloud_web/templates/cloud_partner/show_credits.html.heex:65
+#, elixir-autogen, elixir-format
+msgid "Transfer credits now"
+msgstr "Transferir créditos agora"
+
+#: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:78
+#, elixir-autogen, elixir-format
+msgid "Update partner mode"
+msgstr "Atualizar modo parceiro"
+
+#: extra/keila_cloud_web/templates/cloud_partner/show_credits.html.heex:113
+#, elixir-autogen, elixir-format
+msgid "Update password"
+msgstr "Atualizar senha"
+
+#: extra/keila_cloud_web/templates/cloud_billing/index.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "View invoice"
+msgstr "Ver fatura"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:116
+#, elixir-autogen, elixir-format
+msgid "View invoices"
+msgstr "Ver faturas"
+
+#: extra/keila_cloud_web/templates/cloud_partner/index.html.heex:109
+#, elixir-autogen, elixir-format
+msgid "You have no child accounts yet."
+msgstr "Você ainda não tem subcontas."
+
+#: extra/keila_cloud_web/templates/cloud_partner/show_credits.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Your balance: %{remaining} / %{total}"
+msgstr "Seu saldo: %{remaining} / %{total}"

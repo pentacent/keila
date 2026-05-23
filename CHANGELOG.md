@@ -2,6 +2,29 @@
 
 ## Unreleased
 
+
+## Version 0.20.1
+
+> 🇧🇷 Brazilian Portuguese, pre-filled forms, and many fixes
+
+### Added
+- Added Brazilian Portuguese (pt-BR) translation (thanks @polesapart)
+- Contact form fields can now be pre-populated using GET parameters
+
+### Improved
+- The send preview dialog can now be confirmed with the Enter/Return key
+- App pages now set the HTML `lang` attribute based on the user's locale; forms don't set a `lang` attribute (thanks @marco-luigiano for reporting)
+- Added database indices for `form_id`, `form_params_id`, and `sender_id` on the messages table for improved query performance
+
+### Fixed
+- Fixed recognition of language variants from request headers (e.g. `pt-BR`)
+- Fixed a crash when using custom contact queries with fields not supported by the segment editor
+- Fixed block editor image alignment in Outlook and uneven column gutters in block editor emails
+- Fixed occasional exceptions in the block editor
+- Fixed missing doctype when adding tracking links
+- Fixed handling of single-image Markdown paragraphs
+
+
 ## Version 0.20.0
 
 > 📮 New Email scheduler
