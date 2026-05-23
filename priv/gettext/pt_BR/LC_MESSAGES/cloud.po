@@ -1,0 +1,38 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new translations manually only if they're dynamic
+## translations that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+msgid ""
+msgstr ""
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:274
+#: lib/keila_web/templates/form/edit_live.html.heex:526
+#: lib/keila_web/templates/form/edit_live.html.heex:676
+#, elixir-autogen, elixir-format
+msgid "Start your subscription now"
+msgstr "Inicie sua assinatura agora"
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:252
+#, elixir-autogen, elixir-format
+msgid "To prevent abuse by spammers, sending emails is only possible if you have an active subscription."
+msgstr "Para evitar abusos por parte de spammers, o envio de e-mails só é possível se você tiver uma assinatura ativa."
+
+#: lib/keila_web/templates/form/edit_live.html.heex:519
+#, elixir-autogen, elixir-format
+msgid "To prevent abuse by spammers, the double opt-in feature is currently only available if you have a subscription. Sorry for the inconvenience!"
+msgstr "Para evitar abusos por parte de spammers, o recurso de confirmação dupla (double opt-in) está disponível apenas se você tiver uma assinatura. Desculpe pelo inconveniente!"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:669
+#, elixir-autogen, elixir-format
+msgid "To prevent abuse by spammers, the welcome email feature is currently only available if you have a subscription. Sorry for the inconvenience!"
+msgstr "Para evitar abusos por parte de spammers, o recurso de e-mail de boas-vindas está disponível apenas se você tiver uma assinatura. Desculpe pelo inconveniente!"
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:223
+#, elixir-autogen, elixir-format
+msgid "To prevent abuse by spammers, sending emails is only possible once your onboarding has been completed."
+msgstr "Para evitar abusos por parte de spammers, o envio de e-mails só é possível após a conclusão do seu onboarding."
