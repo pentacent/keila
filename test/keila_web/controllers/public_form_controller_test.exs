@@ -13,6 +13,31 @@ defmodule KeilaWeb.PublicFormControllerTest do
       conn = get(conn, Routes.public_form_path(conn, :show, form.id))
       assert html_response(conn, 200) =~ ~r{#{form.name}\s*</h1>}
     end
+
+    test "pre-populates form fields from GET query parameters", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+
+      form =
+        insert!(:contacts_form,
+          project_id: project.id,
+          settings: %{captcha_required: false},
+          field_settings: [
+            %{field: :email, cast: true, required: true},
+            %{field: :data, key: "foo", cast: true, type: :string}
+          ]
+        )
+
+      conn =
+        get(
+          conn,
+          Routes.public_form_path(conn, :show, form.id) <>
+            "?email=test@example.com&data[foo]=bar"
+        )
+
+      response = html_response(conn, 200)
+      assert response =~ ~s(value="test@example.com")
+      assert response =~ ~s(value="bar")
+    end
   end
 
   describe "POST /forms/:id" do
