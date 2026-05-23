@@ -71,5 +71,6 @@ defmodule KeilaWeb.PutLocalePlug do
     end)
     |> Enum.sort_by(&elem(&1, 1), :desc)
     |> Enum.map(&elem(&1, 0))
+    |> Enum.map(&String.replace(&1, "-", "_"))
   end
 end
