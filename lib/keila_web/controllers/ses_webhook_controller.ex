@@ -35,7 +35,7 @@ defmodule KeilaWeb.SESWebhookController do
   end
 
   def webhook(conn = %{body_params: %{"Type" => "SubscriptionConfirmation"}}, _) do
-    HTTPoison.get!(conn.body_params["SubscribeURL"])
+    Req.get!(conn.body_params["SubscribeURL"], receive_timeout: 5_000)
     Logger.info("Subscribed to SNS topic #{conn.body_params["TopicArn"]}")
 
     conn |> send_resp(200, "")

@@ -54,8 +54,8 @@ defmodule Keila.Instance do
   @release_url "https://api.github.com/repos/pentacent/keila/releases"
   @spec fetch_updates() :: [__MODULE__.Release.t()]
   def fetch_updates() do
-    with {:ok, response} <- HTTPoison.get(@release_url, recv_timeout: 5_000),
-         {:ok, release_attrs} when is_list(release_attrs) <- Jason.decode(response.body) do
+    with {:ok, %{body: release_attrs}} when is_list(release_attrs) <-
+           Req.get(@release_url, receive_timeout: 5_000) do
       current_version = current_version() |> Version.parse!()
 
       release_attrs

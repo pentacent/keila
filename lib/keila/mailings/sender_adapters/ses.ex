@@ -76,7 +76,7 @@ defmodule Keila.Mailings.SenderAdapters.SES do
 
       if uri.host =~ ~r{^sns\.[a-z1-9-]+\.amazonaws\.com$} do
         key =
-          HTTPoison.get!(url)
+          Req.get!(url, receive_timeout: 5_000)
           |> then(fn %{body: pem_file} -> extract_key(pem_file) end)
 
         put_cached_key(url, key)

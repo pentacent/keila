@@ -41,11 +41,9 @@ defmodule KeilaWeb.Captcha do
   def captcha_valid?(response) when response in [nil, ""], do: false
 
   def captcha_valid?(response) do
-    body = request_body(response)
+    request_opts = [request_body(response), receive_timeout: 5_000]
 
-    with {:ok, response} <- HTTPoison.post(verify_url(), body, [], recv_timeout: 5_000),
-         {:ok, response_body} <- Jason.decode(response.body),
-         %{"success" => true} <- response_body do
+    with {:ok, %{body: %{"success" => true}}} <- Req.post(verify_url(), request_opts) do
       true
     else
       _other -> false
