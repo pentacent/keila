@@ -66,5 +66,14 @@ defmodule Keila.Mailings.Message do
       :form_id,
       :form_params_id
     ])
+    |> validate_assocs_project()
+  end
+
+  defp validate_assocs_project(changeset) do
+    changeset
+    |> validate_assoc_project(:contact, Contact)
+    |> validate_assoc_project(:campaign, Campaign)
+    |> validate_assoc_project(:sender, Sender)
+    |> validate_assoc_project(:form, Form)
   end
 end

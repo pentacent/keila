@@ -315,7 +315,7 @@ defmodule KeilaWeb.PublicFormControllerDoubleOptInTest do
   defp insert_doi_form(project_id, settings \\ %{}) do
     insert!(:contacts_form,
       project_id: project_id,
-      sender: build(:mailings_sender),
+      sender: build(:mailings_sender, project_id: project_id),
       settings: Map.merge(%{captcha_required: false, double_opt_in_required: true}, settings)
     )
   end
