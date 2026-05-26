@@ -28,7 +28,7 @@ defmodule Keila.Application do
           id: Keila.Id.Cache,
           start: {Agent, :start_link, [&Keila.Id.hashid_config/0, [name: Keila.Id.Cache]]}
         }
-      ] ++ scheduler_spec()
+      ] ++ scheduler_spec() ++ tz_updates_spec()
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
@@ -62,6 +62,14 @@ defmodule Keila.Application do
       []
     else
       [{Keila.Mailings.Scheduler, []}]
+    end
+  end
+
+  defp tz_updates_spec() do
+    if @env == :test || @env == :dev || Application.get_env(:keila, :disable_tz_updates) do
+      []
+    else
+      [{Tz.UpdatePeriodically, [interval_in_days: 7]}]
     end
   end
 

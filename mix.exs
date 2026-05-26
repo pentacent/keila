@@ -88,7 +88,7 @@ defmodule Keila.MixProject do
       {:oban, "~> 2.20"},
       {:solid, "~> 1.2.2"},
       {:earmark, "~> 1.4"},
-      {:tzdata, "~> 1.1"},
+      {:tz, "~> 0.28.1"},
       {:ex_aws, "~> 2.6.0"},
       {:sweet_xml, "~> 0.6"},
       {:ex_aws_ses, "~> 2.4.1"},

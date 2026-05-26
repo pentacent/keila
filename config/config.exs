@@ -113,7 +113,7 @@ config :keila, Oban,
   ]
 
 # Use Timezone database
-config :elixir, :time_zone_database, Tzdata.TimeZoneDatabase
+config :elixir, :time_zone_database, Tz.TimeZoneDatabase
 
 # Add tsv MIME type
 config :mime, :types, %{

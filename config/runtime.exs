@@ -336,9 +336,9 @@ if config_env() == :prod do
          :update_checks_enabled,
          System.get_env("DISABLE_UPDATE_CHECKS") not in [1, "1", "true", "TRUE"]
 
-  # Disable tzdata auto-update check
+  # Disable tz auto-update check
   if System.get_env("DISABLE_TZDATA_UPDATES") in [1, "1", "true", "TRUE"] do
-    config :tzdata, :autoupdate, :disabled
+    config :keila, :disable_tz_updates, true
   end
 
   # Precedence Bulk Header
