@@ -1,5 +1,10 @@
 export default {
   mjml: {
+    attrs: {
+      dir: null,
+      lang: null,
+      owa: null
+    },
     children: ["mj-head", "mj-body"],
     globalAttrs: false
   },
@@ -15,7 +20,20 @@ export default {
     globalAttrs: false
   },
   "mj-body": {
-    children: ["mj-section", "mj-wrapper", "mj-raw"],
+    attrs: {
+      "background-color": null,
+      "css-class": null,
+      id: null,
+      width: null
+    },
+    children: ["mj-section", "mj-wrapper", "mj-raw", "keila-content"],
+    globalAttrs: false
+  },
+  "keila-content": {
+    attrs: {
+      name: null
+    },
+    children: ["mj-section", "mj-wrapper"],
     globalAttrs: false
   },
   "mj-accordion": {
@@ -52,7 +70,8 @@ export default {
       "icon-position": null,
       "icon-height": null,
       "icon-width": null,
-      "css-class": null
+      "css-class": null,
+      border: null
     },
     globalAttrs: false
   },
@@ -67,7 +86,8 @@ export default {
       "padding-right": null,
       "padding-top": null,
       padding: null,
-      "css-class": null
+      "css-class": null,
+      "font-weight": null
     },
     globalAttrs: false
   },
@@ -82,7 +102,10 @@ export default {
       "padding-right": null,
       "padding-top": null,
       padding: null,
-      "css-class": null
+      "css-class": null,
+      "font-weight": null,
+      "letter-spacing": null,
+      "line-height": null
     },
     globalAttrs: false
   },
@@ -126,7 +149,12 @@ export default {
       "padding-right": null,
       width: null,
       height: null,
-      "css-class": null
+      "css-class": null,
+      "letter-spacing": null,
+      name: null,
+      target: null,
+      "text-align": null,
+      title: null
     },
     globalAttrs: false
   },
@@ -144,7 +172,12 @@ export default {
       "left-icon": null,
       "right-icon": null,
       "icon-width": null,
-      "css-class": null
+      "css-class": null,
+      padding: null,
+      "padding-top": null,
+      "padding-bottom": null,
+      "padding-left": null,
+      "padding-right": null
     },
     globalAttrs: false
   },
@@ -156,7 +189,11 @@ export default {
       rel: null,
       alt: null,
       title: null,
-      "css-class": null
+      "css-class": null,
+      "border-radius": null,
+      "tb-border": null,
+      "tb-border-radius": null,
+      target: null
     },
     globalAttrs: false
   },
@@ -177,7 +214,20 @@ export default {
       "border-radius": null,
       width: null,
       "vertical-align": null,
-      "css-class": null
+      "css-class": null,
+      direction: null,
+      "inner-background-color": null,
+      "inner-border": null,
+      "inner-border-bottom": null,
+      "inner-border-left": null,
+      "inner-border-radius": null,
+      "inner-border-right": null,
+      "inner-border-top": null,
+      padding: null,
+      "padding-top": null,
+      "padding-bottom": null,
+      "padding-left": null,
+      "padding-right": null
     },
     globalAttrs: false
   },
@@ -193,7 +243,8 @@ export default {
       "padding-bottom": null,
       "padding-left": null,
       "padding-right": null,
-      "css-class": null
+      "css-class": null,
+      align: null
     },
     globalAttrs: false
   },
@@ -202,7 +253,8 @@ export default {
       width: null,
       "vertical-align": null,
       "background-color": null,
-      "css-class": null
+      "css-class": null,
+      direction: null
     },
     globalAttrs: false
   },
@@ -230,102 +282,47 @@ export default {
       "padding-left": null,
       "padding-bottom": null,
       "vertical-align": null,
-      "css-class": null
+      "css-class": null,
+      "border-radius": null,
+      "inner-background-color": null,
+      "inner-padding": null,
+      "inner-padding-top": null,
+      "inner-padding-bottom": null,
+      "inner-padding-left": null,
+      "inner-padding-right": null
     },
     globalAttrs: false
   },
   "mj-image": {
     attrs: {
-      padding: null,
-      "padding-top": null,
-      "padding-bottom": null,
-      "padding-left": null,
-      "padding-right": null,
-      "container-background-color": null,
-      border: null,
-      "border-radius": null,
-      width: null,
-      height: null,
-      src: null,
-      href: null,
-      rel: null,
+      align: null,
       alt: null,
-      align: null,
-      title: null,
-      "css-class": null
-    },
-    globalAttrs: false
-  },
-  "mj-invoice": {
-    attrs: {
-      align: null,
-      color: null,
-      "font-family": null,
-      "font-size": null,
-      "line-height": null,
       border: null,
+      "border-bottom": null,
+      "border-left": null,
+      "border-radius": null,
+      "border-right": null,
+      "border-top": null,
       "container-background-color": null,
-      padding: null,
-      "padding-top": null,
-      "padding-bottom": null,
-      "padding-left": null,
-      "padding-right": null,
-      intl: null,
-      format: null,
-      "css-class": null
-    },
-    globalAttrs: false
-  },
-  "mj-invoice-item": {
-    attrs: {
-      color: null,
-      "font-family": null,
-      "font-size": null,
-      "line-height": null,
-      border: null,
-      "text-align": null,
-      padding: null,
-      "padding-top": null,
-      "padding-bottom": null,
-      "padding-left": null,
-      "padding-right": null,
-      name: null,
-      price: null,
-      quantity: null,
-      "css-class": null
-    },
-    globalAttrs: false
-  },
-  "mj-list": {
-    attrs: {
-      color: null,
-      "font-family": null,
-      "font-size": null,
-      "line-height": null,
-      padding: null,
-      "padding-top": null,
-      "padding-bottom": null,
-      "padding-left": null,
-      "padding-right": null,
-      "css-class": null
-    },
-    globalAttrs: false
-  },
-  "mj-location": {
-    attrs: {
-      color: null,
-      "font-family": null,
-      "font-size": null,
-      "font-weight": null,
+      "css-class": null,
+      "fluid-on-mobile": null,
+      height: null,
       href: null,
-      rel: null,
+      "max-height": null,
+      name: null,
       padding: null,
-      "padding-top": null,
       "padding-bottom": null,
       "padding-left": null,
       "padding-right": null,
-      "img-src": null,
-      "css-class": null
+      "padding-top": null,
+      rel: null,
+      sizes: null,
+      src: null,
+      srcset: null,
+      target: null,
+      title: null,
+      usemap: null,
+      width: null
     },
     globalAttrs: false
   },
@@ -347,7 +344,8 @@ export default {
       "ico-text-transform": null,
       "ico-text-decoration": null,
       "ico-line-height": null,
-      "css-class": null
+      "css-class": null,
+      "base-url": null
     },
     globalAttrs: false
   },
@@ -367,7 +365,11 @@ export default {
       "padding-left": null,
       "padding-right": null,
       rel: null,
-      "css-class": null
+      "css-class": null,
+      href: null,
+      "letter-spacing": null,
+      name: null,
+      target: null
     },
     globalAttrs: false
   },
@@ -398,7 +400,10 @@ export default {
       "padding-left": null,
       "padding-right": null,
       direction: null,
-      "css-class": null
+      "css-class": null,
+      "background-position": null,
+      "background-position-x": null,
+      "background-position-y": null
     },
     children: ["mj-column"],
     globalAttrs: false
@@ -424,7 +429,10 @@ export default {
       padding: null,
       "table-layout": null,
       "vertical-align": null,
-      "css-class": null
+      "css-class": null,
+      "icon-height": null,
+      "icon-padding": null,
+      "text-padding": null
     },
     globalAttrs: false
   },
@@ -451,14 +459,29 @@ export default {
       src: null,
       target: null,
       "text-decoration": null,
-      "css-class": null
+      "css-class": null,
+      alt: null,
+      "icon-height": null,
+      "icon-padding": null,
+      "icon-position": null,
+      rel: null,
+      sizes: null,
+      srcset: null,
+      "text-padding": null,
+      title: null
     },
     globalAttrs: false
   },
   "mj-spacer": {
     attrs: {
       height: null,
-      "css-class": null
+      "css-class": null,
+      "container-background-color": null,
+      padding: null,
+      "padding-top": null,
+      "padding-bottom": null,
+      "padding-left": null,
+      "padding-right": null
     },
     globalAttrs: false
   },
@@ -478,7 +501,10 @@ export default {
       "padding-right": null,
       width: null,
       "table-layout": null,
-      "css-class": null
+      "css-class": null,
+      align: null,
+      border: null,
+      role: null
     },
     globalAttrs: false
   },
@@ -528,10 +554,12 @@ export default {
       "padding-bottom": null,
       "padding-left": null,
       "padding-right": null,
-      "css-class": null
+      "css-class": null,
+      "background-position": null,
+      "background-position-x": null,
+      "background-position-y": null,
+      gap: null
     },
     globalAttrs: false
-  },
-  children: ["mj-section"],
-  globalAttrs: false
+  }
 }
