@@ -11,6 +11,7 @@ defmodule Keila.Mailings.Campaign do
     :html_body,
     :json_body,
     :mjml_body,
+    :mjml_content,
     :preview_text,
     :sender_id,
     :template_id,
@@ -27,6 +28,7 @@ defmodule Keila.Mailings.Campaign do
     field :html_body, :string
     field :json_body, :map
     field :mjml_body, :string
+    field :mjml_content, :map
     field :preview_text, :string
     field :data, Keila.Repo.JsonField
 
