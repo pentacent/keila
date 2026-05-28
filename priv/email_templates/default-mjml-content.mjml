@@ -92,10 +92,8 @@
         >
       </mj-column>
     </mj-section>
-    <mj-raw
-      >{% assign colors = "#41b8da,#8bb746,#0b3622" | split: "," %}</mj-raw
-    >
-    <mj-raw>{% for color in colors %}</mj-raw>
+    <keila-code>{% assign colors = "#41b8da,#8bb746,#0b3622" | split: "," %}</keila-code>
+    <keila-code>{% for color in colors %}</keila-code>
     <mj-section background-color="{{ color }}" padding="20px">
       <mj-column padding-top="20px">
         <mj-text font-size="31px" color="#ffffff">{{ color }}</mj-text>
@@ -107,7 +105,7 @@
         <mj-text> This is a dynamically generated section. </mj-text>
       </mj-column>
     </mj-section>
-    <mj-raw>{% endfor %}</mj-raw>
+    <keila-code>{% endfor %}</keila-code>
     <mj-section>
       <mj-column>
         <mj-text font-size="12.5px" align="center">

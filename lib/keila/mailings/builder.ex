@@ -185,14 +185,15 @@ defmodule Keila.Mailings.Builder do
   end
 
   defp put_body(email, campaign = %{settings: %{type: :mjml}}, assigns) do
-    mjml_body = case {campaign.mjml_body, campaign.template} do
-      {mjml, _} when is_binary(mjml) and mjml != "" -> mjml
-      {_, %{mjml_body: mjml}} when is_binary(mjml) and mjml != "" -> mjml
-      _ -> ""
-    end
+    mjml_body =
+      case {campaign.mjml_body, campaign.template} do
+        {mjml, _} when is_binary(mjml) and mjml != "" -> mjml
+        {_, %{mjml_body: mjml}} when is_binary(mjml) and mjml != "" -> mjml
+        _ -> ""
+      end
 
     mjml_content = campaign.mjml_content || %{}
-    mjml = Keila.Templates.MjmlTemplate.merge_content(mjml_body, mjml_content)
+    mjml = Keila.Templates.MjmlTemplate.merge_content_slots(mjml_body, mjml_content)
     __MODULE__.MJML.put_body(email, mjml, assigns)
   end
 

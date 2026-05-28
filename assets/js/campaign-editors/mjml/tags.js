@@ -36,6 +36,9 @@ export default {
     children: ["mj-section", "mj-wrapper"],
     globalAttrs: false
   },
+  "keila-code": {
+    globalAttrs: false
+  },
   "mj-accordion": {
     attrs: {
       "css-class": null,

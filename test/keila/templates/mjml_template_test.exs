@@ -3,6 +3,29 @@ defmodule Keila.Templates.MjmlTemplateTest do
   alias Keila.Templates.MjmlTemplate
   alias Keila.Templates.MjmlTemplate.Slot
 
+  describe "remove_code_blocks/1" do
+    test "strips opening, closing, and self-closing keila-code tags" do
+      input = """
+      <keila-code>{% assign x = 1 %}</keila-code>
+      <mj-section><keila-code/></mj-section>
+      <keila-code  >{% if x %}</keila-code  >
+      <p>hi</p>
+      <keila-code>{% endif %}</keila-code>
+      """
+
+      out = MjmlTemplate.remove_code_blocks(input)
+      refute out =~ "keila-code"
+      assert out =~ "{% assign x = 1 %}"
+      assert out =~ "{% if x %}"
+      assert out =~ "{% endif %}"
+      assert out =~ "<p>hi</p>"
+    end
+
+    test "nil input returns nil" do
+      assert MjmlTemplate.remove_code_blocks(nil) == nil
+    end
+  end
+
   describe "get_content_slots/1" do
     test "returns empty list when no slots present" do
       mjml = "<mjml><mj-body><mj-text>Hello</mj-text></mj-body></mjml>"
@@ -19,9 +42,9 @@ defmodule Keila.Templates.MjmlTemplateTest do
       """
 
       assert [
-               %Slot{name: "hero", default_content: "Hero default"},
+               %Slot{name: "hero", default_content: "Hero default" <> _},
                %Slot{name: "main", default_content: ""},
-               %Slot{name: "footer", default_content: "Footer default"}
+               %Slot{name: "footer", default_content: "Footer default" <> _}
              ] = MjmlTemplate.get_content_slots(mjml)
     end
 
@@ -109,6 +132,26 @@ defmodule Keila.Templates.MjmlTemplateTest do
       out = MjmlTemplate.merge_content_slots(mjml, nil)
       assert out =~ "Default"
       refute out =~ "keila-content"
+    end
+
+    test "preserves special characters inside Liquid tags, escapes them outside" do
+      mjml = """
+      <mjml><mj-body>
+        <mj-text>
+          &lt;outside&gt; &amp; text
+          {{ x | default: "<inside> & quote" }}
+          {% if a < b %}yes{% endif %}
+        </mj-text>
+      </mj-body></mjml>
+      """
+
+      out = MjmlTemplate.merge_content_slots(mjml, %{})
+
+      assert out =~ ~s({{ x | default: "<inside> & quote" }})
+      assert out =~ "{% if a < b %}"
+
+      assert out =~ "&lt;outside&gt;"
+      assert out =~ "&amp; text"
     end
   end
 end
