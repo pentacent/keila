@@ -134,6 +134,22 @@ defmodule Keila.Templates.MjmlTemplateTest do
       refute out =~ "keila-content"
     end
 
+    test "preserves Liquid in content slots" do
+      mjml = """
+      <mjml><mj-body>
+        <keila-content name="main">default</keila-content>
+      </mj-body></mjml>
+      """
+
+      content = %{
+        "main" => ~s(<mj-text>Hi {{ contact.first_name | default: "there" }}</mj-text>)
+      }
+
+      out = MjmlTemplate.merge_content_slots(mjml, content)
+      assert out =~ ~s({{ contact.first_name | default: "there" }})
+      refute out =~ "&quot;"
+    end
+
     test "preserves special characters inside Liquid tags, escapes them outside" do
       mjml = """
       <mjml><mj-body>

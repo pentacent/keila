@@ -34,7 +34,7 @@ defmodule Keila.Templates.MjmlTemplate do
   def get_content_slots(nil), do: []
 
   def get_content_slots(mjml) when is_binary(mjml) do
-    {mjml, liquid_tags} = stash_liquid(mjml)
+    mjml = stash_liquid(mjml)
 
     with {:ok, tree} <- Floki.parse_fragment(mjml) do
       tree
@@ -43,7 +43,7 @@ defmodule Keila.Templates.MjmlTemplate do
         name = attr_value(attrs, "name")
 
         if is_binary(name) and name != "" do
-          content = children |> Floki.raw_html(pretty: true) |> restore_liquid(liquid_tags)
+          content = children |> Floki.raw_html(pretty: true) |> restore_liquid()
           %Slot{name: name, default_content: content}
         end
       end)
@@ -64,8 +64,13 @@ defmodule Keila.Templates.MjmlTemplate do
   def merge_content_slots(nil, _content, _opts), do: nil
 
   def merge_content_slots(mjml, content, opts) when is_binary(mjml) do
-    {mjml, liquid_tags} = stash_liquid(mjml)
-    content = stringify_keys(content || %{})
+    mjml = stash_liquid(mjml)
+
+    content =
+      (content || %{})
+      |> stringify_keys()
+      |> Enum.map(fn {key, value} -> {key, stash_liquid(value)} end)
+      |> Enum.into(%{})
 
     with {:ok, tree} <- Floki.parse_fragment(mjml) do
       tree
@@ -78,33 +83,27 @@ defmodule Keila.Templates.MjmlTemplate do
           other
       end)
       |> Floki.raw_html(pretty: opts[:pretty] || false)
-      |> restore_liquid(liquid_tags)
+      |> restore_liquid()
     else
       _ -> mjml
     end
   end
 
   # This is necessary because otherwise parsing and serializing the HTML breaks special characters inside Liquid tags.
-  defp stash_liquid(mjml) do
-    expressions =
-      ~r/\{[\{%].*?[\}%]\}/s
-      |> Regex.scan(mjml)
-      |> Enum.map(fn [match] -> match end)
-      |> Enum.uniq()
-
-    base = :rand.uniform(900_000_000) + 1_000_000_000
-
-    expressions
-    |> Enum.with_index()
-    |> Enum.reduce({mjml, %{}}, fn {expr, i}, {acc, map} ->
-      placeholder = "__KEILA_LIQUID--#{base + i}__"
-      {String.replace(acc, expr, placeholder), Map.put(map, placeholder, expr)}
+  defp stash_liquid(mjml) when is_binary(mjml) do
+    Regex.replace(~r/\{[\{%].*?[\}%]\}/s, mjml, fn liquid ->
+      "__KEILA_LIQUID--#{Base.encode64(liquid)}__"
     end)
   end
 
-  defp restore_liquid(mjml, liquid_tags) do
-    Enum.reduce(liquid_tags, mjml, fn {placeholder, expr}, acc ->
-      String.replace(acc, placeholder, expr)
+  defp stash_liquid(nil), do: nil
+
+  defp restore_liquid(mjml) do
+    Regex.replace(~r{__KEILA_LIQUID--([A-Za-z0-9+/=]+)__}, mjml, fn full, liquid_base64 ->
+      case Base.decode64(liquid_base64) do
+        {:ok, decoded} -> decoded
+        :error -> full
+      end
     end)
   end
 
