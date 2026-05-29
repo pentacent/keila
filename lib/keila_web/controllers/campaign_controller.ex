@@ -53,7 +53,7 @@ defmodule KeilaWeb.CampaignController do
 
     params =
       (params["campaign"] || %{})
-      |> put_default_body()
+      |> put_default_body(project.id)
 
     case Mailings.create_campaign(project.id, params) do
       {:ok, campaign} ->
@@ -68,7 +68,8 @@ defmodule KeilaWeb.CampaignController do
     project = current_project(conn)
 
     senders = Mailings.get_project_senders(project.id)
-    templates = Templates.get_project_templates(project.id)
+    hybrid_templates = Templates.get_project_templates(project.id, type: :hybrid)
+    mjml_templates = Templates.get_project_templates(project.id, type: :mjml)
     segments = Contacts.get_project_segments(project.id)
 
     conn
@@ -76,17 +77,38 @@ defmodule KeilaWeb.CampaignController do
     |> put_meta(:title, gettext("New Campaign"))
     |> assign(:changeset, changeset)
     |> assign(:senders, senders)
-    |> assign(:templates, templates)
+    |> assign(:hybrid_templates, hybrid_templates)
+    |> assign(:mjml_templates, mjml_templates)
     |> assign(:segments, segments)
     |> render("new.html")
   end
 
-  defp put_default_body(params) do
+  defp put_default_body(params, project_id) do
     # TODO Maybe this would be better implemented as a Context module function
     case get_in(params, ["settings", "type"]) do
       "markdown" -> Map.put(params, "text_body", @default_markdown_body)
-      "mjml" -> Map.put(params, "mjml_body", @default_mjml_body)
+      "mjml" -> maybe_put_default_mjml_content(params, project_id)
       _ -> Map.put(params, "text_body", @default_text_body)
+    end
+  end
+
+  defp maybe_put_default_mjml_content(params, project_id) do
+    with template_id when template_id not in [nil, ""] <- params["template_id"],
+         template = Templates.get_project_template(project_id, template_id),
+         %{mjml_body: template_body} when template_body not in [nil, ""] <- template do
+      case Keila.Templates.MjmlTemplate.get_content_slots(template_body) do
+        [] ->
+          Map.put(params, "mjml_body", template_body)
+
+        slots ->
+          Map.put(
+            params,
+            "mjml_content",
+            Enum.map(slots, &{&1.name, &1.default_content}) |> Map.new()
+          )
+      end
+    else
+      _ -> Map.put(params, "mjml_body", @default_mjml_body)
     end
   end
 

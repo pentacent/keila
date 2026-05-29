@@ -44,8 +44,9 @@ const BlockEditorHook = {
 
 const MjmlEditorHook = {
   mounted() {
-    let place = this.el.querySelector(".editor")
-    new MjmlEditor(place, document.querySelector("#campaign_mjml_body"))
+    const place = this.el.querySelector(".editor")
+    const target = this.el.dataset.target
+    new MjmlEditor(place, document.querySelector(target))
   }
 }
 

@@ -4,6 +4,8 @@ defmodule KeilaWeb.CampaignEditLive do
 
   alias Keila.Accounts
   alias Keila.Mailings
+  alias Keila.Templates.MjmlTemplate
+  alias Keila.Templates.Template
 
   @impl true
   def mount(_params, session, socket) do
@@ -38,7 +40,7 @@ defmodule KeilaWeb.CampaignEditLive do
 
   defp put_campaign_preview(socket) do
     campaign = Ecto.Changeset.apply_changes(socket.assigns.changeset)
-    template = Enum.find(socket.assigns.templates, &(&1.id == campaign.template_id))
+    template = current_template(socket, campaign)
     campaign = %{campaign | template: template}
 
     email = Mailings.Builder.build_preview(campaign)
@@ -50,7 +52,19 @@ defmodule KeilaWeb.CampaignEditLive do
     |> maybe_put_styles(template)
     |> assign(:preview, preview)
     |> assign(:json_body, json_body)
+    |> assign(:mjml_slots, mjml_slots(campaign, template))
   end
+
+  defp mjml_slots(%{mjml_body: body}, _template) when is_binary(body) and body != "" do
+    []
+  end
+
+  defp mjml_slots(_campaign, %Template{type: :mjml, mjml_body: body})
+       when is_binary(body) and body != "" do
+    MjmlTemplate.get_content_slots(body)
+  end
+
+  defp mjml_slots(_campaign, _template), do: []
 
   @impl true
   def render(assigns) do
@@ -92,6 +106,23 @@ defmodule KeilaWeb.CampaignEditLive do
 
       {:noreply, socket}
     end
+  end
+
+  def handle_event("merge_mjml_template", _params, socket) do
+    campaign = Ecto.Changeset.apply_changes(socket.assigns.changeset)
+    template = current_template(socket, campaign)
+    template_mjml = (template && template.mjml_body) || ""
+    mjml = MjmlTemplate.merge_content_slots(template_mjml, campaign.mjml_content, pretty: true)
+
+    changeset = merged_changeset(socket, %{"mjml_body" => mjml, "mjml_content" => %{}})
+
+    socket =
+      socket
+      |> assign(:changeset, changeset)
+      |> assign(:settings_changeset, changeset)
+      |> put_campaign_preview()
+
+    {:noreply, socket}
   end
 
   def handle_event("save", params, socket) do
@@ -270,7 +301,7 @@ defmodule KeilaWeb.CampaignEditLive do
   end
 
   defp send_previews(socket, contacts, campaign, sender) do
-    template = Enum.find(socket.assigns.templates, &(&1.id == campaign.template_id))
+    template = current_template(socket, campaign)
     subject = gettext("[Preview] %{subject}", subject: campaign.subject)
 
     for contact <- contacts do
@@ -426,5 +457,9 @@ defmodule KeilaWeb.CampaignEditLive do
     socket
     |> assign(:changeset, changeset)
     |> assign(:settings_changeset, changeset)
+  end
+
+  defp current_template(socket, campaign) do
+    Enum.find(socket.assigns.templates, &(&1.id == campaign.template_id))
   end
 end

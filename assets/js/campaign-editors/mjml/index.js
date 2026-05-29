@@ -10,6 +10,8 @@ import tags from "./tags.js"
 import theme from "./theme.js"
 
 export default class MjmlEditor {
+  static activeEditor = null
+
   constructor(place, source, options = {}) {
     this.source = source
     this.place = place
@@ -32,7 +34,13 @@ export default class MjmlEditor {
       parent: place
     })
 
+    if (!MjmlEditor.activeEditor) MjmlEditor.activeEditor = this
+    this.view.dom.addEventListener("focusin", () => {
+      MjmlEditor.activeEditor = this
+    })
+
     document.getElementById("mjml-editor-toolbar").addEventListener("x-show-image-dialog", () => {
+      if (MjmlEditor.activeEditor !== this) return
       document
         .querySelector("[data-dialog-for=image]")
         .dispatchEvent(new CustomEvent("x-show", { detail: {} }))

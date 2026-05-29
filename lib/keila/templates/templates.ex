@@ -67,11 +67,26 @@ defmodule Keila.Templates do
 
   @doc """
   Returns all Templates belonging to specified Project.
+
+  Options:
+    * `:type` - filter by template type. Accepts a single atom (e.g. `:mjml`)
+      or a list of atoms (e.g. `[:mjml, :html]`).
   """
-  @spec get_project_templates(Project.id()) :: [Template.t()]
-  def get_project_templates(project_id) when is_id(project_id) do
+  @spec get_project_templates(Project.id(), keyword()) :: [Template.t()]
+  def get_project_templates(project_id, opts \\ []) when is_id(project_id) do
     from(t in Template, where: t.project_id == ^project_id, order_by: [desc: t.updated_at])
+    |> maybe_filter_template_type(opts[:type])
     |> Repo.all()
+  end
+
+  defp maybe_filter_template_type(query, nil), do: query
+
+  defp maybe_filter_template_type(query, type) when is_atom(type) do
+    from(t in query, where: t.type == ^type)
+  end
+
+  defp maybe_filter_template_type(query, types) when is_list(types) do
+    from(t in query, where: t.type in ^types)
   end
 
   @doc """
