@@ -12,6 +12,9 @@ defmodule Keila.Templates do
   use Keila.Repo
   alias __MODULE__.{Template}
 
+  defdelegate get_content_slots(input, opts), to: __MODULE__.ContentSlots
+  defdelegate merge_content_slots(input, content, opts \\ []), to: __MODULE__.ContentSlots
+
   @doc """
   Creates a new template.
   """

@@ -39,7 +39,8 @@ export default class MjmlEditor {
       MjmlEditor.activeEditor = this
     })
 
-    document.getElementById("mjml-editor-toolbar").addEventListener("x-show-image-dialog", () => {
+    const toolbar = document.querySelector(options.toolbar)
+    toolbar.addEventListener("x-show-image-dialog", () => {
       if (MjmlEditor.activeEditor !== this) return
       document
         .querySelector("[data-dialog-for=image]")

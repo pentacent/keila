@@ -1,4 +1,4 @@
-<div id="mjml-editor-toolbar" class="w-full sticky top-0 z-10" phx-update="ignore">
+<div id="html-editor-toolbar" class="w-full sticky top-0 z-10" phx-update="ignore">
   <div class="wysiwyg--menu bg-white relative shadow z-10 flex overflow-x-auto mt-4">
     <button
       type="button"
@@ -19,10 +19,10 @@
     <%= if @content_slots != [] do %>
       <button
         type="button"
-        phx-click="merge_mjml_template"
+        phx-click="merge_html_template"
         data-confirm={
           gettext(
-            "This will merge your content slots with the MJML template and allow you to edit the full MJML document. You will no longer be able to edit slots separately. This action cannot be undone."
+            "This will merge your content slots with the HTML template and allow you to edit the full HTML document. You will no longer be able to edit slots separately. This action cannot be undone."
           )
         }
         class="flex h-10 px-3 items-center justify-center bg-white hover:bg-amber-100 text-black text-sm"
@@ -61,10 +61,10 @@
         <div class="mt-4">
           <label class="text-sm font-semibold text-zinc-100 mb-1 block">{slot.name}</label>
           <div
-            id={"mjml-slot-" <> slot.name}
-            phx-hook="MjmlEditor"
+            id={"html-slot-" <> slot.name}
+            phx-hook="HtmlEditor"
             phx-update="ignore"
-            data-target={"#campaign_mjml_content_" <> slot.name}
+            data-target={"#campaign_html_content_" <> slot.name}
           >
             <div class="editor"></div>
           </div>
@@ -72,20 +72,20 @@
       <% end %>
     <% else %>
       <div
-        id="mjml-editor-wrapper"
+        id="html-editor-wrapper"
         class="h-full [&_.editor]:h-full [&_.cm-editor]:h-full"
-        phx-hook="MjmlEditor"
+        phx-hook="HtmlEditor"
         phx-update="ignore"
-        data-target="#campaign_mjml_body"
+        data-target="#campaign_html_body"
       >
-        <div id="mjml-editor" class="editor"></div>
+        <div id="html-editor" class="editor"></div>
       </div>
     <% end %>
   </div>
   <iframe
     id="html-inline-preview"
     src="about:blank"
-    class="h-full transition-all"
+    class="bg-white h-full transition-all"
     x-bind:class="editorExpanded ? 'w-0' : 'w-3/5'"
   >
   </iframe>
@@ -94,19 +94,19 @@
 <%= if @content_slots != [] do %>
   <%= for slot <- @content_slots do %>
     <textarea
-      id={"campaign_mjml_content_" <> slot.name}
-      name={"campaign[mjml_content][" <> slot.name <> "]"}
+      id={"campaign_html_content_" <> slot.name}
+      name={"campaign[html_content][" <> slot.name <> "]"}
       class="hidden"
       phx-debounce="1000"
-    ><%= (Ecto.Changeset.get_field(@changeset, :mjml_content) || %{})[slot.name] %></textarea>
+    ><%= (Ecto.Changeset.get_field(@changeset, :html_content) || %{})[slot.name] || slot.default_content %></textarea>
   <% end %>
 <% else %>
   <textarea
-    id="campaign_mjml_body"
-    name="campaign[mjml_body]"
+    id="campaign_html_body"
+    name="campaign[html_body]"
     class="hidden"
     phx-debounce="1000"
-  ><%= Ecto.Changeset.get_field(@changeset, :mjml_body) %></textarea>
+  ><%= Ecto.Changeset.get_field(@changeset, :html_body) %></textarea>
 <% end %>
 
 <div

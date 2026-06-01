@@ -4,7 +4,7 @@ defmodule KeilaWeb.CampaignEditLive do
 
   alias Keila.Accounts
   alias Keila.Mailings
-  alias Keila.Templates.MjmlTemplate
+  alias Keila.Templates
   alias Keila.Templates.Template
 
   @impl true
@@ -52,19 +52,27 @@ defmodule KeilaWeb.CampaignEditLive do
     |> maybe_put_styles(template)
     |> assign(:preview, preview)
     |> assign(:json_body, json_body)
-    |> assign(:mjml_slots, mjml_slots(campaign, template))
+    |> assign(:content_slots, content_slots(campaign, template))
   end
 
-  defp mjml_slots(%{mjml_body: body}, _template) when is_binary(body) and body != "" do
-    []
+  defp content_slots(campaign, template) do
+    with {body, mode} when is_binary(body) and body != "" <- template_body(template),
+         true <- has_campaign_body?(campaign, mode) do
+      Templates.get_content_slots(body, mode: mode)
+    else
+      _ -> []
+    end
   end
 
-  defp mjml_slots(_campaign, %Template{type: :mjml, mjml_body: body})
-       when is_binary(body) and body != "" do
-    MjmlTemplate.get_content_slots(body)
-  end
+  defp template_body(%Template{type: :mjml, mjml_body: body}), do: {body, :mjml}
+  defp template_body(%Template{type: :text, text_body: body}), do: {body, :text}
+  defp template_body(%Template{type: :html, html_body: body}), do: {body, :html}
+  defp template_body(_), do: nil
 
-  defp mjml_slots(_campaign, _template), do: []
+  defp has_campaign_body?(%{mjml_body: body}, :mjml) when is_binary(body) and body != "", do: true
+  defp has_campaign_body?(%{text_body: body}, :text) when is_binary(body) and body != "", do: true
+  defp has_campaign_body?(%{html_body: body}, :html) when is_binary(body) and body != "", do: true
+  defp has_campaign_body?(_, _), do: false
 
   @impl true
   def render(assigns) do
@@ -112,9 +120,53 @@ defmodule KeilaWeb.CampaignEditLive do
     campaign = Ecto.Changeset.apply_changes(socket.assigns.changeset)
     template = current_template(socket, campaign)
     template_mjml = (template && template.mjml_body) || ""
-    mjml = MjmlTemplate.merge_content_slots(template_mjml, campaign.mjml_content, pretty: true)
+
+    mjml =
+      Templates.merge_content_slots(template_mjml, campaign.mjml_content,
+        mode: :mjml,
+        pretty: true
+      )
 
     changeset = merged_changeset(socket, %{"mjml_body" => mjml, "mjml_content" => %{}})
+
+    socket =
+      socket
+      |> assign(:changeset, changeset)
+      |> assign(:settings_changeset, changeset)
+      |> put_campaign_preview()
+
+    {:noreply, socket}
+  end
+
+  def handle_event("merge_text_template", _params, socket) do
+    campaign = Ecto.Changeset.apply_changes(socket.assigns.changeset)
+    template = current_template(socket, campaign)
+    template_text = (template && template.text_body) || ""
+    text = Templates.merge_content_slots(template_text, campaign.text_content, mode: :text)
+
+    changeset = merged_changeset(socket, %{"text_body" => text, "text_content" => %{}})
+
+    socket =
+      socket
+      |> assign(:changeset, changeset)
+      |> assign(:settings_changeset, changeset)
+      |> put_campaign_preview()
+
+    {:noreply, socket}
+  end
+
+  def handle_event("merge_html_template", _params, socket) do
+    campaign = Ecto.Changeset.apply_changes(socket.assigns.changeset)
+    template = current_template(socket, campaign)
+    template_html = (template && template.html_body) || ""
+
+    html =
+      Templates.merge_content_slots(template_html, campaign.html_content,
+        mode: :html,
+        pretty: true
+      )
+
+    changeset = merged_changeset(socket, %{"html_body" => html, "html_content" => %{}})
 
     socket =
       socket
@@ -383,9 +435,7 @@ defmodule KeilaWeb.CampaignEditLive do
     end
   end
 
-  defp transform_style_selector(selector, :text), do: selector
-
-  defp transform_style_selector(selector, :mjml), do: selector
+  defp transform_style_selector(selector, _other), do: selector
 
   @markdown_editor_selector "#wysiwyg .editor"
   @markdown_editor_content_selector "#wysiwyg .editor .ProseMirror"

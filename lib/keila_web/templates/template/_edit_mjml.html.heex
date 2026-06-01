@@ -1,0 +1,95 @@
+<div class="container pb-8">
+  <.form
+    :let={f}
+    for={@changeset}
+    id="template"
+    action={Routes.template_path(@socket, :post_edit, @current_project.id, @template.id)}
+    phx-change="form_updated"
+    x-on:change="setUnsavedReminder(true)"
+    class="flex flex-col gap-4 w-full"
+  >
+    <%= with_validation(f, :name) do %>
+      {label(f, :name, gettext("Name"))}
+      {text_input(f, :name, class: "text-black")}
+    <% end %>
+
+    <div class="flex flex-col w-full">
+      <div
+        id="mjml-container"
+        phx-hook="MjmlEditor"
+        data-target="#template_mjml_body"
+      >
+        <div id="mjml-editor-toolbar" class="w-full sticky top-0 z-10" phx-update="ignore">
+          <div class="wysiwyg--menu bg-white relative shadow z-10 flex overflow-x-auto mt-4">
+            <button
+              type="button"
+              title={gettext("Insert image")}
+              class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
+              @click.prevent="$dispatch('x-show-image-dialog')"
+            >
+              {render_icon(:photograph)}
+            </button>
+            <button
+              type="button"
+              title={gettext("Expand editor")}
+              class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
+              @click.prevent="$dispatch('x-toggle-expand-editor')"
+            >
+              {render_icon(:arrows_expand)}
+            </button>
+
+            <div class="flex-grow"></div>
+
+            <button
+              type="button"
+              title={gettext("Preview")}
+              class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
+              @click.prevent="$dispatch('x-toggle-preview')"
+            >
+              {render_icon(:eye)}
+            </button>
+          </div>
+        </div>
+
+        <div id="mjml-editor-wrapper" phx-update="ignore">
+          <div
+            class="flex"
+            x-data="{editorExpanded: false}"
+            x-on:x-toggle-expand-editor.document="editorExpanded = !editorExpanded"
+          >
+            <%!--
+            NOTE: using width: 0 for the editor is a weird hack here because otherwise the editor kept
+            causing the entire page to overflow.
+            The width of the editor is controlled via the (inverse) width of the iframe instead.
+           --%>
+            <div class="flex-grow transition-all" style="width: 0">
+              <div id="mjml-editor" class="editor"></div>
+            </div>
+            <iframe
+              id="html-inline-preview"
+              src="about:blank"
+              class="bg-white transition-all"
+              x-bind:class="editorExpanded ? 'w-0' : 'w-3/5'"
+            >
+            </iframe>
+          </div>
+        </div>
+
+        {textarea(f, :mjml_body,
+          rows: 20,
+          class: "hidden",
+          phx_debounce: "1000"
+        )}
+
+        <div
+          id="html-preview-data"
+          phx-hook="HtmlPreview"
+          class="hidden"
+          data-iframe="#html-inline-preview, #html-preview"
+        >
+          {@preview}
+        </div>
+      </div>
+    </div>
+  </.form>
+</div>
