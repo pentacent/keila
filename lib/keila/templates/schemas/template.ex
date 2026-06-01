@@ -7,7 +7,7 @@ defmodule Keila.Templates.Template do
     field(:styles, :string)
     field(:assigns, :map)
 
-    field(:type, Ecto.Enum, values: [text: 0, html: 1, mjml: 10, hybrid: 20], default: :hybrid)
+    field(:type, Ecto.Enum, values: [text: 0, html: 1, mjml: 10, hybrid: 20])
     field(:mjml_body, :string)
     field(:html_body, :string)
     field(:text_body, :string)
@@ -30,7 +30,7 @@ defmodule Keila.Templates.Template do
   def creation_changeset(struct \\ %__MODULE__{}, params) do
     struct
     |> cast(params, @creation_fields)
-    |> validate_required([:name, :project_id])
+    |> validate_required([:name, :project_id, :type])
   end
 
   def update_changeset(struct \\ %__MODULE__{}, params) do

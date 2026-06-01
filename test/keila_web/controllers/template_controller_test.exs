@@ -37,7 +37,7 @@ defmodule KeilaWeb.TemplateControllerTest do
     test "creates new template and redirects", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
 
-      params = %{"name" => "My Template"}
+      params = %{"name" => "My Template", "type" => "hybrid"}
       conn = post(conn, Routes.template_path(conn, :post_new, project.id, template: params))
       assert redirected_to(conn, 302) =~ Routes.template_path(conn, :edit, project.id, "ntpl_")
     end
@@ -82,7 +82,7 @@ defmodule KeilaWeb.TemplateControllerTest do
     test "generates template preview", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
 
-      template = insert!(:template, project_id: project.id, styles: "h1 { color: #ff00ff }")
+      template = insert!(:template, project_id: project.id, type: :hybrid, styles: "h1 { color: #ff00ff }")
 
       conn = get(conn, Routes.template_path(conn, :edit, project.id, template.id))
       {:ok, lv, html} = live(conn)

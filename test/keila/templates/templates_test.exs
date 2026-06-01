@@ -118,14 +118,6 @@ defmodule Keila.TemplatesTest do
   end
 
   @tag :templates
-  test "newly created templates default to :hybrid type", %{project: project} do
-    assert {:ok, template} =
-             Templates.create_template(project.id, %{"name" => "New template"})
-
-    assert template.type == :hybrid
-  end
-
-  @tag :templates
   test "update_template accepts mjml_body, html_body, text_body",
        %{project: project} do
     template = insert!(:template, project_id: project.id)
@@ -150,5 +142,12 @@ defmodule Keila.TemplatesTest do
 
     assert {:ok, updated} = Templates.update_template(template.id, %{"type" => "mjml"})
     assert updated.type == template.type
+  end
+
+  @tag :templates
+  test "create_template requires a type", %{project: project} do
+    params = %{"name" => "No Type"}
+    assert {:error, changeset} = Templates.create_template(project.id, params)
+    assert "can't be blank" in errors_on(changeset).type
   end
 end
