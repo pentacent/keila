@@ -435,8 +435,6 @@ defmodule KeilaWeb.CampaignEditLive do
     end
   end
 
-  defp transform_style_selector(selector, _other), do: selector
-
   @markdown_editor_selector "#wysiwyg .editor"
   @markdown_editor_content_selector "#wysiwyg .editor .ProseMirror"
   defp transform_style_selector(selector, :markdown) do
@@ -469,6 +467,8 @@ defmodule KeilaWeb.CampaignEditLive do
         @block_editor_selector <> " " <> selector
     end
   end
+
+  defp transform_style_selector(selector, _other), do: selector
 
   defp put_recipient_count(socket) do
     segment_id = Ecto.Changeset.get_field(socket.assigns.changeset, :segment_id)
