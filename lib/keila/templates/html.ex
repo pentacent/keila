@@ -195,14 +195,19 @@ defmodule Keila.Templates.Html do
   end
 
   defp do_apply_email_markup(
-         {"a", a_attrs, [{"table", _, [{"tr", _, [{"td", _, [{"img", img_attrs, _}]}]}]}]}
+         {"a", a_attrs,
+          [{"table", _, [{"tbody", _, [{"tr", _, [{"td", _, [{"img", img_attrs, _}]}]}]}]}]}
        ) do
     build_img_with_link(a_attrs, img_attrs)
   end
 
   defp do_apply_email_markup(
          {"a", a_attrs,
-          [_, {"table", _, [{"tr", _, [{"td", _, [{"img", img_attrs, _}]}]}]}, "\n"]}
+          [
+            _,
+            {"table", _, [{"tbody", _, [{"tr", _, [{"td", _, [{"img", img_attrs, _}]}]}]}]},
+            "\n"
+          ]}
        ) do
     build_img_with_link(a_attrs, img_attrs)
   end
