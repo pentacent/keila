@@ -3460,9 +3460,9 @@ msgid "Confirming ..."
 msgstr ""
 
 #: lib/keila_web/templates/form/index.html.heex:37
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Open"
-msgstr "Aperturas"
+msgstr "Abrir"
 
 #: lib/keila_web/controllers/public_form_controller.ex:169
 #: lib/keila_web/controllers/public_form_controller.ex:208
@@ -3472,9 +3472,9 @@ msgid "Please confirm that you want to unsubscribe."
 msgstr ""
 
 #: lib/keila_web/controllers/public_form_controller.ex:86
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Please confirm your subscription."
-msgstr "Por favor confirma tu correo electrónico"
+msgstr "Por favor confirma tu suscripción."
 
 #: lib/keila_web/controllers/public_form_controller.ex:166
 #: lib/keila_web/controllers/public_form_controller.ex:172
@@ -3484,9 +3484,9 @@ msgstr "Por favor confirma tu correo electrónico"
 #: lib/keila_web/controllers/public_form_controller.ex:232
 #: lib/keila_web/controllers/public_form_controller.ex:246
 #: lib/keila_web/controllers/public_form_controller.ex:262
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Unsubscribing ..."
-msgstr "Darse de baja"
+msgstr "Cancelando suscripción…"
 
 #: lib/keila_web/templates/sender/edit_live.html.heex:53
 #, elixir-autogen, elixir-format, fuzzy
@@ -3524,13 +3524,13 @@ msgstr "justificado"
 #, elixir-autogen, elixir-format
 msgctxt "text-alignment"
 msgid "Left"
-msgstr ""
+msgstr "a la izquierda"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:165
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgctxt "text-alignment"
 msgid "Right"
-msgstr "claro"
+msgstr "a la derecha"
 
 #: extra/keila_cloud_web/templates/cloud_partner/index.html.heex:17
 #, elixir-autogen, elixir-format
@@ -3538,6 +3538,6 @@ msgid "Monthly allocated quota"
 msgstr ""
 
 #: lib/keila_web/templates/campaign/stats_live.html.heex:255
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "emails failed"
-msgstr "correos con clics"
+msgstr "correos fallidos"

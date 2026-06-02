@@ -3625,9 +3625,9 @@ msgid "Confirming ..."
 msgstr ""
 
 #: lib/keila_web/templates/form/index.html.heex:37
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Open"
-msgstr "Megnyitások"
+msgstr "Megnyitás"
 
 #: lib/keila_web/controllers/public_form_controller.ex:169
 #: lib/keila_web/controllers/public_form_controller.ex:208
@@ -3637,9 +3637,9 @@ msgid "Please confirm that you want to unsubscribe."
 msgstr ""
 
 #: lib/keila_web/controllers/public_form_controller.ex:86
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Please confirm your subscription."
-msgstr "Kérjük, erősítse meg e-mail címét"
+msgstr "Kérjük, erősítse meg a feliratkozását."
 
 #: lib/keila_web/controllers/public_form_controller.ex:166
 #: lib/keila_web/controllers/public_form_controller.ex:172
@@ -3649,9 +3649,9 @@ msgstr "Kérjük, erősítse meg e-mail címét"
 #: lib/keila_web/controllers/public_form_controller.ex:232
 #: lib/keila_web/controllers/public_form_controller.ex:246
 #: lib/keila_web/controllers/public_form_controller.ex:262
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Unsubscribing ..."
-msgstr "Leiratkozás"
+msgstr "Leiratkozás folyamatban…"
 
 #: lib/keila_web/templates/sender/edit_live.html.heex:53
 #, elixir-autogen, elixir-format, fuzzy
@@ -3691,13 +3691,13 @@ msgstr "sorkizárt"
 #, elixir-autogen, elixir-format
 msgctxt "text-alignment"
 msgid "Left"
-msgstr ""
+msgstr "balra igazított"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:165
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgctxt "text-alignment"
 msgid "Right"
-msgstr "vékony"
+msgstr "jobbra igazított"
 
 #: extra/keila_cloud_web/templates/cloud_partner/index.html.heex:17
 #, elixir-autogen, elixir-format
@@ -3705,6 +3705,6 @@ msgid "Monthly allocated quota"
 msgstr ""
 
 #: lib/keila_web/templates/campaign/stats_live.html.heex:255
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "emails failed"
-msgstr "e-mailekre kattintások"
+msgstr "sikertelen e-mailek"

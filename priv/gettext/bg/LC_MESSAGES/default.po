@@ -3363,9 +3363,9 @@ msgstr "# Добре дошли!\n\nБлагодарим ви, че се або�
 
 #: lib/keila_web/templates/form/edit_live.html.heex:388
 #: lib/keila_web/templates/form/edit_live.html.heex:598
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "**Important:** You must create and select a sender to send emails."
-msgstr "**Вaжно:** Трябва да създадете и изберете подател тук. В противен случай, няма да бъдат изпращани имейли за потвърждение."
+msgstr "**Важно:** Трябва да създадете и изберете подател, за да изпращате имейли."
 
 #: lib/keila_web/templates/form/edit_live.html.heex:557
 #, elixir-autogen, elixir-format
@@ -3373,15 +3373,15 @@ msgid "Email subject"
 msgstr ""
 
 #: lib/keila_web/templates/form/edit_live.html.heex:639
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Email text"
-msgstr "Имейл"
+msgstr "Текст на имейла"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:365
 #: lib/keila_web/templates/form/edit_live.html.heex:575
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Select a sender"
-msgstr "Изберете файл"
+msgstr "Изберете подател"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:551
 #, elixir-autogen, elixir-format
@@ -3461,9 +3461,9 @@ msgid "Confirming ..."
 msgstr ""
 
 #: lib/keila_web/templates/form/index.html.heex:37
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Open"
-msgstr "Отваря"
+msgstr "Отвори"
 
 #: lib/keila_web/controllers/public_form_controller.ex:169
 #: lib/keila_web/controllers/public_form_controller.ex:208
@@ -3473,9 +3473,9 @@ msgid "Please confirm that you want to unsubscribe."
 msgstr ""
 
 #: lib/keila_web/controllers/public_form_controller.ex:86
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Please confirm your subscription."
-msgstr "Моля, потвърдете имейла си"
+msgstr "Моля, потвърдете абонамента си."
 
 #: lib/keila_web/controllers/public_form_controller.ex:166
 #: lib/keila_web/controllers/public_form_controller.ex:172
@@ -3485,9 +3485,9 @@ msgstr "Моля, потвърдете имейла си"
 #: lib/keila_web/controllers/public_form_controller.ex:232
 #: lib/keila_web/controllers/public_form_controller.ex:246
 #: lib/keila_web/controllers/public_form_controller.ex:262
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Unsubscribing ..."
-msgstr "Отпиши се"
+msgstr "Отписване…"
 
 #: lib/keila_web/templates/sender/edit_live.html.heex:53
 #, elixir-autogen, elixir-format, fuzzy
@@ -3525,13 +3525,13 @@ msgstr "подравнен"
 #, elixir-autogen, elixir-format
 msgctxt "text-alignment"
 msgid "Left"
-msgstr ""
+msgstr "вляво"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:165
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgctxt "text-alignment"
 msgid "Right"
-msgstr "нормално"
+msgstr "вдясно"
 
 #: extra/keila_cloud_web/templates/cloud_partner/index.html.heex:17
 #, elixir-autogen, elixir-format
@@ -3539,6 +3539,6 @@ msgid "Monthly allocated quota"
 msgstr ""
 
 #: lib/keila_web/templates/campaign/stats_live.html.heex:255
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "emails failed"
-msgstr "имейли с кликнати линкове"
+msgstr "неуспешни имейли"

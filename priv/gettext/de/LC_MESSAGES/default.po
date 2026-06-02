@@ -3603,13 +3603,13 @@ msgid "Width of the image in pixels (optional)"
 msgstr ""
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:162
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgctxt "text-alignment"
 msgid "Centered"
 msgstr "zentriert"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:168
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgctxt "text-alignment"
 msgid "Justified"
 msgstr "Blocksatz"
@@ -3618,13 +3618,13 @@ msgstr "Blocksatz"
 #, elixir-autogen, elixir-format
 msgctxt "text-alignment"
 msgid "Left"
-msgstr ""
+msgstr "links"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:165
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgctxt "text-alignment"
 msgid "Right"
-msgstr "leicht"
+msgstr "rechts"
 
 #: extra/keila_cloud_web/templates/cloud_partner/index.html.heex:17
 #, elixir-autogen, elixir-format
@@ -3632,6 +3632,6 @@ msgid "Monthly allocated quota"
 msgstr ""
 
 #: lib/keila_web/templates/campaign/stats_live.html.heex:255
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "emails failed"
-msgstr "Emails geklickt"
+msgstr "Fehlgeschlagene E-Mails"

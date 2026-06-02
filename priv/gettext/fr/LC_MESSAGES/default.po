@@ -2631,9 +2631,9 @@ msgid "Text"
 msgstr "Texte"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:685
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Body background"
-msgstr "Arrière plan"
+msgstr "Arrière plan de la page"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:347
 #, elixir-autogen, elixir-format
@@ -2646,7 +2646,7 @@ msgid "Custom email text"
 msgstr "Texte personnalisé de l’e-mail"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:224
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Data Key"
 msgstr "Clé de la donnée"
 
@@ -2666,7 +2666,7 @@ msgid "Input background"
 msgstr "Arrière plan du champ"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:715
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Input border color"
 msgstr "Couleur de bordure du champ"
 
@@ -2719,12 +2719,12 @@ msgstr ""
 
 #: lib/keila_web/templates/project/edit.html.heex:45
 #: lib/keila_web/templates/project/new.html.heex:23
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Project name"
 msgstr "Nom du projet"
 
 #: lib/keila_web/templates/sender/edit_live.html.heex:105
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Sender name"
 msgstr "Nom de l’expéditeur"
 
@@ -3088,9 +3088,9 @@ msgid "duplicate entry"
 msgstr ""
 
 #: lib/keila_web/templates/campaign/share.html.heex:81
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Address copied to clipboard."
-msgstr "Code copié dans le presse-papier."
+msgstr "Adresse copiée dans le presse-papier."
 
 #: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:50
 #: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:56
@@ -3129,7 +3129,7 @@ msgstr ""
 #: lib/keila_web/templates/campaign/share.html.heex:23
 #: lib/keila_web/templates/campaign/stats_live.html.heex:224
 #: lib/keila_web/templates/campaign/view.html.heex:23
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Statistics"
 msgstr "Statistiques"
 
@@ -3186,9 +3186,9 @@ msgid "Align right"
 msgstr ""
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:99
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Background Color"
-msgstr "Arrière plan"
+msgstr "Couleur d’arrière-plan"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:105
 #, elixir-autogen, elixir-format
@@ -3221,12 +3221,12 @@ msgid "Icon URL (e.g. https://example.com/icon.png)"
 msgstr ""
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:156
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Large"
 msgstr "grande"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:153
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Medium"
 msgstr "moyenne"
 
@@ -3246,12 +3246,12 @@ msgid "Profile URL (e.g., https://example.com/yourprofile)"
 msgstr ""
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:84
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Select a site..."
-msgstr "Sélectionner un fichier"
+msgstr "Sélectionner un site…"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:150
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Small"
 msgstr "petite"
 
@@ -3281,14 +3281,14 @@ msgid "Back to form"
 msgstr ""
 
 #: lib/keila_web/templates/form/edit_live.html.heex:480
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Double Opt-in Failure Message"
-msgstr "Double opt-in"
+msgstr "Message d’échec du double opt-in"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:495
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Double Opt-in Failure Redirect URL"
-msgstr "URL de redirection pour double le opt-in"
+msgstr "URL de redirection en cas d’échec du double opt-in"
 
 #: lib/keila_web/templates/sender/edit_live.html.heex:84
 #, elixir-autogen, elixir-format
@@ -3312,9 +3312,9 @@ msgid "Please submit the form again to receive a new confirmation link."
 msgstr ""
 
 #: lib/keila_web/templates/sender/edit_live.html.heex:144
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Reply-to settings"
-msgstr "Répondre à : nom"
+msgstr "Paramètres de réponse"
 
 #: lib/keila_web/templates/public_form/double_opt_in_failure.html.heex:10
 #, elixir-autogen, elixir-format
@@ -3508,7 +3508,7 @@ msgid "Custom message that is shown when a user submits the form and double opt-
 msgstr "Message personnalisé affiché lorsqu'un utilisateur soumet le formulaire\net que le double opt-in est requis.\n"
 
 #: lib/keila_web/templates/form/edit_live.html.heex:431
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "You may use Liquid and Markdown in the email body.\n\nUse `[Confirm]({{ double_opt_in_link }})` to include the opt-in link.\n"
 msgstr ""
 "  Vous pouvez utiliser Liquid et Markdown dans le corps de l’e-mail.\n"
@@ -3516,7 +3516,7 @@ msgstr ""
 "  Utilisez `[Confirmer]({{ double_opt_in_link }})` pour inclure le lien d’opt-in.\n"
 
 #: lib/keila_web/controllers/public_form_controller.ex:171
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Cancel Subscription"
 msgstr "Annuler l’abonnement"
 
@@ -3532,9 +3532,9 @@ msgid "Confirming ..."
 msgstr ""
 
 #: lib/keila_web/templates/form/index.html.heex:37
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Open"
-msgstr "Ouvertures"
+msgstr "Ouvrir"
 
 #: lib/keila_web/controllers/public_form_controller.ex:169
 #: lib/keila_web/controllers/public_form_controller.ex:208
@@ -3544,9 +3544,9 @@ msgid "Please confirm that you want to unsubscribe."
 msgstr ""
 
 #: lib/keila_web/controllers/public_form_controller.ex:86
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Please confirm your subscription."
-msgstr "Veuillez confirmer votre adresse e-mail"
+msgstr "Veuillez confirmer votre abonnement."
 
 #: lib/keila_web/controllers/public_form_controller.ex:166
 #: lib/keila_web/controllers/public_form_controller.ex:172
@@ -3556,12 +3556,12 @@ msgstr "Veuillez confirmer votre adresse e-mail"
 #: lib/keila_web/controllers/public_form_controller.ex:232
 #: lib/keila_web/controllers/public_form_controller.ex:246
 #: lib/keila_web/controllers/public_form_controller.ex:262
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Unsubscribing ..."
-msgstr "Se désabonner"
+msgstr "Désabonnement…"
 
 #: lib/keila_web/templates/sender/edit_live.html.heex:53
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "We have sent you an email to *%{email}*. \\\nPlease click on the link in the email to verify your email address.\n"
 msgstr ""
 
@@ -3581,13 +3581,13 @@ msgid "Width of the image in pixels (optional)"
 msgstr ""
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:162
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgctxt "text-alignment"
 msgid "Centered"
 msgstr "centré"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:168
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgctxt "text-alignment"
 msgid "Justified"
 msgstr "justifié"
@@ -3596,13 +3596,13 @@ msgstr "justifié"
 #, elixir-autogen, elixir-format
 msgctxt "text-alignment"
 msgid "Left"
-msgstr ""
+msgstr "à gauche"
 
 #: lib/keila_web/templates/campaign/_block_editor.html.heex:165
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgctxt "text-alignment"
 msgid "Right"
-msgstr "fine"
+msgstr "à droite"
 
 #: extra/keila_cloud_web/templates/cloud_partner/index.html.heex:17
 #, elixir-autogen, elixir-format
@@ -3610,6 +3610,6 @@ msgid "Monthly allocated quota"
 msgstr ""
 
 #: lib/keila_web/templates/campaign/stats_live.html.heex:255
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "emails failed"
-msgstr "e-mails cliqués"
+msgstr "e-mails échoués"
