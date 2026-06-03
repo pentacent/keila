@@ -82,7 +82,8 @@ defmodule KeilaWeb.TemplateControllerTest do
     test "generates template preview", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
 
-      template = insert!(:template, project_id: project.id, type: :hybrid, styles: "h1 { color: #ff00ff }")
+      template =
+        insert!(:template, project_id: project.id, type: :hybrid, styles: "h1 { color: #ff00ff }")
 
       conn = get(conn, Routes.template_path(conn, :edit, project.id, template.id))
       {:ok, lv, html} = live(conn)

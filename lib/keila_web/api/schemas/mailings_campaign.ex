@@ -48,6 +48,32 @@ defmodule KeilaWeb.Api.Schemas.MailingsCampaign do
       </mjml>
       """
     },
+    html_body: %{
+      type: :string,
+      example: """
+      <!doctype html>
+      <html>
+        <body>
+          <h1>Hello {{ contact.first_name }}!</h1>
+        </body>
+      </html>
+      """
+    },
+    mjml_content: %{
+      type: :map,
+      description: "Map of MJML content slots, keyed by slot name.",
+      example: %{"main" => "<mj-text>Hi {{ contact.first_name }}!</mj-text>"}
+    },
+    html_content: %{
+      type: :map,
+      description: "Map of HTML content slots, keyed by slot name.",
+      example: %{"main" => "<p>Hi {{ contact.first_name }}!</p>"}
+    },
+    text_content: %{
+      type: :map,
+      description: "Map of text content slots, keyed by slot name.",
+      example: %{"main" => "Hi {{ contact.first_name }}!"}
+    },
     data: %{
       type: :map,
       example: %{
@@ -62,7 +88,7 @@ defmodule KeilaWeb.Api.Schemas.MailingsCampaign do
       properties: %{
         type: %{
           type: :string,
-          enum: ["markdown", "text", "block", "mjml"],
+          enum: ["markdown", "text", "block", "mjml", "html"],
           example: "markdown"
         },
         do_not_track: %{
@@ -133,6 +159,10 @@ defmodule KeilaWeb.Api.Schemas.MailingsCampaign.CreateParams do
     :text_body,
     :json_body,
     :mjml_body,
+    :html_body,
+    :mjml_content,
+    :html_content,
+    :text_content,
     :settings,
     :template_id,
     :sender_id,
@@ -155,6 +185,10 @@ defmodule KeilaWeb.Api.Schemas.MailingsCampaign.UpdateParams do
     :text_body,
     :json_body,
     :mjml_body,
+    :html_body,
+    :mjml_content,
+    :html_content,
+    :text_content,
     :settings,
     :template_id,
     :sender_id,
