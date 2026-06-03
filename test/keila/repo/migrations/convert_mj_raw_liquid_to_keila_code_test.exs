@@ -23,22 +23,18 @@ defmodule Keila.Repo.Migrations.ConvertMjRawLiquidToKeilaCodeTest do
     %{project: project}
   end
 
-  # Run the migration's real conversion SQL on the test's sandbox connection.
-  # We can't drive a full Ecto.Migrator pass here: the migrator runs the
-  # migration in a separate Task/transaction that can't share the sandbox
-  # connection. Executing `update_sql/0` exercises the exact SQL `up/0` runs.
   defp run_migration! do
-    # apply/3 (not @migration.update_sql()) because the migration is loaded at
-    # runtime, so a direct call would warn about an undefined function at compile.
+    # apply/3 because the migration is loaded at runtime, so a direct call
+    # would warn about an undefined function at compile-time.
     Ecto.Adapters.SQL.query!(Repo, apply(Migration, :update_sql, []))
   end
 
-  defp insert_campaign(project, mjml_body) do
+  defp insert_campaign!(project, mjml_body) do
     insert!(:mailings_campaign, project_id: project.id, mjml_body: mjml_body)
   end
 
   defp body_after_migration(project, mjml_body) do
-    campaign = insert_campaign(project, mjml_body)
+    campaign = insert_campaign!(project, mjml_body)
     run_migration!()
     Repo.get!(Campaign, campaign.id).mjml_body
   end
@@ -48,7 +44,7 @@ defmodule Keila.Repo.Migrations.ConvertMjRawLiquidToKeilaCodeTest do
              ~S(<keila-code>{% if x %}</keila-code>)
   end
 
-  test "leaves a {{ }}-only mj-raw block unchanged (interpolation can't break)", %{
+  test "leaves a {{ }}-only mj-raw block unchanged", %{
     project: project
   } do
     body = ~S(<mj-raw>{{ user.name }}</mj-raw>)

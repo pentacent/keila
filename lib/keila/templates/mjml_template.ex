@@ -1,6 +1,7 @@
 defmodule Keila.Templates.MjmlTemplate do
   @moduledoc """
-  Helper module for handling MJML templates.
+    Helper module for handling MJML templates.
+  """
 
   @doc """
   Removes `<keila-code>` wrapper tags from an MJML document, leaving
