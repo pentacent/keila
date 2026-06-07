@@ -250,6 +250,9 @@ defmodule KeilaWeb.Router do
 
     resources "/segments", ApiSegmentController, only: [:index, :show, :create, :update, :delete]
 
+    resources "/templates", ApiTemplateController,
+      only: [:index, :show, :create, :update, :delete]
+
     resources "/senders", ApiSenderController, only: [:index]
   end
 
