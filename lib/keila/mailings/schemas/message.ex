@@ -10,6 +10,8 @@ defmodule Keila.Mailings.Message do
   schema "messages" do
     field(:recipient_email, :string)
     field(:recipient_name, :string)
+    field(:cc, {:array, :string}, default: [])
+    field(:bcc, {:array, :string}, default: [])
     field(:subject, :string)
     field(:html_body, :string)
     field(:text_body, :string)
@@ -44,6 +46,8 @@ defmodule Keila.Mailings.Message do
     |> cast(params, [
       :recipient_email,
       :recipient_name,
+      :cc,
+      :bcc,
       :subject,
       :html_body,
       :text_body,
@@ -66,7 +70,15 @@ defmodule Keila.Mailings.Message do
       :form_id,
       :form_params_id
     ])
+    |> validate_emails()
     |> validate_assocs_project()
+  end
+
+  defp validate_emails(changeset) do
+    changeset
+    |> Keila.EmailAddress.validate_email(:recipient_email)
+    |> Keila.EmailAddress.validate_mailbox_list(:cc)
+    |> Keila.EmailAddress.validate_mailbox_list(:bcc)
   end
 
   defp validate_assocs_project(changeset) do

@@ -11,6 +11,7 @@ defmodule Keila.Mailings.DeliveryWorker do
   use Keila.Repo
   require Logger
   import Ecto.Query
+  alias Keila.EmailAddress
   alias Keila.Contacts.Contact
   alias Keila.Mailings.Message
 
@@ -52,12 +53,27 @@ defmodule Keila.Mailings.DeliveryWorker do
     |> Swoosh.Email.subject(message.subject)
     |> Swoosh.Email.text_body(message.text_body)
     |> Swoosh.Email.html_body(message.html_body)
+    |> put_cc(message.cc)
+    |> put_bcc(message.bcc)
     |> then(fn email -> {:ok, email} end)
   rescue
     _e in ArgumentError ->
       {:error, :invalid_contact}
   end
 
+  defp put_cc(email, addresses) do
+    case EmailAddress.to_swoosh_recipients(addresses) do
+      {:ok, recipients} -> Swoosh.Email.cc(email, recipients)
+      :error -> email
+    end
+  end
+
+  defp put_bcc(email, addresses) do
+    case EmailAddress.to_swoosh_recipients(addresses) do
+      {:ok, recipients} -> Swoosh.Email.bcc(email, recipients)
+      :error -> email
+    end
+  end
   # Email was sent successfully
   defp handle_result({:ok, raw_receipt}, message) do
     receipt = get_receipt(raw_receipt)

@@ -34,7 +34,7 @@ defmodule Keila.EmailAddressTest do
   end
 
   describe "valid?/1" do
-    test "accepts a single bare email address" do
+    test "accepts a single email address" do
       assert EmailAddress.valid?("brian@example.com")
       assert EmailAddress.valid?("lois+tag@example.com")
     end
@@ -51,6 +51,19 @@ defmodule Keila.EmailAddressTest do
       refute EmailAddress.valid?("not an email")
       refute EmailAddress.valid?(nil)
       refute EmailAddress.valid?(123)
+    end
+  end
+
+  describe "valid_mailbox?/1" do
+    test "accepts an email address and an address with a display name" do
+      assert EmailAddress.valid_mailbox?("peter@example.com")
+      assert EmailAddress.valid_mailbox?("Peter <peter@example.com>")
+    end
+
+    test "rejects multiple addresses, invalid strings, and non-strings" do
+      refute EmailAddress.valid_mailbox?("stewie@example.com, brian@example.com")
+      refute EmailAddress.valid_mailbox?("not an email")
+      refute EmailAddress.valid_mailbox?(nil)
     end
   end
 
@@ -92,6 +105,39 @@ defmodule Keila.EmailAddressTest do
 
     defp errors_on(changeset) do
       Ecto.Changeset.traverse_errors(changeset, fn {message, _opts} -> message end)
+    end
+  end
+
+  describe "validate_mailbox_list/3" do
+    defp mailbox_list_changeset(value) do
+      {%{}, %{cc: {:array, :string}}}
+      |> cast(%{"cc" => value}, [:cc])
+      |> EmailAddress.validate_mailbox_list(:cc)
+    end
+
+    test "passes a list of bare addresses and mailboxes with display names" do
+      assert mailbox_list_changeset(["peter@example.com", "Lois <lois@example.com>"]).valid?
+    end
+
+    test "passes an empty list" do
+      assert mailbox_list_changeset([]).valid?
+    end
+
+    test "rejects a list containing an invalid mailbox" do
+      refute mailbox_list_changeset(["peter@example.com", "@@ nope @@"]).valid?
+    end
+
+    test "rejects a list whose entry holds more than one address" do
+      refute mailbox_list_changeset(["stewie@example.com, brian@example.com"]).valid?
+    end
+
+    test "uses a custom :message option" do
+      cs =
+        {%{}, %{cc: {:array, :string}}}
+        |> cast(%{"cc" => ["nope"]}, [:cc])
+        |> EmailAddress.validate_mailbox_list(:cc, message: "bad")
+
+      assert "bad" in Ecto.Changeset.traverse_errors(cs, fn {message, _opts} -> message end).cc
     end
   end
 end

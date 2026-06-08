@@ -10,7 +10,9 @@ defmodule Keila.Mailings.DeliveryWorkerTest do
     _root = insert!(:group)
     user = insert!(:user)
     {:ok, project} = Projects.create_project(user.id, params(:project))
-    %{project: project}
+    sender = insert!(:mailings_sender, project_id: project.id, config: %{type: "test"})
+
+    %{project: project, sender: sender}
   end
 
   describe "perform/1" do
@@ -78,6 +80,27 @@ defmodule Keila.Mailings.DeliveryWorkerTest do
 
       contact = Repo.reload(contact)
       assert contact.status == :unreachable
+    end
+
+    @tag :mailings_worker
+    test "cc and bcc are applied to the email", %{project: project, sender: sender} do
+      message =
+        insert!(:message,
+          project_id: project.id,
+          sender_id: sender.id,
+          recipient_email: "test@example.com",
+          cc: ["cc@example.com"],
+          bcc: ["bcc@example.com"],
+          subject: "Test",
+          text_body: "Test",
+          status: :queued
+        )
+
+      assert :ok = perform_job(Keila.Mailings.DeliveryWorker, %{"message_id" => message.id})
+
+      assert_receive {:email, email}
+      assert email.cc == [{"", "cc@example.com"}]
+      assert email.bcc == [{"", "bcc@example.com"}]
     end
   end
 

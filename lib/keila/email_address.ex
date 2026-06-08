@@ -28,6 +28,24 @@ defmodule Keila.EmailAddress do
   def valid?(_), do: false
 
   @doc """
+  Returns `true` if `value` is a valid single mailbox.
+
+  ## Examples
+
+      iex> Keila.EmailAddress.valid_mailbox?("Peter <peter@example.com>")
+      true
+
+      iex> Keila.EmailAddress.valid_mailbox?("peter@example.com, lois@example.com")
+      false
+  """
+  @spec valid_mailbox?(term()) :: boolean()
+  def valid_mailbox?(value) when is_binary(value) do
+    match?({:ok, [_mailbox]}, :smtp_util.parse_rfc5322_addresses(value))
+  end
+
+  def valid_mailbox?(_), do: false
+
+  @doc """
   Ecto changeset validation to ensure the given `field` contains a single email address.
 
   ## Options
@@ -41,6 +59,26 @@ defmodule Keila.EmailAddress do
         []
       else
         message = Keyword.get(opts, :message, "is not a valid email address")
+        [{field, message}]
+      end
+    end)
+  end
+
+  @doc """
+  Ecto changeset validation to ensure the given `field` contains a list of
+  mailbox strings (each string must be an email address, optionally with a display name).
+
+  ## Options
+
+    * `:message` - the error message. Defaults to "must be a list of valid email addresses"
+  """
+  @spec validate_mailbox_list(Ecto.Changeset.t(), atom(), keyword()) :: Ecto.Changeset.t()
+  def validate_mailbox_list(changeset, field, opts \\ []) do
+    Ecto.Changeset.validate_change(changeset, field, :mailbox_list, fn _, value ->
+      if is_list(value) and Enum.all?(value, &valid_mailbox?/1) do
+        []
+      else
+        message = Keyword.get(opts, :message, "must be a list of valid email addresses")
         [{field, message}]
       end
     end)
