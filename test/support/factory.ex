@@ -95,7 +95,8 @@ defmodule Keila.Factory do
 
   defp do_build(:template) do
     %Keila.Templates.Template{
-      name: "template-#{get_counter_value()}"
+      name: "template-#{get_counter_value()}",
+      type: :hybrid
     }
   end
 

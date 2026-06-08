@@ -126,8 +126,20 @@ defmodule Keila.Mailings.Builder do
 
   defp put_body(email, campaign = %{settings: %{type: :text}}, assigns) do
     body_with_signature =
-      (campaign.text_body || "") <>
-        "\n\n--  \n" <> (assigns["signature"] || HybridTemplate.text_signature())
+      if is_nil(campaign.template) do
+        (campaign.text_body || "") <>
+          "\n\n--  \n" <> (assigns["signature"] || HybridTemplate.text_signature())
+      else
+        text_body =
+          case {campaign.text_body, campaign.template} do
+            {body, _} when is_binary(body) and body != "" -> body
+            {_, %{text_body: body}} when is_binary(body) and body != "" -> body
+            _ -> ""
+          end
+
+        text_content = campaign.text_content || %{}
+        Keila.Templates.merge_content_slots(text_body, text_content, mode: :text)
+      end
 
     case render_liquid(body_with_signature, assigns) do
       {:ok, text_body} ->
@@ -185,9 +197,29 @@ defmodule Keila.Mailings.Builder do
   end
 
   defp put_body(email, campaign = %{settings: %{type: :mjml}}, assigns) do
-    mjml_content = campaign.mjml_body || ""
+    mjml_body =
+      case {campaign.mjml_body, campaign.template} do
+        {mjml, _} when is_binary(mjml) and mjml != "" -> mjml
+        {_, %{mjml_body: mjml}} when is_binary(mjml) and mjml != "" -> mjml
+        _ -> ""
+      end
 
-    __MODULE__.MJML.put_body(email, mjml_content, assigns)
+    mjml_content = campaign.mjml_content || %{}
+    mjml = Keila.Templates.merge_content_slots(mjml_body, mjml_content, mode: :mjml)
+    __MODULE__.MJML.put_body(email, mjml, assigns)
+  end
+
+  defp put_body(email, campaign = %{settings: %{type: :html}}, assigns) do
+    html_body =
+      case {campaign.html_body, campaign.template} do
+        {html, _} when is_binary(html) and html != "" -> html
+        {_, %{html_body: html}} when is_binary(html) and html != "" -> html
+        _ -> ""
+      end
+
+    html_content = campaign.html_content || %{}
+    html = Keila.Templates.merge_content_slots(html_body, html_content, mode: :html)
+    __MODULE__.HTML.put_body(email, html, assigns)
   end
 
   defp fetch_styles(campaign)

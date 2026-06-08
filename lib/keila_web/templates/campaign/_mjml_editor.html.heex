@@ -1,6 +1,7 @@
 <div id="mjml-editor-toolbar" class="w-full sticky top-0 z-10" phx-update="ignore">
   <div class="wysiwyg--menu bg-white relative shadow z-10 flex overflow-x-auto mt-4">
     <button
+      type="button"
       title={gettext("Insert image")}
       class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
       @click.prevent="$dispatch('x-show-image-dialog')"
@@ -8,16 +9,32 @@
       {render_icon(:photograph)}
     </button>
     <button
+      type="button"
       title={gettext("Expand editor")}
       class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
       @click.prevent="$dispatch('x-toggle-expand-editor')"
     >
       {render_icon(:arrows_expand)}
     </button>
+    <%= if @content_slots != [] do %>
+      <button
+        type="button"
+        phx-click="merge_mjml_template"
+        data-confirm={
+          gettext(
+            "This will merge your content slots with the MJML template and allow you to edit the full MJML document. You will no longer be able to edit slots separately. This action cannot be undone."
+          )
+        }
+        class="flex h-10 px-3 items-center justify-center bg-white hover:bg-amber-100 text-black text-sm"
+      >
+        {gettext("Edit full template")}
+      </button>
+    <% end %>
 
     <div class="flex-grow"></div>
 
     <button
+      type="button"
       title={gettext("Preview")}
       class="flex w-10 h-10 p-2 items-center justify-center bg-white hover:bg-emerald-100 text-black"
       @click.prevent="$dispatch('x-toggle-preview')"
@@ -27,37 +44,71 @@
   </div>
 </div>
 
-<div id="mjml-editor-wrapper" phx-update="ignore">
-  <div
-    class="flex"
-    x-data="{editorExpanded: false}"
-    x-on:x-toggle-expand-editor.document="editorExpanded = !editorExpanded"
-  >
-    <%!--
-    NOTE: using width: 0 for the editor is a weird hack here because otherwise the editor kept
-    causing the entire page to overflow.
-    The width of the editor is controlled via the (inverse) width of the iframe instead.
-   --%>
-    <div class="flex-grow transition-all" style="width: 0">
-      <div id="mjml-editor" class="editor"></div>
-    </div>
-    <iframe
-      id="html-inline-preview"
-      src="about:blank"
-      class="transition-all"
-      x-bind:class="editorExpanded ? 'w-0' : 'w-3/5'"
-    >
-    </iframe>
+<div
+  class="flex"
+  style="height: calc(100vh - 18rem); min-height: 24rem"
+  x-data="{editorExpanded: false}"
+  x-on:x-toggle-expand-editor.document="editorExpanded = !editorExpanded"
+>
+  <%!--
+  NOTE: using width: 0 for the editor is a weird hack here because otherwise the editor kept
+  causing the entire page to overflow.
+  The width of the editor is controlled via the (inverse) width of the iframe instead.
+ --%>
+  <div class="flex-grow transition-all overflow-y-auto" style="width: 0">
+    <%= if @content_slots != [] do %>
+      <%= for slot <- @content_slots do %>
+        <div class="mt-4">
+          <label class="text-sm font-semibold text-zinc-100 mb-1 block">{slot.name}</label>
+          <div
+            id={"mjml-slot-" <> slot.name}
+            phx-hook="MjmlEditor"
+            phx-update="ignore"
+            data-target={"#campaign_mjml_content_" <> slot.name}
+          >
+            <div class="editor"></div>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <div
+        id="mjml-editor-wrapper"
+        class="h-full [&_.editor]:h-full [&_.cm-editor]:h-full"
+        phx-hook="MjmlEditor"
+        phx-update="ignore"
+        data-target="#campaign_mjml_body"
+      >
+        <div id="mjml-editor" class="editor"></div>
+      </div>
+    <% end %>
   </div>
+  <iframe
+    id="html-inline-preview"
+    src="about:blank"
+    class="h-full transition-all"
+    x-bind:class="editorExpanded ? 'w-0' : 'w-3/5'"
+  >
+  </iframe>
 </div>
 
-<.form :let={f} for={@changeset}>
-  {textarea(f, :mjml_body,
-    rows: 20,
-    class: "hidden",
-    phx_debounce: "1000"
-  )}
-</.form>
+<%= if @content_slots != [] do %>
+  <%= for slot <- @content_slots do %>
+    <textarea
+      id={"campaign_mjml_content_" <> slot.name}
+      name={"campaign[mjml_content][" <> slot.name <> "]"}
+      class="hidden"
+      phx-debounce="1000"
+    ><%= (Ecto.Changeset.get_field(@changeset, :mjml_content) || %{})[slot.name] %></textarea>
+  <% end %>
+<% else %>
+  <textarea
+    id="campaign_mjml_body"
+    name="campaign[mjml_body]"
+    class="hidden"
+    phx-debounce="1000"
+  ><%= Ecto.Changeset.get_field(@changeset, :mjml_body) %></textarea>
+<% end %>
+
 <div
   id="html-preview-data"
   phx-hook="HtmlPreview"

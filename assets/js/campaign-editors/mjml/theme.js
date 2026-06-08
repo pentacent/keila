@@ -6,6 +6,9 @@ export default EditorView.theme(
       color: "#f4f4f5",
       backgroundColor: "#030712"
     },
+    ".cm-content, .cm-gutter": {
+      minHeight: "30em"
+    },
     ".cm-content": {
       caretColor: "#f9fafb"
     },
@@ -31,6 +34,13 @@ export default EditorView.theme(
     },
     ".ͼi": {
       color: "#4ade80"
+    },
+    ".cm-keila-content .ͼi, .cm-keila-content .ͼe": {
+      color: "#c084fc",
+      fontWeight: "bold"
+    },
+    ".cm-keila-content-block": {
+      backgroundColor: "#f3e8ff33"
     }
   },
   { dark: true }

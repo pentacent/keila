@@ -1,0 +1,56 @@
+<mjml>
+  <mj-head>
+    <mj-title>{{ campaign.subject }}</mj-title>
+    <mj-preview>{{ campaign.preview_text }}</mj-preview>
+    <mj-attributes>
+      <mj-all font-size="16px" line-height="1.6" />
+      <mj-section background-color="#ffffff" />
+      <mj-button background-color="#16a34a" border-radius="5px" />
+    </mj-attributes>
+
+    <mj-style inline="true">
+      a {
+        color: #166534;
+      }
+    </mj-style>
+  </mj-head>
+  <mj-body background-color="#f4f4f5" width="640px">
+    <mj-section background-color="transparent">
+      <mj-column>
+      <mj-image src="https://www.keila.io/newsletter-assets/logo-with-text.png" width="120px" align="center" />
+        </mj-column>
+    </mj-section>
+    <keila-content name="main">
+      <mj-section>
+        <mj-column>
+          <mj-text>
+            Hey {{ contact.first_name | default: "there" }}, this is your MJML template!<br /><br />
+            You can define one or more content slots. When you create a campaign, only the slot content can be edited.
+          </mj-text>
+
+        </mj-column>
+      </mj-section>
+      <mj-section background-color="#bbf7d0">
+        <mj-column>
+          <mj-text>
+            Here is an image.
+          </mj-text>
+          <mj-image src="https://www.keila.io/newsletter-assets/ai-elephant.jpg" />
+        </mj-column>
+        <mj-column>
+          <mj-text>And here is a button.</mj-text>
+          <mj-button width="100%" href="https://www.keila.io">This is a button</mj-button>
+        </mj-column>
+      </mj-section>
+    </keila-content>
+    <mj-section background-color="transparent">
+      <mj-column>
+        <mj-text font-size="14px" align="center">
+          Powered by Keila - Open Source Newsletters
+          <br />
+          <a href="{{ unsubscribe_link }}">Unsubscribe</a>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

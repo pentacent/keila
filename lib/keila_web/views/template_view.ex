@@ -2,6 +2,16 @@ defmodule KeilaWeb.TemplateView do
   use KeilaWeb, :view
   import Ecto.Changeset, only: [get_field: 2]
 
+  @doc """
+  Human-readable label for a `Template.type` value.
+  """
+  @spec template_type_label(atom()) :: String.t()
+  def template_type_label(:hybrid), do: gettext("Classic")
+  def template_type_label(:mjml), do: gettext("MJML")
+  def template_type_label(:html), do: gettext("HTML")
+  def template_type_label(:text), do: gettext("Plain text")
+  def template_type_label(_), do: ""
+
   def render_css_form(form, field, css_rows) do
     Enum.map(css_rows, fn group -> render_group(form, field, group) end)
   end

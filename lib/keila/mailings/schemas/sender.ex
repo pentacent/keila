@@ -31,6 +31,7 @@ defmodule Keila.Mailings.Sender do
     |> validate_required([:project_id, :name, :from_email])
     |> cast_embed(:config)
     |> lowercase_emails()
+    |> validate_emails()
     |> apply_constraints()
   end
 
@@ -52,6 +53,7 @@ defmodule Keila.Mailings.Sender do
     |> cast_embed(:config, config_cast_opts)
     |> maybe_remove_from_email_validation()
     |> lowercase_emails()
+    |> validate_emails()
     |> apply_constraints()
   end
 
@@ -67,6 +69,12 @@ defmodule Keila.Mailings.Sender do
     changeset
     |> update_change(:from_email, &downcase_change/1)
     |> update_change(:reply_to_email, &downcase_change/1)
+  end
+
+  defp validate_emails(changeset) do
+    changeset
+    |> Keila.EmailAddress.validate_email(:from_email)
+    |> Keila.EmailAddress.validate_email(:reply_to_email)
   end
 
   defp apply_constraints(changeset) do

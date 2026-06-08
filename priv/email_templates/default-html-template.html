@@ -1,0 +1,14 @@
+<!doctype html>
+<html>
+    <body>
+        <keila-content name="main">
+            <p>Hello {{ contact.first_name | default: "there" }}!</p>
+        </keila-content>
+        <div style="font-size: small">
+            <a href="https://www.keila.io"
+                >Powered by Keila - Open Source Newsletters</a
+            ><br />
+            <a href="{{ unsubscribe_link }}">Unsubscribe</a>
+        </div>
+    </body>
+</html>

@@ -7,8 +7,10 @@ defmodule Keila.Mailings.Builder.MJML do
 
   @spec put_body(Swoosh.Email.t(), String.t(), map()) :: Swoosh.Email.t()
   def put_body(email, mjml_content, assigns \\ %{}) do
-    with {:ok, rendered_mjml} <- render_mjml(mjml_content),
-         {:ok, html_body} <- render_liquid(rendered_mjml, assigns) do
+    mjml_content = Keila.Templates.MjmlTemplate.remove_code_blocks(mjml_content)
+
+    with {:ok, mjml} <- render_liquid(mjml_content, assigns),
+         {:ok, html_body} <- render_mjml(mjml) do
       html_body(email, html_body)
     else
       {:error, reason} ->

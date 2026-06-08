@@ -37,9 +37,26 @@ defmodule KeilaWeb.TemplateControllerTest do
     test "creates new template and redirects", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
 
-      params = %{"name" => "My Template"}
+      params = %{"name" => "My Template", "type" => "hybrid"}
       conn = post(conn, Routes.template_path(conn, :post_new, project.id, template: params))
       assert redirected_to(conn, 302) =~ Routes.template_path(conn, :edit, project.id, "ntpl_")
+    end
+
+    @tag :template_controller
+    test "creates an MJML template from the new form (does not add signature assign)",
+         %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+
+      params = %{"name" => "My MJML Template", "type" => "mjml"}
+      conn = post(conn, Routes.template_path(conn, :post_new, project.id, template: params))
+
+      assert path = redirected_to(conn, 302)
+      assert path =~ Routes.template_path(conn, :edit, project.id, "ntpl_")
+
+      [_, template_id] = Regex.run(~r{/templates/(ntpl_[^/]+)}, path)
+      template = Templates.get_template(template_id)
+      assert template.type == :mjml
+      assert is_nil(template.assigns) or template.assigns == %{}
     end
 
     @tag :template_controller
@@ -58,14 +75,15 @@ defmodule KeilaWeb.TemplateControllerTest do
       template = insert!(:template, project_id: project.id)
       conn = get(conn, Routes.template_path(conn, :edit, project.id, template.id))
 
-      assert html_response(conn, 200) =~ ~r{Edit Template\s*</h1>}
+      assert html_response(conn, 200) =~ ~r{Edit Template}
     end
 
     @tag :template_controller
     test "generates template preview", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
 
-      template = insert!(:template, project_id: project.id, styles: "h1 { color: #ff00ff }")
+      template =
+        insert!(:template, project_id: project.id, type: :hybrid, styles: "h1 { color: #ff00ff }")
 
       conn = get(conn, Routes.template_path(conn, :edit, project.id, template.id))
       {:ok, lv, html} = live(conn)
@@ -82,6 +100,48 @@ defmodule KeilaWeb.TemplateControllerTest do
                }
              }) =~
                "Signature with Liquid"
+    end
+
+    @tag :template_controller
+    test "mjml template edit form exposes mjml_body textarea",
+         %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+      template = insert!(:template, project_id: project.id, type: :mjml)
+      conn = get(conn, Routes.template_path(conn, :edit, project.id, template.id))
+
+      html = html_response(conn, 200)
+
+      assert html =~ ~s(name="template[mjml_body]")
+      refute html =~ ~s(name="template[html_body]")
+      refute html =~ ~s(name="template[text_body]")
+    end
+
+    @tag :template_controller
+    test "html template edit form exposes html_body textarea",
+         %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+      template = insert!(:template, project_id: project.id, type: :html)
+      conn = get(conn, Routes.template_path(conn, :edit, project.id, template.id))
+
+      html = html_response(conn, 200)
+
+      assert html =~ ~s(name="template[html_body]")
+      refute html =~ ~s(name="template[mjml_body]")
+      refute html =~ ~s(name="template[text_body]")
+    end
+
+    @tag :template_controller
+    test "text template edit form exposes text_body textarea",
+         %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+      template = insert!(:template, project_id: project.id, type: :text)
+      conn = get(conn, Routes.template_path(conn, :edit, project.id, template.id))
+
+      html = html_response(conn, 200)
+
+      assert html =~ ~s(name="template[text_body]")
+      refute html =~ ~s(name="template[mjml_body]")
+      refute html =~ ~s(name="template[html_body]")
     end
   end
 
