@@ -98,14 +98,13 @@ defmodule Keila.Contacts.Contact do
     |> check_constraint(:data, name: :max_data_size, message: "max 8 KB data allowed")
   end
 
-  @email_regex ~r/^[^\s@]+@[^\s@]+$/
   defp validate_email(changeset) do
     changeset
     |> validate_required([:email])
     |> update_change(:email, fn email ->
       if is_binary(email), do: String.trim(email)
     end)
-    |> validate_format(:email, @email_regex, message: "must have the @ sign and no spaces")
+    |> Keila.EmailAddress.validate_email(:email)
     |> validate_length(:email, max: 255)
     |> unique_constraint([:email, :project_id])
   end
