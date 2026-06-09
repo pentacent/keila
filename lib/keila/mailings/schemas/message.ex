@@ -15,6 +15,7 @@ defmodule Keila.Mailings.Message do
     field(:subject, :string)
     field(:html_body, :string)
     field(:text_body, :string)
+    field(:headers, :map, default: %{})
 
     field(:priority, :integer, default: 100)
     field(:render_attempt, :integer, default: 0)
@@ -51,6 +52,7 @@ defmodule Keila.Mailings.Message do
       :subject,
       :html_body,
       :text_body,
+      :headers,
       :priority,
       :status,
       :receipt,

@@ -55,6 +55,7 @@ defmodule Keila.Mailings.DeliveryWorker do
     |> Swoosh.Email.html_body(message.html_body)
     |> put_cc(message.cc)
     |> put_bcc(message.bcc)
+    |> put_headers(message)
     |> then(fn email -> {:ok, email} end)
   rescue
     _e in ArgumentError ->
@@ -74,6 +75,71 @@ defmodule Keila.Mailings.DeliveryWorker do
       :error -> email
     end
   end
+
+  defp put_headers(email, message) do
+    email
+    |> put_custom_headers(message)
+    |> maybe_put_list_unsubscribe(message)
+    |> maybe_put_list_unsubscribe_post()
+    |> maybe_put_bulk_header(message)
+  end
+
+  defp put_custom_headers(email, message) do
+    Enum.reduce(message.headers || %{}, email, fn {key, value}, acc ->
+      Swoosh.Email.header(acc, key, value)
+    end)
+  end
+
+  # TODO: When automations are implemented, this function should also return true for
+  # messages from automations
+  defp maybe_put_list_unsubscribe(email, message) do
+    requires_unsubscribe_header? =
+      not is_nil(message.contact_id) and
+        not (is_nil(message.campaign_id) and
+               is_nil(message.form_id) and
+               is_nil(message.form_params_id))
+
+    if requires_unsubscribe_header? and not has_header?(email, "List-Unsubscribe") do
+      value = "<#{Keila.Mailings.get_unsubscribe_link(message.project_id, message.id)}>"
+      Swoosh.Email.header(email, "List-Unsubscribe", value)
+    else
+      email
+    end
+  end
+
+  defp maybe_put_list_unsubscribe_post(email) do
+    https? = match?("<https://" <> _, get_header(email, "List-Unsubscribe"))
+
+    if https? and not has_header?(email, "List-Unsubscribe-Post") do
+      Swoosh.Email.header(email, "List-Unsubscribe-Post", "List-Unsubscribe=One-Click")
+    else
+      email
+    end
+  end
+
+  defp maybe_put_bulk_header(email, %{campaign_id: campaign_id}) when not is_nil(campaign_id) do
+    if Application.get_env(:keila, Keila.Mailings)[:enable_precedence_header] do
+      Swoosh.Email.header(email, "Precedence", "Bulk")
+    else
+      email
+    end
+  end
+
+  defp maybe_put_bulk_header(email, _message), do: email
+
+  defp has_header?(email, key) do
+    key = String.downcase(key)
+    Enum.any?(email.headers, fn {existing, _value} -> String.downcase(existing) == key end)
+  end
+
+  defp get_header(email, key) do
+    key = String.downcase(key)
+
+    Enum.find_value(email.headers, fn {existing, value} ->
+      if String.downcase(existing) == key, do: value
+    end)
+  end
+
   # Email was sent successfully
   defp handle_result({:ok, raw_receipt}, message) do
     receipt = get_receipt(raw_receipt)

@@ -90,7 +90,11 @@ defmodule Keila.Factory do
   end
 
   defp do_build(:message) do
-    %Keila.Mailings.Message{}
+    %Keila.Mailings.Message{
+      recipient_email: "recipient-#{get_counter_value()}@example.com",
+      subject: "Test Subject",
+      text_body: "Test Body"
+    }
   end
 
   defp do_build(:template) do
