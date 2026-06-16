@@ -1,8 +1,10 @@
 defmodule KeilaWeb.TemplateEditLive do
   use KeilaWeb, :live_view
   alias Keila.Templates.{Template, StyleTemplate, HybridTemplate}
+  alias Keila.Mailings.Renderer
 
-  @default_text_body File.read!("priv/email_templates/default-markdown-content.md")
+  @external_resource "priv/email_templates/default-markdown-content.md"
+  @default_markdown_body File.read!("priv/email_templates/default-markdown-content.md")
 
   @impl true
   def mount(_params, session, socket) do
@@ -59,41 +61,37 @@ defmodule KeilaWeb.TemplateEditLive do
 
   defp put_template_preview(socket) do
     {:ok, template} = Ecto.Changeset.apply_action(socket.assigns.changeset, :update)
-    assign(socket, :preview, build_preview(template, socket.assigns))
+    assign(socket, :preview, render_preview(template, socket.assigns))
   end
 
-  defp build_preview(%Template{type: :hybrid} = template, assigns) do
-    css_preview =
-      assigns.style_template
-      |> StyleTemplate.to_css()
+  defp render_preview(%Template{type: :hybrid} = template, assigns) do
+    template = %{template | styles: StyleTemplate.to_css(assigns.style_template)}
 
-    template = %{template | styles: css_preview}
-
-    campaign = %Keila.Mailings.Campaign{
-      id: nil,
+    %Renderer.Input{
+      type: :markdown,
       subject: "",
-      project_id: assigns.current_project.id,
-      text_body: @default_text_body,
-      settings: %Keila.Mailings.Campaign.Settings{type: :markdown},
-      template: template
-    }
-
-    email = Keila.Mailings.Builder.build_preview(campaign)
-    email.html_body || KeilaWeb.CampaignView.plain_text_preview(email.text_body)
-  end
-
-  defp build_preview(%Template{type: type} = template, assigns)
-       when type in [:mjml, :html, :text] do
-    campaign = %Keila.Mailings.Campaign{
-      id: nil,
-      subject: "",
-      project_id: assigns.current_project.id,
-      settings: %Keila.Mailings.Campaign.Settings{type: type},
+      text_body: @default_markdown_body,
       template: template,
-      text_body: template.text_body
+      assigns: %{"campaign" => %{"subject" => template.name}}
     }
+    |> Renderer.render_preview()
+    |> preview_html()
+  end
 
-    email = Keila.Mailings.Builder.build_preview(campaign)
-    email.html_body || KeilaWeb.CampaignView.plain_text_preview(email.text_body)
+  defp render_preview(%Template{type: type} = template, _assigns)
+       when type in [:mjml, :html, :text] do
+    %Renderer.Input{
+      type: type,
+      subject: "",
+      text_body: template.text_body,
+      template: template,
+      assigns: %{"campaign" => %{"subject" => template.name}}
+    }
+    |> Renderer.render_preview()
+    |> preview_html()
+  end
+
+  defp preview_html(%Keila.Mailings.Renderer.Output{} = output) do
+    output.html_body || KeilaWeb.CampaignView.plain_text_preview(output.text_body)
   end
 end

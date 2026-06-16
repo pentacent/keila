@@ -43,8 +43,8 @@ defmodule KeilaWeb.CampaignEditLive do
     template = current_template(socket, campaign)
     campaign = %{campaign | template: template}
 
-    email = Mailings.Builder.build_preview(campaign)
-    preview = email.html_body || KeilaWeb.CampaignView.plain_text_preview(email.text_body)
+    output = Mailings.CampaignRenderer.render_preview(campaign)
+    preview = output.html_body || KeilaWeb.CampaignView.plain_text_preview(output.text_body)
 
     json_body = if campaign.json_body, do: Jason.encode!(campaign.json_body), else: "{}"
 
@@ -239,8 +239,6 @@ defmodule KeilaWeb.CampaignEditLive do
     handle_event("schedule", %{}, socket)
   end
 
-  @email_regex ~r/^[^\s@]+@[^\s@]+$/
-
   # TODO: This should be re-implemented at the context module level once
   # the campaign refactor is complete (see https://github.com/pentacent/keila/issues/355)
   def handle_event("send-preview", %{"emails" => raw_emails}, socket) do
@@ -274,7 +272,7 @@ defmodule KeilaWeb.CampaignEditLive do
       raw_emails
       |> String.split(",")
       |> Enum.map(&String.trim(&1))
-      |> Enum.filter(&Regex.match?(@email_regex, &1))
+      |> Enum.filter(&Keila.EmailAddress.valid?/1)
       |> Enum.map(fn email ->
         case Keila.Contacts.get_project_contact_by_email(project.id, email) do
           nil -> %Keila.Contacts.Contact{id: "c_id", email: email}
@@ -365,12 +363,18 @@ defmodule KeilaWeb.CampaignEditLive do
             template: template
         }
 
-        email = Mailings.Builder.build(campaign, contact, %{})
-
         # TODO: Once campaign sending has been refactored, enqueue these messages to ensure
         # rate limits are respected
+        output = Mailings.CampaignRenderer.render_preview(campaign, contact)
 
-        Keila.Mailer.deliver_with_sender(email, sender)
+        if output.valid? do
+          Swoosh.Email.new()
+          |> Swoosh.Email.to(contact.email)
+          |> Swoosh.Email.subject(output.subject)
+          |> Swoosh.Email.html_body(output.html_body)
+          |> Swoosh.Email.text_body(output.text_body)
+          |> Keila.Mailer.deliver_with_sender(sender)
+        end
       end)
     end
   end

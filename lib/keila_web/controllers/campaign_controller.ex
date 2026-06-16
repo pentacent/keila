@@ -233,8 +233,8 @@ defmodule KeilaWeb.CampaignController do
   def view(conn, _params) do
     project = current_project(conn)
     campaign = conn.assigns.campaign
-    email = Keila.Mailings.Builder.build_preview(campaign)
-    preview = email.html_body || KeilaWeb.CampaignView.plain_text_preview(email.text_body)
+    output = Keila.Mailings.CampaignRenderer.render_preview(campaign)
+    preview = output.html_body || KeilaWeb.CampaignView.plain_text_preview(output.text_body)
 
     render(conn, "view.html", %{
       current_project: project,

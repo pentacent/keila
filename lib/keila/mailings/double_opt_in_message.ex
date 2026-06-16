@@ -12,8 +12,7 @@ defmodule Keila.Mailings.DoubleOptInMessage do
   alias Keila.Contacts.Form
   alias Keila.Contacts.FormParams
   alias Keila.Mailings.Message
-  alias Keila.Templates.{Css, HybridTemplate}
-  alias Swoosh.Email
+  alias Keila.Mailings.Renderer
   alias KeilaWeb.Router.Helpers, as: Routes
   alias KeilaWeb.Endpoint
 
@@ -31,36 +30,37 @@ defmodule Keila.Mailings.DoubleOptInMessage do
     with :ok <- ensure_feature_available(project_id),
          :ok <- ensure_account_active(project_id),
          :ok <- ensure_sender(sender),
-         email <- build(form_params),
-         :ok <- ensure_valid_email(email),
-         [{recipient_name, recipient_email}] <- email.to do
+         %{valid?: true} = output <- render(form_params, get_unsubscribe_link(form_params)) do
       %Message{}
       |> Message.changeset(%{
         status: :ready,
         priority: 10,
-        subject: email.subject,
-        text_body: email.text_body,
-        html_body: email.html_body,
-        recipient_email: recipient_email,
-        recipient_name: recipient_name,
+        subject: output.subject,
+        text_body: output.text_body,
+        html_body: output.html_body,
+        recipient_email: form_params.params["email"],
+        recipient_name:
+          Contacts.display_name(form_params.params["first_name"], form_params.params["last_name"]),
         project_id: project_id,
         sender_id: sender.id,
         form_id: form_params.form_id,
         form_params_id: form_params.id
       })
       |> Repo.insert()
+    else
+      %{valid?: false} -> {:error, :rendering_error}
+      {:error, reason} -> {:error, reason}
     end
   end
 
   @preview_assigns %{
-    "double_opt_in_link" => "#double-opt-in-preview-link",
-    "unsubscribe_link" => "#unsubscribe-preview-link"
+    "double_opt_in_link" => "#double-opt-in-preview-link"
   }
 
   @doc """
-  Builds a preview email for the given form.
+  Builds a preview of the rendered double opt-in email for the given form.
   """
-  @spec preview(Form.t()) :: Email.t()
+  @spec preview(Form.t()) :: Renderer.Output.t()
   def preview(form) do
     preview_form_params = %FormParams{
       id: "preview_id",
@@ -74,7 +74,7 @@ defmodule Keila.Mailings.DoubleOptInMessage do
       }
     }
 
-    build(preview_form_params, @preview_assigns)
+    render(preview_form_params, "#unsubscribe-preview-link", @preview_assigns)
   end
 
   @doc """
@@ -99,22 +99,23 @@ defmodule Keila.Mailings.DoubleOptInMessage do
     """)
   end
 
-  # Building
-
-  defp build(form_params, assigns \\ %{}) do
+  defp render(form_params, unsubscribe_link, assigns \\ %{}) do
     form = form_params.form
     subject = get_subject(form)
     body_markdown = get_body_markdown(form)
-
     template = if form.template_id, do: Keila.Templates.get_template(form.template_id)
-    styles = get_styles(template)
 
-    assigns = build_assigns(assigns, form_params, template, subject)
+    input = %Renderer.Input{
+      type: :markdown,
+      subject: subject,
+      text_body: body_markdown,
+      template: template,
+      assigns:
+        build_assigns(assigns, form_params, template, subject)
+        |> Map.put("unsubscribe_link", unsubscribe_link)
+    }
 
-    Email.new()
-    |> Email.to(form_params.params["email"])
-    |> Email.subject(subject)
-    |> Keila.Mailings.Builder.Markdown.put_body(body_markdown, styles, assigns)
+    Renderer.render(input)
   end
 
   defp get_subject(form) do
@@ -131,22 +132,11 @@ defmodule Keila.Mailings.DoubleOptInMessage do
     end
   end
 
-  defp get_styles(template) do
-    default_styles = HybridTemplate.styles()
-
-    if template && is_binary(template.styles) do
-      Css.merge(default_styles, Css.parse!(template.styles))
-    else
-      default_styles
-    end
-  end
-
   defp build_assigns(assigns, form_params, template, subject) do
     form = form_params.form
 
     assigns
     |> Map.put_new_lazy("double_opt_in_link", fn -> get_double_opt_in_link(form, form_params) end)
-    |> Map.put_new_lazy("unsubscribe_link", fn -> get_unsubscribe_link(form, form_params) end)
     |> Map.put("contact", form_params.params)
     |> Map.put("campaign", %{"subject" => subject})
     |> Map.put("signature", if(template, do: template.assigns["signature"]))
@@ -157,20 +147,13 @@ defmodule Keila.Mailings.DoubleOptInMessage do
     Routes.public_form_url(Endpoint, :double_opt_in, form.id, form_params.id, hmac)
   end
 
-  defp get_unsubscribe_link(form, form_params) do
+  defp get_unsubscribe_link(form_params) do
+    form = form_params.form
     hmac = Keila.Contacts.double_opt_in_hmac(form_params.form_id, form_params.id)
     Routes.public_form_url(Endpoint, :cancel_double_opt_in, form.id, form_params.id, hmac)
   end
 
   # Helpers
-
-  defp ensure_valid_email(email) do
-    if Enum.find(email.headers, fn {name, _} -> name == "X-Keila-Invalid" end) do
-      {:error, :rendering_error}
-    else
-      :ok
-    end
-  end
 
   Keila.if_cloud do
     defp ensure_feature_available(project_id) do

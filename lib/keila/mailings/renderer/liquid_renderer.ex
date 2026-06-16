@@ -1,13 +1,13 @@
-defmodule Keila.Mailings.Builder.LiquidRenderer do
+defmodule Keila.Mailings.Renderer.LiquidRenderer do
   @moduledoc """
-  Module to safely render Liquid templates from strings or pre-pared by `Solid`.
+  Module to safely render Liquid templates from a string or a pre-parsed by `Solid.Template`.
   """
 
   @doc """
   Safely renders a liquid template to a string.
 
-  Solid can sometimes raise exceptions when rendering invalid templates, this
-  module catches these exceptions and transforms them into an error tuple.
+  Solid can sometimes raise exceptions when rendering invalid templates. This
+  function catches these exceptions and transforms them into an error tuple.
   """
   @spec render_liquid(String.t() | Solid.Template.t(), assigns :: map(), opts :: Keyword.take()) ::
           {:ok, String.t()} | {:error, String.t()}

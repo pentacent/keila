@@ -33,6 +33,27 @@ defmodule Keila.Contacts do
 
   defp maybe_update_contact_status(changeset, _params, _), do: changeset
 
+  @doc """
+  Convenience function for building a display name from a contact's `first_name` and `last_name`
+  Returns `nil` when names are empty.
+
+  Accepts either a `Contact` struct or two string/nil values.
+  """
+  @spec display_name(Contact.t()) :: String.t() | nil
+  def display_name(%Contact{first_name: first_name, last_name: last_name}),
+    do: display_name(first_name, last_name)
+
+  @spec display_name(String.t() | nil, String.t() | nil) :: String.t() | nil
+  def display_name(first_name, last_name) do
+    [first_name, last_name]
+    |> Enum.reject(&(&1 in [nil, ""]))
+    |> Enum.join(" ")
+    |> case do
+      "" -> nil
+      name -> name
+    end
+  end
+
   defdelegate perform_form_action(form, params, opts), to: __MODULE__.FormActionHandler
   defdelegate perform_form_action(form, params), to: __MODULE__.FormActionHandler
 

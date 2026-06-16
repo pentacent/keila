@@ -5,7 +5,7 @@ defmodule KeilaWeb.PublicFormController do
   alias Keila.Contacts.Contact
   alias Keila.Contacts.FormParams
   import Ecto.Changeset
-  import Keila.Mailings.Builder.LiquidRenderer, only: [render_liquid: 2, process_assigns: 1]
+  import Keila.Mailings.Renderer.LiquidRenderer, only: [render_liquid: 2, process_assigns: 1]
 
   @confirmation_delay 3 * 60
 

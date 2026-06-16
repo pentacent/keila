@@ -4,7 +4,7 @@ defmodule Keila.Mailings.CampaignRenderWorker do
 
   When a campaign is sent, all messages are inserted with `status: :unrendered`.
   This worker fetches a batch of unrendered messages for a given campaign,
-  renders each one using `Builder.build/3`, and updates them to `status: :ready`.
+  renders each one using `CampaignRenderer.render/2`, and updates them to `status: :ready`.
 
   If there are more unrendered messages remaining after the batch, the worker
   re-enqueues itself to process the next batch.
@@ -21,7 +21,9 @@ defmodule Keila.Mailings.CampaignRenderWorker do
   use Keila.Repo
   require Logger
   alias Keila.Mailings.Message
-  alias Keila.Mailings.Builder
+  alias Keila.Mailings.CampaignRenderer
+  alias Keila.Contacts
+  alias Keila.Contacts.Contact
 
   @batch_size 500
   @render_timeout 5_000
@@ -77,17 +79,19 @@ defmodule Keila.Mailings.CampaignRenderWorker do
   end
 
   defp render_message(message, campaign) do
-    with email = Builder.build(campaign, message, %{}),
-         :ok <- ensure_valid_email(email),
-         [{_, _}] <- email.to do
-      {message, {:ok, email}}
+    with %Contact{} <- message.contact,
+         %{valid?: true} = output <- CampaignRenderer.render(campaign, message) do
+      {message, {:ok, output}}
     else
-      {:error, :rendering_error} ->
-        Logger.warning("CampaignRenderWorker: render error for message #{message.id}")
+      nil ->
+        Logger.warning("CampaignRenderWorker: message #{message.id} has no contact")
         {message, :error}
 
-      other ->
-        Logger.warning("CampaignRenderWorker: unexpected error: #{inspect(other)}")
+      %{valid?: false} = output ->
+        Logger.warning(
+          "CampaignRenderWorker: render error for message #{message.id}: #{inspect(output.errors)}"
+        )
+
         {message, :error}
     end
   rescue
@@ -112,16 +116,14 @@ defmodule Keila.Mailings.CampaignRenderWorker do
     message_updates =
       results
       |> Enum.filter(fn {_message, result} -> match?({:ok, _}, result) end)
-      |> Enum.map(fn {message, {:ok, email}} ->
-        [{recipient_name, recipient_email}] = email.to
-
+      |> Enum.map(fn {message, {:ok, output}} ->
         %{
           message_id: message.id,
-          subject: email.subject,
-          html_body: email.html_body,
-          text_body: email.text_body,
-          recipient_email: recipient_email,
-          recipient_name: recipient_name
+          subject: output.subject,
+          html_body: output.html_body,
+          text_body: output.text_body,
+          recipient_email: message.contact.email,
+          recipient_name: Contacts.display_name(message.contact)
         }
       end)
 
@@ -194,14 +196,6 @@ defmodule Keila.Mailings.CampaignRenderWorker do
         ]
       )
       |> Repo.update_all([])
-    end
-  end
-
-  defp ensure_valid_email(email) do
-    if Enum.find(email.headers, fn {name, _} -> name == "X-Keila-Invalid" end) do
-      {:error, :rendering_error}
-    else
-      :ok
     end
   end
 
