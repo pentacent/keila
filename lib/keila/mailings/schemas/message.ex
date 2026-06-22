@@ -42,7 +42,7 @@ defmodule Keila.Mailings.Message do
     timestamps()
   end
 
-  def changeset(message, params) do
+  def changeset(message \\ %__MODULE__{}, params) do
     message
     |> cast(params, [
       :recipient_email,

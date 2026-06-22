@@ -100,4 +100,29 @@ defmodule Keila.Mailings.MessageTest do
       assert "association not found" in errors_on(cs).form_id
     end
   end
+
+  describe "changeset/2 email validation" do
+    @tag :mailings_message
+    test "rejects malformed recipient_email" do
+      changeset = Message.changeset(%{"recipient_email" => "not-an-email"})
+
+      refute changeset.valid?
+      assert "is not a valid email address" in errors_on(changeset).recipient_email
+    end
+
+    @tag :mailings_message
+    test "rejects an invalid cc/bcc mailbox" do
+      changeset =
+        Message.changeset(%{
+          "recipient_email" => "to@example.com",
+          "cc" => ["Peter <peter@example.com>", "@@ nope @@"],
+          "bcc" => ["lois@example.com, stewie@example.com"]
+        })
+
+      refute changeset.valid?
+      errors = errors_on(changeset)
+      assert "must be a list of valid email addresses" in errors.cc
+      assert "must be a list of valid email addresses" in errors.bcc
+    end
+  end
 end
