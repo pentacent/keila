@@ -12,6 +12,7 @@ defmodule Keila.Mailings.DeliveryWorker do
   require Logger
   import Ecto.Query
   alias Keila.EmailAddress
+  alias Keila.EmailHeader
   alias Keila.Contacts.Contact
   alias Keila.Mailings.Message
 
@@ -85,8 +86,15 @@ defmodule Keila.Mailings.DeliveryWorker do
   end
 
   defp put_custom_headers(email, message) do
-    Enum.reduce(message.headers || %{}, email, fn {key, value}, acc ->
-      Swoosh.Email.header(acc, key, value)
+    Enum.reduce(message.headers || %{}, email, fn {name, value}, acc ->
+      case EmailHeader.validate(name, value) do
+        :ok ->
+          Swoosh.Email.header(acc, name, value)
+
+        {:error, reason} ->
+          Logger.warning("Dropping invalid custom header on message #{message.id}: #{reason}")
+          acc
+      end
     end)
   end
 

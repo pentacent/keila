@@ -73,6 +73,7 @@ defmodule Keila.Mailings.Message do
       :form_params_id
     ])
     |> validate_emails()
+    |> Keila.EmailHeader.validate_headers(:headers)
     |> validate_assocs_project()
   end
 
