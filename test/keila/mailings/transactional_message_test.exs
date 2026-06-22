@@ -212,7 +212,7 @@ defmodule Keila.Mailings.TransactionalMessageTest do
     end
 
     @tag :transactional_message
-    test "variables get merged into Liquid assigns", %{project: project, sender: sender} do
+    test "assigns get merged into Liquid assigns", %{project: project, sender: sender} do
       assert {:ok, message} =
                TransactionalMessage.deliver(project.id, %{
                  "type" => "text",
@@ -220,7 +220,7 @@ defmodule Keila.Mailings.TransactionalMessageTest do
                  "recipient_email" => "to@example.com",
                  "subject" => "Hi",
                  "text_body" => "Order #{1} for {{ customer_name }}",
-                 "variables" => %{"customer_name" => "Peter"}
+                 "assigns" => %{"customer_name" => "Peter"}
                })
 
       assert message.text_body =~ "Peter"

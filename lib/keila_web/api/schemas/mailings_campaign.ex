@@ -61,17 +61,17 @@ defmodule KeilaWeb.Api.Schemas.MailingsCampaign do
     },
     mjml_content: %{
       type: :map,
-      description: "Map of MJML content slots, keyed by slot name.",
+      description: "Map of named MJML content slots.",
       example: %{"main" => "<mj-text>Hi {{ contact.first_name }}!</mj-text>"}
     },
     html_content: %{
       type: :map,
-      description: "Map of HTML content slots, keyed by slot name.",
+      description: "Map of named HTML content slots.",
       example: %{"main" => "<p>Hi {{ contact.first_name }}!</p>"}
     },
     text_content: %{
       type: :map,
-      description: "Map of text content slots, keyed by slot name.",
+      description: "Map of named text content slots.",
       example: %{"main" => "Hi {{ contact.first_name }}!"}
     },
     data: %{

@@ -31,7 +31,7 @@ defmodule Keila.Mailings.TransactionalMessage.Request do
     field :html_content, :map
     field :text_content, :map
 
-    field :variables, :map
+    field :assigns, :map
 
     field :template_id, :string
     field :template, :map, virtual: true
@@ -55,7 +55,7 @@ defmodule Keila.Mailings.TransactionalMessage.Request do
     :mjml_content,
     :html_content,
     :text_content,
-    :variables,
+    :assigns,
     :template_id,
     :sender_id
   ]

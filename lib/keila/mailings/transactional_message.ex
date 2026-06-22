@@ -189,7 +189,7 @@ defmodule Keila.Mailings.TransactionalMessage do
       contact: request.contact,
       recipient_email: request.recipient_email,
       recipient_name: request.recipient_name,
-      assigns: Map.put(request.variables || %{}, "signature", "")
+      assigns: Map.put(request.assigns || %{}, "signature", "")
     }
   end
 
