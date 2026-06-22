@@ -975,7 +975,7 @@ defmodule Keila.Mailings do
   See `Keila.Mailings.TransactionalMessage.preview/2`.
   """
   @spec transactional_message_preview(Keila.Projects.Project.id(), map()) ::
-          Renderer.Output.t() | {:error, TransactionalMessage.error()}
+          {:ok, Renderer.Output.t()} | {:error, TransactionalMessage.error()}
   defdelegate transactional_message_preview(project_id, params),
     to: TransactionalMessage,
     as: :preview

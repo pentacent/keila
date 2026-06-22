@@ -1,7 +1,7 @@
 defmodule Keila.Repo.Migrations.ConvertMjRawLiquidToKeilaCode do
   use Ecto.Migration
 
-  # Previouxl, MJML campaigns wrapped Liquid tags inside <mj-body> in
+  # Previously, MJML campaigns wrapped Liquid tags inside <mj-body> in
   # <mj-raw>...</mj-raw>. After the template refactor, Liquid is processed
   # first which can break the template by leaving stray opening/closing mj-raw
   # tags. So technically, no new wrapper is necessary but <keila-code> was added

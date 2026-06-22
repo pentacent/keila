@@ -69,7 +69,7 @@ defmodule Keila.Mailings.Renderer.LiquidRenderer do
   Markdown to HTML.
   """
   @spec render_liquid_and_markdown(input :: String.t(), assigns :: map()) ::
-          {:ok, html :: String.t()} | {:error, String.t()}
+          {:ok, markdown :: String.t(), html :: String.t()} | {:error, String.t()}
   def render_liquid_and_markdown(input, assigns) do
     with {:ok, markdown} <- render_liquid(input, assigns),
          {:ok, html} <- render_markdown(markdown) do

@@ -35,7 +35,7 @@ defmodule Keila.Mailings.TransactionalMessage do
   contacts if a) an existing contact matches the provided `recipient_id`
   or b) if `contact_id` or `external_contact_id` were specified.
 
-  If a template is specifid, `subject` and the body fields are not required and
+  If a template is specified, `subject` and the body fields are not required and
   will be taken from the template if they're not specified.
 
   When credits are enabled, consumes one credit per message.
