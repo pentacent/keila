@@ -46,7 +46,7 @@ defmodule Keila.Mailings.TransactionalMessage do
          {:ok, request} <- load_assocs(project_id, request),
          :ok <- ensure_account_active(project_id),
          %{valid?: true} = output <- Renderer.render(to_input(request)),
-         :ok <- maybe_consume_credit(project_id) do
+         :ok <- maybe_consume_credits(project_id, request) do
       project_id
       |> message_attrs(request, output)
       |> Message.changeset()
@@ -162,11 +162,12 @@ defmodule Keila.Mailings.TransactionalMessage do
     defp ensure_account_active(_project_id), do: :ok
   end
 
-  defp maybe_consume_credit(project_id) do
+  defp maybe_consume_credits(project_id, %Request{cc: cc, bcc: bcc}) do
     if Keila.Accounts.credits_enabled?() do
       account = Keila.Accounts.get_project_account(project_id)
+      count = 1 + length(cc || []) + length(bcc || [])
 
-      case Keila.Accounts.consume_credits(account.id, 1) do
+      case Keila.Accounts.consume_credits(account.id, count) do
         :ok -> :ok
         :error -> {:error, :insufficient_credits}
       end

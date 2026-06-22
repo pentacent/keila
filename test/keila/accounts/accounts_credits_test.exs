@@ -154,7 +154,7 @@ defmodule Keila.AccountsTest.Credits do
 
   @tag :accounts
   @tag :mailings
-  test "sending a transactional message requires and consumes credits",
+  test "sending a transactional message requires and consumes one credit per recipient including cc and bcc",
        %{user: user, account: account} do
     {:ok, project} = Keila.Projects.create_project(user.id, params(:project))
     sender = insert!(:mailings_sender, project_id: project.id)
@@ -167,6 +167,8 @@ defmodule Keila.AccountsTest.Credits do
       "type" => "text",
       "sender_id" => sender.id,
       "recipient_email" => "to@example.com",
+      "cc" => ["lois@example.com", "stewie@example.com"],
+      "bcc" => ["brian@example.com"],
       "subject" => "Hello",
       "text_body" => "Hi"
     }
@@ -174,12 +176,12 @@ defmodule Keila.AccountsTest.Credits do
     assert {:error, :insufficient_credits} =
              Keila.Mailings.send_transactional_message(project.id, message_params)
 
-    Accounts.add_credits(account.id, 2, tomorrow())
+    Accounts.add_credits(account.id, 4, tomorrow())
 
     assert {:ok, %Keila.Mailings.Message{}} =
              Keila.Mailings.send_transactional_message(project.id, message_params)
 
-    assert {2, 1} == Accounts.get_credits(account.id)
+    assert {4, 0} == Accounts.get_credits(account.id)
   end
 
   @tag :accounts
