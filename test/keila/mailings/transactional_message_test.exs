@@ -1,16 +1,24 @@
 defmodule Keila.Mailings.TransactionalMessageTest do
   use Keila.DataCase, async: true
+  require Keila
   alias Keila.Mailings.TransactionalMessage
   alias Keila.Mailings.Message
   alias Keila.Mailings.Renderer.Output
 
   setup do
-    _root = insert!(:group)
+    root_group = insert!(:group)
+    account = insert!(:account, group: root_group)
     user = insert!(:user)
+    Keila.Accounts.set_user_account(user.id, account.id)
+
     {:ok, project} = Keila.Projects.create_project(user.id, params(:project))
     {:ok, other_project} = Keila.Projects.create_project(user.id, params(:project))
 
     sender = insert!(:mailings_sender, project_id: project.id)
+
+    Keila.if_cloud do
+      KeilaCloud.Accounts.update_account_status(account.id, :active)
+    end
 
     %{project: project, other_project: other_project, sender: sender}
   end

@@ -1,5 +1,6 @@
 defmodule KeilaWeb.ApiMessageControllerTest do
   use KeilaWeb.ApiCase
+  require Keila
 
   alias Keila.Mailings.Message
 
@@ -18,6 +19,11 @@ defmodule KeilaWeb.ApiMessageControllerTest do
     test "creates a message with text content and persists it with :ready state",
          %{authorized_conn: conn, project: project} do
       sender = insert!(:mailings_sender, project_id: project.id)
+
+      Keila.if_cloud do
+        account = Keila.Accounts.get_project_account(project.id)
+        KeilaCloud.Accounts.update_account_status(account.id, :active)
+      end
 
       params = %{
         "data" => %{
@@ -46,6 +52,11 @@ defmodule KeilaWeb.ApiMessageControllerTest do
     test "accepts cc/bcc as a JSON array of addresses",
          %{authorized_conn: conn, project: project} do
       sender = insert!(:mailings_sender, project_id: project.id)
+
+      Keila.if_cloud do
+        account = Keila.Accounts.get_project_account(project.id)
+        KeilaCloud.Accounts.update_account_status(account.id, :active)
+      end
 
       params = %{
         "data" => %{
