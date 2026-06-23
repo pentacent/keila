@@ -56,9 +56,9 @@ defmodule KeilaWeb.CampaignEditLive do
   end
 
   defp content_slots(campaign, template) do
-    with {body, mode} when is_binary(body) and body != "" <- template_body(template),
-         true <- has_campaign_body?(campaign, mode) do
-      Templates.get_content_slots(body, mode: mode)
+    with {template_body, mode} when template_body not in [nil, ""] <- template_body(template),
+         body when body in [nil, ""] <- body(campaign, mode) do
+      Templates.get_content_slots(template_body, mode: mode)
     else
       _ -> []
     end
@@ -69,10 +69,10 @@ defmodule KeilaWeb.CampaignEditLive do
   defp template_body(%Template{type: :html, html_body: body}), do: {body, :html}
   defp template_body(_), do: nil
 
-  defp has_campaign_body?(%{mjml_body: body}, :mjml) when is_binary(body) and body != "", do: true
-  defp has_campaign_body?(%{text_body: body}, :text) when is_binary(body) and body != "", do: true
-  defp has_campaign_body?(%{html_body: body}, :html) when is_binary(body) and body != "", do: true
-  defp has_campaign_body?(_, _), do: false
+  defp body(%{mjml_body: body}, :mjml), do: body
+  defp body(%{text_body: body}, :text), do: body
+  defp body(%{html_body: body}, :html), do: body
+  defp body(_, _), do: nil
 
   @impl true
   def render(assigns) do
