@@ -68,7 +68,9 @@ Keila.if_cloud do
         "text_body" => "Hi"
       }
 
-      assert {:error, :account_not_active} = Keila.Mailings.send_transactional_message(project.id, params)
+      assert {:error, :account_not_active} =
+               Keila.Mailings.send_transactional_message(project.id, params)
+
       # The credit is not consumed when the account is inactive.
       assert {1, 1} = Accounts.get_credits(account.id)
 
