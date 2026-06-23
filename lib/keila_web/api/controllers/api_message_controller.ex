@@ -12,7 +12,7 @@ defmodule KeilaWeb.ApiMessageController do
   plug KeilaWeb.Api.Plugs.Authorization
   plug KeilaWeb.Api.Plugs.Normalization
 
-  tags(["Messages"])
+  tags(["Transactional Messages"])
 
   operation(:create,
     summary: "Send a transactional message",

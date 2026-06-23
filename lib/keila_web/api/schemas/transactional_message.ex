@@ -19,13 +19,13 @@ defmodule KeilaWeb.Api.Schemas.TransactionalMessage do
       example: "Jane Doe"
     },
     cc: %{
-      type: :string,
+      any_of: [:string, {:array, :string}],
       description:
-        "CC recipients as an RFC 5322 address list, e.g. `Alice <alice@example.com>, bob@example.com`. May also be given as a JSON array of such strings.",
+        "CC recipients as an RFC 5322 address list, e.g. `Jane <jane@example.com>, john@example.com`. May also be given as a JSON array of such strings.",
       example: "Jane <jane@example.com>, john@example.com"
     },
     bcc: %{
-      type: :string,
+      any_of: [:string, {:array, :string}],
       description: "BCC recipients as an RFC 5322 address list (see `cc`).",
       example: "jane@example.com"
     },

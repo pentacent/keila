@@ -43,6 +43,33 @@ defmodule KeilaWeb.ApiMessageControllerTest do
     end
 
     @tag :api_message_controller
+    test "accepts cc/bcc as a JSON array of addresses",
+         %{authorized_conn: conn, project: project} do
+      sender = insert!(:mailings_sender, project_id: project.id)
+
+      params = %{
+        "data" => %{
+          "type" => "text",
+          "sender_id" => sender.id,
+          "recipient_email" => "to@example.com",
+          "subject" => "Hello",
+          "text_body" => "Hi",
+          "cc" => ["lois@example.com", "stewie@example.com"],
+          "bcc" => ["brian@example.com"]
+        }
+      }
+
+      conn = post_json(conn, Routes.api_message_path(conn, :create), params)
+
+      assert %{"data" => %{"id" => message_id}} = json_response(conn, 200)
+
+      assert %Message{
+               cc: ["lois@example.com", "stewie@example.com"],
+               bcc: ["brian@example.com"]
+             } = Keila.Repo.get(Message, message_id)
+    end
+
+    @tag :api_message_controller
     test "returns 400 for missing required fields",
          %{authorized_conn: conn} do
       conn =
