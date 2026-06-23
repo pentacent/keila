@@ -3,6 +3,7 @@ defmodule Keila.Mailings do
   use Keila.Repo
   alias Keila.Project
   alias __MODULE__.{Sender, SenderAdapters, SharedSender, Campaign, Message, MessageActions}
+  alias __MODULE__.{Renderer, TransactionalMessage}
   alias KeilaWeb.Router.Helpers, as: Routes
   require Logger
 
@@ -959,4 +960,23 @@ defmodule Keila.Mailings do
     )
     |> Repo.update_all(set: [html_body: nil, text_body: nil])
   end
+
+  @doc """
+  Sends a transactional email. See `Keila.Mailings.TransactionalMessage.deliver/2`.
+  """
+  @spec send_transactional_message(Keila.Projects.Project.id(), map()) ::
+          {:ok, Message.t()} | {:error, TransactionalMessage.error()}
+  defdelegate send_transactional_message(project_id, params),
+    to: TransactionalMessage,
+    as: :deliver
+
+  @doc """
+  Renders a transactional email without sending it.
+  See `Keila.Mailings.TransactionalMessage.preview/2`.
+  """
+  @spec transactional_message_preview(Keila.Projects.Project.id(), map()) ::
+          {:ok, Renderer.Output.t()} | {:error, TransactionalMessage.error()}
+  defdelegate transactional_message_preview(project_id, params),
+    to: TransactionalMessage,
+    as: :preview
 end

@@ -116,4 +116,38 @@ defmodule Keila.TemplatesTest do
     assert [] == Templates.get_project_templates(project.id)
     assert other_template == Templates.get_template(other_template.id)
   end
+
+  @tag :templates
+  test "update_template accepts mjml_body, html_body, text_body",
+       %{project: project} do
+    template = insert!(:template, project_id: project.id)
+
+    params = %{
+      "name" => "MJML Template",
+      "mjml_body" =>
+        "<mjml><mj-body><mj-section><mj-column><mj-text>Hi</mj-text></mj-column></mj-section></mj-body></mjml>",
+      "html_body" => "<html><body>Hi</body></html>",
+      "text_body" => "Hi"
+    }
+
+    assert {:ok, updated} = Templates.update_template(template.id, params)
+    assert updated.mjml_body =~ "mj-text"
+    assert updated.html_body == "<html><body>Hi</body></html>"
+    assert updated.text_body == "Hi"
+  end
+
+  @tag :templates
+  test "update_template can not change the type", %{project: project} do
+    template = insert!(:template, project_id: project.id)
+
+    assert {:ok, updated} = Templates.update_template(template.id, %{"type" => "mjml"})
+    assert updated.type == template.type
+  end
+
+  @tag :templates
+  test "create_template requires a type", %{project: project} do
+    params = %{"name" => "No Type"}
+    assert {:error, changeset} = Templates.create_template(project.id, params)
+    assert "can't be blank" in errors_on(changeset).type
+  end
 end

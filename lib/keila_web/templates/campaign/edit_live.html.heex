@@ -154,8 +154,16 @@
           <% (type == :block) -> %>
             {render("_block_editor.html", assigns)}
           <% (type == :mjml) -> %>
-            <div id="mjml-container" phx-hook="MjmlEditor">
+            <div id="mjml-container">
               {render("_mjml_editor.html", assigns)}
+            </div>
+          <% (type == :text) -> %>
+            <div id="text-container">
+              {render("_text_editor.html", assigns)}
+            </div>
+          <% (type == :html) -> %>
+            <div id="html-container">
+              {render("_html_editor.html", assigns)}
             </div>
           <% true -> %>
             <div id="markdown-simple-container" phx-hook="MarkdownSimpleEditor">

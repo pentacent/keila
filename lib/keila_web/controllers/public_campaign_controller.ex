@@ -4,19 +4,14 @@ defmodule KeilaWeb.PublicCampaignController do
   plug :fetch_campaign
 
   def show(conn, _params) do
-    email = Keila.Mailings.Builder.build_preview(conn.assigns.campaign)
+    case Keila.Mailings.CampaignRenderer.render_preview(conn.assigns.campaign) do
+      %{valid?: true, html_body: html} when is_binary(html) ->
+        conn |> put_resp_content_type("text/html") |> send_resp(200, html)
 
-    cond do
-      Map.has_key?(email.headers, "X-Keila-Invalid") ->
-        conn |> send_resp(404, "") |> halt()
+      %{valid?: true, text_body: text} when is_binary(text) ->
+        conn |> put_resp_content_type("text/plain") |> send_resp(200, text)
 
-      email.html_body ->
-        conn |> put_resp_content_type("text/html") |> send_resp(200, email.html_body)
-
-      email.text_body ->
-        conn |> put_resp_content_type("text/plain") |> send_resp(200, email.text_body)
-
-      true ->
+      _ ->
         conn |> send_resp(404, "") |> halt()
     end
   end

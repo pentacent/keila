@@ -1,7 +1,7 @@
-defmodule Keila.Mailings.Builder.LiquidRendererTest do
+defmodule Keila.Mailings.Renderer.LiquidRendererTest do
   use Keila.DataCase, async: true
 
-  import Keila.Mailings.Builder.LiquidRenderer
+  import Keila.Mailings.Renderer.LiquidRenderer
 
   describe "render_liquid/3" do
     test "renders a liquid template from a string" do

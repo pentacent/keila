@@ -345,4 +345,18 @@ defmodule Keila.MailingsCampaignTest do
     assert Enum.count(messages, fn m -> m.status == :sent end) == 1
     assert Enum.count(messages, fn m -> m.status == :failed end) == 1
   end
+
+  @tag :mailings_campaign
+  test "update_campaign accepts mjml_content", %{project: project} do
+    campaign =
+      insert!(:mailings_campaign,
+        project_id: project.id,
+        settings: %Mailings.Campaign.Settings{type: :mjml}
+      )
+
+    params = %{"mjml_content" => %{"hero" => "<mj-text>Hi</mj-text>"}}
+
+    assert {:ok, updated} = Mailings.update_campaign(campaign.id, params)
+    assert updated.mjml_content == %{"hero" => "<mj-text>Hi</mj-text>"}
+  end
 end

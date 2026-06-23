@@ -8,9 +8,12 @@ defmodule Keila.Mailings.Campaign do
   @update_fields [
     :subject,
     :text_body,
+    :text_content,
     :html_body,
+    :html_content,
     :json_body,
     :mjml_body,
+    :mjml_content,
     :preview_text,
     :sender_id,
     :template_id,
@@ -24,9 +27,12 @@ defmodule Keila.Mailings.Campaign do
   schema "mailings_campaigns" do
     field :subject, :string
     field :text_body, :string
+    field :text_content, :map
     field :html_body, :string
+    field :html_content, :map
     field :json_body, :map
     field :mjml_body, :string
+    field :mjml_content, :map
     field :preview_text, :string
     field :data, Keila.Repo.JsonField
 

@@ -117,6 +117,29 @@ defmodule Keila.Templates.HybridTemplate do
     @styles
   end
 
+  @doc """
+  Merges the styles for a `template` (or `nil`) with the defaults.
+  """
+  @spec merge_styles(Keila.Templates.Template.t() | nil) :: Css.t()
+  def merge_styles(template)
+
+  def merge_styles(%{styles: styles}) when is_list(styles) do
+    styles()
+    |> Css.merge(styles)
+    |> apply_style_aliases()
+  end
+
+  def merge_styles(%{styles: styles}) when is_binary(styles) do
+    styles()
+    |> Css.merge(Css.parse!(styles))
+    |> apply_style_aliases()
+  end
+
+  def merge_styles(_) do
+    styles()
+    |> apply_style_aliases()
+  end
+
   def embedded_styles() do
     [".email-bg"]
   end

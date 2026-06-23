@@ -6,6 +6,13 @@ defmodule KeilaWeb.TemplateController do
   import Ecto.Changeset
   import Phoenix.LiveView.Controller
 
+  @external_resource "priv/email_templates/default-mjml-template.mjml"
+  @default_mjml_body File.read!("priv/email_templates/default-mjml-template.mjml")
+  @external_resource "priv/email_templates/default-html-template.html"
+  @default_html_body File.read!("priv/email_templates/default-html-template.html")
+  @external_resource "priv/email_templates/default-text-template.txt"
+  @default_text_body File.read!("priv/email_templates/default-text-template.txt")
+
   plug :authorize when action not in [:index, :new, :post_new, :delete]
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
@@ -20,16 +27,21 @@ defmodule KeilaWeb.TemplateController do
 
   @spec new(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def new(conn, _params) do
-    render_new(conn, change(%Template{}))
+    render_new(conn, change(%Template{type: "hybrid"}))
   end
 
   @spec post_new(Plug.Conn.t(), map()) :: Plug.Conn.t()
-  def post_new(conn, params) do
+  def post_new(conn, %{"template" => params}) do
     project = current_project(conn)
 
     params =
-      (params["template"] || %{})
-      |> Map.put("assigns", %{"signature" => HybridTemplate.signature()})
+      case params["type"] do
+        "hybrid" -> Map.put(params, "assigns", %{"signature" => HybridTemplate.signature()})
+        "mjml" -> Map.put(params, "mjml_body", @default_mjml_body)
+        "html" -> Map.put(params, "html_body", @default_html_body)
+        "text" -> Map.put(params, "text_body", @default_text_body)
+        _other -> params
+      end
 
     case Templates.create_template(project.id, params) do
       {:ok, template} ->

@@ -61,6 +61,7 @@ defmodule Keila.Mailings.WelcomeMessageTest do
       assert message.status == :ready
       assert message.priority == 10
       assert message.recipient_email == @email
+      assert message.recipient_name == "Test User"
       assert message.project_id == project.id
       assert message.sender_id == sender.id
       assert message.contact_id == contact.id

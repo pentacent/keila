@@ -10,9 +10,12 @@ defmodule Keila.Mailings.Message do
   schema "messages" do
     field(:recipient_email, :string)
     field(:recipient_name, :string)
+    field(:cc, {:array, :string}, default: [])
+    field(:bcc, {:array, :string}, default: [])
     field(:subject, :string)
     field(:html_body, :string)
     field(:text_body, :string)
+    field(:headers, :map, default: %{})
 
     field(:priority, :integer, default: 100)
     field(:render_attempt, :integer, default: 0)
@@ -39,14 +42,17 @@ defmodule Keila.Mailings.Message do
     timestamps()
   end
 
-  def changeset(message, params) do
+  def changeset(message \\ %__MODULE__{}, params) do
     message
     |> cast(params, [
       :recipient_email,
       :recipient_name,
+      :cc,
+      :bcc,
       :subject,
       :html_body,
       :text_body,
+      :headers,
       :priority,
       :status,
       :receipt,
@@ -66,5 +72,23 @@ defmodule Keila.Mailings.Message do
       :form_id,
       :form_params_id
     ])
+    |> validate_emails()
+    |> Keila.EmailHeader.validate_headers(:headers)
+    |> validate_assocs_project()
+  end
+
+  defp validate_emails(changeset) do
+    changeset
+    |> Keila.EmailAddress.validate_email(:recipient_email)
+    |> Keila.EmailAddress.validate_mailbox_list(:cc)
+    |> Keila.EmailAddress.validate_mailbox_list(:bcc)
+  end
+
+  defp validate_assocs_project(changeset) do
+    changeset
+    |> validate_assoc_project(:contact, Contact)
+    |> validate_assoc_project(:campaign, Campaign)
+    |> validate_assoc_project(:sender, Sender)
+    |> validate_assoc_project(:form, Form)
   end
 end

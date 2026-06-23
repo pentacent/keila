@@ -152,6 +152,63 @@ defmodule Keila.AccountsTest.Credits do
     assert %{scheduled_for: nil} = Keila.Mailings.get_campaign(campaign.id)
   end
 
+  @tag :accounts
+  @tag :mailings
+  test "sending a transactional message requires and consumes one credit per recipient including cc and bcc",
+       %{user: user, account: account} do
+    {:ok, project} = Keila.Projects.create_project(user.id, params(:project))
+    sender = insert!(:mailings_sender, project_id: project.id)
+
+    Keila.if_cloud do
+      KeilaCloud.Accounts.update_account_status(account.id, :active)
+    end
+
+    message_params = %{
+      "type" => "text",
+      "sender_id" => sender.id,
+      "recipient_email" => "to@example.com",
+      "cc" => ["lois@example.com", "stewie@example.com"],
+      "bcc" => ["brian@example.com"],
+      "subject" => "Hello",
+      "text_body" => "Hi"
+    }
+
+    assert {:error, :insufficient_credits} =
+             Keila.Mailings.send_transactional_message(project.id, message_params)
+
+    Accounts.add_credits(account.id, 4, tomorrow())
+
+    assert {:ok, %Keila.Mailings.Message{}} =
+             Keila.Mailings.send_transactional_message(project.id, message_params)
+
+    assert {4, 0} == Accounts.get_credits(account.id)
+  end
+
+  @tag :accounts
+  @tag :mailings
+  test "a transactional message that fails to render does not consume a credit",
+       %{user: user, account: account} do
+    {:ok, project} = Keila.Projects.create_project(user.id, params(:project))
+    sender = insert!(:mailings_sender, project_id: project.id)
+
+    Keila.if_cloud do
+      KeilaCloud.Accounts.update_account_status(account.id, :active)
+    end
+
+    Accounts.add_credits(account.id, 1, tomorrow())
+
+    assert {:error, {:rendering_failed, _}} =
+             Keila.Mailings.send_transactional_message(project.id, %{
+               "type" => "mjml",
+               "sender_id" => sender.id,
+               "recipient_email" => "to@example.com",
+               "subject" => "Hi",
+               "mjml_body" => "<mjml><mj-body><mj-text>{{ broken </mj-text></mj-body></mjml>"
+             })
+
+    assert {1, 1} == Accounts.get_credits(account.id)
+  end
+
   defp set_credits_enabled(enable?) do
     config =
       Application.get_env(:keila, Keila.Accounts, [])

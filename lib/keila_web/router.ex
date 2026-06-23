@@ -250,7 +250,13 @@ defmodule KeilaWeb.Router do
 
     resources "/segments", ApiSegmentController, only: [:index, :show, :create, :update, :delete]
 
+    resources "/templates", ApiTemplateController,
+      only: [:index, :show, :create, :update, :delete]
+
     resources "/senders", ApiSenderController, only: [:index]
+
+    post "/messages", ApiMessageController, :create
+    post "/messages/actions/render", ApiMessageController, :render
   end
 
   # Webhooks

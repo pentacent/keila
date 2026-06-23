@@ -12,10 +12,7 @@ defmodule Keila.Mailings.WelcomeMessage do
   alias Keila.Contacts.Contact
   alias Keila.Contacts.Form
   alias Keila.Mailings.Message
-  alias Keila.Templates.{Css, HybridTemplate}
-  alias Swoosh.Email
-  alias KeilaWeb.Router.Helpers, as: Routes
-  alias KeilaWeb.Endpoint
+  alias Keila.Mailings.Renderer
 
   @doc """
   Renders a welcome email for the given `contact_id` and `form_id` and inserts a
@@ -32,26 +29,51 @@ defmodule Keila.Mailings.WelcomeMessage do
     with :ok <- ensure_feature_available(project_id),
          :ok <- ensure_account_active(project_id),
          :ok <- ensure_welcome_enabled(form),
-         :ok <- ensure_sender(sender),
-         email <- build(contact, form),
-         :ok <- ensure_valid_email(email),
-         [{recipient_name, recipient_email}] <- email.to do
-      %Message{}
-      |> Message.changeset(%{
-        status: :ready,
-        priority: 10,
-        subject: email.subject,
-        text_body: email.text_body,
-        html_body: email.html_body,
-        recipient_email: recipient_email,
-        recipient_name: recipient_name,
-        project_id: project_id,
-        sender_id: sender.id,
-        contact_id: contact_id,
-        form_id: form_id
-      })
-      |> Repo.insert()
+         :ok <- ensure_sender(sender) do
+      insert_and_render(contact, form, sender)
     end
+  end
+
+  # Insert an unrendered message first to retrieve the message id.
+  defp insert_and_render(contact, form, sender) do
+    Repo.transaction(fn ->
+      with {:ok, message} <- insert_unrendered_message(contact, form, sender),
+           unsubscribe_link = Keila.Mailings.get_unsubscribe_link(form.project_id, message.id),
+           %{valid?: true} = output <- render(contact, form, unsubscribe_link),
+           {:ok, message} <- finalize_message(message, output) do
+        message
+      else
+        %{valid?: false} -> Repo.rollback(:rendering_error)
+        {:error, reason} -> Repo.rollback(reason)
+      end
+    end)
+  end
+
+  defp insert_unrendered_message(contact, form, sender) do
+    %Message{}
+    |> Message.changeset(%{
+      status: :unrendered,
+      priority: 10,
+      subject: "",
+      recipient_email: contact.email,
+      recipient_name: Contacts.display_name(contact),
+      project_id: form.project_id,
+      sender_id: sender.id,
+      contact_id: contact.id,
+      form_id: form.id
+    })
+    |> Repo.insert()
+  end
+
+  defp finalize_message(message, output) do
+    message
+    |> Message.changeset(%{
+      status: :ready,
+      subject: output.subject,
+      text_body: output.text_body,
+      html_body: output.html_body
+    })
+    |> Repo.update()
   end
 
   @preview_contact %Contact{
@@ -60,16 +82,12 @@ defmodule Keila.Mailings.WelcomeMessage do
     data: %{}
   }
 
-  @preview_assigns %{
-    "unsubscribe_link" => "#unsubscribe-preview-link"
-  }
-
   @doc """
-  Builds a preview email for the given form.
+  Builds a preview of the rendered welcome email for the given form.
   """
-  @spec preview(Form.t(), Contact.t()) :: Email.t()
+  @spec preview(Form.t(), Contact.t()) :: Renderer.Output.t()
   def preview(form, contact \\ @preview_contact) do
-    build(contact, form, @preview_assigns)
+    render(contact, form, "#unsubscribe-preview-link")
   end
 
   @doc """
@@ -92,21 +110,22 @@ defmodule Keila.Mailings.WelcomeMessage do
     """)
   end
 
-  # Building
-
-  defp build(contact, form, assigns \\ %{}) do
+  defp render(contact, form, unsubscribe_link, assigns \\ %{}) do
     subject = get_subject(form)
     body_markdown = get_body_markdown(form)
-
     template = if form.template_id, do: Keila.Templates.get_template(form.template_id)
-    styles = get_styles(template)
 
-    assigns = build_assigns(assigns, contact, template, subject)
+    input = %Renderer.Input{
+      type: :markdown,
+      subject: subject,
+      text_body: body_markdown,
+      template: template,
+      assigns:
+        build_assigns(assigns, contact, template, subject)
+        |> Map.put("unsubscribe_link", unsubscribe_link)
+    }
 
-    Email.new()
-    |> Email.to(contact.email)
-    |> Email.subject(subject)
-    |> Keila.Mailings.Builder.Markdown.put_body(body_markdown, styles, assigns)
+    Renderer.render(input)
   end
 
   defp get_subject(form) do
@@ -123,19 +142,8 @@ defmodule Keila.Mailings.WelcomeMessage do
     end
   end
 
-  defp get_styles(template) do
-    default_styles = HybridTemplate.styles()
-
-    if template && is_binary(template.styles) do
-      Css.merge(default_styles, Css.parse!(template.styles))
-    else
-      default_styles
-    end
-  end
-
   defp build_assigns(assigns, contact, template, subject) do
     assigns
-    |> Map.put_new_lazy("unsubscribe_link", fn -> get_unsubscribe_link(contact) end)
     |> Map.put("contact", %{
       "email" => contact.email,
       "first_name" => contact.first_name,
@@ -143,26 +151,10 @@ defmodule Keila.Mailings.WelcomeMessage do
       "data" => contact.data || %{}
     })
     |> Map.put("campaign", %{"subject" => subject})
-    |> Map.put("styles", get_styles(template))
     |> Map.put("signature", if(template, do: template.assigns["signature"]))
   end
 
-  defp get_unsubscribe_link(contact) do
-    # TODO: This uses the deprecated unsigned unsubscribe link.
-    # This should be changed once the refactoring for transactional emails will add a record
-    # for emails link this welcome email that can be referenced and signed.
-    Routes.public_form_url(Endpoint, :unsubscribe, contact.project_id, contact.id)
-  end
-
   # Helpers
-
-  defp ensure_valid_email(email) do
-    if Enum.find(email.headers, fn {name, _} -> name == "X-Keila-Invalid" end) do
-      {:error, :rendering_error}
-    else
-      :ok
-    end
-  end
 
   defp ensure_welcome_enabled(form) do
     if form.settings.welcome_enabled do

@@ -34,7 +34,7 @@ defmodule Keila.Mailings.DoubleOptInMessageTest do
         insert!(:contacts_form_params, %{
           project_id: project.id,
           form_id: form.id,
-          params: %{"email" => @email}
+          params: %{"email" => @email, "first_name" => "Test", "last_name" => "User"}
         })
 
       Keila.if_cloud do
@@ -54,6 +54,7 @@ defmodule Keila.Mailings.DoubleOptInMessageTest do
       assert message.status == :ready
       assert message.priority == 10
       assert message.recipient_email == @email
+      assert message.recipient_name == "Test User"
       assert message.project_id == project.id
       assert message.sender_id == sender.id
       assert message.form_id == form.id

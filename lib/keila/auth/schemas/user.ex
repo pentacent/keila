@@ -59,11 +59,10 @@ defmodule Keila.Auth.User do
     |> validate_password()
   end
 
-  @email_regex ~r/^[^\s@]+@[^\s@]+$/
   defp validate_email(changeset) do
     changeset
     |> validate_required([:email])
-    |> validate_format(:email, @email_regex, message: "must have the @ sign and no spaces")
+    |> Keila.EmailAddress.validate_email(:email)
     |> validate_length(:email, max: 255)
     |> unique_constraint(:email)
   end

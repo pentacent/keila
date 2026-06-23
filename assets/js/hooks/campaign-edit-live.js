@@ -44,8 +44,30 @@ const BlockEditorHook = {
 
 const MjmlEditorHook = {
   mounted() {
-    let place = this.el.querySelector(".editor")
-    new MjmlEditor(place, document.querySelector("#campaign_mjml_body"))
+    const place = this.el.querySelector(".editor")
+    const target = this.el.dataset.target
+    new MjmlEditor(place, document.querySelector(target), {
+      toolbar: "#mjml-editor-toolbar"
+    })
+  }
+}
+
+// Reuses the MjmlEditor class but with HTML-only tag completion (no
+// MJML elements). `keila-content` is included so HTML templates can
+// declare content slots.
+const HtmlEditorHook = {
+  mounted() {
+    const place = this.el.querySelector(".editor")
+    const target = this.el.dataset.target
+    new MjmlEditor(place, document.querySelector(target), {
+      toolbar: "#html-editor-toolbar",
+      extraTags: {
+        "keila-content": {
+          attrs: { name: null },
+          globalAttrs: false
+        }
+      }
+    })
   }
 }
 
@@ -60,6 +82,7 @@ const HtmlPreviewHook = {
 
 export {
   BlockEditorHook as BlockEditor,
+  HtmlEditorHook as HtmlEditor,
   HtmlPreviewHook as HtmlPreview,
   MarkdownEditorHook as MarkdownEditor,
   MarkdownSimpleEditorHook as MarkdownSimpleEditor,

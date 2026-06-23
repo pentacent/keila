@@ -1,16 +1,19 @@
-defmodule Keila.Mailings.Builder.Markdown do
+defmodule Keila.Mailings.Renderer.BodyRenderer.Markdown do
   @moduledoc """
-  Builder for Markdown emails.
+  Renders the body for Markdown messages.
   """
+  @behaviour Keila.Mailings.Renderer.BodyRenderer
 
   alias Keila.Templates.HybridTemplate
   alias Keila.Templates.Html
+  alias Keila.Mailings.Renderer.Input
 
-  import Keila.Mailings.Builder.LiquidRenderer
-  import Swoosh.Email
+  import Keila.Mailings.Renderer.LiquidRenderer
 
-  @spec put_body(Swoosh.Email.t(), String.t(), Css.t(), map()) :: Swoosh.Email.t()
-  def put_body(email, main_content, styles, assigns \\ %{}) do
+  @impl true
+  def render(output, %Input{} = input, assigns) do
+    main_content = input.text_body || ""
+    styles = HybridTemplate.merge_styles(input.template)
     signature = get_signature(assigns)
 
     with {:ok, assigns} <- render_signature_to_assigns(assigns, signature),
@@ -19,14 +22,10 @@ defmodule Keila.Mailings.Builder.Markdown do
       html_body = apply_styles!(html_body, styles)
       text_body = build_text_body(assigns)
 
-      email
-      |> text_body(text_body)
-      |> html_body(html_body)
+      %{output | text_body: text_body, html_body: html_body}
     else
       {:error, reason} ->
-        email
-        |> text_body(reason)
-        |> header("X-Keila-Invalid", reason)
+        %{output | text_body: reason, errors: [reason | output.errors]}
     end
   end
 

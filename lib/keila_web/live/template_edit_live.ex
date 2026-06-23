@@ -1,23 +1,28 @@
 defmodule KeilaWeb.TemplateEditLive do
   use KeilaWeb, :live_view
   alias Keila.Templates.{Template, StyleTemplate, HybridTemplate}
+  alias Keila.Mailings.Renderer
 
-  @default_text_body File.read!("priv/email_templates/default-markdown-content.md")
+  @external_resource "priv/email_templates/default-markdown-content.md"
+  @default_markdown_body File.read!("priv/email_templates/default-markdown-content.md")
 
   @impl true
   def mount(_params, session, socket) do
     Gettext.put_locale(session["locale"])
 
-    styles = Keila.Templates.Css.parse!(session["template"].styles || "")
+    template = session["template"]
+    styles = if template.type == :hybrid, do: Keila.Templates.Css.parse!(template.styles || "")
 
     style_template =
-      HybridTemplate.style_template()
-      |> StyleTemplate.apply_values_from_css(styles)
+      if template.type == :hybrid,
+        do:
+          HybridTemplate.style_template()
+          |> StyleTemplate.apply_values_from_css(styles)
 
     socket =
       socket
-      |> assign(:template, session["template"])
-      |> assign(:changeset, Ecto.Changeset.change(session["template"]))
+      |> assign(:template, template)
+      |> assign(:changeset, Ecto.Changeset.change(template))
       |> assign(:current_project, session["current_project"])
       |> assign(:style_template, style_template)
       |> put_template_preview()
@@ -31,17 +36,18 @@ defmodule KeilaWeb.TemplateEditLive do
   end
 
   @impl true
-  def handle_event("form_updated", params, socket) do
+  def handle_event("form_updated", %{"template" => params}, socket) do
+    template = socket.assigns.template
+
     style_template =
-      StyleTemplate.apply_values_from_params(
-        socket.assigns.style_template,
-        params["template"]["styles"]
-      )
+      if template.type == :hybrid,
+        do:
+          StyleTemplate.apply_values_from_params(socket.assigns.style_template, params["styles"])
 
     changeset =
       Template.update_changeset(
         socket.assigns.template,
-        Map.delete(params["template"], "styles")
+        Map.delete(params, "styles")
       )
 
     socket =
@@ -55,25 +61,37 @@ defmodule KeilaWeb.TemplateEditLive do
 
   defp put_template_preview(socket) do
     {:ok, template} = Ecto.Changeset.apply_action(socket.assigns.changeset, :update)
+    assign(socket, :preview, render_preview(template, socket.assigns))
+  end
 
-    css_preview =
-      socket.assigns.style_template
-      |> StyleTemplate.to_css()
+  defp render_preview(%Template{type: :hybrid} = template, assigns) do
+    template = %{template | styles: StyleTemplate.to_css(assigns.style_template)}
 
-    template = %{template | styles: css_preview}
-
-    campaign = %Keila.Mailings.Campaign{
-      id: nil,
+    %Renderer.Input{
+      type: :markdown,
       subject: "",
-      project_id: socket.assigns.current_project.id,
-      text_body: @default_text_body,
-      settings: %Keila.Mailings.Campaign.Settings{type: :markdown},
+      text_body: @default_markdown_body,
       template: template,
-      sender: %Keila.Mailings.Sender{from_name: "Example", from_email: "keila@example.com"}
+      assigns: %{"campaign" => %{"subject" => template.name}}
     }
+    |> Renderer.render_preview()
+    |> preview_html()
+  end
 
-    preview_email = Keila.Mailings.Builder.build(campaign, %{})
+  defp render_preview(%Template{type: type} = template, _assigns)
+       when type in [:mjml, :html, :text] do
+    %Renderer.Input{
+      type: type,
+      subject: "",
+      text_body: template.text_body,
+      template: template,
+      assigns: %{"campaign" => %{"subject" => template.name}}
+    }
+    |> Renderer.render_preview()
+    |> preview_html()
+  end
 
-    assign(socket, :preview, preview_email.html_body)
+  defp preview_html(%Keila.Mailings.Renderer.Output{} = output) do
+    output.html_body || KeilaWeb.CampaignView.plain_text_preview(output.text_body)
   end
 end

@@ -132,6 +132,20 @@
               {gettext("Build fully customized responsive email layouts with MJML.")}
             </p>
           </label>
+          {radio_button(fs, :type, "html", class: "hidden", x_model: "type")}
+          <label
+            for={input_id(fs, :type, "html")}
+            class="bg-gray-800 p-4"
+            x-bind:class="type == 'html' && 'outline outline-2 outline-green-500'"
+          >
+            <h3 class="text-bold text-xl">{gettext("HTML")}</h3>
+            <div class="flex w-24 h-24 bg-gradient-to-br from-gray-200 to-gray-300 rounded text-gray-600 p-2 my-4">
+              {render_icon(:code)}
+            </div>
+            <p class="text-sm">
+              {gettext("Create custom email designs from scratch with HTML.")}
+            </p>
+          </label>
         </div>
       <% end) %>
     </div>
@@ -152,7 +166,49 @@
           {select(
             f,
             :template_id,
-            [{gettext("Default"), nil} | Enum.map(@templates, &{&1.name, &1.id})],
+            [{gettext("Default"), nil} | Enum.map(@hybrid_templates, &{&1.name, &1.id})],
+            class: "text-black"
+          )}
+        <% end %>
+      </div>
+    </template>
+    <template x-if="type === 'mjml'">
+      <div class="form-row">
+        {label(f, :template_id, gettext("Template"))}
+
+        <%= with_validation(f, :template_id) do %>
+          {select(
+            f,
+            :template_id,
+            [{gettext("No template"), nil} | Enum.map(@mjml_templates, &{&1.name, &1.id})],
+            class: "text-black"
+          )}
+        <% end %>
+      </div>
+    </template>
+    <template x-if="type === 'text'">
+      <div class="form-row">
+        {label(f, :template_id, gettext("Template"))}
+
+        <%= with_validation(f, :template_id) do %>
+          {select(
+            f,
+            :template_id,
+            [{gettext("No template"), nil} | Enum.map(@text_templates, &{&1.name, &1.id})],
+            class: "text-black"
+          )}
+        <% end %>
+      </div>
+    </template>
+    <template x-if="type === 'html'">
+      <div class="form-row">
+        {label(f, :template_id, gettext("Template"))}
+
+        <%= with_validation(f, :template_id) do %>
+          {select(
+            f,
+            :template_id,
+            [{gettext("No template"), nil} | Enum.map(@html_templates, &{&1.name, &1.id})],
             class: "text-black"
           )}
         <% end %>

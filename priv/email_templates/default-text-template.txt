@@ -1,0 +1,14 @@
+Hello {{ contact.first_name | default: "there" }}!
+
+<keila-content name="main">
+This is a plain-text email template.
+
+In a plain-text template, you can:
+- use Liquid tags to generate dynamic emails
+- use the keila-content tag to create content slots within your template.
+</keila-content>
+
+--
+Unsubscribe: {{ unsubscribe_url }}
+
+This newsletter is powered by Keila: https://www.keila.io

@@ -119,28 +119,45 @@ defmodule KeilaWeb.Api.Schema do
     for {key, property} <- properties,
         allowed_properties == :all || key in allowed_properties,
         into: %{} do
-      properties = do_schema_build(Map.get(property, :properties))
-
-      items =
-        case do_schema_build(Map.get(property, :items)) do
-          nil -> nil
-          item_properties -> %OpenApiSpex.Schema{type: :object, properties: item_properties}
-        end
-
-      {key,
-       %OpenApiSpex.Schema{
-         type: schema_type(property.type),
-         format: schema_format(property.type),
-         description: Map.get(property, :description),
-         enum: Map.get(property, :enum),
-         example: Map.get(property, :example),
-         properties: properties,
-         items: items
-       }}
+      {key, property_schema(property)}
     end
   end
 
   defp do_schema_build(nil, _), do: nil
+
+  defp property_schema(%{any_of: variants} = property) do
+    %OpenApiSpex.Schema{
+      anyOf: Enum.map(variants, &variant_schema/1),
+      description: Map.get(property, :description),
+      example: Map.get(property, :example)
+    }
+  end
+
+  defp property_schema(property) do
+    properties = do_schema_build(Map.get(property, :properties))
+
+    items =
+      case do_schema_build(Map.get(property, :items)) do
+        nil -> nil
+        item_properties -> %OpenApiSpex.Schema{type: :object, properties: item_properties}
+      end
+
+    %OpenApiSpex.Schema{
+      type: schema_type(property.type),
+      format: schema_format(property.type),
+      description: Map.get(property, :description),
+      enum: Map.get(property, :enum),
+      example: Map.get(property, :example),
+      properties: properties,
+      items: items
+    }
+  end
+
+  defp variant_schema({:array, item_type}),
+    do: %OpenApiSpex.Schema{type: :array, items: %OpenApiSpex.Schema{type: item_type}}
+
+  defp variant_schema(type),
+    do: %OpenApiSpex.Schema{type: schema_type(type)}
 
   defp maybe_add_meta(schema, nil), do: schema
 

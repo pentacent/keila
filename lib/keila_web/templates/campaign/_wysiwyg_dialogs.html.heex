@@ -97,7 +97,7 @@
               module={KeilaWeb.FileManagerLiveComponent}
               id="file-manager"
               current_project_id={@current_project.id}
-              current_campaign_id={@campaign.id}
+              current_campaign_id={assigns[:campaign] && @campaign.id}
             />
           </div>
           <div class="tab-content" data-tab="url" x-show="imageTab === 'url'">

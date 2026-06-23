@@ -52,6 +52,35 @@ Keila.if_cloud do
 
     @tag :accounts
     @tag :mailings
+    test "sending a transactional message requires an active account", %{
+      user: user,
+      account: account
+    } do
+      {:ok, project} = Keila.Projects.create_project(user.id, params(:project))
+      sender = insert!(:mailings_sender, project_id: project.id)
+      Accounts.add_credits(account.id, 1, tomorrow())
+
+      params = %{
+        "type" => "text",
+        "sender_id" => sender.id,
+        "recipient_email" => "to@example.com",
+        "subject" => "Hello",
+        "text_body" => "Hi"
+      }
+
+      assert {:error, :account_not_active} =
+               Keila.Mailings.send_transactional_message(project.id, params)
+
+      # The credit is not consumed when the account is inactive.
+      assert {1, 1} = Accounts.get_credits(account.id)
+
+      KeilaCloud.Accounts.update_account_status(account.id, :active)
+      assert {:ok, _message} = Keila.Mailings.send_transactional_message(project.id, params)
+      assert {1, 0} = Accounts.get_credits(account.id)
+    end
+
+    @tag :accounts
+    @tag :mailings
     @tag :contacts
     test "A campaign that failed to deliver when the account was not active is un-scheduled", %{
       user: user,

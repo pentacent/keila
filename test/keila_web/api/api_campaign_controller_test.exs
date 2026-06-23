@@ -44,6 +44,31 @@ defmodule KeilaWeb.ApiCampaignControllerTest do
                }
              } = json_response(conn, 200)
     end
+
+    @tag :api_campaign_controller
+    test "creates an html campaign with slot content", %{authorized_conn: conn, project: project} do
+      %{id: sender_id} = insert!(:mailings_sender, project_id: project.id)
+
+      body = %{
+        "data" => %{
+          "subject" => "HTML Campaign",
+          "sender_id" => sender_id,
+          "settings" => %{"type" => "html"},
+          "html_body" => "<keila-content name=\"main\"><p>Default</p></keila-content>",
+          "html_content" => %{"main" => "<p>Hi {{ contact.first_name }}!</p>"}
+        }
+      }
+
+      conn = post_json(conn, Routes.api_campaign_path(conn, :create), body)
+
+      assert %{
+               "data" => %{
+                 "settings" => %{"type" => "html"},
+                 "html_body" => "<keila-content name=\"main\"><p>Default</p></keila-content>",
+                 "html_content" => %{"main" => "<p>Hi {{ contact.first_name }}!</p>"}
+               }
+             } = json_response(conn, 200)
+    end
   end
 
   describe "GET /api/v1/campaigns/:id" do
