@@ -118,7 +118,7 @@ Keila.if_cloud do
           :ok
 
         {:error, {:http_error, 400, %{headers: headers}}} = reason ->
-          if Enum.member?(headers, {"x-amzn-ErrorType", "AlreadyExistsException"}),
+          if Enum.member?(headers, {"x-amzn-errortype", "AlreadyExistsException"}),
             do: :ok,
             else: {:error, {"failed to create domain identity", reason}}
 
