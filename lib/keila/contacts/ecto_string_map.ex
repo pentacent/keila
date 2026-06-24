@@ -220,10 +220,9 @@ defmodule Keila.Contacts.EctoStringMap.FieldDefinition do
 
   defp required_validations(_), do: []
 
-  @email_regex ~r/^[^\s@]+@[^\s@]+$/
   defp validate_email(changeset, field) do
     changeset
-    |> validate_format(field, @email_regex, message: "must have the @ sign and no spaces")
+    |> Keila.EmailAddress.validate_email(field)
     |> validate_length(field, max: 255)
   end
 end
