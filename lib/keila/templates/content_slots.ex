@@ -43,7 +43,7 @@ defmodule Keila.Templates.ContentSlots do
   end
 
   defp get_slots_from_tree(input, selector) do
-    input = stash_liquid(input)
+    input = input |> stash_mj_head() |> stash_liquid()
 
     with {:ok, tree} <- Floki.parse_fragment(input) do
       tree
@@ -90,7 +90,7 @@ defmodule Keila.Templates.ContentSlots do
   end
 
   defp merge_content_slots_with_tree(input, content, traverse_fun, opts) do
-    input = stash_liquid(input)
+    input = input |> stash_mj_head() |> stash_liquid()
 
     content =
       (content || %{})
@@ -103,8 +103,9 @@ defmodule Keila.Templates.ContentSlots do
       |> Floki.traverse_and_update(&traverse_fun.(&1, content))
       |> Floki.raw_html(pretty: opts[:pretty] || false)
       |> restore_liquid()
+      |> restore_mj_head()
     else
-      _ -> input
+      _ -> input |> restore_liquid() |> restore_mj_head()
     end
   end
 
@@ -168,7 +169,24 @@ defmodule Keila.Templates.ContentSlots do
     end)
   end
 
-  # ---- helpers ---------------------------------------------------------------
+  # Lexbor is strictly HTML5-compliant and doesn't allow custom self-closing tags.
+  # However, MJML requires self-closing tags in mj-attributes.
+  # Since slots can only live in mj-body anyways, we stash mj-head and restore it
+  # verbatim.
+  defp stash_mj_head(input) when is_binary(input) do
+    Regex.replace(~r{<mj-head\b[^>]*>.*?</mj-head>}s, input, fn head ->
+      "__KEILA_MJ_HEAD--#{Base.encode64(head)}__"
+    end)
+  end
+
+  defp restore_mj_head(input) do
+    Regex.replace(~r{__KEILA_MJ_HEAD--([A-Za-z0-9+/=]+)__}, input, fn full, head_base64 ->
+      case Base.decode64(head_base64) do
+        {:ok, decoded} -> decoded
+        :error -> full
+      end
+    end)
+  end
 
   defp attr_value(attrs, name) do
     case List.keyfind(attrs, name, 0) do

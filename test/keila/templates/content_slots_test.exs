@@ -114,6 +114,20 @@ defmodule Keila.Templates.ContentSlotsTest do
                ~s(<mjml><mj-body><mj-text>Hi {{ contact.first_name | default: "there" }}</mj-text></mj-body></mjml>)
     end
 
+    test "leaves <mj-head> and its self-closing tags untouched while merging the body" do
+      mjml =
+        ~s(<mjml><mj-head><mj-attributes><mj-section background-color="#fff" /><mj-button color="#000" /></mj-attributes></mj-head><mj-body><keila-content name="main">Hi</keila-content></mj-body></mjml>)
+
+      out = Templates.merge_content_slots(mjml, %{}, mode: :mjml)
+
+      # The head is stashed and restored verbatim, so self-closing tags stay
+      # self-closing and don't get mangled by the HTML parser.
+      assert out =~
+               ~s(<mj-head><mj-attributes><mj-section background-color="#fff" /><mj-button color="#000" /></mj-attributes></mj-head>)
+
+      assert out =~ "<mj-body>Hi</mj-body>"
+    end
+
     test "preserves special characters inside Liquid tags, escapes them outside" do
       mjml = """
       <mjml><mj-body>
