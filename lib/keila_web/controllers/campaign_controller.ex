@@ -96,6 +96,7 @@ defmodule KeilaWeb.CampaignController do
       "mjml" -> maybe_put_default_mjml_content(params, project_id)
       "html" -> maybe_put_default_html_content(params, project_id)
       "text" -> maybe_put_default_text_content(params, project_id)
+      _other -> params
     end
   end
 
