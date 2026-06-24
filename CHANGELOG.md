@@ -2,6 +2,45 @@
 
 ## Unreleased
 
+## Version 0.30.0
+
+> MJML, HTML, and Plain-Text Templates, Content Slots, and Transactional Emails
+
+### Breaking Changes
+- In MJML campaigns, Liquid is now rendered before MJML. This means that
+  the previous convention of wrapping control-flow tags such as `{% if %}`
+  in `<mj-raw>` elements no longer works. This release automatically migrates
+  this pattern in existing campaigns to use the new `<keila-code>` element.
+  This new element can be placed at any level of an MJML template/campaign/message
+  and is removed cleanly before MJML is rendered.
+
+### Added
+- New API for sending and rendering transactional emails: one-off messages
+  can be sent with the `POST /messages` and previews rendered without sending
+  with `POST /messages/actions/render`.
+- New API for managing templates.
+- Added support for MJML, HTML and plain-text templates.
+- Added content slots (`<keila-content>`) for MJML, HTML, and plain-text templates
+  which can be filled in the campaign editor and set via the API.
+
+### Improved
+- The MJML editor now allows scrolling the code editor independently from the preview and
+  has better autocomplete for MJML.
+- Improved handling of image resizing in the Block Editor
+- Improved handling of unsubscribe links in welcome and double-opt-in messages
+- Improved validation of user-provided email addresses
+- Added descriptions for API tags in the OpenAPI documentation
+- Replaced the `tzdata` timezone database with `tz`, removing the need for
+  runtime timezone-data updates
+- Replaced the HTTPoison HTTP client with Req
+
+### Fixed
+- Fixed a regression with linked images in Markdown campaigns
+- Fixed a regression where `List-Unsubscribe` and `Precedence` headers were no
+  longer sent with delivered campaigns
+- Fixed incorrect fuzzy translations (manual corrections for German and French,
+  machine translations for other languages)
+
 
 ## Version 0.20.1
 
