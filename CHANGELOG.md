@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+## Version 0.30.1
+
+### Fixed
+- Add HTML option to campaign type dropdown in campaign settings
+- Fixed a bug that caused an internal server error when creating new Block campaigns
+- Fixed rendering errors when using self-closing MJML tags
+- Fix gettext error with Block editor social media block
+
+
 ## Version 0.30.0
 
 > MJML, HTML, and Plain-Text Templates, Content Slots, and Transactional Emails
