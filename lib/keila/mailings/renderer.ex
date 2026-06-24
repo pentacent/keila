@@ -92,10 +92,21 @@ defmodule Keila.Mailings.Renderer do
   def html_to_text(html) when is_binary(html) do
     case Floki.parse_document(html) do
       {:ok, tree} ->
-        tree |> Floki.text(sep: " ") |> String.replace(~r/\s+/, " ") |> String.trim()
+        tree
+        |> body_or_tree()
+        |> Floki.text(sep: " ", style: false)
+        |> String.replace(~r/\s+/, " ")
+        |> String.trim()
 
       _ ->
         ""
+    end
+  end
+
+  defp body_or_tree(tree) do
+    case Floki.find(tree, "body") do
+      [] -> tree
+      body -> body
     end
   end
 

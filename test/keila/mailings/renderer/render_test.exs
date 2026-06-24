@@ -35,6 +35,30 @@ defmodule Keila.Mailings.Renderer.RenderTest do
     assert output.valid?
     assert output.html_body =~ "Hi Jane"
     assert output.text_body =~ "Hi Jane"
+    # MJML emits responsive CSS in <head><style>; it must not leak into the text part.
+    refute output.text_body =~ "mso-table-lspace"
+    refute output.text_body =~ "max-width"
+  end
+
+  describe "html_to_text/1" do
+    test "extracts body text without <style> CSS or the <title>" do
+      html = """
+      <html>
+        <head>
+          <title>My Subject</title>
+          <style>#outlook a { padding: 0; } .mj-column { width: 100% !important; }</style>
+        </head>
+        <body><p>Hello there!</p></body>
+      </html>
+      """
+
+      text = Renderer.html_to_text(html)
+
+      assert text == "Hello there!"
+      refute text =~ "padding"
+      refute text =~ "mj-column"
+      refute text =~ "My Subject"
+    end
   end
 
   test "renders markdown into a text part and an html part" do
