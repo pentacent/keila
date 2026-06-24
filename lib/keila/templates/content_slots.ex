@@ -43,7 +43,7 @@ defmodule Keila.Templates.ContentSlots do
   end
 
   defp get_slots_from_tree(input, selector) do
-    input = input |> stash_mj_head() |> stash_liquid()
+    input = input |> stash_mj_head() |> stash_self_closing() |> stash_liquid()
 
     with {:ok, tree} <- Floki.parse_fragment(input) do
       tree
@@ -52,7 +52,12 @@ defmodule Keila.Templates.ContentSlots do
         name = attr_value(attrs, "name")
 
         if is_binary(name) and name != "" do
-          content = children |> Floki.raw_html(pretty: true) |> restore_liquid()
+          content =
+            children
+            |> Floki.raw_html(pretty: true)
+            |> restore_liquid()
+            |> restore_self_closing()
+
           %Slot{name: name, default_content: content}
         end
       end)
@@ -90,12 +95,12 @@ defmodule Keila.Templates.ContentSlots do
   end
 
   defp merge_content_slots_with_tree(input, content, traverse_fun, opts) do
-    input = input |> stash_mj_head() |> stash_liquid()
+    input = input |> stash_mj_head() |> stash_self_closing() |> stash_liquid()
 
     content =
       (content || %{})
       |> stringify_keys()
-      |> Enum.map(fn {key, value} -> {key, stash_liquid(value)} end)
+      |> Enum.map(fn {key, value} -> {key, value |> stash_self_closing() |> stash_liquid()} end)
       |> Enum.into(%{})
 
     with {:ok, tree} <- Floki.parse_fragment(input) do
@@ -103,9 +108,10 @@ defmodule Keila.Templates.ContentSlots do
       |> Floki.traverse_and_update(&traverse_fun.(&1, content))
       |> Floki.raw_html(pretty: opts[:pretty] || false)
       |> restore_liquid()
+      |> restore_self_closing()
       |> restore_mj_head()
     else
-      _ -> input |> restore_liquid() |> restore_mj_head()
+      _ -> input |> restore_liquid() |> restore_self_closing() |> restore_mj_head()
     end
   end
 
@@ -182,6 +188,27 @@ defmodule Keila.Templates.ContentSlots do
   defp restore_mj_head(input) do
     Regex.replace(~r{__KEILA_MJ_HEAD--([A-Za-z0-9+/=]+)__}, input, fn full, head_base64 ->
       case Base.decode64(head_base64) do
+        {:ok, decoded} -> decoded
+        :error -> full
+      end
+    end)
+  end
+
+  # TODO: Try to fix behavior of self-closing custom tags (i.e. mjml tags)
+  # upstream in Lexbor. This is an intermediary fix.
+  @self_closing_regex ~r{<[a-zA-Z][\w]*-[\w-]*(?:[^>"']|"[^"]*"|'[^']*')*?/>}s
+
+  defp stash_self_closing(input) when is_binary(input) do
+    Regex.replace(@self_closing_regex, input, fn tag ->
+      "__KEILA_SELF_CLOSING--#{Base.encode64(tag)}__"
+    end)
+  end
+
+  defp stash_self_closing(nil), do: nil
+
+  defp restore_self_closing(input) do
+    Regex.replace(~r{__KEILA_SELF_CLOSING--([A-Za-z0-9+/=]+)__}, input, fn full, tag_base64 ->
+      case Base.decode64(tag_base64) do
         {:ok, decoded} -> decoded
         :error -> full
       end

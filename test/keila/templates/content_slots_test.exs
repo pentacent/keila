@@ -128,6 +128,28 @@ defmodule Keila.Templates.ContentSlotsTest do
       assert out =~ "<mj-body>Hi</mj-body>"
     end
 
+    test "leaves a self-closing body element untouched, not swallowing its sibling" do
+      mjml =
+        ~s(<mjml><mj-body><mj-section><mj-column><mj-divider border-width="1px" /><mj-text>after</mj-text></mj-column></mj-section><keila-content name="main">x</keila-content></mj-body></mjml>)
+
+      out = Templates.merge_content_slots(mjml, %{}, mode: :mjml)
+
+      # The divider stays self-closing and <mj-text> stays its sibling.
+      assert out =~ ~s(<mj-divider border-width="1px" /><mj-text>after</mj-text>)
+      assert out =~ "<mj-body><mj-section>"
+      refute out =~ "<keila-content"
+    end
+
+    test "preserves self-closing elements inside user-supplied slot content" do
+      mjml =
+        ~s(<mjml><mj-body><keila-content name="main">d</keila-content></mj-body></mjml>)
+
+      content = %{"main" => ~s(<mj-image src="x.png" /><mj-text>hi</mj-text>)}
+      out = Templates.merge_content_slots(mjml, content, mode: :mjml)
+
+      assert out =~ ~s(<mj-image src="x.png" /><mj-text>hi</mj-text>)
+    end
+
     test "preserves special characters inside Liquid tags, escapes them outside" do
       mjml = """
       <mjml><mj-body>
