@@ -128,20 +128,25 @@ export default class Image {
 
   setupResizeObserver(img) {
     if (!this.resizeObserver) {
-      this.resizeObserver = new ResizeObserver((entries) => {
-        const entry = entries[0]
-        const width = Math.round(entry.contentRect.width)
+      this.resizeObserver = new MutationObserver((mutations) => {
+        const target = mutations[0].target
 
-        if (width > 0 && width !== this.data.width) {
-          this.data.width = width
-          this.block.dispatchChange()
-        }
+        if (!target.style.width.endsWith("px")) return
+
+        const width = parseFloat(target.style.width)
+        if (!Number.isFinite(width) || width <= 0) return
+
+        const rounded = Math.round(width)
+        if (rounded === this.data.width) return
+
+        this.data.width = rounded
+        this.block.dispatchChange()
       })
     } else {
       this.resizeObserver.disconnect()
     }
 
-    this.resizeObserver.observe(img)
+    this.resizeObserver.observe(img, { attributes: true, attributeFilter: ["style"] })
   }
 
   addClickHandler(element) {
