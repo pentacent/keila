@@ -3,209 +3,242 @@ defmodule Keila.Templates.ContentSlotsTest do
   alias Keila.Templates
   alias Keila.Templates.Slot
 
-  describe "get_content_slots/2 with mjml" do
-    test "extracts only direct children of mj-body" do
-      mjml = """
-      <mjml><mj-body>
-        <keila-content name="hero">Direct</keila-content>
-        <mj-section><mj-column>
-          <keila-content name="nested">ignored</keila-content>
-        </mj-column></mj-section>
-      </mj-body></mjml>
-      """
+  @mjml """
+  <mjml>
+  <mj-head>
+    <!-- slots not in mj-body are ignored -->
+    <keila-content name="in-mj-head" />
+  </mj-head>
+  <mj-body>
+    <!-- Comments are ignored even if they contain <keila-content name="comment" />
+    or unclosed tags: <div> -->
 
-      assert [%Slot{name: "hero"}] = Templates.get_content_slots(mjml, mode: :mjml)
+    {{ Liquid tags are ignored even if they contain slot markup ot unclosed tags: <keila-content name="in-liquid" /> <div> }}
+
+    <!-- self-closing slot with no default content -->
+    <keila-content name="empty-slot" />
+
+    <!-- single quote and no quote for the name attr is allowed -->
+    <keila-content name='single-quoted'>Single Quoted</keila-content>
+    <keila-content name=unquoted>Unquoted</keila-content>
+
+    <!-- slots cannot be nested inside elements other than mj-body -->
+    <mj-section>
+      <keila-content name="nested-in-section" />
+    </mj-section>
+
+
+    <!-- default content is extracted -->
+    <keila-content name="main">
+      <mj-section><mj-column><mj-text>Test</mj-text></mj-column></mj-section>
+
+      <!-- nested slots are not extracted -->
+      <keila-content name="nested-in-slot">ignored</keila-content>
+
+      <!-- self-closing mjml elements and void elements don't break things -->
+      <mj-section>
+        <mj-divider />
+        <br><img>
+      </mj-section>
+    </keila-content>
+  </mj-body></mjml>
+  """
+
+  describe "mjml slots" do
+    test "are extracted if they're direct children of mj-body" do
+      assert [
+               %Slot{name: "empty-slot", default_content: ""},
+               %Slot{name: "single-quoted", default_content: "Single Quoted"},
+               %Slot{name: "unquoted", default_content: "Unquoted"},
+               %Slot{name: "main", default_content: main}
+             ] = Templates.get_content_slots(@mjml, mode: :mjml)
+
+      # The default content is dedented and surrounding empty lines are trimmed.
+      assert main ==
+               String.trim("""
+               <mj-section><mj-column><mj-text>Test</mj-text></mj-column></mj-section>
+
+               <!-- nested slots are not extracted -->
+               <keila-content name="nested-in-slot">ignored</keila-content>
+
+               <!-- self-closing mjml elements and void elements don't break things -->
+               <mj-section>
+                 <mj-divider />
+                 <br><img>
+               </mj-section>
+               """)
     end
 
-    test "captures the default content of a slot" do
-      mjml =
-        ~s(<mjml><mj-body><keila-content name="hero">Direct content</keila-content></mj-body></mjml>)
-
-      assert [%Slot{name: "hero", default_content: "Direct content\n"}] =
-               Templates.get_content_slots(mjml, mode: :mjml)
-    end
-
-    test "preserves markup and Liquid in default content" do
-      mjml =
-        ~s(<mjml><mj-body><keila-content name="hero"><mj-text>Hi {{ name }}</mj-text></keila-content></mj-body></mjml>)
-
-      assert [%Slot{name: "hero", default_content: "<mj-text>\n  Hi {{ name }}\n</mj-text>\n"}] =
-               Templates.get_content_slots(mjml, mode: :mjml)
-    end
-
-    test "returns empty list for nil input" do
-      assert Templates.get_content_slots(nil, mode: :mjml) == []
-    end
-
-    test "skips slots without a name attribute" do
-      mjml = """
-      <mjml><mj-body>
-        <keila-content>no name</keila-content>
-        <keila-content name="">empty name</keila-content>
-        <keila-content name="ok">y</keila-content>
-      </mj-body></mjml>
-      """
-
-      assert [%Slot{name: "ok"}] = Templates.get_content_slots(mjml, mode: :mjml)
-    end
-  end
-
-  describe "get_content_slots/2 with html" do
-    test "extracts slots anywhere in the document" do
-      html = """
-      <html><body>
-        <keila-content name="top">A</keila-content>
-        <div>
-          <keila-content name="nested">B</keila-content>
-        </div>
-      </body></html>
-      """
-
-      assert [%Slot{name: "top"}, %Slot{name: "nested"}] =
-               Templates.get_content_slots(html, mode: :html)
-    end
-  end
-
-  describe "get_content_slots/2 with text" do
-    test "extracts slot names with their default content" do
-      text = ~s(Hello\n<keila-content name="main">Default</keila-content>\nGoodbye)
-
-      assert [%Slot{name: "main", default_content: "Default"}] =
-               Templates.get_content_slots(text, mode: :text)
-    end
-
-    test "returns empty list for nil input" do
-      assert Templates.get_content_slots(nil, mode: :text) == []
-    end
-  end
-
-  describe "merge_content_slots/3 with mjml" do
-    test "fills provided slots and falls back to defaults for the rest" do
-      mjml =
-        ~s(<mjml><mj-body><keila-content name="a">Default A</keila-content><keila-content name="b">Default B</keila-content></mj-body></mjml>)
-
-      out = Templates.merge_content_slots(mjml, %{"a" => "AA"}, mode: :mjml)
-      assert out == ~s(<mjml><mj-body>AADefault B</mj-body></mjml>)
-    end
-
-    test "nil mjml input returns nil" do
-      assert Templates.merge_content_slots(nil, %{}, mode: :mjml) == nil
-    end
-
-    test "nil content map is treated as empty (defaults rendered)" do
-      mjml =
-        ~s(<mjml><mj-body><keila-content name="hero">Default</keila-content></mj-body></mjml>)
-
-      out = Templates.merge_content_slots(mjml, nil, mode: :mjml)
-      assert out == ~s(<mjml><mj-body>Default</mj-body></mjml>)
-    end
-
-    test "preserves Liquid (literal `\"` etc.) in user-supplied slot content" do
-      mjml =
-        ~s(<mjml><mj-body><keila-content name="main">d</keila-content></mj-body></mjml>)
-
+    test "are filled with provided content or default content" do
       content = %{
-        "main" => ~s(<mj-text>Hi {{ contact.first_name | default: "there" }}</mj-text>)
+        "empty-slot" => ~s(<mj-button>Click</mj-button>),
+        "single-quoted" => ~s(<mj-text>Hi {{ name }}</mj-text>),
+        "main" => "MAIN"
       }
 
-      out = Templates.merge_content_slots(mjml, content, mode: :mjml)
+      assert Templates.merge_content_slots(@mjml, content, mode: :mjml) ==
+               """
+               <mjml>
+               <mj-head>
+                 <!-- slots not in mj-body are ignored -->
+                 <keila-content name="in-mj-head" />
+               </mj-head>
+               <mj-body>
+                 <!-- Comments are ignored even if they contain <keila-content name="comment" />
+                 or unclosed tags: <div> -->
 
-      assert out ==
-               ~s(<mjml><mj-body><mj-text>Hi {{ contact.first_name | default: "there" }}</mj-text></mj-body></mjml>)
-    end
+                 {{ Liquid tags are ignored even if they contain slot markup ot unclosed tags: <keila-content name="in-liquid" /> <div> }}
 
-    test "leaves <mj-head> and its self-closing tags untouched while merging the body" do
-      mjml =
-        ~s(<mjml><mj-head><mj-attributes><mj-section background-color="#fff" /><mj-button color="#000" /></mj-attributes></mj-head><mj-body><keila-content name="main">Hi</keila-content></mj-body></mjml>)
+                 <!-- self-closing slot with no default content -->
+                 <mj-button>Click</mj-button>
 
-      out = Templates.merge_content_slots(mjml, %{}, mode: :mjml)
+                 <!-- single quote and no quote for the name attr is allowed -->
+                 <mj-text>Hi {{ name }}</mj-text>
+                 Unquoted
 
-      # The head is stashed and restored verbatim, so self-closing tags stay
-      # self-closing and don't get mangled by the HTML parser.
-      assert out =~
-               ~s(<mj-head><mj-attributes><mj-section background-color="#fff" /><mj-button color="#000" /></mj-attributes></mj-head>)
+                 <!-- slots cannot be nested inside elements other than mj-body -->
+                 <mj-section>
+                   <keila-content name="nested-in-section" />
+                 </mj-section>
 
-      assert out =~ "<mj-body>Hi</mj-body>"
-    end
 
-    test "leaves a self-closing body element untouched, not swallowing its sibling" do
-      mjml =
-        ~s(<mjml><mj-body><mj-section><mj-column><mj-divider border-width="1px" /><mj-text>after</mj-text></mj-column></mj-section><keila-content name="main">x</keila-content></mj-body></mjml>)
-
-      out = Templates.merge_content_slots(mjml, %{}, mode: :mjml)
-
-      # The divider stays self-closing and <mj-text> stays its sibling.
-      assert out =~ ~s(<mj-divider border-width="1px" /><mj-text>after</mj-text>)
-      assert out =~ "<mj-body><mj-section>"
-      refute out =~ "<keila-content"
-    end
-
-    test "preserves self-closing elements inside user-supplied slot content" do
-      mjml =
-        ~s(<mjml><mj-body><keila-content name="main">d</keila-content></mj-body></mjml>)
-
-      content = %{"main" => ~s(<mj-image src="x.png" /><mj-text>hi</mj-text>)}
-      out = Templates.merge_content_slots(mjml, content, mode: :mjml)
-
-      assert out =~ ~s(<mj-image src="x.png" /><mj-text>hi</mj-text>)
-    end
-
-    test "preserves special characters inside Liquid tags, escapes them outside" do
-      mjml = """
-      <mjml><mj-body>
-        <mj-text>
-          &lt;outside&gt; &amp; text
-          {{ x | default: "<inside> & quote" }}
-          {% if a < b %}yes{% endif %}
-        </mj-text>
-      </mj-body></mjml>
-      """
-
-      out = Templates.merge_content_slots(mjml, %{}, mode: :mjml)
-
-      assert out =~ ~s({{ x | default: "<inside> & quote" }})
-      assert out =~ "{% if a < b %}"
-      assert out =~ "&lt;outside&gt;"
-      assert out =~ "&amp; text"
+                 <!-- default content is extracted -->
+                 MAIN
+               </mj-body></mjml>
+               """
     end
   end
 
-  describe "merge_content_slots/3 with html" do
-    test "fills slots at any depth" do
-      html =
-        ~s(<div><keila-content name="top">A</keila-content><section><keila-content name="nested">B</keila-content></section></div>)
+  @html """
+  <html>
+    <body>
+      <!-- unlike mjml, html slots are not restricted to a single level -->
+      <keila-content name="top">Top</keila-content>
 
-      out =
-        Templates.merge_content_slots(html, %{"top" => "TOP", "nested" => "NESTED"}, mode: :html)
+      <div>
+        <section>
+          <keila-content name="deeply-nested">Deep</keila-content>
+        </section>
+      </div>
 
-      assert out == ~s(<div>TOP<section>NESTED</section></div>)
-    end
-  end
+      <!-- single, double, and unquoted names are accepted -->
+      <keila-content name='single-quoted'>Single</keila-content>
+      <keila-content name=unquoted>Unquoted</keila-content>
 
-  describe "merge_content_slots/3 with text" do
-    test "replaces slot with supplied content" do
-      text = ~s(Hi <keila-content name="x">default</keila-content>!)
-      assert Templates.merge_content_slots(text, %{"x" => "world"}, mode: :text) == "Hi world!"
-    end
-
-    test "strips single line break adjacent to opening or closing tag" do
-      text = """
-      Before.
-
+      <!-- default content is extracted and dedented -->
       <keila-content name="main">
-      Body
+        <div>
+          <p>Hello</p>
+        </div>
       </keila-content>
+    </body>
+  </html>
+  """
 
-      After.
-      """
+  describe "html slots" do
+    test "are extracted" do
+      assert [
+               %Slot{name: "top", default_content: "Top"},
+               %Slot{name: "deeply-nested", default_content: "Deep"},
+               %Slot{name: "single-quoted", default_content: "Single"},
+               %Slot{name: "unquoted", default_content: "Unquoted"},
+               %Slot{name: "main", default_content: main}
+             ] = Templates.get_content_slots(@html, mode: :html)
 
-      out = Templates.merge_content_slots(text, %{"main" => "X"}, mode: :text)
-      assert out == "Before.\n\nX\n\nAfter.\n"
+      assert main == "<div>\n  <p>Hello</p>\n</div>"
+    end
+
+    test "are filled with provided content or default content" do
+      content = %{
+        "top" => "<h1>Hi</h1>",
+        "deeply-nested" => "<p>D</p>",
+        "single-quoted" => "<em>S</em>",
+        "main" => "<p>Main</p>"
+      }
+
+      assert Templates.merge_content_slots(@html, content, mode: :html) ==
+               """
+               <html>
+                 <body>
+                   <!-- unlike mjml, html slots are not restricted to a single level -->
+                   <h1>Hi</h1>
+
+                   <div>
+                     <section>
+                       <p>D</p>
+                     </section>
+                   </div>
+
+                   <!-- single, double, and unquoted names are accepted -->
+                   <em>S</em>
+                   Unquoted
+
+                   <!-- default content is extracted and dedented -->
+                   <p>Main</p>
+                 </body>
+               </html>
+               """
     end
   end
 
-  describe "merge_content_slots/3 without slots" do
-    test "returns input unchanged for every mode" do
+  @text """
+  Welcome to our newsletter!
+
+  <keila-content name="intro">Intro paragraph.</keila-content>
+
+  Here is an <keila-content name='inline'>inline</keila-content> slot mid-sentence.
+
+  <keila-content name=unquoted>Unquoted</keila-content>
+
+  <keila-content name="block">
+    Line one
+    Line two
+  </keila-content>
+
+  Thanks for reading.
+  """
+
+  describe "text slots" do
+    test "are extracted" do
+      assert [
+               %Slot{name: "intro", default_content: "Intro paragraph."},
+               %Slot{name: "inline", default_content: "inline"},
+               %Slot{name: "unquoted", default_content: "Unquoted"},
+               %Slot{name: "block", default_content: block}
+             ] = Templates.get_content_slots(@text, mode: :text)
+
+      assert block == "Line one\nLine two"
+    end
+
+    test "are filled with provided content or default content" do
+      content = %{"intro" => "Welcome", "inline" => "INLINE", "block" => "BLOCK"}
+
+      assert Templates.merge_content_slots(@text, content, mode: :text) ==
+               """
+               Welcome to our newsletter!
+
+               Welcome
+
+               Here is an INLINE slot mid-sentence.
+
+               Unquoted
+
+               BLOCK
+
+               Thanks for reading.
+               """
+    end
+  end
+
+  describe "nil and slot-less inputs" do
+    test "get_content_slots returns [] and merge_content_slots returns nil for nil input" do
+      for mode <- [:mjml, :html, :text] do
+        assert Templates.get_content_slots(nil, mode: mode) == []
+        assert Templates.merge_content_slots(nil, %{}, mode: mode) == nil
+      end
+    end
+
+    test "merge_content_slots returns the input unchanged when there are no slots" do
       mjml = ~s(<mjml><mj-body><mj-text>Hello</mj-text></mj-body></mjml>)
       assert Templates.merge_content_slots(mjml, %{"x" => "y"}, mode: :mjml) == mjml
 

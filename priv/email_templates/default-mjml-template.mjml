@@ -27,9 +27,9 @@
             Hey {{ contact.first_name | default: "there" }}, this is your MJML template!<br /><br />
             You can define one or more content slots. When you create a campaign, only the slot content can be edited.
           </mj-text>
-
         </mj-column>
       </mj-section>
+      
       <mj-section background-color="#bbf7d0">
         <mj-column>
           <mj-text>

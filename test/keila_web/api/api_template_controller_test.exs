@@ -34,7 +34,7 @@ defmodule KeilaWeb.ApiTemplateControllerTest do
                  "name" => "Welcome Email",
                  "type" => "mjml",
                  "mjml_content_slots" => [
-                   %{"name" => "main", "default_content" => "<mj-text>\n  Welcome!\n</mj-text>\n"}
+                   %{"name" => "main", "default_content" => "<mj-text>Welcome!</mj-text>"}
                  ]
                }
              } = json_response(conn, 200)

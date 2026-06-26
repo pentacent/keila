@@ -4,18 +4,18 @@ defmodule Keila.Templates.ContentSlots do
 
   Supports three modes, set via the `:mode` option:
 
-    * `:mjml` — slots must be direct children of `<mj-body>`.
+    * `:mjml` — slots must be direct children of `<mj-body>`; handled by
+      `Keila.Templates.ContentSlots.Mjml`.
     * `:html` — slots can appear anywhere in the document.
     * `:text` — slots are matched with a regex; single line breaks after the opening
     * tag or before the closing tag are stripped.
+
+  Extracted default content is tidied (dedented, surrounding blank lines removed)
+  because it seeds a new campaign's editor; merged content is kept verbatim.
   """
 
   alias Keila.Templates.Slot
-
-  # A single line break adjacent to the opening or closing tag is stripped,
-  # so authors can format `<keila-content name="x">\nhello\n</keila-content>`
-  # without the surrounding line breaks ending up in the rendered output.
-  @slot_regex ~r{<keila-content\s+name\s*=\s*"([^"]+)"[^>]*>\r?\n?(.*?)\r?\n?</keila-content>}s
+  alias Keila.Templates.ContentSlots.Mjml
 
   @doc """
   Returns the list of content slot definitions in the given input.
@@ -27,44 +27,11 @@ defmodule Keila.Templates.ContentSlots do
   def get_content_slots(nil, _opts), do: []
 
   def get_content_slots(input, opts) when is_binary(input) do
-    case Keyword.fetch!(opts, :mode) do
-      :mjml -> get_slots_from_tree(input, "mj-body > keila-content")
-      :html -> get_slots_from_tree(input, "keila-content")
-      :text -> get_slots_from_regex(input)
+    case Keyword.get(opts, :mode) do
+      :mjml -> Mjml.get_slots(input)
+      _other -> slots_from_regex(input)
     end
-  end
-
-  defp get_slots_from_regex(input) do
-    @slot_regex
-    |> Regex.scan(input)
-    |> Enum.map(fn [_full, name, default] ->
-      %Slot{name: name, default_content: default}
-    end)
-  end
-
-  defp get_slots_from_tree(input, selector) do
-    input = input |> stash_mj_head() |> stash_self_closing() |> stash_liquid()
-
-    with {:ok, tree} <- Floki.parse_fragment(input) do
-      tree
-      |> Floki.find(selector)
-      |> Enum.map(fn {_tag, attrs, children} ->
-        name = attr_value(attrs, "name")
-
-        if is_binary(name) and name != "" do
-          content =
-            children
-            |> Floki.raw_html(pretty: true)
-            |> restore_liquid()
-            |> restore_self_closing()
-
-          %Slot{name: name, default_content: content}
-        end
-      end)
-      |> Enum.reject(&is_nil/1)
-    else
-      _ -> []
-    end
+    |> Enum.map(&tidy_slot/1)
   end
 
   @doc """
@@ -72,154 +39,63 @@ defmodule Keila.Templates.ContentSlots do
 
   Options:
     * `:mode` (required) — `:mjml`, `:html`, or `:text`.
-    * `:pretty` — output is prettified when set to `true` (`:mjml` and `:html` only).
   """
   @spec merge_content_slots(String.t() | nil, map() | nil, keyword()) :: String.t() | nil
   def merge_content_slots(input, content, opts \\ [])
   def merge_content_slots(nil, _content, _opts), do: nil
 
   def merge_content_slots(input, content, opts) when is_binary(input) do
-    case Keyword.fetch!(opts, :mode) do
-      :mjml -> merge_content_slots_with_tree(input, content, &fill_mjml_slots/2, opts)
-      :html -> merge_content_slots_with_tree(input, content, &fill_html_slots/2, opts)
-      :text -> merge_content_slots_with_regex(input, content)
+    content = stringify_keys(content || %{})
+
+    case Keyword.get(opts, :mode) do
+      :mjml -> Mjml.merge_slots(input, content)
+      _other -> merge_with_regex(input, content)
     end
   end
 
-  defp merge_content_slots_with_regex(input, content) do
-    content = stringify_keys(content || %{})
+  # A single line break adjacent to the opening or closing tag is stripped,
+  # so authors can format `<keila-content name="x">\nhello\n</keila-content>`
+  # without the surrounding line breaks ending up in the rendered output.
+  @slot_regex ~r{<keila-content\s+name\s*=\s*["']?([^"'\s>/]+)["']?[^>]*>\r?\n?(.*?)\r?\n?</keila-content>}s
 
+  defp merge_with_regex(input, content) do
     Regex.replace(@slot_regex, input, fn _full, name, default ->
       Map.get(content, name, default)
     end)
   end
 
-  defp merge_content_slots_with_tree(input, content, traverse_fun, opts) do
-    input = input |> stash_mj_head() |> stash_self_closing() |> stash_liquid()
-
-    content =
-      (content || %{})
-      |> stringify_keys()
-      |> Enum.map(fn {key, value} -> {key, value |> stash_self_closing() |> stash_liquid()} end)
-      |> Enum.into(%{})
-
-    with {:ok, tree} <- Floki.parse_fragment(input) do
-      tree
-      |> Floki.traverse_and_update(&traverse_fun.(&1, content))
-      |> Floki.raw_html(pretty: opts[:pretty] || false)
-      |> restore_liquid()
-      |> restore_self_closing()
-      |> restore_mj_head()
-    else
-      _ -> input |> restore_liquid() |> restore_self_closing() |> restore_mj_head()
-    end
-  end
-
-  # In MJML, slots may only be direct children of <mj-body>, so we fill slots
-  # only in that element's children and leave the rest of the tree untouched.
-  defp fill_mjml_slots({"mj-body", attrs, children}, content) when is_list(children),
-    do: {"mj-body", attrs, Enum.flat_map(children, &maybe_merge_content_slot(&1, content))}
-
-  defp fill_mjml_slots(other, _),
-    do: other
-
-  defp fill_html_slots({tag, attrs, children}, content) when is_list(children),
-    do: {tag, attrs, Enum.flat_map(children, &maybe_merge_content_slot(&1, content))}
-
-  defp fill_html_slots(other, _),
-    do: other
-
-  defp maybe_merge_content_slot({"keila-content", attrs, default_content}, content) do
-    name =
-      case attr_value(attrs, "name") do
-        name when is_binary(name) and name != "" -> name
-        _ -> nil
-      end
-
-    if not is_nil(name) and Map.has_key?(content, name) do
-      try_parse_fragment(content[name], default_content)
-    else
-      default_content
-    end
-  end
-
-  defp maybe_merge_content_slot(other, _), do: [other]
-
-  defp try_parse_fragment(value, fallback) when is_binary(value) do
-    case Floki.parse_fragment(value) do
-      {:ok, tree} -> tree
-      _ -> fallback
-    end
-  end
-
-  defp try_parse_fragment(_value, fallback), do: fallback
-
-  # ---- liquid stashing -------------------------------------------------------
-
-  # Wraps each Liquid expression in a base64-encoded placeholder so Floki's
-  # default HTML encoding can't corrupt `"`, `<`, `>`, `&` inside it.
-  defp stash_liquid(input) when is_binary(input) do
-    Regex.replace(~r/\{[\{%].*?[\}%]\}/s, input, fn liquid ->
-      "__KEILA_LIQUID--#{Base.encode64(liquid)}__"
+  defp slots_from_regex(input) do
+    @slot_regex
+    |> Regex.scan(input)
+    |> Enum.map(fn [_full, name, default] ->
+      %Slot{name: name, default_content: default}
     end)
   end
 
-  defp stash_liquid(nil), do: nil
-
-  defp restore_liquid(input) do
-    Regex.replace(~r{__KEILA_LIQUID--([A-Za-z0-9+/=]+)__}, input, fn full, liquid_base64 ->
-      case Base.decode64(liquid_base64) do
-        {:ok, decoded} -> decoded
-        :error -> full
-      end
-    end)
+  defp tidy_slot(%Slot{default_content: content} = slot) do
+    %{slot | default_content: tidy_default_content(content)}
   end
 
-  # Lexbor is strictly HTML5-compliant and doesn't allow custom self-closing tags.
-  # However, MJML requires self-closing tags in mj-attributes.
-  # Since slots can only live in mj-body anyways, we stash mj-head and restore it
-  # verbatim.
-  defp stash_mj_head(input) when is_binary(input) do
-    Regex.replace(~r{<mj-head\b[^>]*>.*?</mj-head>}s, input, fn head ->
-      "__KEILA_MJ_HEAD--#{Base.encode64(head)}__"
-    end)
+  defp tidy_default_content(content) do
+    content
+    |> String.split("\n")
+    |> dedent()
+    |> Enum.join("\n")
+    |> String.trim()
   end
 
-  defp restore_mj_head(input) do
-    Regex.replace(~r{__KEILA_MJ_HEAD--([A-Za-z0-9+/=]+)__}, input, fn full, head_base64 ->
-      case Base.decode64(head_base64) do
-        {:ok, decoded} -> decoded
-        :error -> full
-      end
+  defp dedent(lines) do
+    indent =
+      lines
+      |> Enum.reject(&(String.trim(&1) == ""))
+      |> Enum.map(&(Regex.run(~r/^[ \t]*/, &1) |> hd() |> byte_size()))
+      |> Enum.min(fn -> 0 end)
+
+    Enum.map(lines, fn line ->
+      if String.trim(line) == "",
+        do: "",
+        else: binary_part(line, indent, byte_size(line) - indent)
     end)
-  end
-
-  # TODO: Try to fix behavior of self-closing custom tags (i.e. mjml tags)
-  # upstream in Lexbor. This is an intermediary fix.
-  @self_closing_regex ~r{<[a-zA-Z][\w]*-[\w-]*(?:[^>"']|"[^"]*"|'[^']*')*?/>}s
-
-  defp stash_self_closing(input) when is_binary(input) do
-    Regex.replace(@self_closing_regex, input, fn tag ->
-      "__KEILA_SELF_CLOSING--#{Base.encode64(tag)}__"
-    end)
-  end
-
-  defp stash_self_closing(nil), do: nil
-
-  defp restore_self_closing(input) do
-    Regex.replace(~r{__KEILA_SELF_CLOSING--([A-Za-z0-9+/=]+)__}, input, fn full, tag_base64 ->
-      case Base.decode64(tag_base64) do
-        {:ok, decoded} -> decoded
-        :error -> full
-      end
-    end)
-  end
-
-  defp attr_value(attrs, name) do
-    case List.keyfind(attrs, name, 0) do
-      {^name, value} -> value
-      _ -> nil
-    end
   end
 
   defp stringify_keys(values) when is_map(values) do
