@@ -20,10 +20,15 @@ defmodule Keila.Contacts do
           {:ok, Contact.t()} | {:error, Changeset.t(Contact.t())}
   def create_contact(project_id, params, opts \\ [])
       when is_binary(project_id) or is_integer(project_id) do
-    params
-    |> Contact.creation_changeset(project_id)
-    |> maybe_update_contact_status(params, opts[:set_status])
-    |> Repo.insert()
+    changeset =
+      params
+      |> Contact.creation_changeset(project_id)
+      |> maybe_update_contact_status(params, opts[:set_status])
+
+    with {:ok, contact} <- Repo.insert(changeset) do
+      Keila.Tracking.log_event("create", contact.id, %{})
+      {:ok, contact}
+    end
   end
 
   defp maybe_update_contact_status(changeset, params, update?)
@@ -65,10 +70,23 @@ defmodule Keila.Contacts do
   """
   @spec update_contact(Contact.id(), map(), Keyword.t()) :: {:ok, Contact} | {:error, Contact}
   def update_contact(id, params, opts \\ []) do
-    get_contact(id)
-    |> Contact.update_changeset(params)
-    |> maybe_update_contact_status(params, opts[:update_status])
-    |> Repo.update()
+    contact = get_contact(id)
+
+    changeset =
+      contact
+      |> Contact.update_changeset(params)
+      |> maybe_update_contact_status(params, opts[:update_status])
+
+    with {:ok, updated_contact} <- Repo.update(changeset) do
+      maybe_log_status_change(contact, updated_contact)
+      {:ok, updated_contact}
+    end
+  end
+
+  defp maybe_log_status_change(%Contact{status: status}, %Contact{status: status}), do: :ok
+
+  defp maybe_log_status_change(_contact, %Contact{id: id, status: status}) do
+    Keila.Tracking.log_event("status_change", id, %{"status" => to_string(status)})
   end
 
   @doc """

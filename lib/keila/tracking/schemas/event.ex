@@ -13,7 +13,8 @@ defmodule Keila.Tracking.Event do
             :click,
             :soft_bounce,
             :hard_bounce,
-            :complaint
+            :complaint,
+            :status_change
           ])
 
   schema "contacts_events" do

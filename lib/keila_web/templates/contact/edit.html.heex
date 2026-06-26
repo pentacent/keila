@@ -78,13 +78,28 @@
         <%= with_validation(f, :first_name) do %>
           {text_input(f, :first_name, placeholder: gettext("Jane"), class: "text-black")}
         <% end %>
-      </div>
-      <div class="form-row">
         {label(f, :last_name, gettext("Last name"))}
         <%= with_validation(f, :last_name) do %>
           {text_input(f, :last_name, placeholder: gettext("Doe"), class: "text-black")}
         <% end %>
       </div>
+      <%= if assigns[:contact] do %>
+        <div class="form-row">
+          {label(f, :status, gettext("Status"))}
+          <%= with_validation(f, :status) do %>
+            {select(
+              f,
+              :status,
+              [
+                {gettext("active"), :active},
+                {gettext("unsubscribed"), :unsubscribed},
+                {gettext("unreachable"), :unreachable}
+              ],
+              class: "text-black"
+            )}
+          <% end %>
+        </div>
+      <% end %>
       <div class="form-row">
         {label(f, :data, gettext("Data"))}
         <span class="block text-sm mb-2">
@@ -149,6 +164,8 @@
                     {render_icon(:arrow_uturn_left)}
                   <% :complaint -> %>
                     {render_icon(:exclamation_circle)}
+                  <% :status_change -> %>
+                    {render_icon(:switch_horizontal)}
                   <% _other -> %>
                     {render_icon(:plus)}
                 <% end %>
@@ -184,6 +201,17 @@
                       {gettext("permanently unreachable")}
                     <% :complaint -> %>
                       {gettext("filed a complaint")}
+                    <% :status_change -> %>
+                      <% status =
+                        case event.data["status"] do
+                          "active" -> gettext("active")
+                          "unsubscribed" -> gettext("unsubscribed")
+                          "unreachable" -> gettext("unreachable")
+                          other -> other
+                        end %>
+                      {gettext("status changed to %{status}",
+                        status: status
+                      )}
                     <% other -> %>
                       {Atom.to_string(other)}
                   <% end %>

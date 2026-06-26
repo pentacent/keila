@@ -1,6 +1,6 @@
 defmodule Keila.ContactsTest do
   use Keila.DataCase, async: true
-  alias Keila.{Contacts, Contacts.Contact, Projects, Pagination}
+  alias Keila.{Contacts, Contacts.Contact, Projects, Pagination, Tracking}
 
   setup do
     _root = insert!(:group)
@@ -86,6 +86,37 @@ defmodule Keila.ContactsTest do
     params = params(:contact)
     assert {:ok, updated_contact = %Contact{}} = Contacts.update_contact(contact.id, params)
     assert updated_contact.email == params["email"]
+  end
+
+  @tag :contacts
+  test "Creating a contact logs a :create event", %{project: project} do
+    assert {:ok, contact} = Contacts.create_contact(project.id, params(:contact))
+    assert [%{type: :create}] = Tracking.get_contact_events(contact.id)
+  end
+
+  @tag :contacts
+  test "Updating the status logs a :status_change event with the new status", %{project: project} do
+    contact = insert!(:contact, %{project_id: project.id, status: :active})
+
+    assert {:ok, %Contact{status: :unsubscribed}} =
+             Contacts.update_contact(contact.id, %{"status" => "unsubscribed"},
+               update_status: true
+             )
+
+    assert [%{type: :status_change, data: %{"status" => "unsubscribed"}}] =
+             Tracking.get_contact_events(contact.id)
+  end
+
+  @tag :contacts
+  test "Updating a contact without changing the status logs no event", %{project: project} do
+    contact = insert!(:contact, %{project_id: project.id, status: :active})
+
+    assert {:ok, _} =
+             Contacts.update_contact(contact.id, %{"status" => "active", "first_name" => "Peter"},
+               update_status: true
+             )
+
+    assert Tracking.get_contact_events(contact.id) == []
   end
 
   @tag :double_opt_in

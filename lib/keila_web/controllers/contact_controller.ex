@@ -169,8 +169,7 @@ defmodule KeilaWeb.ContactController do
     params = params["contact"] || %{}
 
     case Contacts.create_contact(current_project(conn).id, params) do
-      {:ok, %{id: id}} ->
-        Keila.Tracking.log_event("create", id, %{})
+      {:ok, _contact} ->
         redirect(conn, to: Routes.contact_path(conn, :index, current_project(conn).id))
 
       {:error, changeset = %{changes: %{data: data}}} when is_map(data) ->
@@ -207,7 +206,7 @@ defmodule KeilaWeb.ContactController do
   def post_edit(conn, %{"contact" => params}) do
     contact = conn.assigns.contact
 
-    with {:ok, _} <- Contacts.update_contact(contact.id, params) do
+    with {:ok, _} <- Contacts.update_contact(contact.id, params, update_status: true) do
       redirect(conn, to: Routes.contact_path(conn, :index, current_project(conn).id))
     else
       {:error, changeset} -> render_edit(conn, 400, changeset)

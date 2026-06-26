@@ -100,11 +100,14 @@ defmodule KeilaWeb.ApiContactControllerTest do
 
       assert %{
                "data" => %{
+                 "id" => id,
                  "email" => "api@example.com",
                  "first_name" => "Jane",
                  "last_name" => "API"
                }
              } = json_response(conn, 200)
+
+      assert [%{type: :create}] = Keila.Tracking.get_contact_events(id)
     end
 
     @tag :api_contact_controller

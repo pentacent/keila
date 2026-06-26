@@ -97,6 +97,26 @@ defmodule KeilaWeb.ContactControllerTest do
   end
 
   @tag :contact_controller
+  test "PUT /projects/:p_id/contacts/:id changes status and logs an event", %{conn: conn} do
+    {conn, project} = with_login_and_project(conn)
+    contact = insert!(:contact, project_id: project.id, status: :active)
+
+    conn =
+      put(
+        conn,
+        Routes.contact_path(conn, :post_edit, project.id, contact.id,
+          contact: %{"email" => contact.email, "status" => "unsubscribed"}
+        )
+      )
+
+    assert redirected_to(conn, 302) == Routes.contact_path(conn, :index, project.id)
+    assert %{status: :unsubscribed} = Keila.Contacts.get_contact(contact.id)
+
+    assert [%{type: :status_change, data: %{"status" => "unsubscribed"}}] =
+             Keila.Tracking.get_contact_events(contact.id)
+  end
+
+  @tag :contact_controller
   test "DELETE /projects/:p_id/contacts", %{conn: conn} do
     {conn, project} = with_login_and_project(conn)
     contact = insert!(:contact, project_id: project.id)
