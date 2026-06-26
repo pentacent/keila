@@ -29,7 +29,8 @@ defmodule Keila.Templates.HybridTemplate do
      get_styles.("#content", [
        "color",
        "background-color",
-       "font-family"
+       "font-family",
+       "line-height"
      ])},
     {gettext("Heading 1"),
      get_styles.("h1", [
@@ -171,7 +172,10 @@ defmodule Keila.Templates.HybridTemplate do
   end
 
   defp aliases do
-    [{"#content", ".stack-column > table", ["color", "font-family"]}]
+    [
+      {"#content", ".stack-column > table", ["color", "font-family"]},
+      {"#content", ".block>td", ["line-height"]}
+    ]
   end
 
   @spec html_template() :: %Solid.Template{}

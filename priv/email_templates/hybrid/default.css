@@ -19,6 +19,7 @@ body {
     background-color: #ffffff;
     color: #1f2937;
     font-family: inherit;
+    line-height: 28px;
     box-shadow: 0 0 8px rgba(0, 0, 0, .05);
 }
 

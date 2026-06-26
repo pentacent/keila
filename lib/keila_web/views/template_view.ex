@@ -49,6 +49,7 @@ defmodule KeilaWeb.TemplateView do
         "background-color" -> gettext("Background")
         "background-image" -> gettext("Image")
         "font-family" -> gettext("Font")
+        "line-height" -> gettext("Line height")
         "font-style" -> gettext("Font style")
         "font-weight" -> gettext("Font weight")
         "text-decoration" -> gettext("Decoration")
@@ -202,6 +203,22 @@ defmodule KeilaWeb.TemplateView do
         {gettext("flush right"), "right"},
         {gettext("centered"), "center"},
         {gettext("justified"), "justfy"}
+      ],
+      name: input_name(form, field, group_label, row),
+      phx_debounce: 250,
+      id: input_name(form, field, group_label, row),
+      value: value_or_default(row)
+    )
+  end
+
+  defp render_input(form, field, group_label, row = %{property: "line-height"}) do
+    select(
+      form,
+      field,
+      [
+        {"24px", "24px"},
+        {"28px", "28px"},
+        {"32px", "32px"}
       ],
       name: input_name(form, field, group_label, row),
       phx_debounce: 250,

@@ -222,6 +222,10 @@ Block Editor Styles
         padding: 0;
     }
 
+    .ce-paragraph {
+        line-height: inherit;
+    }
+
     .ce-block--type-paragraph + .ce-block--type-paragraph,
     .ce-block--type-header + .ce-block--type-paragraph {
         margin-top: -10px !important ;
