@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+
+## Version 0.30.2
+
+### Added
+- Added line-height setting for body text in Classic template style editor
+- The status of a contact (active, unsubscribed, or unreachable) can now be changed manually on the contact edit page
+- Contacts created via the API now trigger a *created* event the contact activity log (implements #429, thanks @lukoerfer for reporting)
+
+### Fixed
+- Added dedicated parser for extracting/filling content slots in MJML content slots, this fixes issues with MJML-specific elements that were being mangled by the HTML parser 
+
+
 ## Version 0.30.1
 
 ### Fixed
