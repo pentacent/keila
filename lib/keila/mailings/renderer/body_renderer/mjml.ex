@@ -46,13 +46,20 @@ defmodule Keila.Mailings.Renderer.BodyRenderer.Mjml do
   end
 
   defp render_mjml(mjml) do
-    case Mjml.to_html(mjml) do
+    case Mjml.to_html(normalize_newlines(mjml)) do
       {:ok, html} ->
         {:ok, html}
 
       {:error, reason} ->
         {:error, gettext("Error compiling MJML: %{reason}", reason: reason)}
     end
+  end
+
+  # FIXME: There is currently a bug in MRML that requires this workaround.
+  # This should be removed once the bug has been fixed.
+  # https://github.com/jdrouet/mrml/issues/654
+  defp normalize_newlines(mjml) do
+    String.replace(mjml, ~r/\r\n?/, "\n")
   end
 
   defp render_liquid(mjml, assigns) do

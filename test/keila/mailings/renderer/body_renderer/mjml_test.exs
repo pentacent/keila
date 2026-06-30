@@ -148,4 +148,26 @@ defmodule Keila.Mailings.Renderer.BodyRenderer.MjmlTest do
     assert email.html_body =~ "Hi #{contact.first_name}"
     refute email.html_body =~ "keila-code"
   end
+
+  @tag :mailings_builder
+  test "Void elements with CRLF line endings don't break MJML compilation" do
+    # This test is to guard against regressions for the mitigation of an MRML bug.
+    # See https://github.com/jdrouet/mrml/issues/654
+    %{project: project, contact: contact} = setup_project_and_contact()
+
+    mjml_body =
+      "<mjml><mj-body><mj-section><mj-column><mj-text><br></mj-text></mj-column></mj-section></mj-body></mjml>\r\n"
+
+    campaign =
+      insert!(:mailings_campaign,
+        project_id: project.id,
+        subject: "Hi",
+        mjml_body: mjml_body,
+        settings: %Mailings.Campaign.Settings{type: :mjml}
+      )
+      |> Keila.Repo.preload(:template)
+
+    email = Mailings.CampaignRenderer.render_preview(campaign, contact)
+    assert "<!doctype html>" <> _ = email.html_body
+  end
 end
