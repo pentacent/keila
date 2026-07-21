@@ -62,7 +62,7 @@
                   type="button"
                   class="button button--white-frame transition disabled:cursor-wait mb-4"
                   x-data="{waiting: false}"
-                  x-on:click="$el.disabled = true; waiting = true; setTimeout(() => { $el.disabled = false; waiting = false; }, 3000)"
+                  x-on:click="setTimeout(() => {$el.disabled = true; waiting = true;}, 0); setTimeout(() => { $el.disabled = false; waiting = false; }, 3000)"
                 >
                   <template x-if="waiting">
                     <div class="w-4 h-4 flex animate-spin" style="animation-duration: 8000ms;">
