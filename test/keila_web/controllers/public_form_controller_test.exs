@@ -210,6 +210,67 @@ defmodule KeilaWeb.PublicFormControllerTest do
     end
   end
 
+  describe "PublicFormView.render_form/3 :embed mode" do
+    @describetag :public_form_controller
+    alias KeilaWeb.PublicFormView
+    alias Keila.Contacts.Contact
+
+    test "embed includes inline styles and form class by default", %{conn: conn} do
+      {_conn, project} = with_login_and_project(conn)
+      form = insert!(:contacts_form, project_id: project.id, settings: %{captcha_required: false})
+
+      changeset = Contact.changeset_from_form(%{}, form)
+
+      html =
+        PublicFormView.render_form(form, changeset, :embed)
+        |> Phoenix.HTML.safe_to_string()
+
+      assert html =~ ~s(style="background-color)
+      assert html =~ "contact-form container"
+    end
+
+    test "embed omits Tailwind classes but keeps inline styles when embedded_styles is disabled",
+         %{
+           conn: conn
+         } do
+      {_conn, project} = with_login_and_project(conn)
+
+      form =
+        insert!(:contacts_form,
+          project_id: project.id,
+          settings: %{captcha_required: false, embedded_styles: :disabled}
+        )
+
+      changeset = Contact.changeset_from_form(%{}, form)
+
+      html =
+        PublicFormView.render_form(form, changeset, :embed)
+        |> Phoenix.HTML.safe_to_string()
+
+      assert html =~ ~s(style="background-color)
+      refute html =~ "contact-form container"
+    end
+
+    test "full mode keeps styles even when embedded_styles is disabled", %{conn: conn} do
+      {_conn, project} = with_login_and_project(conn)
+
+      form =
+        insert!(:contacts_form,
+          project_id: project.id,
+          settings: %{captcha_required: false, embedded_styles: :disabled}
+        )
+
+      changeset = Contact.changeset_from_form(%{}, form)
+
+      html =
+        PublicFormView.render_form(form, changeset, :full)
+        |> Phoenix.HTML.safe_to_string()
+
+      assert html =~ ~s(style="background-color)
+      assert html =~ "contact-form container"
+    end
+  end
+
   defp now() do
     DateTime.utc_now(:second)
   end
