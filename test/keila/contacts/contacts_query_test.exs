@@ -246,6 +246,95 @@ defmodule Keila.ContactsQueryTest do
   end
 
   @tag :contacts_query
+  test "filter custom data with text operators ($like)" do
+    c1 = insert!(:contact, %{data: %{"name" => "Alice"}})
+    c2 = insert!(:contact, %{data: %{"name" => "Bob"}})
+
+    # starts_with
+    assert [c1] == filter_contacts(%{"data.name" => %{"$like" => "Al%"}})
+    # ends_with
+    assert [c2] == filter_contacts(%{"data.name" => %{"$like" => "%ob"}})
+    # includes
+    assert [c1] == filter_contacts(%{"data.name" => %{"$like" => "%lic%"}})
+    # ILIKE is case-insensitive
+    assert [c1] == filter_contacts(%{"data.name" => %{"$like" => "alice"}})
+  end
+
+  @tag :contacts_query
+  test "filter custom data numeric comparison compares numerically, not lexically" do
+    # Values chosen so numeric and string comparison disagree:
+    # numeric 100 > 9, but lexically "100" < "9".
+    c_small = insert!(:contact, %{data: %{"age" => 9}})
+    c_large = insert!(:contact, %{data: %{"age" => 100}})
+
+    assert [c_large] == filter_contacts(%{"data.age" => %{"$gt" => 50}})
+    assert [c_small] == filter_contacts(%{"data.age" => %{"$lt" => 50}})
+    assert [c_large] == filter_contacts(%{"data.age" => %{"$gte" => 100}})
+    assert [c_small] == filter_contacts(%{"data.age" => %{"$lte" => 9}})
+  end
+
+  @tag :contacts_query
+  test "filter custom data date comparison on ISO 8601 strings" do
+    c_early = insert!(:contact, %{data: %{"signup" => "2024-01-15"}})
+    c_late = insert!(:contact, %{data: %{"signup" => "2024-06-20"}})
+
+    # Date-only stored value compared against a date literal
+    assert [c_late] == filter_contacts(%{"data.signup" => %{"$gt" => "2024-03-01"}})
+    assert [c_early] == filter_contacts(%{"data.signup" => %{"$lt" => "2024-03-01"}})
+
+    # ...and against a full ISO 8601 datetime literal (as emitted by the editor)
+    assert [c_late] == filter_contacts(%{"data.signup" => %{"$gt" => "2024-03-01T00:00:00Z"}})
+    assert [c_early] == filter_contacts(%{"data.signup" => %{"$lt" => "2024-03-01T00:00:00Z"}})
+  end
+
+  @tag :contacts_query
+  test "filter custom data comparison operators exclude contacts missing the field" do
+    c_present = insert!(:contact, %{data: %{"age" => 30}})
+    _c_missing = insert!(:contact, %{data: %{"other_field" => "foo"}})
+    _c_no_data = insert!(:contact)
+
+    assert [c_present] == filter_contacts(%{"data.age" => %{"$gt" => 10}})
+    assert [c_present] == filter_contacts(%{"data.age" => %{"$gte" => 30}})
+    assert [c_present] == filter_contacts(%{"data.age" => %{"$lt" => 50}})
+    assert [c_present] == filter_contacts(%{"data.age" => %{"$lte" => 30}})
+  end
+
+  @tag :contacts_query
+  test "filter custom data comparison operators exclude type-incompatible values instead of comparing" do
+    c_number = insert!(:contact, %{data: %{"age" => 9}})
+    c_string = insert!(:contact, %{data: %{"age" => "thirty"}})
+    c_bool = insert!(:contact, %{data: %{"age" => true}})
+    c_list = insert!(:contact, %{data: %{"age" => [1, 2]}})
+    c_object = insert!(:contact, %{data: %{"age" => %{"years" => 9}}})
+    c_null = insert!(:contact, %{data: %{"age" => nil}})
+
+    # A number filter must only ever match a number field - not a boolean, which
+    # JSONB's type-rank ordering would otherwise rank above every number.
+    assert [c_number] == filter_contacts(%{"data.age" => %{"$gt" => 5}})
+    assert [] == filter_contacts(%{"data.age" => %{"$gt" => 100}})
+
+    for op <- ["$gt", "$gte", "$lt", "$lte"] do
+      string_filtered = filter_contacts(%{"data.age" => %{op => "5"}})
+      number_filtered = filter_contacts(%{"data.age" => %{op => 5}})
+
+      # Only the same-typed value may ever match; other JSON types never do,
+      # even though JSONB's type-rank ordering would otherwise rank
+      # Boolean > Number > String for some of these comparisons.
+      refute c_number in string_filtered
+      refute c_bool in string_filtered
+      refute c_list in string_filtered
+      refute c_object in string_filtered
+      refute c_null in string_filtered
+
+      refute c_string in number_filtered
+      refute c_bool in number_filtered
+      refute c_list in number_filtered
+      refute c_object in number_filtered
+      refute c_null in number_filtered
+    end
+  end
+
+  @tag :contacts_query
   test "filter for contact being included in campaign", %{project: project} do
     c = insert!(:contact, %{project_id: project.id})
     campaign1 = insert!(:mailings_campaign, %{project_id: project.id})

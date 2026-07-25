@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+### Added
+- Segment filter editor now supports more operators for custom data: *starts with*, *ends with*, *includes*, *is greater than*, *is smaller than*, *is after date*, and *is before date*
 
 ## Version 0.30.2
 

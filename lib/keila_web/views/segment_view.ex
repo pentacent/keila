@@ -93,9 +93,8 @@ defmodule KeilaWeb.SegmentView do
   defp render_widget(index, condition = %{"type" => "custom"}) do
     value = condition["value"] || %{}
     key = value["key"]
-    match = value["match"]
     widget = condition["widget"] || "matches"
-    assigns = %{index: index, key: key, match: match, widget: widget}
+    assigns = %{index: index, key: key, value: value, widget: widget}
 
     ~H"""
     <label for={"#{@index}[value][key]"} class="self-center text-right">
@@ -108,18 +107,7 @@ defmodule KeilaWeb.SegmentView do
       value={@key}
       class="text-black w-28"
     />
-    <%= if @widget == "matches" do %>
-      <label for={"#{@index}[value][match]"} class="self-center text-right">
-        {gettext("Match:")}
-      </label>
-      <input
-        id={"#{@index}[value][match]"}
-        name={"#{@index}[value][match]"}
-        type="text"
-        value={@match}
-        class="text-black"
-      />
-    <% end %>
+    {render_custom_value(@index, @widget, @value)}
     """
   end
 
@@ -153,5 +141,59 @@ defmodule KeilaWeb.SegmentView do
   defp render_widget(_widget, field_form_data) do
     assigns = %{condition: field_form_data}
     ~H"<p>{inspect(@condition)}</p>"
+  end
+
+  # Renders the value input for a custom-data condition based on its operator.
+
+  # Text operators share a plain text input for the match value.
+  defp render_custom_value(index, widget, value)
+       when widget in ["matches", "starts_with", "ends_with", "includes"] do
+    assigns = %{index: index, match: value["match"]}
+
+    ~H"""
+    <label for={"#{@index}[value][match]"} class="self-center text-right">
+      {gettext("Match:")}
+    </label>
+    <input
+      id={"#{@index}[value][match]"}
+      name={"#{@index}[value][match]"}
+      type="text"
+      value={@match}
+      class="text-black"
+    />
+    """
+  end
+
+  # Numeric operators use a number input so the value is coerced to a number.
+  defp render_custom_value(index, widget, value) when widget in ["gt", "lt"] do
+    assigns = %{index: index, match: value["match"]}
+
+    ~H"""
+    <label for={"#{@index}[value][match]"} class="self-center text-right">
+      {gettext("Value:")}
+    </label>
+    <input
+      id={"#{@index}[value][match]"}
+      name={"#{@index}[value][match]"}
+      type="number"
+      step="any"
+      value={@match}
+      class="text-black"
+    />
+    """
+  end
+
+  # Date operators reuse the built-in date field's date / time / timezone inputs.
+  defp render_custom_value(index, widget, value) when widget in ["before", "after"] do
+    render_widget(index, %{"type" => "date", "widget" => "lt", "value" => value})
+  end
+
+  # empty / not_empty need no value input.
+  defp render_custom_value(index, _widget, _value) do
+    assigns = %{index: index}
+
+    ~H"""
+    <input id={"#{@index}[value][match]"} name={"#{@index}[value][match]"} type="hidden" value="" />
+    """
   end
 end
