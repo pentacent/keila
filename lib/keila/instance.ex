@@ -62,7 +62,16 @@ defmodule Keila.Instance do
       |> Enum.map(fn %{"tag_name" => version, "published_at" => published_at, "body" => changelog} ->
         %{version: version, published_at: published_at, changelog: changelog}
       end)
-      |> Enum.map(&Release.new!/1)
+      |> Enum.flat_map(fn attrs ->
+        case Release.new(attrs) do
+          {:ok, release} ->
+            [release]
+
+          {:error, changeset} ->
+            Logger.info("Unable to parse release: #{inspect(changeset.errors)}")
+            []
+        end
+      end)
       |> Enum.filter(fn %{version: version} ->
         version |> Version.parse!() |> Version.compare(current_version) == :gt
       end)
