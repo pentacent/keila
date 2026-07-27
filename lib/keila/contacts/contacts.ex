@@ -216,7 +216,10 @@ defmodule Keila.Contacts do
 
   This function is idempotent and always returns `:ok`.
   """
-  @spec delete_project_contacts(Project.id(), filter: map(), sort: map()) :: :ok
+  @spec delete_project_contacts(Project.id(),
+          filter: map(),
+          sort: map() | [{String.t(), integer()}]
+        ) :: :ok
   def delete_project_contacts(project_id, opts \\ []) do
     opts = opts |> Keyword.take([:filter]) |> Keyword.put(:sort, false)
 

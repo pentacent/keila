@@ -35,6 +35,16 @@ defmodule KeilaWeb.ApiContactController do
           type: :string,
           "x-validate": KeilaWeb.Api.ContactFilterValidator
         }
+      ],
+      sort: [
+        in: :query,
+        description:
+          "Sort options as JSON string. Accepts a JSON object (`{\"email\": 1}`) or an array of pairs (`[[\"email\", 1], [\"inserted_at\", -1]]`) for deterministic multi-field ordering. `1` = ascending, `-1` = descending.",
+        example: [["email", 1], ["inserted_at", -1]] |> Jason.encode!(),
+        schema: %OpenApiSpex.Schema{
+          type: :string,
+          "x-validate": KeilaWeb.Api.ContactSortValidator
+        }
       ]
     ],
     responses: [
@@ -52,11 +62,13 @@ defmodule KeilaWeb.ApiContactController do
       |> Map.to_list()
 
     filter = Map.get(params, :filter, %{})
+    sort = Map.get(params, :sort)
 
     contacts =
       Contacts.get_project_contacts(project_id(conn),
         paginate: paginate,
-        filter: filter
+        filter: filter,
+        sort: sort
       )
 
     render(conn, "contacts.json", %{contacts: contacts})
