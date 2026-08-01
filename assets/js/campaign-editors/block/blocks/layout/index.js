@@ -46,7 +46,7 @@ export default class Layout {
       this.editors.push(editor)
 
       editorPlace.addEventListener("keydown", e => {
-        if (e.key === "Enter") {
+        if (e.key === "Enter" && !e.shiftKey) {
           e.preventDefault()
           e.stopPropagation()
         }
