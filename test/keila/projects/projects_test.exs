@@ -47,4 +47,21 @@ defmodule Keila.ProjectsTest do
     assert project == Projects.get_user_project(user1.id, project.id)
     assert nil == Projects.get_user_project(user2.id, project.id)
   end
+
+  @tag :projects
+  test "Project users can be listed, added, and removed" do
+    _root = insert!(:group)
+    user = insert!(:user)
+    other_user = insert!(:user)
+    {:ok, project} = Projects.create_project(user.id, %{"name" => "My Project"})
+
+    assert [^user] = Projects.list_project_users(project.id)
+    assert :ok = Projects.add_project_user(project, other_user)
+    assert [^user, ^other_user] = Projects.list_project_users(project.id)
+    assert project == Projects.get_user_project(other_user.id, project.id)
+
+    assert :ok = Projects.remove_project_user(project, other_user)
+    assert [^user] = Projects.list_project_users(project.id)
+    assert nil == Projects.get_user_project(other_user.id, project.id)
+  end
 end

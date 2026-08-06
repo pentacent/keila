@@ -52,3 +52,41 @@
     </div>
   </.form>
 </div>
+
+<div class="container mt-8 max-w-md">
+  <h2 class="text-xl text-gray-100 mb-4">{gettext("Project members")}</h2>
+  <div class="card bg-gray-800">
+    <ul class="divide-y divide-gray-700">
+      <%= for member <- @members do %>
+        <li class="flex items-center justify-between gap-4 py-3">
+          <span class="truncate">{member.email}</span>
+          <%= if member.id != @current_user.id do %>
+            <.delete_form
+              struct={member}
+              as={:user}
+              route={
+                Routes.project_path(@conn, :post_remove_member, @current_project.id, member.id)
+              }
+            />
+            <.delete_button struct={member} class="button button--text">
+              {gettext("Remove")}
+            </.delete_button>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+    <.form
+      :let={f}
+      for={%{}}
+      as={:user}
+      action={Routes.project_path(@conn, :post_add_member, @current_project.id)}
+      class="flex gap-2 pt-4"
+    >
+      {email_input(f, :email,
+        placeholder: gettext("Email address"),
+        class: "text-black flex-grow"
+      )}
+      <button type="submit" class="button button--cta">{gettext("Add member")}</button>
+    </.form>
+  </div>
+</div>

@@ -5,7 +5,7 @@ defmodule Keila.Projects do
   use Keila.Repo
   alias Keila.Projects.Project
   alias Keila.Auth
-  alias Keila.Auth.{User, Group}
+  alias Keila.Auth.{User, Group, UserGroup}
   alias Keila.Accounts
   alias Keila.Accounts.Account
 
@@ -103,5 +103,42 @@ defmodule Keila.Projects do
 
     from(p in Project, where: p.group_id in ^user_group_ids)
     |> Repo.all()
+  end
+
+  @doc """
+  Returns list of all `User`s who are members of the `Project` specified by
+  `project_id`, ordered by date of joining the Project.
+  """
+  @spec list_project_users(Project.t() | Project.id()) :: [User.t()]
+  def list_project_users(%Project{} = project) do
+    from(u in User)
+    |> join(:inner, [u], ug in UserGroup, on: ug.user_id == u.id)
+    |> where([u, ug], ug.group_id == ^project.group_id)
+    |> order_by([u, ug], asc: ug.inserted_at, asc: ug.id)
+    |> select([u, ug], u)
+    |> Repo.all()
+  end
+
+  def list_project_users(project_id) when is_binary(project_id) or is_integer(project_id) do
+    case get_project(project_id) do
+      nil -> []
+      project -> list_project_users(project)
+    end
+  end
+
+  @doc """
+  Adds `User` as a member of the `Project`.
+  """
+  @spec add_project_user(Project.t(), User.t()) :: :ok | {:error, Changeset.t()}
+  def add_project_user(%Project{} = project, %User{} = user) do
+    Auth.add_user_to_group(user.id, project.group_id)
+  end
+
+  @doc """
+  Removes `User` as a member of the `Project`.
+  """
+  @spec remove_project_user(Project.t(), User.t()) :: :ok
+  def remove_project_user(%Project{} = project, %User{} = user) do
+    Auth.remove_user_from_group(user.id, project.group_id)
   end
 end

@@ -72,11 +72,68 @@ defmodule KeilaWeb.ProjectController do
   end
 
   defp render_edit(conn, status \\ 200, changeset) do
+    project = conn.assigns.current_project
+
     conn
     |> put_status(status)
     |> put_meta(:title, gettext("Edit %{project_name}", project_name: changeset.data.name))
     |> assign(:changeset, changeset)
+    |> assign(:members, Projects.list_project_users(project.id))
     |> render("edit.html")
+  end
+
+  @spec post_add_member(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def post_add_member(conn, %{"user" => %{"email" => email}}) do
+    project = conn.assigns.current_project
+
+    case Keila.Auth.find_user_by_email(email) do
+      nil ->
+        conn
+        |> put_flash(:error, gettext("No user with this email address exists."))
+        |> redirect(to: Routes.project_path(conn, :edit, project.id))
+
+      user ->
+        case Projects.add_project_user(project, user) do
+          :ok ->
+            conn
+            |> put_flash(:info, gettext("User was added to project."))
+            |> redirect(to: Routes.project_path(conn, :edit, project.id))
+
+          {:error, _changeset} ->
+            conn
+            |> put_flash(:error, gettext("Could not add user to project."))
+            |> redirect(to: Routes.project_path(conn, :edit, project.id))
+        end
+    end
+  end
+
+  def post_add_member(conn, _) do
+    conn |> put_status(404) |> halt()
+  end
+
+  @spec post_remove_member(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def post_remove_member(conn, %{"user_id" => user_id}) do
+    project = conn.assigns.current_project
+
+    if user_id != conn.assigns.current_user.id do
+      case Keila.Auth.get_user(user_id) do
+        nil ->
+          conn |> put_status(404) |> halt()
+
+        user ->
+          :ok = Projects.remove_project_user(project, user)
+
+          conn
+          |> put_flash(:info, gettext("User was removed from project."))
+          |> redirect(to: Routes.project_path(conn, :edit, project.id))
+      end
+    else
+      conn |> put_status(404) |> halt()
+    end
+  end
+
+  def post_remove_member(conn, _) do
+    conn |> put_status(404) |> halt()
   end
 
   @spec delete(Plug.Conn.t(), any) :: Plug.Conn.t()
