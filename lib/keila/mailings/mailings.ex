@@ -772,7 +772,7 @@ defmodule Keila.Mailings do
           m.campaign_id == ^campaign_id and not is_nil(field(m, ^field)),
       group_by: series.h,
       order_by: series.h,
-      select: {series.h, count(m.id)}
+      select: {series.h, count(m.campaign_id)}
     )
     |> Repo.all()
   end

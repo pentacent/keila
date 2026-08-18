@@ -40,7 +40,7 @@ Keila.if_cloud do
       :ok = Keila.Contacts.import_csv(project.id, "test/keila/contacts/import_rfc_4180.csv")
       sender = insert!(:mailings_sender, project_id: project.id)
       campaign = insert!(:mailings_campaign, project_id: project.id, sender_id: sender.id)
-      n = Repo.aggregate(Keila.Contacts.Contact, :count, :id)
+      n = Repo.aggregate(Keila.Contacts.Contact, :count)
       Accounts.add_credits(account.id, n, tomorrow())
 
       assert {:error, :account_not_active} = Keila.Mailings.deliver_campaign(campaign.id)
@@ -98,7 +98,7 @@ Keila.if_cloud do
           scheduled_for: now
         )
 
-      n = Repo.aggregate(Keila.Contacts.Contact, :count, :id)
+      n = Repo.aggregate(Keila.Contacts.Contact, :count)
       Accounts.add_credits(account.id, n, tomorrow())
 
       assert {:error, :account_not_active} = Keila.Mailings.deliver_campaign(campaign.id)

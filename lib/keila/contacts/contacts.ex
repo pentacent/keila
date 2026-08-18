@@ -162,7 +162,7 @@ defmodule Keila.Contacts do
 
     from(c in Contact, where: c.project_id == ^project_id)
     |> Keila.Contacts.Query.apply(opts)
-    |> Repo.aggregate(:count, :id)
+    |> Repo.aggregate(:count)
   end
 
   @spec get_project_contacts_stats(Project.id(), [Query.opts()]) :: %{
@@ -176,7 +176,7 @@ defmodule Keila.Contacts do
     from(c in Contact, where: c.project_id == ^project_id)
     |> Keila.Contacts.Query.apply(query_opts)
     |> group_by([c], c.status)
-    |> select([c], {c.status, count(c.id)})
+    |> select([c], {c.status, count(c.project_id)})
     |> Repo.all()
     |> Enum.into(%{})
     |> Map.merge(%{active: 0, unsubscribed: 0, unreachable: 0}, fn _key, value1, value2 ->

@@ -95,7 +95,6 @@ defmodule Keila.Contacts.Query do
   defp filter(query, input) do
     from(q in query,
       as: :contact,
-      distinct: true,
       where: ^build_and(input)
     )
   end
