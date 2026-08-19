@@ -38,6 +38,11 @@ defmodule Keila.Contacts.Query do
   - `sort: %{"email" => 1}` will sort results by email in ascending order.
   - `sort: %{"email" => -1}` will sort results by email in descending order.
 
+  When sorting by multiple fields, you can pass a list of `{field, direction}` tuples
+  to preserve a deterministic sort order (Elixir maps do not guarantee key order):
+  - `sort: [{"email", 1}, {"inserted_at", -1}]` will sort by email ascending, then by
+    `inserted_at` descending.
+
   Defaults to sorting by `inserted_at` and `email`.
 
   Sorting can be disabled by passing `sort: false`
@@ -46,7 +51,7 @@ defmodule Keila.Contacts.Query do
   use Keila.Repo
   alias Keila.Contacts.Contact
 
-  @type opts :: {:filter, map()} | {:sort, map()}
+  @type opts :: {:filter, map()} | {:sort, map() | [{String.t(), integer()}]}
 
   @fields ["id", "email", "inserted_at", "first_name", "last_name", "status", "double_opt_in_at"]
   @message_fields [
@@ -278,16 +283,34 @@ defmodule Keila.Contacts.Query do
   defp maybe_sort(query, opts) do
     case Keyword.get(opts, :sort) do
       false -> query
-      opts when is_map(opts) -> sort(query, opts)
+      input when is_map(input) -> sort(query, input)
+      input when is_list(input) -> sort(query, input)
       _ -> sort(query, %{"inserted_at" => 1, "email" => 1})
     end
   end
 
-  defp sort(query, input) do
+  defp sort(query, input) when is_map(input) do
     input
     |> Map.take(@fields)
-    |> Enum.reverse()
-    |> Enum.reduce(query, fn {field, direction}, query ->
+    |> Enum.to_list()
+    |> do_sort(query, reverse?: true)
+  end
+
+  defp sort(query, input) when is_list(input) do
+    input
+    |> Enum.filter(fn {field, _} -> field in @fields end)
+    |> do_sort(query, reverse?: false)
+  end
+
+  defp do_sort(pairs, query, opts) do
+    pairs =
+      if opts[:reverse?] do
+        Enum.reverse(pairs)
+      else
+        pairs
+      end
+
+    Enum.reduce(pairs, query, fn {field, direction}, query ->
       field = String.to_existing_atom(field)
       direction = if direction == -1, do: :desc, else: :asc
 
