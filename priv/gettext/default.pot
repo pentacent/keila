@@ -3541,3 +3541,43 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "emails failed"
 msgstr ""
+
+#: lib/keila_web/controllers/project_controller.ex:91
+#, elixir-autogen, elixir-format
+msgid "No user with this email address exists."
+msgstr ""
+
+#: lib/keila_web/controllers/project_controller.ex:98
+#, elixir-autogen, elixir-format
+msgid "User was added to project."
+msgstr ""
+
+#: lib/keila_web/controllers/project_controller.ex:103
+#, elixir-autogen, elixir-format
+msgid "Could not add user to project."
+msgstr ""
+
+#: lib/keila_web/controllers/project_controller.ex:126
+#, elixir-autogen, elixir-format
+msgid "User was removed from project."
+msgstr ""
+
+#: lib/keila_web/templates/project/edit.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "Project members"
+msgstr ""
+
+#: lib/keila_web/templates/project/edit.html.heex:72
+#, elixir-autogen, elixir-format
+msgid "Remove"
+msgstr ""
+
+#: lib/keila_web/templates/project/edit.html.heex:86
+#, elixir-autogen, elixir-format
+msgid "Email address"
+msgstr ""
+
+#: lib/keila_web/templates/project/edit.html.heex:89
+#, elixir-autogen, elixir-format
+msgid "Add member"
+msgstr ""
