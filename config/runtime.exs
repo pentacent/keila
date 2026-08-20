@@ -121,7 +121,7 @@ if config_env() == :prod do
                 :tls_certificate_check.options(host) ++ [versions: [:"tlsv1.2"]]
               )
             else
-              config
+              Keyword.put(config, :tls, :never)
             end
           end)
       end
