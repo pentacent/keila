@@ -23,6 +23,8 @@ defmodule Keila.Application do
         {Oban, oban_config()},
         # Keila Task Supervisor
         {Task.Supervisor, name: Keila.TaskSupervisor},
+        # Liquid cache,
+        Keila.Mailings.Renderer.LiquidCache,
         # Keila Hashid Config cache
         %{
           id: Keila.Id.Cache,

@@ -1,10 +1,25 @@
 defmodule Keila.Mailings.Renderer.LiquidRenderer do
   @moduledoc """
-  Module to safely render Liquid templates from a string or a pre-parsed by `Solid.Template`.
+  Module to safely parse and render Liquid templates.
   """
 
   @doc """
-  Safely renders a liquid template to a string.
+  Safely remders Liquid string to a Solid template struct.
+  """
+  @spec parse_liquid(String.t()) :: {:ok, Solid.Template.t()} | {:error, String.t()}
+  def parse_liquid(input) do
+    try do
+      case Solid.parse(input) do
+        {:ok, template} -> {:ok, template}
+        {:error, error = %Solid.TemplateError{}} -> {:error, errors_to_string(error.errors)}
+      end
+    rescue
+      _e -> {:error, "Unexpected parsing error"}
+    end
+  end
+
+  @doc """
+  Safely renders a Liquid template to a string. Accepts strings and `Solid.Template`.
 
   Solid can sometimes raise exceptions when rendering invalid templates. This
   function catches these exceptions and transforms them into an error tuple.
@@ -14,13 +29,8 @@ defmodule Keila.Mailings.Renderer.LiquidRenderer do
   def render_liquid(input, assigns, opts \\ [])
 
   def render_liquid(input, assigns, opts) when is_binary(input) do
-    try do
-      case Solid.parse(input) do
-        {:ok, template} -> render_liquid(template, assigns, opts)
-        {:error, error = %Solid.TemplateError{}} -> {:error, errors_to_string(error.errors)}
-      end
-    rescue
-      _e -> {:error, "Unexpected parsing error"}
+    with {:ok, liquid_template} <- parse_liquid(input) do
+      render_liquid(liquid_template, assigns, opts)
     end
   end
 
