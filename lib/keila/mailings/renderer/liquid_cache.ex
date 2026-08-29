@@ -8,6 +8,7 @@ defmodule Keila.Mailings.Renderer.LiquidCache do
 
   use GenServer
 
+  @table __MODULE__
   @ttl :timer.minutes(10)
   @max_entries 500
   @evict_interval :timer.seconds(30)
@@ -18,40 +19,44 @@ defmodule Keila.Mailings.Renderer.LiquidCache do
 
   @spec get(String.t(), (-> term())) :: term()
   def get(sha256, fun) do
-    cached_template = GenServer.call(__MODULE__, {:get, sha256})
+    cached_template = get_from_cache(sha256)
 
     if cached_template do
       cached_template
     else
-      fun.() |> tap(&GenServer.cast(__MODULE__, {:set, sha256, &1}))
+      fun.() |> tap(&write_to_cache(sha256, &1))
     end
+  end
+
+  defp get_from_cache(sha256) do
+    case :ets.lookup(@table, sha256) do
+      [{^sha256, template, _}] ->
+        :ets.update_element(@table, sha256, {3, now()})
+        template
+
+      [] ->
+        nil
+    end
+  end
+
+  defp write_to_cache(sha256, template) do
+    :ets.insert(@table, {sha256, template, now()})
   end
 
   @impl true
   def init(_) do
-    table = :ets.new(:liquid_cache, [:set, :protected, {:read_concurrency, true}])
+    table =
+      :ets.new(@table, [
+        :set,
+        :public,
+        :named_table,
+        {:read_concurrency, true},
+        {:write_concurrency, true}
+      ])
+
     schedule_evict()
 
     {:ok, table}
-  end
-
-  @impl true
-  def handle_call({:get, sha256}, _, table) do
-    case :ets.lookup(table, sha256) do
-      [{sha256, template, _}] ->
-        :ets.update_element(table, sha256, {3, now()})
-        {:reply, template, table}
-
-      [] ->
-        {:reply, nil, table}
-    end
-  end
-
-  @impl true
-  def handle_cast({:set, sha256, template}, table) do
-    :ets.insert(table, {sha256, template, now()})
-
-    {:noreply, table}
   end
 
   @impl true
