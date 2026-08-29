@@ -19,12 +19,12 @@ defmodule Keila.Application do
         {Phoenix.PubSub, name: Keila.PubSub},
         # Start the Endpoint (http/https)
         KeilaWeb.Endpoint,
+        # Liquid cache,
+        Keila.Mailings.Renderer.LiquidCache,
         # Start Oban
         {Oban, oban_config()},
         # Keila Task Supervisor
         {Task.Supervisor, name: Keila.TaskSupervisor},
-        # Liquid cache,
-        Keila.Mailings.Renderer.LiquidCache,
         # Keila Hashid Config cache
         %{
           id: Keila.Id.Cache,

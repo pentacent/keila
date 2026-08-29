@@ -4,6 +4,7 @@ defmodule Keila.Mailings.Renderer.BodyRenderer.Mjml do
   """
   @behaviour Keila.Mailings.Renderer.BodyRenderer
 
+  use KeilaWeb.Gettext
   alias Keila.Mailings.Renderer
   alias Keila.Mailings.Renderer.Input
   import Keila.Mailings.Renderer.LiquidRenderer
