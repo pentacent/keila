@@ -26,6 +26,8 @@ defmodule Keila.Mailings.Renderer.LiquidCache do
     else
       fun.() |> tap(&write_to_cache(sha256, &1))
     end
+  rescue
+    ArgumentError -> fun.()
   end
 
   defp get_from_cache(sha256) do
@@ -59,6 +61,9 @@ defmodule Keila.Mailings.Renderer.LiquidCache do
     {:ok, table}
   end
 
+  # :ets.fun2ms(fn {sha256, _, timestamp} -> {sha256, timestamp} end)
+  @timestamp_ms [{{:"$1", :_, :"$2"}, [], [{{:"$1", :"$2"}}]}]
+
   @impl true
   def handle_info(:evict, table) do
     schedule_evict()
@@ -67,18 +72,18 @@ defmodule Keila.Mailings.Renderer.LiquidCache do
 
     {entries, expired_entries} =
       table
-      |> :ets.tab2list()
-      |> Enum.split_with(fn {_, _, timestamp} -> timestamp >= cutoff end)
+      |> :ets.select(@timestamp_ms)
+      |> Enum.split_with(fn {_, timestamp} -> timestamp >= cutoff end)
 
-    Enum.each(expired_entries, fn {sha256, _, _} -> :ets.delete(table, sha256) end)
+    Enum.each(expired_entries, fn {sha256, _} -> :ets.delete(table, sha256) end)
 
     count = length(entries)
 
     if count > @max_entries do
       entries
-      |> Enum.sort_by(fn {_, _, timestamp} -> timestamp end, :desc)
+      |> Enum.sort_by(fn {_, timestamp} -> timestamp end, :desc)
       |> Enum.drop(@max_entries)
-      |> Enum.each(fn {sha256, _, _} -> :ets.delete(table, sha256) end)
+      |> Enum.each(fn {sha256, _} -> :ets.delete(table, sha256) end)
     end
 
     {:noreply, table}
