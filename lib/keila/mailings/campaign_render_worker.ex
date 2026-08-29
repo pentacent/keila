@@ -25,7 +25,7 @@ defmodule Keila.Mailings.CampaignRenderWorker do
   alias Keila.Contacts
   alias Keila.Contacts.Contact
 
-  @batch_size 500
+  @batch_size 50
   @render_timeout 5_000
   @max_attempts 5
 

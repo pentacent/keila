@@ -21,7 +21,7 @@ defmodule Keila.Mailings.Renderer.BodyRenderer.Mjml do
     end
   end
 
-  def liquid_template(input) do
+  defp liquid_template(input) do
     hash = input_hash(input)
 
     Keila.Mailings.Renderer.LiquidCache.get(hash, fn ->

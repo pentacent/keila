@@ -17,7 +17,7 @@ defmodule Keila.Mailings.Renderer.LiquidCache do
     GenServer.start_link(__MODULE__, nil, name: __MODULE__)
   end
 
-  @spec get(String.t(), (-> term())) :: term()
+  @spec get(binary(), (-> term())) :: term()
   def get(sha256, fun) do
     cached_template = get_from_cache(sha256)
 

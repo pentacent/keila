@@ -4,7 +4,7 @@ defmodule Keila.Mailings.Renderer.LiquidRenderer do
   """
 
   @doc """
-  Safely remders Liquid string to a Solid template struct.
+  Safely renders Liquid string to a Solid template struct.
   """
   @spec parse_liquid(String.t()) :: {:ok, Solid.Template.t()} | {:error, String.t()}
   def parse_liquid(input) do
