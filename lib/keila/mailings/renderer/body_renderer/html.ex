@@ -4,7 +4,6 @@ defmodule Keila.Mailings.Renderer.BodyRenderer.Html do
   """
   @behaviour Keila.Mailings.Renderer.BodyRenderer
 
-  use KeilaWeb.Gettext
   alias Keila.Mailings.Renderer
   alias Keila.Mailings.Renderer.Input
   import Keila.Mailings.Renderer.LiquidRenderer
@@ -30,8 +29,9 @@ defmodule Keila.Mailings.Renderer.BodyRenderer.Html do
     end)
   end
 
-  defp input_hash(%Input{html_body: html_body, template: template, html_content: html_content}) do
-    :crypto.hash(:sha256, :erlang.term_to_binary({html_body, template, html_content}))
+  defp input_hash(%Input{html_body: html_body, html_content: html_content, template: template}) do
+    template_fields = if template, do: Map.take(template, [:id, :updated_at, :name, :html_body])
+    :crypto.hash(:sha256, :erlang.term_to_binary({html_body, html_content, template_fields}))
   end
 
   defp merge_html(%Input{html_body: html_body, template: template, html_content: html_content}) do

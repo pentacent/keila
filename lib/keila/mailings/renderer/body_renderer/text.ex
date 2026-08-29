@@ -30,11 +30,16 @@ defmodule Keila.Mailings.Renderer.BodyRenderer.Text do
   end
 
   defp input_hash(
-         %Input{text_body: text_body, template: template, text_content: text_content},
+         %Input{text_body: text_body, text_content: text_content, template: template},
          assigns
        ) do
     signature = assigns["signature"]
-    :crypto.hash(:sha256, :erlang.term_to_binary({text_body, template, text_content, signature}))
+    template_fields = if template, do: Map.take(template, [:id, :updated_at, :name, :text_body])
+
+    :crypto.hash(
+      :sha256,
+      :erlang.term_to_binary({text_body, text_content, signature, template_fields})
+    )
   end
 
   # Without a template, append the signature directly to the body.
