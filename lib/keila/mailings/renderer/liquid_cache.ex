@@ -17,6 +17,10 @@ defmodule Keila.Mailings.Renderer.LiquidCache do
     GenServer.start_link(__MODULE__, nil, name: __MODULE__)
   end
 
+  @doc """
+  Fetches an entry by the `sha256` key or executes and persists
+  the result of `fun/0` if the key is not present.
+  """
   @spec get(binary(), (-> term())) :: term()
   def get(sha256, fun) do
     cached_template = get_from_cache(sha256)
@@ -29,6 +33,12 @@ defmodule Keila.Mailings.Renderer.LiquidCache do
   rescue
     ArgumentError -> fun.()
   end
+
+  @spec ttl() :: pos_integer()
+  def ttl(), do: @ttl
+
+  @spec max_entries() :: pos_integer()
+  def max_entries(), do: @max_entries
 
   defp get_from_cache(sha256) do
     case :ets.lookup(@table, sha256) do
