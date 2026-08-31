@@ -19,12 +19,12 @@ defmodule Keila.Mailings.CampaignRenderRescueWorker do
       Keila.Mailings.CampaignRenderWorker.new(%{campaign_id: campaign_id})
       |> Oban.insert()
       |> case do
-        {:ok, _} ->
+        {:ok, %Oban.Job{conflict?: false}} ->
           Logger.warning(
             "CampaignRenderRescueWorker: Enqueued campaign render worker for campaign_id: #{campaign_id}"
           )
 
-        _ ->
+        _other ->
           :ok
       end
     end)
