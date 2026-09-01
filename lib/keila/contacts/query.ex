@@ -27,6 +27,25 @@ defmodule Keila.Contacts.Query do
   - `"$like"` - queries if the field matches using the SQL `ILIKE` statement.
      `%{"email" => %{"$like" => "%keila.io"}}`
 
+  ## Filtering on custom data (`data.*`)
+  Any `data.`-prefixed path filters on the contact's JSONB `data` field, e.g.
+  `%{"data.age" => %{"$gt" => 40}}`. All operators above are supported. Because
+  custom data is untyped JSONB, comparison operators (`$gt`, `$gte`, `$lt`,
+  `$lte`) require the stored value and the filter value to be the same JSON
+  type, and only support numbers and strings:
+  - If the field is missing, or its stored value is a different JSON type than
+    the filter value (e.g. filtering `$gt: 40` against a stored string, or
+    `$gt: "40"` against a stored number), the contact is filtered out rather
+    than compared. This avoids JSONB's type-rank ordering (`Object > Array >
+    Boolean > Number > String > Null`), which would otherwise silently produce
+    a match/non-match based on type rather than value.
+  - Numbers compare numerically when both sides are JSON numbers.
+  - Strings (e.g. dates) compare lexicographically when both sides are JSON
+    strings, which is only correct for zero-padded ISO 8601 date values.
+  - Booleans, arrays, and objects never match `$gt`/`$gte`/`$lt`/`$lte`, since
+    there's no sensible ordering to apply.
+  `$like` operates on the text projection of the value and works for any scalar.
+
   # Filtering on received messages (messages)
   A `messages` map can be defined to filter contacts based on their received messages.
   All status fields (like `"opened_at"`) can be defined, as well as `"campaign_id"`.
@@ -233,17 +252,15 @@ defmodule Keila.Contacts.Query do
 
   defp build_data_condition(path, input)
 
-  defp build_data_condition(path, %{"$gt" => value}),
-    do: dynamic([c], fragment("?#>?", c.data, ^path) > ^value)
+  defp build_data_condition(path, %{"$gt" => value}), do: build_data_comparison(path, value, :gt)
 
   defp build_data_condition(path, %{"$gte" => value}),
-    do: dynamic([c], fragment("?#>?", c.data, ^path) >= ^value)
+    do: build_data_comparison(path, value, :gte)
 
-  defp build_data_condition(path, %{"$lt" => value}),
-    do: dynamic([c], fragment("?#>?", c.data, ^path) < ^value)
+  defp build_data_condition(path, %{"$lt" => value}), do: build_data_comparison(path, value, :lt)
 
   defp build_data_condition(path, %{"$lte" => value}),
-    do: dynamic([c], fragment("?#>?", c.data, ^path) <= ^value)
+    do: build_data_comparison(path, value, :lte)
 
   defp build_data_condition(path, %{"$empty" => empty?}) when is_boolean(empty?) do
     is_null = dynamic([c], is_nil(fragment("?#>>?", c.data, ^path)))
@@ -283,6 +300,131 @@ defmodule Keila.Contacts.Query do
     array_contains = dynamic([c], fragment("?#>? @> ?", c.data, ^path, ^value_in_array))
     dynamic([c], ^contains or ^array_contains)
   end
+
+  # Custom data is untyped JSONB, so `$gt`/`$gte`/`$lt`/`$lte` only make sense
+  # between two values of the same JSON type. Comparing across types (e.g. a
+  # number stored where a string is filtered for) would otherwise fall back to
+  # JSONB's type-rank ordering (Object > Array > Boolean > Number > String >
+  # Null), silently matching/excluding rows based on type rather than value.
+  # The CASE guard (rather than a plain `and`) is required: Postgres does not
+  # guarantee left-to-right/short-circuit evaluation of ANDed WHERE clauses, so
+  # a bare type-check-and-cast could still attempt (and fail on) the numeric
+  # cast for a row whose value isn't actually numeric.
+  defp build_data_comparison(path, value, :gt) when is_number(value) do
+    dynamic(
+      [c],
+      fragment(
+        "CASE WHEN jsonb_typeof(?#>?) = 'number' THEN (?#>>?)::numeric > ? ELSE false END",
+        c.data,
+        ^path,
+        c.data,
+        ^path,
+        ^value
+      )
+    )
+  end
+
+  defp build_data_comparison(path, value, :gte) when is_number(value) do
+    dynamic(
+      [c],
+      fragment(
+        "CASE WHEN jsonb_typeof(?#>?) = 'number' THEN (?#>>?)::numeric >= ? ELSE false END",
+        c.data,
+        ^path,
+        c.data,
+        ^path,
+        ^value
+      )
+    )
+  end
+
+  defp build_data_comparison(path, value, :lt) when is_number(value) do
+    dynamic(
+      [c],
+      fragment(
+        "CASE WHEN jsonb_typeof(?#>?) = 'number' THEN (?#>>?)::numeric < ? ELSE false END",
+        c.data,
+        ^path,
+        c.data,
+        ^path,
+        ^value
+      )
+    )
+  end
+
+  defp build_data_comparison(path, value, :lte) when is_number(value) do
+    dynamic(
+      [c],
+      fragment(
+        "CASE WHEN jsonb_typeof(?#>?) = 'number' THEN (?#>>?)::numeric <= ? ELSE false END",
+        c.data,
+        ^path,
+        c.data,
+        ^path,
+        ^value
+      )
+    )
+  end
+
+  defp build_data_comparison(path, value, :gt) when is_binary(value) do
+    dynamic(
+      [c],
+      fragment(
+        "CASE WHEN jsonb_typeof(?#>?) = 'string' THEN (?#>>?) > ? ELSE false END",
+        c.data,
+        ^path,
+        c.data,
+        ^path,
+        ^value
+      )
+    )
+  end
+
+  defp build_data_comparison(path, value, :gte) when is_binary(value) do
+    dynamic(
+      [c],
+      fragment(
+        "CASE WHEN jsonb_typeof(?#>?) = 'string' THEN (?#>>?) >= ? ELSE false END",
+        c.data,
+        ^path,
+        c.data,
+        ^path,
+        ^value
+      )
+    )
+  end
+
+  defp build_data_comparison(path, value, :lt) when is_binary(value) do
+    dynamic(
+      [c],
+      fragment(
+        "CASE WHEN jsonb_typeof(?#>?) = 'string' THEN (?#>>?) < ? ELSE false END",
+        c.data,
+        ^path,
+        c.data,
+        ^path,
+        ^value
+      )
+    )
+  end
+
+  defp build_data_comparison(path, value, :lte) when is_binary(value) do
+    dynamic(
+      [c],
+      fragment(
+        "CASE WHEN jsonb_typeof(?#>?) = 'string' THEN (?#>>?) <= ? ELSE false END",
+        c.data,
+        ^path,
+        c.data,
+        ^path,
+        ^value
+      )
+    )
+  end
+
+  # Neither a number nor a string (e.g. a boolean, list, or map) - there's no
+  # sensible ordering to apply, so the condition matches nothing.
+  defp build_data_comparison(_path, _value, _op), do: false
 
   defp maybe_sort(query, opts) do
     case Keyword.get(opts, :sort) do

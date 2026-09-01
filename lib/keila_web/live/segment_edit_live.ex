@@ -51,6 +51,13 @@ defmodule KeilaWeb.SegmentEditLive do
       ],
       "data" => [
         %{name: "matches", label: gettext("matches")},
+        %{name: "starts_with", label: gettext("starts with")},
+        %{name: "ends_with", label: gettext("ends with")},
+        %{name: "includes", label: gettext("includes")},
+        %{name: "gt", label: gettext("is greater than")},
+        %{name: "lt", label: gettext("is smaller than")},
+        %{name: "after", label: gettext("is after date")},
+        %{name: "before", label: gettext("is before date")},
         %{name: "empty", label: gettext("is empty")},
         %{name: "not_empty", label: gettext("is not empty")}
       ],
@@ -401,6 +408,17 @@ defmodule KeilaWeb.SegmentEditLive do
     %{"value" => %{"key" => field, "match" => condition}}
   end
 
+  defp filter_condition_to_form_data("custom", "data." <> field, %{"$like" => value}) do
+    {widget, match} = classify_like(value)
+    %{"value" => %{"key" => field, "match" => match}, "widget" => widget}
+  end
+
+  defp filter_condition_to_form_data("custom", "data." <> field, %{"$gt" => value}),
+    do: custom_comparison_to_form_data(field, value, "gt", "after")
+
+  defp filter_condition_to_form_data("custom", "data." <> field, %{"$lt" => value}),
+    do: custom_comparison_to_form_data(field, value, "lt", "before")
+
   defp filter_condition_to_form_data("custom", "data." <> field, %{"$empty" => true}) do
     %{"value" => %{"key" => field}, "widget" => "empty"}
   end
@@ -452,6 +470,28 @@ defmodule KeilaWeb.SegmentEditLive do
       end
 
     %{"value" => %{"campaign_id" => campaign_id}, "widget" => widget}
+  end
+
+  # A numeric value maps to the numeric widgets (gt/lt); an ISO 8601 string maps
+  # to the date widgets (after/before). Any other value raises, so the query
+  # gracefully falls back to manual-only editing (see `filter_to_form_data/1`).
+  defp custom_comparison_to_form_data(field, value, number_widget, _date_widget)
+       when is_number(value) do
+    %{"value" => %{"key" => field, "match" => to_string(value)}, "widget" => number_widget}
+  end
+
+  defp custom_comparison_to_form_data(field, value, _number_widget, date_widget)
+       when is_binary(value) do
+    {:ok, datetime, _} = DateTime.from_iso8601(value)
+
+    date_value = %{
+      "key" => field,
+      "date" => DateTime.to_iso8601(datetime),
+      "time" => DateTime.to_iso8601(datetime),
+      "timezone" => "Etc/UTC"
+    }
+
+    %{"value" => date_value, "widget" => date_widget}
   end
 
   # Transforms form_data to filter
@@ -547,6 +587,48 @@ defmodule KeilaWeb.SegmentEditLive do
     end
   end
 
+  defp form_data_condition_to_filter(_field, "custom", widget, value)
+       when widget in ["starts_with", "ends_with", "includes"] and is_map(value) do
+    key = value["key"]
+    match = value["match"]
+
+    if is_binary(key) && key != "" && is_binary(match) && match != "" do
+      pattern =
+        case widget do
+          "starts_with" -> match <> "%"
+          "ends_with" -> "%" <> match
+          "includes" -> "%" <> match <> "%"
+        end
+
+      %{("data." <> key) => %{"$like" => pattern}}
+    end
+  end
+
+  defp form_data_condition_to_filter(_field, "custom", widget, value)
+       when widget in ["gt", "lt"] and is_map(value) do
+    key = value["key"]
+
+    with true <- is_binary(key) and key != "",
+         {:ok, number} <- parse_number(value["match"]) do
+      %{("data." <> key) => %{("$" <> widget) => number}}
+    else
+      _ -> nil
+    end
+  end
+
+  defp form_data_condition_to_filter(_field, "custom", widget, value)
+       when widget in ["before", "after"] and is_map(value) do
+    key = value["key"]
+    op = if widget == "before", do: "$lt", else: "$gt"
+
+    with true <- is_binary(key) and key != "",
+         {:ok, iso8601} <- custom_date_to_iso8601(value) do
+      %{("data." <> key) => %{op => iso8601}}
+    else
+      _ -> nil
+    end
+  end
+
   defp form_data_condition_to_filter(_field, "custom", "empty", value) when is_map(value) do
     key = value["key"]
 
@@ -604,6 +686,55 @@ defmodule KeilaWeb.SegmentEditLive do
 
   defp form_data_condition_to_filter(_, _, _, _) do
     nil
+  end
+
+  # Detects the widget encoded by an ILIKE pattern's `%` placement and returns
+  # the widget name together with the unwrapped match value.
+  defp classify_like(value) do
+    cond do
+      String.starts_with?(value, "%") && String.ends_with?(value, "%") ->
+        {"includes", String.slice(value, 1..-2//1)}
+
+      String.starts_with?(value, "%") ->
+        {"ends_with", String.slice(value, 1..-1//1)}
+
+      String.ends_with?(value, "%") ->
+        {"starts_with", String.slice(value, 0..-2//1)}
+    end
+  end
+
+  # Custom data is untyped JSONB. Numeric comparisons (`$gt`/`$lt`) must send the
+  # value as a JSON number so PostgreSQL compares numerically rather than by
+  # JSONB type rank (see `Keila.Contacts.Query` moduledoc).
+  defp parse_number(value) when is_number(value), do: {:ok, value}
+
+  defp parse_number(value) when is_binary(value) do
+    case Integer.parse(value) do
+      {int, ""} ->
+        {:ok, int}
+
+      _ ->
+        case Float.parse(value) do
+          {float, ""} -> {:ok, float}
+          _ -> :error
+        end
+    end
+  end
+
+  defp parse_number(_), do: :error
+
+  # Converts the date-picker value into an ISO 8601 string. Custom-data dates are
+  # stored as strings, so they are compared lexicographically and must be ISO
+  # 8601 to compare correctly.
+  defp custom_date_to_iso8601(value) do
+    with {:ok, date} <- Date.from_iso8601(to_string(value["date"])),
+         {:ok, time} <- Time.from_iso8601(to_string(value["time"]) <> ":00"),
+         {:ok, datetime} <- DateTime.new(date, time, value["timezone"] || "Etc/UTC"),
+         {:ok, utc_datetime} <- DateTime.shift_zone(datetime, "Etc/UTC") do
+      {:ok, DateTime.to_iso8601(utc_datetime)}
+    else
+      _ -> :error
+    end
   end
 
   # Ensures correct types and widgets for all conditions
