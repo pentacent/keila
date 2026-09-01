@@ -7,25 +7,34 @@ defmodule Keila.Mailings.Renderer.BodyRenderer.Mjml do
   use KeilaWeb.Gettext
   alias Keila.Mailings.Renderer
   alias Keila.Mailings.Renderer.Input
+  import Keila.Mailings.Renderer.LiquidRenderer
 
   @impl true
   def render(output, %Input{} = input, assigns) do
-    mjml =
-      input
-      |> merge_mjml()
-      |> remove_code_blocks()
-
-    with {:ok, mjml} <- render_liquid(mjml, assigns),
+    with {:ok, liquid_template} <- liquid_template(input),
+         {:ok, mjml} <- render_liquid(liquid_template, assigns),
          {:ok, html_body} <- render_mjml(mjml) do
-      %{
-        output
-        | html_body: html_body,
-          text_body: Renderer.html_to_text(html_body)
-      }
+      %{output | html_body: html_body, text_body: Renderer.html_to_text(html_body)}
     else
       {:error, reason} ->
         %{output | text_body: reason, errors: [reason | output.errors]}
     end
+  end
+
+  defp liquid_template(input) do
+    hash = input_hash(input)
+
+    Keila.Mailings.Renderer.LiquidCache.get(hash, fn ->
+      input
+      |> merge_mjml()
+      |> remove_code_blocks()
+      |> Keila.Mailings.Renderer.LiquidRenderer.parse_liquid()
+    end)
+  end
+
+  defp input_hash(%Input{mjml_body: mjml_body, mjml_content: mjml_content, template: template}) do
+    template_fields = if template, do: Map.take(template, [:id, :updated_at, :name, :mjml_body])
+    :crypto.hash(:sha256, :erlang.term_to_binary({mjml_body, mjml_content, template_fields}))
   end
 
   defp merge_mjml(%Input{mjml_body: mjml_body, template: template, mjml_content: mjml_content}) do
@@ -60,15 +69,5 @@ defmodule Keila.Mailings.Renderer.BodyRenderer.Mjml do
   # https://github.com/jdrouet/mrml/issues/654
   defp normalize_newlines(mjml) do
     String.replace(mjml, ~r/\r\n?/, "\n")
-  end
-
-  defp render_liquid(mjml, assigns) do
-    case Keila.Mailings.Renderer.LiquidRenderer.render_liquid(mjml, assigns) do
-      {:ok, rendered_mjml} ->
-        {:ok, rendered_mjml}
-
-      {:error, reason} ->
-        {:error, gettext("Error compiling Liquid: %{reason}", reason: reason)}
-    end
   end
 end
