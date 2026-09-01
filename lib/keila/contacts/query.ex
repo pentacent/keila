@@ -48,7 +48,16 @@ defmodule Keila.Contacts.Query do
 
   @type opts :: {:filter, map()} | {:sort, map()}
 
-  @fields ["id", "email", "inserted_at", "first_name", "last_name", "status", "double_opt_in_at"]
+  @fields [
+    "id",
+    "email",
+    "external_id",
+    "inserted_at",
+    "first_name",
+    "last_name",
+    "status",
+    "double_opt_in_at"
+  ]
   @message_fields [
     "campaign_id",
     "sent_at",
