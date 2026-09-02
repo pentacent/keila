@@ -82,46 +82,86 @@ if config_env() == :prod do
   try do
     mailer_type = System.get_env("MAILER_TYPE") || "smtp"
 
+    tls_mode =
+      case System.get_env("MAILER_SMTP_TLS_MODE", "") |> String.downcase() do
+        "tls" ->
+          :tls
+
+        "starttls" ->
+          :starttls
+
+        "none" ->
+          :none
+
+        "auto" ->
+          :default
+
+        "" ->
+          cond do
+            System.get_env("MAILER_ENABLE_SSL", "FALSE") in ["1", "true", "TRUE"] ->
+              :tls
+
+            System.get_env("MAILER_ENABLE_STARTTLS") in ["1", "true", "TRUE"] ->
+              :starttls
+
+            true ->
+              :default
+          end
+      end
+
+    auth_method =
+      case System.get_env("MAILER_SMTP_AUTH_METHOD", "auto") |> String.downcase() do
+        "password" -> :password
+        "none" -> :none
+        "auto" -> :default
+      end
+
     config =
       case mailer_type do
         "smtp" ->
           host = System.fetch_env!("MAILER_SMTP_HOST")
           from_email = System.fetch_env!("MAILER_SMTP_FROM_EMAIL")
           user = System.get_env("MAILER_SMTP_USER") || from_email
-          password = System.fetch_env!("MAILER_SMTP_PASSWORD")
+          password = if auth_method != :none, do: System.fetch_env!("MAILER_SMTP_PASSWORD")
           port = System.get_env("MAILER_SMTP_PORT", "587") |> maybe_to_int.()
-          ssl? = System.get_env("MAILER_ENABLE_SSL", "FALSE") in [1, "1", "true", "TRUE"]
-
-          starttls? =
-            System.get_env("MAILER_ENABLE_STARTTLS", "FALSE") in [1, "1", "true", "TRUE"]
 
           [
             adapter: Swoosh.Adapters.SMTP,
             relay: host,
-            username: user,
-            password: password,
             from_email: from_email
           ]
+          |> put_if_not_empty.(:username, user)
+          |> put_if_not_empty.(:password, password)
           |> put_if_not_empty.(:port, port)
           |> then(fn config ->
-            if ssl? do
-              config
-              |> Keyword.put(:ssl, true)
-              |> Keyword.put(:sockopts, :tls_certificate_check.options(host))
-            else
-              config
+            case auth_method do
+              :password -> Keyword.put(config, :auth, :always)
+              :none -> Keyword.put(config, :auth, :never)
+              :default -> config
             end
           end)
           |> then(fn config ->
-            if starttls? do
-              config
-              |> Keyword.put(:tls, :always)
-              |> Keyword.put(
-                :tls_options,
-                :tls_certificate_check.options(host) ++ [versions: [:"tlsv1.2"]]
-              )
-            else
-              config
+            case tls_mode do
+              :tls ->
+                config
+                |> Keyword.put(:ssl, true)
+                |> Keyword.put(:sockopts, :tls_certificate_check.options(host))
+
+              :starttls ->
+                config
+                |> Keyword.put(:tls, :always)
+                |> Keyword.put(
+                  :tls_options,
+                  :tls_certificate_check.options(host) ++ [versions: [:"tlsv1.2"]]
+                )
+
+              :none ->
+                config
+                |> Keyword.put(:tls, :never)
+                |> Keyword.put(:ssl, false)
+
+              :default ->
+                config
             end
           end)
       end
@@ -135,9 +175,11 @@ if config_env() == :prod do
       Use the following environment variables:
       - MAILER_TYPE (defaults to "smtp")
       - MAILER_SMTP_HOST (required)
-      - MAILER_SMTP_USER (required)
-      - MAILER_SMTP_PASSWORD (required)
+      - MAILER_SMTP_USER
+      - MAILER_SMTP_PASSWORD (required unless MAILER_SMTP_AUTH_METHOD=none)
       - MAILER_SMTP_PORT (optional, defaults to 587)
+      - MAILER_SMTP_AUTH_METHOD (optional, defaults to "auto", options: "password", "none", "auto")
+      - MAILER_SMTP_TLS_MODE (optional, defaults to "auto", options: "tls", "starttls", "none", "auto")
       """)
   end
 
