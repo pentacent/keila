@@ -5,7 +5,7 @@ require Keila
 {:ok, _} = Application.ensure_all_started(:tls_certificate_check)
 
 exit_from_exception = fn exception, message ->
-  Logger.error(exception.message)
+  Logger.error(Exception.message(exception))
   Logger.error(message)
   Logger.flush()
   System.halt(1)
