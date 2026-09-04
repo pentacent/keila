@@ -2,6 +2,23 @@
 
 ## Unreleased
 
+## Version 0.30.3
+
+### Added
+- Campaign ID is now available as `{{ campaign.id }}` in email templates (implements #559, thanks @Phobetor)
+- New `MAILER_SMTP_TLS_MODE` and `MAILER_SMTP_AUTH_METHOD` environment variables for configuring TLS/STARTTLS and authentication method for the system mailer fixes #536 and #554, thanks @castellinosviluppo and @saz for reporting)
+
+### Improved
+- Shift+Enter now creates a line break instead of a new paragraph in the block editor
+- Added cache for parsing Liquid templates, significantly improving campaign render performance, especially for campaigns with large HTML bodies
+- Improved speed for many queries in large projects such as campaign stats and contact counts
+
+### Fixed
+- Deleting contacts by `external_id` from the API now works correctly (fixes #548, thanks @castellinosviluppo for reporting and @JoeJoeflyn for implementing)
+- Fixed the *Resend verification email* button on the sender edit page
+- Fixed MJML error messages caused by CRLF line breaks (fixes #567, thanks @Twilight-Computer for reporting)
+
+
 
 ## Version 0.30.2
 
