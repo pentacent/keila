@@ -50,7 +50,7 @@ defmodule Keila.Mailings.CampaignRenderer do
   def to_input(%Campaign{} = campaign, contact, assigns \\ %{}) do
     assigns =
       assigns
-      |> Map.put_new("campaign", Map.take(campaign, [:data, :subject, :preview_text]))
+      |> Map.put_new("campaign", Map.take(campaign, [:id, :data, :subject, :preview_text]))
       |> maybe_put_public_link(campaign)
 
     %Input{
