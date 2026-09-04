@@ -76,5 +76,6 @@ jobs:
           RELEASE_VERSION: ${{ steps.meta.outputs.version }}
         run: |
           gh release create "${RELEASE_VERSION}" \
+            --target "${GITHUB_SHA}" \
             --title "Keila v${RELEASE_VERSION}" \
             --notes-file __CHANGELOG__.md
