@@ -75,6 +75,6 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE_VERSION: ${{ steps.meta.outputs.version }}
         run: |
-          gh release create "v${RELEASE_VERSION}" \
+          gh release create "${RELEASE_VERSION}" \
             --title "Keila v${RELEASE_VERSION}" \
             --notes-file __CHANGELOG__.md
