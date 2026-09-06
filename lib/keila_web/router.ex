@@ -244,6 +244,7 @@ defmodule KeilaWeb.Router do
 
     post "/campaigns/:id/actions/send", ApiCampaignController, :deliver
     post "/campaigns/:id/actions/schedule", ApiCampaignController, :schedule
+    get "/campaigns/:id/stats", ApiCampaignController, :stats
 
     resources "/forms", ApiFormController, only: [:index, :show, :create, :update, :delete]
     post "/forms/:id/actions/submit", ApiFormController, :submit
