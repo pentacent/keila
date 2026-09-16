@@ -17,6 +17,11 @@
         {text_input(f, :email, placeholder: gettext("you@keila.io"), class: "text-black")}
       <% end %>
     </div>
+    <div class="flex flex-col">
+      <%= with_validation(f, :captcha) do %>
+        {captcha_tag()}
+      <% end %>
+    </div>
     <div class="flex justify-end mt-8">
       <button class="button button--cta button--large">
         {gettext("Request password reset")}

@@ -49,13 +49,15 @@ defmodule Keila.Mailings.SenderAdapters.Shared.SES do
   def requires_verification?(), do: true
 
   @impl true
-  def deliver_verification_email(sender, token, _url_fn) do
+  def deliver_verification_email(sender, token_params, _url_fn) do
+    {:ok, token} = Keila.Auth.create_token(token_params)
+
     email = sender.from_email
     template_name = template_name(sender, email)
     aws_config = aws_config(sender)
 
-    success_url = Routes.sender_url(KeilaWeb.Endpoint, :verify_from_token, token)
-    failure_url = Routes.sender_url(KeilaWeb.Endpoint, :cancel_verification_from_token, token)
+    success_url = Routes.sender_url(KeilaWeb.Endpoint, :verify_from_token, token.key)
+    failure_url = Routes.sender_url(KeilaWeb.Endpoint, :cancel_verification_from_token, token.key)
     subject = gettext("Verify Your Email for Keila")
 
     content =
@@ -79,6 +81,8 @@ defmodule Keila.Mailings.SenderAdapters.Shared.SES do
 
     ExAws.SES.send_custom_verification_email(email, template_name)
     |> ExAws.request!(aws_config)
+
+    {:ok, sender}
   end
 
   @impl true

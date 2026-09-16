@@ -34,7 +34,7 @@ defmodule Keila.Auth do
   is sent to the new email address. The address change is not applied
   until `update_user_email_from_token/1` is called.
 
-      {:ok, _token} = Auth.update_user_email(user_id, %{"email" => "new@example.com"}, &url_fn/1)
+      {:ok, _user} = Auth.update_user_email(user_id, %{"email" => "new@example.com"}, &url_fn/1)
 
       {:ok, updated_user} = Auth.update_user_email_from_token(token)
 
@@ -426,15 +426,15 @@ defmodule Keila.Auth do
   Only once this token is confirmed via `update_user_email_from_token/1` is the
   new email address persisted.
 
-  Returns `{:ok, user}` if new email is identical to current email;
-  `{:ok, token}` if the token was created and sent out via email;
+  Returns `{:ok, user}` if the confirmation email was sent out or if the new
+  email is identical to the current email;
   `{:error, changeset}` if the change was invalid.
 
   ## Example
       update_user_password(user_id, %{"email" => "new@example.com"})
   """
   @spec update_user_email(User.id(), %{:email => String.t()}, token_url_fn) ::
-          {:ok, Token.t()} | {:ok, User.t()} | {:error, Changeset.t(User.t())}
+          {:ok, User.t()} | {:error, Changeset.t(User.t())}
   def update_user_email(id, params, url_fn \\ &default_url_function/1) do
     user = Repo.get(User, id)
     changeset = User.update_email_changeset(user, params)
@@ -443,14 +443,14 @@ defmodule Keila.Auth do
       email = Changeset.get_change(changeset, :email)
 
       if not is_nil(email) do
-        {:ok, token} =
-          create_token(%{user_id: user.id, scope: "auth.update_email", data: %{email: email}})
-
-        Emails.send!(:update_email, %{user: user, url: url_fn.(token.key)})
-        {:ok, token}
-      else
-        {:ok, user}
+        Emails.send_later(:update_email, %{
+          user: user,
+          url_fn: url_fn,
+          token_params: %{user_id: user.id, scope: "auth.update_email", data: %{email: email}}
+        })
       end
+
+      {:ok, user}
     else
       {:error, changeset}
     end
@@ -631,8 +631,11 @@ defmodule Keila.Auth do
     user = Repo.get(User, id)
 
     if user.activated_at == nil do
-      {:ok, token} = create_token(%{scope: "auth.activate", user_id: user.id})
-      Emails.send!(:activate, %{user: user, url: url_fn.(token.key)})
+      Emails.send_later(:activate, %{
+        user: user,
+        url_fn: url_fn,
+        token_params: %{scope: "auth.activate", user_id: user.id}
+      })
     end
 
     :ok
@@ -646,8 +649,13 @@ defmodule Keila.Auth do
   @spec send_password_reset_link(User.id(), token_url_fn) :: :ok
   def send_password_reset_link(id, url_fn \\ &default_url_function/1) do
     user = Repo.get(User, id)
-    {:ok, token} = create_token(%{scope: "auth.reset", user_id: user.id})
-    Emails.send!(:password_reset_link, %{user: user, url: url_fn.(token.key)})
+
+    Emails.send_later(:password_reset_link, %{
+      user: user,
+      url_fn: url_fn,
+      token_params: %{scope: "auth.reset", user_id: user.id}
+    })
+
     :ok
   end
 
@@ -661,8 +669,13 @@ defmodule Keila.Auth do
   @spec send_login_link(User.id(), token_url_fn) :: :ok
   def send_login_link(id, url_fn \\ &default_url_function/1) do
     user = Repo.get(User, id)
-    {:ok, token} = create_token(%{scope: "auth.login", user_id: user.id})
-    Emails.send!(:login_link, %{user: user, url: url_fn.(token.key)})
+
+    Emails.send_later(:login_link, %{
+      user: user,
+      url_fn: url_fn,
+      token_params: %{scope: "auth.login", user_id: user.id}
+    })
+
     :ok
   end
 end

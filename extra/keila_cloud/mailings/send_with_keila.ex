@@ -158,13 +158,16 @@ Keila.if_cloud do
     end
 
     @impl true
-    def deliver_verification_email(sender, token, url_fn) do
+    def deliver_verification_email(sender, token_params, url_fn) do
       :ok = Mx2.maybe_remove_email_from_suppression_list(sender.from_email)
 
-      Keila.Auth.Emails.send!(:verify_sender_from_email, %{
-        sender: sender,
-        url: url_fn.(token)
+      Keila.Auth.Emails.send_later(:verify_sender_from_email, %{
+        email: sender.from_email,
+        url_fn: url_fn,
+        token_params: token_params
       })
+
+      {:ok, sender}
     end
 
     @doc """

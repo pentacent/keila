@@ -209,22 +209,24 @@ defmodule Keila.Mailings do
       |> DateTime.add(3 * 24, :hour)
       |> DateTime.truncate(:second)
 
-    {:ok, token} =
-      Keila.Auth.create_token(%{
-        scope: "mailings.verify_sender",
-        user_id: nil,
-        data: %{email: sender.from_email, sender_id: sender.id},
-        expires_at: expires_at
-      })
+    token_params = %{
+      scope: "mailings.verify_sender",
+      user_id: nil,
+      data: %{email: sender.from_email, sender_id: sender.id},
+      expires_at: expires_at
+    }
 
     if function_exported?(adapter, :deliver_verification_email, 3) do
-      adapter.deliver_verification_email(sender, token.key, url_fn)
+      adapter.deliver_verification_email(sender, token_params, url_fn)
     else
-      Keila.Auth.Emails.send!(:verify_sender_from_email, %{
-        sender: sender,
-        url: url_fn.(token.key)
+      Keila.Auth.Emails.send_later(:verify_sender_from_email, %{
+        email: sender.from_email,
+        url_fn: url_fn,
+        token_params: token_params
       })
     end
+
+    :ok
   end
 
   defp default_url_function(token) do

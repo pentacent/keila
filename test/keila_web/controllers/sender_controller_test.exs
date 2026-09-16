@@ -57,6 +57,7 @@ defmodule KeilaWeb.SenderControllerTest do
       assert is_nil(sender.verified_from_email)
 
       # Verification email should have been sent
+      assert %{success: 1} = Oban.drain_queue(queue: :system_mailer)
       {:email, %{text_body: text_body}} = assert_email_sent()
       refute_email_sent()
       [_, token] = Regex.run(~r{verify-sender/([^\s]+)}, text_body)
@@ -151,10 +152,10 @@ defmodule KeilaWeb.SenderControllerTest do
     {conn, project} = with_login_and_project(conn)
     sender = insert!(:mailings_sender, %{project_id: project.id})
 
-    {:ok, agent_pid} = Agent.start_link(fn -> nil end)
-    capture_token = fn token -> Agent.update(agent_pid, fn _ -> token end) end
-    Keila.Mailings.send_sender_verification_email(sender.id, &capture_token.(&1))
-    token = Agent.get(agent_pid, & &1)
+    Keila.Mailings.send_sender_verification_email(sender.id)
+    assert %{success: 1} = Oban.drain_queue(queue: :system_mailer)
+    {:email, %{text_body: text_body}} = assert_email_sent()
+    [_, token] = Regex.run(~r{verify-sender/([^\s]+)}, text_body)
 
     conn = get(conn, Routes.sender_path(conn, :verify_from_token, token))
 
@@ -176,10 +177,10 @@ defmodule KeilaWeb.SenderControllerTest do
     {_conn, project} = with_login_and_project(conn)
     sender = insert!(:mailings_sender, %{project_id: project.id})
 
-    {:ok, agent_pid} = Agent.start_link(fn -> nil end)
-    capture_token = fn token -> Agent.update(agent_pid, fn _ -> token end) end
-    Keila.Mailings.send_sender_verification_email(sender.id, &capture_token.(&1))
-    token = Agent.get(agent_pid, & &1)
+    Keila.Mailings.send_sender_verification_email(sender.id)
+    assert %{success: 1} = Oban.drain_queue(queue: :system_mailer)
+    {:email, %{text_body: text_body}} = assert_email_sent()
+    [_, token] = Regex.run(~r{verify-sender/([^\s]+)}, text_body)
 
     conn = get(conn, Routes.sender_path(conn, :verify_from_token, token))
 
@@ -194,10 +195,10 @@ defmodule KeilaWeb.SenderControllerTest do
     {conn, project} = with_login_and_project(conn)
     sender = insert!(:mailings_sender, %{project_id: project.id})
 
-    {:ok, agent_pid} = Agent.start_link(fn -> nil end)
-    capture_token = fn token -> Agent.update(agent_pid, fn _ -> token end) end
-    Keila.Mailings.send_sender_verification_email(sender.id, &capture_token.(&1))
-    token = Agent.get(agent_pid, & &1)
+    Keila.Mailings.send_sender_verification_email(sender.id)
+    assert %{success: 1} = Oban.drain_queue(queue: :system_mailer)
+    {:email, %{text_body: text_body}} = assert_email_sent()
+    [_, token] = Regex.run(~r{verify-sender/([^\s]+)}, text_body)
 
     conn = get(conn, Routes.sender_path(conn, :cancel_verification_from_token, token))
     assert html_response(conn, 404) =~ ~r{Sender verification not successful.\s*</h1>}
