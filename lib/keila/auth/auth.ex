@@ -445,6 +445,7 @@ defmodule Keila.Auth do
       if not is_nil(email) do
         Emails.send_later(:update_email, %{
           user: user,
+          email: email,
           url_fn: url_fn,
           token_params: %{user_id: user.id, scope: "auth.update_email", data: %{email: email}}
         })

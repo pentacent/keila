@@ -71,12 +71,12 @@ defmodule Keila.Auth.Emails do
     )
   end
 
-  @spec build(:update_email, %{url: String.t(), user: Keila.Auth.User.t()}) ::
+  @spec build(:update_email, %{url: String.t(), user: Keila.Auth.User.t(), email: String.t()}) ::
           term() | no_return()
-  def build(:update_email, %{user: user, url: url}) do
+  def build(:update_email, %{user: _user, url: url, email: email}) do
     new()
     |> subject(dgettext("auth", "Please Verify Your Email"))
-    |> to(user.email)
+    |> to(email)
     |> text_body(
       dgettext(
         "auth",
