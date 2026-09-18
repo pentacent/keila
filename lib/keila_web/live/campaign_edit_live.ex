@@ -499,8 +499,12 @@ defmodule KeilaWeb.CampaignEditLive do
           filter: filter
         )
 
+      segment_name =
+        Enum.find_value(socket.assigns.segments, &if(&1.id == segment_id, do: &1.name))
+
       socket
       |> assign(:segment_id, segment_id)
+      |> assign(:segment_name, segment_name)
       |> assign(:recipient_count, recipient_count)
     else
       socket
