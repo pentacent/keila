@@ -52,7 +52,10 @@ defmodule KeilaWeb.ContactController do
     status_filter = %{"status" => conn.assigns.contacts_status |> to_string()}
     filter = Map.merge(status_filter, search_filter)
 
-    sort_by = get_sort_by(params)
+    sort_by =
+      get_sort_by(params) ||
+        if conn.assigns.contacts_status == :active, do: "inserted_at", else: "updated_at"
+
     sort_order = get_sort_order(params)
 
     query_opts = [
@@ -97,10 +100,10 @@ defmodule KeilaWeb.ContactController do
   end
 
   defp get_sort_by(%{"sort_by" => sort_by})
-       when sort_by in ["email", "first_name", "last_name", "inserted_at"],
+       when sort_by in ["email", "first_name", "last_name", "inserted_at", "updated_at"],
        do: sort_by
 
-  defp get_sort_by(_), do: "inserted_at"
+  defp get_sort_by(_), do: nil
 
   defp get_sort_order(%{"sort_order" => "1"}), do: 1
   defp get_sort_order(_), do: -1

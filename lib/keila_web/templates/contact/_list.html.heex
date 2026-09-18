@@ -52,6 +52,17 @@
             {gettext("Added")}
           </div>
         </th>
+
+        <th class="p-2 hidden lg:table-cell gap-2">
+          <div class="flex gap-1">
+            <.table_sort_button
+              key="updated_at"
+              current_key={@sort_by}
+              current_order={@sort_order}
+            />
+            {gettext("Updated")}
+          </div>
+        </th>
         <th class="p-2"></th>
       </tr>
       <%= for contact <- @contacts.data do %>
@@ -81,6 +92,10 @@
           </td>
           <td class="p-2 hidden lg:table-cell">
             {local_datetime_tag(contact.inserted_at)}
+          </td>
+
+          <td class="p-2 hidden lg:table-cell">
+            {local_datetime_tag(contact.updated_at)}
           </td>
           <td class="p-2 flex justify-end gap-2">
             <.delete_button struct={contact} icon={:trash} class="button button--text" />
