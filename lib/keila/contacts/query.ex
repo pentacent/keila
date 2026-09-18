@@ -53,6 +53,7 @@ defmodule Keila.Contacts.Query do
     "email",
     "external_id",
     "inserted_at",
+    "updated_at",
     "first_name",
     "last_name",
     "status",
