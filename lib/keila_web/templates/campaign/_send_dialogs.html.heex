@@ -28,13 +28,26 @@
         <h2 class="text-3xl">Ready to send your campaign?</h2>
         <br />
         <p>
-          {raw(
-            gettext(
-              "Are you ready to send your campaign <em>%{subject}</em> to %{count} contacts?",
-              subject: Ecto.Changeset.get_field(@changeset, :subject),
-              count: @recipient_count
-            )
-          )}
+          <%= if @segment_name do %>
+            {raw(
+              ngettext(
+                "Are you ready to send your campaign <em>%{subject}</em> to %{count} contact in the <em>%{segment}</em> segment?",
+                "Are you ready to send your campaign <em>%{subject}</em> to %{count} contacts in the <em>%{segment}</em> segment?",
+                @recipient_count,
+                subject: Ecto.Changeset.get_field(@changeset, :subject),
+                segment: @segment_name
+              )
+            )}
+          <% else %>
+            {raw(
+              ngettext(
+                "Are you ready to send your campaign <em>%{subject}</em> to %{count} contact?",
+                "Are you ready to send your campaign <em>%{subject}</em> to %{count} contacts?",
+                @recipient_count,
+                subject: Ecto.Changeset.get_field(@changeset, :subject)
+              )
+            )}
+          <% end %>
         </p>
         <%= if get_field(@changeset, :scheduled_for) do %>
           <br />
@@ -105,13 +118,26 @@
               "This campaign has already been scheduled. You can reschedule or cancel it up to five minutes before the scheduled sending time."
             )}
           <% else %>
-            {raw(
-              gettext(
-                "Are you ready to schedule sending your campaign <em>%{subject}</em> to %{count} contacts?",
-                subject: Ecto.Changeset.get_field(@changeset, :subject),
-                count: @recipient_count
-              )
-            )}
+            <%= if @segment_name do %>
+              {raw(
+                ngettext(
+                  "Are you ready to schedule sending your campaign <em>%{subject}</em> to %{count} contact in the <em>%{segment}</em> segment?",
+                  "Are you ready to schedule sending your campaign <em>%{subject}</em> to %{count} contacts in the <em>%{segment}</em> segment?",
+                  @recipient_count,
+                  subject: Ecto.Changeset.get_field(@changeset, :subject),
+                  segment: @segment_name
+                )
+              )}
+            <% else %>
+              {raw(
+                ngettext(
+                  "Are you ready to schedule sending your campaign <em>%{subject}</em> to %{count} contact?",
+                  "Are you ready to schedule sending your campaign <em>%{subject}</em> to %{count} contacts?",
+                  @recipient_count,
+                  subject: Ecto.Changeset.get_field(@changeset, :subject)
+                )
+              )}
+            <% end %>
           <% end %>
         </p>
         <div class="grid gap-4 mt-4">
