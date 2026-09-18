@@ -113,6 +113,7 @@ defmodule KeilaWeb do
       import KeilaWeb.DeleteButtonHelpers
       import KeilaWeb.IconHelper
       import KeilaWeb.DateTimeHelpers
+      import KeilaWeb.HtmlEscapeHelper
       use KeilaWeb.Gettext
 
       alias KeilaWeb.Router.Helpers, as: Routes

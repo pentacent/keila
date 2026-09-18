@@ -34,8 +34,8 @@
                 "Are you ready to send your campaign <em>%{subject}</em> to %{count} contact in the <em>%{segment}</em> segment?",
                 "Are you ready to send your campaign <em>%{subject}</em> to %{count} contacts in the <em>%{segment}</em> segment?",
                 @recipient_count,
-                subject: Ecto.Changeset.get_field(@changeset, :subject),
-                segment: @segment_name
+                subject: escape(Ecto.Changeset.get_field(@changeset, :subject)),
+                segment: escape(@segment_name)
               )
             )}
           <% else %>
@@ -44,7 +44,7 @@
                 "Are you ready to send your campaign <em>%{subject}</em> to %{count} contact?",
                 "Are you ready to send your campaign <em>%{subject}</em> to %{count} contacts?",
                 @recipient_count,
-                subject: Ecto.Changeset.get_field(@changeset, :subject)
+                subject: escape(Ecto.Changeset.get_field(@changeset, :subject))
               )
             )}
           <% end %>
@@ -124,8 +124,8 @@
                   "Are you ready to schedule sending your campaign <em>%{subject}</em> to %{count} contact in the <em>%{segment}</em> segment?",
                   "Are you ready to schedule sending your campaign <em>%{subject}</em> to %{count} contacts in the <em>%{segment}</em> segment?",
                   @recipient_count,
-                  subject: Ecto.Changeset.get_field(@changeset, :subject),
-                  segment: @segment_name
+                  subject: escape(Ecto.Changeset.get_field(@changeset, :subject)),
+                  segment: escape(@segment_name)
                 )
               )}
             <% else %>
@@ -134,7 +134,7 @@
                   "Are you ready to schedule sending your campaign <em>%{subject}</em> to %{count} contact?",
                   "Are you ready to schedule sending your campaign <em>%{subject}</em> to %{count} contacts?",
                   @recipient_count,
-                  subject: Ecto.Changeset.get_field(@changeset, :subject)
+                  subject: escape(Ecto.Changeset.get_field(@changeset, :subject))
                 )
               )}
             <% end %>
