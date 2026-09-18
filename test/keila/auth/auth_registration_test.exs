@@ -20,6 +20,8 @@ defmodule Keila.AuthTest.Registration do
 
     user_id = user.id
 
+    assert %{success: 1} = Oban.drain_queue(queue: :system_mailer)
+
     receive do
       {:email, email} ->
         [_, token] = Regex.run(~r{~~key(.+)~~}, email.text_body)
@@ -38,6 +40,7 @@ defmodule Keila.AuthTest.Registration do
                skip_activation_email: true
              )
 
+    Oban.drain_queue(queue: :system_mailer)
     assert_no_email_sent()
   end
 
@@ -104,12 +107,13 @@ defmodule Keila.AuthTest.Registration do
   test "Change user email with token and send verification email" do
     user = insert!(:user)
 
-    {:ok, token = %Auth.Token{}} =
-      Auth.update_user_email(user.id, %{"email" => "new@foo.bar"}, & &1)
+    {:ok, %User{}} = Auth.update_user_email(user.id, %{"email" => "new@foo.bar"}, &"~~key#{&1}~~")
 
-    assert_email_sent(Auth.Emails.build(:update_email, %{user: user, url: token.key}))
+    assert %{success: 1} = Oban.drain_queue(queue: :system_mailer)
 
-    assert {:ok, %User{email: "new@foo.bar"}} = Auth.update_user_email_from_token(token.key)
+    {:email, email} = assert_email_sent()
+    [_, key] = Regex.run(~r{~~key(.+)~~}, email.text_body)
+    assert {:ok, %User{email: "new@foo.bar"}} = Auth.update_user_email_from_token(key)
   end
 
   @tag :auth
@@ -169,6 +173,7 @@ defmodule Keila.AuthTest.Registration do
     user = insert!(:user)
 
     assert :ok = Auth.send_login_link(user.id, &"~~key#{&1}~~")
+    assert %{success: 1} = Oban.drain_queue(queue: :system_mailer)
 
     receive do
       {:email, email} ->
@@ -182,6 +187,7 @@ defmodule Keila.AuthTest.Registration do
     user = insert!(:user, activated_at: nil)
 
     assert :ok = Auth.send_activation_link(user.id, &"~~key#{&1}~~")
+    assert %{success: 1} = Oban.drain_queue(queue: :system_mailer)
 
     receive do
       {:email, email} ->
@@ -195,6 +201,7 @@ defmodule Keila.AuthTest.Registration do
     user = insert!(:user)
 
     assert :ok = Auth.send_password_reset_link(user.id, &"~~key#{&1}~~")
+    assert %{success: 1} = Oban.drain_queue(queue: :system_mailer)
 
     receive do
       {:email, email} ->

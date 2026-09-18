@@ -1,5 +1,6 @@
 defmodule KeilaWeb.AuthControllerTest do
   use KeilaWeb.ConnCase
+  use Oban.Testing, repo: Keila.Repo
   alias Keila.{Repo, Auth}
 
   @password "BatteryHorseStaple"
@@ -27,6 +28,7 @@ defmodule KeilaWeb.AuthControllerTest do
         )
 
       assert html_response(conn, 200) =~ ~r{Check your inbox!\s*</h1>}
+      assert %{success: 1} = Oban.drain_queue(queue: :system_mailer)
       assert_email_sent()
       assert {:ok, %{activated_at: nil}} = Auth.find_user_by_credentials(@sign_up_params)
     end
@@ -35,6 +37,7 @@ defmodule KeilaWeb.AuthControllerTest do
     test "shows error with missing captcha", %{conn: conn} do
       conn = post(conn, Routes.auth_path(conn, :register), user: @sign_up_params)
       assert html_response(conn, 400) =~ ~r{Please complete the captcha.}
+      Oban.drain_queue(queue: :system_mailer)
       assert_no_email_sent()
     end
 
@@ -84,6 +87,7 @@ defmodule KeilaWeb.AuthControllerTest do
   @tag :auth_controller
   test "user is activated with activation link", %{conn: conn} do
     assert {:ok, user} = Auth.create_user(@sign_up_params, url_fn: &"~~key#{&1}~~")
+    assert %{success: 1} = Oban.drain_queue(queue: :system_mailer)
 
     receive do
       {:email, email} ->
@@ -110,6 +114,9 @@ defmodule KeilaWeb.AuthControllerTest do
     conn = post(recycle(conn), Routes.auth_path(conn, :post_activate_resend), user: %{})
 
     assert html_response(conn, 200) =~ ~r{Check your inbox!\s*</h1>}
+
+    # Two activation emails were enqueued: one at sign-up, one from the resend
+    assert %{success: 2} = Oban.drain_queue(queue: :system_mailer)
     assert_email_sent()
   end
 
@@ -123,23 +130,49 @@ defmodule KeilaWeb.AuthControllerTest do
     @tag :auth_controller
     test "sends email for existing users", %{conn: conn} do
       user = insert!(:user)
-      conn = post(conn, Routes.auth_path(conn, :reset), user: %{email: user.email})
+
+      conn =
+        post(conn, Routes.auth_path(conn, :reset),
+          user: %{email: user.email},
+          "h-captcha-response": @valid_hcaptcha
+        )
+
       assert html_response(conn, 200) =~ ~r{Check your inbox!\s*</h1>}
+      assert %{success: 1} = Oban.drain_queue(queue: :system_mailer)
       assert_email_sent()
     end
 
     @tag :auth_controller
     test "shows no error for non-existent users", %{conn: conn} do
       conn =
-        post(conn, Routes.auth_path(conn, :reset), user: %{email: "non-existent@example.com"})
+        post(conn, Routes.auth_path(conn, :reset),
+          user: %{email: "non-existent@example.com"},
+          "h-captcha-response": @valid_hcaptcha
+        )
 
       assert html_response(conn, 200) =~ ~r{Check your inbox!\s*</h1>}
+      refute_enqueued(worker: Keila.Auth.SystemMailerWorker)
+      assert_no_email_sent()
+    end
+
+    @tag :auth_controller
+    test "shows error with missing captcha", %{conn: conn} do
+      user = insert!(:user)
+      conn = post(conn, Routes.auth_path(conn, :reset), user: %{email: user.email})
+
+      assert html_response(conn, 400) =~ ~r{Please complete the captcha.}
+      refute_enqueued(worker: Keila.Auth.SystemMailerWorker)
       assert_no_email_sent()
     end
 
     @tag :auth_controller
     test "shows error when not filled out", %{conn: conn} do
-      conn = post(conn, Routes.auth_path(conn, :reset), user: %{})
+      conn =
+        post(conn, Routes.auth_path(conn, :reset),
+          user: %{},
+          "h-captcha-response": @valid_hcaptcha
+        )
+
       assert html_response(conn, 400) =~ ~r{Reset your password\.\s*</h1>}
 
       conn = post(conn, Routes.auth_path(conn, :reset), %{})

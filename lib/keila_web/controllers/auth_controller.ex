@@ -109,30 +109,48 @@ defmodule KeilaWeb.AuthController do
   end
 
   @spec post_reset(Plug.Conn.t(), map) :: Plug.Conn.t()
-  def post_reset(conn, %{"user" => params}) do
+  def post_reset(conn, params = %{"user" => user_params}) do
     changeset =
       %Auth.User{}
-      |> Ecto.Changeset.cast(params, [:email])
+      |> Ecto.Changeset.cast(user_params, [:email])
       |> Ecto.Changeset.validate_required([:email])
+      |> validate_captcha(params)
 
-    if changeset.valid? do
-      email = Ecto.Changeset.get_change(changeset, :email)
-      user = Auth.find_user_by_email(email)
+    case Ecto.Changeset.apply_action(changeset, :insert) do
+      {:ok, %{email: email}} ->
+        user = Auth.find_user_by_email(email)
 
-      if not is_nil(user) do
-        Auth.send_password_reset_link(user.id, &Routes.auth_url(conn, :reset_change_password, &1))
-      end
+        if not is_nil(user) do
+          Auth.send_password_reset_link(
+            user.id,
+            &Routes.auth_url(conn, :reset_change_password, &1)
+          )
+        end
 
-      conn
-      |> assign(:email, email)
-      |> put_meta(:title, dgettext("auth", "Password reset"))
-      |> render("reset_success.html")
-    else
-      render_reset(conn, 400, changeset)
+        conn
+        |> assign(:email, email)
+        |> put_meta(:title, dgettext("auth", "Password reset"))
+        |> render("reset_success.html")
+
+      {:error, changeset} ->
+        render_reset(conn, 400, changeset)
     end
   end
 
   def post_reset(conn, _), do: post_reset(conn, %{"user" => %{}})
+
+  defp validate_captcha(%{valid?: true} = changeset, params) do
+    captcha_response = KeilaWeb.Captcha.get_captcha_response(params)
+
+    if captcha_valid?(captcha_response) do
+      changeset
+    else
+      changeset
+      |> Ecto.Changeset.add_error(:captcha, dgettext("auth", "Please complete the captcha."))
+    end
+  end
+
+  defp validate_captcha(changeset, _params), do: changeset
 
   defp render_reset(conn, status \\ 200, changeset) do
     conn

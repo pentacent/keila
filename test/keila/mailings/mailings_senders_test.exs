@@ -96,13 +96,11 @@ defmodule Keila.Mailings.SenderTest do
       sender = insert!(:mailings_sender, project: project)
       from_email = sender.from_email
 
-      {:ok, agent_pid} = Agent.start_link(fn -> nil end)
-      capture_token = capture_and_return_token(agent_pid)
-      Keila.Mailings.send_sender_verification_email(sender.id, &capture_token.(&1))
-      token = Agent.get(agent_pid, & &1)
+      Keila.Mailings.send_sender_verification_email(sender.id)
 
+      assert %{success: 1} = Oban.drain_queue(queue: :system_mailer)
       {:email, %{text_body: text_body}} = assert_email_sent()
-      assert String.contains?(text_body, token)
+      [_, token] = Regex.run(~r{verify-sender/([^\s]+)}, text_body)
 
       assert {:ok, %Sender{verified_from_email: ^from_email}} =
                Mailings.verify_sender_from_email(token)
@@ -118,10 +116,10 @@ defmodule Keila.Mailings.SenderTest do
       sender = insert!(:mailings_sender, project: project)
 
       # Create a token
-      {:ok, agent_pid} = Agent.start_link(fn -> nil end)
-      capture_token = capture_and_return_token(agent_pid)
-      Keila.Mailings.send_sender_verification_email(sender.id, &capture_token.(&1))
-      token = Agent.get(agent_pid, & &1)
+      Keila.Mailings.send_sender_verification_email(sender.id)
+      assert %{success: 1} = Oban.drain_queue(queue: :system_mailer)
+      {:email, %{text_body: text_body}} = assert_email_sent()
+      [_, token] = Regex.run(~r{verify-sender/([^\s]+)}, text_body)
 
       # Cancel the token
       assert :ok == Mailings.cancel_sender_from_email_verification(token)
@@ -174,13 +172,6 @@ defmodule Keila.Mailings.SenderTest do
       errors = errors_on(changeset)
       assert "can't be blank" in errors.config.smtp_username
       assert "can't be blank" in errors.config.smtp_password
-    end
-  end
-
-  defp capture_and_return_token(agent_pid) do
-    fn token ->
-      :ok = Agent.update(agent_pid, fn _ -> token end)
-      token
     end
   end
 end

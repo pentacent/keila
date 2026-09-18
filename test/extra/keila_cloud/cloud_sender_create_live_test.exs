@@ -53,6 +53,7 @@ Keila.if_cloud do
       end)
 
       # Verification email was sent
+      assert %{success: 1} = Oban.drain_queue(queue: :system_mailer)
       {:email, %{text_body: text_body}} = assert_email_sent()
       refute_email_sent()
       [_, verification_code] = Regex.run(~r{verify-sender/([^\s]+)}, text_body)
@@ -130,6 +131,7 @@ Keila.if_cloud do
       end)
 
       # Verification email was sent
+      assert %{success: 1} = Oban.drain_queue(queue: :system_mailer)
       {:email, %{text_body: text_body}} = assert_email_sent()
       refute_email_sent()
       [_, verification_code] = Regex.run(~r{verify-sender/([^\s]+)}, text_body)
@@ -194,6 +196,7 @@ Keila.if_cloud do
       end)
 
       # Verification email was sent
+      assert %{success: 1} = Oban.drain_queue(queue: :system_mailer)
       {:email, %{text_body: text_body}} = assert_email_sent()
       refute_email_sent()
       [_, verification_code] = Regex.run(~r{verify-sender/([^\s]+)}, text_body)

@@ -3,19 +3,55 @@ defmodule Keila.Auth.Emails do
   use KeilaWeb.Gettext
   import Swoosh.Email
 
+  @token_placeholder "__KEILA_TOKEN__"
+
   @spec send!(atom(), map()) :: term() | no_return()
   def send!(email, params) do
-    config = Application.get_env(:keila, __MODULE__, [])
+    {token_params, params} = Map.pop(params, :token_params)
+    params = maybe_put_token(params, token_params)
 
     email
     |> build(params)
-    |> Keila.Mailer.deliver!(config)
+    |> put_system_from()
+    |> Keila.Mailer.deliver!(config())
+  end
+
+  defp maybe_put_token(params, nil), do: params
+
+  defp maybe_put_token(params, token_params) do
+    {:ok, token} = Keila.Auth.create_token(token_params)
+
+    %{params | url: String.replace(params.url, @token_placeholder, token.key)}
+  end
+
+  @spec send_later(atom(), map()) :: Oban.Job.t()
+  def send_later(email, params) do
+    {url_fn, params} = Map.pop(params, :url_fn)
+    {token_params, params} = Map.pop(params, :token_params)
+    url = if url_fn, do: url_fn.(@token_placeholder)
+
+    %{
+      "email" => email,
+      "locale" => Gettext.get_locale(),
+      "params" => params |> Map.put(:url, url) |> serialize_params(),
+      "token_params" => token_params
+    }
+    |> Keila.Auth.SystemMailerWorker.new()
+    |> Oban.insert!()
+  end
+
+  defp serialize_params(params), do: Map.new(params, &serialize_param/1)
+
+  defp serialize_param({:user, user}), do: {"user_id", user.id}
+  defp serialize_param({key, value}), do: {Atom.to_string(key), value}
+
+  defp put_system_from(email) do
+    from(email, {"Keila", system_from_email()})
   end
 
   @spec build(:activate, %{url: String.t(), user: Keila.Auth.User.t()}) :: term() | no_return()
   def build(:activate, %{user: user, url: url}) do
     new()
-    |> from({"Keila", system_from_email()})
     |> subject(dgettext("auth", "Please Verify Your Account"))
     |> to(user.email)
     |> text_body(
@@ -35,13 +71,12 @@ defmodule Keila.Auth.Emails do
     )
   end
 
-  @spec build(:update_email, %{url: String.t(), user: Keila.Auth.User.t()}) ::
+  @spec build(:update_email, %{url: String.t(), user: Keila.Auth.User.t(), email: String.t()}) ::
           term() | no_return()
-  def build(:update_email, %{user: user, url: url}) do
+  def build(:update_email, %{user: _user, url: url, email: email}) do
     new()
-    |> from({"Keila", system_from_email()})
     |> subject(dgettext("auth", "Please Verify Your Email"))
-    |> to(user.email)
+    |> to(email)
     |> text_body(
       dgettext(
         "auth",
@@ -65,7 +100,6 @@ defmodule Keila.Auth.Emails do
     new()
     |> subject(dgettext("auth", "Your Account Reset Link"))
     |> to(user.email)
-    |> from({"Keila", system_from_email()})
     |> text_body(
       dgettext(
         "auth",
@@ -90,7 +124,6 @@ defmodule Keila.Auth.Emails do
     new()
     |> subject(dgettext("auth", "Your Login Link"))
     |> to(user.email)
-    |> from({"Keila", system_from_email()})
     |> text_body(
       dgettext(
         "auth",
@@ -108,13 +141,12 @@ defmodule Keila.Auth.Emails do
     )
   end
 
-  @spec build(:verify_sender_from_email, %{url: String.t(), sender: Keila.Mailings.Sender.t()}) ::
+  @spec build(:verify_sender_from_email, %{url: String.t(), email: String.t()}) ::
           term() | no_return()
-  def build(:verify_sender_from_email, %{sender: sender, url: url}) do
+  def build(:verify_sender_from_email, %{email: email, url: url}) do
     new()
     |> subject(dgettext("auth", "Please Verify Your Email for Keila"))
-    |> to(sender.from_email)
-    |> from({"Keila", system_from_email()})
+    |> to(email)
     |> text_body(
       dgettext(
         "auth",
@@ -133,7 +165,11 @@ defmodule Keila.Auth.Emails do
     )
   end
 
+  defp config() do
+    Application.get_env(:keila, __MODULE__, [])
+  end
+
   defp system_from_email() do
-    Application.get_env(:keila, __MODULE__) |> Keyword.fetch!(:from_email)
+    config() |> Keyword.fetch!(:from_email)
   end
 end

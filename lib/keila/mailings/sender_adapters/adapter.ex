@@ -177,7 +177,7 @@ defmodule Keila.Mailings.SenderAdapters.Adapter do
   """
   @callback deliver_verification_email(
               Sender.t(),
-              token :: String.t(),
+              token_params :: map(),
               url_fn :: (String.t() -> String.t())
             ) ::
               {:ok, Sender.t()} | {:error, term()}
