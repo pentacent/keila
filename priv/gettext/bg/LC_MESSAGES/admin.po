@@ -81,7 +81,7 @@ msgstr "Имейл"
 #: lib/keila_web/templates/user_admin/index.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Here you can manage other users on your Keila instance."
-msgstr "Тук можете да управлявате други потребители в тaзи инсталация на Keila."
+msgstr "Тук можете да управлявате други потребители в тази инсталация на Keila."
 
 #: lib/keila_web/templates/shared_sender_admin/edit.html.heex:9
 #, elixir-autogen, elixir-format
@@ -106,7 +106,7 @@ msgstr "Общи податели"
 #: lib/keila_web/templates/shared_sender_admin/index.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "Shared Senders are available to all users on this instance of Keila."
-msgstr "Общите податели са достъпни за всички потребители в тaзи инсталация на Keila."
+msgstr "Общите податели са достъпни за всички потребители в тази инсталация на Keila."
 
 #: lib/keila_web/templates/user_admin/index.html.heex:25
 #, elixir-autogen, elixir-format
@@ -146,7 +146,7 @@ msgstr "В момента използвате Keila `%{version}` на `%{host}`
 #: lib/keila_web/templates/instance_admin/show.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "There are updates available for your Keila instance!"
-msgstr "Налични са актуализации за вашaта инсталация на Keila"
+msgstr "Налични са актуализации за вашата инсталация на Keila."
 
 #: lib/keila_web/templates/instance_admin/show.html.heex:42
 #, elixir-autogen, elixir-format
@@ -157,13 +157,3 @@ msgstr "Проверките за актуализации са деактиви
 #, elixir-autogen, elixir-format
 msgid "You seem to be running the most recent version of Keila!"
 msgstr "Изглежда, че използвате най-новата версия на Keila!"
-
-#: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:47
-#, elixir-autogen, elixir-format
-msgid "Status"
-msgstr "Статус"
-
-#: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:52
-#, elixir-autogen, elixir-format
-msgid "Update status"
-msgstr "Актуализирайте статуса си"
