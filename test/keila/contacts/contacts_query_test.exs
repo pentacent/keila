@@ -361,6 +361,47 @@ defmodule Keila.ContactsQueryTest do
     assert false == Query.valid_opts?(filter: %{"invalid_field" => "foo@example.com"})
   end
 
+  @tag :contacts_query
+  test "$not negates string conditions" do
+    _c1 = insert!(:contact, email: "a@example.com")
+    c2 = insert!(:contact, email: "b@example.com")
+    c3 = insert!(:contact, email: "c@example.com")
+
+    assert [c2, c3] ==
+             filter_contacts(%{"$not" => %{"email" => "a@example.com"}})
+             |> Enum.sort_by(& &1.email)
+
+    assert [c2, c3] ==
+             filter_contacts(%{"$not" => %{"email" => %{"$like" => "a%"}}})
+             |> Enum.sort_by(& &1.email)
+
+    assert [] ==
+             filter_contacts(%{"$not" => %{"email" => %{"$like" => "%@example.com"}}})
+  end
+
+  @tag :contacts_query
+  test "$not negates date conditions" do
+    _c1 = insert!(:contact, email: "a@example.com", inserted_at: ~U[2020-01-01 00:00:00Z])
+    c2 = insert!(:contact, email: "b@example.com", inserted_at: ~U[2021-01-01 00:00:00Z])
+    c3 = insert!(:contact, email: "c@example.com", inserted_at: ~U[2022-01-01 00:00:00Z])
+
+    assert [c2, c3] ==
+             filter_contacts(%{
+               "$not" => %{"inserted_at" => %{"$lt" => ~U[2021-01-01 00:00:00Z]}}
+             })
+             |> Enum.sort_by(& &1.email)
+  end
+
+  @tag :contacts_query
+  test "$not negates custom data conditions" do
+    c1 = insert!(:contact, email: "a@example.com", data: %{"city" => "Berlin"})
+    _c2 = insert!(:contact, email: "b@example.com", data: %{"city" => "Paris"})
+    c3 = insert!(:contact, email: "c@example.com", data: %{"city" => "London"})
+
+    assert [c1, c3] ==
+             filter_contacts(%{"$not" => %{"data.city" => "Paris"}}) |> Enum.sort_by(& &1.email)
+  end
+
   defp filter_contacts(filter) do
     from(Contact) |> Query.apply(filter: filter) |> Repo.all()
   end
