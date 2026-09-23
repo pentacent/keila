@@ -55,6 +55,25 @@ defmodule KeilaWeb.FormEditLive do
   end
 
   @impl true
+  def handle_event("update_embedded_styles", %{"embedded_styles" => value}, socket) do
+    embedded_styles = String.to_existing_atom(value)
+
+    changeset =
+      Ecto.Changeset.change(socket.assigns.changeset)
+      |> Ecto.Changeset.put_embed(:settings, %{
+        (socket.assigns.changeset.changes[:settings] || socket.assigns.form.settings)
+        | embedded_styles: embedded_styles
+      })
+
+    socket =
+      socket
+      |> assign(:changeset, changeset)
+      |> put_default_assigns()
+
+    {:noreply, socket}
+  end
+
+  @impl true
   def handle_event("add_custom_field", _params, socket) do
     socket =
       update(socket, :changeset, fn changeset ->

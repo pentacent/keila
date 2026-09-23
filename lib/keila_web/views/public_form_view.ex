@@ -29,13 +29,6 @@ defmodule KeilaWeb.PublicFormView do
   # defp form_style_attr(form) do
   #   build_form_styles(form)
   # end
-  defp input_styles(form) do
-    build_styles(%{
-      "background-color" => form.settings.input_bg_color,
-      "color" => form.settings.input_text_color,
-      "border-color" => form.settings.input_border_color
-    })
-  end
 
   # def form_csrf_token(form, mode) do
   #   csrf_disabled? = mode == :embed or form.settings.csrf_disabled
@@ -44,10 +37,12 @@ defmodule KeilaWeb.PublicFormView do
   # end
 
   def render_form(form, changeset \\ Ecto.Changeset.change(%Contact{}), mode) do
+    form = if mode == :embed, do: form, else: force_styles_enabled(form)
+
     form_opts =
-      []
-      |> put_style_opts(form)
-      |> maybe_put_csrf_opt(form, mode)
+      styles(form, @form_classes) ++
+        [style: build_form_styles(form)] ++
+        maybe_put_csrf_opt([], form, mode)
 
     form_for(
       changeset,
@@ -67,11 +62,11 @@ defmodule KeilaWeb.PublicFormView do
     )
   end
 
-  defp put_style_opts(opts, form) do
-    opts
-    |> Keyword.put(:class, @form_classes)
-    |> Keyword.put(:style, build_form_styles(form))
-  end
+  defp styles(%{settings: %{embedded_styles: :disabled}}, _class), do: []
+  defp styles(_form, class), do: [class: class]
+
+  defp force_styles_enabled(form),
+    do: %{form | settings: %{form.settings | embedded_styles: :enabled}}
 
   defp maybe_put_csrf_opt(opts, form, mode) do
     csrf_disabled? = mode == :embed or form.settings.csrf_disabled
@@ -90,13 +85,21 @@ defmodule KeilaWeb.PublicFormView do
     })
   end
 
+  defp input_styles(form) do
+    build_styles(%{
+      "background-color" => form.settings.input_bg_color,
+      "color" => form.settings.input_text_color,
+      "border-color" => form.settings.input_border_color
+    })
+  end
+
   defp render_h1(form) do
-    content_tag(:h1, form.name, class: "text-4xl my-4")
+    content_tag(:h1, form.name, styles(form, "text-4xl my-4"))
   end
 
   defp render_intro(form) do
     if form.settings.intro_text do
-      content_tag(:div, form.settings.intro_text, class: "text-xl")
+      content_tag(:div, form.settings.intro_text, styles(form, "text-xl"))
     else
       []
     end
@@ -129,7 +132,7 @@ defmodule KeilaWeb.PublicFormView do
         end
 
       form.settings.captcha_required ->
-        content_tag(:div, class: "flex flex-col") do
+        content_tag(:div, styles(form, "flex flex-col")) do
           with_validation(f, :captcha) do
             KeilaWeb.Captcha.captcha_tag()
           end
@@ -141,18 +144,22 @@ defmodule KeilaWeb.PublicFormView do
   end
 
   defp render_submit(form, _f) do
-    content_tag(:div, class: "flex justify-start") do
+    content_tag(:div, styles(form, "flex justify-start")) do
       [
-        content_tag(:button, form.settings.submit_label || gettext("Submit"),
-          class: "button button--cta button--large",
-          style:
-            build_styles(%{
-              "background-color" => form.settings.submit_bg_color,
-              "color" => form.settings.submit_text_color
-            })
+        content_tag(
+          :button,
+          form.settings.submit_label || gettext("Submit"),
+          styles(form, "button button--cta button--large") ++ [style: submit_styles(form)]
         )
       ]
     end
+  end
+
+  defp submit_styles(form) do
+    build_styles(%{
+      "background-color" => form.settings.submit_bg_color,
+      "color" => form.settings.submit_text_color
+    })
   end
 
   defp render_fine_print(form) do
@@ -160,7 +167,7 @@ defmodule KeilaWeb.PublicFormView do
       content_tag(
         :div,
         raw(Keila.Templates.Html.restrict(form.settings.fine_print, :limited)),
-        class: "text-xs"
+        styles(form, "text-xs")
       )
     else
       []
@@ -174,7 +181,7 @@ defmodule KeilaWeb.PublicFormView do
     form.field_settings
     |> Enum.filter(& &1.cast)
     |> Enum.map(fn field_settings ->
-      content_tag(:div, class: "flex flex-col") do
+      content_tag(:div, styles(form, "flex flex-col")) do
         if field_settings.field == :data do
           atom_key = find_mapping_atom_key(field_mapping, field_settings.key)
           render_field(form, data_inputs, atom_key, field_settings)
@@ -229,14 +236,16 @@ defmodule KeilaWeb.PublicFormView do
     ]
   end
 
-  defp render_field(_form, f, field, field_settings = %{type: type}) when type in [:boolean] do
+  defp render_field(form, f, field, field_settings = %{type: type})
+       when type in [:boolean] do
     name = form_input_name(f, field_settings)
     id = form_input_id(f, field_settings)
+    checkbox_opts = [name: name, id: id] ++ maybe_checkbox_style(form)
 
     label(f, field, for: id) do
       with_validation(f, field) do
         [
-          checkbox(f, field, style: "mr-4", name: name, id: id),
+          checkbox(f, field, checkbox_opts),
           " ",
           field_settings.label || "",
           if(field_settings.required, do: "", else: [" ", gettext("(optional)")])
@@ -271,25 +280,23 @@ defmodule KeilaWeb.PublicFormView do
     ]
   end
 
-  defp render_field(_form, f, field, field_settings = %{type: :tags}) do
+  defp render_field(form, f, field, field_settings = %{type: :tags}) do
     name = form_input_name(f, field_settings) <> "[]"
     values = Ecto.Changeset.get_field(f.source, field, [])
 
     [
       content_tag(:label, field_settings.label),
       with_validation(f, field) do
-        content_tag(:div, class: "flex gap-4 flex-wrap") do
+        content_tag(:div, styles(form, "flex gap-4 flex-wrap")) do
           for %{label: label, value: value} <- field_settings.allowed_values do
             checked? = value in values
 
             content_tag(:label) do
               [
-                tag(:input,
-                  name: name,
-                  value: value,
-                  type: "checkbox",
-                  checked: checked?,
-                  class: "mr-1"
+                tag(
+                  :input,
+                  [name: name, value: value, type: "checkbox", checked: checked?] ++
+                    styles(form, "mr-1")
                 ),
                 label || ""
               ]
@@ -301,6 +308,8 @@ defmodule KeilaWeb.PublicFormView do
   end
 
   def render_form_success(form) do
+    form = force_styles_enabled(form)
+
     content_tag(:div, class: @form_classes, style: build_form_styles(form)) do
       [
         render_h1(form),
@@ -311,6 +320,8 @@ defmodule KeilaWeb.PublicFormView do
   end
 
   def render_form_double_opt_in_required(form, email) do
+    form = force_styles_enabled(form)
+
     content_tag(:div, class: @form_classes, style: build_form_styles(form)) do
       [
         render_h1(form),
@@ -345,6 +356,7 @@ defmodule KeilaWeb.PublicFormView do
   end
 
   def render_unsubscribe_form(form) do
+    form = force_styles_enabled(form)
     form_styles = build_form_styles(form)
 
     content_tag(:div, class: @form_classes, style: form_styles) do
@@ -385,4 +397,7 @@ defmodule KeilaWeb.PublicFormView do
         Phoenix.HTML.Form.input_id(f, other)
     end
   end
+
+  defp maybe_checkbox_style(%{settings: %{embedded_styles: :disabled}}), do: []
+  defp maybe_checkbox_style(_form), do: [style: "mr-4"]
 end
