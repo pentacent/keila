@@ -472,7 +472,7 @@ defmodule Keila.Contacts do
   def downgrade_contact_status(contact_id, :unsubscribed) do
     with %Contact{} = contact <- get_contact(contact_id) do
       if contact.status != :unsubscribed do
-        contact |> change(%{status: :unreachable}) |> Repo.update!()
+        contact |> change(%{status: :unsubscribed}) |> Repo.update!()
       else
         contact
       end
