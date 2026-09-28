@@ -16,9 +16,10 @@
     <div class="flex flex-col">
       {label(f, :email, gettext("Email"))}
       <%= with_validation(f, :email) do %>
-        {text_input(f, :email,
+        {email_input(f, :email,
           placeholder: gettext("you@keila.io"),
           class: "text-black",
+          autocomplete: "email",
           autofocus: true
         )}
       <% end %>
@@ -29,7 +30,7 @@
         {gettext("Must have at least 10 characters.")}
       </p>
       <%= with_validation(f, :password) do %>
-        {password_input(f, :password, class: "text-black")}
+        {password_input(f, :password, class: "text-black", autocomplete: "new-password")}
       <% end %>
     </div>
     <div class="flex flex-col">
