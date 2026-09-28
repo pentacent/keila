@@ -137,5 +137,21 @@ defmodule Keila.Mailings.EmailTest do
       input = Email.to_input(email, nil, %{"campaign" => %{"subject" => "Custom"}})
       assert input.assigns["campaign"]["subject"] == "Custom"
     end
+
+    test "accepts a {name, email} tuple as recipient", %{project: project} do
+      email = build(:mailings_email, project_id: project.id, template: nil)
+
+      assert %Renderer.Input{
+               contact: nil,
+               recipient_name: "Peter Griffin",
+               recipient_email: "peter@example.com"
+             } = input = Email.to_input(email, {"Peter Griffin", "peter@example.com"})
+
+      assert input.assigns["contact"] == nil
+
+      output = Renderer.render_preview(%{input | subject: "Hi {{ contact.display_name }}"})
+      assert output.valid?
+      assert output.subject == "Hi Peter Griffin"
+    end
   end
 end

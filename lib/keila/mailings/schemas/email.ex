@@ -4,6 +4,9 @@ defmodule Keila.Mailings.Email do
   alias Keila.Templates.Template
   alias Keila.Mailings.Renderer
 
+  @type recipient ::
+          Keila.Contacts.Contact.t() | {name :: String.t() | nil, email :: String.t()} | nil
+
   @content_fields [
     :type,
     :subject,
@@ -101,13 +104,20 @@ defmodule Keila.Mailings.Email do
 
   `template` must be preloaded before calling this function.
   """
-  @spec to_input(t(), Keila.Contacts.Contact.t() | nil, map()) :: Renderer.Input.t()
-  def to_input(%__MODULE__{} = email, contact, assigns \\ %{}) do
+  @spec to_input(t(), recipient(), map()) :: Renderer.Input.t()
+  def to_input(%__MODULE__{} = email, recipient, assigns \\ %{}) do
     assigns =
       Map.put_new(assigns, "campaign", %{
         "subject" => email.subject,
         "preview_text" => email.preview_text
       })
+
+    {contact, recipient_name, recipient_email} =
+      case recipient do
+        %Keila.Contacts.Contact{} = contact -> {contact, nil, nil}
+        {name, email} -> {nil, name, email}
+        nil -> {nil, nil, nil}
+      end
 
     %Renderer.Input{
       type: email.type,
@@ -121,7 +131,8 @@ defmodule Keila.Mailings.Email do
       mjml_content: email.mjml_content,
       template: email.template,
       contact: contact,
-      recipient_email: contact && contact.email,
+      recipient_name: recipient_name,
+      recipient_email: recipient_email,
       assigns: assigns
     }
   end

@@ -2,17 +2,21 @@ defmodule Keila.Mailings.TransactionalMessage.Request do
   @moduledoc """
   Transient data structure that represents the data from which a `Message`
   can be created by the `TransactionalMessage` module.
+
+  A request consists of delivery parameters (recipient, sender, cc/bcc,
+  assigns) and email content, which is cast into a `Keila.Mailings.Email`
+  struct in the virtual `email` field.
+  Both delivery parameters and email content parameters must be provided as
+  a flat `params` map. `Email` changeset errors are merged back into the
+  `Request` changeset.
   """
 
   use Ecto.Schema
   import Ecto.Changeset
+  alias Keila.Mailings.Email
 
   @primary_key false
   embedded_schema do
-    field :type, Ecto.Enum, values: [:text, :markdown, :block, :mjml, :html]
-
-    field :subject, :string
-
     field :recipient_email, :string
     field :recipient_name, :string
     field :contact_id, :string
@@ -22,78 +26,61 @@ defmodule Keila.Mailings.TransactionalMessage.Request do
     field :cc, {:array, :string}
     field :bcc, {:array, :string}
 
-    field :text_body, :string
-    field :html_body, :string
-    field :json_body, :map
-    field :mjml_body, :string
-
-    field :mjml_content, :map
-    field :html_content, :map
-    field :text_content, :map
-
     field :assigns, :map
 
-    field :template_id, :string
-    field :template, :map, virtual: true
     field :sender_id, :string
     field :sender, :map, virtual: true
+
+    field :email, :map, virtual: true
   end
 
   @type t :: %__MODULE__{}
 
   @cast_fields [
-    :type,
     :recipient_email,
     :recipient_name,
     :contact_id,
     :external_contact_id,
-    :subject,
-    :text_body,
-    :html_body,
-    :json_body,
-    :mjml_body,
-    :mjml_content,
-    :html_content,
-    :text_content,
     :assigns,
-    :template_id,
     :sender_id
   ]
 
   @recipient_fields [:contact_id, :external_contact_id, :recipient_email]
-  @body_fields %{text: :text_body, html: :html_body, mjml: :mjml_body}
+  @supported_types [:text, :html, :mjml]
 
-  def changeset(params) do
+  def changeset(params, project_id) do
     %__MODULE__{}
     |> cast(params, @cast_fields)
     |> cast_addresses(params, :cc)
     |> cast_addresses(params, :bcc)
-    |> validate_required([:type, :sender_id])
-    |> validate_inclusion(:type, [:text, :html, :mjml], message: "is not supported")
+    |> validate_required([:sender_id])
     |> validate_one_of(@recipient_fields)
-    |> validate_body_source()
     |> Keila.EmailAddress.validate_email(:recipient_email)
+    |> cast_email(params, project_id)
   end
 
-  # A message needs a body for its `type`, supplied directly or via a referenced
-  # template. The template's actual contents are only known at render time, so
-  # here we just require that one of the two sources is present.
-  defp validate_body_source(changeset) do
-    case @body_fields[get_field(changeset, :type)] do
-      nil ->
-        changeset
+  defp cast_email(changeset, params, project_id) do
+    email_changeset = Email.creation_changeset(%Email{}, params, project_id)
 
-      body_field ->
-        if present?(get_field(changeset, body_field)) or
-             present?(get_field(changeset, :template_id)) do
-          changeset
-        else
-          add_error(changeset, body_field, "can't be blank without a template")
-        end
+    changeset
+    |> put_change(:email, apply_changes(email_changeset))
+    |> merge_errors(email_changeset)
+    |> validate_email_type(email_changeset)
+  end
+
+  defp merge_errors(changeset, %Ecto.Changeset{errors: errors}) do
+    Enum.reduce(errors, changeset, fn {field, {message, opts}}, changeset ->
+      add_error(changeset, field, message, opts)
+    end)
+  end
+
+  defp validate_email_type(changeset, email_changeset) do
+    case get_field(email_changeset, :type) do
+      nil -> changeset
+      type when type in @supported_types -> changeset
+      _other -> add_error(changeset, :type, "is not supported")
     end
   end
-
-  defp present?(value), do: is_binary(value) and value != ""
 
   # `cc`/`bcc` accept either a single RFC 5322 address-list string or a list of
   # such strings; normalize both to a list of canonical mailbox strings.

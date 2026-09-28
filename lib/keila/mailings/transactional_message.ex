@@ -9,7 +9,7 @@ defmodule Keila.Mailings.TransactionalMessage do
   alias Keila.Contacts
   alias Keila.Contacts.Contact
   alias Keila.Mailings
-  alias Keila.Mailings.{Message, Sender, Renderer}
+  alias Keila.Mailings.{Email, Message, Sender, Renderer}
   alias Keila.Mailings.TransactionalMessage.Request
   alias Keila.Projects.Project
   alias Keila.Templates
@@ -42,7 +42,7 @@ defmodule Keila.Mailings.TransactionalMessage do
   """
   @spec deliver(Project.id(), map()) :: {:ok, Message.t()} | {:error, error()}
   def deliver(project_id, params) do
-    with {:ok, request} <- cast_request(params),
+    with {:ok, request} <- cast_request(project_id, params),
          {:ok, request} <- load_assocs(project_id, request),
          :ok <- ensure_account_active(project_id),
          %{valid?: true} = output <- Renderer.render(to_input(request)),
@@ -66,15 +66,15 @@ defmodule Keila.Mailings.TransactionalMessage do
   """
   @spec preview(Project.id(), map()) :: {:ok, Renderer.Output.t()} | {:error, error()}
   def preview(project_id, params) do
-    with {:ok, request} <- cast_request(params),
+    with {:ok, request} <- cast_request(project_id, params),
          {:ok, request} <- load_assocs(project_id, request) do
       {:ok, Renderer.render(to_input(request))}
     end
   end
 
-  defp cast_request(params) do
+  defp cast_request(project_id, params) do
     params
-    |> Request.changeset()
+    |> Request.changeset(project_id)
     |> Ecto.Changeset.apply_action(:insert)
   end
 
@@ -82,18 +82,17 @@ defmodule Keila.Mailings.TransactionalMessage do
   # virtual fields, defaulting the subject.
   defp load_assocs(project_id, request) do
     with {:ok, sender} <- get_sender(project_id, request.sender_id),
-         {:ok, template} <- get_template(project_id, request.template_id),
+         {:ok, template} <- get_template(project_id, request.email.template_id),
          {:ok, subject} <- get_subject(request, template),
          {:ok, recipient} <- get_recipient(project_id, request) do
       {:ok,
        %Request{
          request
-         | template: template,
+         | email: %Email{request.email | template: template, subject: subject},
            sender: sender,
            contact: recipient.contact,
            recipient_email: recipient.recipient_email,
-           recipient_name: recipient.recipient_name,
-           subject: subject
+           recipient_name: recipient.recipient_name
        }}
     end
   end
@@ -114,7 +113,7 @@ defmodule Keila.Mailings.TransactionalMessage do
     end
   end
 
-  defp get_subject(%Request{subject: s}, _template) when is_binary(s) and s != "",
+  defp get_subject(%Request{email: %Email{subject: s}}, _template) when is_binary(s) and s != "",
     do: {:ok, s}
 
   defp get_subject(_request, %Template{name: name}) when is_binary(name) and name != "",
@@ -176,22 +175,14 @@ defmodule Keila.Mailings.TransactionalMessage do
     end
   end
 
-  defp to_input(%Request{} = request) do
-    %Renderer.Input{
-      type: request.type,
-      subject: request.subject,
-      mjml_body: request.mjml_body,
-      html_body: request.html_body,
-      text_body: request.text_body,
-      mjml_content: request.mjml_content,
-      html_content: request.html_content,
-      text_content: request.text_content,
-      template: request.template,
-      contact: request.contact,
-      recipient_email: request.recipient_email,
-      recipient_name: request.recipient_name,
-      assigns: Map.put(request.assigns || %{}, "signature", "")
-    }
+  defp to_input(%Request{email: %Email{} = email} = request) do
+    # TODO: The signature assign is set to "" to avoid plain-text
+    # emails receiving the default plain-text footer. This should be
+    # solved differently in the future.
+    assigns = Map.put(request.assigns || %{}, "signature", "")
+    recipient = request.contact || {request.recipient_name, request.recipient_email}
+
+    Email.to_input(email, recipient, assigns)
   end
 
   defp message_attrs(project_id, %Request{sender: sender, contact: contact} = request, output) do
