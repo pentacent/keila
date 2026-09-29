@@ -23,6 +23,13 @@ config :keila, KeilaWeb.Endpoint,
   pubsub_server: Keila.PubSub,
   live_view: [signing_salt: "kH+cT7XL"]
 
+# Configures the public URL
+config :keila, :public_url,
+  scheme: nil,
+  host: nil,
+  port: nil,
+  path: nil
+
 # Configure file uploads and serving of files
 config :keila, Keila.Files, adapter: Keila.Files.StorageAdapters.Local
 
