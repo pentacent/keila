@@ -4,8 +4,6 @@ defmodule KeilaWeb.CampaignEditLive do
 
   alias Keila.Accounts
   alias Keila.Mailings
-  alias Keila.Templates
-  alias Keila.Templates.Template
 
   @impl true
   def mount(_params, session, socket) do
@@ -33,46 +31,9 @@ defmodule KeilaWeb.CampaignEditLive do
       |> assign(:onboarding_required, false)
       |> assign(:send_preview_error, nil)
       |> put_recipient_count()
-      |> put_campaign_preview()
 
     {:ok, socket}
   end
-
-  defp put_campaign_preview(socket) do
-    campaign = Ecto.Changeset.apply_changes(socket.assigns.changeset)
-    template = current_template(socket, campaign)
-    campaign = %{campaign | template: template}
-
-    output = Mailings.CampaignRenderer.render_preview(campaign)
-    preview = output.html_body || KeilaWeb.CampaignView.plain_text_preview(output.text_body)
-
-    json_body = if campaign.json_body, do: Jason.encode!(campaign.json_body), else: "{}"
-
-    socket
-    |> maybe_put_styles(template)
-    |> assign(:preview, preview)
-    |> assign(:json_body, json_body)
-    |> assign(:content_slots, content_slots(campaign, template))
-  end
-
-  defp content_slots(campaign, template) do
-    with {template_body, mode} when template_body not in [nil, ""] <- template_body(template),
-         body when body in [nil, ""] <- body(campaign, mode) do
-      Templates.get_content_slots(template_body, mode: mode)
-    else
-      _ -> []
-    end
-  end
-
-  defp template_body(%Template{type: :mjml, mjml_body: body}), do: {body, :mjml}
-  defp template_body(%Template{type: :text, text_body: body}), do: {body, :text}
-  defp template_body(%Template{type: :html, html_body: body}), do: {body, :html}
-  defp template_body(_), do: nil
-
-  defp body(%{mjml_body: body}, :mjml), do: body
-  defp body(%{text_body: body}, :text), do: body
-  defp body(%{html_body: body}, :html), do: body
-  defp body(_, _), do: nil
 
   @impl true
   def render(assigns) do
@@ -85,10 +46,8 @@ defmodule KeilaWeb.CampaignEditLive do
 
     socket =
       socket
-      |> assign(:changeset, changeset)
-      |> assign(:settings_changeset, changeset)
+      |> put_changesets(changeset)
       |> put_recipient_count()
-      |> put_campaign_preview()
 
     {:noreply, socket}
   end
@@ -99,10 +58,8 @@ defmodule KeilaWeb.CampaignEditLive do
     if changeset.valid? do
       socket =
         socket
-        |> assign(:settings_changeset, changeset)
-        |> assign(:changeset, changeset)
+        |> put_changesets(changeset)
         |> put_recipient_count()
-        |> put_campaign_preview()
         |> push_event("settings_validated", %{valid: true})
 
       {:noreply, socket}
@@ -114,67 +71,6 @@ defmodule KeilaWeb.CampaignEditLive do
 
       {:noreply, socket}
     end
-  end
-
-  def handle_event("merge_mjml_template", _params, socket) do
-    campaign = Ecto.Changeset.apply_changes(socket.assigns.changeset)
-    template = current_template(socket, campaign)
-    template_mjml = (template && template.mjml_body) || ""
-
-    mjml =
-      Templates.merge_content_slots(template_mjml, campaign.mjml_content,
-        mode: :mjml,
-        pretty: true
-      )
-
-    changeset = merged_changeset(socket, %{"mjml_body" => mjml, "mjml_content" => %{}})
-
-    socket =
-      socket
-      |> assign(:changeset, changeset)
-      |> assign(:settings_changeset, changeset)
-      |> put_campaign_preview()
-
-    {:noreply, socket}
-  end
-
-  def handle_event("merge_text_template", _params, socket) do
-    campaign = Ecto.Changeset.apply_changes(socket.assigns.changeset)
-    template = current_template(socket, campaign)
-    template_text = (template && template.text_body) || ""
-    text = Templates.merge_content_slots(template_text, campaign.text_content, mode: :text)
-
-    changeset = merged_changeset(socket, %{"text_body" => text, "text_content" => %{}})
-
-    socket =
-      socket
-      |> assign(:changeset, changeset)
-      |> assign(:settings_changeset, changeset)
-      |> put_campaign_preview()
-
-    {:noreply, socket}
-  end
-
-  def handle_event("merge_html_template", _params, socket) do
-    campaign = Ecto.Changeset.apply_changes(socket.assigns.changeset)
-    template = current_template(socket, campaign)
-    template_html = (template && template.html_body) || ""
-
-    html =
-      Templates.merge_content_slots(template_html, campaign.html_content,
-        mode: :html,
-        pretty: true
-      )
-
-    changeset = merged_changeset(socket, %{"html_body" => html, "html_content" => %{}})
-
-    socket =
-      socket
-      |> assign(:changeset, changeset)
-      |> assign(:settings_changeset, changeset)
-      |> put_campaign_preview()
-
-    {:noreply, socket}
   end
 
   def handle_event("save", params, socket) do
@@ -231,7 +127,7 @@ defmodule KeilaWeb.CampaignEditLive do
       {:noreply, redirect(socket, to: Routes.campaign_path(socket, :index, campaign.project_id))}
     else
       {:error, changeset} ->
-        {:noreply, put_changesets(socket, changeset) |> put_campaign_preview()}
+        {:noreply, put_changesets(socket, changeset)}
     end
   end
 
@@ -263,6 +159,13 @@ defmodule KeilaWeb.CampaignEditLive do
      |> assign(:send_preview_error, nil)
      |> assign(:subscription_required, false)
      |> assign(:onboarding_required, false)}
+  end
+
+  # Content changed by the email editor component (e.g. merged template slots).
+  @impl true
+  def handle_info({:email_editor, _id, params}, socket) do
+    changeset = merged_changeset(socket, params)
+    {:noreply, put_changesets(socket, changeset)}
   end
 
   defp get_preview_contacts(socket, raw_emails) do
@@ -399,80 +302,6 @@ defmodule KeilaWeb.CampaignEditLive do
   end
 
   defp maybe_parse_json_body(params), do: params
-
-  defp maybe_put_styles(socket, template) do
-    if (is_nil(template) && is_nil(socket.assigns[:styles])) ||
-         (not is_nil(template) && socket.assigns[:current_template_id] != template.id) do
-      template_styles =
-        if template && template.styles do
-          Keila.Templates.Css.parse!(template.styles)
-        else
-          []
-        end
-
-      default_styles = Keila.Templates.HybridTemplate.styles()
-
-      campaign_type = socket.assigns.campaign.settings.type
-
-      styles =
-        Keila.Templates.Css.merge(default_styles, template_styles)
-        |> Enum.map(fn {selector, styles} ->
-          selector =
-            selector
-            |> String.split(",")
-            |> Enum.map(&transform_style_selector(&1, campaign_type))
-            |> Enum.join(",")
-
-          {selector, styles}
-        end)
-        |> Keila.Templates.Css.encode()
-
-      socket
-      |> assign(:current_template_id, if(template, do: template.id))
-      |> assign(:styles, styles)
-    else
-      if is_nil(socket.assigns[:styles]) do
-        assign(socket, :styles, "")
-      else
-        socket
-      end
-    end
-  end
-
-  @markdown_editor_selector "#wysiwyg .editor"
-  @markdown_editor_content_selector "#wysiwyg .editor .ProseMirror"
-  defp transform_style_selector(selector, :markdown) do
-    case selector do
-      ".email-bg" -> @markdown_editor_selector
-      "#content" <> selector -> @markdown_editor_content_selector <> selector
-      ".block--button .button-td" -> @markdown_editor_selector <> " h4 a"
-      ".block--button .button-a" -> @markdown_editor_selector <> " h4 a"
-      selector -> @markdown_editor_selector <> " " <> selector
-    end
-  end
-
-  @block_editor_selector "#block-container .editor"
-  @block_editor_content_selector "#block-container .editor .codex-editor__redactor"
-  defp transform_style_selector(selector, :block) do
-    case selector do
-      ".email-bg" ->
-        @block_editor_selector
-
-      "#content" <> selector ->
-        @block_editor_content_selector <> selector
-
-      ".block--button .button-td" ->
-        @block_editor_selector <> " .ce-block--type-button .button-contenteditable"
-
-      ".block--button .button-a" ->
-        @block_editor_selector <> " .ce-block--type-button .button-contenteditable"
-
-      selector ->
-        @block_editor_selector <> " " <> selector
-    end
-  end
-
-  defp transform_style_selector(selector, _other), do: selector
 
   defp put_recipient_count(socket) do
     segment_id = Ecto.Changeset.get_field(socket.assigns.changeset, :segment_id)

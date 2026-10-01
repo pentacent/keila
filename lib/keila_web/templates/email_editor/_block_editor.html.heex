@@ -1,4 +1,4 @@
-<div id="block-container-assets" class="hidden">
+<div class="block-container-assets hidden">
   <div class="icon-photograph">{render_icon(:photograph)}</div>
   <div class="icon-horizontal-rule">{render_icon(:horizontal_rule)}</div>
   <div class="icon-button-alt">{render_icon(:button_alt)}</div>
@@ -169,10 +169,11 @@
   </div>
 </div>
 
-<div id="block-editor-toolbar" phx-update="ignore">
+<div id={"#{@id}-block-toolbar"} phx-update="ignore">
   <div class="relative shadow z-10 flex overflow-x-auto mt-4">
     <div class="flex-grow"></div>
     <button
+      type="button"
       title={gettext("Preview")}
       class="flex w-10 h-10 p-2 items-center justify-center bg-gray-800 hover:bg-gray-600 text-white"
       @click.prevent="$dispatch('x-toggle-preview')"
@@ -182,22 +183,32 @@
   </div>
 </div>
 
-<.form :let={f} for={@changeset}>
-  {textarea(f, :json_body, class: "hidden", value: @json_body, phx_debounce: "1000")}
-</.form>
+{textarea(@form, :json_body,
+  id: "#{@id}-json-body",
+  class: "hidden",
+  value: @json_body,
+  phx_debounce: "1000"
+)}
 
 <div
-  id="block-container"
+  id={"#{@id}-block"}
   phx-hook="BlockEditor"
+  data-target={"##{@id}-json-body"}
   class="flex-grow bg-white mt-4 min-h-10 text-gray-800"
 >
-  <div id="block-editor" class="editor" style="min-height: 25vh;" phx-update="ignore"></div>
+  <div
+    id={"#{@id}-block-editor"}
+    class="editor"
+    style="min-height: 25vh;"
+    phx-update="ignore"
+  >
+  </div>
   <style>
     <%= raw(@styles) %>
   </style>
 </div>
 <div
-  id="block-html-preview-data"
+  id={"#{@id}-preview-data"}
   phx-hook="HtmlPreview"
   class="hidden"
   data-iframe="#html-preview"

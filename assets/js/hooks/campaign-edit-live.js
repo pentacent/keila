@@ -30,25 +30,26 @@ const MarkdownSimpleEditorHook = {
 
 const MarkdownEditorHook = {
   mounted() {
-    let place = this.el.querySelector(".editor")
-    new MarkdownEditor(place, document.querySelector("#campaign_text_body"))
+    const place = this.el.querySelector(".editor")
+    const target = document.querySelector(this.el.dataset.target)
+    new MarkdownEditor(place, target)
   }
 }
 
 const BlockEditorHook = {
   mounted() {
-    let place = this.el.querySelector(".editor")
-    new BlockEditor(place, document.querySelector("#campaign_json_body"))
+    const place = this.el.querySelector(".editor")
+    const target = document.querySelector(this.el.dataset.target)
+    new BlockEditor(place, target)
   }
 }
 
 const MjmlEditorHook = {
   mounted() {
     const place = this.el.querySelector(".editor")
-    const target = this.el.dataset.target
-    new MjmlEditor(place, document.querySelector(target), {
-      toolbar: "#mjml-editor-toolbar"
-    })
+    const target = document.querySelector(this.el.dataset.target)
+    const toolbar = document.querySelector(this.el.dataset.toolbar)
+    new MjmlEditor(place, target, { toolbar })
   }
 }
 
@@ -58,9 +59,10 @@ const MjmlEditorHook = {
 const HtmlEditorHook = {
   mounted() {
     const place = this.el.querySelector(".editor")
-    const target = this.el.dataset.target
-    new MjmlEditor(place, document.querySelector(target), {
-      toolbar: "#html-editor-toolbar",
+    const target = document.querySelector(this.el.dataset.target)
+    const toolbar = document.querySelector(this.el.dataset.toolbar)
+    new MjmlEditor(place, target, {
+      toolbar,
       extraTags: {
         "keila-content": {
           attrs: { name: null },

@@ -1,0 +1,34 @@
+<div id={@id} class="flex flex-col w-full">
+  <%= cond do %>
+    <% @type == :markdown && @config.enable_wysiwyg -> %>
+      {textarea(@form, :text_body, id: "#{@id}-text-body", class: "hidden")}
+      <div
+        id={"#{@id}-editor-markdown-wysiwyg"}
+        phx-hook="MarkdownEditor"
+        data-target={"##{@id}-text-body"}
+        class="flex-grow bg-white mt-4 min-h-10"
+      >
+        {render("_wysiwyg_editor.html", assigns)}
+      </div>
+    <% @type == :markdown -> %>
+      <div id={"#{@id}-editor-markdown-simple"} phx-hook="MarkdownSimpleEditor">
+        {render("_markdown_editor.html", assigns)}
+      </div>
+    <% @type == :block -> %>
+      <div id={"#{@id}-editor-block"}>
+        {render("_block_editor.html", assigns)}
+      </div>
+    <% @type == :mjml -> %>
+      <div id={"#{@id}-editor-mjml"}>
+        {render("_mjml_editor.html", assigns)}
+      </div>
+    <% @type == :text -> %>
+      <div id={"#{@id}-editor-text"}>
+        {render("_text_editor.html", assigns)}
+      </div>
+    <% @type == :html -> %>
+      <div id={"#{@id}-editor-html"}>
+        {render("_html_editor.html", assigns)}
+      </div>
+  <% end %>
+</div>

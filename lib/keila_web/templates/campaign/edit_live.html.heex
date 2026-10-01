@@ -138,44 +138,21 @@
         <% end %>
       </div>
 
-      <div class="flex flex-col w-full">
-        <% type = Ecto.Changeset.get_field(@changeset, :settings).type %>
-        <% enable_wysiwyg? = Ecto.Changeset.get_field(@changeset, :settings).enable_wysiwyg %>
-        <%= cond do %>
-          <% (type == :markdown && enable_wysiwyg?) -> %>
-            {textarea(f, :text_body, class: "hidden")}
-            <div
-              id="wysiwyg-container"
-              phx-hook="MarkdownEditor"
-              class="flex-grow bg-white mt-4 min-h-10"
-            >
-              {render("_wysiwyg_editor.html", assigns)}
-            </div>
-          <% (type == :block) -> %>
-            {render("_block_editor.html", assigns)}
-          <% (type == :mjml) -> %>
-            <div id="mjml-container">
-              {render("_mjml_editor.html", assigns)}
-            </div>
-          <% (type == :text) -> %>
-            <div id="text-container">
-              {render("_text_editor.html", assigns)}
-            </div>
-          <% (type == :html) -> %>
-            <div id="html-container">
-              {render("_html_editor.html", assigns)}
-            </div>
-          <% true -> %>
-            <div id="markdown-simple-container" phx-hook="MarkdownSimpleEditor">
-              {render("_markdown_editor.html", assigns)}
-            </div>
-        <% end %>
-      </div>
+      <% settings = Ecto.Changeset.get_field(@changeset, :settings) %>
+      <.live_component
+        module={KeilaWeb.EmailEditorLiveComponent}
+        id="campaign-email"
+        form={f}
+        type={settings.type}
+        config={%Keila.Mailings.Email.EditorConfig{enable_wysiwyg: settings.enable_wysiwyg}}
+        project_id={@current_project.id}
+        to_input={&Keila.Mailings.CampaignRenderer.to_input/3}
+      />
     </.form>
   </div>
   {render("_send_dialogs.html", assigns)}
   {render("_settings_dialog.html", assigns)}
-  {render("_preview_dialog.html", assigns)}
+  {render(KeilaWeb.EmailEditorView, "_preview_dialog.html", assigns)}
 </div>
 
-{render("_wysiwyg_dialogs.html", assigns)}
+{render(KeilaWeb.EmailEditorView, "_wysiwyg_dialogs.html", assigns)}

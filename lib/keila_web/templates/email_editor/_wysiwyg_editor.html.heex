@@ -1,4 +1,4 @@
-<div id="wysiwyg" phx-update="ignore">
+<div id={"#{@id}-wysiwyg"} phx-update="ignore">
   <div class="wysiwyg--menu bg-white relative shadow z-10 flex overflow-x-auto">
     <button
       title={gettext("Bold")}
@@ -115,7 +115,7 @@
 </style>
 
 <div
-  id="wysiwyg-html-preview-data"
+  id={"#{@id}-preview-data"}
   phx-hook="HtmlPreview"
   data-iframe="#html-preview"
   class="hidden"

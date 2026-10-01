@@ -15,7 +15,7 @@ export default class BlockEditor {
   constructor(place, source) {
     const editor = new EditorJS({
       holder: place,
-      placeholder: document.querySelector("#block-container-assets .editor-placeholder").innerText,
+      placeholder: document.querySelector(".block-container-assets .editor-placeholder").innerText,
       data: JSON.parse(source.value),
       logLevel: "WARN",
       tools: {

@@ -25,11 +25,11 @@ const knownSites = {
 }
 
 function getText(selectorClass) {
-  return document.querySelector(`#block-container-assets .editor-social-icons-${selectorClass}`).innerText
+  return document.querySelector(`.block-container-assets .editor-social-icons-${selectorClass}`).innerText
 }
 
 function getIcon(iconName) {
-  return document.querySelector(`#block-container-assets .icon-${iconName}`).innerHTML
+  return document.querySelector(`.block-container-assets .icon-${iconName}`).innerHTML
 }
 
 function createUrlInput(
