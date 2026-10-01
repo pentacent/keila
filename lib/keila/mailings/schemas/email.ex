@@ -138,6 +138,10 @@ defmodule Keila.Mailings.Email do
   end
 end
 
+defimpl Keila.Mailings.Renderable, for: Keila.Mailings.Email do
+  defdelegate to_input(email, recipient, assigns), to: Keila.Mailings.Email
+end
+
 defmodule Keila.Mailings.Email.EditorConfig do
   use Ecto.Schema
   import Ecto.Changeset

@@ -20,7 +20,6 @@ defmodule KeilaWeb.EmailEditorLiveComponent do
   * `form` - the parent's `Phoenix.HTML.Form`
   * `type` - `:text`, `:markdown`, `:block`, `:mjml`, or `:html`
   * `project_id` - used to fetch the selected template
-  * `to_input` - function `(content, recipient, assigns) -> Renderer.Input`
   * `config` - `Email.EditorConfig` (default: `%Email.EditorConfig{}`)
   * `preview_assigns` - assigns for the preview (default `%{}`)
   * `preview_contact` - contact for the preview (default: sample contact)
@@ -29,6 +28,7 @@ defmodule KeilaWeb.EmailEditorLiveComponent do
 
   alias Keila.Contacts.Contact
   alias Keila.Mailings.Email
+  alias Keila.Mailings.Renderable
   alias Keila.Mailings.Renderer
   alias Keila.Templates
   alias Keila.Templates.Css
@@ -146,7 +146,7 @@ defmodule KeilaWeb.EmailEditorLiveComponent do
   defp put_template(content, _template), do: content
 
   defp render_preview(assigns, content) do
-    input = assigns.to_input.(content, assigns.preview_contact, assigns.preview_assigns)
+    input = Renderable.to_input(content, assigns.preview_contact, assigns.preview_assigns)
     output = Renderer.render_preview(input)
 
     output.html_body || KeilaWeb.CampaignView.plain_text_preview(output.text_body)
