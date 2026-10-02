@@ -12,13 +12,14 @@ Keila.if_cloud do
         Plan.new("660927", "S", 5000, :month, true),
         Plan.new("660928", "M", 15000, :month, true),
         Plan.new("660929", "L", 50000, :month, true),
-        Plan.new("924432", "L+", 75000, :month, true),
+        Plan.new("924432", "L+", 75000, :month, false),
         Plan.new("660930", "XL", 100_000, :month, true),
         Plan.new("660931", "XXL", 250_000, :month, true),
         Plan.new("920819", "XS", 2000, :year, true),
         Plan.new("920820", "S", 5000, :year, true),
         Plan.new("924267", "M", 15000, :year, true),
-        Plan.new("920822", "L", 50000, :year, true)
+        Plan.new("920822", "L", 50000, :year, true),
+        Plan.new("930293", "L+", 75000, :year, false)
       ]
     else
       @plans [

@@ -6,8 +6,9 @@ Keila.if_cloud do
       :paddle_id,
       :name,
       :monthly_credits,
-      :is_active,
-      :billing_interval
+      :active?,
+      :billing_interval,
+      promoted?: true
     ]
 
     def new(paddle_id, name, monthly_credits, billing_interval, active?) do
@@ -16,7 +17,7 @@ Keila.if_cloud do
         name: name,
         monthly_credits: monthly_credits,
         billing_interval: billing_interval,
-        is_active: active?
+        active?: active?
       }
     end
   end
