@@ -137,13 +137,13 @@ Keila.if_cloud do
             </label>
 
             <div x-show="annual" class="grid grid-cols-2 md:grid-cols-3 gap-8">
-              <%= for plan <- @plans, plan.billing_interval == :year do %>
+              <%= for plan <- @plans, plan.billing_interval == :year and @plan.promoted? do %>
                 <.plan_card plan={plan} account={@account} current_user={@current_user} />
               <% end %>
             </div>
 
             <div x-show="!annual" class="grid grid-cols-2 md:grid-cols-3 gap-8">
-              <%= for plan <- @plans, plan.billing_interval == :month do %>
+              <%= for plan <- @plans, plan.billing_interval == :month and @plan.promoted? do %>
                 <.plan_card plan={plan} account={@account} current_user={@current_user} />
               <% end %>
             </div>
