@@ -264,6 +264,7 @@ defmodule KeilaWeb.Router do
     pipe_through :api
 
     post "/senders/ses", SESWebhookController, :webhook
+    post "/senders/mailgun", MailgunWebhookController, :webhook
 
     Keila.if_cloud do
       post "/paddle", CloudPaddleWebhookController, :webhook
