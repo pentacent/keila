@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Added
+- Mailgun senders can now receive bounce and complaint webhooks. Set the *Webhook Signing Key* on the sender and add `/api/webhooks/senders/mailgun` as webhook URL in Mailgun to automatically mark contacts with permanent failures as unreachable.
+
 ## Version 0.30.3
 
 ### Added
