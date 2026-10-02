@@ -14,7 +14,11 @@
     <div class="flex flex-col">
       {label(f, :email, gettext("Email"))}
       <%= with_validation(f, :email) do %>
-        {text_input(f, :email, placeholder: gettext("you@keila.io"), class: "text-black")}
+        {email_input(f, :email, 
+          placeholder: gettext("you@keila.io"), 
+          class: "text-black", 
+          autocomplete: "email"
+        )}
       <% end %>
     </div>
     <div class="flex flex-col">
