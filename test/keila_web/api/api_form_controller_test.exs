@@ -23,13 +23,11 @@ defmodule KeilaWeb.ApiFormControllerTest do
     @tag :api_form_controller
     test "creates new form", %{authorized_conn: conn, project: project} do
       %{id: sender_id} = insert!(:mailings_sender, project_id: project.id)
-      %{id: template_id} = insert!(:template, project_id: project.id)
 
       body = %{
         "data" => %{
           "name" => "Test Name",
           "sender_id" => sender_id,
-          "template_id" => template_id,
           "settings" => %{
             "fine_print" => "This is the fine print"
           },
@@ -54,7 +52,6 @@ defmodule KeilaWeb.ApiFormControllerTest do
       assert %Contacts.Form{
                name: "Test Name",
                sender_id: ^sender_id,
-               template_id: ^template_id,
                settings: %{
                  fine_print: "This is the fine print"
                },
@@ -143,6 +140,102 @@ defmodule KeilaWeb.ApiFormControllerTest do
              } = json_response(conn, 200)
 
       assert %{name: "Updated Name"} = Keila.Contacts.get_form(id)
+    end
+
+    @tag :api_form_controller
+    test "creates, updates, and removes the welcome and double opt-in emails", %{
+      authorized_conn: authorized_conn,
+      project: project
+    } do
+      %{id: id} = insert!(:contacts_form, project_id: project.id)
+      template = insert!(:template, project_id: project.id)
+      template_id = template.id
+
+      body = %{
+        "data" => %{
+          "welcome_email" => %{
+            "type" => "markdown",
+            "subject" => "Welcome, Peter",
+            "text_body" => "Hello {{ contact.first_name }}",
+            "template_id" => template.id
+          },
+          "double_opt_in_email" => %{
+            "type" => "markdown",
+            "subject" => "Confirm, Lois",
+            "text_body" => "[Confirm]({{ double_opt_in_link }})"
+          }
+        }
+      }
+
+      conn = patch_json(authorized_conn, Routes.api_form_path(authorized_conn, :update, id), body)
+
+      assert %{
+               "data" => %{
+                 "welcome_email" => %{
+                   "type" => "markdown",
+                   "subject" => "Welcome, Peter",
+                   "template_id" => ^template_id
+                 },
+                 "double_opt_in_email" => %{"subject" => "Confirm, Lois"}
+               }
+             } = json_response(conn, 200)
+
+      welcome_id = Keila.Contacts.get_form(id).welcome_email.id
+
+      body = %{"data" => %{"welcome_email" => %{"subject" => "Welcome, Stewie"}}}
+      conn = patch_json(authorized_conn, Routes.api_form_path(authorized_conn, :update, id), body)
+
+      assert %{
+               "data" => %{
+                 "welcome_email" => %{
+                   "subject" => "Welcome, Stewie",
+                   "text_body" => "Hello {{ contact.first_name }}"
+                 }
+               }
+             } = json_response(conn, 200)
+
+      assert Keila.Contacts.get_form(id).welcome_email.id == welcome_id
+
+      body = %{"data" => %{"welcome_email" => nil}}
+      conn = patch_json(authorized_conn, Routes.api_form_path(authorized_conn, :update, id), body)
+
+      assert %{"data" => %{"welcome_email" => nil, "double_opt_in_email" => %{}}} =
+               json_response(conn, 200)
+
+      assert is_nil(Keila.Contacts.get_form(id).welcome_email)
+    end
+
+    @tag :api_form_controller
+    test "saves and returns the content slots of an email", %{
+      authorized_conn: conn,
+      project: project
+    } do
+      %{id: id} = insert!(:contacts_form, project_id: project.id)
+
+      template =
+        insert!(:template,
+          project_id: project.id,
+          type: :html,
+          html_body: "<html><body><keila-content name=\"main\"></keila-content></body></html>"
+        )
+
+      body = %{
+        "data" => %{
+          "welcome_email" => %{
+            "type" => "html",
+            "subject" => "Welcome, Brian",
+            "template_id" => template.id,
+            "html_content" => %{"main" => "<p>Hi Brian</p>"}
+          }
+        }
+      }
+
+      conn = patch_json(conn, Routes.api_form_path(conn, :update, id), body)
+
+      assert %{
+               "data" => %{"welcome_email" => %{"html_content" => %{"main" => "<p>Hi Brian</p>"}}}
+             } =
+               json_response(conn, 200)
     end
   end
 

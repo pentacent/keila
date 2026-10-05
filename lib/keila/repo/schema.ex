@@ -67,6 +67,29 @@ defmodule Keila.Schema do
           end
         end)
       end
+
+      defp validate_embed_assoc_project(changeset, embed, assoc, assoc_schema) do
+        prepare_changes(changeset, fn changeset ->
+          field = :"#{assoc}_id"
+
+          with %{} = embedded <- get_field(changeset, embed),
+               assoc_id when not is_nil(assoc_id) <- Map.fetch!(embedded, field) do
+            project_id = get_field(changeset, :project_id)
+
+            valid_assoc? =
+              from(a in assoc_schema, where: a.id == ^assoc_id and a.project_id == ^project_id)
+              |> changeset.repo.exists?()
+
+            if valid_assoc? do
+              changeset
+            else
+              changeset |> add_error(embed, "#{assoc} not found")
+            end
+          else
+            _ -> changeset
+          end
+        end)
+      end
     end
   end
 end

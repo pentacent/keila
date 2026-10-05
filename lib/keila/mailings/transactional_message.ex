@@ -42,7 +42,7 @@ defmodule Keila.Mailings.TransactionalMessage do
   """
   @spec deliver(Project.id(), map()) :: {:ok, Message.t()} | {:error, error()}
   def deliver(project_id, params) do
-    with {:ok, request} <- cast_request(project_id, params),
+    with {:ok, request} <- cast_request(params),
          {:ok, request} <- load_assocs(project_id, request),
          :ok <- ensure_account_active(project_id),
          %{valid?: true} = output <- Renderer.render(to_input(request)),
@@ -66,15 +66,15 @@ defmodule Keila.Mailings.TransactionalMessage do
   """
   @spec preview(Project.id(), map()) :: {:ok, Renderer.Output.t()} | {:error, error()}
   def preview(project_id, params) do
-    with {:ok, request} <- cast_request(project_id, params),
+    with {:ok, request} <- cast_request(params),
          {:ok, request} <- load_assocs(project_id, request) do
       {:ok, Renderer.render(to_input(request))}
     end
   end
 
-  defp cast_request(project_id, params) do
+  defp cast_request(params) do
     params
-    |> Request.changeset(project_id)
+    |> Request.changeset()
     |> Ecto.Changeset.apply_action(:insert)
   end
 

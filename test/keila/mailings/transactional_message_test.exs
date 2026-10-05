@@ -472,19 +472,20 @@ defmodule Keila.Mailings.TransactionalMessageTest do
                  "subject" => "S"
                })
 
-      assert "can't be blank without a template" in errors_on(cs).text_body
+      assert "can't be blank when no template is set" in errors_on(cs).text_body
     end
 
     @tag :transactional_message
-    test "returns :no_subject when neither the request nor template supply a subject",
-         %{project: project, sender: sender} do
-      assert {:error, :no_subject} =
+    test "requires a subject when no template is given", %{project: project, sender: sender} do
+      assert {:error, %Ecto.Changeset{} = cs} =
                TransactionalMessage.deliver(project.id, %{
                  "type" => "text",
                  "sender_id" => sender.id,
                  "recipient_email" => "to@example.com",
                  "text_body" => "yo"
                })
+
+      assert "can't be blank when no template is set" in errors_on(cs).subject
     end
 
     @tag :transactional_message
@@ -514,6 +515,7 @@ defmodule Keila.Mailings.TransactionalMessageTest do
                  "type" => "text",
                  "sender_id" => other_sender.id,
                  "recipient_email" => "to@example.com",
+                 "subject" => "Hi",
                  "text_body" => "Hi"
                })
     end
@@ -642,6 +644,7 @@ defmodule Keila.Mailings.TransactionalMessageTest do
                  "type" => "text",
                  "sender_id" => other_sender.id,
                  "recipient_email" => "to@example.com",
+                 "subject" => "Hi",
                  "text_body" => "Hi"
                })
     end

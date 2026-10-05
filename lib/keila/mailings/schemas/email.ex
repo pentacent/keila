@@ -1,8 +1,10 @@
 defmodule Keila.Mailings.Email do
-  use Keila.Schema, prefix: "eml"
-  alias Keila.Projects.Project
+  use Ecto.Schema
+  import Ecto.Changeset
   alias Keila.Templates.Template
   alias Keila.Mailings.Renderer
+
+  @type t :: %__MODULE__{}
 
   @type recipient ::
           Keila.Contacts.Contact.t() | {name :: String.t() | nil, email :: String.t()} | nil
@@ -21,7 +23,7 @@ defmodule Keila.Mailings.Email do
     :template_id
   ]
 
-  schema "mailings_emails" do
+  embedded_schema do
     field :type, Ecto.Enum, values: [text: 0, html: 1, mjml: 10, block: 20, markdown: 30]
     field :subject, :string
     field :preview_text, :string
@@ -35,34 +37,49 @@ defmodule Keila.Mailings.Email do
 
     embeds_one :editor_config, __MODULE__.EditorConfig, on_replace: :update
 
-    belongs_to :project, Project, type: Project.Id
-    belongs_to :template, Template, type: Template.Id
-
-    timestamps()
+    field :template_id, Template.Id
+    field :template, :any, virtual: true
   end
 
-  @spec creation_changeset(t(), map(), Project.id()) :: Ecto.Changeset.t(t())
-  def creation_changeset(struct \\ %__MODULE__{}, params, project_id) do
+  @doc """
+  Casts and validates an `Email`.
+
+  ## Options
+  - `:require_content` - When `false`, the subject and the body of Markdown
+    emails are not required. Use this for emails whose empty content is filled
+    with default content before rendering. Defaults to `true`.
+  """
+  # TODO: Once Markdown support is added to MJML/HTML templates, they should
+  # also be allowed to be empty here when require_content: false
+  @spec changeset(t(), map(), Keyword.t()) :: Ecto.Changeset.t(t())
+  def changeset(struct \\ %__MODULE__{}, params, opts \\ []) do
     struct
     |> cast(params, @content_fields)
-    |> put_change(:project_id, project_id)
-    |> validate_required([:project_id])
-    |> validate_content()
-  end
-
-  @spec update_changeset(t(), map()) :: Ecto.Changeset.t(t())
-  def update_changeset(struct = %__MODULE__{}, params) do
-    struct
-    |> cast(params, @content_fields)
-    |> validate_content()
-  end
-
-  defp validate_content(changeset) do
-    changeset
     |> cast_embed(:editor_config)
     |> validate_required([:type])
-    |> validate_body()
-    |> validate_assoc_project(:template, Template)
+    |> validate_content(Keyword.get(opts, :require_content, true))
+  end
+
+  defp validate_content(changeset, true) do
+    changeset
+    |> validate_subject()
+    |> validate_body(get_field(changeset, :type))
+  end
+
+  defp validate_content(changeset, false) do
+    case get_field(changeset, :type) do
+      :markdown -> changeset
+      type -> validate_body(changeset, type)
+    end
+  end
+
+  # A subject is required unless a template has been specified
+  defp validate_subject(changeset) do
+    if is_nil(get_field(changeset, :template_id)) do
+      validate_required(changeset, [:subject], message: "can't be blank when no template is set")
+    else
+      changeset
+    end
   end
 
   @body_fields %{
@@ -73,31 +90,25 @@ defmodule Keila.Mailings.Email do
     block: :json_body
   }
 
-  # An email needs the body for its type.
-  defp validate_body(changeset) do
-    type = get_field(changeset, :type)
-
-    case Map.fetch(@body_fields, type) do
-      {:ok, body_field} -> validate_body(changeset, type, body_field)
-      :error -> changeset
-    end
-  end
-
-  # Text, HTML, and MJML templates can supply the body through content slots,
-  # so the body is optional when such a template is set.
-  defp validate_body(changeset, type, body_field) when type in [:text, :html, :mjml] do
+  # Text, HTML, and MJML templates can supply the body, making the body optional.
+  defp validate_body(changeset, type) when type in [:text, :html, :mjml] do
     if is_nil(get_field(changeset, :template_id)) do
-      validate_required(changeset, [body_field], message: "can't be blank without a template")
+      body_field = Map.fetch!(@body_fields, type)
+
+      validate_required(changeset, [body_field],
+        message: "can't be blank when no template is set"
+      )
     else
       changeset
     end
   end
 
-  # Markdown and block emails always need a body because their templates only
-  # provide the layout.
-  defp validate_body(changeset, _type, body_field) do
+  defp validate_body(changeset, type) when type in [:block, :markdown] do
+    body_field = Map.fetch!(@body_fields, type)
     validate_required(changeset, [body_field])
   end
+
+  defp validate_body(changeset, nil), do: changeset
 
   @doc """
   Builds a `Keila.Mailings.Renderer.Input` from the given email.

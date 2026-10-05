@@ -11,6 +11,7 @@ defmodule Keila.Mailings.WelcomeMessage do
   alias Keila.Contacts
   alias Keila.Contacts.Contact
   alias Keila.Contacts.Form
+  alias Keila.Mailings.Email
   alias Keila.Mailings.Message
   alias Keila.Mailings.Renderer
 
@@ -111,38 +112,25 @@ defmodule Keila.Mailings.WelcomeMessage do
   end
 
   defp render(contact, form, unsubscribe_link, assigns \\ %{}) do
-    subject = get_subject(form)
-    body_markdown = get_body_markdown(form)
-    template = if form.template_id, do: Keila.Templates.get_template(form.template_id)
-
-    input = %Renderer.Input{
-      type: :markdown,
-      subject: subject,
-      text_body: body_markdown,
-      template: template,
-      assigns:
-        build_assigns(assigns, contact, template, subject)
-        |> Map.put("unsubscribe_link", unsubscribe_link)
-    }
-
-    Renderer.render(input)
+    form
+    |> to_input(contact, assigns)
+    |> put_assign("unsubscribe_link", unsubscribe_link)
+    |> Renderer.render()
   end
 
-  defp get_subject(form) do
-    case form.settings.welcome_subject do
-      empty when empty in [nil, ""] -> default_subject()
-      subject -> subject
-    end
+  defp to_input(%Form{welcome_email: email} = form, contact, assigns) do
+    (email || %Email{type: :markdown})
+    |> maybe_put_default_subject()
+    |> maybe_put_default_body()
+    |> fetch_template(form.project_id)
+    |> Email.to_input(contact, build_assigns(assigns, contact))
   end
 
-  defp get_body_markdown(form) do
-    case form.settings.welcome_markdown_body do
-      empty when empty in [nil, ""] -> default_markdown_body()
-      body -> body
-    end
+  defp put_assign(%Renderer.Input{} = input, key, value) do
+    %{input | assigns: Map.put(input.assigns, key, value)}
   end
 
-  defp build_assigns(assigns, contact, template, subject) do
+  defp build_assigns(assigns, contact) do
     assigns
     |> Map.put("contact", %{
       "email" => contact.email,
@@ -150,11 +138,22 @@ defmodule Keila.Mailings.WelcomeMessage do
       "last_name" => contact.last_name,
       "data" => contact.data || %{}
     })
-    |> Map.put("campaign", %{"subject" => subject})
-    |> Map.put("signature", if(template, do: template.assigns["signature"]))
   end
 
-  # Helpers
+  defp maybe_put_default_subject(%Email{subject: nil} = email),
+    do: %{email | subject: default_subject()}
+
+  defp maybe_put_default_subject(email), do: email
+
+  defp maybe_put_default_body(%Email{type: :markdown, text_body: nil} = email),
+    do: %{email | text_body: default_markdown_body()}
+
+  defp maybe_put_default_body(email), do: email
+
+  defp fetch_template(%Email{template_id: nil} = email, _project_id), do: email
+
+  defp fetch_template(email, project_id),
+    do: %{email | template: Keila.Templates.get_project_template(project_id, email.template_id)}
 
   defp ensure_welcome_enabled(form) do
     if form.settings.welcome_enabled do

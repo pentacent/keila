@@ -48,7 +48,7 @@ defmodule Keila.Mailings.TransactionalMessage.Request do
   @recipient_fields [:contact_id, :external_contact_id, :recipient_email]
   @supported_types [:text, :html, :mjml]
 
-  def changeset(params, project_id) do
+  def changeset(params) do
     %__MODULE__{}
     |> cast(params, @cast_fields)
     |> cast_addresses(params, :cc)
@@ -56,11 +56,11 @@ defmodule Keila.Mailings.TransactionalMessage.Request do
     |> validate_required([:sender_id])
     |> validate_one_of(@recipient_fields)
     |> Keila.EmailAddress.validate_email(:recipient_email)
-    |> cast_email(params, project_id)
+    |> cast_email(params)
   end
 
-  defp cast_email(changeset, params, project_id) do
-    email_changeset = Email.creation_changeset(%Email{}, params, project_id)
+  defp cast_email(changeset, params) do
+    email_changeset = Email.changeset(%Email{}, params)
 
     changeset
     |> put_change(:email, apply_changes(email_changeset))

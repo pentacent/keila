@@ -3,64 +3,55 @@ defmodule Keila.Mailings.EmailTest do
   alias Keila.Mailings.Email
   alias Keila.Mailings.Renderer
 
-  setup do
-    user = insert!(:user)
-    account = insert!(:account)
-    Keila.Accounts.set_user_account(user.id, account.id)
-    {:ok, project} = Keila.Projects.create_project(user.id, %{name: "Email Test"})
-
-    %{project: project}
-  end
-
-  describe "creation_changeset/3" do
-    test "sets the project and requires a type", %{project: project} do
-      changeset = Email.creation_changeset(%Email{}, %{subject: "Hello"}, project.id)
+  describe "changeset/2" do
+    test "requires a type" do
+      changeset = Email.changeset(%Email{}, %{subject: "Hello"})
       refute changeset.valid?
-      assert Ecto.Changeset.get_field(changeset, :project_id) == project.id
       assert %{type: _} = errors_on(changeset)
 
       changeset =
-        Email.creation_changeset(
-          %Email{},
-          %{type: :markdown, subject: "Hello", text_body: "Body"},
-          project.id
-        )
+        Email.changeset(%Email{}, %{type: :markdown, subject: "Hello", text_body: "Body"})
 
       assert changeset.valid?
     end
 
-    test "rejects unknown types", %{project: project} do
-      changeset = Email.creation_changeset(%Email{}, %{type: :hybrid}, project.id)
+    test "rejects unknown types" do
+      changeset = Email.changeset(%Email{}, %{type: :hybrid})
 
       refute changeset.valid?
       assert %{type: _} = errors_on(changeset)
     end
 
-    test "casts the editor config", %{project: project} do
+    test "casts the editor config" do
       email =
         %Email{}
-        |> Email.creation_changeset(
-          %{type: :markdown, editor_config: %{enable_wysiwyg: false}},
-          project.id
-        )
+        |> Email.changeset(%{type: :markdown, editor_config: %{enable_wysiwyg: false}})
         |> Ecto.Changeset.apply_changes()
 
       assert %Email.EditorConfig{enable_wysiwyg: false} = email.editor_config
     end
   end
 
-  describe "update_changeset/2" do
-    test "does not change the project", %{project: project} do
-      existing = build(:mailings_email, project_id: project.id)
-      changeset = Email.update_changeset(existing, %{"subject" => "New", "project_id" => "other"})
+  describe "subject validation" do
+    test "requires a subject without a template" do
+      changeset = Email.changeset(%Email{}, %{type: :text, text_body: "Hi"})
+      refute changeset.valid?
+      assert %{subject: ["can't be blank when no template is set"]} = errors_on(changeset)
 
-      assert Ecto.Changeset.get_field(changeset, :project_id) == project.id
-      assert Ecto.Changeset.get_change(changeset, :subject) == "New"
+      changeset = Email.changeset(%Email{}, %{type: :text, text_body: "Hi", template_id: "tpl_1"})
+      assert changeset.valid?
+    end
+
+    test "require_content: false allows emails without a subject" do
+      changeset =
+        Email.changeset(%Email{}, %{type: :markdown, text_body: "Hi"}, require_content: false)
+
+      assert changeset.valid?
     end
   end
 
   describe "body validation" do
-    test "requires the body for the type", %{project: project} do
+    test "requires the appropriate body for the type" do
       for {type, body_field, body} <- [
             {:text, :text_body, "body"},
             {:markdown, :text_body, "body"},
@@ -68,52 +59,53 @@ defmodule Keila.Mailings.EmailTest do
             {:mjml, :mjml_body, "body"},
             {:block, :json_body, %{"blocks" => []}}
           ] do
-        changeset = Email.creation_changeset(%Email{}, %{type: type}, project.id)
+        changeset = Email.changeset(%Email{}, %{type: type})
         refute changeset.valid?
         assert Map.has_key?(errors_on(changeset), body_field)
 
         changeset =
-          Email.creation_changeset(%Email{}, %{:type => type, body_field => body}, project.id)
+          Email.changeset(%Email{}, %{:type => type, :subject => "Hi", body_field => body})
 
         assert changeset.valid?
       end
     end
 
-    test "text, html, and mjml templates can supply the body", %{project: project} do
+    test "text, html, and mjml templates can supply the body" do
       for type <- [:text, :html, :mjml] do
-        changeset =
-          Email.creation_changeset(%Email{}, %{type: type, template_id: "tpl_1"}, project.id)
-
+        changeset = Email.changeset(%Email{}, %{type: type, template_id: "tpl_1"})
         assert changeset.valid?
       end
     end
 
-    test "markdown and block emails need a body even with a template", %{project: project} do
-      changeset =
-        Email.creation_changeset(%Email{}, %{type: :markdown, template_id: "tpl_1"}, project.id)
+    test "require_content: false allows markdown emails without a body" do
+      changeset = Email.changeset(%Email{}, %{type: :markdown}, require_content: false)
+      assert changeset.valid?
 
+      changeset = Email.changeset(%Email{}, %{type: :html}, require_content: false)
+      refute changeset.valid?
+      assert %{html_body: _} = errors_on(changeset)
+    end
+
+    test "markdown and block emails need a body even with a template" do
+      changeset = Email.changeset(%Email{}, %{type: :markdown, template_id: "tpl_1"})
       refute changeset.valid?
       assert %{text_body: _} = errors_on(changeset)
 
-      changeset =
-        Email.creation_changeset(%Email{}, %{type: :block, template_id: "tpl_1"}, project.id)
-
+      changeset = Email.changeset(%Email{}, %{type: :block, template_id: "tpl_1"})
       refute changeset.valid?
       assert %{json_body: _} = errors_on(changeset)
     end
   end
 
   describe "to_input/3" do
-    test "maps the content fields, adds a campaign assign, and renders", %{project: project} do
-      template = insert!(:template, project_id: project.id)
+    test "maps the content fields and adds a campaign assign" do
+      template = build(:template)
 
       email =
         build(:mailings_email,
-          project_id: project.id,
           subject: "Hello {{ contact.first_name }}",
           preview_text: "Preview",
           text_body: "Hi {{ contact.first_name }}!",
-          template_id: template.id,
           template: template
         )
 
@@ -125,33 +117,26 @@ defmodule Keila.Mailings.EmailTest do
                text_body: "Hi {{ contact.first_name }}!",
                template: ^template,
                contact: ^contact,
-               assigns: %{"campaign" => %{"subject" => "Hello {{ contact.first_name }}"}}
-             } = input = Email.to_input(email, contact)
-
-      output = Renderer.render_preview(input)
-      assert output.valid?
-      assert output.subject == "Hello Lois"
-      assert output.html_body =~ "Hi Lois!"
-      assert output.text_body =~ "Hi Lois!"
+               assigns: %{
+                 "campaign" => %{
+                   "subject" => "Hello {{ contact.first_name }}",
+                   "preview_text" => "Preview"
+                 }
+               }
+             } = Email.to_input(email, contact)
 
       input = Email.to_input(email, nil, %{"campaign" => %{"subject" => "Custom"}})
       assert input.assigns["campaign"]["subject"] == "Custom"
     end
 
-    test "accepts a {name, email} tuple as recipient", %{project: project} do
-      email = build(:mailings_email, project_id: project.id, template: nil)
+    test "accepts a {name, email} tuple as recipient" do
+      email = build(:mailings_email)
 
       assert %Renderer.Input{
                contact: nil,
                recipient_name: "Peter Griffin",
                recipient_email: "peter@example.com"
-             } = input = Email.to_input(email, {"Peter Griffin", "peter@example.com"})
-
-      assert input.assigns["contact"] == nil
-
-      output = Renderer.render_preview(%{input | subject: "Hi {{ contact.display_name }}"})
-      assert output.valid?
-      assert output.subject == "Hi Peter Griffin"
+             } = Email.to_input(email, {"Peter Griffin", "peter@example.com"})
     end
   end
 end

@@ -74,5 +74,40 @@ defmodule Keila.Mailings.DoubleOptInMessageTest do
                  hmac
                )
     end
+
+    test "preview/1 uses an unsaved email from the form struct", %{project: project} do
+      form =
+        insert!(:contacts_form,
+          project_id: project.id,
+          settings: %{captcha_required: false, double_opt_in_required: true}
+        )
+
+      form = %{
+        form
+        | double_opt_in_email: %Keila.Mailings.Email{
+            type: :markdown,
+            subject: "Unsaved subject",
+            text_body: "Unsaved body"
+          }
+      }
+
+      output = DoubleOptInMessage.preview(form)
+      assert output.valid?
+      assert output.subject == "Unsaved subject"
+      assert output.html_body =~ "Unsaved body"
+    end
+
+    test "preview/1 uses the default content when the form has no email", %{project: project} do
+      form =
+        insert!(:contacts_form,
+          project_id: project.id,
+          double_opt_in_email: nil,
+          settings: %{captcha_required: false, double_opt_in_required: true}
+        )
+
+      output = DoubleOptInMessage.preview(form)
+      assert output.valid?
+      assert output.subject == DoubleOptInMessage.default_subject()
+    end
   end
 end

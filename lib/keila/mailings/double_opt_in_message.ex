@@ -11,6 +11,7 @@ defmodule Keila.Mailings.DoubleOptInMessage do
   alias Keila.Contacts
   alias Keila.Contacts.Form
   alias Keila.Contacts.FormParams
+  alias Keila.Mailings.Email
   alias Keila.Mailings.Message
   alias Keila.Mailings.Renderer
   alias KeilaWeb.Router.Helpers, as: Routes
@@ -100,47 +101,49 @@ defmodule Keila.Mailings.DoubleOptInMessage do
   end
 
   defp render(form_params, unsubscribe_link, assigns \\ %{}) do
-    form = form_params.form
-    subject = get_subject(form)
-    body_markdown = get_body_markdown(form)
-    template = if form.template_id, do: Keila.Templates.get_template(form.template_id)
-
-    input = %Renderer.Input{
-      type: :markdown,
-      subject: subject,
-      text_body: body_markdown,
-      template: template,
-      assigns:
-        build_assigns(assigns, form_params, template, subject)
-        |> Map.put("unsubscribe_link", unsubscribe_link)
-    }
-
-    Renderer.render(input)
+    form_params
+    |> to_input(assigns)
+    |> put_assign("unsubscribe_link", unsubscribe_link)
+    |> Renderer.render()
   end
 
-  defp get_subject(form) do
-    case form.settings.double_opt_in_subject do
-      empty when empty in [nil, ""] -> default_subject()
-      subject -> subject
-    end
+  defp to_input(
+         %FormParams{form: %Form{double_opt_in_email: email} = form} = form_params,
+         assigns
+       ) do
+    (email || %Email{type: :markdown})
+    |> maybe_put_default_subject()
+    |> maybe_put_default_body()
+    |> fetch_template(form.project_id)
+    |> Email.to_input(nil, build_assigns(assigns, form_params))
   end
 
-  defp get_body_markdown(form) do
-    case form.settings.double_opt_in_markdown_body do
-      empty when empty in [nil, ""] -> default_markdown_body()
-      body -> body
-    end
+  defp put_assign(%Renderer.Input{} = input, key, value) do
+    %{input | assigns: Map.put(input.assigns, key, value)}
   end
 
-  defp build_assigns(assigns, form_params, template, subject) do
+  defp build_assigns(assigns, form_params) do
     form = form_params.form
 
     assigns
     |> Map.put_new_lazy("double_opt_in_link", fn -> get_double_opt_in_link(form, form_params) end)
     |> Map.put("contact", form_params.params)
-    |> Map.put("campaign", %{"subject" => subject})
-    |> Map.put("signature", if(template, do: template.assigns["signature"]))
   end
+
+  defp maybe_put_default_subject(%Email{subject: nil} = email),
+    do: %{email | subject: default_subject()}
+
+  defp maybe_put_default_subject(email), do: email
+
+  defp maybe_put_default_body(%Email{type: :markdown, text_body: nil} = email),
+    do: %{email | text_body: default_markdown_body()}
+
+  defp maybe_put_default_body(email), do: email
+
+  defp fetch_template(%Email{template_id: nil} = email, _project_id), do: email
+
+  defp fetch_template(email, project_id),
+    do: %{email | template: Keila.Templates.get_project_template(project_id, email.template_id)}
 
   defp get_double_opt_in_link(form, form_params) do
     hmac = Keila.Contacts.double_opt_in_hmac(form_params.form_id, form_params.id)
@@ -152,8 +155,6 @@ defmodule Keila.Mailings.DoubleOptInMessage do
     hmac = Keila.Contacts.double_opt_in_hmac(form_params.form_id, form_params.id)
     Routes.public_form_url(Endpoint, :cancel_double_opt_in, form.id, form_params.id, hmac)
   end
-
-  # Helpers
 
   Keila.if_cloud do
     defp ensure_feature_available(project_id) do
