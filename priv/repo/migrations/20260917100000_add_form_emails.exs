@@ -77,7 +77,7 @@ defmodule Keila.Repo.Migrations.AddFormEmails do
         "subject" => subject,
         "text_body" => body,
         "template_id" => template_id,
-        "editor_config" => %{"enable_wysiwyg" => true}
+        "editor_config" => %{"enable_wysiwyg" => false}
       }
     end
   end

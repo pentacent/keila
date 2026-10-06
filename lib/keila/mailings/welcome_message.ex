@@ -140,13 +140,14 @@ defmodule Keila.Mailings.WelcomeMessage do
     })
   end
 
-  defp maybe_put_default_subject(%Email{subject: nil} = email),
+  defp maybe_put_default_subject(%Email{subject: empty} = email) when empty in [nil, ""],
     do: %{email | subject: default_subject()}
 
   defp maybe_put_default_subject(email), do: email
 
-  defp maybe_put_default_body(%Email{type: :markdown, text_body: nil} = email),
-    do: %{email | text_body: default_markdown_body()}
+  defp maybe_put_default_body(%Email{type: :markdown, text_body: empty} = email)
+       when empty in [nil, ""],
+       do: %{email | text_body: default_markdown_body()}
 
   defp maybe_put_default_body(email), do: email
 

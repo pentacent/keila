@@ -54,9 +54,17 @@ defmodule Keila.Contacts.Form do
     enabled? = match?(%{^enabled_key => true}, get_field(changeset, :settings))
 
     if enabled? and is_nil(get_field(changeset, field)) do
-      put_embed(changeset, field, %Email{type: :markdown})
+      put_embed(changeset, field, new_email())
     else
       changeset
     end
+  end
+
+  @doc """
+  Returns a new, empty form email for inserting when enabling form emails.
+  """
+  @spec new_email() :: Email.t()
+  def new_email() do
+    %Email{type: :markdown, editor_config: %Email.EditorConfig{enable_wysiwyg: false}}
   end
 end

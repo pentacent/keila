@@ -75,7 +75,13 @@ defmodule Keila.Contacts.FormEmailsTest do
                  "settings" => %{"id" => form.settings.id, "welcome_enabled" => true}
                })
 
-      assert %Email{type: :markdown, subject: nil, text_body: nil} = form.welcome_email
+      assert %Email{
+               type: :markdown,
+               subject: nil,
+               text_body: nil,
+               editor_config: %{enable_wysiwyg: false}
+             } = form.welcome_email
+
       assert %Email{} = Contacts.get_form(form.id).welcome_email
     end
 
