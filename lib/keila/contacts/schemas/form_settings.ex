@@ -30,6 +30,7 @@ defmodule Keila.Contacts.Form.Settings do
     field(:welcome_enabled, :boolean, default: false)
     field(:welcome_subject, :string)
     field(:welcome_markdown_body, :string)
+    field(:embedded_styles, Ecto.Enum, values: [:enabled, :disabled], default: :enabled)
   end
 
   def changeset(struct \\ %__MODULE__{}, params) do
@@ -59,7 +60,8 @@ defmodule Keila.Contacts.Form.Settings do
       :failure_url,
       :welcome_enabled,
       :welcome_subject,
-      :welcome_markdown_body
+      :welcome_markdown_body,
+      :embedded_styles
     ])
   end
 end

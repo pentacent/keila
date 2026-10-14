@@ -823,6 +823,23 @@
           {gettext("Copy")}
         </button>
       </div>
+      <div class="flex flex-col gap-1 mt-2">
+        <label for="embedded-styles-select">{gettext("Include Tailwind classes")}</label>
+        <select
+          id="embedded-styles-select"
+          name="embedded_styles"
+          class="text-black"
+          phx-change="update_embedded_styles"
+        >
+          {Phoenix.HTML.Form.options_for_select(
+            [
+              {:enabled, gettext("Include Tailwind classes")},
+              {:disabled, gettext("Disable Tailwind classes")}
+            ],
+            @form_preview.settings.embedded_styles
+          )}
+        </select>
+      </div>
     <% end %>
     <div
       id="copy-success"
