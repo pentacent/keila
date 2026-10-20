@@ -232,6 +232,41 @@ defmodule KeilaWeb.FormControllerTest do
     end
 
     @tag :form_controller
+    test "creates a new email without changing the settings", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+
+      form =
+        insert!(:contacts_form,
+          project_id: project.id,
+          welcome_email: nil,
+          settings: %{captcha_required: false, welcome_enabled: true}
+        )
+
+      {:ok, lv, _} = live(conn, Routes.form_path(conn, :edit, project.id, form.id))
+
+      lv
+      |> element("button[phx-target='#welcome_email'][phx-click=open]")
+      |> render_click()
+
+      lv |> element("button[phx-click=show_content]") |> render_click()
+
+      lv
+      |> element("#welcome_email-form")
+      |> render_submit(%{"email" => %{"text_body" => "Hi, Meg"}})
+
+      lv |> element("#form") |> render_submit()
+      assert_redirect(lv, Routes.form_path(conn, :index, project.id))
+
+      assert %{
+               welcome_email: %{
+                 type: :markdown,
+                 text_body: "Hi, Meg",
+                 editor_config: %{enable_wysiwyg: false}
+               }
+             } = Contacts.get_form(form.id)
+    end
+
+    @tag :form_controller
     test "shows the rich text option for emails without editor config", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
 
