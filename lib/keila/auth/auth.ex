@@ -52,6 +52,7 @@ defmodule Keila.Auth do
       {:ok, employees_group} = Auth.create_group(%{name: employees})
   """
   require Logger
+  require Keila
   require Ecto.Query
   import Ecto.Query
 
@@ -340,12 +341,17 @@ defmodule Keila.Auth do
   ## Options
   - `:paginate` - `true` or Pagination options.
   - `:filter` - string for filtering users by email.
+  - `:account_status` - Account status for filtering users by the status of
+    their Account. Only supported in Keila Cloud, ignored otherwise.
 
   If `:pagination` is not `true` or a list of options, a list of all results is returned.
   """
   @spec list_users() :: [User.t()] | Keila.Pagination.t(User.t())
   def list_users(opts \\ []) do
-    query = from(u in User, order_by: u.inserted_at) |> maybe_filter_users(opts[:filter])
+    query =
+      from(u in User, order_by: u.inserted_at)
+      |> maybe_filter_users(opts[:filter])
+      |> maybe_filter_users_by_account_status(opts[:account_status])
 
     case Keyword.get(opts, :paginate) do
       true -> Keila.Pagination.paginate(query)
@@ -360,6 +366,16 @@ defmodule Keila.Auth do
   defp maybe_filter_users(query, filter) do
     filter = "%#{filter}%"
     where(query, [u], fragment("? ILIKE ?", u.email, ^filter))
+  end
+
+  defp maybe_filter_users_by_account_status(query, status)
+  defp maybe_filter_users_by_account_status(query, status) when status in [nil, ""], do: query
+
+  Keila.if_cloud do
+    defp maybe_filter_users_by_account_status(query, status),
+      do: KeilaCloud.Accounts.filter_users_by_account_status(query, status)
+  else
+    defp maybe_filter_users_by_account_status(query, _status), do: query
   end
 
   @doc """

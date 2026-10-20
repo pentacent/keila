@@ -33,6 +33,20 @@ Keila.if_cloud do
     end
 
     @tag :accounts
+    test "list users filtered by account status", %{account: account, user: user} do
+      other_user = insert!(:user)
+      other_account = insert!(:account, group: insert!(:group))
+      Accounts.set_user_account(other_user.id, other_account.id)
+      {:ok, _} = KeilaCloud.Accounts.update_account_status(account.id, :active)
+
+      assert [user.id] ==
+               Keila.Auth.list_users(account_status: "active") |> Enum.map(& &1.id)
+
+      assert [other_user.id] ==
+               Keila.Auth.list_users(account_status: "default") |> Enum.map(& &1.id)
+    end
+
+    @tag :accounts
     @tag :mailings
     @tag :contacts
     test "delivering campaigns requires an active account", %{user: user, account: account} do
