@@ -124,7 +124,7 @@ defmodule Keila.Mailings.WelcomeMessage do
   defp render(contact, form, unsubscribe_link, assigns \\ %{}) do
     form
     |> to_input(contact, assigns)
-    |> put_assign("unsubscribe_link", unsubscribe_link)
+    |> Renderer.assign("unsubscribe_link", unsubscribe_link)
     |> Renderer.render()
   end
 
@@ -133,10 +133,6 @@ defmodule Keila.Mailings.WelcomeMessage do
     |> put_default_content()
     |> fetch_template(form.project_id)
     |> Email.to_input(contact, build_assigns(assigns, contact))
-  end
-
-  defp put_assign(%Renderer.Input{} = input, key, value) do
-    %{input | assigns: Map.put(input.assigns, key, value)}
   end
 
   defp build_assigns(assigns, contact) do

@@ -113,7 +113,7 @@ defmodule Keila.Mailings.DoubleOptInMessage do
   defp render(form_params, unsubscribe_link, assigns \\ %{}) do
     form_params
     |> to_input(assigns)
-    |> put_assign("unsubscribe_link", unsubscribe_link)
+    |> Renderer.assign("unsubscribe_link", unsubscribe_link)
     |> Renderer.render()
   end
 
@@ -125,10 +125,6 @@ defmodule Keila.Mailings.DoubleOptInMessage do
     |> put_default_content()
     |> fetch_template(form.project_id)
     |> Email.to_input(nil, build_assigns(assigns, form_params))
-  end
-
-  defp put_assign(%Renderer.Input{} = input, key, value) do
-    %{input | assigns: Map.put(input.assigns, key, value)}
   end
 
   defp build_assigns(assigns, form_params) do

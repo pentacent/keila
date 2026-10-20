@@ -118,11 +118,15 @@ defmodule Keila.Mailings.Renderer do
   @spec render_preview(Input.t()) :: Output.t()
   def render_preview(%Input{} = input) do
     input
-    |> put_assign("unsubscribe_link", "#unsubscribe-preview-link")
+    |> assign("unsubscribe_link", "#unsubscribe-preview-link")
     |> render()
   end
 
-  defp put_assign(input, key, value) do
+  @doc """
+  Puts an assign into an `Input`.
+  """
+  @spec assign(Input.t(), String.t(), term()) :: Input.t()
+  def assign(%Input{} = input, key, value) do
     %{input | assigns: Map.put(input.assigns, key, value)}
   end
 end
