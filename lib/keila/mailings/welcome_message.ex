@@ -111,6 +111,16 @@ defmodule Keila.Mailings.WelcomeMessage do
     """)
   end
 
+  @doc """
+  Fills empty subject and/or Markdown body with default content.
+  """
+  @spec put_default_content(Email.t()) :: Email.t()
+  def put_default_content(email) do
+    email
+    |> maybe_put_default_subject()
+    |> maybe_put_default_body()
+  end
+
   defp render(contact, form, unsubscribe_link, assigns \\ %{}) do
     form
     |> to_input(contact, assigns)
@@ -120,8 +130,7 @@ defmodule Keila.Mailings.WelcomeMessage do
 
   defp to_input(%Form{welcome_email: email} = form, contact, assigns) do
     (email || %Email{type: :markdown})
-    |> maybe_put_default_subject()
-    |> maybe_put_default_body()
+    |> put_default_content()
     |> fetch_template(form.project_id)
     |> Email.to_input(contact, build_assigns(assigns, contact))
   end

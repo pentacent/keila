@@ -1,6 +1,7 @@
 defmodule KeilaWeb.FormEditLive do
   use KeilaWeb, :live_view
 
+  alias Keila.Contacts.Form
   alias Keila.Mailings.DoubleOptInMessage
   alias Keila.Mailings.WelcomeMessage
 
@@ -10,17 +11,19 @@ defmodule KeilaWeb.FormEditLive do
     current_project = session["current_project"]
     senders = Keila.Mailings.get_project_senders(current_project.id)
     templates = Keila.Templates.get_project_templates(current_project.id)
+    form = session["form"]
 
     socket =
       socket
-      |> assign(:form, session["form"])
-      |> assign(:changeset, Ecto.Changeset.change(session["form"]))
+      |> assign(:form, form)
+      |> assign(:changeset, Ecto.Changeset.change(form))
       |> assign(:current_project, current_project)
       |> assign(:senders, senders)
       |> assign(:templates, templates)
       |> assign(:double_opt_in_available, session["double_opt_in_available"])
       |> assign(:welcome_email_available, session["welcome_email_available"])
       |> assign(:current_tab, "settings")
+      |> assign(:email_params, %{})
       |> put_default_assigns()
 
     {:ok, socket}
@@ -33,20 +36,33 @@ defmodule KeilaWeb.FormEditLive do
 
   @impl true
   def handle_event("form_updated", params, socket) do
-    changeset =
-      Keila.Contacts.Form.update_changeset(socket.assigns.form, params["form"])
-      |> then(fn changeset ->
-        if changeset.valid?,
-          do: changeset,
-          else: Ecto.Changeset.apply_action(changeset, :update) |> elem(1)
-      end)
+    params = params["form"] |> merge_email_params(socket)
+    changeset = Form.update_changeset(socket.assigns.form, params)
 
-    socket =
-      socket
-      |> assign(:changeset, changeset)
-      |> put_default_assigns()
+    {:noreply, put_form_changeset(socket, changeset)}
+  end
 
-    {:noreply, socket}
+  def handle_event("save", params, socket) do
+    params = params["form"] |> merge_email_params(socket)
+
+    case Keila.Contacts.update_form(socket.assigns.form.id, params) do
+      {:ok, _form} ->
+        {:noreply,
+         redirect(socket, to: Routes.form_path(socket, :index, socket.assigns.current_project.id))}
+
+      {:error, changeset} ->
+        {:noreply, socket |> assign(:changeset, changeset) |> put_default_assigns()}
+    end
+  end
+
+  def handle_event("reset_email", %{"email" => name}, socket) do
+    params =
+      Form.new_email()
+      |> Map.from_struct()
+      |> Map.update!(:editor_config, &Map.from_struct/1)
+      |> Map.new(fn {key, value} -> {to_string(key), value} end)
+
+    {:noreply, put_email_params(socket, name, params)}
   end
 
   @impl true
@@ -146,6 +162,39 @@ defmodule KeilaWeb.FormEditLive do
       |> put_default_assigns()
 
     {:noreply, socket}
+  end
+
+  @impl true
+  def handle_info({:email_dialog, name, params}, socket) do
+    params = Map.merge(Map.get(socket.assigns.email_params, name, %{}), params)
+    {:noreply, put_email_params(socket, name, params)}
+  end
+
+  # Stores email params, then updates form changeset with them.
+  # Email params are stored separately because they don't come
+  # from an input in the form and need to be re-merged with the
+  # form params when updating the changeset.
+  defp put_email_params(socket, name, params) do
+    changeset = Form.update_changeset(socket.assigns.changeset, %{name => params})
+
+    socket
+    |> update(:email_params, &Map.put(&1, name, params))
+    |> put_form_changeset(changeset)
+  end
+
+  defp merge_email_params(params, socket) do
+    Map.merge(params, socket.assigns.email_params)
+  end
+
+  defp put_form_changeset(socket, changeset) do
+    changeset =
+      if changeset.valid?,
+        do: changeset,
+        else: Ecto.Changeset.apply_action(changeset, :update) |> elem(1)
+
+    socket
+    |> assign(:changeset, changeset)
+    |> put_default_assigns()
   end
 
   defp put_default_assigns(socket) do

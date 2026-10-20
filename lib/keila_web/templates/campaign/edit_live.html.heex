@@ -146,6 +146,7 @@
         type={settings.type}
         config={%Keila.Mailings.Email.EditorConfig{enable_wysiwyg: settings.enable_wysiwyg}}
         project_id={@current_project.id}
+        on_update={&send(self(), {:email_editor, &1})}
       />
     </.form>
   </div>

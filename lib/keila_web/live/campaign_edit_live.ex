@@ -163,7 +163,7 @@ defmodule KeilaWeb.CampaignEditLive do
 
   # Content changed by the email editor component (e.g. merged template slots).
   @impl true
-  def handle_info({:email_editor, _id, params}, socket) do
+  def handle_info({:email_editor, params}, socket) do
     changeset = merged_changeset(socket, params)
     {:noreply, put_changesets(socket, changeset)}
   end

@@ -1,4 +1,7 @@
 <div id={@id} class="flex flex-col w-full">
+  <div :if={@help != []} class="markdown text-sm text-gray-300">
+    {render_slot(@help)}
+  </div>
   <%= cond do %>
     <% @type == :markdown && @config.enable_wysiwyg -> %>
       {textarea(@form, :text_body, id: "#{@id}-text-body", class: "hidden")}

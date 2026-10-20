@@ -1,0 +1,93 @@
+<div id={@id}>
+  <div
+    :if={@changeset}
+    id={"#{@id}-dialog"}
+    x-data
+    class="fixed z-20 inset-0 bg-black/90 flex items-stretch justify-center p-4 sm:p-8"
+  >
+    <div
+      class="bg-gray-900 rounded-lg shadow-xl w-full max-w-6xl p-6 flex flex-col gap-4 min-h-0"
+      role="dialog"
+      aria-modal="true"
+    >
+      <.form
+        :let={f}
+        for={@changeset}
+        as={:email}
+        id={"#{@id}-form"}
+        phx-change="change"
+        phx-submit="confirm"
+        phx-target={@myself}
+        class="flex flex-col gap-4 flex-grow min-h-0"
+      >
+        <div class="tabs flex flex-col flex-grow min-h-0">
+          <div class="grid grid-cols-[1fr_auto_1fr] items-end gap-4">
+            <div>
+              <button
+                type="button"
+                class={["tab-label", @tab == :settings && "active"]}
+                phx-click="show_settings"
+                phx-target={@myself}
+              >
+                {gettext("Settings")}
+              </button>
+              <button
+                type="button"
+                class={["tab-label", @tab == :content && "active"]}
+                phx-click="show_content"
+                phx-target={@myself}
+              >
+                {gettext("Content")}
+              </button>
+            </div>
+            <h2 class="text-2xl self-center">{@title}</h2>
+            <div class="flex flex-row justify-end gap-4 pb-2">
+              <button
+                type="button"
+                class="button button--text button--large"
+                phx-click="cancel"
+                phx-target={@myself}
+              >
+                {gettext("Cancel")}
+              </button>
+              <button
+                type="submit"
+                class="button button--cta button--large"
+                @click="setUnsavedReminder(true)"
+              >
+                {gettext("Ok")}
+              </button>
+            </div>
+          </div>
+          <div class="tab-content flex-grow min-h-0">
+            {with_errors(f, body_field(get_field(@changeset, :type))) do
+              [gettext("Content:")]
+            end}
+            <%= if @tab == :settings do %>
+              {render("_settings.html",
+                form: f,
+                type: get_field(@changeset, :type),
+                templates: @templates,
+                subject_placeholder: @subject_placeholder
+              )}
+            <% else %>
+              <.live_component
+                module={KeilaWeb.EmailEditorLiveComponent}
+                id={"#{@id}-editor"}
+                on_update={&Phoenix.LiveView.send_update(@myself, editor_params: &1)}
+                form={f}
+                type={get_field(@changeset, :type)}
+                config={editor_config(@changeset)}
+                project_id={@project_id}
+                preview_assigns={@preview_assigns}
+                body_placeholder={@body_placeholder}
+                preprocess_preview={@preprocess_preview}
+                help={@help}
+              />
+            <% end %>
+          </div>
+        </div>
+      </.form>
+    </div>
+  </div>
+</div>

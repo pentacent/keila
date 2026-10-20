@@ -110,4 +110,18 @@ defmodule Keila.Mailings.DoubleOptInMessageTest do
       assert output.subject == DoubleOptInMessage.default_subject()
     end
   end
+
+  describe "put_default_content/1" do
+    test "fills nil and empty subject and body" do
+      for empty <- [nil, ""] do
+        email = %Keila.Mailings.Email{type: :markdown, subject: empty, text_body: empty}
+
+        assert %{subject: subject, text_body: body} =
+                 DoubleOptInMessage.put_default_content(email)
+
+        assert subject == DoubleOptInMessage.default_subject()
+        assert body == DoubleOptInMessage.default_markdown_body()
+      end
+    end
+  end
 end

@@ -100,6 +100,16 @@ defmodule Keila.Mailings.DoubleOptInMessage do
     """)
   end
 
+  @doc """
+  Fills empty subject and/or Markdown body with default content.
+  """
+  @spec put_default_content(Email.t()) :: Email.t()
+  def put_default_content(email) do
+    email
+    |> maybe_put_default_subject()
+    |> maybe_put_default_body()
+  end
+
   defp render(form_params, unsubscribe_link, assigns \\ %{}) do
     form_params
     |> to_input(assigns)
@@ -112,8 +122,7 @@ defmodule Keila.Mailings.DoubleOptInMessage do
          assigns
        ) do
     (email || %Email{type: :markdown})
-    |> maybe_put_default_subject()
-    |> maybe_put_default_body()
+    |> put_default_content()
     |> fetch_template(form.project_id)
     |> Email.to_input(nil, build_assigns(assigns, form_params))
   end
@@ -130,13 +139,14 @@ defmodule Keila.Mailings.DoubleOptInMessage do
     |> Map.put("contact", form_params.params)
   end
 
-  defp maybe_put_default_subject(%Email{subject: nil} = email),
+  defp maybe_put_default_subject(%Email{subject: empty} = email) when empty in [nil, ""],
     do: %{email | subject: default_subject()}
 
   defp maybe_put_default_subject(email), do: email
 
-  defp maybe_put_default_body(%Email{type: :markdown, text_body: nil} = email),
-    do: %{email | text_body: default_markdown_body()}
+  defp maybe_put_default_body(%Email{type: :markdown, text_body: empty} = email)
+       when empty in [nil, ""],
+       do: %{email | text_body: default_markdown_body()}
 
   defp maybe_put_default_body(email), do: email
 

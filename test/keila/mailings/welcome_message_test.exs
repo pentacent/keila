@@ -147,4 +147,16 @@ defmodule Keila.Mailings.WelcomeMessageTest do
       assert output.subject == WelcomeMessage.default_subject()
     end
   end
+
+  describe "put_default_content/1" do
+    test "fills nil and empty subject and body" do
+      for empty <- [nil, ""] do
+        email = %Keila.Mailings.Email{type: :markdown, subject: empty, text_body: empty}
+
+        assert %{subject: subject, text_body: body} = WelcomeMessage.put_default_content(email)
+        assert subject == WelcomeMessage.default_subject()
+        assert body == WelcomeMessage.default_markdown_body()
+      end
+    end
+  end
 end

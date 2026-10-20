@@ -6,9 +6,8 @@ defmodule KeilaWeb.EmailEditorLiveComponent do
   must be provided as the `form` attribute. The form must be built from a
   changeset of a `Campaign` or `Email`.
 
-  The parent must handle both input changes via `phx-change` and the
-  `{:email_editor, id, params}` message via `handle_info/2` to update
-  the form changeset.
+  The parent must handle both input changes via `phx-change` and changes
+  from the editor via `on_update` to update the form changeset.
 
   `_wysiwyg_dialogs.html` and `_preview_dialog.html` from
   `KeilaWeb.EmailEditorView` must be rendered once per page by the parent,
@@ -18,11 +17,18 @@ defmodule KeilaWeb.EmailEditorLiveComponent do
 
   * `id`
   * `form` - the parent's `Phoenix.HTML.Form`
+  * `on_update` - callback for receiving params from changes made by the editor server-side
   * `type` - `:text`, `:markdown`, `:block`, `:mjml`, or `:html`
   * `project_id` - used to fetch the selected template
   * `config` - `Email.EditorConfig` (default: `%Email.EditorConfig{}`)
-  * `preview_assigns` - assigns for the preview (default `%{}`)
+  * `preview_assigns` - assigns for the preview
   * `preview_contact` - contact for the preview (default: sample contact)
+  * `body_placeholder` - placeholder of the plain Markdown editor
+  * `preprocess_preview` - applied to the content before rendering the preview
+
+  ## Slots
+
+  * `help` - help text shown above the editor
   """
   use KeilaWeb, :live_component
 
@@ -56,6 +62,9 @@ defmodule KeilaWeb.EmailEditorLiveComponent do
       |> assign_new(:config, fn -> %Email.EditorConfig{} end)
       |> assign_new(:preview_assigns, fn -> %{} end)
       |> assign_new(:preview_contact, fn -> @preview_contact end)
+      |> assign_new(:body_placeholder, fn -> nil end)
+      |> assign_new(:preprocess_preview, fn -> &Function.identity/1 end)
+      |> assign_new(:help, fn -> [] end)
       |> fetch_template()
       |> put_preview()
 
@@ -106,7 +115,7 @@ defmodule KeilaWeb.EmailEditorLiveComponent do
   end
 
   defp send_change(socket, params) do
-    send(self(), {:email_editor, socket.assigns.id, params})
+    socket.assigns.on_update.(params)
     {:noreply, socket}
   end
 
@@ -146,7 +155,11 @@ defmodule KeilaWeb.EmailEditorLiveComponent do
   defp put_template(content, _template), do: content
 
   defp render_preview(assigns, content) do
-    input = Renderable.to_input(content, assigns.preview_contact, assigns.preview_assigns)
+    input =
+      content
+      |> assigns.preprocess_preview.()
+      |> Renderable.to_input(assigns.preview_contact, assigns.preview_assigns)
+
     output = Renderer.render_preview(input)
 
     output.html_body || KeilaWeb.CampaignView.plain_text_preview(output.text_body)

@@ -38,800 +38,804 @@
   </div>
 </div>
 
-<div
-  class="container grid grid-cols-3 gap-4 tabs"
-  x-data="{tab: 'settings', showClipboardMessage: false}"
->
-  <.form
-    :let={f}
-    for={@changeset}
-    id="form"
-    action={Routes.form_path(@socket, :post_edit, @current_project.id, @form.id)}
-    phx-change="form_updated"
-    x-on:change="setUnsavedReminder(true)"
-  >
-    <div class="flex gap-1 flex-wrap">
-      <a
-        href="#"
-        class="tab-label"
-        x-bind:class="{ 'active': tab === 'settings' }"
-        @click.prevent="tab = 'settings'"
-        phx-click="set_tab"
-        phx-value-tab="settings"
-      >
-        {gettext("Settings")}
-      </a>
-      <a
-        href="#"
-        class="tab-label"
-        x-bind:class="{ 'active': tab === 'fields' }"
-        @click.prevent="tab = 'fields'"
-        phx-click="set_tab"
-        phx-value-tab="fields"
-      >
-        {gettext("Fields")}
-      </a>
+<div class="container tabs" x-data="{tab: 'settings', showClipboardMessage: false}">
+  <div class="flex gap-1 flex-wrap">
+    <a
+      href="#"
+      class="tab-label"
+      x-bind:class="{ 'active': tab === 'settings' }"
+      @click.prevent="tab = 'settings'"
+      phx-click="set_tab"
+      phx-value-tab="settings"
+    >
+      {gettext("Settings")}
+    </a>
+    <a
+      href="#"
+      class="tab-label"
+      x-bind:class="{ 'active': tab === 'fields' }"
+      @click.prevent="tab = 'fields'"
+      phx-click="set_tab"
+      phx-value-tab="fields"
+    >
+      {gettext("Fields")}
+    </a>
+    <a
+      href="#"
+      class="tab-label"
+      x-bind:class="{ 'active': tab === 'style' }"
+      @click.prevent="tab = 'style'"
+      phx-click="set_tab"
+      phx-value-tab="style"
+    >
+      {gettext("Style")}
+    </a>
+    <a
+      href="#"
+      class="tab-label"
+      x-bind:class="{ 'active': tab === 'double-opt-in' }"
+      @click.prevent="tab = 'double-opt-in'"
+      phx-click="set_tab"
+      phx-value-tab="double-opt-in"
+    >
+      {gettext("Double Opt-in")}
+    </a>
+    <a
+      href="#"
+      class="tab-label"
+      x-bind:class="{ 'active': tab === 'welcome-email' }"
+      @click.prevent="tab = 'welcome-email'"
+      phx-click="set_tab"
+      phx-value-tab="welcome-email"
+    >
+      {gettext("Welcome Email")}
+    </a>
+    <a
+      href="#"
+      class="tab-label"
+      x-bind:class="{ 'active': tab === 'share' }"
+      @click.prevent="tab = 'share'"
+      phx-click="set_tab"
+      phx-value-tab="share"
+    >
+      {gettext("Share & Embed")}
+    </a>
+  </div>
 
-      <a
-        href="#"
-        class="tab-label"
-        x-bind:class="{ 'active': tab === 'style' }"
-        @click.prevent="tab = 'style'"
-        phx-click="set_tab"
-        phx-value-tab="style"
-      >
-        {gettext("Style")}
-      </a>
-      <a
-        href="#"
-        class="tab-label"
-        x-bind:class="{ 'active': tab === 'double-opt-in' }"
-        @click.prevent="tab = 'double-opt-in'"
-        phx-click="set_tab"
-        phx-value-tab="double-opt-in"
-      >
-        {gettext("Double Opt-in")}
-      </a>
-      <a
-        href="#"
-        class="tab-label"
-        x-bind:class="{ 'active': tab === 'welcome-email' }"
-        @click.prevent="tab = 'welcome-email'"
-        phx-click="set_tab"
-        phx-value-tab="welcome-email"
-      >
-        {gettext("Welcome Email")}
-      </a>
-    </div>
-
-    <div class="flex flex-col gap-2 tab-content bg-gray-800" x-show="tab === 'settings'">
-      <%= inputs_for(f, :settings, fn fs -> %>
-        <div class="flex flex-col">
-          {label(f, :name, gettext("Name"))}
-          <%= with_validation(f, :name) do %>
-            {text_input(f, :name, class: "text-black")}
-          <% end %>
-        </div>
-        <div class="flex flex-col">
-          {label(fs, :submit_label, gettext("Button label"))}
-          <%= with_validation(fs, :submit_label) do %>
-            {text_input(fs, :submit_label, class: "text-black")}
-          <% end %>
-        </div>
-        <div class="flex flex-col">
-          {label(fs, :intro_text, gettext("Intro text"))}
-          <%= with_validation(fs, :intro_text) do %>
-            {text_input(fs, :intro_text, class: "text-black")}
-          <% end %>
-        </div>
-        <div class="flex flex-col">
-          {label(fs, :fine_print, gettext("Fine print"))}
-          <%= with_validation(fs, :fine_print) do %>
-            {textarea(fs, :fine_print, class: "text-black", rows: 3)}
-          <% end %>
-        </div>
-        <%= with_validation(fs, :captcha_required) do %>
-          <%= label(fs, :captcha_required) do %>
-            {checkbox(fs, :captcha_required, class: "text-emerald-500")}
-            {gettext("Require captcha")}
-          <% end %>
-        <% end %>
-        <div class="flex flex-col">
-          {label(fs, :success_text, gettext("Thank you message"))}
-          <%= with_validation(fs, :success_text) do %>
-            {text_input(fs, :success_text, class: "text-black")}
-          <% end %>
-        </div>
-        <div class="flex flex-col">
-          {label(fs, :success_text, gettext("Thank you redirect URL"))}
-          <%= with_validation(fs, :success_url) do %>
-            {url_input(fs, :success_url, class: "text-black")}
-          <% end %>
-        </div>
-        <%= with_validation(fs, :csrf_disabled) do %>
-          <%= label(fs, :csrf_disabled) do %>
-            {checkbox(fs, :csrf_disabled, class: "text-emerald-500")}
-            {gettext("Allow embedding as HTML")}
-          <% end %>
-        <% end %>
-      <% end) %>
-    </div>
-
-    <div class="flex flex-col gap-2 tab-content bg-gray-800" x-show="tab === 'fields'">
-      <.inputs_for :let={fs} field={f[:field_settings]} ) %>
-        <div class="flex flex-col gap-2" x-data="{cast: $el.querySelector('input.cast').checked}">
-          {hidden_input(fs, :field)}
-          <% field = fs.source.changes[:field] || fs.data.field %>
-          <% key = fs.source.changes[:key] || fs.data.key %>
-
-          <%= case field do %>
-            <% :email -> %>
-              <h3 class="font-bold">
-                {checkbox(fs, :cast, x_model: "cast", class: "cast hidden")}
-                {gettext("Email")}
-              </h3>
-            <% :first_name -> %>
-              <h3 class="font-bold pt-4 border-solid border-t-2 border-gray-600">
-                <%= label(fs, :cast) do %>
-                  {checkbox(fs, :cast, x_model: "cast", class: "cast")}
-                  {gettext("First name")}
-                <% end %>
-              </h3>
-            <% :last_name -> %>
-              <h3 class="font-bold pt-4 border-solid border-t-2 border-gray-600">
-                <%= label(fs, :cast) do %>
-                  {checkbox(fs, :cast, x_model: "cast", class: "cast")}
-                  {gettext("Last name")}
-                <% end %>
-              </h3>
-            <% :data -> %>
-              <h3 class="font-bold pt-4 border-solid border-t-2 border-gray-600">
-                <%= label(fs, :cast) do %>
-                  {checkbox(fs, :cast, x_model: "cast", class: "cast")}
-                  {gettext("Custom field: data.%{key}", key: key)}
-                <% end %>
-              </h3>
-          <% end %>
-
-          <%= if field != :email do %>
-            <div class="flex flex-col" x-show="cast">
-              <%= with_validation(fs, :required) do %>
-                <%= label(fs, :required) do %>
-                  {checkbox(fs, :required)}
-                  {gettext("Require")}
-                <% end %>
-              <% end %>
-            </div>
-          <% end %>
-
-          <%= if field == :data do %>
-            <div class="flex flex-col" x-show="cast">
-              {select(
-                fs,
-                :type,
-                [
-                  {gettext("Text"), "string"},
-                  {gettext("Email"), "email"},
-                  {gettext("Number"), "integer"},
-                  {gettext("Checkbox"), "boolean"},
-                  {gettext("Dropdown"), "enum"},
-                  {gettext("Tags"), "tags"}
-                ],
-                class: "text-black"
-              )}
-            </div>
-            <div class="flex flex-col" x-show="cast">
-              {label(fs, :key, gettext("Data Key"))}
-              <%= with_validation(fs, :key) do %>
-                {text_input(fs, :key, class: "text-black", required: true)}
-              <% end %>
-              <div class="text-xs">
-                {gettext_md(
-                  """
-                  You can use data from this field as
-                  `{{ contact.data.%{key} }}` in your emails or segments.
-                  """,
-                  key: key
-                )}
-              </div>
-              <br />
-            </div>
-          <% end %>
-
-          <div class="flex flex-col" x-show="cast">
-            {label(fs, :label, gettext("Label"))}
-            <%= with_validation(fs, :label) do %>
-              {text_input(fs, :label, class: "text-black")}
+  <div class="grid grid-cols-4 gap-4 p-4 ring-1 ring-inset ring-gray-600 bg-gray-800">
+    <.form
+      :let={f}
+      for={@changeset}
+      id="form"
+      phx-change="form_updated"
+      phx-submit="save"
+      x-on:change="setUnsavedReminder(true)"
+    >
+      <div class="flex flex-col gap-4" x-show="tab === 'settings'">
+        <%= inputs_for(f, :settings, fn fs -> %>
+          <div class="flex flex-col">
+            {label(f, :name, gettext("Name"))}
+            <%= with_validation(f, :name) do %>
+              {text_input(f, :name, class: "text-black")}
             <% end %>
           </div>
+          <div class="flex flex-col">
+            {label(fs, :submit_label, gettext("Button label"))}
+            <%= with_validation(fs, :submit_label) do %>
+              {text_input(fs, :submit_label, class: "text-black")}
+            <% end %>
+          </div>
+          <div class="flex flex-col">
+            {label(fs, :intro_text, gettext("Intro text"))}
+            <%= with_validation(fs, :intro_text) do %>
+              {text_input(fs, :intro_text, class: "text-black")}
+            <% end %>
+          </div>
+          <div class="flex flex-col">
+            {label(fs, :fine_print, gettext("Fine print"))}
+            <%= with_validation(fs, :fine_print) do %>
+              {textarea(fs, :fine_print, class: "text-black", rows: 3)}
+            <% end %>
+          </div>
+          <%= with_validation(fs, :captcha_required) do %>
+            <%= label(fs, :captcha_required) do %>
+              {checkbox(fs, :captcha_required, class: "text-emerald-500")}
+              {gettext("Require captcha")}
+            <% end %>
+          <% end %>
+          <div class="flex flex-col">
+            {label(fs, :success_text, gettext("Thank you message"))}
+            <%= with_validation(fs, :success_text) do %>
+              {text_input(fs, :success_text, class: "text-black")}
+            <% end %>
+          </div>
+          <div class="flex flex-col">
+            {label(fs, :success_text, gettext("Thank you redirect URL"))}
+            <%= with_validation(fs, :success_url) do %>
+              {url_input(fs, :success_url, class: "text-black")}
+            <% end %>
+          </div>
+        <% end) %>
+      </div>
 
-          <%= case Ecto.Changeset.get_field(fs.source, :type) do %>
-            <% type when type in [:string, :email, nil] -> %>
+      <div class="flex flex-col gap-4" x-show="tab === 'fields'">
+        <.inputs_for :let={fs} field={f[:field_settings]} ) %>
+          <div
+            class="flex flex-col gap-2"
+            x-data="{cast: $el.querySelector('input.cast').checked}"
+          >
+            {hidden_input(fs, :field)}
+            <% field = fs.source.changes[:field] || fs.data.field %>
+            <% key = fs.source.changes[:key] || fs.data.key %>
+
+            <%= case field do %>
+              <% :email -> %>
+                <h3 class="font-bold">
+                  {checkbox(fs, :cast, x_model: "cast", class: "cast hidden")}
+                  {gettext("Email")}
+                </h3>
+              <% :first_name -> %>
+                <h3 class="font-bold pt-4 border-solid border-t-2 border-gray-600">
+                  <%= label(fs, :cast) do %>
+                    {checkbox(fs, :cast, x_model: "cast", class: "cast")}
+                    {gettext("First name")}
+                  <% end %>
+                </h3>
+              <% :last_name -> %>
+                <h3 class="font-bold pt-4 border-solid border-t-2 border-gray-600">
+                  <%= label(fs, :cast) do %>
+                    {checkbox(fs, :cast, x_model: "cast", class: "cast")}
+                    {gettext("Last name")}
+                  <% end %>
+                </h3>
+              <% :data -> %>
+                <h3 class="font-bold pt-4 border-solid border-t-2 border-gray-600">
+                  <%= label(fs, :cast) do %>
+                    {checkbox(fs, :cast, x_model: "cast", class: "cast")}
+                    {gettext("Custom field: data.%{key}", key: key)}
+                  <% end %>
+                </h3>
+            <% end %>
+
+            <%= if field != :email do %>
               <div class="flex flex-col" x-show="cast">
-                {label(fs, :placeholder, gettext("Placeholder"))}
-                <%= with_validation(fs, :placeholder) do %>
-                  {text_input(fs, :placeholder, class: "text-black")}
+                <%= with_validation(fs, :required) do %>
+                  <%= label(fs, :required) do %>
+                    {checkbox(fs, :required)}
+                    {gettext("Require")}
+                  <% end %>
                 <% end %>
               </div>
-            <% type when type in [:enum, :tags] -> %>
-              <div class="flex flex-col mt-2" x-show="cast">
-                {label(fs, :allowed_values, gettext("Options"))}
-                <table class="w-full">
-                  <tr>
-                    <th>Value</th>
-                    <th>Label</th>
-                    <th></th>
-                  </tr>
-                  <%= inputs_for(fs, :allowed_values, fn fo -> %>
+            <% end %>
+
+            <%= if field == :data do %>
+              <div class="flex flex-col" x-show="cast">
+                {select(
+                  fs,
+                  :type,
+                  [
+                    {gettext("Text"), "string"},
+                    {gettext("Email"), "email"},
+                    {gettext("Number"), "integer"},
+                    {gettext("Checkbox"), "boolean"},
+                    {gettext("Dropdown"), "enum"},
+                    {gettext("Tags"), "tags"}
+                  ],
+                  class: "text-black"
+                )}
+              </div>
+              <div class="flex flex-col" x-show="cast">
+                {label(fs, :key, gettext("Data Key"))}
+                <%= with_validation(fs, :key) do %>
+                  {text_input(fs, :key, class: "text-black", required: true)}
+                <% end %>
+                <div class="text-xs">
+                  {gettext_md(
+                    """
+                    You can use data from this field as
+                    `{{ contact.data.%{key} }}` in your emails or segments.
+                    """,
+                    key: key
+                  )}
+                </div>
+                <br />
+              </div>
+            <% end %>
+
+            <div class="flex flex-col" x-show="cast">
+              {label(fs, :label, gettext("Label"))}
+              <%= with_validation(fs, :label) do %>
+                {text_input(fs, :label, class: "text-black")}
+              <% end %>
+            </div>
+
+            <%= case Ecto.Changeset.get_field(fs.source, :type) do %>
+              <% type when type in [:string, :email, nil] -> %>
+                <div class="flex flex-col" x-show="cast">
+                  {label(fs, :placeholder, gettext("Placeholder"))}
+                  <%= with_validation(fs, :placeholder) do %>
+                    {text_input(fs, :placeholder, class: "text-black")}
+                  <% end %>
+                </div>
+              <% type when type in [:enum, :tags] -> %>
+                <div class="flex flex-col mt-2" x-show="cast">
+                  {label(fs, :allowed_values, gettext("Options"))}
+                  <table class="w-full">
                     <tr>
-                      <td>
-                        {text_input(fo, :value, class: "w-full bg-transparent text-white")}
-                      </td>
-                      <td>
-                        {text_input(fo, :label, class: "w-full bg-transparent text-white")}
-                      </td>
-                      <td>
-                        <button
-                          class="button button--text"
-                          type="button"
-                          phx-click="remove_allowed_value"
-                          phx-value-fs-id={Ecto.Changeset.get_field(fs.source, :id)}
-                          phx-value-av-id={Ecto.Changeset.get_field(fo.source, :id)}
-                        >
-                          <span class="w-4">{render_icon(:trash)}</span>
-                        </button>
-                      </td>
+                      <th>Value</th>
+                      <th>Label</th>
+                      <th></th>
                     </tr>
-                  <% end) %>
-                </table>
+                    <%= inputs_for(fs, :allowed_values, fn fo -> %>
+                      <tr>
+                        <td>
+                          {text_input(fo, :value, class: "w-full bg-transparent text-white")}
+                        </td>
+                        <td>
+                          {text_input(fo, :label, class: "w-full bg-transparent text-white")}
+                        </td>
+                        <td>
+                          <button
+                            class="button button--text"
+                            type="button"
+                            phx-click="remove_allowed_value"
+                            phx-value-fs-id={Ecto.Changeset.get_field(fs.source, :id)}
+                            phx-value-av-id={Ecto.Changeset.get_field(fo.source, :id)}
+                          >
+                            <span class="w-4">{render_icon(:trash)}</span>
+                          </button>
+                        </td>
+                      </tr>
+                    <% end) %>
+                  </table>
+                  <button
+                    type="button"
+                    class="button button--sm inline-flex self-start mt-4"
+                    phx-click="add_allowed_value"
+                    phx-value-fs-id={Ecto.Changeset.get_field(fs.source, :id)}
+                  >
+                    {gettext("Add option")}
+                  </button>
+                </div>
+              <% _other -> %>
+                <br />
+            <% end %>
+
+            <%= if field == :data do %>
+              <div>
                 <button
+                  class="button button--text"
                   type="button"
-                  class="button button--sm inline-flex self-start mt-4"
-                  phx-click="add_allowed_value"
+                  phx-click="remove_custom_field"
                   phx-value-fs-id={Ecto.Changeset.get_field(fs.source, :id)}
                 >
-                  {gettext("Add option")}
+                  {gettext("Remove field")}
+                  <span class="w-4">{render_icon(:trash)}</span>
                 </button>
               </div>
-            <% _other -> %>
-              <br />
-          <% end %>
+            <% end %>
+          </div>
+        </.inputs_for>
+        <div class="mt-4">
+          <button type="button" class="button button--cta" phx-click="add_custom_field">
+            {render_icon(:plus)} {gettext("Add custom field")}
+          </button>
+        </div>
+      </div>
 
-          <%= if field == :data do %>
-            <div>
+      <div class="flex flex-col gap-4" x-show="tab === 'double-opt-in'">
+        <%= if @double_opt_in_available do %>
+          <div
+            class="flex flex-col gap-4"
+            x-data="{enable: $el.querySelector('input[type=checkbox]').checked}"
+          >
+            <p class="text-gray-300">
+              {gettext(
+                "New contacts have to confirm their email after they submit the form. Contacts are only created if the confirmation is successful."
+              )}
+            </p>
+
+            <%= inputs_for(f, :settings, [skip_hidden: true], fn fs -> %>
+              <%= with_validation(fs, :double_opt_in_required) do %>
+                <%= label(fs, :double_opt_in_required) do %>
+                  {checkbox(fs, :double_opt_in_required,
+                    class: "text-emerald-500",
+                    x_model: "enable"
+                  )}
+                  {gettext("Require double opt-in")}
+                <% end %>
+              <% end %>
+
+              <template x-if="enable">
+                <div class="form-row">
+                  {label(f, :sender_id, gettext("Sender"))}
+                  <%= if Enum.any?(@senders) do %>
+                    <%= with_validation(f, :sender_id) do %>
+                      {select(
+                        f,
+                        :sender_id,
+                        [{gettext("Select a sender"), nil}] ++
+                          Enum.map(
+                            @senders,
+                            &{"#{&1.name} (#{&1.from_name} <#{&1.from_email}>)", &1.id}
+                          ),
+                        id: "form_settings_double_opt_in_sender_id",
+                        name: "form_settings_double_opt_in_sender_id",
+                        class: "text-black w-full",
+                        x_ref: "double_opt_in_sender_id",
+                        phx_update: "ignore",
+                        "x-on:input.stop":
+                          "$dispatch('sender-changed', {value: $event.target.value})",
+                        "x-on:change.stop": true,
+                        "x-on:sender-changed.window":
+                          "$refs.double_opt_in_sender_id.value = $event.detail.value"
+                      )}
+                    <% end %>
+                  <% else %>
+                    <div class="flex flex-row gap-4 items-center">
+                      <span class="text-red-700 flex w-12">
+                        {render_icon(:exclamation_triangle)}
+                      </span>
+                      <div>
+                        {gettext_md(
+                          "**Important:** You must create and select a sender to send emails."
+                        )}
+                        <br />
+                        <a
+                          href={Routes.sender_path(@socket, :new, @current_project.id)}
+                          class="button button--cta"
+                        >
+                          {gettext("Create your first sender")}
+                        </a>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              </template>
+
+              <div class="form-row flex flex-col gap-2" x-show="enable">
+                <div class="flex flex-col items-start gap-2">
+                  <button
+                    type="button"
+                    class="button button--cta button--large w-full justify-center"
+                    phx-click="open"
+                    phx-target="#double_opt_in_email"
+                  >
+                    {render_icon(:pencil_alt)}
+                    {gettext("Edit email")}
+                  </button>
+                  <button
+                    type="button"
+                    class="button button--text button--small"
+                    phx-click="reset_email"
+                    phx-value-email="double_opt_in_email"
+                    data-confirm={
+                      gettext(
+                        "This will replace the email with the default content once you save the form."
+                      )
+                    }
+                  >
+                    {gettext("Reset to default")}
+                  </button>
+                </div>
+              </div>
+
+              <template x-if="enable">
+                <div class="form-row">
+                  {label(fs, :double_opt_in_message, gettext("Double Opt-in Info Message"))}
+                  <%= with_validation(fs, :double_opt_in_message) do %>
+                    <div class="text-xs">
+                      {gettext_md("""
+                      Custom message that is shown when a user submits the form and double opt-in
+                      is required.
+                      """)}
+                    </div>
+                    {text_input(fs, :double_opt_in_message, class: "text-black")}
+                  <% end %>
+                </div>
+              </template>
+
+              <template x-if="enable">
+                <div class="form-row">
+                  {label(fs, :success_text, gettext("Double Opt-in Info Redirect URL"))}
+                  <%= with_validation(fs, :double_opt_in_url) do %>
+                    <div class="text-xs">
+                      {gettext_md("""
+                      Custom URL to which users are redirected when they submit the form and double opt-in
+                      is required.
+                      """)}
+                    </div>
+                    {url_input(fs, :double_opt_in_url, class: "text-black")}
+                  <% end %>
+                </div>
+              </template>
+
+              <template x-if="enable">
+                <div class="form-row">
+                  {label(fs, :failure_text, gettext("Double Opt-in Failure Message"))}
+                  <%= with_validation(fs, :failure_text) do %>
+                    <div class="text-xs">
+                      {gettext_md("""
+                      Custom message that is shown when a double opt-in link has expired or
+                      has already been used.
+                      """)}
+                    </div>
+                    {text_input(fs, :failure_text, class: "text-black")}
+                  <% end %>
+                </div>
+              </template>
+
+              <template x-if="enable">
+                <div class="form-row">
+                  {label(fs, :failure_url, gettext("Double Opt-in Failure Redirect URL"))}
+                  <%= with_validation(fs, :failure_url) do %>
+                    <div class="text-xs">
+                      {gettext_md("""
+                      Custom URL to which users are redirected when a double opt-in link
+                      has expired or has already been used.
+                      """)}
+                    </div>
+                    {url_input(fs, :failure_url, class: "text-black")}
+                  <% end %>
+                </div>
+              </template>
+            <% end) %>
+          </div>
+        <% else %>
+          <div class="flex gap-4 items-center">
+            <span class="inline-flex h-12 w-12 flex-shrink-0">
+              {render_icon(:paper_airplane)}
+            </span>
+            <p class="text-2xl">
+              {gettext("Thanks for trying out Keila!")}
+            </p>
+          </div>
+          <p>
+            {dgettext(
+              "cloud",
+              "To prevent abuse by spammers, the double opt-in feature is currently only available if you have a subscription. Sorry for the inconvenience!"
+            )}
+          </p>
+          <p>
+            <a href={Routes.account_path(@socket, :edit)} class="button button--large button--cta">
+              {dgettext("cloud", "Start your subscription now")}
+            </a>
+          </p>
+        <% end %>
+      </div>
+
+      <div class="flex flex-col gap-4" x-show="tab === 'welcome-email'">
+        <%= if @welcome_email_available do %>
+          <div
+            class="flex flex-col gap-4"
+            x-data="{enable: $el.querySelector('input[type=checkbox]').checked}"
+          >
+            <p class="text-gray-300">
+              {gettext(
+                "The welcome email is sent to new contacts after they subscribe. If double opt-in is enabled, the email is sent after the confirmation link has been clicked."
+              )}
+            </p>
+
+            <%= inputs_for(f, :settings, [skip_hidden: true], fn fs -> %>
+              <%= with_validation(fs, :welcome_enabled) do %>
+                <%= label(fs, :welcome_enabled) do %>
+                  {checkbox(fs, :welcome_enabled,
+                    class: "text-emerald-500",
+                    x_model: "enable"
+                  )}
+                  {gettext("Send welcome email")}
+                <% end %>
+              <% end %>
+
+              <template x-if="enable">
+                <div class="form-row">
+                  {label(f, :sender_id, gettext("Sender"))}
+                  <%= if Enum.any?(@senders) do %>
+                    <%= with_validation(f, :sender_id) do %>
+                      {select(
+                        f,
+                        :sender_id,
+                        [{gettext("Select a sender"), nil}] ++
+                          Enum.map(
+                            @senders,
+                            &{"#{&1.name} (#{&1.from_name} <#{&1.from_email}>)", &1.id}
+                          ),
+                        id: "form_settings_welcome_sender_id",
+                        name: "form_settings_welcome_sender_id",
+                        class: "text-black w-full",
+                        x_ref: "welcome_sender_id",
+                        phx_update: "ignore",
+                        "x-on:input.stop":
+                          "$dispatch('sender-changed', {value: $event.target.value})",
+                        "x-on:change.stop": true,
+                        "x-on:sender-changed.window":
+                          "$refs.welcome_sender_id.value = $event.detail.value"
+                      )}
+                    <% end %>
+                  <% else %>
+                    <div class="flex flex-row gap-4 items-center">
+                      <span class="text-red-700 flex w-12">
+                        {render_icon(:exclamation_triangle)}
+                      </span>
+                      <div>
+                        {gettext_md(
+                          "**Important:** You must create and select a sender to send emails."
+                        )}
+                        <br />
+                        <a
+                          href={Routes.sender_path(@socket, :new, @current_project.id)}
+                          class="button button--cta"
+                        >
+                          {gettext("Create your first sender")}
+                        </a>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              </template>
+
+              <div class="form-row flex flex-col gap-2" x-show="enable">
+                <div class="flex flex-col items-start gap-2">
+                  <button
+                    type="button"
+                    class="button button--cta button--large w-full justify-center"
+                    phx-click="open"
+                    phx-target="#welcome_email"
+                  >
+                    {render_icon(:pencil_alt)}
+                    {gettext("Edit email")}
+                  </button>
+                  <button
+                    type="button"
+                    class="button button--text button--small"
+                    phx-click="reset_email"
+                    phx-value-email="welcome_email"
+                    data-confirm={
+                      gettext(
+                        "This will replace the email with the default content once you save the form."
+                      )
+                    }
+                  >
+                    {gettext("Reset to default")}
+                  </button>
+                </div>
+              </div>
+            <% end) %>
+          </div>
+        <% else %>
+          <div class="flex gap-4 items-center">
+            <span class="inline-flex h-12 w-12 flex-shrink-0">
+              {render_icon(:paper_airplane)}
+            </span>
+            <p class="text-2xl">
+              {gettext("Thanks for trying out Keila!")}
+            </p>
+          </div>
+          <p>
+            {dgettext(
+              "cloud",
+              "To prevent abuse by spammers, the welcome email feature is currently only available if you have a subscription. Sorry for the inconvenience!"
+            )}
+          </p>
+          <p>
+            <a href={Routes.account_path(@socket, :edit)} class="button button--large button--cta">
+              {dgettext("cloud", "Start your subscription now")}
+            </a>
+          </p>
+        <% end %>
+      </div>
+
+      <div class="flex flex-col gap-4" x-show="tab === 'style'">
+        <%= inputs_for(f, :settings, [skip_hidden: true], fn fs -> %>
+          <div class="flex flex-col">
+            {label(fs, :body_bg_color, gettext("Body background"))}
+            <%= with_validation(fs, :body_bg_color) do %>
+              {text_input(fs, :body_bg_color, class: "text-black", type: "color")}
+            <% end %>
+          </div>
+          <div class="flex flex-col">
+            {label(fs, :form_bg_color, gettext("Form background"))}
+            <%= with_validation(fs, :form_bg_color) do %>
+              {text_input(fs, :form_bg_color, class: "text-black", type: "color")}
+            <% end %>
+          </div>
+          <div class="flex flex-col">
+            {label(fs, :text_color, gettext("Form text color"))}
+            <%= with_validation(fs, :text_color) do %>
+              {text_input(fs, :text_color, class: "text-black", type: "color")}
+            <% end %>
+          </div>
+          <div class="flex flex-col">
+            {label(fs, :input_bg_color, gettext("Input background"))}
+            <%= with_validation(fs, :input_bg_color) do %>
+              {text_input(fs, :input_bg_color, class: "text-black", type: "color")}
+            <% end %>
+          </div>
+          <div class="flex flex-col">
+            {label(fs, :input_text_color, gettext("Input text color"))}
+            <%= with_validation(fs, :input_text_color) do %>
+              {text_input(fs, :input_text_color, class: "text-black", type: "color")}
+            <% end %>
+          </div>
+          <div class="flex flex-col">
+            {label(fs, :input_border_color, gettext("Input border color"))}
+            <%= with_validation(fs, :input_border_color) do %>
+              {text_input(fs, :input_border_color, class: "text-black", type: "color")}
+            <% end %>
+          </div>
+          <div class="flex flex-col">
+            {label(fs, :submit_bg_color, gettext("Submit button background"))}
+            <%= with_validation(fs, :submit_bg_color) do %>
+              {text_input(fs, :submit_bg_color, class: "text-black", type: "color")}
+            <% end %>
+          </div>
+          <div class="flex flex-col">
+            {label(fs, :submit_text_color, gettext("Submit text color"))}
+            <%= with_validation(fs, :submit_text_color) do %>
+              {text_input(fs, :submit_text_color, class: "text-black", type: "color")}
+            <% end %>
+          </div>
+        <% end) %>
+      </div>
+
+      <div class="flex flex-col gap-4" x-show="tab === 'share'">
+        <div class="flex flex-col gap-2">
+          <h2 class="font-bold">{gettext("Link to this form")}</h2>
+          <div class="flex items-start gap-4">
+            <input
+              type="text"
+              class="w-full bg-gray-900"
+              readonly
+              x-ref="form-link"
+              value={Routes.public_form_url(@socket, :show, @form.id)}
+            />
+            <button
+              type="button"
+              class="button"
+              @click.prevent="$refs['form-link'].select(); document.execCommand('copy'); showClipboardMessage = true; setTimeout(() => showClipboardMessage = false, 1000)"
+            >
+              {gettext("Copy")}
+            </button>
+          </div>
+        </div>
+
+        <%= inputs_for(f, :settings, [skip_hidden: true], fn fs -> %>
+          <%= with_validation(fs, :csrf_disabled) do %>
+            <%= label(fs, :csrf_disabled) do %>
+              {checkbox(fs, :csrf_disabled, class: "text-emerald-500")}
+              {gettext("Allow embedding as HTML")}
+            <% end %>
+          <% end %>
+        <% end) %>
+
+        <%= if @form_preview.settings.csrf_disabled do %>
+          <div class="flex flex-col gap-2">
+            <h2 class="font-bold">{gettext("Form HTML")}</h2>
+            <div class="flex items-start gap-4">
+              <textarea class="w-full bg-gray-900 text-sm" rows="8" x-ref="form-html"><%= @embed %></textarea>
               <button
-                class="button button--text"
                 type="button"
-                phx-click="remove_custom_field"
-                phx-value-fs-id={Ecto.Changeset.get_field(fs.source, :id)}
+                class="button"
+                @click.prevent="$refs['form-html'].select(); document.execCommand('copy'); showClipboardMessage = true; setTimeout(() => showClipboardMessage = false, 1000)"
               >
-                {gettext("Remove field")}
-                <span class="w-4">{render_icon(:trash)}</span>
+                {gettext("Copy")}
               </button>
             </div>
-          <% end %>
-        </div>
-      </.inputs_for>
-      <div class="mt-4">
-        <button type="button" class="button button--cta" phx-click="add_custom_field">
-          {render_icon(:plus)} {gettext("Add custom field")}
-        </button>
-      </div>
-    </div>
-
-    <div class="tab-content bg-gray-800" x-show="tab === 'double-opt-in'">
-      <%= if @double_opt_in_available do %>
-        <div
-          class="flex flex-col gap-4"
-          x-data="{enable: $el.querySelector('input[type=checkbox]').checked}"
-        >
-          <p class="text-sm text-gray-300">
-            {gettext(
-              "When enabled, a confirmation email will be sent to new contacts after they submit the form. The contact is only added to your contact list after they open the confirmation link."
-            )}
-          </p>
-
-          <%= inputs_for(f, :settings, [skip_hidden: true], fn fs -> %>
-            <%= with_validation(fs, :double_opt_in_required) do %>
-              <%= label(fs, :double_opt_in_required) do %>
-                {checkbox(fs, :double_opt_in_required,
-                  class: "text-emerald-500",
-                  x_model: "enable"
-                )}
-                {gettext("Require double opt-in")}
-              <% end %>
-            <% end %>
-
-            <template x-if="enable">
-              <div class="form-row">
-                {label(fs, :double_opt_in_subject, gettext("Custom email subject"))}
-                <%= with_validation(fs, :double_opt_in_subject) do %>
-                  {text_input(fs, :double_opt_in_subject,
-                    class: "text-black",
-                    placeholder: Keila.Mailings.DoubleOptInMessage.default_subject()
-                  )}
-                <% end %>
-              </div>
-            </template>
-
-            <template x-if="enable">
-              <div class="form-row">
-                {label(f, :sender_id, gettext("Sender"))}
-                <%= if Enum.any?(@senders) do %>
-                  <%= with_validation(f, :sender_id) do %>
-                    {select(
-                      f,
-                      :sender_id,
-                      [{gettext("Select a sender"), nil}] ++
-                        Enum.map(
-                          @senders,
-                          &{"#{&1.name} (#{&1.from_name} <#{&1.from_email}>)", &1.id}
-                        ),
-                      id: "form_settings_double_opt_in_sender_id",
-                      name: "form_settings_double_opt_in_sender_id",
-                      class: "text-black w-full",
-                      x_ref: "double_opt_in_sender_id",
-                      phx_update: "ignore",
-                      "x-on:input.stop":
-                        "$dispatch('sender-changed', {value: $event.target.value})",
-                      "x-on:change.stop": true,
-                      "x-on:sender-changed.window":
-                        "$refs.double_opt_in_sender_id.value = $event.detail.value"
-                    )}
-                  <% end %>
-                <% else %>
-                  <div class="flex flex-row gap-4 items-center">
-                    <span class="text-red-700 flex w-12">
-                      {render_icon(:exclamation_triangle)}
-                    </span>
-                    <div>
-                      {gettext_md(
-                        "**Important:** You must create and select a sender to send emails."
-                      )}
-                      <br />
-                      <a
-                        href={Routes.sender_path(@socket, :new, @current_project.id)}
-                        class="button button--cta"
-                      >
-                        {gettext("Create your first sender")}
-                      </a>
-                    </div>
-                  </div>
-                <% end %>
-              </div>
-            </template>
-
-            <template x-if="enable">
-              <div class="form-row">
-                {label(f, :template_id, gettext("Template"))}
-                <%= with_validation(f, :template_id) do %>
-                  {select(
-                    f,
-                    :template_id,
-                    [{gettext("Default"), nil} | Enum.map(@templates, &{&1.name, &1.id})],
-                    id: "form_settings_double_opt_in_template_id",
-                    name: "form_settings_double_opt_in_template_id",
-                    class: "text-black",
-                    x_ref: "double_opt_in_template_id",
-                    phx_update: "ignore",
-                    "x-on:input.stop":
-                      "$dispatch('template-changed', {value: $event.target.value})",
-                    "x-on:change.stop": true,
-                    "x-on:template-changed.window":
-                      "$refs.double_opt_in_template_id.value = $event.detail.value"
-                  )}
-                <% end %>
-              </div>
-            </template>
-
-            <template x-if="enable">
-              <div class="form-row">
-                {label(fs, :double_opt_in_markdown_body, gettext("Custom email text"))}
-                <div class="text-xs">
-                  {gettext_md("""
-                  You may use Liquid and Markdown in the email body.
-
-                  Use `[Confirm]({{ double_opt_in_link }})` to include the opt-in link.
-                  """)}
-                </div>
-                <br />
-                <%= with_validation(fs, :double_opt_in_markdown_body) do %>
-                  {textarea(fs, :double_opt_in_markdown_body,
-                    class: "text-black",
-                    rows: 8,
-                    placeholder: Keila.Mailings.DoubleOptInMessage.default_markdown_body()
-                  )}
-                <% end %>
-              </div>
-            </template>
-
-            <template x-if="enable">
-              <div class="form-row">
-                {label(fs, :double_opt_in_message, gettext("Double Opt-in Info Message"))}
-                <%= with_validation(fs, :double_opt_in_message) do %>
-                  <div class="text-xs">
-                    {gettext_md("""
-                    Custom message that is shown when a user submits the form and double opt-in
-                    is required.
-                    """)}
-                  </div>
-                  {text_input(fs, :double_opt_in_message, class: "text-black")}
-                <% end %>
-              </div>
-            </template>
-
-            <template x-if="enable">
-              <div class="form-row">
-                {label(fs, :success_text, gettext("Double Opt-in Info Redirect URL"))}
-                <%= with_validation(fs, :double_opt_in_url) do %>
-                  <div class="text-xs">
-                    {gettext_md("""
-                    Custom URL to which users are redirected when they submit the form and double opt-in
-                    is required.
-                    """)}
-                  </div>
-                  {url_input(fs, :double_opt_in_url, class: "text-black")}
-                <% end %>
-              </div>
-            </template>
-
-            <template x-if="enable">
-              <div class="form-row">
-                {label(fs, :failure_text, gettext("Double Opt-in Failure Message"))}
-                <%= with_validation(fs, :failure_text) do %>
-                  <div class="text-xs">
-                    {gettext_md("""
-                    Custom message that is shown when a double opt-in link has expired or
-                    has already been used.
-                    """)}
-                  </div>
-                  {text_input(fs, :failure_text, class: "text-black")}
-                <% end %>
-              </div>
-            </template>
-
-            <template x-if="enable">
-              <div class="form-row">
-                {label(fs, :failure_url, gettext("Double Opt-in Failure Redirect URL"))}
-                <%= with_validation(fs, :failure_url) do %>
-                  <div class="text-xs">
-                    {gettext_md("""
-                    Custom URL to which users are redirected when a double opt-in link
-                    has expired or has already been used.
-                    """)}
-                  </div>
-                  {url_input(fs, :failure_url, class: "text-black")}
-                <% end %>
-              </div>
-            </template>
-          <% end) %>
-        </div>
-      <% else %>
-        <div class="flex gap-4 items-center">
-          <span class="inline-flex h-12 w-12 flex-shrink-0">
-            {render_icon(:paper_airplane)}
-          </span>
-          <p class="text-2xl">
-            {gettext("Thanks for trying out Keila!")}
-          </p>
-        </div>
-        <p>
-          {dgettext(
-            "cloud",
-            "To prevent abuse by spammers, the double opt-in feature is currently only available if you have a subscription. Sorry for the inconvenience!"
-          )}
-        </p>
-        <p>
-          <a href={Routes.account_path(@socket, :edit)} class="button button--large button--cta">
-            {dgettext("cloud", "Start your subscription now")}
-          </a>
-        </p>
-      <% end %>
-    </div>
-
-    <div class="tab-content bg-gray-800" x-show="tab === 'welcome-email'">
-      <%= if @welcome_email_available do %>
-        <div
-          class="flex flex-col gap-4"
-          x-data="{enable: $el.querySelector('input[type=checkbox]').checked}"
-        >
-          <p class="text-sm text-gray-300">
-            {gettext(
-              "When enabled, a welcome email will be sent to new contacts after they subscribe. If double opt-in is enabled, the email will be sent after the contact confirms their email."
-            )}
-          </p>
-
-          <%= inputs_for(f, :settings, [skip_hidden: true], fn fs -> %>
-            <%= with_validation(fs, :welcome_enabled) do %>
-              <%= label(fs, :welcome_enabled) do %>
-                {checkbox(fs, :welcome_enabled,
-                  class: "text-emerald-500",
-                  x_model: "enable"
-                )}
-                {gettext("Send welcome email")}
-              <% end %>
-            <% end %>
-
-            <template x-if="enable">
-              <div class="form-row">
-                {label(fs, :welcome_subject, gettext("Email subject"))}
-                <%= with_validation(fs, :welcome_subject) do %>
-                  {text_input(fs, :welcome_subject,
-                    class: "text-black",
-                    placeholder: Keila.Mailings.WelcomeMessage.default_subject()
-                  )}
-                <% end %>
-              </div>
-            </template>
-
-            <template x-if="enable">
-              <div class="form-row">
-                {label(f, :sender_id, gettext("Sender"))}
-                <%= if Enum.any?(@senders) do %>
-                  <%= with_validation(f, :sender_id) do %>
-                    {select(
-                      f,
-                      :sender_id,
-                      [{gettext("Select a sender"), nil}] ++
-                        Enum.map(
-                          @senders,
-                          &{"#{&1.name} (#{&1.from_name} <#{&1.from_email}>)", &1.id}
-                        ),
-                      id: "form_settings_welcome_sender_id",
-                      name: "form_settings_welcome_sender_id",
-                      class: "text-black w-full",
-                      x_ref: "welcome_sender_id",
-                      phx_update: "ignore",
-                      "x-on:input.stop":
-                        "$dispatch('sender-changed', {value: $event.target.value})",
-                      "x-on:change.stop": true,
-                      "x-on:sender-changed.window":
-                        "$refs.welcome_sender_id.value = $event.detail.value"
-                    )}
-                  <% end %>
-                <% else %>
-                  <div class="flex flex-row gap-4 items-center">
-                    <span class="text-red-700 flex w-12">
-                      {render_icon(:exclamation_triangle)}
-                    </span>
-                    <div>
-                      {gettext_md(
-                        "**Important:** You must create and select a sender to send emails."
-                      )}
-                      <br />
-                      <a
-                        href={Routes.sender_path(@socket, :new, @current_project.id)}
-                        class="button button--cta"
-                      >
-                        {gettext("Create your first sender")}
-                      </a>
-                    </div>
-                  </div>
-                <% end %>
-              </div>
-            </template>
-
-            <template x-if="enable">
-              <div class="form-row">
-                {label(f, :template_id, gettext("Template"))}
-                <%= with_validation(f, :template_id) do %>
-                  {select(
-                    f,
-                    :template_id,
-                    [{gettext("Default"), nil} | Enum.map(@templates, &{&1.name, &1.id})],
-                    id: "form_settings_welcome_template_id",
-                    name: "form_settings_welcome_template_id",
-                    class: "text-black",
-                    x_ref: "welcome_template_id",
-                    phx_update: "ignore",
-                    "x-on:input.stop":
-                      "$dispatch('template-changed', {value: $event.target.value})",
-                    "x-on:change.stop": true,
-                    "x-on:template-changed.window":
-                      "$refs.welcome_template_id.value = $event.detail.value"
-                  )}
-                <% end %>
-              </div>
-            </template>
-
-            <template x-if="enable">
-              <div class="form-row">
-                {label(fs, :welcome_markdown_body, gettext("Email text"))}
-                <div class="text-xs">
-                  {gettext_md("""
-                  You may use Liquid and Markdown in the email body.
-
-                  Available variables: `{{ contact.email }}`, `{{ contact.first_name }}`, `{{ contact.last_name }}`, `{{ contact.data.* }}`
-                  """)}
-                </div>
-                <br />
-                <%= with_validation(fs, :welcome_markdown_body) do %>
-                  {textarea(fs, :welcome_markdown_body,
-                    class: "text-black",
-                    rows: 8,
-                    placeholder: Keila.Mailings.WelcomeMessage.default_markdown_body()
-                  )}
-                <% end %>
-              </div>
-            </template>
-          <% end) %>
-        </div>
-      <% else %>
-        <div class="flex gap-4 items-center">
-          <span class="inline-flex h-12 w-12 flex-shrink-0">
-            {render_icon(:paper_airplane)}
-          </span>
-          <p class="text-2xl">
-            {gettext("Thanks for trying out Keila!")}
-          </p>
-        </div>
-        <p>
-          {dgettext(
-            "cloud",
-            "To prevent abuse by spammers, the welcome email feature is currently only available if you have a subscription. Sorry for the inconvenience!"
-          )}
-        </p>
-        <p>
-          <a href={Routes.account_path(@socket, :edit)} class="button button--large button--cta">
-            {dgettext("cloud", "Start your subscription now")}
-          </a>
-        </p>
-      <% end %>
-    </div>
-
-    <div class="flex flex-col gap-4 tab-content bg-gray-800" x-show="tab === 'style'">
-      <%= inputs_for(f, :settings, [skip_hidden: true], fn fs -> %>
-        <div class="flex flex-col">
-          {label(fs, :body_bg_color, gettext("Body background"))}
-          <%= with_validation(fs, :body_bg_color) do %>
-            {text_input(fs, :body_bg_color, class: "text-black", type: "color")}
-          <% end %>
-        </div>
-        <div class="flex flex-col">
-          {label(fs, :form_bg_color, gettext("Form background"))}
-          <%= with_validation(fs, :form_bg_color) do %>
-            {text_input(fs, :form_bg_color, class: "text-black", type: "color")}
-          <% end %>
-        </div>
-        <div class="flex flex-col">
-          {label(fs, :text_color, gettext("Form text color"))}
-          <%= with_validation(fs, :text_color) do %>
-            {text_input(fs, :text_color, class: "text-black", type: "color")}
-          <% end %>
-        </div>
-        <div class="flex flex-col">
-          {label(fs, :input_bg_color, gettext("Input background"))}
-          <%= with_validation(fs, :input_bg_color) do %>
-            {text_input(fs, :input_bg_color, class: "text-black", type: "color")}
-          <% end %>
-        </div>
-        <div class="flex flex-col">
-          {label(fs, :input_text_color, gettext("Input text color"))}
-          <%= with_validation(fs, :input_text_color) do %>
-            {text_input(fs, :input_text_color, class: "text-black", type: "color")}
-          <% end %>
-        </div>
-        <div class="flex flex-col">
-          {label(fs, :input_border_color, gettext("Input border color"))}
-          <%= with_validation(fs, :input_border_color) do %>
-            {text_input(fs, :input_border_color, class: "text-black", type: "color")}
-          <% end %>
-        </div>
-        <div class="flex flex-col">
-          {label(fs, :submit_bg_color, gettext("Submit button background"))}
-          <%= with_validation(fs, :submit_bg_color) do %>
-            {text_input(fs, :submit_bg_color, class: "text-black", type: "color")}
-          <% end %>
-        </div>
-        <div class="flex flex-col">
-          {label(fs, :submit_text_color, gettext("Submit text color"))}
-          <%= with_validation(fs, :submit_text_color) do %>
-            {text_input(fs, :submit_text_color, class: "text-black", type: "color")}
-          <% end %>
-        </div>
-      <% end) %>
-    </div>
-
-    {hidden_input(f, :sender_id,
-      x_ref: "sender_id",
-      "x-on:sender-changed.window":
-        "$refs.sender_id.value = $event.detail.value; $refs.sender_id.dispatchEvent(new Event('input', {bubbles: true}))"
-    )}
-
-    {hidden_input(f, :template_id,
-      x_ref: "template_id",
-      "x-on:template_changed.window":
-        "$refs.template_id.value = $event.detail.value; $refs.template_id.dispatchEvent(new Event('input', {bubbles: true}))"
-    )}
-  </.form>
-
-  <div class="col-span-2">
-    <%= cond do %>
-      <% @current_tab == "welcome-email" && @welcome_email_preview -> %>
-        <div class="bg-white w-full">
-          <iframe
-            id="welcome-email-preview"
-            src="about:blank"
-            class="w-full bg-gray-100"
-            style="height: 60vh"
-          >
-          </iframe>
-          <div
-            id="welcome-email-preview-data"
-            phx-hook="HtmlPreview"
-            class="hidden"
-            data-iframe="#welcome-email-preview"
-          >
-            {@welcome_email_preview}
           </div>
-        </div>
-      <% @current_tab == "double-opt-in" && @double_opt_in_preview -> %>
-        <div class="bg-white rounded">
-          <iframe
-            id="double-opt-in-preview"
-            src="about:blank"
-            class="w-full bg-gray-100"
-            style="height: 60vh"
-          >
-          </iframe>
-          <div
-            id="double-opt-in-preview-data"
-            phx-hook="HtmlPreview"
-            class="hidden"
-            data-iframe="#double-opt-in-preview"
-          >
-            {@double_opt_in_preview}
-          </div>
-        </div>
-      <% true -> %>
-        <div
-          class="form-main p-4 md:p-8"
-          style={build_styles(%{"background-color" => @form_preview.settings.body_bg_color})}
-        >
-          {KeilaWeb.PublicFormView.render("show.html",
-            form: @form_preview,
-            mode: :preview,
-            changeset: Keila.Contacts.Contact.changeset_from_form(%{}, @form_preview)
-          )}
-        </div>
-    <% end %>
-    <br />
-    <h2>{gettext("Link to this form")}</h2>
-    <div class="flex items-start gap-4">
-      <input
-        type="text"
-        class="w-full bg-gray-800"
-        readonly
-        x-ref="form-link"
-        value={Routes.public_form_url(@socket, :show, @form.id)}
-      />
-      <button
-        class="button"
-        @click.prevent="$refs['form-link'].select(); document.execCommand('copy'); showClipboardMessage = true; setTimeout(() => showClipboardMessage = false, 1000)"
-      >
-        {gettext("Copy")}
-      </button>
-    </div>
-    <%= if @form_preview.settings.csrf_disabled do %>
-      <h2 class="mt-4">{gettext("Form HTML")}</h2>
-      <div class="flex items-start gap-4">
-        <textarea class="w-full bg-gray-800 text-sm" rows="5" x-ref="form-html"><%= @embed %></textarea>
-        <button
-          class="button"
-          @click.prevent="$refs['form-html'].select(); document.execCommand('copy'); showClipboardMessage = true; setTimeout(() => showClipboardMessage = false, 1000)"
-        >
-          {gettext("Copy")}
-        </button>
+        <% end %>
       </div>
-    <% end %>
-    <div
-      id="copy-success"
-      x-ref="copy-success"
-      phx-update="ignore"
-      class="fixed bg-gray-50 text-gray-900 shadow text-sm p-4 bottom-4 right-4"
-      x-show.transition="showClipboardMessage"
-    >
-      {gettext("Code copied to clipboard.")}
+
+      {hidden_input(f, :sender_id,
+        x_ref: "sender_id",
+        "x-on:sender-changed.window":
+          "$refs.sender_id.value = $event.detail.value; $refs.sender_id.dispatchEvent(new Event('input', {bubbles: true}))"
+      )}
+    </.form>
+
+    <div class="col-span-3 flex flex-col">
+      <%= cond do %>
+        <% @current_tab == "welcome-email" && @welcome_email_preview -> %>
+          <div class="bg-white w-full flex flex-col flex-grow">
+            <iframe
+              id="welcome-email-preview"
+              src="about:blank"
+              class="w-full bg-gray-100 flex-grow"
+              style="min-height: 60vh"
+            >
+            </iframe>
+            <div
+              id="welcome-email-preview-data"
+              phx-hook="HtmlPreview"
+              class="hidden"
+              data-iframe="#welcome-email-preview"
+            >
+              {@welcome_email_preview}
+            </div>
+          </div>
+        <% @current_tab == "double-opt-in" && @double_opt_in_preview -> %>
+          <div class="bg-white rounded flex flex-col flex-grow">
+            <iframe
+              id="double-opt-in-preview"
+              src="about:blank"
+              class="w-full bg-gray-100 flex-grow"
+              style="min-height: 60vh"
+            >
+            </iframe>
+            <div
+              id="double-opt-in-preview-data"
+              phx-hook="HtmlPreview"
+              class="hidden"
+              data-iframe="#double-opt-in-preview"
+            >
+              {@double_opt_in_preview}
+            </div>
+          </div>
+        <% true -> %>
+          <div
+            class="form-main p-4 md:p-8 flex-grow"
+            style={build_styles(%{"background-color" => @form_preview.settings.body_bg_color})}
+          >
+            {KeilaWeb.PublicFormView.render("show.html",
+              form: @form_preview,
+              mode: :preview,
+              changeset: Keila.Contacts.Contact.changeset_from_form(%{}, @form_preview)
+            )}
+          </div>
+      <% end %>
     </div>
   </div>
+
+  <div
+    id="copy-success"
+    x-ref="copy-success"
+    phx-update="ignore"
+    class="fixed bg-gray-50 text-gray-900 shadow text-sm p-4 bottom-4 right-4"
+    x-show.transition="showClipboardMessage"
+  >
+    {gettext("Code copied to clipboard.")}
+  </div>
 </div>
+
+<.live_component
+  module={KeilaWeb.EmailDialogLiveComponent}
+  id="welcome_email"
+  email={Ecto.Changeset.get_field(@changeset, :welcome_email) || Keila.Contacts.Form.new_email()}
+  title={gettext("Welcome Email")}
+  project_id={@current_project.id}
+  templates={@templates}
+  changeset_opts={[require_content: false]}
+  subject_placeholder={WelcomeMessage.default_subject()}
+  body_placeholder={WelcomeMessage.default_markdown_body()}
+  preview_assigns={%{"unsubscribe_link" => "#unsubscribe-preview-link"}}
+  preprocess_preview={&WelcomeMessage.put_default_content/1}
+/>
+
+<.live_component
+  module={KeilaWeb.EmailDialogLiveComponent}
+  id="double_opt_in_email"
+  email={
+    Ecto.Changeset.get_field(@changeset, :double_opt_in_email) || Keila.Contacts.Form.new_email()
+  }
+  title={gettext("Double Opt-in Email")}
+  project_id={@current_project.id}
+  templates={@templates}
+  changeset_opts={[require_content: false]}
+  subject_placeholder={DoubleOptInMessage.default_subject()}
+  body_placeholder={DoubleOptInMessage.default_markdown_body()}
+  preview_assigns={
+    %{
+      "unsubscribe_link" => "#unsubscribe-preview-link",
+      "double_opt_in_link" => "#double-opt-in-preview-link"
+    }
+  }
+  preprocess_preview={&DoubleOptInMessage.put_default_content/1}
+>
+  <:help>
+    {gettext_md("""
+    Add a link or button to `{{ double_opt_in_link }}` so that contacts can confirm their subscription.
+    """)}
+  </:help>
+</.live_component>
+
+{render(KeilaWeb.EmailEditorView, "_preview_dialog.html", assigns)}
+{render(KeilaWeb.EmailEditorView, "_wysiwyg_dialogs.html", assigns)}

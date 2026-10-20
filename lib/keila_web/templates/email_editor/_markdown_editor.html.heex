@@ -36,6 +36,7 @@
 <div class="flex gap-4">
   {textarea(@form, :text_body,
     id: "#{@id}-text-body",
+    placeholder: @body_placeholder,
     rows: 20,
     class: "bg-gray-900 border-none appearance-none resize-y flex-grow w-1/2"
   )}
