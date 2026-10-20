@@ -63,6 +63,7 @@ defmodule KeilaWeb.EmailDialogLiveComponent do
   @impl true
   def handle_event("open", _params, socket) do
     %{email: email, changeset_opts: changeset_opts} = socket.assigns
+    email = %{email | editor_config: email.editor_config || %Email.EditorConfig{}}
     changeset = Email.changeset(email, %{}, changeset_opts)
     tab = if email.subject || email.template_id, do: :content, else: :settings
 

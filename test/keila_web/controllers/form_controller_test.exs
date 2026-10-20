@@ -232,6 +232,32 @@ defmodule KeilaWeb.FormControllerTest do
     end
 
     @tag :form_controller
+    test "shows the rich text option for emails without editor config", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+
+      # Emails created via the API have no editor config
+      form =
+        insert!(:contacts_form,
+          project_id: project.id,
+          welcome_email: build(:mailings_email, editor_config: nil),
+          settings: %{captcha_required: false, welcome_enabled: true}
+        )
+
+      {:ok, lv, _} = live(conn, Routes.form_path(conn, :edit, project.id, form.id))
+
+      lv
+      |> element("button[phx-target='#welcome_email'][phx-click=open]")
+      |> render_click()
+
+      lv |> element("button[phx-click=show_settings]") |> render_click()
+
+      assert has_element?(
+               lv,
+               "#welcome_email-form input[type=checkbox][name='email[editor_config][enable_wysiwyg]'][checked]"
+             )
+    end
+
+    @tag :form_controller
     test "merges changes from multiple dialog sessions", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
 

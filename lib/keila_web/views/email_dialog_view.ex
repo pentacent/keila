@@ -2,8 +2,6 @@ defmodule KeilaWeb.EmailDialogView do
   use KeilaWeb, :view
   import Ecto.Changeset, only: [get_field: 2]
 
-  alias Keila.Mailings.Email
-
   defp type_options() do
     [
       {gettext("Markdown"), "markdown"},
@@ -27,10 +25,6 @@ defmodule KeilaWeb.EmailDialogView do
       for template <- templates, template.type in template_types, do: {template.name, template.id}
 
     [{gettext("Default"), nil} | options]
-  end
-
-  defp editor_config(changeset) do
-    get_field(changeset, :editor_config) || %Email.EditorConfig{}
   end
 
   defp body_field(:html), do: :html_body
