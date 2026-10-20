@@ -35,7 +35,7 @@
   <% end %>
   <%= if not is_nil(Ecto.Changeset.get_field(@contact_data_changeset, :is_organization)) do %>
     <div class="form-row">
-      {label(f, :given_name, dgettext("cloud", "Website"))}
+      {label(f, :website, dgettext("cloud", "Website"))}
       <%= with_validation(f, :website) do %>
         {url_input(f, :website,
           placeholder: dgettext("cloud", "https://example.com"),
