@@ -27,7 +27,8 @@
       <%= with_validation(f, :organization_name) do %>
         {text_input(f, :organization_name,
           placeholder: dgettext("cloud", "Your Company, Inc."),
-          class: "text-black w-64"
+          class: "text-black w-64",
+          autocomplete: "organization"
         )}
       <% end %>
     </div>

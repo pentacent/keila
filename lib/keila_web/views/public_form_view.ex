@@ -205,7 +205,8 @@ defmodule KeilaWeb.PublicFormView do
               placeholder: field_settings.placeholder,
               style: input_styles,
               name: name,
-              id: id
+              id: id,
+              autocomplete: autocomplete(field_settings)
             )
 
           type == :integer ->
@@ -222,7 +223,8 @@ defmodule KeilaWeb.PublicFormView do
               placeholder: field_settings.placeholder,
               style: input_styles,
               name: name,
-              id: id
+              id: id,
+              autocomplete: autocomplete(field_settings)
             )
         end
       end
@@ -299,6 +301,11 @@ defmodule KeilaWeb.PublicFormView do
       end
     ]
   end
+
+  defp autocomplete(%{field: :email}), do: "email"
+  defp autocomplete(%{field: :first_name}), do: "given-name"
+  defp autocomplete(%{field: :last_name}), do: "family-name"
+  defp autocomplete(_field_settings), do: nil
 
   def render_form_success(form) do
     content_tag(:div, class: @form_classes, style: build_form_styles(form)) do
