@@ -350,7 +350,7 @@ defmodule KeilaWeb.CampaignEditLive do
     end
   end
 
-  defp send_previews(socket, contacts, campaign, sender) do
+  defp send_previews(socket, contacts, %Mailings.Campaign{} = campaign, sender) do
     template = current_template(socket, campaign)
     subject = gettext("[Preview] %{subject}", subject: campaign.subject)
 

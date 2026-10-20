@@ -14,7 +14,12 @@ defmodule Keila.Mailings.Renderer.LiquidCacheTest do
     assert {:ok, :parsed} = LiquidCache.get(sha256, fn -> {:ok, :parsed} end)
     assert [{^sha256, {:ok, :parsed}, _}] = :ets.lookup(LiquidCache, sha256)
 
-    assert {:ok, :parsed} = LiquidCache.get(sha256, fn -> send(self, :again) && {:ok, :other} end)
+    assert {:ok, :parsed} =
+             LiquidCache.get(sha256, fn ->
+               send(self, :again)
+               {:ok, :other}
+             end)
+
     refute_receive :again
   end
 
