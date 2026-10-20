@@ -3,6 +3,7 @@ require Keila
 Keila.if_cloud do
   defmodule KeilaCloud.Accounts do
     use Keila.Repo
+    alias Keila.Accounts.Account
     alias KeilaCloud.Accounts.Account.CloudData
     alias KeilaCloud.Accounts.Account.ContactData
     alias KeilaCloud.Accounts.Account.OnboardingReviewData
@@ -42,6 +43,36 @@ Keila.if_cloud do
       Keila.Accounts.get_account(account_id)
       |> cast(%{status: status}, [:status])
       |> Repo.update()
+    end
+
+    @doc """
+    Narrows a `Keila.Auth.User` query to Users belonging to an Account with the
+    given `status`. Unknown statuses match no Users.
+    """
+    def filter_users_by_account_status(query, status) do
+      case cast_account_status(status) do
+        {:ok, status} ->
+          user_ids =
+            from ug in Keila.Auth.UserGroup,
+              join: a in Account,
+              on: a.group_id == ug.group_id,
+              where: a.status == ^status,
+              select: ug.user_id
+
+          where(query, [u], u.id in subquery(user_ids))
+
+        :error ->
+          where(query, false)
+      end
+    end
+
+    defp cast_account_status(status) do
+      Ecto.Enum.values(Account, :status)
+      |> Enum.find(&(to_string(&1) == to_string(status)))
+      |> case do
+        nil -> :error
+        status -> {:ok, status}
+      end
     end
 
     def handle_subscription_created(account_id) do

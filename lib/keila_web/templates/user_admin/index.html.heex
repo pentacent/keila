@@ -97,7 +97,10 @@
 
     <%= if @users.page_count > 1 do %>
       <div class="flex gap-3 justify-center py-8">
-        <.pagination_nav pagination={@users} href={&~p"/admin/users?page=#{&1 + 1}"} />
+        <.pagination_nav
+          pagination={@users}
+          href={&~p"/admin/users?#{Map.put(@filter_params, "page", &1 + 1)}"}
+        />
       </div>
     <% end %>
   </div>

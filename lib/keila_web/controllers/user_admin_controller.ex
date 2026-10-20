@@ -9,13 +9,22 @@ defmodule KeilaWeb.UserAdminController do
   def index(conn, params) do
     page = String.to_integer(Map.get(params, "page", "1")) - 1
     filter = Map.get(params, "filter", nil)
-    users = Auth.list_users(paginate: [page: page, page_size: 20], filter: filter)
+    account_status = Map.get(params, "status", nil)
+
+    users =
+      Auth.list_users(
+        paginate: [page: page, page_size: 20],
+        filter: filter,
+        account_status: account_status
+      )
+
     user_accounts = get_user_accounts(users.data)
     user_credits = maybe_get_user_credits(user_accounts)
 
     conn
     |> put_meta(:title, dgettext("admin", "Administrate Users"))
     |> assign(:users, users)
+    |> assign(:filter_params, Map.take(params, ["filter", "status"]))
     |> assign(:user_credits, user_credits)
     |> assign(:user_accounts, user_accounts)
     |> render("index.html")
