@@ -11,7 +11,7 @@ defmodule KeilaWeb.EmailDialogView do
     ]
   end
 
-  defp template_options(templates, type) do
+  def compatible_templates(templates, type) do
     template_types =
       case type do
         :markdown -> [:hybrid]
@@ -21,8 +21,12 @@ defmodule KeilaWeb.EmailDialogView do
         _other -> []
       end
 
+    Enum.filter(templates, &(&1.type in template_types))
+  end
+
+  defp template_options(templates, type) do
     options =
-      for template <- templates, template.type in template_types, do: {template.name, template.id}
+      for template <- compatible_templates(templates, type), do: {template.name, template.id}
 
     [{gettext("Default"), nil} | options]
   end

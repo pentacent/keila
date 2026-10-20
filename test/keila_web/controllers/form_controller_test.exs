@@ -324,6 +324,43 @@ defmodule KeilaWeb.FormControllerTest do
     end
 
     @tag :form_controller
+    test "changing the email type removes incompatible template", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+      template = insert!(:template, project_id: project.id, type: :hybrid)
+
+      form =
+        insert!(:contacts_form,
+          project_id: project.id,
+          welcome_email:
+            build(:mailings_email, subject: "Welcome, Lois", template_id: template.id),
+          settings: %{captcha_required: false, welcome_enabled: true}
+        )
+
+      {:ok, lv, _} = live(conn, Routes.form_path(conn, :edit, project.id, form.id))
+
+      lv
+      |> element("button[phx-target='#welcome_email'][phx-click=open]")
+      |> render_click()
+
+      lv |> element("button[phx-click=show_settings]") |> render_click()
+
+      lv
+      |> element("#welcome_email-form")
+      |> render_change(%{"email" => %{"type" => "text", "template_id" => template.id}})
+
+      lv |> element("button[phx-click=show_content]") |> render_click()
+
+      lv
+      |> element("#welcome_email-form")
+      |> render_submit(%{"email" => %{"text_body" => "Hi, Lois"}})
+
+      lv |> element("#form") |> render_submit()
+      assert_redirect(lv, Routes.form_path(conn, :index, project.id))
+
+      assert %{welcome_email: %{type: :text, template_id: nil}} = Contacts.get_form(form.id)
+    end
+
+    @tag :form_controller
     test "cancelling the dialog discards its changes", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
 

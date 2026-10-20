@@ -30,6 +30,7 @@ defmodule KeilaWeb.EmailDialogLiveComponent do
   use KeilaWeb, :live_component
 
   alias Keila.Mailings.Email
+  alias KeilaWeb.EmailDialogView
 
   @impl true
   def mount(socket) do
@@ -57,7 +58,7 @@ defmodule KeilaWeb.EmailDialogLiveComponent do
 
   @impl true
   def render(assigns) do
-    Phoenix.View.render(KeilaWeb.EmailDialogView, "email_dialog.html", assigns)
+    Phoenix.View.render(EmailDialogView, "email_dialog.html", assigns)
   end
 
   @impl true
@@ -100,10 +101,30 @@ defmodule KeilaWeb.EmailDialogLiveComponent do
   end
 
   defp change(socket, params) do
-    %{changeset: changeset, changeset_opts: changeset_opts} = socket.assigns
+    %{changeset: changeset, changeset_opts: changeset_opts, templates: templates} = socket.assigns
     params = Map.merge(changeset.params, params)
 
-    assign(socket, :changeset, Email.changeset(changeset.data, params, changeset_opts))
+    changeset =
+      changeset.data
+      |> Email.changeset(params, changeset_opts)
+      |> ensure_compatible_template(templates, changeset_opts)
+
+    assign(socket, :changeset, changeset)
+  end
+
+  defp ensure_compatible_template(changeset, templates, changeset_opts) do
+    template_id = Ecto.Changeset.get_field(changeset, :template_id)
+    type = Ecto.Changeset.get_field(changeset, :type)
+    compatible_ids = EmailDialogView.compatible_templates(templates, type) |> Enum.map(& &1.id)
+
+    if is_nil(template_id) or template_id in compatible_ids do
+      changeset
+    else
+      # Clear template_id via params instead of `put_change` because params
+      # are sent to dialog parent.
+      params = Map.put(changeset.params, "template_id", nil)
+      Email.changeset(changeset.data, params, changeset_opts)
+    end
   end
 
   defp close(socket) do
