@@ -5,6 +5,7 @@ defmodule Keila.Mailings do
   alias __MODULE__.{Sender, SenderAdapters, SharedSender, Campaign, Message, MessageActions}
   alias __MODULE__.{Renderer, TransactionalMessage}
   alias KeilaWeb.Router.Helpers, as: Routes
+  alias Keila.Mailings.PublicUrl
   require Logger
 
   @moduledoc """
@@ -813,6 +814,7 @@ defmodule Keila.Mailings do
     hmac = unsubscribe_hmac(project_id, message_id)
 
     Routes.public_form_url(KeilaWeb.Endpoint, :unsubscribe, project_id, message_id, hmac)
+    |> PublicUrl.convert_url_to_public_url()
   end
 
   @doc """

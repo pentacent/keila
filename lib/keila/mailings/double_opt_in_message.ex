@@ -15,6 +15,7 @@ defmodule Keila.Mailings.DoubleOptInMessage do
   alias Keila.Mailings.Renderer
   alias KeilaWeb.Router.Helpers, as: Routes
   alias KeilaWeb.Endpoint
+  alias Keila.Mailings.PublicUrl
 
   @doc """
   Renders a double opt-in email for the given `form_params_id` and inserts a
@@ -150,7 +151,9 @@ defmodule Keila.Mailings.DoubleOptInMessage do
   defp get_unsubscribe_link(form_params) do
     form = form_params.form
     hmac = Keila.Contacts.double_opt_in_hmac(form_params.form_id, form_params.id)
+
     Routes.public_form_url(Endpoint, :cancel_double_opt_in, form.id, form_params.id, hmac)
+    |> PublicUrl.convert_url_to_public_url()
   end
 
   # Helpers

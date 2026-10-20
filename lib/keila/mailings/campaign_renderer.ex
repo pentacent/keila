@@ -11,6 +11,7 @@ defmodule Keila.Mailings.CampaignRenderer do
   alias Keila.Mailings.Renderer.{Input, Output}
   alias Keila.Contacts.Contact
   alias KeilaWeb.Router.Helpers, as: Routes
+  alias Keila.Mailings.PublicUrl
   require Logger
 
   @doc """
@@ -107,7 +108,7 @@ defmodule Keila.Mailings.CampaignRenderer do
     Floki.find_and_update(html, @tracking_click_selector, fn {tag, attributes} ->
       href = List.keyfind(attributes, "href", 0) |> elem(1)
       # if not Keila link
-      if String.starts_with?(href, KeilaWeb.Endpoint.url()) do
+      if String.starts_with?(href, KeilaWeb.Endpoint.url()) or PublicUrl.is_public_url(href) do
         {tag, attributes}
       else
         link = Keila.Tracking.get_or_register_link(href, campaign_id)
@@ -119,7 +120,9 @@ defmodule Keila.Mailings.CampaignRenderer do
           link_id: link.id
         }
 
-        url = Keila.Tracking.get_tracking_url(KeilaWeb.Endpoint, :click, params)
+        url =
+          Keila.Tracking.get_tracking_url(KeilaWeb.Endpoint, :click, params)
+          |> PublicUrl.convert_url_to_public_url()
 
         {tag, List.keyreplace(attributes, "href", 0, {"href", url})}
       end
@@ -135,7 +138,10 @@ defmodule Keila.Mailings.CampaignRenderer do
         {tag, attributes}
       else
         params = %{url: src, campaign_id: campaign_id, message_id: message_id}
-        url = Keila.Tracking.get_tracking_url(KeilaWeb.Endpoint, :open, params)
+
+        url =
+          Keila.Tracking.get_tracking_url(KeilaWeb.Endpoint, :open, params)
+          |> PublicUrl.convert_url_to_public_url()
 
         {tag, List.keyreplace(attributes, "src", 0, {"src", url})}
       end
@@ -145,7 +151,10 @@ defmodule Keila.Mailings.CampaignRenderer do
   defp put_tracking_pixel(html, campaign_id, message_id) do
     pixel_url = Routes.static_url(KeilaWeb.Endpoint, "/images/pixel.gif")
     params = %{url: pixel_url, campaign_id: campaign_id, message_id: message_id}
-    url = Keila.Tracking.get_tracking_url(KeilaWeb.Endpoint, :open, params)
+
+    url =
+      Keila.Tracking.get_tracking_url(KeilaWeb.Endpoint, :open, params)
+      |> PublicUrl.convert_url_to_public_url()
 
     img = {"img", [{"src", url}], []}
 

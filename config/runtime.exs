@@ -314,6 +314,42 @@ if config_env() == :prod do
     """)
   end
 
+  # Public Endpoint
+  public_url_host = System.get_env("PUBLIC_URL_HOST")
+  public_url_port = System.get_env("PUBLIC_URL_PORT") |> maybe_to_int.()
+  public_url_schema = System.get_env("PUBLIC_URL_SCHEMA")
+  public_url_path = System.get_env("PUBLIC_URL_PATH")
+
+  public_url_port =
+    cond do
+      public_url_port not in [nil, ""] -> public_url_port
+      public_url_schema == "https" -> 443
+      true -> url_port
+    end
+
+  public_url_schema =
+    cond do
+      public_url_schema not in [nil, ""] -> public_url_schema
+      public_url_port == 443 -> "https"
+      true -> url_schema
+    end
+
+  if public_url_host not in [nil, ""] do
+    config =
+      [host: public_url_host, scheme: public_url_schema]
+      |> put_if_not_empty.(:port, public_url_port)
+      |> put_if_not_empty.(:path, public_url_path)
+
+    config(:keila, :public_url, config)
+  else
+    config =
+      [host: url_host, scheme: url_schema]
+      |> put_if_not_empty.(:port, url_port)
+      |> put_if_not_empty.(:path, url_path)
+
+    config(:keila, :public_url, config)
+  end
+
   # File Storage
   user_content_dir = System.get_env("USER_CONTENT_DIR")
 
