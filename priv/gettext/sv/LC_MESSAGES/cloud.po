@@ -1,0 +1,735 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Keila 0.30.3\n"
+"POT-Creation-Date: 2026-09-08 00:00+0000\n"
+"PO-Revision-Date: 2026-09-21 16:57+0300\n"
+"Last-Translator: \n"
+"Language-Team: Swedish\n"
+"Language: sv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.9\n"
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:274
+#: lib/keila_web/templates/campaign/stats_live.html.heex:77
+#: lib/keila_web/templates/form/edit_live.html.heex:526
+#: lib/keila_web/templates/form/edit_live.html.heex:676
+msgid "Start your subscription now"
+msgstr "Starta din prenumeration nu"
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:252
+msgid "To prevent abuse by spammers, sending emails is only possible if you have an active subscription."
+msgstr "För att förhindra missbruk av spammare kan du bara skicka e-post om du har en aktiv prenumeration."
+
+#: lib/keila_web/templates/form/edit_live.html.heex:519
+msgid "To prevent abuse by spammers, the double opt-in feature is currently only available if you have a subscription. Sorry for the inconvenience!"
+msgstr "För att förhindra missbruk av spammare är funktionen för dubbel opt-in för närvarande endast tillgänglig om du har en prenumeration. Vi beklagar besväret!"
+
+#: lib/keila_web/templates/form/edit_live.html.heex:669
+msgid "To prevent abuse by spammers, the welcome email feature is currently only available if you have a subscription. Sorry for the inconvenience!"
+msgstr "För att förhindra missbruk av spammare är funktionen för välkomstmeddelanden för närvarande endast tillgänglig om du har en prenumeration. Vi beklagar besväret!"
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:223
+msgid "To prevent abuse by spammers, sending emails is only possible once your onboarding has been completed."
+msgstr "För att förhindra missbruk av spammare kan du börja skicka e-post först när introduktionen har slutförts."
+
+#: extra/keila_cloud_web/components/subscription_status.ex:250
+msgid "%{monthly_emails} emails"
+msgstr "%{monthly_emails} e-postmeddelanden"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:264
+msgid "%{monthly_emails} emails/month"
+msgstr "%{monthly_emails} e-postmeddelanden/månad"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:230
+msgid "%{price} / month"
+msgstr "%{price} / månad"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:221
+msgid "%{price} one time"
+msgstr "%{price} engångsbelopp"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:239
+msgid "(%{price} incl. tax)"
+msgstr "(%{price} inkl. skatt)"
+
+#: extra/keila_cloud_web/templates/cloud_account/onboarding.html.heex:10
+msgid "Account Verification"
+msgstr "Kontoverifiering"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:193
+msgid "Account not activated"
+msgstr "Kontot är inte aktiverat"
+
+#: lib/keila_web/templates/user_admin/index.html.heex:64
+msgid "Account status"
+msgstr "Kontostatus"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:42
+msgid "Address line 1"
+msgstr "Adressrad 1"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:45
+msgid "Address line 2"
+msgstr "Adressrad 2"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:48
+msgid "Address line 3"
+msgstr "Adressrad 3"
+
+#: extra/keila_cloud_web/templates/cloud_account/_referral_source.html.heex:8
+msgid "Almost done!"
+msgstr "Nästan klart!"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:95
+msgid "Apt 1"
+msgstr "Lgh 1"
+
+#: extra/keila_cloud_web/templates/cloud_account/_completed.html.heex:15
+msgid "Back to project list"
+msgstr "Tillbaka till projektlistan"
+
+#: lib/keila_web/templates/layout/app.html.heex:41
+msgid "Before you can start sending emails, we need some more information about your account."
+msgstr "Innan du kan börja skicka e-post behöver vi lite mer information om ditt konto."
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:33
+msgid "Business/organization name"
+msgstr "Företagets/organisationens namn"
+
+#: extra/keila_cloud_web/components/cloud_registration.ex:11
+msgid "By creating an account, you agree to our [terms of service](%{tos_link}). Please also acknowledge our [privacy policy](%{pp_link})."
+msgstr "Genom att skapa ett konto godkänner du våra [användarvillkor](%{tos_link}). Läs även vår [integritetspolicy](%{pp_link})."
+
+#: extra/keila_cloud_web/components/subscription_status.ex:283
+msgid "Cancel subscription"
+msgstr "Avsluta prenumeration"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:299
+msgid "Check Domain"
+msgstr "Kontrollera domän"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:113
+msgid "Check status"
+msgstr "Kontrollera status"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:100
+msgid "Check your subscription now"
+msgstr "Kontrollera din prenumeration nu"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:73
+msgid "City"
+msgstr "Ort"
+
+#: lib/keila_web/templates/layout/app.html.heex:45
+msgid "Complete information"
+msgstr "Komplettera information"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:65
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:113
+msgid "Country"
+msgstr "Land"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:66
+msgid "County"
+msgstr "Län"
+
+#: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:91
+msgid "Custom"
+msgstr "Anpassad"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:64
+msgid "Department"
+msgstr "Avdelning"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:68
+msgid "District"
+msgstr "Distrikt"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:74
+msgid "Domain verified"
+msgstr "Domänen är verifierad"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:58
+msgid "Emirate"
+msgstr "Emirat"
+
+#: extra/keila_cloud_web/templates/cloud_account/onboarding.html.heex:13
+msgid ""
+"Every new account has to undergo a quick manual review.\n"
+"Please share some information about you to help with this process.\n"
+msgstr ""
+"Varje nytt konto måste genomgå en snabb manuell granskning.\n"
+"Ge oss lite information om dig för att hjälpa oss med processen.\n"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:93
+msgid "Finalizing your sender ..."
+msgstr "Slutför din avsändare ..."
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:36
+msgid "First name"
+msgstr "Förnamn"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:296
+msgid "Get started"
+msgstr "Kom igång"
+
+#: extra/keila_cloud_web/templates/cloud_account/_referral_source.html.heex:12
+msgid "How did you hear about Keila?"
+msgstr "Hur fick du höra talas om Keila?"
+
+#: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:29
+msgid "I don’t have an existing contact list yet."
+msgstr "Jag har ännu ingen befintlig kontaktlista."
+
+#: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:25
+msgid "I have an existing contact list that I want to import into Keila."
+msgstr "Jag har en befintlig kontaktlista som jag vill importera till Keila."
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:45
+msgid "If you don’t have a website yet, you can also enter the link to a social media profile or some other public online presence."
+msgstr "Om du ännu inte har någon webbplats kan du även ange en länk till en profil på sociala medier eller någon annan offentlig närvaro på nätet."
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:59
+msgid "Island"
+msgstr "Ö"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:90
+msgid "It looks like you've already used up the email quota from your subscription."
+msgstr "Det ser ut som att du redan har använt hela e-postkvoten i din prenumeration."
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:304
+msgid "Last checked at:"
+msgstr "Senast kontrollerad:"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:39
+msgid "Last name"
+msgstr "Efternamn"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:127
+msgid "Legacy Settings"
+msgstr "Äldre inställningar"
+
+#: extra/keila_cloud_web/templates/cloud_account/_user_name.html.heex:9
+msgid "Let’s get to know each other!"
+msgstr "Låt oss lära känna varandra!"
+
+#: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:93
+msgid "Leverage your existing email infrastructure and send emails with SMTP, or via Mailgun, Sendgrid, SES, or Postmark."
+msgstr "Använd din befintliga e-postinfrastruktur och skicka e-post med SMTP eller via Mailgun, Sendgrid, SES eller Postmark."
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:89
+msgid "Main Street 1"
+msgstr "Storgatan 1"
+
+#: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:29
+msgid "My Newsletter"
+msgstr "Mitt nyhetsbrev"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:8
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:9
+msgid "Nice to meet you, %{given_name}!"
+msgstr "Trevligt att träffas, %{given_name}!"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:196
+msgid ""
+"Once you have provided the necessary details, we will perform a manual review of your account. This usually takes less than one working day.\n"
+"\n"
+"If you have any questions, please reach out to our support at [%{support_email}](mailto:%{support_email}).\n"
+msgstr ""
+"När du har lämnat de nödvändiga uppgifterna gör vi en manuell granskning av ditt konto. Det tar vanligtvis mindre än en arbetsdag.\n"
+"\n"
+"Om du har frågor kan du kontakta vår support på [%{support_email}](mailto:%{support_email}).\n"
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:26
+msgid "Organization/business name"
+msgstr "Organisationens/företagets namn"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:62
+msgid "Parish"
+msgstr "Församling"
+
+#: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:37
+msgid "Please describe the origin of your contact list and how you've obtained consent from your existing contacts."
+msgstr "Beskriv var din kontaktlista kommer ifrån och hur du har fått samtycke från dina befintliga kontakter."
+
+#: extra/keila_cloud_web/templates/cloud_account/_onboarding_review_data.html.heex:12
+msgid "Please describe the type of content and the purpose of the emails you are planning to send with Keila."
+msgstr "Beskriv vilken typ av innehåll och vilket syfte de e-postmeddelanden du planerar att skicka med Keila har."
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:116
+msgid "Please select a country"
+msgstr "Välj ett land"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:67
+msgid "Please start a subscription before sending your first campaign."
+msgstr "Starta en prenumeration innan du skickar din första kampanj."
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:53
+msgid "Postal code"
+msgstr "Postnummer"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:67
+msgid "Prefecture"
+msgstr "Prefektur"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:61
+msgid "Province"
+msgstr "Provins"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:63
+msgid "Region"
+msgstr "Region"
+
+#: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:3
+msgid "Review account for %{email}"
+msgstr "Granska konto för %{email}"
+
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:246
+msgid "Review account information"
+msgstr "Granska kontoinformation"
+
+#: lib/keila_web/templates/layout/app.html.heex:33
+msgid "Select plan"
+msgstr "Välj prenumeration"
+
+#: lib/keila_web/views/sender_view.ex:33
+msgid "Send With Keila"
+msgstr "Skicka med Keila"
+
+#: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:68
+msgid "Send with Keila"
+msgstr "Skicka med Keila"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:205
+msgid "Show DNS Records"
+msgstr "Visa DNS-poster"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:94
+msgid "Start new subscription"
+msgstr "Starta ny prenumeration"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:60
+msgid "State"
+msgstr "Delstat"
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:69
+msgid "State/Province"
+msgstr "Delstat/provins"
+
+#: lib/keila_web/templates/layout/app.html.heex:71
+msgid "Status page"
+msgstr "Statussida"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:211
+msgid "Subdomain"
+msgstr "Subdomän"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:136
+msgid "Subscribe for a year and get one month for free!"
+msgstr "Prenumerera i ett år och få en månad gratis!"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:121
+msgid "Subscribe now and start sending emails!"
+msgstr "Prenumerera nu och börja skicka e-post!"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:39
+msgid "Subscription"
+msgstr "Prenumeration"
+
+#: extra/keila_cloud_web/controllers/cloud_account_controller.ex:34
+msgid "Subscription still active"
+msgstr "Prenumerationen är fortfarande aktiv"
+
+#: extra/keila_cloud_web/templates/cloud_account/await_subscription_live.html.heex:22
+msgid "Thank you for subscribing to Keila!"
+msgstr "Tack för att du prenumererar på Keila!"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:69
+msgid "There was an error processing your payment. Please update your payment method to continue using Keila."
+msgstr "Ett fel uppstod när betalningen behandlades. Uppdatera din betalningsmetod för att fortsätta använda Keila."
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:17
+msgid "This account is for a business/organization"
+msgstr "Det här kontot är för ett företag/en organisation"
+
+#: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:50
+msgid "This email will show up as the *From email* in the inbox of your recipients."
+msgstr "Den här e-postadressen visas som *Från-adress* i mottagarnas inkorg."
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:21
+msgid "This is a private account"
+msgstr "Det här är ett privat konto"
+
+#: extra/keila_cloud_web/templates/cloud_account/_referral_source.html.heex:21
+msgid "This is optional, but it's really useful for us!"
+msgstr "Det här är valfritt, men det är till stor hjälp för oss!"
+
+#: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:34
+msgid "This name will show up as the *From name* in the inbox of your recipients."
+msgstr "Det här namnet visas som *Avsändarnamn* i mottagarnas inkorg."
+
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:13
+msgid "To comply with anti-spam regulations, we need to know your address."
+msgstr "För att följa regler mot skräppost behöver vi känna till din adress."
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:50
+msgid "To ensure good deliverability of your emails, you need to verify your domain by adding DNS records. [Read more](https://www.keila.io/docs/managed-dmarc){:target=\"_blank\"}"
+msgstr "För att säkerställa god leverans av dina e-postmeddelanden behöver du verifiera din domän genom att lägga till DNS-poster. [Läs mer](https://www.keila.io/docs/managed-dmarc){:target=\"_blank\"}"
+
+#: extra/keila_cloud_web/templates/cloud_account/_user_name.html.heex:13
+msgid ""
+"To make sure Keila is only used to send legitimate emails, we need to review every new account.\n"
+"\n"
+"Thank you for helping us fight spam!\n"
+msgstr ""
+"För att säkerställa att Keila endast används för legitima utskick måste vi granska varje nytt konto.\n"
+"\n"
+"Tack för att du hjälper oss bekämpa skräppost!\n"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:212
+msgid "Type"
+msgstr "Typ"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:56
+msgid "Until you have verified your domain, emails for this sender will be sent from *%{fallback_email}*. Replies will go to *%{from_email}*."
+msgstr "Tills du har verifierat din domän skickas e-post för den här avsändaren från *%{fallback_email}*. Svar går till *%{from_email}*."
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:211
+#: lib/keila_web/templates/layout/app.html.heex:58
+msgid "Update account information"
+msgstr "Uppdatera kontoinformation"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:278
+msgid "Update payment method"
+msgstr "Uppdatera betalningsmetod"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:148
+msgid "Update to new settings"
+msgstr "Uppdatera till nya inställningar"
+
+#: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:70
+msgid "Use our reliable European email infrastructure for excellent deliverability and automatic bounce handling."
+msgstr "Använd vår tillförlitliga europeiska e-postinfrastruktur för utmärkt leverans och automatisk hantering av studsande e-post."
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:213
+msgid "Value"
+msgstr "Värde"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:48
+msgid "Waiting for domain verification ..."
+msgstr "Väntar på domänverifiering ..."
+
+#: extra/keila_cloud_web/templates/cloud_account/_completed.html.heex:2
+msgid ""
+"We will now perform a manual review of your data. This usually doesn't take longer than one working day.\n"
+"\n"
+"In the meantime, you can continue to use Keila. Sending emails will be enabled for your account\n"
+"once the review has been completed.\n"
+msgstr ""
+"Vi kommer nu att göra en manuell granskning av dina uppgifter. Det tar vanligtvis inte längre än en arbetsdag.\n"
+"\n"
+"Under tiden kan du fortsätta använda Keila. Möjligheten att skicka e-post aktiveras för ditt konto\n"
+"när granskningen är klar.\n"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:96
+msgid "We're currently finalizing the setup of your sender. This may take a few minutes."
+msgstr "Vi slutför just nu konfigurationen av din avsändare. Det kan ta några minuter."
+
+#: extra/keila_cloud_web/templates/cloud_account/await_subscription_live.html.heex:26
+msgid "We're currently processing your subscription. This shouldn't take longer than a minute …"
+msgstr "Vi behandlar din prenumeration just nu. Det bör inte ta längre än en minut …"
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:37
+msgid "Website"
+msgstr "Webbplats"
+
+#: lib/keila_web/templates/layout/app.html.heex:29
+msgid "Welcome to Keila, have a look around! To start sending emails, please choose a subscription."
+msgstr "Välkommen till Keila! Titta gärna runt. För att börja skicka e-post behöver du välja en prenumeration."
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:131
+msgid "You are currently using legacy email settings. We recommend updating to the new settings for better performance and reliability."
+msgstr "Du använder för närvarande äldre e-postinställningar. Vi rekommenderar att du uppdaterar till de nya inställningarna för bättre prestanda och tillförlitlighet."
+
+#: extra/keila_cloud_web/components/subscription_status.ex:83
+msgid "You can continue using your subscription until:"
+msgstr "Du kan fortsätta använda din prenumeration till:"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:49
+msgid "You currently have an active subscription. Thanks for supporting Keila!"
+msgstr "Du har för närvarande en aktiv prenumeration. Tack för att du stöder Keila!"
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:29
+msgid "Your Company, Inc."
+msgstr "Ditt företag AB"
+
+#: lib/keila_web/templates/layout/app.html.heex:53
+msgid "Your account is currently under review. Sending emails will be enabled once the review has been completed."
+msgstr "Ditt konto granskas för närvarande. Möjligheten att skicka e-post aktiveras när granskningen är klar."
+
+#: extra/keila_cloud_web/components/subscription_status.ex:79
+msgid "Your subscription has been cancelled."
+msgstr "Din prenumeration har avslutats."
+
+#: extra/keila_cloud_web/components/subscription_status.ex:59
+msgid "Your subscription is currently suspended. Please update your payment method to continue using Keila."
+msgstr "Din prenumeration är för tillfället avstängd. Uppdatera din betalningsmetod för att fortsätta använda Keila."
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:30
+msgid "You’re using a shared domain. Emails will be sent from *%{fallback_email}*. Replies will go to *%{from_email}*. [Read more](https://www.keila.io/docs/shared-domains){:target=\"_blank\"}"
+msgstr "Du använder en delad domän. E-post skickas från *%{fallback_email}*. Svar går till *%{from_email}*. [Läs mer](https://www.keila.io/docs/shared-domains){:target=\"_blank\"}"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:214
+msgid "billed annually"
+msgstr "debiteras årligen"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:271
+msgid "current value:"
+msgstr "nuvarande värde:"
+
+#: extra/keila_cloud_web/templates/cloud_account/_referral_source.html.heex:17
+msgid "e.g. a friend, blog post, Google, …"
+msgstr "t.ex. en vän, ett blogginlägg, Google, …"
+
+#: extra/keila_cloud_web/components/shared_send_with_keila_status.ex:268
+msgid "empty"
+msgstr "tomt"
+
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:40
+msgid "https://example.com"
+msgstr "https://example.com"
+
+#: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:45
+msgid "newsletter@example.com"
+msgstr "nyhetsbrev@example.com"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:258
+msgid "no subscription"
+msgstr "ingen prenumeration"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:271
+msgid "unlimited contacts"
+msgstr "obegränsat antal kontakter"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:254
+msgid "valid for one year"
+msgstr "giltig i ett år"
+
+#: extra/keila_cloud_web/templates/cloud_partner/index.html.heex:34
+msgid "%{allocated} / %{total} emails allocated"
+msgstr "%{allocated} / %{total} e-postmeddelanden tilldelade"
+
+#: extra/keila_cloud_web/templates/cloud_partner/show_credits.html.heex:11
+msgid "%{remaining} / %{total} credits"
+msgstr "%{remaining} / %{total} krediter"
+
+#: extra/keila_cloud_web/controllers/cloud_partner_controller.ex:94
+#: extra/keila_cloud_web/templates/cloud_partner/index.html.heex:8
+#: extra/keila_cloud_web/templates/cloud_partner/new.html.heex:4
+msgid "Add child account"
+msgstr "Lägg till underkonto"
+
+#: extra/keila_cloud_web/templates/cloud_billing/index.html.heex:29
+#: extra/keila_cloud_web/templates/cloud_partner/show_credits.html.heex:74
+msgid "Amount"
+msgstr "Antal"
+
+#: extra/keila_cloud_web/controllers/cloud_billing_controller.ex:15
+#: extra/keila_cloud_web/templates/cloud_billing/index.html.heex:15
+msgid "Billing"
+msgstr "Fakturering"
+
+#: extra/keila_cloud_web/templates/cloud_partner/show_credits.html.heex:97
+msgid "Change password"
+msgstr "Ändra lösenord"
+
+#: extra/keila_cloud_web/controllers/cloud_partner_controller.ex:105
+msgid "Child account created."
+msgstr "Underkontot har skapats."
+
+#: extra/keila_cloud_web/templates/cloud_partner/index.html.heex:44
+msgid "Child accounts"
+msgstr "Underkonton"
+
+#: extra/keila_cloud_web/templates/cloud_billing/index.html.heex:6
+#: lib/keila_web/templates/campaign/stats_live.html.heex:10
+msgid "Contact Support"
+msgstr "Kontakta supporten"
+
+#: extra/keila_cloud_web/controllers/cloud_partner_controller.ex:110
+msgid "Could not create child account."
+msgstr "Kunde inte skapa underkonto."
+
+#: extra/keila_cloud_web/templates/cloud_billing/index.html.heex:5
+msgid "Could not load invoices."
+msgstr "Kunde inte läsa in fakturor."
+
+#: extra/keila_cloud_web/controllers/cloud_partner_controller.ex:158
+msgid "Could not transfer credits."
+msgstr "Kunde inte överföra krediter."
+
+#: extra/keila_cloud_web/controllers/cloud_partner_controller.ex:81
+msgid "Could not update credit allocation."
+msgstr "Kunde inte uppdatera kredittilldelningen."
+
+#: extra/keila_cloud_web/templates/cloud_partner/new.html.heex:16
+msgid "Creates a new account with the given email and password. The account is activated immediately and added as your child."
+msgstr "Skapar ett nytt konto med angiven e-postadress och lösenord. Kontot aktiveras omedelbart och läggs till som ditt underkonto."
+
+#: extra/keila_cloud_web/templates/cloud_partner/index.html.heex:49
+msgid "Credits"
+msgstr "Krediter"
+
+#: extra/keila_cloud_web/templates/cloud_partner/show_credits.html.heex:3
+msgid "Credits for %{email}"
+msgstr "Krediter för %{email}"
+
+#: extra/keila_cloud_web/templates/cloud_partner/show_credits.html.heex:42
+msgid "Credits per cycle"
+msgstr "Krediter per period"
+
+#: extra/keila_cloud_web/controllers/cloud_partner_controller.ex:156
+msgid "Credits transferred."
+msgstr "Krediterna har överförts."
+
+#: extra/keila_cloud_web/templates/cloud_billing/index.html.heex:30
+msgid "Currency"
+msgstr "Valuta"
+
+#: extra/keila_cloud_web/templates/cloud_billing/index.html.heex:27
+msgid "Date"
+msgstr "Datum"
+
+#: extra/keila_cloud_web/templates/cloud_partner/index.html.heex:48
+msgid "Email"
+msgstr "E-post"
+
+#: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:75
+msgid "Enable partner mode"
+msgstr "Aktivera partnerläge"
+
+#: extra/keila_cloud_web/templates/cloud_billing/index.html.heex:28
+msgid "Invoice"
+msgstr "Faktura"
+
+#: extra/keila_cloud_web/templates/cloud_partner/index.html.heex:87
+msgid "Log in as"
+msgstr "Logga in som"
+
+#: extra/keila_cloud_web/controllers/cloud_partner_controller.ex:40
+msgid "Manage child account credits"
+msgstr "Hantera underkontots krediter"
+
+#: extra/keila_cloud_web/templates/cloud_partner/index.html.heex:59
+#: extra/keila_cloud_web/templates/cloud_partner/index.html.heex:79
+msgid "Manage credits"
+msgstr "Hantera krediter"
+
+#: extra/keila_cloud_web/templates/cloud_partner/index.html.heex:50
+#: extra/keila_cloud_web/templates/cloud_partner/show_credits.html.heex:33
+msgid "Monthly allocation"
+msgstr "Månatlig tilldelning"
+
+#: extra/keila_cloud_web/controllers/cloud_partner_controller.ex:76
+msgid "Monthly credit allocation updated."
+msgstr "Den månatliga kredittilldelningen har uppdaterats."
+
+#: extra/keila_cloud_web/templates/cloud_partner/show_credits.html.heex:68
+msgid "Move credits from your current billing cycle balance to this child."
+msgstr "Flytta krediter från saldot för din nuvarande faktureringsperiod till det här underkontot."
+
+#: extra/keila_cloud_web/templates/cloud_partner/show_credits.html.heex:103
+msgid "New password"
+msgstr "Nytt lösenord"
+
+#: extra/keila_cloud_web/controllers/cloud_partner_controller.ex:157
+msgid "Not enough credits."
+msgstr "Inte tillräckligt med krediter."
+
+#: extra/keila_cloud_web/controllers/cloud_partner_controller.ex:128
+msgid "Not found."
+msgstr "Hittades inte."
+
+#: lib/keila_web/templates/layout/_menu.html.heex:150
+msgid "Partner"
+msgstr "Partner"
+
+#: extra/keila_cloud_web/controllers/cloud_partner_controller.ex:24
+#: extra/keila_cloud_web/templates/cloud_partner/index.html.heex:4
+msgid "Partner Area"
+msgstr "Partnerområde"
+
+#: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:65
+msgid "Partner mode"
+msgstr "Partnerläge"
+
+#: extra/keila_cloud_web/controllers/cloud_partner_controller.ex:133
+msgid "Password change not accepted."
+msgstr "Lösenordsändringen godkändes inte."
+
+#: extra/keila_cloud_web/controllers/cloud_partner_controller.ex:123
+msgid "Password updated."
+msgstr "Lösenordet har uppdaterats."
+
+#: extra/keila_cloud_web/controllers/cloud_partner_controller.ex:87
+msgid "Please enter a non-negative number."
+msgstr "Ange ett tal som är noll eller större."
+
+#: extra/keila_cloud_web/controllers/cloud_partner_controller.ex:58
+msgid "Please enter a valid amount."
+msgstr "Ange ett giltigt antal."
+
+#: extra/keila_cloud_web/templates/cloud_partner/show_credits.html.heex:53
+msgid "Save allocation"
+msgstr "Spara tilldelning"
+
+#: extra/keila_cloud_web/templates/cloud_partner/show_credits.html.heex:100
+msgid "Set a new password for this child user."
+msgstr "Ange ett nytt lösenord för den här underanvändaren."
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:6
+msgid "Some emails could not be delivered."
+msgstr "Vissa e-postmeddelanden kunde inte levereras."
+
+#: extra/keila_cloud_web/templates/cloud_billing/index.html.heex:23
+msgid "There are no invoices to display."
+msgstr "Det finns inga fakturor att visa."
+
+#: extra/keila_cloud_web/templates/cloud_partner/show_credits.html.heex:36
+msgid "This is the amount of credits automatically added to this account in future billing cycles."
+msgstr "Det här är antalet krediter som automatiskt läggs till på kontot under framtida faktureringsperioder."
+
+#: extra/keila_cloud_web/templates/cloud_partner/show_credits.html.heex:84
+msgid "Transfer credits"
+msgstr "Överför krediter"
+
+#: extra/keila_cloud_web/templates/cloud_partner/show_credits.html.heex:65
+msgid "Transfer credits now"
+msgstr "Överför krediter nu"
+
+#: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:78
+msgid "Update partner mode"
+msgstr "Uppdatera partnerläge"
+
+#: extra/keila_cloud_web/templates/cloud_partner/show_credits.html.heex:113
+msgid "Update password"
+msgstr "Uppdatera lösenord"
+
+#: extra/keila_cloud_web/templates/cloud_billing/index.html.heex:42
+msgid "View invoice"
+msgstr "Visa faktura"
+
+#: extra/keila_cloud_web/components/subscription_status.ex:116
+msgid "View invoices"
+msgstr "Visa fakturor"
+
+#: extra/keila_cloud_web/templates/cloud_partner/index.html.heex:109
+msgid "You have no child accounts yet."
+msgstr "Du har ännu inga underkonton."
+
+#: extra/keila_cloud_web/templates/cloud_partner/show_credits.html.heex:18
+msgid "Your balance: %{remaining} / %{total}"
+msgstr "Ditt saldo: %{remaining} / %{total}"
