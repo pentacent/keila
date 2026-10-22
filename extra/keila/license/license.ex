@@ -7,7 +7,6 @@ defmodule Keila.License do
   For more information, refer to the extra/README.md file.
   """
 
-  require Logger
   alias __MODULE__.Parser
   alias __MODULE__.Props
 
