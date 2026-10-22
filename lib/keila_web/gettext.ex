@@ -6,6 +6,11 @@ defmodule KeilaWeb.Gettext do
     end
   end
 
+  @doc """
+  List of available locales and their native name.
+  Ordered alphabetically for Latin-script languages,
+  then ordered by language code for non-Latin scripts. 
+  """
   def available_locales() do
     [
       {"English", "en"},
@@ -15,8 +20,8 @@ defmodule KeilaWeb.Gettext do
       {"Italiano", "it"},
       {"Magyar", "hu"},
       {"Português (Brasil)", "pt_BR"},
-      {"Български", "bg"},
-      {"Svenska", "sv"}
+      {"Svenska", "sv"},
+      {"Български", "bg"}
     ]
   end
 end
