@@ -48,3 +48,42 @@
     </template>
   </div>
 <% end %>
+
+<%= if is_nil(@form.data.mailgun_webhook_signing_key) do %>
+  <div class="form-row">
+    {label(@form, :mailgun_webhook_signing_key, gettext("Webhook Signing Key (optional)"))}
+    <%= with_validation(@form, :mailgun_webhook_signing_key) do %>
+      {password_input(@form, :mailgun_webhook_signing_key, class: "text-black")}
+    <% end %>
+  </div>
+<% else %>
+  <div
+    x-data="{ show: false }"
+    x-init="$watch('show', show => { $nextTick(() => { if (show) $refs.webhook_signing_key.focus() }) })"
+    class="form-row"
+  >
+    <div class="flex gap-5">
+      {label(@form, :mailgun_webhook_signing_key, gettext("Webhook Signing Key (optional)"))}
+      <label>
+        <input type="checkbox" x-model="show" />
+        {gettext("Change")}
+      </label>
+    </div>
+
+    <template x-if="show">
+      <%= with_validation(@form, :mailgun_webhook_signing_key) do %>
+        {password_input(@form, :mailgun_webhook_signing_key,
+          class: "text-black",
+          x_ref: "webhook_signing_key"
+        )}
+      <% end %>
+    </template>
+  </div>
+<% end %>
+
+<p class="text-sm opacity-70">
+  {gettext(
+    "To automatically mark bounced contacts as unreachable, add this URL as a webhook for the “Permanent Failure”, “Temporary Failure” and “Spam Complaints” events in Mailgun and enter your HTTP webhook signing key above:"
+  )}
+  <code class="break-all">{Routes.mailgun_webhook_url(KeilaWeb.Endpoint, :webhook)}</code>
+</p>

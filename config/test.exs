@@ -39,11 +39,12 @@ config :keila, Oban, testing: :manual
 # Allow scheduling campaigns at utc_now
 config :keila, Keila.Mailings, min_campaign_schedule_offset: -10
 
-# Only use test and smtp Sender Adapters
+# Only use test, smtp, ses and mailgun Sender Adapters
 config :keila, Keila.Mailings.SenderAdapters,
   adapters: [
     Keila.Mailings.SenderAdapters.SMTP,
     Keila.Mailings.SenderAdapters.SES,
+    Keila.Mailings.SenderAdapters.Mailgun,
     Keila.TestSenderAdapter
   ]
 
