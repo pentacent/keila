@@ -54,23 +54,27 @@ defmodule KeilaWeb.Api.Schemas.Form do
     },
     fields: %{
       type: :array,
+      description:
+        "Fields of the form. Must include an `email` field with `cast` and `required` set to `true`.",
       items: %{
         field: %{
           type: :string,
           enum: [:email, :first_name, :last_name, :data]
         },
         required: %{
-          type: :boolean
+          type: :boolean,
+          description: "Defaults to `false`."
         },
         cast: %{
-          type: :boolean
+          type: :boolean,
+          description: "Defaults to `true`."
         },
         key: %{
           type: :string
         },
         type: %{
           type: :string,
-          values: [:email, :string, :integer, :boolean, :enum, :tags, :array]
+          enum: [:email, :string, :integer, :boolean, :enum, :tags, :array]
         },
         label: %{
           type: :string
@@ -140,7 +144,7 @@ defmodule KeilaWeb.Api.Schemas.Form.CreateParams do
     :welcome_email,
     :double_opt_in_email
   ]
-  build_open_api_schema(@properties, only: @allowed_properties, required: [:name])
+  build_open_api_schema(@properties, only: @allowed_properties, required: [:name, :fields])
 end
 
 defmodule KeilaWeb.Api.Schemas.Form.UpdateParams do

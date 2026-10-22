@@ -19,6 +19,7 @@ defmodule Keila.Contacts.FormEmailsTest do
       assert {:ok, form} =
                Contacts.create_form(project.id, %{
                  "name" => "Form",
+                 "field_settings" => [%{"field" => "email", "required" => true}],
                  "welcome_email" => %{
                    "type" => "markdown",
                    "subject" => "Welcome",

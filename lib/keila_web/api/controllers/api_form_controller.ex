@@ -49,7 +49,7 @@ defmodule KeilaWeb.ApiFormController do
 
     case Contacts.create_form(project_id(conn), params) do
       {:ok, form} -> render(conn, "form.json", %{form: form})
-      {:error, changeset} -> Errors.send_changeset_error(conn, changeset)
+      {:error, changeset} -> send_changeset_error(conn, changeset)
     end
   end
 
@@ -89,8 +89,34 @@ defmodule KeilaWeb.ApiFormController do
          {:ok, form} <- Contacts.update_form(id, params) do
       render(conn, "form.json", %{form: form})
     else
-      {:error, changeset} -> Errors.send_changeset_error(conn, changeset)
+      {:error, changeset} -> send_changeset_error(conn, changeset)
       nil -> Errors.send_404(conn)
+    end
+  end
+
+  defp send_changeset_error(conn, changeset) do
+    changeset =
+      changeset
+      |> Map.update!(:errors, &rename_field_settings/1)
+      |> Map.update!(:changes, &rename_field_settings/1)
+      |> Map.update!(:types, &rename_field_settings/1)
+
+    Errors.send_changeset_error(conn, changeset)
+  end
+
+  # Changeset `:errors` are a list
+  defp rename_field_settings(list) when is_list(list) do
+    Enum.map(list, fn
+      {:field_settings, value} -> {:fields, value}
+      other -> other
+    end)
+  end
+
+  # Changeset `:changes` and `:types` are maps
+  defp rename_field_settings(map) when is_map(map) do
+    case Map.pop(map, :field_settings) do
+      {nil, map} -> map
+      {value, map} -> Map.put(map, :fields, value)
     end
   end
 

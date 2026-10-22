@@ -37,6 +37,7 @@ defmodule Keila.Contacts.Form do
     changeset
     |> cast_embed(:settings)
     |> cast_embed(:field_settings)
+    |> validate_email_field_settings()
     |> cast_embed(:welcome_email, with: &Email.changeset(&1, &2, require_content: false))
     |> cast_embed(:double_opt_in_email, with: &Email.changeset(&1, &2, require_content: false))
     |> maybe_ensure_email_embed_exists(:welcome_email, :welcome_enabled)
@@ -66,5 +67,16 @@ defmodule Keila.Contacts.Form do
   @spec new_email() :: Email.t()
   def new_email() do
     %Email{type: :markdown, editor_config: %Email.EditorConfig{enable_wysiwyg: false}}
+  end
+
+  # The email field is mandatory for every Contact, so it must always be cast and required.
+  defp validate_email_field_settings(changeset) do
+    field_settings = get_field(changeset, :field_settings)
+
+    case Enum.find(field_settings, &(&1.field == :email)) do
+      nil -> add_error(changeset, :field_settings, "must include an email field")
+      %{cast: true, required: true} -> changeset
+      _other -> add_error(changeset, :field_settings, "email field must be cast and required")
+    end
   end
 end

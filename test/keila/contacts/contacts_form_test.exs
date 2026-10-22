@@ -29,7 +29,8 @@ defmodule Keila.ContactsFormTest do
       "field_settings" => [
         %{
           "field" => "email",
-          "label" => "Enter your email here"
+          "label" => "Enter your email here",
+          "required" => true
         }
       ]
     }
@@ -44,10 +45,28 @@ defmodule Keila.ContactsFormTest do
              field_settings: [
                %Form.FieldSettings{
                  field: :email,
-                 label: "Enter your email here"
+                 label: "Enter your email here",
+                 cast: true,
+                 required: true
                }
              ]
            } = form
+  end
+
+  @tag :contacts_form
+  test "Email field must be cast and required", %{project: project} do
+    params = %{"name" => "My Form", "field_settings" => [%{"field" => "email"}]}
+
+    assert {:error, changeset} = Contacts.create_form(project.id, params)
+    assert [field_settings: {"email field must be cast and required", _}] = changeset.errors
+  end
+
+  @tag :contacts_form
+  test "Form requires an email field", %{project: project} do
+    params = %{"name" => "My Form", "field_settings" => [%{"field" => "first_name"}]}
+
+    assert {:error, changeset} = Contacts.create_form(project.id, params)
+    assert [field_settings: {"must include an email field", _}] = changeset.errors
   end
 
   @tag :contacts_form
