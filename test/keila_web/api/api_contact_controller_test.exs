@@ -87,6 +87,60 @@ defmodule KeilaWeb.ApiContactControllerTest do
                "errors" => [%{"parameter" => "filter"}]
              } = json_response(conn, 400)
     end
+
+    @tag :api_contact_controller
+    test "supports sorting with JSON object", %{authorized_conn: conn, project: project} do
+      insert!(:contact, project_id: project.id, email: "b@example.com")
+      insert!(:contact, project_id: project.id, email: "a@example.com")
+
+      query = %{"sort" => Jason.encode!(%{"email" => 1})}
+      conn = get(conn, Routes.api_contact_path(conn, :index, query))
+
+      assert %{"data" => [%{"email" => "a@example.com"}, %{"email" => "b@example.com"}]} =
+               json_response(conn, 200)
+    end
+
+    @tag :api_contact_controller
+    test "supports sorting with array of pairs for deterministic order", %{
+      authorized_conn: conn,
+      project: project
+    } do
+      insert!(:contact,
+        project_id: project.id,
+        first_name: "A",
+        email: "b@example.com"
+      )
+
+      insert!(:contact,
+        project_id: project.id,
+        first_name: "A",
+        email: "a@example.com"
+      )
+
+      insert!(:contact,
+        project_id: project.id,
+        first_name: "B",
+        email: "c@example.com"
+      )
+
+      query = %{"sort" => Jason.encode!([["first_name", 1], ["email", 1]])}
+      conn = get(conn, Routes.api_contact_path(conn, :index, query))
+
+      assert %{"data" => [first, second, third]} = json_response(conn, 200)
+      assert first["first_name"] == "A" and first["email"] == "a@example.com"
+      assert second["first_name"] == "A" and second["email"] == "b@example.com"
+      assert third["first_name"] == "B" and third["email"] == "c@example.com"
+    end
+
+    @tag :api_contact_controller
+    test "invalid sort creates error", %{authorized_conn: conn} do
+      query = %{"sort" => "___invalid-sort___"}
+      conn = get(conn, Routes.api_contact_path(conn, :index, query))
+
+      assert %{
+               "errors" => [%{"parameter" => "sort"}]
+             } = json_response(conn, 400)
+    end
   end
 
   describe "POST /api/v1/contacts" do

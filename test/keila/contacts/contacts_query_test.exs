@@ -39,6 +39,48 @@ defmodule Keila.ContactsQueryTest do
   end
 
   @tag :contacts_query
+  test "sort contact query with list of tuples preserves order" do
+    c1 =
+      insert!(:contact, %{
+        email: "a@example.com",
+        first_name: "A",
+        inserted_at: ~U[2020-01-01 10:00:00Z]
+      })
+
+    c2 =
+      insert!(:contact, %{
+        email: "a@example.com",
+        first_name: "B",
+        inserted_at: ~U[2020-01-02 10:00:00Z]
+      })
+
+    c3 =
+      insert!(:contact, %{
+        email: "b@example.com",
+        first_name: "C",
+        inserted_at: ~U[2020-01-01 10:00:00Z]
+      })
+
+    # Sort by email asc, then inserted_at desc — list form preserves the specified order
+    assert [c2, c1, c3] ==
+             from(Contact)
+             |> Query.apply(sort: [{"email", 1}, {"inserted_at", -1}])
+             |> Repo.all()
+
+    # Same fields, reversed priority
+    assert [c1, c3, c2] ==
+             from(Contact)
+             |> Query.apply(sort: [{"inserted_at", 1}, {"email", 1}])
+             |> Repo.all()
+
+    # Single-field list sort works the same as map sort
+    assert [c1, c2, c3] ==
+             from(Contact)
+             |> Query.apply(sort: [{"email", 1}, {"inserted_at", 1}])
+             |> Repo.all()
+  end
+
+  @tag :contacts_query
   defp insert_filter_test_contacts!() do
     c1 =
       insert!(:contact, %{
