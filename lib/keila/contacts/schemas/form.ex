@@ -36,7 +36,10 @@ defmodule Keila.Contacts.Form do
   defp cast_embeds(changeset) do
     changeset
     |> cast_embed(:settings)
-    |> cast_embed(:field_settings)
+    |> cast_embed(:field_settings,
+      sort_param: :field_settings_sort,
+      drop_param: :field_settings_drop
+    )
     |> validate_email_field_settings()
     |> cast_embed(:welcome_email, with: &Email.changeset(&1, &2, require_content: false))
     |> cast_embed(:double_opt_in_email, with: &Email.changeset(&1, &2, require_content: false))

@@ -57,6 +57,50 @@ defmodule KeilaWeb.FormControllerTest do
              |> render_change(%{"form" => %{"settings" => %{"captcha_required" => true}}}) =~
                ~r{I am human.}
     end
+
+    @tag :form_controller
+    test "adds and removes custom fields", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+      form = insert!(:contacts_form, project_id: project.id, settings: %{captcha_required: false})
+      {:ok, lv, _} = live(conn, Routes.form_path(conn, :edit, project.id, form.id))
+
+      assert lv
+             |> element("#form")
+             |> render_change(%{"form" => %{"field_settings_sort" => ["0", "new"]}}) =~
+               "my_custom_field"
+
+      refute lv
+             |> element("#form")
+             |> render_change(%{"form" => %{"field_settings_drop" => ["1"]}}) =~
+               "my_custom_field"
+    end
+
+    @tag :form_controller
+    test "adds and removes options of unsaved custom fields", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+      form = insert!(:contacts_form, project_id: project.id, settings: %{captcha_required: false})
+      {:ok, lv, _} = live(conn, Routes.form_path(conn, :edit, project.id, form.id))
+
+      lv
+      |> element("#form")
+      |> render_change(%{"form" => %{"field_settings_sort" => ["0", "new"]}})
+
+      lv
+      |> element("#form")
+      |> render_change(%{"form" => %{"field_settings" => %{"1" => %{"type" => "enum"}}}})
+
+      assert lv
+             |> element("#form")
+             |> render_change(%{
+               "form" => %{"field_settings" => %{"1" => %{"allowed_values_sort" => ["new"]}}}
+             }) =~ "option-1"
+
+      refute lv
+             |> element("#form")
+             |> render_change(%{
+               "form" => %{"field_settings" => %{"1" => %{"allowed_values_drop" => ["0"]}}}
+             }) =~ "option-1"
+    end
   end
 
   describe "LV /projects/:p_id/forms/:id email dialog" do
@@ -467,7 +511,9 @@ defmodule KeilaWeb.FormControllerTest do
 
       {:ok, lv, _} = live(conn, Routes.form_path(conn, :edit, project.id, form.id))
 
-      lv |> element("button[phx-click=add_custom_field]") |> render_click()
+      lv
+      |> element("#form")
+      |> render_change(%{"form" => %{"field_settings_sort" => ["0", "new"]}})
 
       lv
       |> element("button[phx-target='#welcome_email'][phx-click=open]")

@@ -33,7 +33,10 @@ defmodule Keila.Contacts.Form.FieldSettings do
       :placeholder,
       :description
     ])
-    |> cast_embed(:allowed_values)
+    |> cast_embed(:allowed_values,
+      sort_param: :allowed_values_sort,
+      drop_param: :allowed_values_drop
+    )
     |> validate_required([:field, :cast, :required])
     |> maybe_validate_key()
   end
