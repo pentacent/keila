@@ -28,12 +28,12 @@ defmodule Keila.Mailings.WelcomeMessageTest do
         insert!(:contacts_form,
           project_id: project.id,
           sender_id: sender.id,
-          settings: %{
-            captcha_required: false,
-            welcome_enabled: true,
-            welcome_subject: "Welcome to our newsletter!",
-            welcome_markdown_body: "Thank you for subscribing, {{ contact.first_name }}!"
-          }
+          welcome_email:
+            build(:mailings_email,
+              subject: "Welcome to our newsletter!",
+              text_body: "Thank you for subscribing, {{ contact.first_name }}!"
+            ),
+          settings: %{captcha_required: false, welcome_enabled: true}
         )
 
       contact =
@@ -104,7 +104,7 @@ defmodule Keila.Mailings.WelcomeMessageTest do
       assert is_nil(Keila.Repo.one(Message))
     end
 
-    test "uses default subject and body when not configured", %{project: project} do
+    test "uses the translated default content for an empty email", %{project: project} do
       sender =
         insert!(:mailings_sender,
           project_id: project.id,
@@ -115,29 +115,48 @@ defmodule Keila.Mailings.WelcomeMessageTest do
         insert!(:contacts_form,
           project_id: project.id,
           sender_id: sender.id,
-          settings: %{
-            captcha_required: false,
-            welcome_enabled: true
-          }
+          settings: %{captcha_required: false, welcome_enabled: true}
         )
 
-      contact =
-        insert!(:contact,
-          project_id: project.id,
-          email: @email
-        )
+      contact = insert!(:contact, project_id: project.id, email: @email)
 
       Keila.if_cloud do
         account = Keila.Repo.one(Keila.Accounts.Account)
         KeilaCloud.Accounts.update_account_status(account.id, :active)
       end
 
+      Gettext.put_locale("de")
       assert {:ok, message} = WelcomeMessage.deliver(contact.id, form.id)
+      Gettext.put_locale("en")
 
       message = Keila.Repo.get!(Message, message.id)
+      assert message.subject == "Willkommen!"
+      assert message.html_body =~ "Vielen Dank für dein Abonnement"
+    end
 
-      assert message.subject =~ "Welcome!"
-      assert message.html_body =~ "Thank you for subscribing"
+    test "preview/2 uses the default content when the form has no email", %{project: project} do
+      form =
+        insert!(:contacts_form,
+          project_id: project.id,
+          welcome_email: nil,
+          settings: %{captcha_required: false, welcome_enabled: true}
+        )
+
+      output = WelcomeMessage.preview(form)
+      assert output.valid?
+      assert output.subject == WelcomeMessage.default_subject()
+    end
+  end
+
+  describe "put_default_content/1" do
+    test "fills nil and empty subject and body" do
+      for empty <- [nil, ""] do
+        email = %Keila.Mailings.Email{type: :markdown, subject: empty, text_body: empty}
+
+        assert %{subject: subject, text_body: body} = WelcomeMessage.put_default_content(email)
+        assert subject == WelcomeMessage.default_subject()
+        assert body == WelcomeMessage.default_markdown_body()
+      end
     end
   end
 end

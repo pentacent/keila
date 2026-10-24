@@ -1,4 +1,4 @@
-<div id="html-editor-toolbar" class="w-full sticky top-0 z-10" phx-update="ignore">
+<div id={"#{@id}-html-toolbar"} class="w-full sticky top-0 z-10" phx-update="ignore">
   <div class="wysiwyg--menu bg-white relative shadow z-10 flex overflow-x-auto mt-4">
     <button
       type="button"
@@ -20,6 +20,7 @@
       <button
         type="button"
         phx-click="merge_html_template"
+        phx-target={@myself}
         data-confirm={
           gettext(
             "This will merge your content slots with the HTML template and allow you to edit the full HTML document. You will no longer be able to edit slots separately. This action cannot be undone."
@@ -61,10 +62,11 @@
         <div class="mt-4">
           <label class="text-sm font-semibold text-zinc-100 mb-1 block">{slot.name}</label>
           <div
-            id={"html-slot-" <> slot.name}
+            id={"#{@id}-html-slot-#{slot.name}"}
             phx-hook="HtmlEditor"
             phx-update="ignore"
-            data-target={"#campaign_html_content_" <> slot.name}
+            data-target={"##{@id}-html-content-#{slot.name}"}
+            data-toolbar={"##{@id}-html-toolbar"}
           >
             <div class="editor"></div>
           </div>
@@ -72,18 +74,19 @@
       <% end %>
     <% else %>
       <div
-        id="html-editor-wrapper"
+        id={"#{@id}-html-editor-wrapper"}
         class="h-full [&_.editor]:h-full [&_.cm-editor]:h-full"
         phx-hook="HtmlEditor"
         phx-update="ignore"
-        data-target="#campaign_html_body"
+        data-target={"##{@id}-html-body"}
+        data-toolbar={"##{@id}-html-toolbar"}
       >
-        <div id="html-editor" class="editor"></div>
+        <div class="editor"></div>
       </div>
     <% end %>
   </div>
   <iframe
-    id="html-inline-preview"
+    id={"#{@id}-inline-preview"}
     src="about:blank"
     class="bg-white h-full transition-all"
     x-bind:class="editorExpanded ? 'w-0' : 'w-3/5'"
@@ -94,26 +97,26 @@
 <%= if @content_slots != [] do %>
   <%= for slot <- @content_slots do %>
     <textarea
-      id={"campaign_html_content_" <> slot.name}
-      name={"campaign[html_content][" <> slot.name <> "]"}
+      id={"#{@id}-html-content-#{slot.name}"}
+      name={"#{@form.name}[html_content][#{slot.name}]"}
       class="hidden"
       phx-debounce="1000"
-    ><%= (Ecto.Changeset.get_field(@changeset, :html_content) || %{})[slot.name] || slot.default_content %></textarea>
+    ><%= (get_field(@form.source, :html_content) || %{})[slot.name] || slot.default_content %></textarea>
   <% end %>
 <% else %>
   <textarea
-    id="campaign_html_body"
-    name="campaign[html_body]"
+    id={"#{@id}-html-body"}
+    name={"#{@form.name}[html_body]"}
     class="hidden"
     phx-debounce="1000"
-  ><%= Ecto.Changeset.get_field(@changeset, :html_body) %></textarea>
+  ><%= get_field(@form.source, :html_body) %></textarea>
 <% end %>
 
 <div
-  id="html-preview-data"
+  id={"#{@id}-preview-data"}
   phx-hook="HtmlPreview"
   class="hidden"
-  data-iframe="#html-inline-preview, #html-preview"
+  data-iframe={"##{@id}-inline-preview, #html-preview"}
 >
   {@preview}
 </div>

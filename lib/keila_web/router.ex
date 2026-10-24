@@ -138,7 +138,6 @@ defmodule KeilaWeb.Router do
     get "/projects/:project_id/forms", FormController, :index
     get "/projects/:project_id/forms/new", FormController, :new
     get "/projects/:project_id/forms/:id", FormController, :edit
-    put "/projects/:project_id/forms/:id", FormController, :post_edit
     delete "/projects/:project_id/forms", FormController, :delete
 
     get "/projects/:project_id/templates", TemplateController, :index

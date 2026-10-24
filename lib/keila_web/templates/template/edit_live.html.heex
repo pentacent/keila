@@ -44,12 +44,12 @@
       {render("_edit_hybrid.html", assigns)}
     <% :mjml -> %>
       {render("_edit_mjml.html", assigns)}
-      {render(KeilaWeb.CampaignView, "_wysiwyg_dialogs.html", assigns)}
-      {render(KeilaWeb.CampaignView, "_preview_dialog.html", assigns)}
+      {render(KeilaWeb.EmailEditorView, "_wysiwyg_dialogs.html", assigns)}
+      {render(KeilaWeb.EmailEditorView, "_preview_dialog.html", assigns)}
     <% :html -> %>
       {render("_edit_html.html", assigns)}
-      {render(KeilaWeb.CampaignView, "_wysiwyg_dialogs.html", assigns)}
-      {render(KeilaWeb.CampaignView, "_preview_dialog.html", assigns)}
+      {render(KeilaWeb.EmailEditorView, "_wysiwyg_dialogs.html", assigns)}
+      {render(KeilaWeb.EmailEditorView, "_preview_dialog.html", assigns)}
     <% :text -> %>
       {render("_edit_text.html", assigns)}
   <% end %>

@@ -15,17 +15,15 @@ defmodule KeilaWeb.Api.Schemas.Form do
       type: :string,
       example: "ms_12345"
     },
-    template_id: %{
-      type: :string,
-      example: "tpl_12345"
-    },
     settings: %{
       type: :map,
       properties: %{
         captcha_required: %{type: :boolean},
         double_opt_in_required: %{type: :boolean},
-        double_opt_in_subject: %{type: :string},
-        double_opt_in_markdown_body: %{type: :string},
+        welcome_enabled: %{
+          type: :boolean,
+          description: "Sends the welcome email to new contacts."
+        },
         double_opt_in_message: %{type: :string},
         double_opt_in_url: %{
           type: :string,
@@ -56,23 +54,27 @@ defmodule KeilaWeb.Api.Schemas.Form do
     },
     fields: %{
       type: :array,
+      description:
+        "Fields of the form. Must include an `email` field with `cast` and `required` set to `true`.",
       items: %{
         field: %{
           type: :string,
           enum: [:email, :first_name, :last_name, :data]
         },
         required: %{
-          type: :boolean
+          type: :boolean,
+          description: "Defaults to `false`."
         },
         cast: %{
-          type: :boolean
+          type: :boolean,
+          description: "Defaults to `true`."
         },
         key: %{
           type: :string
         },
         type: %{
           type: :string,
-          values: [:email, :string, :integer, :boolean, :enum, :tags, :array]
+          enum: [:email, :string, :integer, :boolean, :enum, :tags, :array]
         },
         label: %{
           type: :string
@@ -88,6 +90,20 @@ defmodule KeilaWeb.Api.Schemas.Form do
           items: %{label: %{type: :string}, value: %{type: :string}}
         }
       }
+    },
+    welcome_email: %{
+      type: :map,
+      nullable: true,
+      description:
+        "Welcome email. Only sent when `settings.welcome_enabled` is `true`. A localized default email is sent when set to `null`. If defined, `subject` and the `text_body` of a Markdown email may still be left empty to use localized default content.",
+      properties: KeilaWeb.Api.Schemas.Email.properties()
+    },
+    double_opt_in_email: %{
+      type: :map,
+      nullable: true,
+      description:
+        "Double opt-in email. Only sent when `settings.double_opt_in_required` is `true`. A localized default email is sent when set to `null`. If defined, `subject` and the `text_body` of a Markdown email may still be left empty to use localized default content. A custom body must link to `{{ double_opt_in_link }}` so that contacts can confirm their subscription, e.g. `[Confirm subscription]({{ double_opt_in_link }})` in Markdown.",
+      properties: KeilaWeb.Api.Schemas.Email.properties()
     }
   }
 
@@ -120,15 +136,29 @@ defmodule KeilaWeb.Api.Schemas.Form.CreateParams do
   use KeilaWeb.Api.Schema
 
   @properties KeilaWeb.Api.Schemas.Form.properties()
-  @allowed_properties [:name, :sender_id, :template_id, :settings, :fields]
-  build_open_api_schema(@properties, only: @allowed_properties, required: [:name])
+  @allowed_properties [
+    :name,
+    :sender_id,
+    :settings,
+    :fields,
+    :welcome_email,
+    :double_opt_in_email
+  ]
+  build_open_api_schema(@properties, only: @allowed_properties, required: [:name, :fields])
 end
 
 defmodule KeilaWeb.Api.Schemas.Form.UpdateParams do
   use KeilaWeb.Api.Schema
 
   @properties KeilaWeb.Api.Schemas.Form.properties()
-  @allowed_properties [:name, :sender_id, :template_id, :settings, :fields]
+  @allowed_properties [
+    :name,
+    :sender_id,
+    :settings,
+    :fields,
+    :welcome_email,
+    :double_opt_in_email
+  ]
   build_open_api_schema(@properties, only: @allowed_properties)
 end
 
