@@ -41,6 +41,7 @@ defmodule Keila.Contacts.Form do
       drop_param: :field_settings_drop
     )
     |> validate_email_field_settings()
+    |> validate_unique_data_keys()
     |> cast_embed(:welcome_email, with: &Email.changeset(&1, &2, require_content: false))
     |> cast_embed(:double_opt_in_email, with: &Email.changeset(&1, &2, require_content: false))
     |> maybe_ensure_email_embed_exists(:welcome_email, :welcome_enabled)
@@ -81,5 +82,39 @@ defmodule Keila.Contacts.Form do
       %{cast: true, required: true} -> changeset
       _other -> add_error(changeset, :field_settings, "email field must be cast and required")
     end
+  end
+
+  defp validate_unique_data_keys(changeset) do
+    case get_change(changeset, :field_settings) do
+      nil ->
+        changeset
+
+      field_changesets ->
+        key_counts = field_changesets |> Enum.map(&data_key/1) |> Enum.frequencies()
+
+        field_changesets =
+          Enum.map(field_changesets, &maybe_add_duplicate_key_error(&1, key_counts))
+
+        %{
+          changeset
+          | changes: %{changeset.changes | field_settings: field_changesets},
+            valid?: changeset.valid? and Enum.all?(field_changesets, & &1.valid?)
+        }
+    end
+  end
+
+  # Returns the key of a data field, or nil for removed (replaced) data fields and other fields.
+  defp data_key(%{action: :replace}), do: nil
+
+  defp data_key(field_changeset) do
+    if get_field(field_changeset, :field) == :data, do: get_field(field_changeset, :key)
+  end
+
+  defp maybe_add_duplicate_key_error(field_changeset, key_counts) do
+    key = data_key(field_changeset)
+
+    if key && key_counts[key] > 1,
+      do: add_error(field_changeset, :key, "has already been taken"),
+      else: field_changeset
   end
 end
