@@ -45,7 +45,7 @@ defmodule Keila.Contacts.Form.FieldSettings do
     if get_field(changeset, :field) == :data do
       changeset
       |> validate_required(:key)
-      |> validate_format(:key, ~r/^[a-zA-Z_]+$/)
+      |> validate_format(:key, ~r/^[a-zA-Z_][a-zA-Z0-9_]*$/)
     else
       changeset
     end

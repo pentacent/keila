@@ -70,6 +70,32 @@ defmodule Keila.ContactsFormTest do
   end
 
   @tag :contacts_form
+  test "Data fields must have unique keys", %{project: project} do
+    params = %{
+      "name" => "My Form",
+      "field_settings" => [
+        %{"field" => "email", "required" => true},
+        %{"field" => "data", "key" => "pet", "type" => "string"},
+        %{"field" => "data", "key" => "pet", "type" => "string"},
+        %{"field" => "data", "type" => "string"},
+        %{"field" => "data", "type" => "string"}
+      ]
+    }
+
+    assert {:error, changeset} = Contacts.create_form(project.id, params)
+
+    assert %{
+             field_settings: [
+               %{},
+               %{key: ["has already been taken"]},
+               %{key: ["has already been taken"]},
+               %{key: ["can't be blank"]},
+               %{key: ["can't be blank"]}
+             ]
+           } = errors_on(changeset)
+  end
+
+  @tag :contacts_form
   test "Update form", %{project: project} do
     form = insert!(:contacts_form, project_id: project.id)
     assert {:ok, form} = Contacts.update_form(form.id, %{"name" => "Updated Form"})

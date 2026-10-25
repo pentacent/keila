@@ -160,14 +160,18 @@
 
       <div class="flex flex-col gap-4" x-show="tab === 'fields'">
         <.inputs_for :let={fs} field={f[:field_settings]}>
+          <% field = Ecto.Changeset.get_field(fs.source, :field) %>
+          <% key = Ecto.Changeset.get_field(fs.source, :key) %>
           <div
+            id={fs.id}
             class="flex flex-col gap-2"
             x-data="{cast: $el.querySelector('input.cast').checked}"
+            phx-hook={if field == :data, do: "FormFieldKey"}
+            data-saved={not is_nil(fs.data.id)}
+            data-key-error={Keyword.has_key?(fs.errors, :key)}
           >
             <input type="hidden" name="form[field_settings_sort][]" value={fs.index} />
             {hidden_input(fs, :field)}
-            <% field = fs.source.changes[:field] || fs.data.field %>
-            <% key = fs.source.changes[:key] || fs.data.key %>
 
             <%= case field do %>
               <% :email -> %>
@@ -177,23 +181,23 @@
                 </h3>
               <% :first_name -> %>
                 <h3 class="font-bold pt-4 border-solid border-t-2 border-gray-600">
-                  <%= label(fs, :cast) do %>
-                    {checkbox(fs, :cast, x_model: "cast", class: "cast")}
-                    {gettext("First name")}
+                  <%= label(fs, :cast, class: "flex items-center justify-between gap-2") do %>
+                    <span class="truncate">{gettext("First name")}</span>
+                    {checkbox(fs, :cast, x_model: "cast", class: "cast shrink-0")}
                   <% end %>
                 </h3>
               <% :last_name -> %>
                 <h3 class="font-bold pt-4 border-solid border-t-2 border-gray-600">
-                  <%= label(fs, :cast) do %>
-                    {checkbox(fs, :cast, x_model: "cast", class: "cast")}
-                    {gettext("Last name")}
+                  <%= label(fs, :cast, class: "flex items-center justify-between gap-2") do %>
+                    <span class="truncate">{gettext("Last name")}</span>
+                    {checkbox(fs, :cast, x_model: "cast", class: "cast shrink-0")}
                   <% end %>
                 </h3>
               <% :data -> %>
                 <h3 class="font-bold pt-4 border-solid border-t-2 border-gray-600">
-                  <%= label(fs, :cast) do %>
-                    {checkbox(fs, :cast, x_model: "cast", class: "cast")}
-                    {gettext("Custom field: data.%{key}", key: key)}
+                  <%= label(fs, :cast, class: "flex items-center justify-between gap-2") do %>
+                    <span class="truncate">{key}</span>
+                    {checkbox(fs, :cast, x_model: "cast", class: "cast shrink-0")}
                   <% end %>
                 </h3>
             <% end %>
@@ -209,8 +213,52 @@
               </div>
             <% end %>
 
+            <div class="flex flex-col" x-show="cast">
+              {label(fs, :label, gettext("Label"))}
+              <%= with_validation(fs, :label) do %>
+                {text_input(fs, :label,
+                  class: "text-black",
+                  data_role: "label"
+                )}
+              <% end %>
+            </div>
+
             <%= if field == :data do %>
+              <% key_hint_id = fs.id <> "_key_hint" %>
+              <% key_editor_id = fs.id <> "_key_editor" %>
               <div class="flex flex-col" x-show="cast">
+                <div id={key_hint_id} class="text-xs flex items-center gap-1" data-role="key-hint">
+                  <span
+                    class="cursor-help"
+                    title={
+                      gettext("Use {{ contact.data.%{key} }} in your emails or segments.",
+                        key: key
+                      )
+                    }
+                  >
+                    {gettext("Data key:")} <code>{key}</code>
+                  </span>
+                  <button
+                    type="button"
+                    class="font-bold text-emerald-500 underline hover:text-emerald-400"
+                    phx-click={
+                      JS.remove_class("hidden", to: "#" <> key_editor_id)
+                      |> JS.add_class("hidden", to: "#" <> key_hint_id)
+                      |> JS.focus(to: "#" <> input_id(fs, :key))
+                    }
+                  >
+                    {gettext("Edit")}
+                  </button>
+                </div>
+                <div id={key_editor_id} class="hidden flex flex-col" data-role="key-editor">
+                  {label(fs, :key, gettext("Data Key"))}
+                  <%= with_validation(fs, :key) do %>
+                    {text_input(fs, :key, class: "text-black", required: true, data_role: "key")}
+                  <% end %>
+                </div>
+              </div>
+              <div class="flex flex-col" x-show="cast">
+                {label(fs, :type, gettext("Field Type"))}
                 {select(
                   fs,
                   :type,
@@ -225,30 +273,7 @@
                   class: "text-black"
                 )}
               </div>
-              <div class="flex flex-col" x-show="cast">
-                {label(fs, :key, gettext("Data Key"))}
-                <%= with_validation(fs, :key) do %>
-                  {text_input(fs, :key, class: "text-black", required: true)}
-                <% end %>
-                <div class="text-xs">
-                  {gettext_md(
-                    """
-                    You can use data from this field as
-                    `{{ contact.data.%{key} }}` in your emails or segments.
-                    """,
-                    key: key
-                  )}
-                </div>
-                <br />
-              </div>
             <% end %>
-
-            <div class="flex flex-col" x-show="cast">
-              {label(fs, :label, gettext("Label"))}
-              <%= with_validation(fs, :label) do %>
-                {text_input(fs, :label, class: "text-black")}
-              <% end %>
-            </div>
 
             <%= case Ecto.Changeset.get_field(fs.source, :type) do %>
               <% type when type in [:string, :email, nil] -> %>

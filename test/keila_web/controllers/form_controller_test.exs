@@ -67,12 +67,53 @@ defmodule KeilaWeb.FormControllerTest do
       assert lv
              |> element("#form")
              |> render_change(%{"form" => %{"field_settings_sort" => ["0", "new"]}}) =~
-               "my_custom_field"
+               "custom_field_1"
 
       refute lv
              |> element("#form")
              |> render_change(%{"form" => %{"field_settings_drop" => ["1"]}}) =~
-               "my_custom_field"
+               "custom_field_1"
+    end
+
+    @tag :form_controller
+    test "numbers the data keys of new custom fields", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+
+      form =
+        insert!(:contacts_form,
+          project_id: project.id,
+          settings: %{captcha_required: false},
+          field_settings: [
+            %Keila.Contacts.Form.FieldSettings{field: :email, cast: true, required: true},
+            %Keila.Contacts.Form.FieldSettings{
+              field: :data,
+              key: "custom_field_3",
+              label: "Pet",
+              type: :string
+            },
+            %Keila.Contacts.Form.FieldSettings{
+              field: :data,
+              key: "custom_field_x",
+              label: "Dog",
+              type: :string
+            }
+          ]
+        )
+
+      {:ok, lv, _} = live(conn, Routes.form_path(conn, :edit, project.id, form.id))
+
+      assert lv
+             |> element("#form")
+             |> render_change(%{"form" => %{"field_settings_sort" => ["0", "1", "2", "new"]}}) =~
+               ~s(value="custom_field_4")
+
+      html =
+        lv
+        |> element("#form")
+        |> render_change(%{"form" => %{"field_settings_sort" => ["0", "1", "2", "3", "new"]}})
+
+      assert html =~ ~s(value="custom_field_4")
+      assert html =~ ~s(value="custom_field_5")
     end
 
     @tag :form_controller
@@ -525,7 +566,7 @@ defmodule KeilaWeb.FormControllerTest do
       |> element("button[phx-value-email=double_opt_in_email][phx-click=reset_email]")
       |> render_click()
 
-      assert render(lv) =~ "my_custom_field"
+      assert render(lv) =~ "custom_field_1"
     end
 
     @tag :form_controller
