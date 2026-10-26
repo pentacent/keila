@@ -75,7 +75,7 @@ defmodule Keila.MixProject do
       {:tailwind, "~> 0.4.1", runtime: Mix.env() == :dev},
       {:gettext, "~> 1.0"},
       {:jason, "~> 1.0"},
-      {:bandit, "~> 1.13"},
+      {:bandit, "~> 1.14"},
       {:ex_doc, "~> 0.23", only: :dev, runtime: false},
       {:swoosh, "~> 1.26.3"},
       {:gen_smtp, "~> 1.3"},
