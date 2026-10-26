@@ -103,6 +103,41 @@ defmodule Keila.Mailings.SwooshAdapters.CloudflareTest do
     assert body["bcc"] == "bcc@example.com"
   end
 
+  test "maps reply-to onto Cloudflare's reply_to field" do
+    email = Swoosh.Email.reply_to(email(), {"Rico", "rico@example.com"})
+
+    Cloudflare.deliver(email, @config)
+
+    assert decode(post_request())["reply_to"] == "rico@example.com"
+  end
+
+  test "forwards list and X- headers, lowercases Precedence, and drops disallowed headers" do
+    email =
+      email()
+      |> Swoosh.Email.header("List-Unsubscribe", "<https://keila.example/unsubscribe/abc>")
+      |> Swoosh.Email.header("List-Unsubscribe-Post", "List-Unsubscribe=One-Click")
+      |> Swoosh.Email.header("Precedence", "Bulk")
+      |> Swoosh.Email.header("X-Keila-Invite", "1")
+      |> Swoosh.Email.header("Message-ID", "<not-allowed@example.com>")
+
+    Cloudflare.deliver(email, @config)
+
+    assert decode(post_request())["headers"] == %{
+             "List-Unsubscribe" => "<https://keila.example/unsubscribe/abc>",
+             "List-Unsubscribe-Post" => "List-Unsubscribe=One-Click",
+             "Precedence" => "bulk",
+             "X-Keila-Invite" => "1"
+           }
+  end
+
+  test "omits reply_to and headers when there are none" do
+    Cloudflare.deliver(email(), @config)
+
+    body = decode(post_request())
+    refute Map.has_key?(body, "reply_to")
+    refute Map.has_key?(body, "headers")
+  end
+
   test "reports a permanent bounce as an invalid email so the contact is retired" do
     Process.put(
       :cloudflare_response,
