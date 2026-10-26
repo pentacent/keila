@@ -28,6 +28,18 @@ defmodule Keila.Mailings.SwooshAdapters.Cloudflare do
 
   @base_url "https://api.cloudflare.com/client/v4"
 
+  # Headers Cloudflare accepts in the `headers` field, besides any `X-` header.
+  # A header outside this list makes Cloudflare reject the whole request, so the
+  # adapter drops anything else (logging it) instead of losing the message.
+  # https://developers.cloudflare.com/email-service/reference/headers/
+  @allowed_headers ~w(
+    in-reply-to references thread-index thread-topic
+    list-unsubscribe list-unsubscribe-post list-id list-archive list-help
+    list-owner list-post list-subscribe precedence auto-submitted
+    content-language keywords comments importance priority sensitivity
+    organization require-recipient-valid-since expires reply-by archived-at
+  )
+
   @impl true
   def deliver(%Swoosh.Email{} = email, config) do
     account_id = Keyword.fetch!(config, :account_id)
@@ -113,10 +125,51 @@ defmodule Keila.Mailings.SwooshAdapters.Cloudflare do
     }
     |> put_if_present("cc", recipient_field(email.cc))
     |> put_if_present("bcc", recipient_field(email.bcc))
+    |> put_if_present("reply_to", reply_to(email.reply_to))
+    |> put_if_present("headers", headers(email.headers))
+  end
+
+  defp reply_to(nil), do: nil
+  defp reply_to([]), do: nil
+  defp reply_to([single | _]), do: address(single)
+  defp reply_to(single), do: address(single)
+
+  defp headers(headers) when map_size(headers) == 0, do: nil
+
+  defp headers(headers) do
+    headers
+    |> Enum.flat_map(fn {name, value} ->
+      key = String.downcase(name)
+
+      cond do
+        String.starts_with?(key, "x-") ->
+          [{name, value}]
+
+        key == "precedence" ->
+          # Cloudflare accepts only lowercase `bulk`, `list` or `junk`.
+          [{name, String.downcase(value)}]
+
+        key in @allowed_headers ->
+          [{name, value}]
+
+        true ->
+          Logger.warning(
+            "Cloudflare adapter: dropping header #{name}, which Email Service does not accept"
+          )
+
+          []
+      end
+    end)
+    |> Map.new()
+    |> case do
+      empty when map_size(empty) == 0 -> nil
+      kept -> kept
+    end
   end
 
   defp put_if_present(body, _key, nil), do: body
   defp put_if_present(body, _key, []), do: body
+  defp put_if_present(body, _key, map) when is_map(map) and map_size(map) == 0, do: body
   defp put_if_present(body, key, value), do: Map.put(body, key, value)
 
   defp recipient_field([]), do: nil
