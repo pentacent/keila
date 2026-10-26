@@ -159,197 +159,229 @@
       </div>
 
       <div class="flex flex-col gap-4" x-show="tab === 'fields'">
-        <.inputs_for :let={fs} field={f[:field_settings]}>
-          <% field = Ecto.Changeset.get_field(fs.source, :field) %>
-          <% key = Ecto.Changeset.get_field(fs.source, :key) %>
-          <div
-            id={fs.id}
-            class="flex flex-col gap-2"
-            x-data="{cast: $el.querySelector('input.cast').checked}"
-            phx-hook={if field == :data, do: "FormFieldKey"}
-            data-saved={not is_nil(fs.data.id)}
-            data-key-error={Keyword.has_key?(fs.errors, :key)}
-          >
-            <input type="hidden" name="form[field_settings_sort][]" value={fs.index} />
-            {hidden_input(fs, :field)}
+        <div id="field-settings" class="flex flex-col gap-4" phx-hook="Sortable">
+          <.inputs_for :let={fs} field={f[:field_settings]}>
+            <% field = Ecto.Changeset.get_field(fs.source, :field) %>
+            <% key = Ecto.Changeset.get_field(fs.source, :key) %>
+            <div
+              id={fs.id}
+              class="flex flex-col gap-2 pt-4 border-t-2 border-gray-600 first-of-type:pt-0 first-of-type:border-t-0"
+              x-data="{cast: $el.querySelector('input.cast').checked}"
+              phx-hook={if field == :data, do: "FormFieldKey"}
+              data-role="sortable-item"
+              data-saved={not is_nil(fs.data.id)}
+              data-key-error={Keyword.has_key?(fs.errors, :key)}
+            >
+              <input type="hidden" name="form[field_settings_sort][]" value={fs.index} />
+              {hidden_input(fs, :field)}
 
-            <%= case field do %>
-              <% :email -> %>
-                <h3 class="font-bold">
-                  {checkbox(fs, :cast, x_model: "cast", class: "cast hidden")}
-                  {gettext("Email")}
-                </h3>
-              <% :first_name -> %>
-                <h3 class="font-bold pt-4 border-solid border-t-2 border-gray-600">
-                  <%= label(fs, :cast, class: "flex items-center justify-between gap-2") do %>
-                    <span class="truncate">{gettext("First name")}</span>
-                    {checkbox(fs, :cast, x_model: "cast", class: "cast shrink-0")}
-                  <% end %>
-                </h3>
-              <% :last_name -> %>
-                <h3 class="font-bold pt-4 border-solid border-t-2 border-gray-600">
-                  <%= label(fs, :cast, class: "flex items-center justify-between gap-2") do %>
-                    <span class="truncate">{gettext("Last name")}</span>
-                    {checkbox(fs, :cast, x_model: "cast", class: "cast shrink-0")}
-                  <% end %>
-                </h3>
-              <% :data -> %>
-                <h3 class="font-bold pt-4 border-solid border-t-2 border-gray-600">
-                  <%= label(fs, :cast, class: "flex items-center justify-between gap-2") do %>
-                    <span class="truncate">{key}</span>
-                    {checkbox(fs, :cast, x_model: "cast", class: "cast shrink-0")}
-                  <% end %>
-                </h3>
-            <% end %>
-
-            <%= if field != :email do %>
-              <div class="flex flex-col" x-show="cast">
-                <%= with_validation(fs, :required) do %>
-                  <%= label(fs, :required) do %>
-                    {checkbox(fs, :required)}
-                    {gettext("Require")}
-                  <% end %>
+              <div class="flex items-center gap-2">
+                <span
+                  class="inline-flex w-4 shrink-0 cursor-grab text-gray-400"
+                  title={gettext("Drag to reorder")}
+                  data-role="drag-handle"
+                  aria-hidden="true"
+                >
+                  {render_icon(:grip_vertical)}
+                </span>
+                <%= case field do %>
+                  <% :email -> %>
+                    <h3 class="font-bold flex-1 min-w-0">
+                      {checkbox(fs, :cast, x_model: "cast", class: "cast hidden")}
+                      {gettext("Email")}
+                    </h3>
+                  <% :first_name -> %>
+                    <h3 class="font-bold flex-1 min-w-0">
+                      <%= label(fs, :cast, class: "flex items-center justify-between gap-2") do %>
+                        <span class="truncate">{gettext("First name")}</span>
+                        {checkbox(fs, :cast, x_model: "cast", class: "cast shrink-0")}
+                      <% end %>
+                    </h3>
+                  <% :last_name -> %>
+                    <h3 class="font-bold flex-1 min-w-0">
+                      <%= label(fs, :cast, class: "flex items-center justify-between gap-2") do %>
+                        <span class="truncate">{gettext("Last name")}</span>
+                        {checkbox(fs, :cast, x_model: "cast", class: "cast shrink-0")}
+                      <% end %>
+                    </h3>
+                  <% :data -> %>
+                    <h3 class="font-bold flex-1 min-w-0">
+                      <%= label(fs, :cast, class: "flex items-center justify-between gap-2") do %>
+                        <span class="truncate">{key}</span>
+                        {checkbox(fs, :cast, x_model: "cast", class: "cast shrink-0")}
+                      <% end %>
+                    </h3>
                 <% end %>
               </div>
-            <% end %>
 
-            <div class="flex flex-col" x-show="cast">
-              {label(fs, :label, gettext("Label"))}
-              <%= with_validation(fs, :label) do %>
-                {text_input(fs, :label,
-                  class: "text-black",
-                  data_role: "label"
-                )}
-              <% end %>
-            </div>
-
-            <%= if field == :data do %>
-              <% key_hint_id = fs.id <> "_key_hint" %>
-              <% key_editor_id = fs.id <> "_key_editor" %>
-              <div class="flex flex-col" x-show="cast">
-                <div id={key_hint_id} class="text-xs flex items-center gap-1" data-role="key-hint">
-                  <span
-                    class="cursor-help"
-                    title={
-                      gettext("Use {{ contact.data.%{key} }} in your emails or segments.",
-                        key: key
-                      )
-                    }
-                  >
-                    {gettext("Data key:")} <code>{key}</code>
-                  </span>
-                  <button
-                    type="button"
-                    class="font-bold text-emerald-500 underline hover:text-emerald-400"
-                    phx-click={
-                      JS.remove_class("hidden", to: "#" <> key_editor_id)
-                      |> JS.add_class("hidden", to: "#" <> key_hint_id)
-                      |> JS.focus(to: "#" <> input_id(fs, :key))
-                    }
-                  >
-                    {gettext("Edit")}
-                  </button>
-                </div>
-                <div id={key_editor_id} class="hidden flex flex-col" data-role="key-editor">
-                  {label(fs, :key, gettext("Data Key"))}
-                  <%= with_validation(fs, :key) do %>
-                    {text_input(fs, :key, class: "text-black", required: true, data_role: "key")}
-                  <% end %>
-                </div>
-              </div>
-              <div class="flex flex-col" x-show="cast">
-                {label(fs, :type, gettext("Field Type"))}
-                {select(
-                  fs,
-                  :type,
-                  [
-                    {gettext("Text"), "string"},
-                    {gettext("Email"), "email"},
-                    {gettext("Number"), "integer"},
-                    {gettext("Checkbox"), "boolean"},
-                    {gettext("Dropdown"), "enum"},
-                    {gettext("Tags"), "tags"}
-                  ],
-                  class: "text-black"
-                )}
-              </div>
-            <% end %>
-
-            <%= case Ecto.Changeset.get_field(fs.source, :type) do %>
-              <% type when type in [:string, :email, nil] -> %>
+              <%= if field != :email do %>
                 <div class="flex flex-col" x-show="cast">
-                  {label(fs, :placeholder, gettext("Placeholder"))}
-                  <%= with_validation(fs, :placeholder) do %>
-                    {text_input(fs, :placeholder, class: "text-black")}
+                  <%= with_validation(fs, :required) do %>
+                    <%= label(fs, :required) do %>
+                      {checkbox(fs, :required)}
+                      {gettext("Require")}
+                    <% end %>
                   <% end %>
                 </div>
-              <% type when type in [:enum, :tags] -> %>
-                <div class="flex flex-col mt-2" x-show="cast">
-                  {label(fs, :allowed_values, gettext("Options"))}
-                  <table class="w-full">
-                    <tr>
-                      <th>Value</th>
-                      <th>Label</th>
-                      <th></th>
-                    </tr>
-                    <.inputs_for :let={fo} field={fs[:allowed_values]}>
-                      <tr>
-                        <td>
-                          <input
-                            type="hidden"
-                            name={fs.name <> "[allowed_values_sort][]"}
-                            value={fo.index}
-                          />
-                          {text_input(fo, :value, class: "w-full bg-transparent text-white")}
-                        </td>
-                        <td>
-                          {text_input(fo, :label, class: "w-full bg-transparent text-white")}
-                        </td>
-                        <td>
-                          <button
-                            class="button button--text"
-                            type="button"
-                            name={fs.name <> "[allowed_values_drop][]"}
-                            value={fo.index}
-                            phx-click={JS.dispatch("change")}
-                          >
-                            <span class="w-4">{render_icon(:trash)}</span>
-                          </button>
-                        </td>
-                      </tr>
-                    </.inputs_for>
-                  </table>
-                  <input type="hidden" name={fs.name <> "[allowed_values_drop][]"} />
+              <% end %>
+
+              <div class="flex flex-col" x-show="cast">
+                {label(fs, :label, gettext("Label"))}
+                <%= with_validation(fs, :label) do %>
+                  {text_input(fs, :label,
+                    class: "text-black",
+                    data_role: "label"
+                  )}
+                <% end %>
+              </div>
+
+              <%= if field == :data do %>
+                <% key_hint_id = fs.id <> "_key_hint" %>
+                <% key_editor_id = fs.id <> "_key_editor" %>
+                <div class="flex flex-col" x-show="cast">
+                  <div
+                    id={key_hint_id}
+                    class="text-xs flex items-center gap-1"
+                    data-role="key-hint"
+                  >
+                    <span
+                      class="cursor-help"
+                      title={
+                        gettext("Use {{ contact.data.%{key} }} in your emails or segments.",
+                          key: key
+                        )
+                      }
+                    >
+                      {gettext("Data key:")} <code>{key}</code>
+                    </span>
+                    <button
+                      type="button"
+                      class="font-bold text-emerald-500 underline hover:text-emerald-400"
+                      phx-click={
+                        JS.remove_class("hidden", to: "#" <> key_editor_id)
+                        |> JS.add_class("hidden", to: "#" <> key_hint_id)
+                        |> JS.focus(to: "#" <> input_id(fs, :key))
+                      }
+                    >
+                      {gettext("Edit")}
+                    </button>
+                  </div>
+                  <div id={key_editor_id} class="hidden flex flex-col" data-role="key-editor">
+                    {label(fs, :key, gettext("Data Key"))}
+                    <%= with_validation(fs, :key) do %>
+                      {text_input(fs, :key, class: "text-black", required: true, data_role: "key")}
+                    <% end %>
+                  </div>
+                </div>
+                <div class="flex flex-col" x-show="cast">
+                  {label(fs, :type, gettext("Field Type"))}
+                  {select(
+                    fs,
+                    :type,
+                    [
+                      {gettext("Text"), "string"},
+                      {gettext("Email"), "email"},
+                      {gettext("Number"), "integer"},
+                      {gettext("Checkbox"), "boolean"},
+                      {gettext("Dropdown"), "enum"},
+                      {gettext("Tags"), "tags"}
+                    ],
+                    class: "text-black"
+                  )}
+                </div>
+              <% end %>
+
+              <%= case Ecto.Changeset.get_field(fs.source, :type) do %>
+                <% type when type in [:string, :email, nil] -> %>
+                  <div class="flex flex-col" x-show="cast">
+                    {label(fs, :placeholder, gettext("Placeholder"))}
+                    <%= with_validation(fs, :placeholder) do %>
+                      {text_input(fs, :placeholder, class: "text-black")}
+                    <% end %>
+                  </div>
+                <% type when type in [:enum, :tags] -> %>
+                  <div class="flex flex-col mt-2" x-show="cast">
+                    {label(fs, :allowed_values, gettext("Options"))}
+                    <table class="w-full">
+                      <thead>
+                        <tr>
+                          <th></th>
+                          <th>Value</th>
+                          <th>Label</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody id={fs.id <> "_allowed_values"} phx-hook="Sortable">
+                        <.inputs_for :let={fo} field={fs[:allowed_values]}>
+                          <tr id={fo.id} data-role="sortable-item">
+                            <td>
+                              <span
+                                class="inline-flex w-4 cursor-grab text-gray-400"
+                                title={gettext("Drag to reorder")}
+                                data-role="drag-handle"
+                                aria-hidden="true"
+                              >
+                                {render_icon(:grip_vertical)}
+                              </span>
+                            </td>
+                            <td>
+                              <input
+                                type="hidden"
+                                name={fs.name <> "[allowed_values_sort][]"}
+                                value={fo.index}
+                              />
+                              {text_input(fo, :value, class: "w-full bg-transparent text-white")}
+                            </td>
+                            <td>
+                              {text_input(fo, :label, class: "w-full bg-transparent text-white")}
+                            </td>
+                            <td>
+                              <button
+                                class="button button--text"
+                                type="button"
+                                name={fs.name <> "[allowed_values_drop][]"}
+                                value={fo.index}
+                                phx-click={JS.dispatch("change")}
+                              >
+                                <span class="w-4">{render_icon(:trash)}</span>
+                              </button>
+                            </td>
+                          </tr>
+                        </.inputs_for>
+                      </tbody>
+                    </table>
+                    <input type="hidden" name={fs.name <> "[allowed_values_drop][]"} />
+                    <button
+                      type="button"
+                      class="button button--sm inline-flex self-start mt-4"
+                      name={fs.name <> "[allowed_values_sort][]"}
+                      value="new"
+                      phx-click={JS.dispatch("change")}
+                    >
+                      {gettext("Add option")}
+                    </button>
+                  </div>
+                <% _other -> %>
+                  <br />
+              <% end %>
+
+              <%= if field == :data do %>
+                <div>
                   <button
+                    class="button button--text"
                     type="button"
-                    class="button button--sm inline-flex self-start mt-4"
-                    name={fs.name <> "[allowed_values_sort][]"}
-                    value="new"
+                    name="form[field_settings_drop][]"
+                    value={fs.index}
                     phx-click={JS.dispatch("change")}
                   >
-                    {gettext("Add option")}
+                    {gettext("Remove field")}
+                    <span class="w-4">{render_icon(:trash)}</span>
                   </button>
                 </div>
-              <% _other -> %>
-                <br />
-            <% end %>
-
-            <%= if field == :data do %>
-              <div>
-                <button
-                  class="button button--text"
-                  type="button"
-                  name="form[field_settings_drop][]"
-                  value={fs.index}
-                  phx-click={JS.dispatch("change")}
-                >
-                  {gettext("Remove field")}
-                  <span class="w-4">{render_icon(:trash)}</span>
-                </button>
-              </div>
-            <% end %>
-          </div>
-        </.inputs_for>
+              <% end %>
+            </div>
+          </.inputs_for>
+        </div>
         <input type="hidden" name="form[field_settings_drop][]" />
         <div class="mt-4">
           <button

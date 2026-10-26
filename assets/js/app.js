@@ -22,6 +22,7 @@ import * as DateTimeHooks from "./hooks/date-time"
 import { FileManager } from "./hooks/file_manager"
 import { FormFieldKey } from "./hooks/form-field-key"
 import { RememberUnsaved } from "./hooks/remember-unsaved"
+import { Sortable } from "./hooks/sortable"
 
 const Hooks = {
   ...DateTimeHooks,
@@ -30,6 +31,7 @@ const Hooks = {
   FileManager,
   RememberUnsaved,
   FormFieldKey,
+  Sortable,
   CampaignSettingsDialogHook,
   CampaignStatsChartHook
 }
