@@ -42,8 +42,7 @@ export const FormFieldKey = {
     if (this.keyEdited || this.el.hasAttribute("data-saved")) return
 
     const label = this.labelInput().value
-    this.keyInput().value =
-      label === this.defaultLabel ? this.defaultKey : labelToKey(label) || this.defaultKey
+    this.keyInput().value = label === this.defaultLabel ? this.defaultKey : labelToKey(label) || this.defaultKey
   },
 
   maybeShowKeyEditor() {
