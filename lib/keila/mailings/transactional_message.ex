@@ -80,15 +80,15 @@ defmodule Keila.Mailings.TransactionalMessage do
 
   # Loads the referenced sender, template, and contact into the cast Request's
   # virtual fields, defaulting the subject.
-  defp load_assocs(project_id, request) do
+  defp load_assocs(project_id, %Request{email: %Email{} = email} = request) do
     with {:ok, sender} <- get_sender(project_id, request.sender_id),
-         {:ok, template} <- get_template(project_id, request.email.template_id),
+         {:ok, template} <- get_template(project_id, email.template_id),
          {:ok, subject} <- get_subject(request, template),
          {:ok, recipient} <- get_recipient(project_id, request) do
       {:ok,
        %Request{
          request
-         | email: %Email{request.email | template: template, subject: subject},
+         | email: %Email{email | template: template, subject: subject},
            sender: sender,
            contact: recipient.contact,
            recipient_email: recipient.recipient_email,

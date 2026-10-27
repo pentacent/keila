@@ -83,7 +83,7 @@ defmodule Keila.Mailings.CampaignRenderer do
 
   defp maybe_put_tracking(output, %{settings: %{do_not_track: true}}, _message), do: output
 
-  defp maybe_put_tracking(output, campaign, message) do
+  defp maybe_put_tracking(%Output{} = output, campaign, message) do
     html =
       output.html_body
       |> Floki.parse_document!()

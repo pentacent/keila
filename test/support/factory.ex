@@ -58,6 +58,7 @@ defmodule Keila.Factory do
       config: %{
         type: "smtp",
         smtp_relay: "mail.example.com",
+        smtp_tls_mode: "starttls",
         smtp_username: "foo",
         smtp_password: "BatteryHorseStaple"
       }

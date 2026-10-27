@@ -97,6 +97,8 @@
             {gettext("STARTTLS"), "starttls"},
             {gettext("None"), "none"}
           ],
+          # Senders created before v0.12.6 have no TLS mode and should not default to another option
+          prompt: if(@form.data.id && @form.data.smtp_tls_mode in [nil, ""], do: ""),
           "x-ref": "smtpTlsMode",
           "x-on:change":
             "switch ($refs.smtpTlsMode.value) {case 'tls': port = '465'; break; case 'starttls': port = '587'; break}"

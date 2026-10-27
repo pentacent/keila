@@ -102,9 +102,9 @@ config :keila, Oban,
   ],
   repo: Keila.Repo,
   plugins: [
-    {Oban.Plugins.Pruner, max_age: 1800},
-    {Oban.Plugins.Lifeline, rescue_after: :timer.minutes(10)},
-    {Oban.Plugins.Cron,
+    {Oban.Pruner, max_age: 1800},
+    {Oban.Lifeline, rescue_after: :timer.minutes(10)},
+    {Oban.Cron,
      crontab: [
        {"* * * * *", Keila.Mailings.DeliverScheduledCampaignsWorker},
        {"* * * * *", Keila.Mailings.CampaignRenderRescueWorker},
