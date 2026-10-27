@@ -28,12 +28,12 @@ msgstr "Активацията беше успешна"
 msgid "Check your inbox!"
 msgstr "Проверете пощенската си кутия!"
 
-#: lib/keila_web/templates/auth/login.html.heex:34
+#: lib/keila_web/templates/auth/login.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Don’t have an account?"
 msgstr "Нямате акаунт?"
 
-#: lib/keila_web/templates/auth/login.html.heex:40
+#: lib/keila_web/templates/auth/login.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Forgot your password?"
 msgstr "Забравена парола?"
@@ -122,13 +122,13 @@ msgstr "Моля, попълнете капчата."
 msgid "Resend activation link"
 msgstr "Изпрати линк за активиране от отново"
 
-#: lib/keila_web/templates/auth/login.html.heex:42
+#: lib/keila_web/templates/auth/login.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Reset your password."
 msgstr "Възстановете паролата си."
 
 #: lib/keila_web/controllers/auth_controller.ex:215
-#: lib/keila_web/templates/auth/login.html.heex:30
+#: lib/keila_web/templates/auth/login.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Sign in"
 msgstr "Вход"
@@ -153,7 +153,7 @@ msgstr "Регистрация"
 msgid "Sign up successful"
 msgstr "Регистрацията беше успешна"
 
-#: lib/keila_web/templates/auth/login.html.heex:36
+#: lib/keila_web/templates/auth/login.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Sign up."
 msgstr "Регистрация."

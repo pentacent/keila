@@ -32,7 +32,7 @@ msgstr "Adicionar créditos"
 msgid "Administer Credits for %{email}"
 msgstr "Administrar Créditos para %{email}"
 
-#: lib/keila_web/controllers/user_admin_controller.ex:17
+#: lib/keila_web/controllers/user_admin_controller.ex:25
 #, elixir-autogen, elixir-format
 msgid "Administrate Users"
 msgstr "Administrar Usuários"
@@ -160,9 +160,9 @@ msgstr "Parece que você está executando a versão mais recente do Keila!"
 #: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "Update status"
-msgstr ""
+msgstr "Atualizar status"

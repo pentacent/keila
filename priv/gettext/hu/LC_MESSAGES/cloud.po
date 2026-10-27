@@ -12,22 +12,22 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:274
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:300
 #: lib/keila_web/templates/campaign/stats_live.html.heex:77
-#: lib/keila_web/templates/form/edit_live.html.heex:526
-#: lib/keila_web/templates/form/edit_live.html.heex:676
+#: lib/keila_web/templates/form/edit_live.html.heex:574
+#: lib/keila_web/templates/form/edit_live.html.heex:695
 #, elixir-autogen, elixir-format
 msgid "Start your subscription now"
 msgstr "Indítsa el előfizetését most"
 
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:252
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:278
 #, elixir-autogen, elixir-format
 msgid "To prevent abuse by spammers, sending emails is only possible if you have an active subscription."
 msgstr ""
 "A spammerek általi visszaélések megelőzése érdekében e-mailek küldése csak "
 "aktív előfizetés esetén lehetséges."
 
-#: lib/keila_web/templates/form/edit_live.html.heex:519
+#: lib/keila_web/templates/form/edit_live.html.heex:567
 #, elixir-autogen, elixir-format
 msgid "To prevent abuse by spammers, the double opt-in feature is currently only available if you have a subscription. Sorry for the inconvenience!"
 msgstr ""
@@ -35,7 +35,7 @@ msgstr ""
 "jelenleg csak akkor érhető el, ha van előfizetésed. Elnézést a "
 "kellemetlenségért!"
 
-#: lib/keila_web/templates/form/edit_live.html.heex:669
+#: lib/keila_web/templates/form/edit_live.html.heex:688
 #, elixir-autogen, elixir-format
 msgid "To prevent abuse by spammers, the welcome email feature is currently only available if you have a subscription. Sorry for the inconvenience!"
 msgstr ""
@@ -43,7 +43,7 @@ msgstr ""
 "funkció jelenleg csak előfizetés esetén érhető el. Elnézést a "
 "kellemetlenségért!"
 
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:223
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:249
 #, elixir-autogen, elixir-format
 msgid "To prevent abuse by spammers, sending emails is only possible once your onboarding has been completed."
 msgstr ""
@@ -90,17 +90,17 @@ msgstr "Fiók nincs aktiválva"
 msgid "Account status"
 msgstr "Fiók állapota"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:42
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Address line 1"
 msgstr "Cím 1. sora"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:45
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Address line 2"
 msgstr "Cím 2. sora"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:48
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "Address line 3"
 msgstr "Cím 3. sora"
@@ -110,7 +110,7 @@ msgstr "Cím 3. sora"
 msgid "Almost done!"
 msgstr "Már majdnem kész!"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:95
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:96
 #, elixir-autogen, elixir-format
 msgid "Apt 1"
 msgstr "1. lakás"
@@ -127,7 +127,7 @@ msgstr ""
 "Mielőtt elkezdhetne e-maileket küldeni, még néhány információra van "
 "szükségünk a fiókjáról."
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:33
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Business/organization name"
 msgstr "Vállalkozás/szervezet neve"
@@ -160,7 +160,7 @@ msgstr "Állapot ellenőrzése"
 msgid "Check your subscription now"
 msgstr "Ellenőrizze most az előfizetését"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:73
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "City"
 msgstr "Város"
@@ -170,13 +170,13 @@ msgstr "Város"
 msgid "Complete information"
 msgstr "Adatok kitöltése"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:65
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:113
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:66
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:115
 #, elixir-autogen, elixir-format
 msgid "Country"
 msgstr "Ország"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:66
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "County"
 msgstr "Megye"
@@ -186,12 +186,12 @@ msgstr "Megye"
 msgid "Custom"
 msgstr "Egyéni"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:64
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "Department"
 msgstr "Részleg"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:68
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "District"
 msgstr "Kerület"
@@ -201,7 +201,7 @@ msgstr "Kerület"
 msgid "Domain verified"
 msgstr "Domain ellenőrizve"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:58
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Emirate"
 msgstr "Emírség"
@@ -218,7 +218,7 @@ msgstr ""
 msgid "Finalizing your sender ..."
 msgstr "Küldő véglegesítése ..."
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:36
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "First name"
 msgstr "Keresztnév"
@@ -244,14 +244,14 @@ msgid "I have an existing contact list that I want to import into Keila."
 msgstr ""
 "Van egy meglévő kontaktlistám, amelyet importálni szeretnék a Keilába."
 
-#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:45
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "If you don’t have a website yet, you can also enter the link to a social media profile or some other public online presence."
 msgstr ""
 "Ha még nincs weboldala, megadhatja egy közösségimédia-profil linkjét vagy "
 "valamilyen más nyilvános online jelenlétet is."
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:59
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "Island"
 msgstr "Sziget"
@@ -267,7 +267,7 @@ msgstr ""
 msgid "Last checked at:"
 msgstr "Utoljára ellenőrizve:"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:39
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Last name"
 msgstr "Vezetéknév"
@@ -289,7 +289,7 @@ msgstr ""
 "Használja a meglévő e-mail infrastruktúráját, és küldjön e-maileket SMTP-"
 "vel, vagy Mailgun, Sendgrid, SES vagy Postmark segítségével."
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:89
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:90
 #, elixir-autogen, elixir-format
 msgid "Main Street 1"
 msgstr "Fő utca 1"
@@ -318,7 +318,7 @@ msgstr ""
 msgid "Organization/business name"
 msgstr "Szervezet/vállalkozás neve"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:62
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "Parish"
 msgstr "Plébánia"
@@ -337,7 +337,7 @@ msgstr ""
 "Kérjük, írja le a Keilával küldeni tervezett e-mailek tartalmának típusát és"
 " célját."
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:116
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:118
 #, elixir-autogen, elixir-format
 msgid "Please select a country"
 msgstr "Kérjük, válasszon országot"
@@ -347,22 +347,22 @@ msgstr "Kérjük, válasszon országot"
 msgid "Please start a subscription before sending your first campaign."
 msgstr "Kérjük, indítson előfizetést, mielőtt elküldi az első kampányát."
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:53
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "Postal code"
 msgstr "Irányítószám"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:67
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "Prefecture"
 msgstr "Prefektúra"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:61
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "Province"
 msgstr "Tartomány"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:63
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "Region"
 msgstr "Régió"
@@ -372,7 +372,7 @@ msgstr "Régió"
 msgid "Review account for %{email}"
 msgstr "%{email} fiók felülvizsgálata"
 
-#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:246
+#: lib/keila_web/templates/campaign/_send_dialogs.html.heex:272
 #, elixir-autogen, elixir-format
 msgid "Review account information"
 msgstr "Fiókadatok áttekintése"
@@ -402,12 +402,12 @@ msgstr "DNS-rekordok megjelenítése"
 msgid "Start new subscription"
 msgstr "Új előfizetés indítása"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:60
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "State"
 msgstr "Állam"
 
-#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:69
+#: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "State/Province"
 msgstr "Állam/Tartomány"
@@ -571,7 +571,7 @@ msgid "We're currently processing your subscription. This shouldn't take longer 
 msgstr ""
 "Jelenleg feldolgozzuk az előfizetésedet. Ez nem tarthat tovább egy percnél …"
 
-#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:37
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Website"
 msgstr "Weboldal"
@@ -650,7 +650,7 @@ msgstr "pl. egy barát, blogbejegyzés, Google, …"
 msgid "empty"
 msgstr "üres"
 
-#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:40
+#: extra/keila_cloud_web/templates/cloud_account/_org_name.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "https://example.com"
 msgstr "https://example.com"

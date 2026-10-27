@@ -33,7 +33,7 @@ msgstr "Добавяне на кредити"
 msgid "Administer Credits for %{email}"
 msgstr "Оправление на кредити за %{email}"
 
-#: lib/keila_web/controllers/user_admin_controller.ex:17
+#: lib/keila_web/controllers/user_admin_controller.ex:25
 #, elixir-autogen, elixir-format
 msgid "Administrate Users"
 msgstr "Оправление на потребители"
@@ -157,3 +157,13 @@ msgstr "Проверките за актуализации са деактиви
 #, elixir-autogen, elixir-format
 msgid "You seem to be running the most recent version of Keila!"
 msgstr "Изглежда, че използвате най-новата версия на Keila!"
+
+#: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "Статус"
+
+#: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:52
+#, elixir-autogen, elixir-format
+msgid "Update status"
+msgstr "Обновяване на статуса"
