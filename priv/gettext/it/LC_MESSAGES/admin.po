@@ -42,7 +42,7 @@ msgstr "Aggiungi crediti"
 msgid "Administer Credits for %{email}"
 msgstr "Amministra crediti per %{email}"
 
-#: lib/keila_web/controllers/user_admin_controller.ex:17
+#: lib/keila_web/controllers/user_admin_controller.ex:25
 #, elixir-autogen, elixir-format
 msgid "Administrate Users"
 msgstr "Amministra utenti"

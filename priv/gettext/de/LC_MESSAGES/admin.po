@@ -33,7 +33,7 @@ msgstr "Credits hinzufügen"
 msgid "Administer Credits for %{email}"
 msgstr "Credits für %{email} verwalten"
 
-#: lib/keila_web/controllers/user_admin_controller.ex:17
+#: lib/keila_web/controllers/user_admin_controller.ex:25
 #, elixir-autogen, elixir-format
 msgid "Administrate Users"
 msgstr "Benutzer verwalten"
@@ -89,7 +89,7 @@ msgid "New Shared Sender"
 msgstr "Neuer gemeinsamer Absender"
 
 #: lib/keila_web/templates/shared_sender_admin/edit.html.heex:51
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Shared Sender Name"
 msgstr "Name des gemeinsamen Absenders"
 

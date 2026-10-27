@@ -33,7 +33,7 @@ msgstr "Ajouter des crédits"
 msgid "Administer Credits for %{email}"
 msgstr "Administrer les crédits pour %{email}"
 
-#: lib/keila_web/controllers/user_admin_controller.ex:17
+#: lib/keila_web/controllers/user_admin_controller.ex:25
 #, elixir-autogen, elixir-format
 msgid "Administrate Users"
 msgstr "Administrer les utilisateurs"
@@ -89,7 +89,7 @@ msgid "New Shared Sender"
 msgstr "Nouvel expéditeur partagé"
 
 #: lib/keila_web/templates/shared_sender_admin/edit.html.heex:51
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Shared Sender Name"
 msgstr "Nom de l’expéditeur partagé"
 
@@ -161,9 +161,9 @@ msgstr "Vous semblez utiliser la version la plus récente de Keila!"
 #: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Status"
-msgstr ""
+msgstr "Statut"
 
 #: extra/keila_cloud_web/templates/cloud_admin/user_account_status.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "Update status"
-msgstr ""
+msgstr "Mettre à jour le statut"

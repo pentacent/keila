@@ -27,12 +27,12 @@ msgstr "Ativação bem-sucedida"
 msgid "Check your inbox!"
 msgstr "Verifique sua caixa de entrada!"
 
-#: lib/keila_web/templates/auth/login.html.heex:34
+#: lib/keila_web/templates/auth/login.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Don’t have an account?"
 msgstr "Não tem uma conta?"
 
-#: lib/keila_web/templates/auth/login.html.heex:40
+#: lib/keila_web/templates/auth/login.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Forgot your password?"
 msgstr "Esqueceu sua senha?"
@@ -42,17 +42,17 @@ msgstr "Esqueceu sua senha?"
 msgid "Get started!"
 msgstr "Começar!"
 
-#: lib/keila/auth/emails.ex:46
+#: lib/keila/auth/emails.ex:81
 #, elixir-autogen, elixir-format
 msgid "Hey there,\n\nplease confirm your new email address by visiting the following link:\n\n%{url}\n\nIf you weren’t trying to change your email address, simply ignore this message.\n"
 msgstr "Olá,\n\npor favor, confirme seu novo endereço de e-mail visitando o seguinte link:\n\n%{url}\n\nSe você não estava tentando alterar seu endereço de e-mail, simplesmente ignore esta mensagem.\n"
 
-#: lib/keila/auth/emails.ex:95
+#: lib/keila/auth/emails.ex:128
 #, elixir-autogen, elixir-format
 msgid "Hey there,\n\nyou can login to Keila with the following link:\n\n%{url}\n\nIf you haven’t requested a login, simply ignore this message.\n"
 msgstr "Olá,\n\nvocê pode fazer login no Keila com o seguinte link:\n\n%{url}\n\nSe você não solicitou um login, simplesmente ignore esta mensagem.\n"
 
-#: lib/keila/auth/emails.ex:70
+#: lib/keila/auth/emails.ex:104
 #, elixir-autogen, elixir-format
 msgid "Hey there,\n\nyou have requested a password reset for your Keila account.\n\nYou can set a new password by visiting the following link:\n\n%{url}\n\nIf you weren’t trying to reset your password, simply ignore this message.\n"
 msgstr "Olá,\n\nvocê solicitou a redefinição de senha para sua conta Keila.\n\nVocê pode definir uma nova senha visitando o seguinte link:\n\n%{url}\n\nSe você não estava tentando redefinir sua senha, simplesmente ignore esta mensagem.\n"
@@ -77,29 +77,29 @@ msgstr "Gerenciar Conta"
 msgid "New password saved."
 msgstr "Nova senha salva."
 
-#: lib/keila_web/controllers/auth_controller.ex:217
+#: lib/keila_web/controllers/auth_controller.ex:235
 #, elixir-autogen, elixir-format
 msgid "Not found"
 msgstr "Não encontrado"
 
-#: lib/keila_web/controllers/auth_controller.ex:128
-#: lib/keila_web/controllers/auth_controller.ex:141
-#: lib/keila_web/controllers/auth_controller.ex:174
+#: lib/keila_web/controllers/auth_controller.ex:132
+#: lib/keila_web/controllers/auth_controller.ex:159
+#: lib/keila_web/controllers/auth_controller.ex:192
 #, elixir-autogen, elixir-format
 msgid "Password reset"
 msgstr "Redefinição de senha"
 
-#: lib/keila_web/controllers/auth_controller.ex:161
+#: lib/keila_web/controllers/auth_controller.ex:179
 #, elixir-autogen, elixir-format
 msgid "Password reset successful"
 msgstr "Redefinição de senha bem-sucedida"
 
-#: lib/keila/auth/emails.ex:19
+#: lib/keila/auth/emails.ex:55
 #, elixir-autogen, elixir-format
 msgid "Please Verify Your Account"
 msgstr "Por favor, verifique sua conta"
 
-#: lib/keila/auth/emails.ex:43
+#: lib/keila/auth/emails.ex:78
 #, elixir-autogen, elixir-format
 msgid "Please Verify Your Email"
 msgstr "Por favor, verifique seu e-mail"
@@ -110,6 +110,7 @@ msgid "Please activate your account first."
 msgstr "Por favor, ative sua conta primeiro."
 
 #: lib/keila_web/controllers/auth_controller.ex:45
+#: lib/keila_web/controllers/auth_controller.ex:149
 #: lib/keila_web/controllers/public_form_controller.ex:64
 #, elixir-autogen, elixir-format
 msgid "Please complete the captcha."
@@ -120,13 +121,13 @@ msgstr "Por favor, complete o captcha."
 msgid "Resend activation link"
 msgstr "Reenviar link de ativação"
 
-#: lib/keila_web/templates/auth/login.html.heex:42
+#: lib/keila_web/templates/auth/login.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Reset your password."
 msgstr "Redefina sua senha."
 
-#: lib/keila_web/controllers/auth_controller.ex:197
-#: lib/keila_web/templates/auth/login.html.heex:30
+#: lib/keila_web/controllers/auth_controller.ex:215
+#: lib/keila_web/templates/auth/login.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Sign in"
 msgstr "Entrar"
@@ -151,7 +152,7 @@ msgstr "Cadastrar-se"
 msgid "Sign up successful"
 msgstr "Cadastro realizado com sucesso"
 
-#: lib/keila_web/templates/auth/login.html.heex:36
+#: lib/keila_web/templates/auth/login.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Sign up."
 msgstr "Cadastre-se."
@@ -171,7 +172,7 @@ msgstr "Isso não funcionou :-("
 msgid "Welcome to Keila!"
 msgstr "Bem-vindo ao Keila!"
 
-#: lib/keila/auth/emails.ex:22
+#: lib/keila/auth/emails.ex:58
 #, elixir-autogen, elixir-format
 msgid "Welcome to Keila,\n\nplease confirm your new account by visiting the following link:\n\n%{url}\n\nIf you weren’t trying to create an account, simply ignore this message.\n"
 msgstr "Bem-vindo ao Keila,\n\npor favor, confirme sua nova conta visitando o seguinte link:\n\n%{url}\n\nSe você não estava tentando criar uma conta, simplesmente ignore esta mensagem.\n"
@@ -196,12 +197,12 @@ msgstr "Agora você pode continuar usando o Keila."
 msgid "You need to verify your email before you can use Keila. Please check your inbox."
 msgstr "Você precisa verificar seu e-mail antes de poder usar o Keila. Por favor, verifique sua caixa de entrada."
 
-#: lib/keila/auth/emails.ex:66
+#: lib/keila/auth/emails.ex:101
 #, elixir-autogen, elixir-format
 msgid "Your Account Reset Link"
 msgstr "Seu link de redefinição de conta"
 
-#: lib/keila/auth/emails.ex:91
+#: lib/keila/auth/emails.ex:125
 #, elixir-autogen, elixir-format
 msgid "Your Login Link"
 msgstr "Seu link de login"
@@ -211,12 +212,12 @@ msgstr "Seu link de login"
 msgid "Log in with your new password"
 msgstr "Logar com sua nova senha"
 
-#: lib/keila/auth/emails.ex:119
+#: lib/keila/auth/emails.ex:151
 #, elixir-autogen, elixir-format
 msgid "Hey there,\n\nplease verify your sender email address by visiting the following link:\n\n%{url}\n\nIf you didn't request this verification, please ignore this message and\ndo not click on the link.\n"
 msgstr "Olá,\n\npor favor, verifique seu endereço de e-mail de remetente visitando o seguinte link:\n\n%{url}\n\nSe você não solicitou esta verificação, ignore esta mensagem e\nnão clique no link.\n"
 
-#: lib/keila/auth/emails.ex:115
+#: lib/keila/auth/emails.ex:148
 #, elixir-autogen, elixir-format
 msgid "Please Verify Your Email for Keila"
 msgstr "Por favor, verifique seu e-mail para o Keila"
