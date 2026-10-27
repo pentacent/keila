@@ -119,7 +119,7 @@ defmodule Keila.MixProject do
       "assets.deploy": [
         "esbuild default --minify",
         "cmd --cd assets npm run deploy",
-        "cmd cp -R assets/static/* priv/static/",
+        "cmd cp -R assets/static/. priv/static/",
         "phx.digest"
       ]
     ]
