@@ -15,6 +15,7 @@ export const FormFieldKey = {
   mounted() {
     this.keyEdited = false
     this.defaultKey = this.keyInput().value
+    this.defaultLabel = this.labelInput().value
     this.el.addEventListener("input", (e) => this.handleInput(e.target))
     this.maybeShowKeyEditor()
   },
@@ -40,7 +41,9 @@ export const FormFieldKey = {
   maybeDeriveKey() {
     if (this.keyEdited || this.el.hasAttribute("data-saved")) return
 
-    this.keyInput().value = labelToKey(this.labelInput().value) || this.defaultKey
+    const label = this.labelInput().value
+    this.keyInput().value =
+      label === this.defaultLabel ? this.defaultKey : labelToKey(label) || this.defaultKey
   },
 
   maybeShowKeyEditor() {
