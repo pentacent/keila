@@ -23,6 +23,11 @@ defmodule KeilaWeb.IconHelper do
     Path.join(:code.priv_dir(:keila), "vendor/font-awesome")
   ]
 
+  @filenames @paths
+             |> Enum.flat_map(&File.ls!/1)
+             |> Enum.filter(&(&1 =~ ~r{\.svg$}))
+             |> Enum.sort()
+
   for path <- @paths do
     File.ls!(path)
     |> Enum.filter(fn filename -> filename =~ ~r{\.svg$} end)
@@ -30,10 +35,16 @@ defmodule KeilaWeb.IconHelper do
       path = Path.join(path, filename)
       name = filename |> String.replace(".svg", "") |> String.replace("-", "_")
       eex = EEx.compile_file(path, [])
+      @external_resource path
 
       def render_icon(unquote(String.to_atom(name))) do
         {:safe, unquote(eex)}
       end
     end)
+  end
+
+  def __mix_recompile__?() do
+    @paths |> Enum.flat_map(&File.ls!/1) |> Enum.filter(&(&1 =~ ~r{\.svg$})) |> Enum.sort() !=
+      @filenames
   end
 end

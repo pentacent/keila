@@ -100,12 +100,32 @@ defmodule KeilaWeb.FormEditLive do
   defp put_new_field_defaults(params) do
     maybe_put_new_defaults(params, "field_settings", "field_settings_sort", %{
       "field" => "data",
-      "key" => "my_custom_field",
-      "label" => gettext("My Custom Field"),
+      "key" => next_custom_field_key(params),
+      "label" => gettext("Custom Field"),
       "cast" => "true",
       "type" => "string"
     })
   end
+
+  defp next_custom_field_key(params) do
+    highest =
+      params
+      |> Map.get("field_settings", %{})
+      |> Map.values()
+      |> Enum.map(&custom_field_number/1)
+      |> Enum.max(fn -> 0 end)
+
+    "custom_field_#{highest + 1}"
+  end
+
+  defp custom_field_number(%{"key" => "custom_field_" <> suffix}) do
+    case Integer.parse(suffix) do
+      {number, ""} -> number
+      _other -> 0
+    end
+  end
+
+  defp custom_field_number(_field_params), do: 0
 
   defp put_new_allowed_value_defaults(params = %{"field_settings" => field_settings}) do
     field_settings =
