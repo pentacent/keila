@@ -7,8 +7,6 @@ defmodule Keila.Contacts.Form.Settings do
   embedded_schema do
     field(:captcha_required, :boolean, default: true)
     field(:double_opt_in_required, :boolean, default: false)
-    field(:double_opt_in_subject, :string)
-    field(:double_opt_in_markdown_body, :string)
     field(:double_opt_in_message, :string)
     field(:double_opt_in_url, :string)
     field(:csrf_disabled, :boolean, default: true)
@@ -28,6 +26,10 @@ defmodule Keila.Contacts.Form.Settings do
     field(:failure_text, :string)
     field(:failure_url, :string)
     field(:welcome_enabled, :boolean, default: false)
+
+    # DEPRECATED
+    field(:double_opt_in_subject, :string)
+    field(:double_opt_in_markdown_body, :string)
     field(:welcome_subject, :string)
     field(:welcome_markdown_body, :string)
   end
@@ -37,8 +39,6 @@ defmodule Keila.Contacts.Form.Settings do
     |> cast(params, [
       :captcha_required,
       :double_opt_in_required,
-      :double_opt_in_subject,
-      :double_opt_in_markdown_body,
       :double_opt_in_message,
       :double_opt_in_url,
       :csrf_disabled,
@@ -57,9 +57,7 @@ defmodule Keila.Contacts.Form.Settings do
       :success_url,
       :failure_text,
       :failure_url,
-      :welcome_enabled,
-      :welcome_subject,
-      :welcome_markdown_body
+      :welcome_enabled
     ])
   end
 end

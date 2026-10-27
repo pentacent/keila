@@ -7,7 +7,7 @@
   <div
     x-show.transition="activeDialog"
     style="display: none"
-    class="fixed z-10 inset-0 overflow-y-auto bg-black/90 flex items-center justify-center"
+    class="fixed z-30 inset-0 overflow-y-auto bg-black/90 flex items-center justify-center"
   >
     <div
       class="bg-gray-900 rounded-lg overflow-hidden shadow-xl transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
@@ -23,7 +23,7 @@
         x-on:x-confirm="$dispatch('update-link', link)"
         x-on:x-cancel="$dispatch('update-link', { cancel: true} )"
         @keydown.enter.prevent="$dispatch('x-confirm')"
-        @keydown.esc.prevent="$dispatch('x-cancel')"
+        @keydown.esc.prevent.stop="$dispatch('x-cancel')"
         @click.away="$dispatch('x-cancel')"
       >
         <h2 class="text-3xl">{gettext("Insert Link")}</h2>
@@ -70,7 +70,7 @@
         x-on:x-file-selected.stop="image.src = $event.detail.url; imageTab = 'url'"
         x-on:x-file-removed.stop="if (image.src == $event.detail.src) image = {}"
         @keydown.enter.prevent="$dispatch('x-confirm')"
-        @keydown.esc.prevent="$dispatch('x-cancel')"
+        @keydown.esc.prevent.stop="$dispatch('x-cancel')"
         @click.away="$dispatch('x-cancel')"
       >
         <h2 class="text-3xl">{gettext("Insert Image")}</h2>
@@ -162,7 +162,7 @@
         x-on:x-confirm="$dispatch('update-button', button)"
         x-on:x-cancel="$dispatch('update-button', { cancel: true} )"
         @keydown.enter.prevent="$dispatch('x-confirm')"
-        @keydown.esc.prevent="$dispatch('x-cancel')"
+        @keydown.esc.prevent.stop="$dispatch('x-cancel')"
         @click.away="$dispatch('x-cancel')"
       >
         <h2 class="text-3xl">{gettext("Insert Button")}</h2>
@@ -204,7 +204,7 @@
         x-on:x-confirm="$dispatch('update-liquid', liquid)"
         x-on:x-cancel="$dispatch('update-liquid', { cancel: true} )"
         @keydown.enter.prevent="$dispatch('x-confirm')"
-        @keydown.esc.prevent="$dispatch('x-cancel')"
+        @keydown.esc.prevent.stop="$dispatch('x-cancel')"
         @click.away="$dispatch('x-cancel')"
       >
         <h2 class="text-3xl">{gettext("Insert Code")}</h2>

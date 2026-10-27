@@ -37,7 +37,7 @@ msgstr "За да предотвратим злоупотребата от сп�
 #: lib/keila_web/templates/campaign/_send_dialogs.html.heex:223
 #, elixir-autogen, elixir-format
 msgid "To prevent abuse by spammers, sending emails is only possible once your onboarding has been completed."
-msgstr "Това е името, което ще се показва в пощенската кутия на получателите."
+msgstr "За да предотвратим злоупотребата от спамъри, изпращането на имейли е възможно само след като приключите с началната настройка."
 
 #: extra/keila_cloud_web/components/subscription_status.ex:250
 #, elixir-autogen, elixir-format
@@ -444,7 +444,7 @@ msgstr "Това е по желание, но е много полезно за 
 #: extra/keila_cloud_web/templates/cloud_sender/create_live.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "This name will show up as the *From name* in the inbox of your recipients."
-msgstr "Това име бъде обозначено като *От име* в кутията за получаване на вашите получатели."
+msgstr "Това име ще бъде обозначено като *От име* в кутията за получаване на вашите получатели."
 
 #: extra/keila_cloud_web/templates/cloud_account/_address.html.heex:13
 #, elixir-autogen, elixir-format

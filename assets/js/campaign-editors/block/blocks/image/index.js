@@ -1,6 +1,6 @@
 function getIcon(iconName) {
   const element = document.querySelector(
-    `#block-container-assets .icon-${iconName}`
+    `.block-container-assets .icon-${iconName}`
   )
   if (!element) return ""
   return element.innerHTML
@@ -8,7 +8,7 @@ function getIcon(iconName) {
 
 function getAlignmentLabel(key) {
   const element = document.querySelector(
-    `#block-container-assets .editor-alignment-${key}`
+    `.block-container-assets .editor-alignment-${key}`
   )
   if (!element) return key
   return element.innerText
@@ -64,7 +64,7 @@ export default class Image {
 
     if (this.isEmpty()) {
       const placeholder = document.createElement("div")
-      placeholder.innerHTML = document.querySelector("#block-container-assets .image-placeholder").innerHTML
+      placeholder.innerHTML = document.querySelector(".block-container-assets .image-placeholder").innerHTML
       this.wrapper.appendChild(placeholder)
       this.addClickHandler(placeholder)
     } else {
@@ -96,7 +96,7 @@ export default class Image {
       const captionEditor = this.captionEditor || document.createElement("div")
       this.captionEditor = captionEditor
       captionEditor.dataset.placeholder =
-        document.querySelector("#block-container-assets .image-caption-placeholder").innerText
+        document.querySelector(".block-container-assets .image-caption-placeholder").innerText
       captionEditor.setAttribute("contenteditable", true)
       captionEditor.innerHTML = this.data.caption
       captionEditor.className = "mt-2 w-full"
@@ -113,7 +113,7 @@ export default class Image {
 
       const linkEditor = this.linkEditor || document.createElement("input")
       linkEditor.setAttribute("type", "url")
-      const linkEditorPlaceholder = document.querySelector("#block-container-assets .image-url-placeholder").innerText
+      const linkEditorPlaceholder = document.querySelector(".block-container-assets .image-url-placeholder").innerText
       linkEditor.setAttribute("placeholder", linkEditorPlaceholder)
       linkEditor.className = "text-xs mt-1 w-full bg-transparent border-1 border-gray-500 border-dashed"
       linkEditor.value = this.data.url || ""
@@ -179,7 +179,7 @@ export default class Image {
 
   static get toolbox() {
     return {
-      title: document.querySelector("#block-container-assets .editor-image-title").innerText,
+      title: document.querySelector(".block-container-assets .editor-image-title").innerText,
       icon: getIcon("photograph")
     }
   }
@@ -199,7 +199,7 @@ export default class Image {
 
     return [
       {
-        label: document.querySelector("#block-container-assets .editor-image-edit-label").innerText,
+        label: document.querySelector(".block-container-assets .editor-image-edit-label").innerText,
         icon: getIcon("photograph"),
         onActivate: () => this.openDialog(),
         closeOnActivate: true

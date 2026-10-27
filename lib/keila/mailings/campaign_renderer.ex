@@ -155,3 +155,7 @@ defmodule Keila.Mailings.CampaignRenderer do
     end)
   end
 end
+
+defimpl Keila.Mailings.Renderable, for: Keila.Mailings.Campaign do
+  defdelegate to_input(campaign, contact, assigns), to: Keila.Mailings.CampaignRenderer
+end

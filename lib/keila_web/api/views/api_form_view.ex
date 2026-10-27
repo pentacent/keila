@@ -27,12 +27,16 @@ defmodule KeilaWeb.ApiFormView do
     }
   end
 
-  @properties [:id, :name, :settings, :field_settings, :sender_id, :template_id]
+  @properties [:id, :name, :settings, :field_settings, :sender_id]
+  @settings_properties Map.keys(KeilaWeb.Api.Schemas.Form.properties().settings.properties)
+  @email_properties Map.keys(KeilaWeb.Api.Schemas.Email.properties())
 
   defp form_data(form) do
     form
     |> Map.take(@properties)
     |> Map.update!(:settings, &settings_data/1)
+    |> Map.put(:welcome_email, email_data(form.welcome_email))
+    |> Map.put(:double_opt_in_email, email_data(form.double_opt_in_email))
     |> Map.update!(:field_settings, &field_settings_data/1)
     |> then(fn form_data ->
       field_settings = form_data.field_settings
@@ -43,8 +47,11 @@ defmodule KeilaWeb.ApiFormView do
     end)
   end
 
+  defp email_data(%Keila.Mailings.Email{} = email), do: Map.take(email, @email_properties)
+  defp email_data(_email), do: nil
+
   defp settings_data(nil), do: %{}
-  defp settings_data(settings), do: settings |> Map.from_struct() |> Map.drop([:id])
+  defp settings_data(settings), do: Map.take(settings, @settings_properties)
 
   defp field_settings_data(nil), do: %{}
 

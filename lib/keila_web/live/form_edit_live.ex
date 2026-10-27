@@ -1,6 +1,7 @@
 defmodule KeilaWeb.FormEditLive do
   use KeilaWeb, :live_view
 
+  alias Keila.Contacts.Form
   alias Keila.Mailings.DoubleOptInMessage
   alias Keila.Mailings.WelcomeMessage
 
@@ -10,17 +11,19 @@ defmodule KeilaWeb.FormEditLive do
     current_project = session["current_project"]
     senders = Keila.Mailings.get_project_senders(current_project.id)
     templates = Keila.Templates.get_project_templates(current_project.id)
+    form = session["form"]
 
     socket =
       socket
-      |> assign(:form, session["form"])
-      |> assign(:changeset, Ecto.Changeset.change(session["form"]))
+      |> assign(:form, form)
+      |> assign(:changeset, Ecto.Changeset.change(form))
       |> assign(:current_project, current_project)
       |> assign(:senders, senders)
       |> assign(:templates, templates)
       |> assign(:double_opt_in_available, session["double_opt_in_available"])
       |> assign(:welcome_email_available, session["welcome_email_available"])
       |> assign(:current_tab, "settings")
+      |> assign(:email_params, %{})
       |> put_default_assigns()
 
     {:ok, socket}
@@ -33,20 +36,38 @@ defmodule KeilaWeb.FormEditLive do
 
   @impl true
   def handle_event("form_updated", params, socket) do
-    changeset =
-      Keila.Contacts.Form.update_changeset(socket.assigns.form, params["form"])
-      |> then(fn changeset ->
-        if changeset.valid?,
-          do: changeset,
-          else: Ecto.Changeset.apply_action(changeset, :update) |> elem(1)
-      end)
+    params =
+      params["form"]
+      |> put_new_field_defaults()
+      |> put_new_allowed_value_defaults()
+      |> merge_email_params(socket)
 
-    socket =
-      socket
-      |> assign(:changeset, changeset)
-      |> put_default_assigns()
+    changeset = Form.update_changeset(socket.assigns.form, params)
 
-    {:noreply, socket}
+    {:noreply, put_form_changeset(socket, changeset)}
+  end
+
+  def handle_event("save", params, socket) do
+    params = params["form"] |> merge_email_params(socket)
+
+    case Keila.Contacts.update_form(socket.assigns.form.id, params) do
+      {:ok, _form} ->
+        {:noreply,
+         redirect(socket, to: Routes.form_path(socket, :index, socket.assigns.current_project.id))}
+
+      {:error, changeset} ->
+        {:noreply, socket |> assign(:changeset, changeset) |> put_default_assigns()}
+    end
+  end
+
+  def handle_event("reset_email", %{"email" => name}, socket) do
+    params =
+      Form.new_email()
+      |> Map.from_struct()
+      |> Map.update!(:editor_config, &Map.from_struct/1)
+      |> Map.new(fn {key, value} -> {to_string(key), value} end)
+
+    {:noreply, put_email_params(socket, name, params)}
   end
 
   @impl true
@@ -55,97 +76,73 @@ defmodule KeilaWeb.FormEditLive do
   end
 
   @impl true
-  def handle_event("add_custom_field", _params, socket) do
-    socket =
-      update(socket, :changeset, fn changeset ->
-        existing = Ecto.Changeset.get_field(changeset, :field_settings, [])
-
-        new = %Keila.Contacts.Form.FieldSettings{
-          id: Ecto.UUID.generate(),
-          field: :data,
-          key: "my_custom_field",
-          label: gettext("My Custom Field"),
-          cast: true,
-          type: :string
-        }
-
-        Ecto.Changeset.put_embed(changeset, :field_settings, existing ++ [new])
-      end)
-      |> put_default_assigns()
-
-    {:noreply, socket}
+  def handle_info({:email_dialog, name, params}, socket) do
+    params = Map.merge(Map.get(socket.assigns.email_params, name, %{}), params)
+    {:noreply, put_email_params(socket, name, params)}
   end
 
-  def handle_event("remove_custom_field", %{"fs-id" => fs_id}, socket) do
-    socket =
-      update(socket, :changeset, fn changeset ->
-        field_settings =
-          Ecto.Changeset.get_field(changeset, :field_settings, [])
-          |> Enum.filter(&(&1.id != fs_id))
+  # Stores email params, then updates form changeset with them.
+  # Email params are stored separately because they don't come
+  # from an input in the form and need to be re-merged with the
+  # form params when updating the changeset.
+  defp put_email_params(socket, name, params) do
+    changeset = Form.update_changeset(socket.assigns.changeset, %{name => params})
 
-        Ecto.Changeset.put_embed(changeset, :field_settings, field_settings)
-      end)
-      |> put_default_assigns()
-
-    {:noreply, socket}
+    socket
+    |> update(:email_params, &Map.put(&1, name, params))
+    |> put_form_changeset(changeset)
   end
 
-  def handle_event("add_allowed_value", %{"fs-id" => fs_id}, socket) do
-    socket =
-      update(socket, :changeset, fn changeset ->
-        fields =
-          Ecto.Changeset.get_field(changeset, :field_settings, [])
-          |> Enum.map(fn field_setting ->
-            if field_setting.id == fs_id do
-              existing = field_setting.allowed_values || []
-
-              new = %Keila.Contacts.Form.FieldSettings.AllowedValue{
-                id: Ecto.UUID.generate(),
-                value: "option-1",
-                label: gettext("My Custom Option")
-              }
-
-              field_setting
-              |> Ecto.Changeset.change()
-              |> Ecto.Changeset.put_embed(:allowed_values, existing ++ [new])
-            else
-              field_setting
-            end
-          end)
-
-        Ecto.Changeset.put_embed(changeset, :field_settings, fields)
-      end)
-      |> put_default_assigns()
-
-    {:noreply, socket}
+  defp merge_email_params(params, socket) do
+    Map.merge(params, socket.assigns.email_params)
   end
 
-  def handle_event("remove_allowed_value", %{"fs-id" => fs_id, "av-id" => av_id}, socket) do
-    socket =
-      update(socket, :changeset, fn changeset ->
-        fields =
-          Ecto.Changeset.get_field(changeset, :field_settings, [])
-          |> Enum.map(fn field_setting ->
-            if field_setting.id == fs_id do
-              allowed_values =
-                field_setting.allowed_values
-                |> Enum.filter(fn allowed_value ->
-                  allowed_value.id != av_id
-                end)
+  defp put_new_field_defaults(params) do
+    maybe_put_new_defaults(params, "field_settings", "field_settings_sort", %{
+      "field" => "data",
+      "key" => "my_custom_field",
+      "label" => gettext("My Custom Field"),
+      "cast" => "true",
+      "type" => "string"
+    })
+  end
 
-              field_setting
-              |> Ecto.Changeset.change()
-              |> Ecto.Changeset.put_embed(:allowed_values, allowed_values)
-            else
-              field_setting
-            end
-          end)
+  defp put_new_allowed_value_defaults(params = %{"field_settings" => field_settings}) do
+    field_settings =
+      Map.new(field_settings, fn {index, field_params} ->
+        field_params =
+          maybe_put_new_defaults(field_params, "allowed_values", "allowed_values_sort", %{
+            "value" => "option-1",
+            "label" => gettext("My Custom Option")
+          })
 
-        Ecto.Changeset.put_embed(changeset, :field_settings, fields)
+        {index, field_params}
       end)
-      |> put_default_assigns()
 
-    {:noreply, socket}
+    Map.put(params, "field_settings", field_settings)
+  end
+
+  defp put_new_allowed_value_defaults(params), do: params
+
+  # "Add" buttons append "new" to the sort param of an embed. Ecto then adds a new
+  # entry and casts it with the params at the "new" index, which are set here.
+  defp maybe_put_new_defaults(params, key, sort_key, defaults) do
+    if "new" in Map.get(params, sort_key, []) do
+      put_in(params, [Access.key(key, %{}), "new"], defaults)
+    else
+      params
+    end
+  end
+
+  defp put_form_changeset(socket, changeset) do
+    changeset =
+      if changeset.valid?,
+        do: changeset,
+        else: Ecto.Changeset.apply_action(changeset, :update) |> elem(1)
+
+    socket
+    |> assign(:changeset, changeset)
+    |> put_default_assigns()
   end
 
   defp put_default_assigns(socket) do

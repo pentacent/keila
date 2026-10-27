@@ -10,8 +10,9 @@ defmodule Keila.TemplatesTest do
     _root = insert!(:group)
     user = insert!(:user)
     {:ok, project} = Keila.Projects.create_project(user.id, params(:project))
+    {:ok, other_project} = Keila.Projects.create_project(user.id, params(:project))
 
-    %{project: project}
+    %{project: project, other_project: other_project}
   end
 
   @input_html """
@@ -115,6 +116,84 @@ defmodule Keila.TemplatesTest do
 
     assert [] == Templates.get_project_templates(project.id)
     assert other_template == Templates.get_template(other_template.id)
+  end
+
+  @tag :templates
+  test "replaces the template of embedded emails in the project", %{
+    project: project,
+    other_project: other_project
+  } do
+    template = insert!(:template, project_id: project.id)
+    replacement = insert!(:template, project_id: project.id)
+
+    form =
+      insert!(:contacts_form,
+        project_id: project.id,
+        welcome_email: build(:mailings_email, template_id: template.id),
+        double_opt_in_email: build(:mailings_email, template_id: template.id)
+      )
+
+    # Emails migrated from the old form settings store integer template ids
+    {:ok, integer_id} = Template.Id.dump(template.id)
+
+    from(f in Keila.Contacts.Form,
+      where: f.id == ^form.id,
+      update: [
+        set: [
+          double_opt_in_email:
+            fragment("jsonb_set(?, '{template_id}', ?)", f.double_opt_in_email, ^integer_id)
+        ]
+      ]
+    )
+    |> Repo.update_all([])
+
+    other_form =
+      insert!(:contacts_form,
+        project_id: other_project.id,
+        welcome_email: build(:mailings_email, template_id: template.id)
+      )
+
+    assert :ok =
+             Templates.replace_project_email_templates(project.id, [template.id], replacement.id)
+
+    assert %{
+             welcome_email: %{template_id: welcome_template_id},
+             double_opt_in_email: %{template_id: double_opt_in_template_id}
+           } = Keila.Contacts.get_form(form.id)
+
+    assert welcome_template_id == replacement.id
+    assert double_opt_in_template_id == replacement.id
+
+    assert Keila.Contacts.get_form(other_form.id).welcome_email.template_id == template.id
+
+    assert :ok = Templates.delete_template(replacement.id)
+
+    assert %{welcome_email: %{template_id: nil}, double_opt_in_email: %{template_id: nil}} =
+             Keila.Contacts.get_form(form.id)
+  end
+
+  @tag :templates
+  test "doesn't replace templates with a template from another project", %{
+    project: project,
+    other_project: other_project
+  } do
+    template = insert!(:template, project_id: project.id)
+    other_template = insert!(:template, project_id: other_project.id)
+
+    form =
+      insert!(:contacts_form,
+        project_id: project.id,
+        welcome_email: build(:mailings_email, template_id: template.id)
+      )
+
+    assert {:error, :template_not_found} =
+             Templates.replace_project_email_templates(
+               project.id,
+               [template.id],
+               other_template.id
+             )
+
+    assert Keila.Contacts.get_form(form.id).welcome_email.template_id == template.id
   end
 
   @tag :templates

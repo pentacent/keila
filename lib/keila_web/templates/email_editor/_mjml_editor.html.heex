@@ -1,4 +1,4 @@
-<div id="mjml-editor-toolbar" class="w-full sticky top-0 z-10" phx-update="ignore">
+<div id={"#{@id}-mjml-toolbar"} class="w-full sticky top-0 z-10" phx-update="ignore">
   <div class="wysiwyg--menu bg-white relative shadow z-10 flex overflow-x-auto mt-4">
     <button
       type="button"
@@ -20,6 +20,7 @@
       <button
         type="button"
         phx-click="merge_mjml_template"
+        phx-target={@myself}
         data-confirm={
           gettext(
             "This will merge your content slots with the MJML template and allow you to edit the full MJML document. You will no longer be able to edit slots separately. This action cannot be undone."
@@ -61,10 +62,11 @@
         <div class="mt-4">
           <label class="text-sm font-semibold text-zinc-100 mb-1 block">{slot.name}</label>
           <div
-            id={"mjml-slot-" <> slot.name}
+            id={"#{@id}-mjml-slot-#{slot.name}"}
             phx-hook="MjmlEditor"
             phx-update="ignore"
-            data-target={"#campaign_mjml_content_" <> slot.name}
+            data-target={"##{@id}-mjml-content-#{slot.name}"}
+            data-toolbar={"##{@id}-mjml-toolbar"}
           >
             <div class="editor"></div>
           </div>
@@ -72,18 +74,19 @@
       <% end %>
     <% else %>
       <div
-        id="mjml-editor-wrapper"
+        id={"#{@id}-mjml-editor-wrapper"}
         class="h-full [&_.editor]:h-full [&_.cm-editor]:h-full"
         phx-hook="MjmlEditor"
         phx-update="ignore"
-        data-target="#campaign_mjml_body"
+        data-target={"##{@id}-mjml-body"}
+        data-toolbar={"##{@id}-mjml-toolbar"}
       >
-        <div id="mjml-editor" class="editor"></div>
+        <div class="editor"></div>
       </div>
     <% end %>
   </div>
   <iframe
-    id="html-inline-preview"
+    id={"#{@id}-inline-preview"}
     src="about:blank"
     class="h-full transition-all"
     x-bind:class="editorExpanded ? 'w-0' : 'w-3/5'"
@@ -94,26 +97,26 @@
 <%= if @content_slots != [] do %>
   <%= for slot <- @content_slots do %>
     <textarea
-      id={"campaign_mjml_content_" <> slot.name}
-      name={"campaign[mjml_content][" <> slot.name <> "]"}
+      id={"#{@id}-mjml-content-#{slot.name}"}
+      name={"#{@form.name}[mjml_content][#{slot.name}]"}
       class="hidden"
       phx-debounce="1000"
-    ><%= (Ecto.Changeset.get_field(@changeset, :mjml_content) || %{})[slot.name] %></textarea>
+    ><%= (get_field(@form.source, :mjml_content) || %{})[slot.name] %></textarea>
   <% end %>
 <% else %>
   <textarea
-    id="campaign_mjml_body"
-    name="campaign[mjml_body]"
+    id={"#{@id}-mjml-body"}
+    name={"#{@form.name}[mjml_body]"}
     class="hidden"
     phx-debounce="1000"
-  ><%= Ecto.Changeset.get_field(@changeset, :mjml_body) %></textarea>
+  ><%= get_field(@form.source, :mjml_body) %></textarea>
 <% end %>
 
 <div
-  id="html-preview-data"
+  id={"#{@id}-preview-data"}
   phx-hook="HtmlPreview"
   class="hidden"
-  data-iframe="#html-inline-preview, #html-preview"
+  data-iframe={"##{@id}-inline-preview, #html-preview"}
 >
   {@preview}
 </div>

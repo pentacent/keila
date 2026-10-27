@@ -31,8 +31,8 @@ export default class Button {
 
   static get toolbox() {
     return {
-      title: document.querySelector("#block-container-assets .editor-button-title").innerText,
-      icon: document.querySelector("#block-container-assets .icon-button-alt").innerHTML
+      title: document.querySelector(".block-container-assets .editor-button-title").innerText,
+      icon: document.querySelector(".block-container-assets .icon-button-alt").innerHTML
     }
   }
 
@@ -47,8 +47,8 @@ export default class Button {
       {
         icon: "<->",
         label: this.data.centered
-          ? document.querySelector("#block-container-assets .editor-button-make-full-width-label").innerText
-          : document.querySelector("#block-container-assets .editor-button-make-centered-label").innerText,
+          ? document.querySelector(".block-container-assets .editor-button-make-full-width-label").innerText
+          : document.querySelector(".block-container-assets .editor-button-make-centered-label").innerText,
         onActivate: () => this.toggleCentered(),
         closeOnActivate: true
       }
