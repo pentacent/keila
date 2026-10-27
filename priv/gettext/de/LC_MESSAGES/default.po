@@ -734,6 +734,7 @@ msgid "Instructions"
 msgstr "Anleitung"
 
 #: lib/keila_web/templates/campaign/stats_live.html.heex:87
+#: lib/keila_web/templates/campaign/stats_live.html.heex:111
 #, elixir-autogen, elixir-format
 msgid "Insufficient email quota."
 msgstr "Unzureichendes E-Mail-Kontingent."
@@ -3009,6 +3010,7 @@ msgid "External ID"
 msgstr "Externe ID"
 
 #: lib/keila_web/live/campaign_edit_live.ex:238
+#: lib/keila_web/live/campaign_edit_live.ex:251
 #, elixir-autogen, elixir-format
 msgid "Insufficient credits."
 msgstr "Unzureichendes E-Mail-Kontingent."
@@ -3823,3 +3825,13 @@ msgstr "Status geändert: %{status}"
 #, elixir-autogen, elixir-format
 msgid "unreachable"
 msgstr "Nicht erreichbar"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:121
+#, elixir-autogen, elixir-format
+msgid "Check your sending quota now"
+msgstr "Sendekontingent überprüfen"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:114
+#, elixir-autogen, elixir-format
+msgid "Your email quota is not sufficient for sending this campaign."
+msgstr "Dein E-Mail-Kontingent reicht für den Versand dieser Kampagne nicht aus."

@@ -723,6 +723,7 @@ msgid "Instructions"
 msgstr "Instrucciones"
 
 #: lib/keila_web/templates/campaign/stats_live.html.heex:87
+#: lib/keila_web/templates/campaign/stats_live.html.heex:111
 #, elixir-autogen, elixir-format
 msgid "Insufficient email quota."
 msgstr "Cuota de correo insuficiente."
@@ -2949,6 +2950,7 @@ msgid "External ID"
 msgstr "ID externo"
 
 #: lib/keila_web/live/campaign_edit_live.ex:238
+#: lib/keila_web/live/campaign_edit_live.ex:251
 #, elixir-autogen, elixir-format
 msgid "Insufficient credits."
 msgstr "Créditos insuficientes."
@@ -3735,3 +3737,13 @@ msgstr "estado cambiado a %{status}"
 #, elixir-autogen, elixir-format
 msgid "unreachable"
 msgstr "inalcanzable"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:121
+#, elixir-autogen, elixir-format
+msgid "Check your sending quota now"
+msgstr "Comprueba ahora tu cuota de envío"
+
+#: lib/keila_web/templates/campaign/stats_live.html.heex:114
+#, elixir-autogen, elixir-format
+msgid "Your email quota is not sufficient for sending this campaign."
+msgstr "Tu cuota de correo no es suficiente para enviar esta campaña."
