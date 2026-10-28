@@ -2,6 +2,67 @@
 
 ## Unreleased
 
+## Version 0.40.0
+
+> 🇸🇪 Fully editable welcome and double opt-in emails, sortable form fields, Elixir 1.20, and a new Swedish translation
+
+### Breaking Changes
+- Keila now requires PostgreSQL 14 or newer
+- The system mailer no longer uses opportunistic TLS. When `MAILER_SMTP_TLS_MODE` is unset or `auto`,
+  STARTTLS is now required on all ports except 465, where TLS is required. Set `MAILER_SMTP_TLS_MODE=none`
+  to disable TLS explicitly.
+- Project SMTP senders now require an explicit TLS mode. Existing senders without one continue to work, but a
+  TLS mode must be selected when they are edited.
+- Welcome and double opt-in emails of forms have moved to the new `welcome_email` and `double_opt_in_email`
+  objects in the forms API. The `template_id` property and the `settings.welcome_subject`,
+  `settings.welcome_markdown_body`, `settings.double_opt_in_subject`, and
+  `settings.double_opt_in_markdown_body` properties have been removed. Existing welcome and double opt-in
+  emails are migrated automatically.
+
+### Security
+- The Docker image is now based on Elixir 1.20 and Erlang/OTP 29, which includes fixes for several security
+  advisories in Erlang/OTP, among them two critical TLS certificate verification bypasses
+- Updated dependencies to address further security advisories in Phoenix, Phoenix LiveView, Plug, Bandit,
+  Postgrex, Swoosh, Mint, HPAX, and Decimal
+- Liquid `for` and `tablerow` loops over very large ranges can no longer exhaust server memory
+
+### Added
+- Welcome and double opt-in emails can now be edited with the full email editor
+- Fields and the options of select fields in the form editor can now be reordered with drag and drop
+- Data keys of custom form fields are now derived automatically from their field label
+- New `MAILER_SMTP_VERIFY_SSL_HOST` and `MAILER_SMTP_CA_CERT` environment variables for disabling
+  certificate verification or trusting a custom CA for the system mailer
+- The contacts list now shows when a contact was last updated; unsubscribed and unreachable contacts
+  are sorted by this date by default
+- Added Swedish translation (thanks @rainersnookh)
+
+### Improved
+- The send and schedule dialogs now show the name of the selected segment (implements #574)
+- Password resets now require a captcha
+- System emails such as password resets and sender verifications are now sent via a background queue
+- Added autocomplete hints to login, registration, and password forms as well as public forms (fixes #580,
+  thanks @vincenz1991 for reporting)
+- Duplicate data keys for custom form fields now show an error (fixes #570)
+- The forms API now enforces that forms must include a required email field and returns improved error
+  messages for invalid field settings
+- Transactional messages without subject and template now return a validation error on `subject`
+- TLS for SMTP senders and the system mailer now supports TLS 1.3
+- Multi-column MJML sections with padding or borders now get correct column widths
+- Updated Bulgarian translation (thanks @ramromcode)
+
+### Fixed
+- Fixed scheduler errors caused by Postgres subquery guarantees (fixes #585, thanks @castellinosviluppo for
+  reporting)
+- Fixed a crash when adding options to a custom select field in the form editor
+- Fixed content slots with blank content overriding the default content of templates
+- Fixed a crash when rendering templates with missing content slots
+- Email change verifications are now sent to the new email address
+- Liquid comparisons with `blank` and `empty` now work correctly. Previously, `!= blank` and `!= empty` were
+  always true. Whitespace-only strings and `false` are now also treated as `blank`.
+- SMTP senders created before connection security settings were introduced now use STARTTLS
+- Campaign subjects are now properly escaped in the send and schedule dialogs
+
+
 ## Version 0.30.3
 
 ### Added
