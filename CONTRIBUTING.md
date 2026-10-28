@@ -16,7 +16,7 @@ git clone https://github.com/pentacent/keila.git
 ```
 
 Keila requires the following tools to compile and run:
-- [Elixir](https://elixir-lang.org/install.html) (1.18+) and Erlang/OTP (27+)
+- [Elixir](https://elixir-lang.org/install.html) (1.20+) and Erlang/OTP (29+)
 - [Node.js](https://nodejs.org/en/download/) (20+)
 - [Cmake](https://cmake.org/download/) (to compile `lexbor`/`fast_html`)
 
@@ -24,7 +24,7 @@ If you want to work on the frontend JavaScript code, it's also recommended you i
 
 You use the [asdf version manager](https://asdf-vm.com/) (`asdf install`) to install these dependencies. Cmake can be installed with your system's package manager (e.g. `apt install cmake` or `brew install cmake`).
 
-In addition, you need to have an instance of [PostgreSQL](https://www.postgresql.org/) to run Keila.
+In addition, you need to have an instance of [PostgreSQL](https://www.postgresql.org/) (14+) to run Keila.
 
 
 ### Option 2: Setup with VS Code and [DevContainer](https://code.visualstudio.com/docs/remote/containers)
