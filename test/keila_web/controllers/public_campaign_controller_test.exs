@@ -74,6 +74,8 @@ defmodule KeilaWeb.PublicCampaignControllerTest do
       assert response = html_response(conn, 200)
       assert response =~ "<title>My Amazing Campaign</title>"
       assert response =~ "<strong>Markdown</strong>"
+      assert [csp] = get_resp_header(conn, "content-security-policy")
+      assert csp =~ ~r/^sandbox /
     end
 
     test "returns 404 if there was a rendering error", %{conn: conn, project: project} do
