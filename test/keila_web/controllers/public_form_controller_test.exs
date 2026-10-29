@@ -38,6 +38,25 @@ defmodule KeilaWeb.PublicFormControllerTest do
       assert response =~ ~s(value="test@example.com")
       assert response =~ ~s(value="bar")
     end
+
+    test "sanitizes fine print", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+
+      form =
+        insert!(:contacts_form,
+          project_id: project.id,
+          settings: %{
+            captcha_required: false,
+            fine_print:
+              ~s{<img src=x onerror="evil()"><a href="javascript:evil()">x</a><a href="https://example.com">Privacy</a>}
+          }
+        )
+
+      conn = get(conn, Routes.public_form_path(conn, :show, form.id))
+      response = html_response(conn, 200)
+      assert response =~ ~s{<a>x</a><a href="https://example.com">Privacy</a>}
+      refute response =~ "evil()"
+    end
   end
 
   describe "POST /forms/:id" do

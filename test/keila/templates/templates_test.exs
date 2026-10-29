@@ -64,6 +64,18 @@ defmodule Keila.TemplatesTest do
   end
 
   @tag :templates
+  test "restrict removes comments and obfuscated javascript: links" do
+    html =
+      ~s{<!-- note --><a href=" \u0001javascript:evil()">a</a>} <>
+        ~s{<a href="java\tscr\nipt:evil()">b</a>} <>
+        ~s{<a href="JavaScript:evil()">c</a>} <>
+        ~s{<a href="/privacy">d</a>}
+
+    assert ~s{<a>a</a><a>b</a><a>c</a><a href="/privacy">d</a>} ==
+             html |> Html.parse_fragment!() |> Html.restrict(:limited) |> Html.to_fragment()
+  end
+
+  @tag :templates
   test "get CSS values by selector and property" do
     css = Css.parse!(@input_css)
     assert "#f0f" == Css.get_value(css, ".foo", "background-color")
