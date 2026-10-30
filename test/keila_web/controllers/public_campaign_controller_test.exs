@@ -19,16 +19,18 @@ defmodule KeilaWeb.PublicCampaignControllerTest do
           sent_at: DateTime.utc_now(:second)
         )
 
-      conn = get(conn, Routes.public_campaign_path(conn, :show, campaign.id))
-      assert response(conn, 404)
+      assert_error_sent 404, fn ->
+        get(conn, Routes.public_campaign_path(conn, :show, campaign.id))
+      end
     end
 
     test "returns 404 if campaign doesn't exist", %{conn: conn, project: project} do
       campaign = insert!(:mailings_campaign, project_id: project.id)
       Keila.Mailings.delete_campaign(campaign.id)
 
-      conn = get(conn, Routes.public_campaign_path(conn, :show, campaign.id))
-      assert response(conn, 404)
+      assert_error_sent 404, fn ->
+        get(conn, Routes.public_campaign_path(conn, :show, campaign.id))
+      end
     end
 
     test "returns 404 if campaign has not been sent", %{conn: conn, project: project} do
@@ -41,8 +43,9 @@ defmodule KeilaWeb.PublicCampaignControllerTest do
           sent_at: nil
         )
 
-      conn = get(conn, Routes.public_campaign_path(conn, :show, campaign.id))
-      assert response(conn, 404)
+      assert_error_sent 404, fn ->
+        get(conn, Routes.public_campaign_path(conn, :show, campaign.id))
+      end
     end
 
     test "renders text content of campaign type is :text", %{conn: conn, project: project} do
@@ -90,8 +93,9 @@ defmodule KeilaWeb.PublicCampaignControllerTest do
           sent_at: DateTime.utc_now(:second)
         )
 
-      conn = get(conn, Routes.public_campaign_path(conn, :show, campaign.id))
-      assert response(conn, 404)
+      assert_error_sent 404, fn ->
+        get(conn, Routes.public_campaign_path(conn, :show, campaign.id))
+      end
     end
   end
 end

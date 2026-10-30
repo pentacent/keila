@@ -87,9 +87,7 @@ defmodule KeilaWeb.FormController do
 
     case Contacts.get_project_form(project_id, form_id) do
       nil ->
-        conn
-        |> put_status(404)
-        |> halt()
+        raise KeilaWeb.NotFoundError
 
       form ->
         assign(conn, :form, form)

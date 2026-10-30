@@ -87,9 +87,7 @@ defmodule KeilaWeb.SegmentController do
 
     case Contacts.get_project_segment(project_id, segment_id) do
       nil ->
-        conn
-        |> put_status(404)
-        |> halt()
+        raise KeilaWeb.NotFoundError
 
       segment ->
         assign(conn, :segment, segment)

@@ -122,7 +122,7 @@ defmodule KeilaWeb.SenderController do
     project_id = current_project(conn).id
 
     case Mailings.get_project_sender(project_id, id) do
-      nil -> conn |> put_status(404) |> halt()
+      nil -> raise KeilaWeb.NotFoundError
       sender -> assign(conn, :sender, sender)
     end
   end

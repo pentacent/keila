@@ -1,0 +1,17 @@
+{render("_page.html",
+  status: 500,
+  title: gettext("Internal Server Error"),
+  message:
+    Keila.if_cloud(
+      do:
+        dgettext_md(
+          "cloud",
+          "Sorry, this shouldn’t have happened! Please reach out to our support at [%{support_email}](mailto:%{support_email}).",
+          support_email: "hello@keila.io"
+        ),
+      else:
+        gettext(
+          "Sorry, this shouldn’t have happened. Please contact your administrator or check the logs."
+        )
+    )
+)}

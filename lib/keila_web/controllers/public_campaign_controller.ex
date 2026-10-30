@@ -17,7 +17,7 @@ defmodule KeilaWeb.PublicCampaignController do
         conn |> put_resp_content_type("text/plain") |> send_resp(200, text)
 
       _ ->
-        conn |> send_resp(404, "") |> halt()
+        raise KeilaWeb.NotFoundError
     end
   end
 
@@ -25,7 +25,7 @@ defmodule KeilaWeb.PublicCampaignController do
     id = conn.params["id"]
 
     case Keila.Mailings.get_public_campaign(id) do
-      nil -> conn |> send_resp(404, "") |> halt()
+      nil -> raise KeilaWeb.NotFoundError
       campaign -> assign(conn, :campaign, campaign)
     end
   end

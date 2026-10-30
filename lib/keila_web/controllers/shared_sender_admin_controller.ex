@@ -126,12 +126,12 @@ defmodule KeilaWeb.SharedSenderAdminController do
   defp authorize(conn = %{assigns: %{is_admin?: true}}, _),
     do: conn
 
-  defp authorize(conn, _),
-    do: conn |> put_status(404) |> halt()
+  defp authorize(_conn, _),
+    do: raise(KeilaWeb.NotFoundError)
 
   defp put_resource(conn = %{path_params: %{"id" => id}}, _) do
     case Mailings.get_shared_sender(id) do
-      nil -> conn |> put_status(404) |> halt()
+      nil -> raise KeilaWeb.NotFoundError
       shared_sender -> conn |> assign(:shared_sender, shared_sender)
     end
   end
