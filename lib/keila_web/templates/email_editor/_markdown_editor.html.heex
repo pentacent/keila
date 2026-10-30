@@ -45,7 +45,13 @@
     class="w-1/2 flex-grow flex flex-col"
     phx-update="ignore"
   >
-    <iframe id={"#{@id}-inline-preview"} src="about:blank" class="bg-gray-100 flex-grow"></iframe>
+    <iframe
+      id={"#{@id}-inline-preview"}
+      src="about:blank"
+      sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox"
+      class="bg-gray-100 flex-grow"
+    >
+    </iframe>
   </div>
   <div
     id={"#{@id}-preview-data"}
