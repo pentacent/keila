@@ -1,4 +1,5 @@
 import EditorJS from "@editorjs/editorjs"
+import DOMPurify from "dompurify"
 import Header from "@editorjs/header"
 import List from "@editorjs/nested-list"
 import Quote from "@editorjs/quote"
@@ -11,12 +12,28 @@ import Alignment from "./tools/alignment"
 import TextColor from "./tools/text-color"
 import AlignmentTune from "./tunes/alignment"
 
+// Sanitize all HTML strings
+const sanitizeBlockData = (value) => {
+  if (Array.isArray(value)) return value.map(sanitizeBlockData)
+
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, entry]) => [key, sanitizeBlockData(entry)])
+    )
+  }
+
+  if (typeof value !== "string" || !value.includes("<")) return value
+
+  const sanitizedValue = DOMPurify.sanitize(value, { ADD_ATTR: ["target"] })
+  return DOMPurify.removed.length === 0 ? value : sanitizedValue
+}
+
 export default class BlockEditor {
   constructor(place, source) {
     const editor = new EditorJS({
       holder: place,
       placeholder: document.querySelector(".block-container-assets .editor-placeholder").innerText,
-      data: JSON.parse(source.value),
+      data: sanitizeBlockData(JSON.parse(source.value)),
       logLevel: "WARN",
       tools: {
         textColor: {
