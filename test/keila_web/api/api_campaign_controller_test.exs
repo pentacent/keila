@@ -165,6 +165,78 @@ defmodule KeilaWeb.ApiCampaignControllerTest do
     end
   end
 
+  describe "GET /api/v1/campaigns/:id/stats" do
+    @tag :api_campaign_controller
+    test "returns stats for unsent campaign", %{authorized_conn: conn, project: project} do
+      campaign = insert!(:mailings_campaign, project_id: project.id)
+      campaign_id = campaign.id
+
+      conn = get(conn, Routes.api_campaign_path(conn, :stats, campaign_id))
+
+      assert %{
+               "data" => %{
+                 "campaign_id" => ^campaign_id,
+                 "status" => "unsent",
+                 "recipients_count" => 0,
+                 "sent_count" => 0,
+                 "open_count" => 0,
+                 "click_count" => 0,
+                 "failed_count" => 0,
+                 "unsubscribe_count" => 0,
+                 "hard_bounce_count" => 0,
+                 "complaint_count" => 0,
+                 "opened_at_series" => [],
+                 "clicked_at_series" => []
+               }
+             } = json_response(conn, 200)
+    end
+
+    @tag :api_campaign_controller
+    test "returns 404 for non-existent campaign", %{authorized_conn: conn} do
+      conn = get(conn, Routes.api_campaign_path(conn, :stats, "nonexistent"))
+
+      assert json_response(conn, 404)
+    end
+
+    @tag :api_campaign_controller
+    test "returns stats with tracking data for sent campaign",
+         %{authorized_conn: conn, project: project} do
+      sender =
+        insert!(:mailings_sender,
+          project_id: project.id,
+          config: %{type: "test"}
+        )
+
+      campaign =
+        insert!(:mailings_campaign,
+          project_id: project.id,
+          sender_id: sender.id,
+          settings: %{type: :text}
+        )
+
+      campaign_id = campaign.id
+      _contacts = insert_n!(:contact, 3, fn _ -> %{project_id: project.id} end)
+
+      :ok = Keila.Mailings.deliver_campaign(campaign_id)
+      assert %{success: 1} = Oban.drain_queue(queue: :campaign_renderer)
+      :ok = Keila.MailingsSchedulerTestHelper.schedule_messages()
+      assert %{success: 3} = Oban.drain_queue(queue: :mailer)
+
+      conn = get(conn, Routes.api_campaign_path(conn, :stats, campaign_id))
+
+      assert %{
+               "data" => %{
+                 "campaign_id" => ^campaign_id,
+                 "status" => "sent",
+                 "recipients_count" => 3,
+                 "sent_count" => 3,
+                 "opened_at_series" => [],
+                 "clicked_at_series" => []
+               }
+             } = json_response(conn, 200)
+    end
+  end
+
   describe "POST /api/v1/campaigns/:id/actions/schedule" do
     @tag :api_campaign_controller
     test "returns updated campaign", %{authorized_conn: conn, project: project} do

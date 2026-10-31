@@ -164,5 +164,26 @@ defmodule KeilaWeb.ApiCampaignController do
     end
   end
 
+  operation(:stats,
+    summary: "Campaign Stats",
+    description: "Retrieve delivery and engagement statistics for a campaign.",
+    parameters: [id: [in: :path, type: :string, description: "Campaign ID"]],
+    responses: [
+      ok: {"Campaign stats response", "application/json", Schemas.MailingsCampaign.StatsResponse}
+    ]
+  )
+
+  @spec stats(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def stats(conn, %{id: id}) do
+    campaign = Mailings.get_project_campaign(project_id(conn), id)
+
+    if campaign do
+      stats = Mailings.get_campaign_stats(campaign.id)
+      render(conn, "stats.json", %{campaign_id: campaign.id, stats: stats})
+    else
+      Errors.send_404(conn)
+    end
+  end
+
   defp project_id(conn), do: conn.assigns.current_project.id
 end
