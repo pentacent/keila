@@ -12,6 +12,11 @@ import Alignment from "./tools/alignment"
 import TextColor from "./tools/text-color"
 import AlignmentTune from "./tunes/alignment"
 
+const sanitizeConfig = {
+  ADD_ATTR: ["target"],
+  FORBID_TAGS: ["style", "form", "input", "button", "textarea", "select", "option"]
+}
+
 // Sanitize all HTML strings
 const sanitizeBlockData = (value) => {
   if (Array.isArray(value)) return value.map(sanitizeBlockData)
@@ -24,7 +29,7 @@ const sanitizeBlockData = (value) => {
 
   if (typeof value !== "string" || !value.includes("<")) return value
 
-  const sanitizedValue = DOMPurify.sanitize(value, { ADD_ATTR: ["target"] })
+  const sanitizedValue = DOMPurify.sanitize(value, sanitizeConfig)
   return DOMPurify.removed.length === 0 ? value : sanitizedValue
 }
 
