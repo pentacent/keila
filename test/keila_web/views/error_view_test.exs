@@ -18,7 +18,12 @@ defmodule KeilaWeb.ErrorViewTest do
   end
 
   test "renders 500.html" do
-    assert render_to_string(KeilaWeb.ErrorView, "500.html", []) =~
-             "Please contact your administrator or check the logs."
+    html = render_to_string(KeilaWeb.ErrorView, "500.html", [])
+
+    Keila.if_cloud do
+      assert html =~ ~s{<a href="mailto:hello@keila.io">hello@keila.io</a>}
+    else
+      assert html =~ "Please contact your administrator or check the logs."
+    end
   end
 end

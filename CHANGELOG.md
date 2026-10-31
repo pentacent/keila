@@ -2,6 +2,26 @@
 
 ## Unreleased
 
+## Version 0.40.1
+
+> 🔒 Fixes for several stored cross-site scripting vulnerabilities. Updating is recommended for all instances that allow untrusted users.
+
+### Security
+- Fixed several stored cross-site scripting vulnerabilities in forms and campaigns
+- HMAC signatures of unsubscribe, double opt-in, and tracking links are now compared in constant time
+
+### Added
+- New error pages for 404 and 500 errors
+
+### Improved
+- Links in email previews now open in a new tab instead of navigating the preview
+
+### Fixed
+- Requests for missing entities (e.g. campaigns, contacts, forms) or user-facing links (e.g. unsubscribe or
+  double opt-in links with incorrect IDs or invalid signatures) now show the 404 page instead of an internal
+  server error
+
+
 ## Version 0.40.0
 
 > 🇸🇪 Fully editable welcome and double opt-in emails, sortable form fields, Elixir 1.20, and a new Swedish translation
