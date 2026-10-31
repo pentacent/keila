@@ -72,13 +72,20 @@
               end
             end}
             <%= if user.id != @current_user.id do %>
-              <a
-                href={~p"/admin/users/#{user.id}/impersonate"}
-                title={dgettext("admin", "Login as")}
-                class="button button--text"
+              <.form
+                for={%{}}
+                method="post"
+                action={~p"/admin/users/#{user.id}/impersonate"}
+                class="contents"
               >
-                {render_icon(:login)}
-              </a>
+                <button
+                  type="submit"
+                  title={dgettext("admin", "Login as")}
+                  class="button button--text"
+                >
+                  {render_icon(:login)}
+                </button>
+              </.form>
               <.delete_form
                 struct={user}
                 as={:user}

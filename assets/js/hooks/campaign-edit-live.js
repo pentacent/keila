@@ -18,6 +18,12 @@ const putHtmlPreview = (el) => {
     doc.open()
     doc.write(content)
     doc.close()
+
+    // Prevent links from navigating away from the preview iframe
+    const base = doc.createElement("base")
+    base.target = "_blank"
+    doc.head.prepend(base)
+
     iframe.contentWindow.scrollTo(scrollX, scrollY)
   }
 }

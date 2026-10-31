@@ -444,10 +444,7 @@ defmodule Keila.Contacts do
   """
   @spec valid_double_opt_in_hmac?(String.t(), Form.id(), FormParams.id()) :: boolean()
   def valid_double_opt_in_hmac?(hmac, form_id, form_params_id) do
-    case double_opt_in_hmac(form_id, form_params_id) do
-      ^hmac -> true
-      _other -> false
-    end
+    Plug.Crypto.secure_compare(double_opt_in_hmac(form_id, form_params_id), hmac)
   end
 
   @doc """

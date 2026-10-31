@@ -2,6 +2,7 @@ import EditorJS from "@editorjs/editorjs"
 import Header from "@editorjs/header"
 import List from "@editorjs/nested-list"
 import Quote from "@editorjs/quote"
+import DOMPurify from "dompurify"
 import Button from "./blocks/button"
 import Image from "./blocks/image"
 import Layout from "./blocks/layout"
@@ -11,12 +12,33 @@ import Alignment from "./tools/alignment"
 import TextColor from "./tools/text-color"
 import AlignmentTune from "./tunes/alignment"
 
+const sanitizeConfig = {
+  ADD_ATTR: ["target"],
+  FORBID_TAGS: ["style", "form", "input", "button", "textarea", "select", "option"]
+}
+
+// Sanitize all HTML strings
+const sanitizeBlockData = (value) => {
+  if (Array.isArray(value)) return value.map(sanitizeBlockData)
+
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, entry]) => [key, sanitizeBlockData(entry)])
+    )
+  }
+
+  if (typeof value !== "string" || !value.includes("<")) return value
+
+  const sanitizedValue = DOMPurify.sanitize(value, sanitizeConfig)
+  return DOMPurify.removed.length === 0 ? value : sanitizedValue
+}
+
 export default class BlockEditor {
   constructor(place, source) {
     const editor = new EditorJS({
       holder: place,
       placeholder: document.querySelector(".block-container-assets .editor-placeholder").innerText,
-      data: JSON.parse(source.value),
+      data: sanitizeBlockData(JSON.parse(source.value)),
       logLevel: "WARN",
       tools: {
         textColor: {

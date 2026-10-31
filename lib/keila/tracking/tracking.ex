@@ -164,10 +164,7 @@ defmodule Keila.Tracking do
   end
 
   defp valid_hmac?(hmac, encoded_url, message_id, link_id \\ nil) do
-    case create_hmac(encoded_url, message_id, link_id) do
-      ^hmac -> true
-      _other -> false
-    end
+    Plug.Crypto.secure_compare(create_hmac(encoded_url, message_id, link_id), hmac)
   end
 
   @spec log_event(type :: String.t() | atom(), Contact.id(), Message.id() | nil, map()) ::

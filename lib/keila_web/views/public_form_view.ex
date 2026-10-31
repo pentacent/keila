@@ -155,17 +155,17 @@ defmodule KeilaWeb.PublicFormView do
     end
   end
 
-  defp render_fine_print(form) do
-    if form.settings.fine_print do
-      content_tag(
-        :div,
-        raw(Keila.Templates.Html.restrict(form.settings.fine_print, :limited)),
-        class: "text-xs"
-      )
-    else
-      []
-    end
+  defp render_fine_print(%{settings: %{fine_print: fine_print}}) when is_binary(fine_print) do
+    sanitized_fine_print =
+      fine_print
+      |> Keila.Templates.Html.parse_fragment!()
+      |> Keila.Templates.Html.restrict(:limited)
+      |> Keila.Templates.Html.to_fragment()
+
+    content_tag(:div, raw(sanitized_fine_print), class: "text-xs")
   end
+
+  defp render_fine_print(_form), do: []
 
   defp render_fields(form, f) do
     field_mapping = data_field_mapping(form)

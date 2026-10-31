@@ -821,10 +821,7 @@ defmodule Keila.Mailings do
   """
   @spec valid_unsubscribe_hmac?(Project.id(), Message.id(), String.t()) :: boolean()
   def valid_unsubscribe_hmac?(project_id, message_id, hmac) do
-    case unsubscribe_hmac(project_id, message_id) do
-      ^hmac -> true
-      _other -> false
-    end
+    Plug.Crypto.secure_compare(unsubscribe_hmac(project_id, message_id), hmac)
   end
 
   defp unsubscribe_hmac(project_id, message_id) do
