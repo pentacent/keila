@@ -37,12 +37,28 @@ Keila.if_cloud do
     end
 
     @org_name_contact_fields ~w[is_organization organization_name website]a
-    @address_contact_fields ~w[country address_line_1 locality]a
-    defp required_contact_data_fields(:address), do: @address_contact_fields
-    defp required_contact_data_fields(_), do: @org_name_contact_fields
+
+    defp required_contact_data_fields(step, country \\ nil)
+
+    defp required_contact_data_fields(:address, country) do
+      address_fields =
+        country
+        |> Countries.required_address_fields()
+        |> Enum.map(&String.to_existing_atom/1)
+
+      [:country | address_fields]
+    end
+
+    defp required_contact_data_fields(_step, _country), do: @org_name_contact_fields
+
+    defp contact_data_country(socket, params) do
+      contact_data = socket.assigns.current_account.contact_data || %ContactData{}
+      Map.get(params, "country", contact_data.country)
+    end
 
     defp put_contact_data_changeset(socket, params \\ %{}) do
-      required_fields = required_contact_data_fields(socket.assigns.step)
+      country = contact_data_country(socket, params)
+      required_fields = required_contact_data_fields(socket.assigns.step, country)
       contact_data = socket.assigns.current_account.contact_data || %ContactData{}
 
       assign(
@@ -134,7 +150,7 @@ Keila.if_cloud do
       case KeilaCloud.Accounts.update_account_contact_data(
              socket.assigns.current_account.id,
              params,
-             required_contact_data_fields(:address)
+             required_contact_data_fields(:address, contact_data_country(socket, params))
            ) do
         {:ok, account} ->
           {:noreply,

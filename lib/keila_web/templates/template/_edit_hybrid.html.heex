@@ -61,7 +61,13 @@
   </.form>
 
   <div class="flex flex-grow bg-white text-black">
-    <iframe id="html-preview" src="about:blank" class="bg-gray-100 flex-grow" style="height: 75vh">
+    <iframe
+      id="html-preview"
+      src="about:blank"
+      sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox"
+      class="bg-gray-100 flex-grow"
+      style="height: 75vh"
+    >
     </iframe>
     <div id="html-preview-data" phx-hook="HtmlPreview" class="hidden" data-iframe="#html-preview">
       {@preview}

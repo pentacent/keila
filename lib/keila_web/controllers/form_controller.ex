@@ -49,15 +49,6 @@ defmodule KeilaWeb.FormController do
     )
   end
 
-  @spec post_edit(Plug.Conn.t(), map()) :: Plug.Conn.t()
-  def post_edit(conn, params) do
-    params = params["form"] || %{}
-    form_id = conn.assigns.form.id
-
-    {:ok, _form} = Contacts.update_form(form_id, params)
-    redirect(conn, to: Routes.form_path(conn, :index, current_project(conn).id))
-  end
-
   @spec delete(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def delete(conn, params) do
     ids =
@@ -96,9 +87,7 @@ defmodule KeilaWeb.FormController do
 
     case Contacts.get_project_form(project_id, form_id) do
       nil ->
-        conn
-        |> put_status(404)
-        |> halt()
+        raise KeilaWeb.NotFoundError
 
       form ->
         assign(conn, :form, form)

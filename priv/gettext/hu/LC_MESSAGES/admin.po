@@ -34,7 +34,7 @@ msgstr "Kreditek hozzáadása"
 msgid "Administer Credits for %{email}"
 msgstr "Kreditek kezelése a következőhöz: %{email}"
 
-#: lib/keila_web/controllers/user_admin_controller.ex:17
+#: lib/keila_web/controllers/user_admin_controller.ex:25
 #, elixir-autogen, elixir-format
 msgid "Administrate Users"
 msgstr "Felhasználók kezelése"

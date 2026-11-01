@@ -107,6 +107,15 @@ defmodule Keila.Templates.ContentSlotsTest do
                </mj-body></mjml>
                """
     end
+
+    test "with blank content keep their default content" do
+      content = %{"single-quoted" => "", "unquoted" => nil, "main" => "  \n"}
+      merged = Templates.merge_content_slots(@mjml, content, mode: :mjml)
+
+      assert merged =~ "Single Quoted"
+      assert merged =~ "Unquoted"
+      assert merged =~ "<mj-text>Test</mj-text>"
+    end
   end
 
   @html """
@@ -178,6 +187,15 @@ defmodule Keila.Templates.ContentSlotsTest do
                  </body>
                </html>
                """
+    end
+
+    test "with blank content keep their default content" do
+      content = %{"top" => "", "deeply-nested" => nil, "main" => "  \n"}
+      merged = Templates.merge_content_slots(@html, content, mode: :html)
+
+      assert merged =~ "Top"
+      assert merged =~ "Deep"
+      assert merged =~ "<p>Hello</p>"
     end
   end
 

@@ -38,6 +38,25 @@ defmodule KeilaWeb.PublicFormControllerTest do
       assert response =~ ~s(value="test@example.com")
       assert response =~ ~s(value="bar")
     end
+
+    test "sanitizes fine print", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+
+      form =
+        insert!(:contacts_form,
+          project_id: project.id,
+          settings: %{
+            captcha_required: false,
+            fine_print:
+              ~s{<img src=x onerror="evil()"><a href="javascript:evil()">x</a><a href="https://example.com">Privacy</a>}
+          }
+        )
+
+      conn = get(conn, Routes.public_form_path(conn, :show, form.id))
+      response = html_response(conn, 200)
+      assert response =~ ~s{<a>x</a><a href="https://example.com">Privacy</a>}
+      refute response =~ "evil()"
+    end
   end
 
   describe "POST /forms/:id" do
@@ -207,6 +226,35 @@ defmodule KeilaWeb.PublicFormControllerTest do
 
       assert html_response(conn, 200) =~ "You have been unsubscribed"
       assert %{status: :unsubscribed} = Contacts.get_contact(contact.id)
+    end
+
+    test "returns 404 for unknown messages", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+      contact = insert!(:contact, project_id: project.id)
+      campaign = insert!(:mailings_campaign, project_id: project.id)
+
+      message =
+        insert!(:message, project: project, campaign: campaign, contact: contact, sent_at: now())
+
+      unsubscribe_link = Mailings.get_unsubscribe_link(project.id, message.id)
+      Keila.Repo.delete!(message)
+
+      assert_error_sent 404, fn -> post(conn, unsubscribe_link) end
+    end
+
+    test "returns 404 for invalid HMACs", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+      contact = insert!(:contact, project_id: project.id)
+      campaign = insert!(:mailings_campaign, project_id: project.id)
+
+      message =
+        insert!(:message, project: project, campaign: campaign, contact: contact, sent_at: now())
+
+      assert_error_sent 404, fn ->
+        post(conn, Routes.public_form_path(conn, :unsubscribe, project.id, message.id, "x"))
+      end
+
+      assert %{status: :active} = Contacts.get_contact(contact.id)
     end
   end
 

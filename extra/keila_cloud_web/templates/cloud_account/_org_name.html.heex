@@ -27,14 +27,15 @@
       <%= with_validation(f, :organization_name) do %>
         {text_input(f, :organization_name,
           placeholder: dgettext("cloud", "Your Company, Inc."),
-          class: "text-black w-64"
+          class: "text-black w-64",
+          autocomplete: "organization"
         )}
       <% end %>
     </div>
   <% end %>
   <%= if not is_nil(Ecto.Changeset.get_field(@contact_data_changeset, :is_organization)) do %>
     <div class="form-row">
-      {label(f, :given_name, dgettext("cloud", "Website"))}
+      {label(f, :website, dgettext("cloud", "Website"))}
       <%= with_validation(f, :website) do %>
         {url_input(f, :website,
           placeholder: dgettext("cloud", "https://example.com"),

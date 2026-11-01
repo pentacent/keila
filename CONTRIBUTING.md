@@ -16,7 +16,7 @@ git clone https://github.com/pentacent/keila.git
 ```
 
 Keila requires the following tools to compile and run:
-- [Elixir](https://elixir-lang.org/install.html) (1.18+) and Erlang/OTP (27+)
+- [Elixir](https://elixir-lang.org/install.html) (1.20+) and Erlang/OTP (29+)
 - [Node.js](https://nodejs.org/en/download/) (20+)
 - [Cmake](https://cmake.org/download/) (to compile `lexbor`/`fast_html`)
 
@@ -24,7 +24,7 @@ If you want to work on the frontend JavaScript code, it's also recommended you i
 
 You use the [asdf version manager](https://asdf-vm.com/) (`asdf install`) to install these dependencies. Cmake can be installed with your system's package manager (e.g. `apt install cmake` or `brew install cmake`).
 
-In addition, you need to have an instance of [PostgreSQL](https://www.postgresql.org/) to run Keila.
+In addition, you need to have an instance of [PostgreSQL](https://www.postgresql.org/) (14+) to run Keila.
 
 
 ### Option 2: Setup with VS Code and [DevContainer](https://code.visualstudio.com/docs/remote/containers)
@@ -80,31 +80,28 @@ Read here about how the CLA works: [CLA Readme](.cla/README.md)
 Keila uses the [Gettext format](https://en.wikipedia.org/wiki/Gettext) for
 translations of the interface.
 
-Translation files are located in `priv/gettext`.
-
-### Getting Started
-
-Before you create a new translation or modify an existing translation, you need
-to extract and update all strings from the code:
-`mix gettext.extract --merge`
-
-### Modify existing translations
-Next you can use the editor of your choice to either edit the existing `.po`
-files in `priv/gettext`. A convenient Open Source program for editing
-translation files is [Poedit](https://poedit.net).
+Translation files are located in `priv/gettext`:
+- The `.pot` files are templates with all strings from the code.
+- The `.po` files in `priv/gettext/$LANGUAGE_CODE/LC_MESSAGES` contain the
+  actual translations for each language.
 
 ### Creating a new translation
-1) Use the `.pot` templates in `priv/gettext` to create translation files for your
-   language . New translations should be stored in
-   `priv/gettext/:language/LC_MESSAGES`.
+1) Run `mix gettext.merge priv/gettext --locale $LANGUAGE_CODE`.
+   This creates the `.po` files for your language in `priv/gettext/$LANGUAGE_CODE/LC_MESSAGES`.
 
 2) Find the line `config :keila, KeilaWeb.Gettext` in `config/config.exs` and
    add the language code of the new language to the `:locales` list.
 
 3) Find the line `def available_locales() do` in `lib/keila_web/gettext.ex` and
    add a tuple with the native language name and the language code to the list
-   returned by the function.
+   returned by the function. Languages with Latin alphabets should be sorted
+   alphabetically by their native name; languages with other writing systems
+   are added afterwars, sorted by their language code.
 
-## Finalizing your changes
-Run `mix gettext.merge priv/gettext` to compile your changes. Make sure to
-commit all changes to `.pot`, `.po` and the compiled `.mo`.
+4) Translate the strings in the new `.po` files.
+
+
+### Modifying existing translations
+You can use the editor of your choice to edit the existing `.po` files in
+`priv/gettext`. A convenient Open Source program for editing translation files
+is [Poedit](https://poedit.net).

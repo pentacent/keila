@@ -144,7 +144,7 @@ Keila.if_cloud do
         |> KeilaWeb.AuthSession.start_auth_session(user_id)
         |> redirect(to: ~p"/")
       else
-        conn |> put_status(404) |> halt()
+        raise KeilaWeb.NotFoundError
       end
     end
 
@@ -170,10 +170,7 @@ Keila.if_cloud do
       if account && account.parent_id == partner_id do
         {:ok, account}
       else
-        {:error,
-         conn
-         |> put_status(404)
-         |> halt()}
+        raise KeilaWeb.NotFoundError
       end
     end
 
@@ -183,7 +180,7 @@ Keila.if_cloud do
       if account && account.is_partner do
         conn
       else
-        conn |> put_status(404) |> halt()
+        raise KeilaWeb.NotFoundError
       end
     end
 

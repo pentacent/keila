@@ -38,7 +38,7 @@ export default class Layout {
         holder: editorPlace,
         tools: this.config.tools,
         data: this.data.blocks[i],
-        placeholder: document.querySelector("#block-container-assets .editor-layout-placeholder").innerText,
+        placeholder: document.querySelector(".block-container-assets .editor-layout-placeholder").innerText,
         onChange: () => {
           this.block.dispatchChange()
         }
@@ -144,7 +144,7 @@ export default class Layout {
   static get toolbox() {
     return {
       title: "Layout",
-      icon: document.querySelector("#block-container-assets .icon-block").innerHTML
+      icon: document.querySelector(".block-container-assets .icon-block").innerHTML
     }
   }
 }

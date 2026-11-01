@@ -7,14 +7,14 @@ const ALLOWED_BLOCK_TYPES = ["paragraph", "header"]
 
 function getText(key) {
   const element = document.querySelector(
-    `#block-container-assets .editor-alignment-${key}`
+    `.block-container-assets .editor-alignment-${key}`
   )
   return element.innerText
 }
 
 function getIcon(iconName) {
   const element = document.querySelector(
-    `#block-container-assets .icon-${iconName}`
+    `.block-container-assets .icon-${iconName}`
   )
   if (!element) return ""
   return element.innerHTML

@@ -236,6 +236,10 @@ defmodule KeilaWeb.PublicFormController do
     end
   end
 
+  defp unsubscribe_from_message(_conn, _form, _project_id, nil, _hmac) do
+    raise KeilaWeb.NotFoundError
+  end
+
   defp unsubscribe_from_message(conn, form, project_id, message, hmac) do
     if Mailings.valid_unsubscribe_hmac?(project_id, message.id, hmac) do
       Keila.Mailings.unsubscribe_from_message(message.id)
@@ -246,7 +250,7 @@ defmodule KeilaWeb.PublicFormController do
       |> put_meta(:title, gettext("Unsubscribing ..."))
       |> render("unsubscribe.html")
     else
-      conn |> put_status(:not_found) |> halt()
+      raise KeilaWeb.NotFoundError
     end
   end
 
@@ -280,9 +284,7 @@ defmodule KeilaWeb.PublicFormController do
 
     case Contacts.get_form(form_id) do
       nil ->
-        conn
-        |> put_status(404)
-        |> halt()
+        raise KeilaWeb.NotFoundError
 
       form ->
         assign(conn, :form, form)
@@ -301,7 +303,7 @@ defmodule KeilaWeb.PublicFormController do
         conn |> assign(:form, form) |> render_failure_or_redirect() |> halt()
 
       true ->
-        conn |> put_status(404) |> halt()
+        raise KeilaWeb.NotFoundError
     end
   end
 

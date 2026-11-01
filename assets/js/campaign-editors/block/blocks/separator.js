@@ -20,8 +20,8 @@ export default class Separator {
 
   static get toolbox() {
     return {
-      title: document.querySelector("#block-container-assets .editor-separator-title").innerText,
-      icon: document.querySelector("#block-container-assets .icon-horizontal-rule").innerHTML
+      title: document.querySelector(".block-container-assets .editor-separator-title").innerText,
+      icon: document.querySelector(".block-container-assets .icon-horizontal-rule").innerHTML
     }
   }
 }

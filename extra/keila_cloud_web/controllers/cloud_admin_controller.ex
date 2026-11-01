@@ -45,7 +45,7 @@ Keila.if_cloud do
     defp authorize(conn, _) do
       case conn.assigns.is_admin? do
         true -> conn
-        false -> conn |> put_status(404) |> halt()
+        false -> raise KeilaWeb.NotFoundError
       end
     end
   end

@@ -131,7 +131,7 @@ defmodule Keila.Hasher do
 
   def hash_file(path, algs, options) do
     Path.expand(path)
-    |> File.stream!([], @stream_size)
+    |> File.stream!(@stream_size)
     |> hash_stream(algs, options)
   end
 

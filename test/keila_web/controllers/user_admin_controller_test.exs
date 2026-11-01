@@ -7,8 +7,10 @@ defmodule KeilaWeb.UserAdminControllerTest do
       {root, user} = with_seed()
 
       conn = with_login(conn, user: user)
-      conn = get(conn, Routes.user_admin_path(conn, :index))
-      assert conn.status == 404
+
+      assert_error_sent 404, fn ->
+        get(conn, Routes.user_admin_path(conn, :index))
+      end
 
       conn = with_login(conn, user: root)
       conn = get(conn, Routes.user_admin_path(conn, :index))
@@ -44,9 +46,10 @@ defmodule KeilaWeb.UserAdminControllerTest do
       conn = with_login(conn, user: user)
 
       params = %{"email" => user.email, "password" => user.password}
-      conn = post(conn, Routes.user_admin_path(conn, :create, user: params))
 
-      assert conn.status == 404
+      assert_error_sent 404, fn ->
+        post(conn, Routes.user_admin_path(conn, :create, user: params))
+      end
     end
   end
 
@@ -78,7 +81,7 @@ defmodule KeilaWeb.UserAdminControllerTest do
       {root, user} = with_seed()
       conn = with_login(conn, user: root)
 
-      conn = get(conn, Routes.user_admin_path(conn, :impersonate, user.id))
+      conn = post(conn, Routes.user_admin_path(conn, :impersonate, user.id))
       assert redirected_to(conn, 302) == "/"
 
       conn = recycle(conn) |> get("/")

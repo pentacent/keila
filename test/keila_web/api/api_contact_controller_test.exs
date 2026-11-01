@@ -133,7 +133,7 @@ defmodule KeilaWeb.ApiContactControllerTest do
       assert %{"errors" => errors} = json_response(conn, 400)
 
       assert Enum.find(errors, fn error ->
-               match?(%{"pointer" => "/data/attributes/email"}, error)
+               match?(%{"pointer" => "/data/email"}, error)
              end)
     end
   end
@@ -210,7 +210,7 @@ defmodule KeilaWeb.ApiContactControllerTest do
       assert %{"errors" => errors} = json_response(conn, 400)
 
       assert Enum.find(errors, fn error ->
-               match?(%{"pointer" => "/data/attributes/email"}, error)
+               match?(%{"pointer" => "/data/email"}, error)
              end)
     end
 

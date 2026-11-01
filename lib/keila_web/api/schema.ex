@@ -147,6 +147,8 @@ defmodule KeilaWeb.Api.Schema do
       format: schema_format(property.type),
       description: Map.get(property, :description),
       enum: Map.get(property, :enum),
+      nullable: Map.get(property, :nullable),
+      deprecated: Map.get(property, :deprecated),
       example: Map.get(property, :example),
       properties: properties,
       items: items

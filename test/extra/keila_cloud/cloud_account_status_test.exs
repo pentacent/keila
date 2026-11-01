@@ -21,7 +21,7 @@ Keila.if_cloud do
       set_credits_enabled(true)
       on_exit(fn -> set_credits_enabled(credits_enabled_before?) end)
 
-      %{account: account, user: user, child_account: child_account}
+      %{account: account, user: user, child_account: child_account, root_group: root_group}
     end
 
     @tag :accounts
@@ -30,6 +30,24 @@ Keila.if_cloud do
 
       assert {:ok, %{status: :active}} =
                KeilaCloud.Accounts.update_account_status(account.id, :active)
+    end
+
+    @tag :accounts
+    test "list users filtered by account status", %{
+      account: account,
+      user: user,
+      root_group: root_group
+    } do
+      other_user = insert!(:user)
+      other_account = insert!(:account, group: insert!(:group, parent: root_group))
+      Accounts.set_user_account(other_user.id, other_account.id)
+      {:ok, _} = KeilaCloud.Accounts.update_account_status(account.id, :active)
+
+      assert [user.id] ==
+               Keila.Auth.list_users(account_status: "active") |> Enum.map(& &1.id)
+
+      assert [other_user.id] ==
+               Keila.Auth.list_users(account_status: "default") |> Enum.map(& &1.id)
     end
 
     @tag :accounts

@@ -140,11 +140,11 @@ defmodule KeilaWeb.SenderControllerTest do
 
     other_user = insert!(:activated_user)
 
-    conn =
-      with_login(conn, user: other_user)
-      |> get(Routes.sender_path(conn, :edit, project.id, sender.id))
+    conn = with_login(conn, user: other_user)
 
-    assert conn.status == 404
+    assert_error_sent 404, fn ->
+      get(conn, Routes.sender_path(conn, :edit, project.id, sender.id))
+    end
   end
 
   @tag :sender_controller

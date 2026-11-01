@@ -111,9 +111,7 @@ defmodule Keila.Templates do
   @spec delete_template(Template.id()) :: :ok
   def delete_template(template_id) when is_id(template_id) do
     from(t in Template, where: t.id == ^template_id)
-    |> Repo.delete_all()
-
-    :ok
+    |> delete_templates()
   end
 
   @doc """
@@ -123,8 +121,78 @@ defmodule Keila.Templates do
   """
   def delete_project_templates(project_id, ids) when is_id(project_id) do
     from(t in Template, where: t.id in ^ids and t.project_id == ^project_id)
-    |> Repo.delete_all()
+    |> delete_templates()
+  end
+
+  defp delete_templates(query) do
+    Repo.transaction(fn ->
+      {_count, deleted} = query |> select([t], {t.project_id, t.id}) |> Repo.delete_all()
+
+      deleted
+      |> Enum.group_by(&elem(&1, 0), &elem(&1, 1))
+      |> Enum.each(fn {project_id, template_ids} ->
+        :ok = replace_project_email_templates(project_id, template_ids, nil)
+      end)
+    end)
 
     :ok
+  end
+
+  # List of all embedded `Email` structs in the database.
+  # Should be kept up-to-date for pruning of referenced template IDs.
+  @email_embeds [
+    {Keila.Contacts.Form, :welcome_email},
+    {Keila.Contacts.Form, :double_opt_in_email}
+  ]
+
+  @doc """
+  Replaces the template_id of all embedded `Keila.Mailings.Email`s in the
+  specified project which match the given `template_ids`.
+  `replacement_id` may be the ID of another template in the project or `nil`.
+
+  Returns `{:error, :template_not_found}` if no template with `replacement_id`
+  could be found in the project.
+  """
+  @spec replace_project_email_templates(
+          Project.id(),
+          [Template.id()],
+          Template.id() | nil
+        ) :: :ok | {:error, :template_not_found}
+  def replace_project_email_templates(project_id, template_ids, replacement_id)
+      when is_id(project_id) do
+    if is_nil(replacement_id) or get_project_template(project_id, replacement_id) do
+      stored_ids = Enum.flat_map(template_ids, &stored_template_ids/1)
+      {:ok, replacement_id} = Ecto.Type.cast(Template.Id, replacement_id)
+
+      for {schema, field} <- @email_embeds do
+        email =
+          dynamic(
+            [e],
+            fragment(
+              "jsonb_set(?, '{template_id}', coalesce(to_jsonb(?::text), 'null'))",
+              field(e, ^field),
+              ^replacement_id
+            )
+          )
+
+        from(e in schema,
+          where: e.project_id == ^project_id,
+          where: fragment("?->>'template_id' = ANY(?)", field(e, ^field), ^stored_ids),
+          update: [set: ^[{field, email}]]
+        )
+        |> Repo.update_all([])
+      end
+
+      :ok
+    else
+      {:error, :template_not_found}
+    end
+  end
+
+  # Emails may store template ids as hashids or as integers
+  defp stored_template_ids(template_id) do
+    {:ok, hashid} = Ecto.Type.cast(Template.Id, template_id)
+    {:ok, integer_id} = Template.Id.dump(hashid)
+    [hashid, to_string(integer_id)]
   end
 end

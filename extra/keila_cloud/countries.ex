@@ -47,15 +47,13 @@ Keila.if_cloud do
       "required_fields" => ["address_line_1", "locality"]
     }
 
+    # Keys missing from a country's entry fall back to the default format.
     def address_format(country) do
-      @address_formats[country] || @default_address_format
+      Map.merge(@default_address_format, Map.get(@address_formats, country, %{}))
     end
 
     def required_address_fields(country) do
-      case address_format(country) do
-        %{"required_fields" => required_fields} when is_list(required_fields) -> required_fields
-        _ -> @default_address_format["required_fields"]
-      end
+      address_format(country)["required_fields"]
     end
   end
 end

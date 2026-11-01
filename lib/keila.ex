@@ -4,7 +4,7 @@ defmodule Keila do
   as well as Keila's AGPLv3 code and the non-AGPLv3 "extra" code.
   """
 
-  @extra? match?({:module, _}, Code.ensure_compiled(KeilaCloud))
+  @extra? "extra" in Mix.Project.config()[:elixirc_paths]
   if @extra? do
     @cloud? KeilaCloud.cloud?()
   else
@@ -12,7 +12,7 @@ defmodule Keila do
   end
 
   def __mix_recompile__?() do
-    @extra? != match?({:module, _}, Code.ensure_loaded(KeilaCloud)) ||
+    @extra? != "extra" in Mix.Project.config()[:elixirc_paths] ||
       @cloud? != (@extra? and Keila.cloud?())
   end
 

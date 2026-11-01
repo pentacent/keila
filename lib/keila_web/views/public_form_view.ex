@@ -155,17 +155,17 @@ defmodule KeilaWeb.PublicFormView do
     end
   end
 
-  defp render_fine_print(form) do
-    if form.settings.fine_print do
-      content_tag(
-        :div,
-        raw(Keila.Templates.Html.restrict(form.settings.fine_print, :limited)),
-        class: "text-xs"
-      )
-    else
-      []
-    end
+  defp render_fine_print(%{settings: %{fine_print: fine_print}}) when is_binary(fine_print) do
+    sanitized_fine_print =
+      fine_print
+      |> Keila.Templates.Html.parse_fragment!()
+      |> Keila.Templates.Html.restrict(:limited)
+      |> Keila.Templates.Html.to_fragment()
+
+    content_tag(:div, raw(sanitized_fine_print), class: "text-xs")
   end
+
+  defp render_fine_print(_form), do: []
 
   defp render_fields(form, f) do
     field_mapping = data_field_mapping(form)
@@ -205,7 +205,8 @@ defmodule KeilaWeb.PublicFormView do
               placeholder: field_settings.placeholder,
               style: input_styles,
               name: name,
-              id: id
+              id: id,
+              autocomplete: autocomplete(field_settings)
             )
 
           type == :integer ->
@@ -222,7 +223,8 @@ defmodule KeilaWeb.PublicFormView do
               placeholder: field_settings.placeholder,
               style: input_styles,
               name: name,
-              id: id
+              id: id,
+              autocomplete: autocomplete(field_settings)
             )
         end
       end
@@ -299,6 +301,11 @@ defmodule KeilaWeb.PublicFormView do
       end
     ]
   end
+
+  defp autocomplete(%{field: :email}), do: "email"
+  defp autocomplete(%{field: :first_name}), do: "given-name"
+  defp autocomplete(%{field: :last_name}), do: "family-name"
+  defp autocomplete(_field_settings), do: nil
 
   def render_form_success(form) do
     content_tag(:div, class: @form_classes, style: build_form_styles(form)) do

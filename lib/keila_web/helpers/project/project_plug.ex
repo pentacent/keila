@@ -15,7 +15,7 @@ defmodule KeilaWeb.ProjectPlug do
     user = conn.assigns.current_user
 
     case Projects.get_user_project(user.id, project_id) do
-      nil -> conn |> put_status(404) |> halt()
+      nil -> raise KeilaWeb.NotFoundError
       project -> assign(conn, :current_project, project)
     end
   end

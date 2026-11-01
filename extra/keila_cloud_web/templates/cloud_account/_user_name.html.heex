@@ -23,13 +23,13 @@
   <div class="form-row">
     {label(f, :given_name, gettext("First name"))}
     <%= with_validation(f, :given_name) do %>
-      {text_input(f, :given_name, class: "text-black w-64")}
+      {text_input(f, :given_name, class: "text-black w-64", autocomplete: "given-name")}
     <% end %>
   </div>
   <div class="form-row">
     {label(f, :family_name, gettext("Last name"))}
     <%= with_validation(f, :family_name) do %>
-      {text_input(f, :family_name, class: "text-black w-64")}
+      {text_input(f, :family_name, class: "text-black w-64", autocomplete: "family-name")}
     <% end %>
 
     <%= if @user_changeset.valid? do %>

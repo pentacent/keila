@@ -174,4 +174,31 @@ defmodule Keila.Mailings.SenderTest do
       assert "can't be blank" in errors.config.smtp_password
     end
   end
+
+  describe "Testing smtp senders TLS mode" do
+    @describetag :mailings
+    test "requires smtp_tls_mode" do
+      group = insert!(:group)
+      project = insert!(:project, group: group)
+
+      params =
+        params(:mailings_sender)
+        |> update_in(["config"], &Map.delete(&1, :smtp_tls_mode))
+
+      assert {:error, changeset} = Mailings.create_sender(project.id, params)
+      assert "can't be blank" in errors_on(changeset).config.smtp_tls_mode
+    end
+
+    test "rejects unknown smtp_tls_mode" do
+      group = insert!(:group)
+      project = insert!(:project, group: group)
+
+      params =
+        params(:mailings_sender)
+        |> update_in(["config"], &Map.put(&1, :smtp_tls_mode, "auto"))
+
+      assert {:error, changeset} = Mailings.create_sender(project.id, params)
+      assert "is invalid" in errors_on(changeset).config.smtp_tls_mode
+    end
+  end
 end

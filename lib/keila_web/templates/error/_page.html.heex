@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang={Gettext.get_locale()}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{@title} · Keila</title>
+    <link rel="stylesheet" href={Routes.static_path(KeilaWeb.Endpoint, "/css/app.css")} />
+  </head>
+  <body class="min-h-screen flex flex-col items-center justify-center gap-12 p-8 text-center text-white">
+    <main class="max-w-xl flex flex-col gap-4">
+      <h1 class="flex flex-col gap-2 font-bold">
+        <span class="text-5xl">{@status}</span>
+        <span class="text-4xl">{@title}</span>
+      </h1>
+      <div class="text-lg text-gray-200 [&_a]:underline">
+        {@message}
+      </div>
+    </main>
+    <a
+      href={Routes.project_path(KeilaWeb.Endpoint, :index)}
+      class="inline-flex items-start text-emerald-500"
+    >
+      <span class="flex h-11 w-11 -mr-1">
+        {render_icon(:logo)}
+      </span>
+      <span class="text-3xl font-light">Keila</span>
+    </a>
+  </body>
+</html>

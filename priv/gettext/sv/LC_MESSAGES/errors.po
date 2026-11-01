@@ -1,0 +1,111 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Keila 0.30.3\n"
+"POT-Creation-Date: 2026-09-08 00:00+0000\n"
+"PO-Revision-Date: 2026-09-08 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: Swedish\n"
+"Language: sv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: ChatGPT/Poedit-compatible\n"
+
+## This is a PO Template file.
+##
+## `msgid`s here are often extracted from source code.
+## Add new translations manually only if they're dynamic
+## translations that can't be statically extracted.
+##
+## Run `mix gettext.extract` to bring this file up to
+## date. Leave `msgstr`s empty as changing them here has no
+## effect: edit them in PO (`.po`) files instead.
+## From Ecto.Changeset.cast/4
+msgid "can't be blank"
+msgstr "får inte vara tomt"
+
+## From Ecto.Changeset.unique_constraint/3
+msgid "has already been taken"
+msgstr "används redan"
+
+## From Ecto.Changeset.put_change/3
+msgid "is invalid"
+msgstr "är ogiltigt"
+
+## From Ecto.Changeset.validate_acceptance/3
+msgid "must be accepted"
+msgstr "måste godkännas"
+
+## From Ecto.Changeset.validate_format/3
+msgid "has invalid format"
+msgstr "har ogiltigt format"
+
+## From Ecto.Changeset.validate_subset/3
+msgid "has an invalid entry"
+msgstr "innehåller ett ogiltigt värde"
+
+## From Ecto.Changeset.validate_exclusion/3
+msgid "is reserved"
+msgstr "är reserverat"
+
+## From Ecto.Changeset.validate_confirmation/3
+msgid "does not match confirmation"
+msgstr "stämmer inte överens med bekräftelsen"
+
+## From Ecto.Changeset.no_assoc_constraint/3
+msgid "is still associated with this entry"
+msgstr "är fortfarande kopplat till denna post"
+
+msgid "are still associated with this entry"
+msgstr "är fortfarande kopplade till denna post"
+
+## From Ecto.Changeset.validate_length/3
+msgid "should be %{count} character(s)"
+msgid_plural "should be %{count} character(s)"
+msgstr[0] "bör vara %{count} tecken"
+msgstr[1] "bör vara %{count} tecken"
+
+msgid "should have %{count} item(s)"
+msgid_plural "should have %{count} item(s)"
+msgstr[0] "bör innehålla %{count} objekt"
+msgstr[1] "bör innehålla %{count} objekt"
+
+msgid "should be at least %{count} character(s)"
+msgid_plural "should be at least %{count} character(s)"
+msgstr[0] "bör vara minst %{count} tecken"
+msgstr[1] "bör vara minst %{count} tecken"
+
+msgid "should have at least %{count} item(s)"
+msgid_plural "should have at least %{count} item(s)"
+msgstr[0] "bör innehålla minst %{count} objekt"
+msgstr[1] "bör innehålla minst %{count} objekt"
+
+msgid "should be at most %{count} character(s)"
+msgid_plural "should be at most %{count} character(s)"
+msgstr[0] "bör vara högst %{count} tecken"
+msgstr[1] "bör vara högst %{count} tecken"
+
+msgid "should have at most %{count} item(s)"
+msgid_plural "should have at most %{count} item(s)"
+msgstr[0] "bör innehålla högst %{count} objekt"
+msgstr[1] "bör innehålla högst %{count} objekt"
+
+## From Ecto.Changeset.validate_number/3
+msgid "must be less than %{number}"
+msgstr "måste vara mindre än %{number}"
+
+msgid "must be greater than %{number}"
+msgstr "måste vara större än %{number}"
+
+msgid "must be less than or equal to %{number}"
+msgstr "måste vara mindre än eller lika med %{number}"
+
+msgid "must be greater than or equal to %{number}"
+msgstr "måste vara större än eller lika med %{number}"
+
+msgid "must be equal to %{number}"
+msgstr "måste vara lika med %{number}"
+
+msgid "must be at least %{offset} seconds in the future"
+msgstr "måste vara minst %{offset} sekunder framåt i tiden"

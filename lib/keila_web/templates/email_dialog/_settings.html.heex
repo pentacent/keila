@@ -1,0 +1,41 @@
+<div class="flex flex-col gap-4 max-w-xl">
+  <div class="flex flex-col">
+    {label(@form, :subject, gettext("Subject"))}
+    <%= with_validation(@form, :subject) do %>
+      {text_input(@form, :subject, placeholder: @subject_placeholder, class: "text-black")}
+    <% end %>
+  </div>
+  <div class="flex flex-col">
+    {label(@form, :type, gettext("Email Type"))}
+    <%= with_validation(@form, :type) do %>
+      {select(@form, :type, type_options(), class: "text-black")}
+    <% end %>
+  </div>
+  <div :if={@type == :markdown} class="form-row-checkbox">
+    <%= inputs_for(@form, :editor_config, [skip_hidden: true], fn cf -> %>
+      {checkbox(cf, :enable_wysiwyg)}
+      {label(cf, :enable_wysiwyg, gettext("Enable rich text editor"))}
+    <% end) %>
+  </div>
+  <div class="flex flex-col">
+    {label(@form, :template_id, gettext("Template"))}
+    <%= with_validation(@form, :template_id) do %>
+      {select(@form, :template_id, template_options(@templates, @type), class: "text-black")}
+    <% end %>
+  </div>
+  <div class="flex flex-col">
+    <%= label(@form, :preview_text) do %>
+      {gettext("Preview Text")}<br />
+      <span class="text-sm">
+        {gettext("Users see this preview before they open your email. Use up to 50 characters.")}
+      </span>
+    <% end %>
+    <%= with_validation(@form, :preview_text) do %>
+      {textarea(@form, :preview_text,
+        placeholder: gettext("Can you summarize your email in 50 characters?"),
+        class: "text-black",
+        rows: 2
+      )}
+    <% end %>
+  </div>
+</div>

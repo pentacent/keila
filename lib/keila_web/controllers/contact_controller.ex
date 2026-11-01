@@ -238,9 +238,7 @@ defmodule KeilaWeb.ContactController do
 
     case Contacts.get_project_contact(project_id, contact_id) do
       nil ->
-        conn
-        |> put_status(404)
-        |> halt()
+        raise KeilaWeb.NotFoundError
 
       contact ->
         assign(conn, :contact, contact)

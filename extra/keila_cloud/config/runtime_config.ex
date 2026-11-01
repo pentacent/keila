@@ -8,7 +8,7 @@ Keila.if_cloud do
           update_in(
             Application.get_env(:keila, Oban)[:plugins],
             [
-              Access.filter(&match?({Oban.Plugins.Cron, _}, &1)),
+              Access.filter(&match?({Oban.Cron, _}, &1)),
               Access.elem(1),
               :crontab
             ],

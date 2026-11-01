@@ -21,12 +21,12 @@ defmodule KeilaWeb.ApiErrorView do
   end
 
   defp error_object(title, changeset = %Ecto.Changeset{}) do
-    {field, {message, _}} = changeset.errors |> List.first()
+    {path, message} = first_changeset_error(changeset)
 
     %{
       "title" => title || "Validation failed",
       "detail" => message,
-      "pointer" => "/data/attributes/#{field}"
+      "pointer" => "/data/" <> Enum.join(path, "/")
     }
   end
 
@@ -56,6 +56,27 @@ defmodule KeilaWeb.ApiErrorView do
 
   defp error_object(title, nil) when is_binary(title), do: %{"title" => title}
   defp error_object(nil, detail) when is_binary(detail), do: %{"detail" => detail}
+
+  defp first_changeset_error(changeset) do
+    changeset
+    |> Ecto.Changeset.traverse_errors(fn {message, _opts} -> message end)
+    |> find_first_error()
+  end
+
+  defp find_first_error(errors, path \\ [])
+
+  defp find_first_error([message | _], path) when is_binary(message),
+    do: {Enum.reverse(path), message}
+
+  defp find_first_error(errors, path) when is_map(errors) do
+    Enum.find_value(errors, fn {field, nested} -> find_first_error(nested, [field | path]) end)
+  end
+
+  defp find_first_error(errors, path) when is_list(errors) do
+    errors
+    |> Enum.with_index()
+    |> Enum.find_value(fn {nested, index} -> find_first_error(nested, [index | path]) end)
+  end
 
   # Since the OpenApiSpex error struct doesn’t provide information on whether
   # the error originated from a query parameter or from the request body,

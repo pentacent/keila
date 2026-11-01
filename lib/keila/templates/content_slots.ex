@@ -36,6 +36,7 @@ defmodule Keila.Templates.ContentSlots do
 
   @doc """
   Merges a map of named content slots into the given input.
+  Blank content values (`nil` or whitespace-only strings) are ignored.
 
   Options:
     * `:mode` (required) — `:mjml`, `:html`, or `:text`.
@@ -45,7 +46,10 @@ defmodule Keila.Templates.ContentSlots do
   def merge_content_slots(nil, _content, _opts), do: nil
 
   def merge_content_slots(input, content, opts) when is_binary(input) do
-    content = stringify_keys(content || %{})
+    content =
+      (content || %{})
+      |> stringify_keys()
+      |> Map.reject(&blank_slot?/1)
 
     case Keyword.get(opts, :mode) do
       :mjml -> Mjml.merge_slots(input, content)
@@ -97,6 +101,10 @@ defmodule Keila.Templates.ContentSlots do
         else: binary_part(line, indent, byte_size(line) - indent)
     end)
   end
+
+  defp blank_slot?({_name, nil}), do: true
+  defp blank_slot?({_name, content}) when is_binary(content), do: String.trim(content) == ""
+  defp blank_slot?(_slot), do: false
 
   defp stringify_keys(values) when is_map(values) do
     Enum.into(values, %{}, fn

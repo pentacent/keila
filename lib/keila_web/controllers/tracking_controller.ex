@@ -12,7 +12,7 @@ defmodule KeilaWeb.TrackingController do
 
     case Tracking.track_open_and_get_link(encoded_url, message_id, hmac, opts) do
       {:ok, url} -> redirect(conn, external: url)
-      :error -> put_status(conn, 404) |> halt()
+      :error -> raise KeilaWeb.NotFoundError
     end
   end
 
@@ -30,7 +30,7 @@ defmodule KeilaWeb.TrackingController do
 
     case Tracking.track_click_and_get_link(encoded_url, message_id, link_id, hmac, opts) do
       {:ok, url} -> redirect(conn, external: url)
-      :error -> put_status(conn, 404) |> halt()
+      :error -> raise KeilaWeb.NotFoundError
     end
   end
 end

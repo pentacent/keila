@@ -29,8 +29,9 @@ defmodule Keila.Mailings.SenderAdapters.SMTP do
       :smtp_port,
       :smtp_auth_method
     ])
-    |> validate_required([:smtp_relay])
+    |> validate_required([:smtp_relay, :smtp_tls_mode])
     |> validate_inclusion(:smtp_auth_method, ["password", "none", ""])
+    |> validate_inclusion(:smtp_tls_mode, ["tls", "starttls", "none"])
     |> maybe_require_smtp_auth()
   end
 
@@ -68,15 +69,15 @@ defmodule Keila.Mailings.SenderAdapters.SMTP do
         opts
         |> Keyword.put(:tls, :always)
         |> Keyword.put(:tls_options, :tls_certificate_check.options(config.smtp_relay))
-        |> put_in([:tls_options, :versions], [:"tlsv1.2"])
 
       config.smtp_tls_mode == "none" ->
         opts
         |> Keyword.put(:tls, :never)
         |> Keyword.put(:ssl, false)
 
+      # DEPRECATED: Senders created before v0.12.6 may still use opportunistic TLS
       true ->
-        opts
+        Keyword.put(opts, :tls_options, :tls_certificate_check.options(config.smtp_relay))
     end
   end
 

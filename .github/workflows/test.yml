@@ -17,7 +17,7 @@ on:
         description: "Elixir version"
         required: false
         type: string
-        default: "1.18-otp-27"
+        default: "1.20-otp-29"
     secrets:
       KEILA_CLOUD_LICENSE:
         description: "License key for Keila Cloud tests"
@@ -33,7 +33,7 @@ jobs:
     container: elixir:${{ inputs.elixir_version }}-alpine
     services:
       postgres:
-        image: postgres:13-alpine
+        image: postgres:14-alpine
         env:
           POSTGRES_PASSWORD: postgres
         options: >-

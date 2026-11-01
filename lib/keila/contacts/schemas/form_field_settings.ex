@@ -9,8 +9,8 @@ defmodule Keila.Contacts.Form.FieldSettings do
 
   embedded_schema do
     field(:field, Ecto.Enum, values: @fields)
-    field(:required, :boolean)
-    field(:cast, :boolean)
+    field(:required, :boolean, default: false)
+    field(:cast, :boolean, default: true)
     field(:key, :string)
     field(:type, Ecto.Enum, values: @types)
     field(:label, :string)
@@ -33,7 +33,11 @@ defmodule Keila.Contacts.Form.FieldSettings do
       :placeholder,
       :description
     ])
-    |> cast_embed(:allowed_values)
+    |> cast_embed(:allowed_values,
+      sort_param: :allowed_values_sort,
+      drop_param: :allowed_values_drop
+    )
+    |> validate_required([:field, :cast, :required])
     |> maybe_validate_key()
   end
 
@@ -41,7 +45,7 @@ defmodule Keila.Contacts.Form.FieldSettings do
     if get_field(changeset, :field) == :data do
       changeset
       |> validate_required(:key)
-      |> validate_format(:key, ~r/^[a-zA-Z_]+$/)
+      |> validate_format(:key, ~r/^[a-zA-Z_][a-zA-Z0-9_]*$/)
     else
       changeset
     end

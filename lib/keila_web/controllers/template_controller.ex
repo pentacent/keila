@@ -173,9 +173,7 @@ defmodule KeilaWeb.TemplateController do
 
     case Templates.get_project_template(project_id, template_id) do
       nil ->
-        conn
-        |> put_status(404)
-        |> halt()
+        raise KeilaWeb.NotFoundError
 
       template ->
         assign(conn, :template, template)

@@ -50,7 +50,7 @@ defmodule Keila.Templates.Html do
     Floki.raw_html(html_tree)
   end
 
-  @allowed_tags ~w(h1 h2 h3 h4 section[checked] div p span a[href] em strong ul li)
+  @allowed_tags ~w(h1 h2 h3 h4 section[checked] div p span a[href,target,rel,title] em strong b i u br ul li)
   @config Enum.map(@allowed_tags, fn tag ->
             case Regex.run(~r{(\w+)(?:\[([a-z0-9\-,]+)\])?}, tag) do
               [_, tag] -> {tag, []}
@@ -59,13 +59,18 @@ defmodule Keila.Templates.Html do
           end)
           |> Enum.into(%{})
 
+  @allowed_url_schemes ~w(http https mailto tel)
+
   @doc """
   Takes an HTML tree and removes tags and attributes that are not allowed by the
   specified `format`.
   Currently only one format is supported: `:limited`. It allows the following
   tags and attributes:
 
-  `h1 h2 h3 h4 section[checked] div p span a[href] em strong ul li`
+  `h1 h2 h3 h4 section[checked] div p span a[href,target,rel,title] em strong b i u br ul li`
+
+  `href` attributes are only retained if they are relative or use one of the
+  following schemes: `http`, `https`, `mailto`, `tel`.
 
   ## Usage
 
@@ -74,19 +79,19 @@ defmodule Keila.Templates.Html do
       iex> |> Keila.Templates.Html.restrict(:limited) \\
       iex> |> Keila.Templates.Html.to_fragment()
       "<p>harmless</p>"
+
+      iex> ~s{<a href="javascript:evil()">click</a><a href="https://example.com">ok</a>} \\
+      iex> |> Keila.Templates.Html.parse_fragment!() \\
+      iex> |> Keila.Templates.Html.restrict(:limited) \\
+      iex> |> Keila.Templates.Html.to_fragment()
+      ~s{<a>click</a><a href="https://example.com">ok</a>}
   """
   @spec restrict(t(), :limited) :: t()
-  def restrict(html_tree, :limited) do
+  def restrict(html_tree, :limited) when is_list(html_tree) do
     restrict_nodes(html_tree, @config)
   end
 
-  defp restrict_nodes(children, config)
-
-  defp restrict_nodes([], _config), do: []
-
-  defp restrict_nodes(text, _config) when is_binary(text), do: text
-
-  defp restrict_nodes(children, config) do
+  defp restrict_nodes(children, config) when is_list(children) do
     children
     |> Enum.filter(fn node -> filter_node(node, config) end)
     |> Enum.map(fn node -> restrict_node(node, config) end)
@@ -100,8 +105,17 @@ defmodule Keila.Templates.Html do
     true
   end
 
+  # HTML comments and doctypes
+  defp filter_node(_other, _config) do
+    false
+  end
+
   defp restrict_node({tag, attrs, children}, config) do
-    attrs = Enum.filter(attrs, fn {attr, _} -> attr in Map.get(config, tag) end)
+    attrs =
+      Enum.filter(attrs, fn {attr, value} ->
+        attr in Map.get(config, tag) and allowed_attr_value?(attr, value)
+      end)
+
     children = restrict_nodes(children, config)
     {tag, attrs, children}
   end
@@ -109,6 +123,22 @@ defmodule Keila.Templates.Html do
   defp restrict_node(text, _config) when is_binary(text) do
     text
   end
+
+  defp allowed_attr_value?("href", value) do
+    # See https://url.spec.whatwg.org/#concept-basic-url-parser for how URL schemes are parsed
+    value
+    |> String.replace(~r/^[\x00-\x20]+/, "")
+    |> String.replace(~r/[\t\n\r]/, "")
+    |> URI.parse()
+    |> Map.get(:scheme)
+    |> allowed_url_scheme?()
+  end
+
+  defp allowed_attr_value?(_attr, _value), do: true
+
+  # Relative URLs have no scheme
+  defp allowed_url_scheme?(nil), do: true
+  defp allowed_url_scheme?(scheme), do: scheme in @allowed_url_schemes
 
   @doc """
   Takes an HTML tree and a CSS list and applies the CSS styles as inline styles.

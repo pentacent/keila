@@ -37,12 +37,12 @@ msgstr "Aktivierung erfolgreich"
 msgid "Check your inbox!"
 msgstr "Du hast Post!"
 
-#: lib/keila_web/templates/auth/login.html.heex:34
+#: lib/keila_web/templates/auth/login.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Don’t have an account?"
 msgstr "Noch keinen Account?"
 
-#: lib/keila_web/templates/auth/login.html.heex:40
+#: lib/keila_web/templates/auth/login.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Forgot your password?"
 msgstr "Passwort vergessen?"
@@ -52,7 +52,7 @@ msgstr "Passwort vergessen?"
 msgid "Get started!"
 msgstr "Los geht’s!"
 
-#: lib/keila/auth/emails.ex:46
+#: lib/keila/auth/emails.ex:81
 #, elixir-autogen, elixir-format
 msgid "Hey there,\n\nplease confirm your new email address by visiting the following link:\n\n%{url}\n\nIf you weren’t trying to change your email address, simply ignore this message.\n"
 msgstr ""
@@ -64,7 +64,7 @@ msgstr ""
 "\n"
 "Solltest du nicht versucht haben, deine E-Mail-Adresse zu ändern, kannst du diese Nachricht ignorieren.\n"
 
-#: lib/keila/auth/emails.ex:95
+#: lib/keila/auth/emails.ex:128
 #, elixir-autogen, elixir-format
 msgid "Hey there,\n\nyou can login to Keila with the following link:\n\n%{url}\n\nIf you haven’t requested a login, simply ignore this message.\n"
 msgstr ""
@@ -76,7 +76,7 @@ msgstr ""
 "\n"
 "Solltest du keinen Login-Link angefordert haben, kannst du diese Nachricht ignorieren.\n"
 
-#: lib/keila/auth/emails.ex:70
+#: lib/keila/auth/emails.ex:104
 #, elixir-autogen, elixir-format
 msgid "Hey there,\n\nyou have requested a password reset for your Keila account.\n\nYou can set a new password by visiting the following link:\n\n%{url}\n\nIf you weren’t trying to reset your password, simply ignore this message.\n"
 msgstr ""
@@ -109,29 +109,29 @@ msgstr "Account verwalten"
 msgid "New password saved."
 msgstr "Neues Passwort gespeichert."
 
-#: lib/keila_web/controllers/auth_controller.ex:217
+#: lib/keila_web/controllers/auth_controller.ex:235
 #, elixir-autogen, elixir-format
 msgid "Not found"
 msgstr "Nicht gefunden"
 
-#: lib/keila_web/controllers/auth_controller.ex:128
-#: lib/keila_web/controllers/auth_controller.ex:141
-#: lib/keila_web/controllers/auth_controller.ex:174
+#: lib/keila_web/controllers/auth_controller.ex:132
+#: lib/keila_web/controllers/auth_controller.ex:159
+#: lib/keila_web/controllers/auth_controller.ex:192
 #, elixir-autogen, elixir-format
 msgid "Password reset"
 msgstr "Passwort-Zurücksetzung"
 
-#: lib/keila_web/controllers/auth_controller.ex:161
+#: lib/keila_web/controllers/auth_controller.ex:179
 #, elixir-autogen, elixir-format
 msgid "Password reset successful"
 msgstr "Passwort erfolgreich zurückgesetzt"
 
-#: lib/keila/auth/emails.ex:19
+#: lib/keila/auth/emails.ex:55
 #, elixir-autogen, elixir-format
 msgid "Please Verify Your Account"
 msgstr "Bitte bestätige deinen Account"
 
-#: lib/keila/auth/emails.ex:43
+#: lib/keila/auth/emails.ex:78
 #, elixir-autogen, elixir-format
 msgid "Please Verify Your Email"
 msgstr "Bitte bestätige deine E-Mail"
@@ -142,6 +142,7 @@ msgid "Please activate your account first."
 msgstr "Bitte aktiviere erst noch deinen Account"
 
 #: lib/keila_web/controllers/auth_controller.ex:45
+#: lib/keila_web/controllers/auth_controller.ex:149
 #: lib/keila_web/controllers/public_form_controller.ex:64
 #, elixir-autogen, elixir-format
 msgid "Please complete the captcha."
@@ -152,13 +153,13 @@ msgstr "Bitte löse das Captcha."
 msgid "Resend activation link"
 msgstr "Aktivierungs-Link erneut senden"
 
-#: lib/keila_web/templates/auth/login.html.heex:42
+#: lib/keila_web/templates/auth/login.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Reset your password."
 msgstr "Setze dein Passwort zurück."
 
-#: lib/keila_web/controllers/auth_controller.ex:197
-#: lib/keila_web/templates/auth/login.html.heex:30
+#: lib/keila_web/controllers/auth_controller.ex:215
+#: lib/keila_web/templates/auth/login.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Sign in"
 msgstr "Einloggen"
@@ -183,7 +184,7 @@ msgstr "Registrieren"
 msgid "Sign up successful"
 msgstr "Registrierung erfolgreich"
 
-#: lib/keila_web/templates/auth/login.html.heex:36
+#: lib/keila_web/templates/auth/login.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Sign up."
 msgstr "Registrieren."
@@ -203,7 +204,7 @@ msgstr "Das hat nicht geklappt :-("
 msgid "Welcome to Keila!"
 msgstr "Willkommen bei Keila!"
 
-#: lib/keila/auth/emails.ex:22
+#: lib/keila/auth/emails.ex:58
 #, elixir-autogen, elixir-format
 msgid "Welcome to Keila,\n\nplease confirm your new account by visiting the following link:\n\n%{url}\n\nIf you weren’t trying to create an account, simply ignore this message.\n"
 msgstr ""
@@ -235,12 +236,12 @@ msgstr "Du kannst nun Keila wieder benutzen."
 msgid "You need to verify your email before you can use Keila. Please check your inbox."
 msgstr "Du musst deine E-Mail bestätigen, bevor du Keila benutzen kannst. Bitte überprüfe deinen Posteingang."
 
-#: lib/keila/auth/emails.ex:66
+#: lib/keila/auth/emails.ex:101
 #, elixir-autogen, elixir-format
 msgid "Your Account Reset Link"
 msgstr "Dein Account-Zurücksetzungs-Link"
 
-#: lib/keila/auth/emails.ex:91
+#: lib/keila/auth/emails.ex:125
 #, elixir-autogen, elixir-format
 msgid "Your Login Link"
 msgstr "Dein Login-Link"
@@ -250,12 +251,12 @@ msgstr "Dein Login-Link"
 msgid "Log in with your new password"
 msgstr "Logge dich mit deinem neuen Passwort ein"
 
-#: lib/keila/auth/emails.ex:119
+#: lib/keila/auth/emails.ex:151
 #, elixir-autogen, elixir-format
 msgid "Hey there,\n\nplease verify your sender email address by visiting the following link:\n\n%{url}\n\nIf you didn't request this verification, please ignore this message and\ndo not click on the link.\n"
 msgstr "Hallo,\n\nbitte bestätige deine Sender-E-Mail-Adresse, indem du den folgenden Link besuchst:\n\n%{url}\n\nSolltest du diese Bestätigung nicht angefordert haben, ignoriere diese Nachricht bitte und klicke nicht auf den Link.\n"
 
-#: lib/keila/auth/emails.ex:115
-#, elixir-autogen, elixir-format, fuzzy
+#: lib/keila/auth/emails.ex:148
+#, elixir-autogen, elixir-format
 msgid "Please Verify Your Email for Keila"
-msgstr "Bitte bestätige deine E-Mail"
+msgstr "Bitte bestätige deine E-Mail-Adresse für Keila"

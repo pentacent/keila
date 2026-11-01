@@ -305,9 +305,7 @@ defmodule KeilaWeb.CampaignController do
 
     case Mailings.get_project_campaign(project_id, campaign_id) do
       nil ->
-        conn
-        |> put_status(404)
-        |> halt()
+        raise KeilaWeb.NotFoundError
 
       campaign ->
         assign(conn, :campaign, campaign)
