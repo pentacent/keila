@@ -215,27 +215,6 @@ defmodule KeilaWeb.PublicFormController do
     end
   end
 
-  # DEPRECATED: This implementation is deprecated and will be removed in a future version
-  def unsubscribe(conn, %{"project_id" => project_id, "contact_id" => contact_id}) do
-    form = Contacts.get_project_forms(project_id) |> List.first() || @default_unsubscribe_form
-    contact = Contacts.get_project_contact(project_id, contact_id)
-
-    if requires_confirmation?(conn, nil) do
-      conn
-      |> assign(:form, form)
-      |> assign(:confirmation_message, gettext("Unsubscribing ..."))
-      |> assign(
-        :confirmation_action_message,
-        gettext("Please confirm that you want to unsubscribe.")
-      )
-      |> assign(:confirmation_action_cta, gettext("Unsubscribe"))
-      |> put_meta(:title, gettext("Unsubscribing ..."))
-      |> render_confirmation()
-    else
-      perform_contact_unsubscribe(conn, form, contact)
-    end
-  end
-
   defp unsubscribe_from_message(_conn, _form, _project_id, nil, _hmac) do
     raise KeilaWeb.NotFoundError
   end
@@ -252,19 +231,6 @@ defmodule KeilaWeb.PublicFormController do
     else
       raise KeilaWeb.NotFoundError
     end
-  end
-
-  defp perform_contact_unsubscribe(conn, form, contact) do
-    if contact && contact.status != :unsubscribed do
-      Keila.Contacts.update_contact_status(contact.id, :unsubscribed)
-      Keila.Tracking.log_event("unsubscribe", contact.id, %{})
-    end
-
-    conn
-    |> assign(:form, form)
-    |> assign(:mode, :full)
-    |> put_meta(:title, gettext("Unsubscribing ..."))
-    |> render("unsubscribe.html")
   end
 
   defp requires_confirmation?(conn, datetime) do

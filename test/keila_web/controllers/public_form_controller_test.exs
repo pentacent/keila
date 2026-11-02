@@ -134,45 +134,6 @@ defmodule KeilaWeb.PublicFormControllerTest do
     end
   end
 
-  describe "Deprecated: GET /unsubscribe/:p_id/:c_id" do
-    @describetag :public_form_controller
-
-    test "always shows delay message", %{conn: conn} do
-      {conn, project} = with_login_and_project(conn)
-      contact = insert!(:contact, project_id: project.id)
-      conn = get(conn, Routes.public_form_path(conn, :unsubscribe, project.id, contact.id))
-      assert html_response(conn, 200) =~ "Unsubscribing ..."
-    end
-  end
-
-  describe "Deprecated: POST /unsubscribe/:p_id/:c_id" do
-    @describetag :public_form_controller
-    test "unsubscribes contact", %{conn: conn} do
-      {conn, project} = with_login_and_project(conn)
-      contact = insert!(:contact, project_id: project.id)
-      conn = post(conn, Routes.public_form_path(conn, :unsubscribe, project.id, contact.id))
-      assert html_response(conn, 200) =~ "You have been unsubscribed"
-      assert %{status: :unsubscribed} = Contacts.get_contact(contact.id)
-    end
-
-    test "shows no error for non-existent contacts", %{conn: conn} do
-      {conn, project} = with_login_and_project(conn)
-
-      conn =
-        post(
-          conn,
-          Routes.public_form_path(
-            conn,
-            :unsubscribe,
-            project.id,
-            elem(Contacts.Contact.Id.cast(0), 1)
-          )
-        )
-
-      assert html_response(conn, 200) =~ "You have been unsubscribed"
-    end
-  end
-
   describe "GET /unsubscribe/:project_id/:message_id/:hmac" do
     @describetag :public_form_controller
     test "shows confirmation page when message sent_at is recent", %{conn: conn} do
