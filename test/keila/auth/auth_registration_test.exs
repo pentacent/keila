@@ -129,16 +129,27 @@ defmodule Keila.AuthTest.Registration do
   @tag :auth
   test "Create and find tokens" do
     user = insert!(:user)
-    assert {:ok, %Token{} = token} = Auth.create_token(%{user_id: user.id, scope: "foo:bar"})
+    assert {:ok, %Token{} = token} = Auth.create_token(%{user_id: user.id, scope: "auth.login"})
 
     assert Map.put(token, :key, nil) == Auth.find_token(token.key, token.scope)
+  end
+
+  @tag :auth
+  test "Tokens with unknown scopes are rejected" do
+    user = insert!(:user)
+
+    assert {:error, %{errors: [scope: _]}} =
+             Auth.create_token(%{user_id: user.id, scope: "foo:bar"})
+
+    assert_raise FunctionClauseError, fn -> Auth.find_token("key", "foo:bar") end
+    assert_raise FunctionClauseError, fn -> Auth.find_and_delete_token("key", "foo:bar") end
   end
 
   @tag :auth
   test "Store JSON data with tokens" do
     user = insert!(:user)
     data = %{"foo" => "bar", "fizz" => "buzz"}
-    params = %{user_id: user.id, scope: "foo:bar", data: data}
+    params = %{user_id: user.id, scope: "auth.login", data: data}
     {:ok, token} = Auth.create_token(params)
 
     assert token.data == data
@@ -147,7 +158,7 @@ defmodule Keila.AuthTest.Registration do
   @tag :auth
   test "Find and delete single-use tokens" do
     user = insert!(:user)
-    {:ok, token} = Auth.create_token(%{user_id: user.id, scope: "foo:bar"})
+    {:ok, token} = Auth.create_token(%{user_id: user.id, scope: "auth.login"})
 
     assert Map.put(token, :key, nil) == Auth.find_and_delete_token(token.key, token.scope)
     assert nil == Auth.find_and_delete_token(token.key, token.scope)
@@ -157,7 +168,7 @@ defmodule Keila.AuthTest.Registration do
   test "Token expiry is respected" do
     user = insert!(:user)
     past_expiry = DateTime.utc_now() |> DateTime.add(-100, :second) |> DateTime.truncate(:second)
-    params = %{user_id: user.id, scope: "foo:bar", expires_at: past_expiry}
+    params = %{user_id: user.id, scope: "auth.login", expires_at: past_expiry}
 
     assert {:ok, token} = Auth.create_token(params)
     assert nil == Auth.find_token(token.key, token.scope)
@@ -165,7 +176,7 @@ defmodule Keila.AuthTest.Registration do
 
   @tag :auth
   test "Invalid tokens fail gracefully" do
-    assert nil == Auth.find_token("invalid-token", "foo:bar")
+    assert nil == Auth.find_token("invalid-token", "auth.login")
   end
 
   @tag :auth
