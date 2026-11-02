@@ -275,22 +275,43 @@ defmodule Keila.Accounts do
   Credits with earlier expiry date are consumed first.
 
   Returns `:ok` if sufficient credits were available, otherwise `:error`.
+  Credits are consumed in a transaction, so an error causes a rollback when
+  called from another transaction.
 
   If credits are disabled in the application configuration, always returns `:ok`.
   """
   @spec consume_credits(Account.id(), integer()) :: :ok | :error
   def consume_credits(account_id, amount) do
     if credits_enabled?() do
-      credits_for_account(account_id)
-      |> order_by([c], c.expires_at)
-      |> group_by([c], [c.account_id, c.expires_at])
-      |> select([c], {c.account_id, sum(c.amount), c.expires_at})
-      |> Repo.all()
-      |> build_transactions(amount)
-      |> maybe_insert_transactions()
+      Repo.transact(fn ->
+        lock_credit_accounts(account_id)
+
+        credits_for_account(account_id)
+        |> order_by([c], c.expires_at)
+        |> group_by([c], [c.account_id, c.expires_at])
+        |> select([c], {c.account_id, sum(c.amount), c.expires_at})
+        |> Repo.all()
+        |> build_transactions(amount)
+        |> maybe_insert_transactions()
+      end)
+      |> case do
+        {:ok, _} -> :ok
+        {:error, _} -> :error
+      end
     else
       :ok
     end
+  end
+
+  defp lock_credit_accounts(account_id) do
+    from(a in Account,
+      where:
+        a.id == ^account_id or
+          a.id in subquery(parent_credit_account_id_query(account_id)),
+      order_by: a.id,
+      lock: "FOR NO KEY UPDATE"
+    )
+    |> Repo.all()
   end
 
   defp build_transactions(amount_tuples, amount) do
@@ -336,10 +357,10 @@ defmodule Keila.Accounts do
 
   defp maybe_insert_transactions({0, transactions}) do
     Repo.insert_all(CreditTransaction, transactions)
-    :ok
+    {:ok, nil}
   end
 
-  defp maybe_insert_transactions(_), do: :error
+  defp maybe_insert_transactions(_), do: {:error, :insufficient_credits}
 
   defp maybe_nil_to_zero(nil), do: 0
   defp maybe_nil_to_zero(int), do: int
