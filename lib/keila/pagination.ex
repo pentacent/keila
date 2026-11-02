@@ -10,6 +10,9 @@ defmodule Keila.Pagination do
   import Ecto.Query
   require Ecto.Query
 
+  @max_page 1_000_000
+  @max_page_size 1_000
+
   @doc """
   Paginates a query and retrieves data from Repo.
 
@@ -17,10 +20,10 @@ defmodule Keila.Pagination do
   - `:page` - the page that should be retrieved. Defaults to `0`.
   - `:page_size` - the number of records per page. Defaults to `10`.
   """
-  @spec paginate(Ecto.Query.t(), page: integer(), page_size: integer()) :: t()
+  @spec paginate(Ecto.Query.t(), page: non_neg_integer(), page_size: pos_integer()) :: t()
   def paginate(query, opts \\ []) do
-    page = Keyword.get(opts, :page, 0)
-    page_size = Keyword.get(opts, :page_size, 10)
+    page = opts |> Keyword.get(:page, 0) |> max(0) |> min(@max_page)
+    page_size = opts |> Keyword.get(:page_size, 10) |> max(1) |> min(@max_page_size)
     id_field = get_id_field(query)
     count = query |> exclude(:order_by) |> Keila.Repo.aggregate(:count, id_field)
     page_count = ceil(count / page_size)

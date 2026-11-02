@@ -15,6 +15,7 @@ defmodule Keila.Contacts.Segment do
     struct
     |> cast(params, [:name, :project_id, :filter])
     |> ensure_filter_not_empty()
+    |> validate_filter()
   end
 
   @spec update_changeset(t(), Changeset.data()) :: Changeset.t(t())
@@ -23,6 +24,15 @@ defmodule Keila.Contacts.Segment do
     |> cast(params, [:name, :filter])
     |> validate_required(:name)
     |> ensure_filter_not_empty()
+    |> validate_filter()
+  end
+
+  defp validate_filter(changeset) do
+    validate_change(changeset, :filter, fn :filter, filter ->
+      if Keila.Contacts.Query.valid_opts?(filter: filter),
+        do: [],
+        else: [filter: "is not a valid filter"]
+    end)
   end
 
   defp ensure_filter_not_empty(changeset) do
