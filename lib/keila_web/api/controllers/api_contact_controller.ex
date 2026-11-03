@@ -22,8 +22,13 @@ defmodule KeilaWeb.ApiContactController do
         schema: %OpenApiSpex.Schema{
           type: :object,
           properties: %{
-            page: %OpenApiSpex.Schema{type: :integer, example: 0},
-            page_size: %OpenApiSpex.Schema{type: :integer, example: 50}
+            page: %OpenApiSpex.Schema{
+              type: :integer,
+              minimum: 0,
+              maximum: 1_000_000,
+              example: 0
+            },
+            page_size: %OpenApiSpex.Schema{type: :integer, minimum: 1, maximum: 1000, example: 50}
           }
         }
       ],

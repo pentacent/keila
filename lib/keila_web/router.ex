@@ -206,10 +206,6 @@ defmodule KeilaWeb.Router do
     get "/c/:encoded_url/:message_id/:link_id/:hmac", TrackingController, :track_click
 
     get "/archive/:id", PublicCampaignController, :show
-
-    # DEPRECATED: These routes will be removed in a future Keila release
-    get "/unsubscribe/:project_id/:contact_id", PublicFormController, :unsubscribe
-    post "/unsubscribe/:project_id/:contact_id", PublicFormController, :unsubscribe
   end
 
   scope "/uploads", KeilaWeb do

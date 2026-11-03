@@ -13,6 +13,19 @@ defmodule Keila.Auth.Token do
     timestamps(updated_at: false)
   end
 
+  @scopes ~w(web.session auth.activate auth.login auth.reset auth.update_email api mailings.verify_sender)
+
+  @doc """
+  Returns all token scopes.
+  """
+  @spec scopes() :: [String.t()]
+  def scopes, do: @scopes
+
+  @doc """
+  Guard that checks whether `scope` is a valid token scope.
+  """
+  defguard is_scope(scope) when scope in @scopes
+
   @doc """
   Changeset for inserting a new token with a random 32-bit key.
 
@@ -27,6 +40,8 @@ defmodule Keila.Auth.Token do
   def changeset(params) do
     %__MODULE__{}
     |> cast(params, [:user_id, :scope, :expires_at, :data])
+    |> validate_required([:scope])
+    |> validate_inclusion(:scope, @scopes)
     |> maybe_put_default_expires_at()
     |> put_random_key()
   end
@@ -59,7 +74,7 @@ defmodule Keila.Auth.Token do
   Builds `Ecto.Query` to find specified token.
   """
   @spec find_token_query(String.t(), String.t()) :: Ecto.Query.t()
-  def find_token_query(key, scope) do
+  def find_token_query(key, scope) when is_scope(scope) do
     with {:ok, key} <- Base.url_decode64(key, padding: false) do
       hashed_key = :crypto.hash(:sha256, key)
 
@@ -70,5 +85,13 @@ defmodule Keila.Auth.Token do
     else
       _ -> from(t in __MODULE__, where: true == false)
     end
+  end
+
+  @doc """
+  Builds `Ecto.Query` to find all tokens for the given user with the given scopes.
+  """
+  @spec by_user_and_scopes_query(Auth.User.id(), [String.t()]) :: Ecto.Query.t()
+  def by_user_and_scopes_query(user_id, [_ | _] = scopes) do
+    from(t in __MODULE__, where: t.user_id == ^user_id and t.scope in ^scopes)
   end
 end

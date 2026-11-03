@@ -172,9 +172,6 @@ defmodule KeilaWeb.AuthController do
   def post_reset_change_password(conn, %{"token" => token_key, "user" => params}) do
     with token = %Auth.Token{} <- Auth.find_token(token_key, "auth.reset"),
          {:ok, _user} <- Auth.update_user_password(token.user_id, params) do
-      # TODO Implement Login
-      Auth.find_and_delete_token(token_key, "auth.reset")
-
       conn
       |> put_meta(:title, dgettext("auth", "Password reset successful"))
       |> render("reset_change_password_success.html")

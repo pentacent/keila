@@ -87,6 +87,21 @@ defmodule KeilaWeb.ApiContactControllerTest do
                "errors" => [%{"parameter" => "filter"}]
              } = json_response(conn, 400)
     end
+
+    @tag :api_contact_controller
+    test "out-of-range pagination creates error", %{authorized_conn: conn} do
+      for paginate <- [
+            %{"page" => -1},
+            %{"page" => 1_000_001},
+            %{"page_size" => 0},
+            %{"page_size" => 1001}
+          ] do
+        query = %{"paginate" => paginate}
+        conn = get(conn, Routes.api_contact_path(conn, :index, query))
+
+        assert %{"errors" => [_ | _]} = json_response(conn, 400)
+      end
+    end
   end
 
   describe "POST /api/v1/contacts" do

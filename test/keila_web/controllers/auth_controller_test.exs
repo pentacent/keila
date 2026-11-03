@@ -207,10 +207,16 @@ defmodule KeilaWeb.AuthControllerTest do
     end
 
     @tag :auth_controller
-    test "resets password", %{conn: conn} do
+    test "resets password and ends existing sessions", %{conn: conn} do
       user = insert!(:user)
       user_id = user.id
       {:ok, %{key: key}} = Auth.create_token(%{user_id: user.id, scope: "auth.reset"})
+      {:ok, %{key: other_reset_key}} = Auth.create_token(%{user_id: user.id, scope: "auth.reset"})
+      {:ok, %{key: session_key}} = Auth.create_token(%{user_id: user.id, scope: "web.session"})
+
+      {:ok, %{key: update_email_key}} =
+        Auth.create_token(%{user_id: user.id, scope: "auth.update_email"})
+
       params = %{"password" => "NewSecurePassword123"}
       conn = post(conn, Routes.auth_path(conn, :reset_change_password, key), user: params)
       assert html_response(conn, 200) =~ ~r{Your password was changed!\s*</h1>}
@@ -220,6 +226,11 @@ defmodule KeilaWeb.AuthControllerTest do
                  "email" => user.email,
                  "password" => "NewSecurePassword123"
                })
+
+      assert nil == Auth.find_token(key, "auth.reset")
+      assert nil == Auth.find_token(other_reset_key, "auth.reset")
+      assert nil == Auth.find_token(session_key, "web.session")
+      assert nil == Auth.find_token(update_email_key, "auth.update_email")
     end
 
     @tag :auth_controller
