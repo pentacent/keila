@@ -40,7 +40,10 @@ defmodule KeilaWeb.ApiSegmentControllerTest do
 
     @tag :api_segment_controller
     test "rejects invalid filters", %{authorized_conn: conn} do
-      body = %{"data" => %{"name" => "Test Segment", "filter" => %{"email" => %{"like" => "%.com"}}}}
+      body = %{
+        "data" => %{"name" => "Test Segment", "filter" => %{"email" => %{"like" => "%.com"}}}
+      }
+
       conn = post_json(conn, Routes.api_segment_path(conn, :create), body)
 
       assert %{"errors" => [%{"pointer" => "/data/filter", "detail" => "is not a valid filter"}]} =
