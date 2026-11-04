@@ -2,6 +2,25 @@
 
 ## Unreleased
 
+## Version 0.40.2
+
+> 🔒 Updated dependencies to address security advisories. Updating is recommended for all instances.
+
+### Breaking Changes
+- Unsubscribe links without a signature, which were used by Keila before v0.11.0, are no
+  longer supported
+
+### Security
+- Updated dependencies to address high-severity CVEs:
+  Bandit ([CVE-2026-116078](https://osv.dev/vulnerability/EEF-CVE-2026-116078)),
+  `phx_html` ([CVE-2026-117645](https://osv.dev/vulnerability/EEF-CVE-2026-117645)),
+  and `ssl_verify_fun` ([CVE-2026-117666](https://osv.dev/vulnerability/EEF-CVE-2026-117666))
+- Changing the password now signs out all other sessions
+
+### Changed
+- API endpoints now limit page size to 1,000 entries
+
+
 ## Version 0.40.1
 
 > 🔒 Fixes for several stored cross-site scripting vulnerabilities. Updating is recommended for all instances that allow untrusted users.
