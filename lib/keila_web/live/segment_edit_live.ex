@@ -19,38 +19,55 @@ defmodule KeilaWeb.SegmentEditLive do
     %{
       "email" => [
         %{name: "eq", label: gettext("is equal")},
+        %{name: "not_eq", label: gettext("is not equal")},
         %{name: "starts_with", label: gettext("starts with")},
+        %{name: "not_starts_with", label: gettext("does not start with")},
         %{name: "ends_with", label: gettext("ends with")},
-        %{name: "includes", label: gettext("includes")}
+        %{name: "not_ends_with", label: gettext("does not end with")},
+        %{name: "includes", label: gettext("includes")},
+        %{name: "not_includes", label: gettext("does not include")}
       ],
       "inserted_at" => [
         %{name: "lt", label: gettext("is before")},
-        %{name: "gt", label: gettext("is after")}
+        %{name: "not_lt", label: gettext("is not before")},
+        %{name: "gt", label: gettext("is after")},
+        %{name: "not_gt", label: gettext("is not after")}
       ],
       "double_opt_in_at" => [
         %{name: "lt", label: gettext("is before")},
+        %{name: "not_lt", label: gettext("is not before")},
         %{name: "gt", label: gettext("is after")},
+        %{name: "not_gt", label: gettext("is not after")},
         %{name: "empty", label: gettext("is empty")},
         %{name: "not_empty", label: gettext("is not empty")}
       ],
       "first_name" => [
         %{name: "eq", label: gettext("is equal")},
+        %{name: "not_eq", label: gettext("is not equal")},
         %{name: "starts_with", label: gettext("starts with")},
+        %{name: "not_starts_with", label: gettext("does not start with")},
         %{name: "ends_with", label: gettext("ends with")},
+        %{name: "not_ends_with", label: gettext("does not end with")},
         %{name: "includes", label: gettext("includes")},
+        %{name: "not_includes", label: gettext("does not include")},
         %{name: "empty", label: gettext("is empty")},
         %{name: "not_empty", label: gettext("is not empty")}
       ],
       "last_name" => [
         %{name: "eq", label: gettext("is equal")},
+        %{name: "not_eq", label: gettext("is not equal")},
         %{name: "starts_with", label: gettext("starts with")},
+        %{name: "not_starts_with", label: gettext("does not start with")},
         %{name: "ends_with", label: gettext("ends with")},
+        %{name: "not_ends_with", label: gettext("does not end with")},
         %{name: "includes", label: gettext("includes")},
+        %{name: "not_includes", label: gettext("does not include")},
         %{name: "empty", label: gettext("is empty")},
         %{name: "not_empty", label: gettext("is not empty")}
       ],
       "data" => [
         %{name: "matches", label: gettext("matches")},
+        %{name: "not_matches", label: gettext("does not match")},
         %{name: "empty", label: gettext("is empty")},
         %{name: "not_empty", label: gettext("is not empty")}
       ],
@@ -316,27 +333,46 @@ defmodule KeilaWeb.SegmentEditLive do
     |> Enum.map(fn {condition, condition_index} ->
       {field, condition} = Enum.at(condition, 0)
 
-      {actual_field, actual_condition, type} =
+      {actual_field, actual_condition, type, negated?} =
         case {field, condition} do
           {"$not", %{"messages" => inner}} ->
             # $not wrapping messages - pass the whole $not structure
-            {"messages", %{"$not" => %{"messages" => inner}}, "messages"}
+            {"messages", %{"$not" => %{"messages" => inner}}, "messages", false}
+
+          {"$not", inner} when is_map(inner) ->
+            # $not wrapping a regular field - unwrap and mark as negated
+            {inner_field, inner_condition} = Enum.at(inner, 0)
+
+            {inner_type, inner_field_resolved} =
+              case inner_field do
+                "data." <> _ -> {"custom", inner_field}
+                f -> {fields()[f][:type] || raise("Unsupported field: #{f}"), f}
+              end
+
+            {inner_field_resolved, inner_condition, inner_type, true}
 
           {"messages", _} ->
-            {"messages", condition, "messages"}
+            {"messages", condition, "messages", false}
 
           {"data." <> _, _} ->
-            {field, condition, "custom"}
+            {field, condition, "custom", false}
 
           {field, _} ->
             type = fields()[field][:type] || raise "Unsupported field: #{field}"
-            {field, condition, type}
+            {field, condition, type, false}
         end
 
       form_data =
         filter_condition_to_form_data(type, actual_field, actual_condition)
         |> Map.put("type", type)
         |> Map.put("field", actual_field)
+
+      form_data =
+        if negated? do
+          Map.update!(form_data, "widget", &("not_" <> &1))
+        else
+          form_data
+        end
 
       {to_string(condition_index), form_data}
     end)
@@ -496,8 +532,17 @@ defmodule KeilaWeb.SegmentEditLive do
     %{field => value}
   end
 
+  defp form_data_condition_to_filter(field, "string", "not_eq", value) when is_binary(value) do
+    %{"$not" => %{field => value}}
+  end
+
   defp form_data_condition_to_filter(field, "string", "includes", value) when is_binary(value) do
     %{field => %{"$like" => "%" <> value <> "%"}}
+  end
+
+  defp form_data_condition_to_filter(field, "string", "not_includes", value)
+       when is_binary(value) do
+    %{"$not" => %{field => %{"$like" => "%" <> value <> "%"}}}
   end
 
   defp form_data_condition_to_filter(field, "string", "starts_with", value)
@@ -505,8 +550,18 @@ defmodule KeilaWeb.SegmentEditLive do
     %{field => %{"$like" => value <> "%"}}
   end
 
+  defp form_data_condition_to_filter(field, "string", "not_starts_with", value)
+       when is_binary(value) do
+    %{"$not" => %{field => %{"$like" => value <> "%"}}}
+  end
+
   defp form_data_condition_to_filter(field, "string", "ends_with", value) when is_binary(value) do
     %{field => %{"$like" => "%" <> value}}
+  end
+
+  defp form_data_condition_to_filter(field, "string", "not_ends_with", value)
+       when is_binary(value) do
+    %{"$not" => %{field => %{"$like" => "%" <> value}}}
   end
 
   defp form_data_condition_to_filter(field, "string", "empty", _value) do
@@ -529,6 +584,18 @@ defmodule KeilaWeb.SegmentEditLive do
     end
   end
 
+  defp form_data_condition_to_filter(field, "date", "not_" <> widget, value)
+       when widget in ["lt", "lte", "gt", "gte"] and is_map(value) do
+    with {:ok, date} <- Date.from_iso8601(value["date"]),
+         {:ok, time} <- Time.from_iso8601(value["time"] <> ":00"),
+         {:ok, datetime} <- DateTime.new(date, time, value["timezone"]),
+         {:ok, utc_datetime} <- DateTime.shift_zone(datetime, "Etc/UTC") do
+      %{"$not" => %{field => %{("$" <> widget) => utc_datetime}}}
+    else
+      _ -> nil
+    end
+  end
+
   defp form_data_condition_to_filter(field, "date", "empty", _value) do
     %{field => %{"$empty" => true}}
   end
@@ -544,6 +611,16 @@ defmodule KeilaWeb.SegmentEditLive do
 
     if key && match do
       %{("data." <> key) => match}
+    end
+  end
+
+  defp form_data_condition_to_filter(_field, "custom", "not_matches", value)
+       when is_map(value) do
+    key = value["key"]
+    match = value["match"]
+
+    if key && match do
+      %{"$not" => %{("data." <> key) => match}}
     end
   end
 
