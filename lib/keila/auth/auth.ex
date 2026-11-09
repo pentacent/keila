@@ -66,10 +66,12 @@ defmodule Keila.Auth do
     Permission,
     UserGroup,
     UserGroupRole,
-    Token
+    Token,
+    Event
   }
 
   require Token
+  require Event
 
   @type token_url_fn :: (String.t() -> String.t())
 
@@ -592,6 +594,65 @@ defmodule Keila.Auth do
       {0, _} -> nil
       {1, [token]} -> token
     end
+  end
+
+  @doc """
+  Logs an auth event of the given `type` for the user with `user_id`.
+
+  `user_id` may be `nil` if the event can't be attributed to a user.
+  `ip` is the IP address of the client as an `:inet.ip_address()` tuple or `nil`.
+
+  If the retention period is set to zero days, events are not stored.
+
+  ## Options
+  - `:actor_id` - ID of the user who triggered the event on behalf of `user_id`
+  - `:data` - map with additional information about the event
+  """
+  @spec log_event(atom(), User.id() | nil, :inet.ip_address() | nil, Keyword.t()) ::
+          {:ok, Event.t() | nil} | {:error, Changeset.t(Event.t())}
+  def log_event(type, user_id, ip, opts \\ []) when Event.is_type(type) do
+    if event_retention_days() > 0 do
+      %{
+        type: type,
+        user_id: user_id,
+        actor_id: Keyword.get(opts, :actor_id),
+        ip: ip,
+        data: Keyword.get(opts, :data, %{})
+      }
+      |> Event.creation_changeset()
+      |> Repo.insert()
+    else
+      {:ok, nil}
+    end
+  end
+
+  @doc """
+  Deletes auth events that are older than the retention period.
+
+  Deletes at most `limit` events, or all of them if `limit` is `:infinity`.
+
+  The retention period can be configured via the `AUTH_EVENT_RETENTION_DAYS`
+  environment variable. A retention period of 0 days disables logging auth events.
+  """
+  @spec prune_events(limit :: non_neg_integer() | :infinity) :: {non_neg_integer(), nil}
+  def prune_events(limit \\ :infinity) do
+    cutoff = DateTime.utc_now() |> DateTime.add(-event_retention_days(), :day)
+
+    ids_query =
+      from(e in Event, where: e.inserted_at < ^cutoff, select: e.id)
+      |> then(fn ids_query ->
+        case limit do
+          :infinity -> ids_query
+          limit when is_integer(limit) -> limit(ids_query, ^limit)
+        end
+      end)
+
+    from(e in Event, where: e.id in subquery(ids_query))
+    |> Repo.delete_all()
+  end
+
+  defp event_retention_days do
+    Application.get_env(:keila, __MODULE__) |> Keyword.fetch!(:event_retention_days)
   end
 
   # TODO: The API Key functions should probably be extracted to a different module

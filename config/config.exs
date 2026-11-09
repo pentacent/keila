@@ -77,6 +77,8 @@ config :keila, Keila.Accounts,
   # Disable sending quotas by default
   credits_enabled: false
 
+config :keila, Keila.Auth, event_retention_days: 90
+
 # Staging configuration for hCaptcha or FriendlyCaptcha
 config :keila, KeilaWeb.Captcha,
   secret_key: "0x0000000000000000000000000000000000000000",
@@ -109,7 +111,8 @@ config :keila, Oban,
        {"* * * * *", Keila.Mailings.DeliverScheduledCampaignsWorker},
        {"* * * * *", Keila.Mailings.CampaignRenderRescueWorker},
        {"1 0 * * *", Keila.Instance.UpdateCronWorker},
-       {"0 0 * * *", Keila.Mailings.MessagePruner}
+       {"0 0 * * *", Keila.Mailings.MessagePruner},
+       {"15 0 * * *", Keila.Auth.EventPruner}
      ]}
   ]
 

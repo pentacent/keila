@@ -15,6 +15,7 @@ defmodule KeilaWeb.AccountController do
     case Auth.update_user_password(conn.assigns.current_user.id, params) do
       {:ok, user} ->
         conn
+        |> log_auth_event(:change_password, user.id)
         |> start_auth_session(user.id)
         |> put_flash(:info, dgettext("auth", "New password saved."))
         |> redirect(to: Routes.account_path(conn, :edit))
