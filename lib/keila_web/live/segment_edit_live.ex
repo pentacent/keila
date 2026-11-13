@@ -3,6 +3,9 @@ defmodule KeilaWeb.SegmentEditLive do
   alias Keila.Contacts
   alias Keila.Mailings
 
+  on_mount {KeilaWeb.LiveAuth, :require_auth}
+  on_mount {KeilaWeb.LiveAuth, :require_project}
+
   defp fields do
     %{
       "inserted_at" => %{type: "date", label: gettext("Date added")},
@@ -80,22 +83,32 @@ defmodule KeilaWeb.SegmentEditLive do
   @impl true
   def mount(_params, session, socket) do
     Gettext.put_locale(session["locale"])
-
-    campaigns = Mailings.get_project_campaigns(session["current_project"].id)
+    project_id = socket.assigns.current_project.id
 
     socket =
-      socket
-      |> assign(:current_project, session["current_project"])
-      |> assign(:segment, session["segment"])
-      |> assign(:changeset, Ecto.Changeset.change(session["segment"]))
-      |> assign(:fields, fields())
-      |> assign(:widgets, widgets())
-      |> assign(:campaigns, campaigns)
-      |> assign(:page, 0)
-      |> put_filter(session["segment"].filter || %{})
-      |> update_assigns()
+      assign_new(socket, :segment, fn ->
+        Contacts.get_project_segment(project_id, session["segment_id"])
+      end)
 
-    {:ok, socket}
+    if socket.assigns.segment do
+      {:ok, put_initial_assigns(socket)}
+    else
+      raise KeilaWeb.NotFoundError
+    end
+  end
+
+  defp put_initial_assigns(socket) do
+    segment = socket.assigns.segment
+    campaigns = Mailings.get_project_campaigns(socket.assigns.current_project.id)
+
+    socket
+    |> assign(:changeset, Ecto.Changeset.change(segment))
+    |> assign(:fields, fields())
+    |> assign(:widgets, widgets())
+    |> assign(:campaigns, campaigns)
+    |> assign(:page, 0)
+    |> put_filter(segment.filter || %{})
+    |> update_assigns()
   end
 
   @impl true

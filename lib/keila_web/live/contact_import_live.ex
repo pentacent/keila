@@ -1,6 +1,9 @@
 defmodule KeilaWeb.ContactImportLive do
   use KeilaWeb, :live_view
 
+  on_mount {KeilaWeb.LiveAuth, :require_auth}
+  on_mount {KeilaWeb.LiveAuth, :require_project}
+
   @impl true
   def mount(_params, session, socket) do
     Gettext.put_locale(session["locale"])
@@ -9,7 +12,6 @@ defmodule KeilaWeb.ContactImportLive do
       socket
       |> allow_upload(:csv, accept: [".csv", ".txt", ".tsv"], max_entries: 1)
       |> assign(:uploaded_files, [])
-      |> assign(:current_project, session["current_project"])
       |> put_default_assigns()
 
     {:ok, socket}

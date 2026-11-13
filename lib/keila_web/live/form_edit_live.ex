@@ -1,32 +1,52 @@
 defmodule KeilaWeb.FormEditLive do
   use KeilaWeb, :live_view
+  require Keila
 
   alias Keila.Contacts.Form
   alias Keila.Mailings.DoubleOptInMessage
   alias Keila.Mailings.WelcomeMessage
 
+  on_mount {KeilaWeb.LiveAuth, :require_auth}
+  on_mount {KeilaWeb.LiveAuth, :require_project}
+
   @impl true
   def mount(_params, session, socket) do
     Gettext.put_locale(session["locale"])
-    current_project = session["current_project"]
-    senders = Keila.Mailings.get_project_senders(current_project.id)
-    templates = Keila.Templates.get_project_templates(current_project.id)
-    form = session["form"]
+    project_id = socket.assigns.current_project.id
 
     socket =
-      socket
-      |> assign(:form, form)
-      |> assign(:changeset, Ecto.Changeset.change(form))
-      |> assign(:current_project, current_project)
-      |> assign(:senders, senders)
-      |> assign(:templates, templates)
-      |> assign(:double_opt_in_available, session["double_opt_in_available"])
-      |> assign(:welcome_email_available, session["welcome_email_available"])
-      |> assign(:current_tab, "settings")
-      |> assign(:email_params, %{})
-      |> put_default_assigns()
+      assign_new(socket, :form, fn ->
+        Keila.Contacts.get_project_form(project_id, session["form_id"])
+      end)
 
-    {:ok, socket}
+    if socket.assigns.form do
+      {:ok, put_initial_assigns(socket)}
+    else
+      raise KeilaWeb.NotFoundError
+    end
+  end
+
+  defp put_initial_assigns(socket) do
+    project_id = socket.assigns.current_project.id
+    senders = Keila.Mailings.get_project_senders(project_id)
+    templates = Keila.Templates.get_project_templates(project_id)
+
+    socket
+    |> assign(:changeset, Ecto.Changeset.change(socket.assigns.form))
+    |> assign(:senders, senders)
+    |> assign(:templates, templates)
+    |> assign(:double_opt_in_available, feature_available?(project_id, :double_opt_in))
+    |> assign(:welcome_email_available, feature_available?(project_id, :welcome_email))
+    |> assign(:current_tab, "settings")
+    |> assign(:email_params, %{})
+    |> put_previews()
+  end
+
+  Keila.if_cloud do
+    defp feature_available?(project_id, feature),
+      do: KeilaCloud.Billing.feature_available?(project_id, feature)
+  else
+    defp feature_available?(_project_id, _feature), do: true
   end
 
   @impl true
@@ -56,7 +76,7 @@ defmodule KeilaWeb.FormEditLive do
          redirect(socket, to: Routes.form_path(socket, :index, socket.assigns.current_project.id))}
 
       {:error, changeset} ->
-        {:noreply, socket |> assign(:changeset, changeset) |> put_default_assigns()}
+        {:noreply, socket |> assign(:changeset, changeset) |> put_previews()}
     end
   end
 
@@ -72,7 +92,7 @@ defmodule KeilaWeb.FormEditLive do
 
   @impl true
   def handle_event("set_tab", %{"tab" => tab}, socket) do
-    {:noreply, socket |> assign(:current_tab, tab) |> put_default_assigns()}
+    {:noreply, socket |> assign(:current_tab, tab) |> put_previews()}
   end
 
   @impl true
@@ -162,10 +182,10 @@ defmodule KeilaWeb.FormEditLive do
 
     socket
     |> assign(:changeset, changeset)
-    |> put_default_assigns()
+    |> put_previews()
   end
 
-  defp put_default_assigns(socket) do
+  defp put_previews(socket) do
     case Ecto.Changeset.apply_action(socket.assigns.changeset, :update) do
       {:ok, form} ->
         embed =

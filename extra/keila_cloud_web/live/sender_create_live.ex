@@ -44,6 +44,9 @@ Keila.if_cloud do
     import Ecto.Changeset
     alias Keila.Mailings.Sender
 
+    on_mount {KeilaWeb.LiveAuth, :require_auth}
+    on_mount {KeilaWeb.LiveAuth, :require_project}
+
     @email_regex ~r/^[^\s@]+@[^\s@]+$/
 
     @steps [
@@ -191,14 +194,10 @@ Keila.if_cloud do
 
     @impl true
     def mount(_params, session, socket) do
-      current_project = Keila.Projects.get_project(session["current_project_id"])
-      current_user = Keila.Auth.get_user(session["current_user_id"])
       Gettext.put_locale(session["locale"])
 
       {:ok,
        socket
-       |> assign(:current_project, current_project)
-       |> assign(:current_user, current_user)
        |> assign(:step, hd(@steps))
        |> put_setup_changeset()}
     end

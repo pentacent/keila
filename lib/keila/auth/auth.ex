@@ -535,6 +535,20 @@ defmodule Keila.Auth do
   end
 
   @doc """
+  Returns the `User` of the `"web.session"` token with given `key` or `nil` if
+  no such token exists or the token has expired.
+  """
+  @spec find_user_by_session_token(String.t() | nil) :: User.t() | nil
+  def find_user_by_session_token(key) when is_binary(key) do
+    Token.find_token_query(key, "web.session")
+    |> join(:inner, [t], u in assoc(t, :user))
+    |> select([_t, u], u)
+    |> Repo.one()
+  end
+
+  def find_user_by_session_token(_), do: nil
+
+  @doc """
   Updates the `given_name` and `family_name` properites of a given `User`.
   """
   @spec update_user_name(User.id(), map()) :: {:ok, User.t()} | {:error, Changeset.t(User.t())}

@@ -2,6 +2,9 @@ defmodule KeilaWeb.CreateUserLive do
   use KeilaWeb, :live_view
   alias Keila.Auth.User
 
+  on_mount {KeilaWeb.LiveAuth, :require_auth}
+  on_mount {KeilaWeb.LiveAuth, :require_admin}
+
   @impl true
   def mount(_params, _session, socket) do
     socket =

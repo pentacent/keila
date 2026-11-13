@@ -9,17 +9,17 @@ Keila.if_cloud do
     alias KeilaCloud.Accounts.Account.OnboardingReviewData
     alias KeilaCloud.Countries
 
+    on_mount {KeilaWeb.LiveAuth, :require_auth}
+
     @impl true
     def mount(_params, session, socket) do
       Gettext.put_locale(session["locale"])
-      current_user = session["current_user"]
-      current_account = session["current_account"]
+      user_id = socket.assigns.current_user.id
       countries = Countries.country_options(session["locale"])
 
       {:ok,
        socket
-       |> assign(:current_user, current_user)
-       |> assign(:current_account, current_account)
+       |> assign_new(:current_account, fn -> Keila.Accounts.get_user_account(user_id) end)
        |> assign(:countries, countries)
        |> assign(:step, :user_name)
        |> put_user_changeset()

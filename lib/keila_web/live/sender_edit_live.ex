@@ -8,21 +8,41 @@ defmodule KeilaWeb.SenderEditLive do
   alias Keila.Mailings.SenderAdapters
   import Ecto.Changeset
 
+  on_mount {KeilaWeb.LiveAuth, :require_auth}
+  on_mount {KeilaWeb.LiveAuth, :require_project}
+
   @impl true
   def mount(_params, session, socket) do
     Gettext.put_locale(session["locale"])
-    sender = Keila.Mailings.get_sender(session["sender_id"])
+    project_id = socket.assigns.current_project.id
+
+    socket =
+      assign_new(socket, :sender, fn ->
+        get_project_sender(project_id, session["sender_id"])
+      end)
+
+    if socket.assigns.sender || is_nil(session["sender_id"]) do
+      {:ok, put_initial_assigns(socket)}
+    else
+      raise KeilaWeb.NotFoundError
+    end
+  end
+
+  defp get_project_sender(_project_id, nil), do: nil
+
+  defp get_project_sender(project_id, sender_id),
+    do: Mailings.get_project_sender(project_id, sender_id)
+
+  defp put_initial_assigns(socket) do
+    sender = socket.assigns.sender
 
     if sender && connected?(socket) do
       Phoenix.PubSub.subscribe(Keila.PubSub, "sender:#{sender.id}")
     end
 
-    {:ok,
-     socket
-     |> maybe_put_sender(sender)
-     |> assign(:current_project, session["current_project"])
-     |> assign(:shared_senders, Mailings.get_shared_senders())
-     |> assign(:current_user, session["current_user"])}
+    socket
+    |> maybe_put_sender(sender)
+    |> assign(:shared_senders, Mailings.get_shared_senders())
   end
 
   @impl true
