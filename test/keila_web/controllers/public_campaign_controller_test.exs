@@ -81,6 +81,20 @@ defmodule KeilaWeb.PublicCampaignControllerTest do
       assert csp =~ ~r/^sandbox /
     end
 
+    test "renders without the sample preview contact", %{conn: conn, project: project} do
+      campaign =
+        insert!(:mailings_campaign,
+          project_id: project.id,
+          public_link_enabled: true,
+          text_body: ~s[Hello {{ contact.first_name | default: "subscriber" }}!],
+          settings: %{type: :text},
+          sent_at: DateTime.utc_now(:second)
+        )
+
+      conn = get(conn, Routes.public_campaign_path(conn, :show, campaign.id))
+      assert text_response(conn, 200) =~ "Hello subscriber!"
+    end
+
     test "returns 404 if there was a rendering error", %{conn: conn, project: project} do
       campaign =
         insert!(:mailings_campaign,

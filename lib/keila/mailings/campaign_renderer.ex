@@ -36,9 +36,9 @@ defmodule Keila.Mailings.CampaignRenderer do
 
   @doc """
   Renders a campaign preview with a placeholder unsubscribe link and a sample
-  contact (unless one is provided).
+  contact (unless a contact or `nil` is provided).
   """
-  @spec render_preview(Campaign.t(), Contact.t()) :: Output.t()
+  @spec render_preview(Campaign.t(), Contact.t() | nil) :: Output.t()
   def render_preview(%Campaign{} = campaign, contact \\ @default_preview_contact) do
     campaign
     |> to_input(contact)

@@ -6,7 +6,7 @@ defmodule KeilaWeb.PublicCampaignController do
   @archive_csp "sandbox allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation; frame-ancestors *"
 
   def show(conn, _params) do
-    case Keila.Mailings.CampaignRenderer.render_preview(conn.assigns.campaign) do
+    case Keila.Mailings.CampaignRenderer.render_preview(conn.assigns.campaign, nil) do
       %{valid?: true, html_body: html} when is_binary(html) ->
         conn
         |> put_resp_header("content-security-policy", @archive_csp)
