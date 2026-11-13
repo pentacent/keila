@@ -456,6 +456,25 @@ if config_env() == :prod do
     config :keila, Keila.Auth, event_retention_days: auth_event_retention_days
   end
 
+  # FormParams retention
+  double_opt_in_retention_days =
+    System.get_env("DOUBLE_OPT_IN_RETENTION_DAYS") |> maybe_to_int.()
+
+  cond do
+    is_nil(double_opt_in_retention_days) ->
+      :ok
+
+    double_opt_in_retention_days < 1 ->
+      Logger.warning("""
+      DOUBLE_OPT_IN_RETENTION_DAYS must be at least 1. Defaulting to 1 day.
+      """)
+
+      config :keila, Keila.Contacts, double_opt_in_retention_days: 1
+
+    true ->
+      config :keila, Keila.Contacts, double_opt_in_retention_days: double_opt_in_retention_days
+  end
+
   # Default to info messages in production
   case System.get_env("LOG_LEVEL") do
     level when level in ["info", "error", "debug"] ->

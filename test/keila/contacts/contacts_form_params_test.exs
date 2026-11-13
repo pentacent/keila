@@ -19,7 +19,11 @@ defmodule Keila.Contacts.ContactsFormParamsTest do
     @describetag :double_opt_in
     test "creates a new FormParams entity", %{form: form} do
       assert {:ok, form_params} = Contacts.create_form_params(form.id, @params)
-      assert form_params.expires_at
+
+      expected_expires_at =
+        DateTime.utc_now(:second) |> DateTime.add(Contacts.FormParams.retention_days(), :day)
+
+      assert DateTime.diff(form_params.expires_at, expected_expires_at) in -5..0
       assert form_params.params == @params
     end
   end

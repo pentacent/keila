@@ -61,6 +61,10 @@ config :keila, Keila.Mailings,
   # Message bodies are retained for 30 days by default
   message_retention_days: 30
 
+config :keila, Keila.Contacts,
+  # Unconfirmed double opt-in requests are retained for 30 days by default
+  double_opt_in_retention_days: 30
+
 config :keila, Keila.Mailings.SenderAdapters,
   adapters: [
     Keila.Mailings.SenderAdapters.SMTP,
@@ -112,7 +116,8 @@ config :keila, Oban,
        {"* * * * *", Keila.Mailings.CampaignRenderRescueWorker},
        {"1 0 * * *", Keila.Instance.UpdateCronWorker},
        {"0 0 * * *", Keila.Mailings.MessagePruner},
-       {"15 0 * * *", Keila.Auth.EventPruner}
+       {"15 0 * * *", Keila.Auth.EventPruner},
+       {"30 0 * * *", Keila.Contacts.FormParamsPruner}
      ]}
   ]
 

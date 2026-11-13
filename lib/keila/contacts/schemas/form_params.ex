@@ -6,8 +6,6 @@ defmodule Keila.Contacts.FormParams do
   use Keila.Schema, prefix: "f_attr"
   alias Keila.Contacts.Form
 
-  @expiry_in_days 60
-
   schema "contacts_form_params" do
     field :params, :map
     field :expires_at, :utc_datetime
@@ -31,6 +29,15 @@ defmodule Keila.Contacts.FormParams do
   end
 
   defp expires_at() do
-    DateTime.utc_now() |> DateTime.truncate(:second) |> DateTime.add(@expiry_in_days, :day)
+    DateTime.utc_now() |> DateTime.truncate(:second) |> DateTime.add(retention_days(), :day)
+  end
+
+  @doc """
+  Returns the number of days FormParams are retained, configured via
+  the `DOUBLE_OPT_IN_RETENTION_DAYS` environment variable.
+  """
+  @spec retention_days() :: pos_integer()
+  def retention_days() do
+    Application.get_env(:keila, Keila.Contacts) |> Keyword.fetch!(:double_opt_in_retention_days)
   end
 end

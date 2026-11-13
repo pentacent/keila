@@ -427,6 +427,33 @@ defmodule Keila.Contacts do
   end
 
   @doc """
+  Deletes `FormParams` entities older than the retention period.
+
+  The retention period defaults to 30 days and can be configured via the
+  `DOUBLE_OPT_IN_RETENTION_DAYS` environment variable.
+
+  Deletes all expired entries unless a `limit` is specified.
+
+  Returns the number of deleted entities.
+  """
+  @spec prune_form_params(limit :: non_neg_integer() | :infinity) :: {non_neg_integer(), nil}
+  def prune_form_params(limit \\ :infinity) do
+    cutoff = DateTime.utc_now() |> DateTime.add(-FormParams.retention_days(), :day)
+
+    prunable_ids_query =
+      from(fa in FormParams, where: fa.inserted_at < ^cutoff, select: fa.id)
+      |> then(fn query ->
+        case limit do
+          limit when is_integer(limit) -> limit(query, ^limit)
+          :infinity -> query
+        end
+      end)
+
+    from(fa in FormParams, where: fa.id in subquery(prunable_ids_query))
+    |> Repo.delete_all()
+  end
+
+  @doc """
   Returns an HMAC string for the given `FormParams` ID that can be
   used when verifying a contact in the double opt-in process.
   """
