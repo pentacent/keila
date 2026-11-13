@@ -104,7 +104,9 @@ defmodule Keila.Mailings.MessagePrunerTest do
       ]
     end)
 
-    MessagePruner.perform(%Oban.Job{})
+    Oban.insert!(MessagePruner.new(%{}))
+
+    assert %{success: 1} = Oban.drain_queue(queue: :system)
 
     assert from(m in Message, where: is_nil(m.text_body)) |> Repo.aggregate(:count, :id) ==
              batch_size

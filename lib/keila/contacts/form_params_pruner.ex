@@ -18,7 +18,8 @@ defmodule Keila.Contacts.FormParamsPruner do
   def perform(_job) do
     case Contacts.prune_form_params(@batch_size) do
       {@batch_size, _} ->
-        Oban.insert!(new(%{}))
+        Oban.insert!(new(%{}, unique: false))
+        :ok
 
       _other ->
         :ok

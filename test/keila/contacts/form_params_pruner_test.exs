@@ -39,7 +39,9 @@ defmodule Keila.Contacts.FormParamsPrunerTest do
       [form_id: form.id, inserted_at: days_ago(threshold + 1)]
     end)
 
-    FormParamsPruner.perform(%Oban.Job{})
+    Oban.insert!(FormParamsPruner.new(%{}))
+
+    assert %{success: 1} = Oban.drain_queue(queue: :system)
     assert Repo.aggregate(FormParams, :count) == 1
 
     assert %{success: 1} = Oban.drain_queue(queue: :system)

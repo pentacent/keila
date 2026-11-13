@@ -18,7 +18,8 @@ defmodule Keila.Mailings.MessagePruner do
   def perform(_job) do
     case Mailings.prune_messages(@batch_size) do
       {@batch_size, _} ->
-        Oban.insert!(new(%{}))
+        Oban.insert!(new(%{}, unique: false))
+        :ok
 
       _other ->
         :ok
