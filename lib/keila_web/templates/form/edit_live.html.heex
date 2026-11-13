@@ -809,14 +809,11 @@
       <%= cond do %>
         <% @current_tab == "welcome-email" && @welcome_email_preview -> %>
           <div class="bg-white w-full flex flex-col flex-grow">
-            <iframe
+            <KeilaWeb.PreviewIframe.preview_iframe
               id="welcome-email-preview"
-              src="about:blank"
-              sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox"
               class="w-full bg-gray-100 flex-grow"
               style="min-height: 60vh"
-            >
-            </iframe>
+            />
             <div
               id="welcome-email-preview-data"
               phx-hook="HtmlPreview"
@@ -828,14 +825,11 @@
           </div>
         <% @current_tab == "double-opt-in" && @double_opt_in_preview -> %>
           <div class="bg-white rounded flex flex-col flex-grow">
-            <iframe
+            <KeilaWeb.PreviewIframe.preview_iframe
               id="double-opt-in-preview"
-              src="about:blank"
-              sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox"
               class="w-full bg-gray-100 flex-grow"
               style="min-height: 60vh"
-            >
-            </iframe>
+            />
             <div
               id="double-opt-in-preview-data"
               phx-hook="HtmlPreview"
