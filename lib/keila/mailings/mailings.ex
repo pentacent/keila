@@ -677,8 +677,8 @@ defmodule Keila.Mailings do
           unsubscribe_count: non_neg_integer(),
           hard_bounce_count: non_neg_integer(),
           complaint_count: non_neg_integer(),
-          clicked_at_series: list({hour :: non_neg_integer(), count :: non_neg_integer()}),
-          opened_at_series: list({hour :: non_neg_integer(), count :: non_neg_integer()})
+          clicked_at_series: list({hour :: DateTime.t(), count :: non_neg_integer()}),
+          opened_at_series: list({hour :: DateTime.t(), count :: non_neg_integer()})
         }
   def get_campaign_stats(campaign_id) when is_id(campaign_id) do
     campaign = get_campaign(campaign_id)
@@ -774,7 +774,7 @@ defmodule Keila.Mailings do
           m.campaign_id == ^campaign_id and not is_nil(field(m, ^field)),
       group_by: series.h,
       order_by: series.h,
-      select: {series.h, count(m.campaign_id)}
+      select: {type(series.h, :utc_datetime), count(m.campaign_id)}
     )
     |> Repo.all()
   end
