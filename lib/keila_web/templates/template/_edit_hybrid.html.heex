@@ -3,8 +3,8 @@
     :let={f}
     for={@changeset}
     id="template"
-    action={Routes.template_path(@socket, :post_edit, @current_project.id, @template.id)}
     phx-change="form_updated"
+    phx-submit="save"
     phx-debounce="2000"
     phx-update="ignore"
     class="w-1/3"

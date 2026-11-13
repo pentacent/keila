@@ -156,7 +156,7 @@ defmodule KeilaWeb.ContactController do
   def import(conn, _params) do
     live_render(conn, KeilaWeb.ContactImportLive,
       session: %{
-        "current_project" => conn.assigns.current_project,
+        "project_id" => conn.assigns.current_project.id,
         "locale" => Gettext.get_locale()
       }
     )

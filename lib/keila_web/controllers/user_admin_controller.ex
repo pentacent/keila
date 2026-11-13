@@ -135,6 +135,7 @@ defmodule KeilaWeb.UserAdminController do
 
   def impersonate(conn, %{"id" => user_id}) do
     conn
+    |> log_auth_event(:impersonate, user_id, actor_id: conn.assigns.current_user.id)
     |> KeilaWeb.AuthSession.end_auth_session()
     |> KeilaWeb.AuthSession.start_auth_session(user_id)
     |> redirect(to: KeilaWeb.Router.Helpers.project_path(conn, :index))

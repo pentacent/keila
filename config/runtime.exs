@@ -417,12 +417,43 @@ if config_env() == :prod do
     config(:keila, Keila.Mailings, enable_precedence_header: false)
   end
 
+  # Trusted reverse proxies (comma-separated list of IPs and CIDR ranges)
+  # Forwarding headers are only read if the request comes from a trusted proxy.
+  trusted_proxies =
+    System.get_env("TRUSTED_PROXIES", "")
+    |> String.split(",")
+    |> Enum.map(&String.trim/1)
+    |> Enum.reject(&(&1 == ""))
+    |> Enum.map(fn entry ->
+      case KeilaWeb.RemoteIpPlug.parse_proxy(entry) do
+        {:ok, proxy} -> proxy
+        :error -> raise "Invalid IP address or CIDR range in TRUSTED_PROXIES: #{inspect(entry)}"
+      end
+    end)
+
+  if Enum.any?(trusted_proxies) do
+    trusted_proxy_header =
+      System.get_env("TRUSTED_PROXY_HEADER", "x-forwarded-for") |> String.downcase()
+
+    config :keila, KeilaWeb.RemoteIpPlug,
+      proxies: trusted_proxies,
+      header: trusted_proxy_header
+  end
+
   # Message body retention
   message_retention_days =
     System.get_env("MESSAGE_RETENTION_DAYS") |> maybe_to_int.()
 
   if message_retention_days do
     config :keila, Keila.Mailings, message_retention_days: message_retention_days
+  end
+
+  # Auth event retention
+  auth_event_retention_days =
+    System.get_env("AUTH_EVENT_RETENTION_DAYS") |> maybe_to_int.()
+
+  if auth_event_retention_days do
+    config :keila, Keila.Auth, event_retention_days: auth_event_retention_days
   end
 
   # Default to info messages in production

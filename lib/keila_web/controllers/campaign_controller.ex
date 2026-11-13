@@ -194,19 +194,10 @@ defmodule KeilaWeb.CampaignController do
     campaign = conn.assigns.campaign
 
     if is_nil(campaign.sent_at) do
-      senders = Mailings.get_project_senders(project.id)
-      templates = Templates.get_project_templates(project.id)
-      segments = Contacts.get_project_segments(project.id)
-      account = Keila.Accounts.get_user_account(conn.assigns.current_user.id)
-
       live_render(conn, KeilaWeb.CampaignEditLive,
         session: %{
-          "current_project" => project,
-          "campaign" => campaign,
-          "senders" => senders,
-          "templates" => templates,
-          "segments" => segments,
-          "account" => account,
+          "project_id" => project.id,
+          "campaign_id" => campaign.id,
           "locale" => Gettext.get_locale()
         }
       )
@@ -219,13 +210,11 @@ defmodule KeilaWeb.CampaignController do
   def stats(conn, _params) do
     project = current_project(conn)
     campaign = conn.assigns.campaign
-    account = Keila.Accounts.get_user_account(conn.assigns.current_user.id)
 
     live_render(conn, KeilaWeb.CampaignStatsLive,
       session: %{
-        "current_project" => project,
-        "campaign" => campaign,
-        "account" => account,
+        "project_id" => project.id,
+        "campaign_id" => campaign.id,
         "locale" => Gettext.get_locale()
       }
     )

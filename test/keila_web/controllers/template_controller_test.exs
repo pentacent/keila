@@ -143,21 +143,35 @@ defmodule KeilaWeb.TemplateControllerTest do
       refute html =~ ~s(name="template[mjml_body]")
       refute html =~ ~s(name="template[html_body]")
     end
-  end
 
-  describe "PUT /projects/:p_id/templates/:id" do
     @tag :template_controller
-    test "updates campaign and redirects to index", %{conn: conn} do
+    test "updates template and redirects to index", %{conn: conn} do
       {conn, project} = with_login_and_project(conn)
       template = insert!(:template, project_id: project.id)
+      conn = get(conn, Routes.template_path(conn, :edit, project.id, template.id))
+      {:ok, lv, _html} = live(conn)
 
-      params = %{"name" => "New Name"}
+      lv
+      |> element("#template")
+      |> render_submit(%{"template" => %{"name" => "New Name"}})
 
-      conn =
-        put(conn, Routes.template_path(conn, :edit, project.id, template.id, template: params))
-
-      assert redirected_to(conn, 302) == Routes.template_path(conn, :index, project.id)
+      assert_redirect(lv, Routes.template_path(conn, :index, project.id))
       assert %{name: "New Name"} = Templates.get_template(template.id)
+    end
+
+    @tag :template_controller
+    test "shows validation errors when saving", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+      template = insert!(:template, project_id: project.id, type: :html)
+      conn = get(conn, Routes.template_path(conn, :edit, project.id, template.id))
+      {:ok, lv, _html} = live(conn)
+
+      assert lv
+             |> element("#template")
+             |> render_submit(%{"template" => %{"name" => ""}}) =~ "can&#39;t be blank"
+
+      assert %{name: name} = Templates.get_template(template.id)
+      assert name == template.name
     end
   end
 

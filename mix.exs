@@ -96,6 +96,7 @@ defmodule Keila.MixProject do
       {:open_api_spex, "~> 3.22"},
       {:ex_rated, "~> 2.1"},
       {:tls_certificate_check, "~> 1.31"},
+      {:inet_cidr, "~> 1.0"},
       {:mjml, "~> 6.0"},
       {:ex_cldr, "~> 2.44"},
       {:ex_cldr_territories, "~> 2.11"},

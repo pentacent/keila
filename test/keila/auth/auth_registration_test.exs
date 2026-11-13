@@ -83,6 +83,17 @@ defmodule Keila.AuthTest.Registration do
   end
 
   @tag :auth
+  test "Find user by session token" do
+    user = insert!(:user)
+    {:ok, session_token} = Auth.create_token(%{user_id: user.id, scope: "web.session"})
+    {:ok, login_token} = Auth.create_token(%{user_id: user.id, scope: "auth.login"})
+
+    assert user == Auth.find_user_by_session_token(session_token.key)
+    assert nil == Auth.find_user_by_session_token(login_token.key)
+    assert nil == Auth.find_user_by_session_token(nil)
+  end
+
+  @tag :auth
   test "Create and find user with password" do
     params = %{email: "foo@bar.com", password: @password}
     {:ok, user} = Auth.create_user(params)

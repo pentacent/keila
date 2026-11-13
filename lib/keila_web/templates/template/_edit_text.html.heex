@@ -3,8 +3,8 @@
     :let={f}
     for={@changeset}
     id="template"
-    action={Routes.template_path(@socket, :post_edit, @current_project.id, @template.id)}
     phx-change="form_updated"
+    phx-submit="save"
     x-on:change="setUnsavedReminder(true)"
     class="flex flex-col gap-4 w-full"
   >

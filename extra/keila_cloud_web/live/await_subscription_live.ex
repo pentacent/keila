@@ -6,17 +6,17 @@ Keila.if_cloud do
     alias Keila.Accounts
     alias KeilaCloud.Billing
 
+    on_mount {KeilaWeb.LiveAuth, :require_auth}
+
     @impl true
     def mount(_params, session, socket) do
       Gettext.put_locale(session["locale"])
 
-      current_user = session["current_user"]
-      account = Accounts.get_user_account(current_user.id)
+      account = Accounts.get_user_account(socket.assigns.current_user.id)
       credits = Accounts.get_credits(account.id)
 
       socket =
         socket
-        |> assign(:current_user, current_user)
         |> assign(:account, account)
         |> assign(:credits, credits)
         |> schedule_update()

@@ -30,6 +30,7 @@ defmodule KeilaWeb.AuthController do
           maybe_set_cloud_data(user, params["account"])
 
           conn
+          |> log_auth_event(:register, user.id)
           |> assign(:user, user)
           |> put_meta(:title, dgettext("auth", "Sign up successful"))
           |> render("register_success.html")
@@ -97,7 +98,10 @@ defmodule KeilaWeb.AuthController do
 
     if not is_nil(user) and user.activated_at == nil do
       Auth.send_activation_link(user.id, &Routes.auth_url(conn, :activate, &1))
-      render(conn, "activate_resend_success.html")
+
+      conn
+      |> log_auth_event(:resend_activation, user.id)
+      |> render("activate_resend_success.html")
     else
       redirect(conn, to: Routes.auth_path(conn, :login))
     end
@@ -128,6 +132,7 @@ defmodule KeilaWeb.AuthController do
         end
 
         conn
+        |> log_auth_event(:request_password_reset, user && user.id)
         |> assign(:email, email)
         |> put_meta(:title, dgettext("auth", "Password reset"))
         |> render("reset_success.html")
@@ -171,8 +176,9 @@ defmodule KeilaWeb.AuthController do
   @spec post_reset_change_password(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def post_reset_change_password(conn, %{"token" => token_key, "user" => params}) do
     with token = %Auth.Token{} <- Auth.find_token(token_key, "auth.reset"),
-         {:ok, _user} <- Auth.update_user_password(token.user_id, params) do
+         {:ok, user} <- Auth.update_user_password(token.user_id, params) do
       conn
+      |> log_auth_event(:reset_password, user.id)
       |> put_meta(:title, dgettext("auth", "Password reset successful"))
       |> render("reset_change_password_success.html")
     else
@@ -198,8 +204,15 @@ defmodule KeilaWeb.AuthController do
   @spec post_login(Plug.Conn.t(), any) :: Plug.Conn.t()
   def post_login(conn, %{"user" => params}) do
     case Auth.find_user_by_credentials(params) do
-      {:ok, user} -> do_login(conn, user)
-      {:error, changeset} -> render_login(conn, 400, changeset)
+      {:ok, user} ->
+        conn
+        |> log_auth_event(:login, user.id)
+        |> do_login(user)
+
+      {:error, changeset} ->
+        conn
+        |> log_auth_event(:login_failed, changeset.data.id)
+        |> render_login(400, changeset)
     end
   end
 
@@ -222,6 +235,7 @@ defmodule KeilaWeb.AuthController do
   @spec logout(Plug.Conn.t(), map) :: Plug.Conn.t()
   def logout(conn, _params) do
     conn
+    |> log_auth_event(:logout, conn.assigns.current_user.id)
     |> end_auth_session()
     |> redirect(to: Routes.auth_path(conn, :login))
   end

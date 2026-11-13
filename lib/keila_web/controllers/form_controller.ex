@@ -1,6 +1,5 @@
 defmodule KeilaWeb.FormController do
   use KeilaWeb, :controller
-  require Keila
   import Phoenix.LiveView.Controller
   alias Keila.Contacts
 
@@ -25,26 +24,11 @@ defmodule KeilaWeb.FormController do
 
   @spec edit(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def edit(conn, _params) do
-    current_project = current_project(conn)
-
-    Keila.if_cloud do
-      double_opt_in_available? =
-        KeilaCloud.Billing.feature_available?(current_project.id, :double_opt_in)
-
-      welcome_email_available? =
-        KeilaCloud.Billing.feature_available?(current_project.id, :welcome_email)
-    else
-      double_opt_in_available? = true
-      welcome_email_available? = true
-    end
-
     live_render(conn, KeilaWeb.FormEditLive,
       session: %{
-        "current_project" => current_project,
-        "form" => conn.assigns.form,
-        "locale" => Gettext.get_locale(),
-        "double_opt_in_available" => double_opt_in_available?,
-        "welcome_email_available" => welcome_email_available?
+        "project_id" => current_project(conn).id,
+        "form_id" => conn.assigns.form.id,
+        "locale" => Gettext.get_locale()
       }
     )
   end

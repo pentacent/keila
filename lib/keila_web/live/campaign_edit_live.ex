@@ -5,34 +5,42 @@ defmodule KeilaWeb.CampaignEditLive do
   alias Keila.Accounts
   alias Keila.Mailings
 
+  on_mount {KeilaWeb.LiveAuth, :require_auth}
+  on_mount {KeilaWeb.LiveAuth, :require_project}
+
   @impl true
   def mount(_params, session, socket) do
     Gettext.put_locale(session["locale"])
-
-    project = session["current_project"]
-    senders = session["senders"]
-    segments = session["segments"]
-    templates = session["templates"] || []
-    campaign = session["campaign"]
-    changeset = Ecto.Changeset.change(campaign, %{})
-    account = session["account"]
+    project_id = socket.assigns.current_project.id
 
     socket =
-      socket
-      |> assign(:current_project, project)
-      |> assign(:campaign, campaign)
-      |> assign(:senders, senders)
-      |> assign(:segments, segments)
-      |> assign(:templates, templates)
-      |> assign(:changeset, changeset)
-      |> assign(:settings_changeset, changeset)
-      |> assign(:account, account)
-      |> assign(:subscription_required, false)
-      |> assign(:onboarding_required, false)
-      |> assign(:send_preview_error, nil)
-      |> put_recipient_count()
+      assign_new(socket, :campaign, fn ->
+        Mailings.get_project_campaign(project_id, session["campaign_id"])
+      end)
 
-    {:ok, socket}
+    if socket.assigns.campaign do
+      {:ok, put_initial_assigns(socket)}
+    else
+      raise KeilaWeb.NotFoundError
+    end
+  end
+
+  defp put_initial_assigns(socket) do
+    project_id = socket.assigns.current_project.id
+    user_id = socket.assigns.current_user.id
+    changeset = Ecto.Changeset.change(socket.assigns.campaign, %{})
+
+    socket
+    |> assign(:senders, Mailings.get_project_senders(project_id))
+    |> assign(:segments, Keila.Contacts.get_project_segments(project_id))
+    |> assign(:templates, Keila.Templates.get_project_templates(project_id))
+    |> assign(:account, Accounts.get_user_account(user_id))
+    |> assign(:changeset, changeset)
+    |> assign(:settings_changeset, changeset)
+    |> assign(:subscription_required, false)
+    |> assign(:onboarding_required, false)
+    |> assign(:send_preview_error, nil)
+    |> put_recipient_count()
   end
 
   @impl true

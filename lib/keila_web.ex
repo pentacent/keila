@@ -26,6 +26,7 @@ defmodule KeilaWeb do
       import KeilaWeb.Meta, only: [put_meta: 3]
       import KeilaWeb.Captcha, only: [captcha_valid?: 1]
       import KeilaWeb.AuthSession, only: [start_auth_session: 2, end_auth_session: 1]
+      import KeilaWeb.AuthEvents, only: [log_auth_event: 3, log_auth_event: 4]
 
       alias KeilaWeb.Router.Helpers, as: Routes
       unquote(verified_routes())

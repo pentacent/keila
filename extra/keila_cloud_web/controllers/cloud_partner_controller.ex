@@ -118,8 +118,9 @@ Keila.if_cloud do
       child_account = Accounts.get_user_account(child_user_id)
 
       case Partners.update_child_account_user_password(partner_account.id, child_user_id, params) do
-        {:ok, _user} ->
+        {:ok, user} ->
           conn
+          |> log_auth_event(:change_password, user.id, actor_id: conn.assigns.current_user.id)
           |> put_flash(:info, dgettext("cloud", "Password updated."))
           |> redirect(to: ~p"/partner/accounts/#{child_account.id}/credits")
 
@@ -140,6 +141,7 @@ Keila.if_cloud do
 
       if Partners.partner_of?(partner_account.id, user_id) do
         conn
+        |> log_auth_event(:impersonate, user_id, actor_id: conn.assigns.current_user.id)
         |> KeilaWeb.AuthSession.end_auth_session()
         |> KeilaWeb.AuthSession.start_auth_session(user_id)
         |> redirect(to: ~p"/")

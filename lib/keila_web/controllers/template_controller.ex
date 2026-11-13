@@ -95,44 +95,11 @@ defmodule KeilaWeb.TemplateController do
 
     live_render(conn, KeilaWeb.TemplateEditLive,
       session: %{
-        "current_project" => project,
-        "template" => template,
+        "project_id" => project.id,
+        "template_id" => template.id,
         "locale" => Gettext.get_locale()
       }
     )
-  end
-
-  @spec post_edit(Plug.Conn.t(), map()) :: Plug.Conn.t()
-  def post_edit(conn, %{"template" => params}) do
-    project = current_project(conn)
-    template = conn.assigns.template
-    styles = fetch_styles(params)
-
-    case Templates.update_template(template.id, Map.put(params, "styles", styles)) do
-      {:ok, _template} ->
-        redirect(conn, to: Routes.template_path(conn, :index, project.id))
-
-      {:error, changeset} ->
-        live_render(conn, KeilaWeb.TemplateEditLive,
-          session: %{
-            "current_project" => project,
-            "template" => template,
-            "changeset" => changeset,
-            "locale" => Gettext.get_locale()
-          }
-        )
-    end
-  end
-
-  defp fetch_styles(params) do
-    if is_map(params["styles"]) do
-      Keila.Templates.HybridTemplate.style_template()
-      |> Keila.Templates.StyleTemplate.apply_values_from_params(params["styles"])
-      |> Keila.Templates.StyleTemplate.to_css()
-      |> Keila.Templates.Css.encode()
-    else
-      params["styles"]
-    end
   end
 
   @spec delete(Plug.Conn.t(), map()) :: Plug.Conn.t()

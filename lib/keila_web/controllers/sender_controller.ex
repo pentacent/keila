@@ -34,9 +34,7 @@ defmodule KeilaWeb.SenderController do
     Keila.if_cloud do
       live_render(conn, KeilaWeb.CloudSenderCreateLive,
         session: %{
-          "current_project_id" => conn.assigns.current_project.id,
-          "current_user_id" => conn.assigns.current_user.id,
-          "sender_id" => nil,
+          "project_id" => conn.assigns.current_project.id,
           "locale" => Gettext.get_locale()
         }
       )
@@ -49,8 +47,7 @@ defmodule KeilaWeb.SenderController do
   def edit(conn, _params) do
     live_render(conn, KeilaWeb.SenderEditLive,
       session: %{
-        "current_project" => conn.assigns.current_project,
-        "current_user" => conn.assigns.current_user,
+        "project_id" => conn.assigns.current_project.id,
         "sender_id" => conn.assigns[:sender] && conn.assigns.sender.id,
         "locale" => Gettext.get_locale()
       }

@@ -1,17 +1,33 @@
 defmodule KeilaWeb.CampaignStatsLive do
   use KeilaWeb, :live_view
   require Keila
-  alias Keila.{Mailings, Tracking}
+  alias Keila.{Accounts, Mailings, Tracking}
+
+  on_mount {KeilaWeb.LiveAuth, :require_auth}
+  on_mount {KeilaWeb.LiveAuth, :require_project}
 
   @impl true
   def mount(_params, session, socket) do
     Gettext.put_locale(session["locale"])
+    project_id = socket.assigns.current_project.id
 
-    project = session["current_project"]
-    campaign = session["campaign"]
+    socket =
+      assign_new(socket, :campaign, fn ->
+        Mailings.get_project_campaign(project_id, session["campaign_id"])
+      end)
+
+    if socket.assigns.campaign do
+      {:ok, put_initial_assigns(socket)}
+    else
+      raise KeilaWeb.NotFoundError
+    end
+  end
+
+  defp put_initial_assigns(socket) do
+    campaign = socket.assigns.campaign
+    account = Accounts.get_user_account(socket.assigns.current_user.id)
     stats = Mailings.get_campaign_stats(campaign.id)
     link_stats = Tracking.get_link_stats(campaign.id)
-    account = session["account"]
 
     Keila.if_cloud do
       subscription = KeilaCloud.Billing.get_account_subscription(account.id)
@@ -19,24 +35,14 @@ defmodule KeilaWeb.CampaignStatsLive do
       subscription = nil
     end
 
-    socket =
-      socket
-      |> assign(:campaign, campaign)
-      |> assign(:current_project, project)
-      |> assign(:stats, stats)
-      |> assign(:chart_datasets, chart_datasets(stats))
-      |> assign(:chart_labels, chart_labels(stats))
-      |> assign(:link_stats, link_stats)
-      |> assign(:account, account)
-      |> assign(:subscription, subscription)
-      |> put_default_assigns()
-      |> schedule_update()
-
-    {:ok, socket}
-  end
-
-  defp put_default_assigns(socket) do
     socket
+    |> assign(:account, account)
+    |> assign(:stats, stats)
+    |> assign(:chart_datasets, chart_datasets(stats))
+    |> assign(:chart_labels, chart_labels(stats))
+    |> assign(:link_stats, link_stats)
+    |> assign(:subscription, subscription)
+    |> schedule_update()
   end
 
   @impl true
