@@ -112,12 +112,9 @@ defmodule Keila.Contacts.Import do
         status: find_header_column(headers, ~r{status}i)
       ]
       |> Enum.filter(fn {_key, column} -> not is_nil(column) end)
-      |> Enum.sort_by(fn {_key, column} -> column end)
-      |> Enum.map(fn {key, _} -> key end)
 
     fn row ->
-      Enum.zip(columns, row)
-      |> Enum.into(%{})
+      Map.new(columns, fn {key, column} -> {key, Enum.at(row, column)} end)
       |> Map.update(:data, nil, &update_data_param/1)
       |> then(fn row ->
         unless contact_not_active?(row) do

@@ -313,6 +313,15 @@ defmodule Keila.ContactsTest do
   end
 
   @tag :contacts
+  test "Import CSV with other columns between the known ones", %{project: project} do
+    assert :ok ==
+             Contacts.import_csv(project.id, "test/keila/contacts/import_extra_columns.csv")
+
+    assert %{first_name: "Ann", last_name: "Lee"} =
+             Repo.get_by(Contacts.Contact, email: "ann@example.com")
+  end
+
+  @tag :contacts
   test "Import RFC 4180 CSV with external IDs and on_conflict: :ignore", %{project: project} do
     assert :ok ==
              Contacts.import_csv(
