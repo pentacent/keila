@@ -4,7 +4,7 @@
   </div>
   <%= cond do %>
     <% @type == :markdown && @config.enable_wysiwyg -> %>
-      {textarea(@form, :text_body, id: "#{@id}-text-body", class: "hidden")}
+      {textarea(@form, :text_body, id: "#{@id}-text-body", class: "hidden", data_1p_ignore: true)}
       <div
         id={"#{@id}-editor-markdown-wysiwyg"}
         phx-hook="MarkdownEditor"
