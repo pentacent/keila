@@ -107,19 +107,15 @@ defmodule KeilaWeb.SegmentControllerTest do
     assert conn.state == :chunked
     rows = String.split(response(conn, 200), "\r\n")
     assert length(rows) == 6
-    assert Enum.at(rows, 1) =~ ~r/,unreachable/
+    assert Enum.count(rows, &(&1 =~ ~r/,unreachable/)) == 1
 
     {_, disposition} = List.keyfind(conn.resp_headers, "content-disposition", 0)
 
     assert disposition ==
              "attachment; filename=\"contacts_#{project.id}_segment_#{segment.id}.csv\""
 
-    assert [
-             "Email,First name,Last name,Data,Status,External ID",
-             contact_row | _
-           ] = rows
+    assert ["Email,First name,Last name,Data,Status,External ID" | _] = rows
 
-    assert contact_row ==
-             "test1@keila.io,#{contact.first_name},#{contact.last_name},,unreachable,#{contact.external_id}"
+    assert "test1@keila.io,#{contact.first_name},#{contact.last_name},,unreachable,#{contact.external_id}" in rows
   end
 end

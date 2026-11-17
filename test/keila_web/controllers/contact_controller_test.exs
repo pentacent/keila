@@ -185,8 +185,8 @@ defmodule KeilaWeb.ContactControllerTest do
     |> element("#import-form")
     |> render_submit(%{csv: csv})
 
+    assert await_import(lv) =~ "You have successfully imported 201 contacts!"
     assert Keila.Contacts.get_project_contacts(project.id) |> Enum.count() == 201
-    assert render(lv) =~ "You have successfully imported 201 contacts!"
   end
 
   @tag :contact_controller
@@ -218,6 +218,17 @@ defmodule KeilaWeb.ContactControllerTest do
     assert conn.state == :chunked
     rows = String.split(response(conn, 200), "\r\n")
     assert length(rows) == 6
-    assert Enum.at(rows, 2) =~ ~r/,unreachable/
+    assert Enum.count(rows, &(&1 =~ ~r/,unreachable/)) == 1
+  end
+
+  defp await_import(lv, attempts \\ 50) do
+    html = render(lv)
+
+    if html =~ "You have successfully imported" or attempts == 0 do
+      html
+    else
+      :timer.sleep(50)
+      await_import(lv, attempts - 1)
+    end
   end
 end

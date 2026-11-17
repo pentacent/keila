@@ -189,6 +189,27 @@ defmodule Keila.ContactsTest do
   end
 
   @tag :contacts
+  test "Pages of get_project_contacts don't overlap when sort values are equal", %{
+    project: project
+  } do
+    inserted_at = ~U[2026-11-16 10:00:00Z]
+
+    contacts =
+      insert_n!(:contact, 300, fn n ->
+        %{project_id: project.id, inserted_at: DateTime.add(inserted_at, div(n, 20), :second)}
+      end)
+
+    paginated_ids =
+      for page <- 0..2 do
+        Contacts.get_project_contacts(project.id, paginate: [page: page, page_size: 100]).data
+      end
+      |> List.flatten()
+      |> Enum.map(& &1.id)
+
+    assert Enum.sort(paginated_ids) == contacts |> Enum.map(& &1.id) |> Enum.sort()
+  end
+
+  @tag :contacts
   test "delete_contact and delete_project_contacts", %{project: project} do
     contact1 = insert!(:contact, %{project_id: project.id})
     _contact2 = insert!(:contact, %{project_id: project.id})

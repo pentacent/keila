@@ -800,7 +800,7 @@ defmodule Keila.Mailings do
     from(m in Message,
       where: m.contact_id == ^contact_id and m.status in [:sent, :failed],
       preload: [:campaign, :form],
-      order_by: [desc: m.inserted_at]
+      order_by: [desc: m.inserted_at, desc: m.id]
     )
     |> Keila.Pagination.paginate(pagination_opts)
   end

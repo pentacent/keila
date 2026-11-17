@@ -40,6 +40,8 @@ defmodule Keila.Contacts.Query do
 
   Defaults to sorting by `inserted_at` and `email`.
 
+  To ensure stable results, `id` is used as a tiebreaker for sorting.
+
   Sorting can be disabled by passing `sort: false`
   """
 
@@ -303,5 +305,6 @@ defmodule Keila.Contacts.Query do
 
       order_by(query, [c], [{^direction, field(c, ^field)}])
     end)
+    |> order_by([c], desc: c.id)
   end
 end

@@ -353,7 +353,7 @@ defmodule Keila.Auth do
   @spec list_users() :: [User.t()] | Keila.Pagination.t(User.t())
   def list_users(opts \\ []) do
     query =
-      from(u in User, order_by: u.inserted_at)
+      from(u in User, order_by: [u.inserted_at, u.id])
       |> maybe_filter_users(opts[:filter])
       |> maybe_filter_users_by_account_status(opts[:account_status])
 
