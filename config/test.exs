@@ -44,6 +44,7 @@ config :keila, Keila.Mailings.SenderAdapters,
   adapters: [
     Keila.Mailings.SenderAdapters.SMTP,
     Keila.Mailings.SenderAdapters.SES,
+    Keila.Mailings.SenderAdapters.Cloudflare,
     Keila.TestSenderAdapter
   ]
 
