@@ -28,7 +28,7 @@ defmodule KeilaWeb.ProjectController do
     |> assign(:contacts_count, Contacts.get_project_contacts_count(project.id))
     |> assign(:forms_count, Contacts.get_project_forms(project.id) |> Enum.count())
     |> assign(:templates_count, Templates.get_project_templates(project.id) |> Enum.count())
-    |> assign(:campaigns_count, Mailings.get_project_campaigns(project.id) |> Enum.count())
+    |> assign(:campaigns_count, Mailings.get_project_campaigns_counts(project.id).total)
   end
 
   @spec new(Plug.Conn.t(), map()) :: Plug.Conn.t()

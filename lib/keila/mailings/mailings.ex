@@ -359,11 +359,95 @@ defmodule Keila.Mailings do
 
   @doc """
   Returns all Campaigns belonging to the specified Project.
+
+  The results are ordered by `updated_at` in descending order by default.
+  If `:status` is provided, sorting changes depending on the status value.
+
+  ## Options
+  - `:status` - `:draft` (unsent and unscheduled), `:scheduled` (scheduled
+    but not yet sent, sorted by `scheduled_for` in ascending order), or
+    `:sent` (sorted by `sent_at` in descending order).
+  - `:search` - only returns campaigns where the subject or content contains
+    the given string (not case-sensitive).
+  - `:paginate` - `true` or `Keila.Pagination.paginate/2` options to enable
+    pagination.
   """
-  @spec get_project_campaigns(Project.id()) :: [Campaign.t()]
-  def get_project_campaigns(project_id) when is_id(project_id) do
-    from(c in Campaign, where: c.project_id == ^project_id, order_by: [desc: c.updated_at])
-    |> Repo.all()
+  @spec get_project_campaigns(Project.id(), [
+          {:status, :draft | :scheduled | :sent}
+          | {:search, String.t() | nil}
+          | {:paginate, boolean() | Keyword.t()}
+        ]) :: [Campaign.t()] | Keila.Pagination.t(Campaign.t())
+  def get_project_campaigns(project_id, opts \\ []) when is_id(project_id) do
+    status = Keyword.get(opts, :status)
+
+    query =
+      from(c in Campaign, where: c.project_id == ^project_id)
+      |> filter_campaigns_by_status(status)
+      |> filter_campaigns_by_string(Keyword.get(opts, :search))
+      |> sort_campaigns(status)
+      |> order_by([c], desc: c.id)
+
+    case Keyword.get(opts, :paginate) do
+      true -> Keila.Pagination.paginate(query)
+      opts when is_list(opts) -> Keila.Pagination.paginate(query, opts)
+      _ -> Repo.all(query)
+    end
+  end
+
+  defp filter_campaigns_by_status(query, nil), do: query
+
+  defp filter_campaigns_by_status(query, :draft),
+    do: where(query, [c], is_nil(c.sent_at) and is_nil(c.scheduled_for))
+
+  defp filter_campaigns_by_status(query, :scheduled),
+    do: where(query, [c], is_nil(c.sent_at) and not is_nil(c.scheduled_for))
+
+  defp filter_campaigns_by_status(query, :sent), do: where(query, [c], not is_nil(c.sent_at))
+
+  defp filter_campaigns_by_string(query, empty) when empty in [nil, ""], do: query
+
+  defp filter_campaigns_by_string(query, search) do
+    where(
+      query,
+      [c],
+      ilike(c.subject, ^"%#{search}%") or
+        ilike(c.text_body, ^"%#{search}%") or
+        ilike(c.html_body, ^"%#{search}%") or
+        ilike(c.mjml_body, ^"%#{search}%") or
+        ilike(fragment("?::text", c.json_body), ^"%#{search}%") or
+        ilike(fragment("?::text", c.text_content), ^"%#{search}%") or
+        ilike(fragment("?::text", c.html_content), ^"%#{search}%") or
+        ilike(fragment("?::text", c.mjml_content), ^"%#{search}%")
+    )
+  end
+
+  defp sort_campaigns(query, :scheduled), do: order_by(query, [c], asc: c.scheduled_for)
+  defp sort_campaigns(query, :sent), do: order_by(query, [c], desc: c.sent_at)
+  defp sort_campaigns(query, _status), do: order_by(query, [c], desc: c.updated_at)
+
+  @doc """
+  Returns the total number of Campaigns in the specified Project and the number
+  of draft, scheduled, and sent Campaigns.
+
+  See `get_project_campaigns/2` for status details.
+  """
+  @spec get_project_campaigns_counts(Project.id()) :: %{
+          total: non_neg_integer(),
+          draft: non_neg_integer(),
+          scheduled: non_neg_integer(),
+          sent: non_neg_integer()
+        }
+  def get_project_campaigns_counts(project_id) when is_id(project_id) do
+    from(c in Campaign,
+      where: c.project_id == ^project_id,
+      select: %{
+        total: count(),
+        draft: filter(count(), is_nil(c.sent_at) and is_nil(c.scheduled_for)),
+        scheduled: filter(count(), is_nil(c.sent_at) and not is_nil(c.scheduled_for)),
+        sent: filter(count(), not is_nil(c.sent_at))
+      }
+    )
+    |> Repo.one()
   end
 
   @doc """
@@ -542,31 +626,6 @@ defmodule Keila.Mailings do
     if campaign && campaign.scheduled_for do
       campaign |> Campaign.unschedule_after_failed_delivery_changeset() |> Repo.update()
     end
-  end
-
-  @doc """
-  Searches for campaigns in a given project that contain the given search string.
-
-  Returns a list of campaigns that match the search string or an empty list if no campaigns match.
-
-  The search string is matched against the `text_body`, `html_body`, `mjml_body`, and `json_body` fields.
-  """
-  @spec search_in_project_campaigns(Project.id(), String.t()) :: [Campaign.t()]
-  def search_in_project_campaigns(project_id, search_string)
-      when is_binary(project_id) or is_integer(project_id) do
-    from(c in Campaign,
-      where: c.project_id == ^project_id,
-      where:
-        fragment(
-          "text_body LIKE ? OR html_body LIKE ? OR mjml_body LIKE ? OR json_body::text LIKE ?",
-          ^"%#{search_string}%",
-          ^"%#{search_string}%",
-          ^"%#{search_string}%",
-          ^"%#{search_string}%"
-        ),
-      order_by: [desc: :updated_at]
-    )
-    |> Repo.all()
   end
 
   defp get_and_lock_campaign(id) when is_id(id) do

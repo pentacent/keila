@@ -61,16 +61,16 @@ defmodule Keila.FilesTest do
         html_body: "<img src=\"#{file_url}\">"
       )
 
-    uuid_results = Mailings.search_in_project_campaigns(project.id, file.uuid)
+    uuid_results = Mailings.get_project_campaigns(project.id, search: file.uuid)
     assert length(uuid_results) == 2
     assert campaign_with_uuid.id in Enum.map(uuid_results, & &1.id)
 
-    url_results = Mailings.search_in_project_campaigns(project.id, file_url)
+    url_results = Mailings.get_project_campaigns(project.id, search: file_url)
     assert length(url_results) == 1
     assert campaign_with_url.id in Enum.map(url_results, & &1.id)
 
     other_project = insert!(:project, group: group)
-    other_results = Mailings.search_in_project_campaigns(other_project.id, file.uuid)
+    other_results = Mailings.get_project_campaigns(other_project.id, search: file.uuid)
     assert Enum.empty?(other_results)
   end
 

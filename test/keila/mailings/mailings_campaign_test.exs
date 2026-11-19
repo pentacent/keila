@@ -45,6 +45,77 @@ defmodule Keila.MailingsCampaignTest do
   end
 
   @tag :mailings_campaign
+  test "list campaigns by status", %{project: project} do
+    now = DateTime.utc_now(:second)
+    in_hours = fn hours -> DateTime.add(now, hours, :hour) end
+
+    draft = insert!(:mailings_campaign, project_id: project.id, subject: "Peter's draft")
+
+    scheduled_later =
+      insert!(:mailings_campaign, project_id: project.id, scheduled_for: in_hours.(2))
+
+    scheduled_sooner =
+      insert!(:mailings_campaign, project_id: project.id, scheduled_for: in_hours.(1))
+
+    sent_earlier = insert!(:mailings_campaign, project_id: project.id, sent_at: in_hours.(-2))
+
+    sent_later =
+      insert!(:mailings_campaign,
+        project_id: project.id,
+        scheduled_for: in_hours.(-1),
+        sent_at: in_hours.(-1)
+      )
+
+    ids = fn campaigns -> Enum.map(campaigns, & &1.id) end
+
+    assert ids.(Mailings.get_project_campaigns(project.id, status: :draft)) == [draft.id]
+
+    assert ids.(Mailings.get_project_campaigns(project.id, status: :scheduled)) ==
+             [scheduled_sooner.id, scheduled_later.id]
+
+    assert ids.(Mailings.get_project_campaigns(project.id, status: :sent)) ==
+             [sent_later.id, sent_earlier.id]
+
+    assert %{total: 5, draft: 1, scheduled: 2, sent: 2} ==
+             Mailings.get_project_campaigns_counts(project.id)
+  end
+
+  @tag :mailings_campaign
+  test "search campaigns by subject and content", %{project: project} do
+    by_subject = insert!(:mailings_campaign, project_id: project.id, subject: "Lois' Newsletter")
+    by_body = insert!(:mailings_campaign, project_id: project.id, text_body: "Hi from LOIS")
+
+    by_slot_content =
+      insert!(:mailings_campaign, project_id: project.id, mjml_content: %{"main" => "Lois"})
+
+    _other = insert!(:mailings_campaign, project_id: project.id, subject: "Stewie's Newsletter")
+
+    found_ids =
+      Mailings.get_project_campaigns(project.id, search: "lois")
+      |> Enum.map(& &1.id)
+      |> Enum.sort()
+
+    assert found_ids == Enum.sort([by_subject.id, by_body.id, by_slot_content.id])
+  end
+
+  @tag :mailings_campaign
+  test "paginate campaigns", %{project: project} do
+    insert_n!(:mailings_campaign, 3, fn _ -> %{project_id: project.id, subject: "Brian"} end)
+    insert!(:mailings_campaign, project_id: project.id, subject: "Peter")
+
+    assert %Keila.Pagination{count: 4, page_count: 2, data: first_page} =
+             Mailings.get_project_campaigns(project.id, paginate: [page: 0, page_size: 3])
+
+    assert length(first_page) == 3
+
+    assert %Keila.Pagination{count: 3, page_count: 1} =
+             Mailings.get_project_campaigns(project.id,
+               search: "brian",
+               paginate: [page: 0, page_size: 3]
+             )
+  end
+
+  @tag :mailings_campaign
   test "get latest campaign in a project", %{project: project} do
     previous_campaign_inserted_at = DateTime.utc_now(:second) |> DateTime.add(-1000, :second)
 

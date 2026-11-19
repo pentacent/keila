@@ -51,7 +51,7 @@ defmodule KeilaWeb.FileManagerLiveComponent do
         file_url = Keila.Files.get_file_url(file.uuid)
 
         campaigns =
-          Keila.Mailings.search_in_project_campaigns(project_id, file_url)
+          Keila.Mailings.get_project_campaigns(project_id, search: file_url)
           |> Enum.filter(fn campaign -> is_nil(campaign_id) or campaign.id != campaign_id end)
 
         case campaigns do
