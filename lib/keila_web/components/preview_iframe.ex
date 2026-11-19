@@ -28,4 +28,33 @@ defmodule KeilaWeb.PreviewIframe do
     </iframe>
     """
   end
+
+  @doc """
+  Renders a scaled-down preview of the page at `src`.
+  """
+  attr :href, :string, required: true
+  attr :src, :string, required: true
+  attr :title, :string, required: true
+
+  def thumbnail_iframe(assigns) do
+    ~H"""
+    <a
+      href={@href}
+      class="block relative h-56 mb-4 rounded-md overflow-hidden bg-white shadow-lg ring-1 ring-white/10 transition hover:ring-2 hover:ring-emerald-500 after:absolute after:inset-x-0 after:bottom-0 after:h-12 after:bg-gradient-to-b after:from-transparent after:to-gray-800/60"
+      aria-label={@title}
+      tabindex="-1"
+    >
+      <iframe
+        src={@src}
+        loading="lazy"
+        sandbox=""
+        scrolling="no"
+        tabindex="-1"
+        title={@title}
+        class="absolute top-0 left-0 w-[calc(100%/0.6)] h-[calc(100%/0.6)] scale-[0.6] origin-top-left border-0 pointer-events-none"
+      >
+      </iframe>
+    </a>
+    """
+  end
 end

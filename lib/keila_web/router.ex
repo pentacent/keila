@@ -146,6 +146,7 @@ defmodule KeilaWeb.Router do
     get "/projects/:project_id/templates/:id", TemplateController, :edit
     get "/projects/:project_id/templates/:id/clone", TemplateController, :clone
     post "/projects/:project_id/templates/:id/clone", TemplateController, :post_clone
+    get "/projects/:project_id/templates/:id/preview", TemplateController, :preview
     delete "/projects/:project_id/templates", TemplateController, :delete
 
     get "/projects/:project_id/segments", SegmentController, :index
@@ -161,6 +162,7 @@ defmodule KeilaWeb.Router do
     get "/projects/:project_id/campaigns/:id", CampaignController, :edit
     get "/projects/:project_id/campaigns/:id/stats", CampaignController, :stats
     get "/projects/:project_id/campaigns/:id/view", CampaignController, :view
+    get "/projects/:project_id/campaigns/:id/preview", CampaignController, :preview
     get "/projects/:project_id/campaigns/:id/share", CampaignController, :share
     post "/projects/:project_id/campaigns/:id/share", CampaignController, :post_share
     get "/projects/:project_id/campaigns/:id/clone", CampaignController, :clone

@@ -68,6 +68,37 @@ defmodule KeilaWeb.TemplateControllerTest do
     end
   end
 
+  describe "GET /projects/:p_id/templates/:id/preview" do
+    @tag :template_controller
+    test "renders the template in a sandbox", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+
+      template =
+        insert!(:template, project_id: project.id, type: :hybrid, styles: "h1 { color: #ff00ff }")
+
+      conn = get(conn, Routes.template_path(conn, :preview, project.id, template.id))
+
+      assert html_response(conn, 200) =~ "#ff00ff"
+
+      assert get_resp_header(conn, "content-security-policy") == [
+               "sandbox; frame-ancestors 'self'"
+             ]
+
+      assert get_resp_header(conn, "cache-control") == ["private, no-cache"]
+      assert get_resp_header(conn, "x-frame-options") == []
+    end
+
+    @tag :template_controller
+    test "returns 404 for templates of other projects", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+      other_template = insert!(:template)
+
+      assert_error_sent 404, fn ->
+        get(conn, Routes.template_path(conn, :preview, project.id, other_template.id))
+      end
+    end
+  end
+
   describe "LV /projects/:p_id/templates/:id" do
     @tag :template_controller
     test "shows edit form", %{conn: conn} do

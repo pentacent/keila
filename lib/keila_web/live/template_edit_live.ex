@@ -1,10 +1,6 @@
 defmodule KeilaWeb.TemplateEditLive do
   use KeilaWeb, :live_view
   alias Keila.Templates.{Template, StyleTemplate, HybridTemplate}
-  alias Keila.Mailings.Renderer
-
-  @external_resource "priv/email_templates/default-markdown-content.md"
-  @default_markdown_body File.read!("priv/email_templates/default-markdown-content.md")
 
   on_mount {KeilaWeb.LiveAuth, :require_auth}
   on_mount {KeilaWeb.LiveAuth, :require_project}
@@ -95,37 +91,8 @@ defmodule KeilaWeb.TemplateEditLive do
 
   defp put_template_preview(socket) do
     {:ok, template} = Ecto.Changeset.apply_action(socket.assigns.changeset, :update)
-    assign(socket, :preview, render_preview(template, socket.assigns))
-  end
+    preview = KeilaWeb.TemplateView.render_preview(template, socket.assigns.style_template)
 
-  defp render_preview(%Template{type: :hybrid} = template, assigns) do
-    template = %{template | styles: StyleTemplate.to_css(assigns.style_template)}
-
-    %Renderer.Input{
-      type: :markdown,
-      subject: "",
-      text_body: @default_markdown_body,
-      template: template,
-      assigns: %{"campaign" => %{"subject" => template.name}}
-    }
-    |> Renderer.render_preview()
-    |> preview_html()
-  end
-
-  defp render_preview(%Template{type: type} = template, _assigns)
-       when type in [:mjml, :html, :text] do
-    %Renderer.Input{
-      type: type,
-      subject: "",
-      text_body: template.text_body,
-      template: template,
-      assigns: %{"campaign" => %{"subject" => template.name}}
-    }
-    |> Renderer.render_preview()
-    |> preview_html()
-  end
-
-  defp preview_html(%Keila.Mailings.Renderer.Output{} = output) do
-    output.html_body || KeilaWeb.CampaignView.plain_text_preview(output.text_body)
+    assign(socket, :preview, preview)
   end
 end

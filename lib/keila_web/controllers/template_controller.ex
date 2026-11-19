@@ -102,6 +102,18 @@ defmodule KeilaWeb.TemplateController do
     )
   end
 
+  @spec preview(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def preview(conn, _params) do
+    html = KeilaWeb.TemplateView.render_preview(conn.assigns.template)
+
+    conn
+    |> put_resp_header("content-security-policy", "sandbox; frame-ancestors 'self'")
+    |> delete_resp_header("x-frame-options")
+    |> put_resp_header("cache-control", "private, no-cache")
+    |> put_resp_content_type("text/html")
+    |> send_resp(200, html)
+  end
+
   @spec delete(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def delete(conn, params) do
     ids =

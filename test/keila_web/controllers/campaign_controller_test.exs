@@ -52,6 +52,41 @@ defmodule KeilaWeb.CampaignControllerTest do
     end
   end
 
+  describe "GET /projects/:p_id/campaigns/:id/preview" do
+    @tag :campaign_controller
+    test "renders the campaign in a sandbox", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+
+      campaign =
+        insert!(:mailings_campaign,
+          project_id: project.id,
+          text_body: "Hello <b>Peter</b>!",
+          settings: %{type: :text}
+        )
+
+      conn = get(conn, Routes.campaign_path(conn, :preview, project.id, campaign.id))
+
+      assert html_response(conn, 200) =~ "Hello &lt;b&gt;Peter&lt;/b&gt;!"
+
+      assert get_resp_header(conn, "content-security-policy") == [
+               "sandbox; frame-ancestors 'self'"
+             ]
+
+      assert get_resp_header(conn, "cache-control") == ["private, no-cache"]
+      assert get_resp_header(conn, "x-frame-options") == []
+    end
+
+    @tag :campaign_controller
+    test "returns 404 for campaigns of other projects", %{conn: conn} do
+      {conn, project} = with_login_and_project(conn)
+      other_campaign = insert!(:mailings_campaign)
+
+      assert_error_sent 404, fn ->
+        get(conn, Routes.campaign_path(conn, :preview, project.id, other_campaign.id))
+      end
+    end
+  end
+
   describe "LV /projects/:p_id/campaigns/:id" do
     @tag :campaign_controller
     test "shows edit form", %{conn: conn} do

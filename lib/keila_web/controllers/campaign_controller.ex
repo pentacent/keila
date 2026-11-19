@@ -233,6 +233,19 @@ defmodule KeilaWeb.CampaignController do
     })
   end
 
+  @spec preview(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def preview(conn, _params) do
+    output = Keila.Mailings.CampaignRenderer.render_preview(conn.assigns.campaign)
+    html = output.html_body || KeilaWeb.CampaignView.plain_text_preview(output.text_body)
+
+    conn
+    |> put_resp_header("content-security-policy", "sandbox; frame-ancestors 'self'")
+    |> delete_resp_header("x-frame-options")
+    |> put_resp_header("cache-control", "private, no-cache")
+    |> put_resp_content_type("text/html")
+    |> send_resp(200, html)
+  end
+
   def share(conn, _params) do
     project = current_project(conn)
     campaign = conn.assigns.campaign

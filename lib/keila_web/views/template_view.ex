@@ -1,6 +1,11 @@
 defmodule KeilaWeb.TemplateView do
   use KeilaWeb, :view
   import Ecto.Changeset, only: [get_field: 2]
+  alias Keila.Templates.{Template, StyleTemplate}
+  alias Keila.Mailings.Renderer
+
+  @external_resource "priv/email_templates/default-markdown-content.md"
+  @default_markdown_body File.read!("priv/email_templates/default-markdown-content.md")
 
   @doc """
   Human-readable label for a `Template.type` value.
@@ -11,6 +16,49 @@ defmodule KeilaWeb.TemplateView do
   def template_type_label(:html), do: gettext("HTML")
   def template_type_label(:text), do: gettext("Plain text")
   def template_type_label(_), do: ""
+
+  @doc """
+  Renders the preview HTML of a template with sample content. Hybrid templates
+  use the styles of the given `style_template` or, if omitted, their stored styles.
+  """
+  @spec render_preview(Template.t(), StyleTemplate.t() | nil) :: String.t()
+  def render_preview(template, style_template \\ nil)
+
+  def render_preview(%Template{type: :hybrid} = template, style_template) do
+    template = maybe_put_styles(template, style_template)
+
+    %Renderer.Input{
+      type: :markdown,
+      subject: "",
+      text_body: @default_markdown_body,
+      template: template,
+      assigns: %{"campaign" => %{"subject" => template.name}}
+    }
+    |> Renderer.render_preview()
+    |> preview_html()
+  end
+
+  def render_preview(%Template{type: type} = template, _style_template)
+      when type in [:mjml, :html, :text] do
+    %Renderer.Input{
+      type: type,
+      subject: "",
+      text_body: template.text_body,
+      template: template,
+      assigns: %{"campaign" => %{"subject" => template.name}}
+    }
+    |> Renderer.render_preview()
+    |> preview_html()
+  end
+
+  defp maybe_put_styles(template, nil), do: template
+
+  defp maybe_put_styles(template, style_template),
+    do: %{template | styles: StyleTemplate.to_css(style_template)}
+
+  defp preview_html(%Renderer.Output{} = output) do
+    output.html_body || KeilaWeb.CampaignView.plain_text_preview(output.text_body)
+  end
 
   def render_css_form(form, field, css_rows) do
     Enum.map(css_rows, fn group -> render_group(form, field, group) end)
