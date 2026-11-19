@@ -4,13 +4,27 @@ defmodule KeilaWeb.ApiCampaignControllerTest do
   describe "GET /api/v1/campaigns" do
     @tag :api_campaign_controller
     test "lists campaigns", %{authorized_conn: conn, project: project} do
-      n = 10
+      n = 60
       insert_n!(:mailings_campaign, n, fn _n -> %{project_id: project.id} end)
 
       conn = get(conn, Routes.api_campaign_path(conn, :index))
 
-      assert %{"data" => campaigns} = json_response(conn, 200)
-      assert Enum.count(campaigns) == n
+      assert %{
+               "meta" => %{"page" => 0, "page_count" => 2, "count" => ^n},
+               "data" => campaigns
+             } = json_response(conn, 200)
+
+      assert Enum.count(campaigns) == 50
+
+      query = %{"paginate" => %{"page" => 2, "page_size" => 25}}
+      conn = get(conn, Routes.api_campaign_path(conn, :index, query))
+
+      assert %{
+               "meta" => %{"page" => 2, "page_count" => 3, "count" => ^n},
+               "data" => campaigns
+             } = json_response(conn, 200)
+
+      assert Enum.count(campaigns) == 10
     end
   end
 

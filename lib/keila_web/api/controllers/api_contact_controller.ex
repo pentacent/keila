@@ -13,7 +13,8 @@ defmodule KeilaWeb.ApiContactController do
 
   operation(:index,
     summary: "Index contacts",
-    description: "Retrieve contacts from your project with support for pagination and filtering.",
+    description:
+      "Retrieve contacts from your project. Results are paginated with 50 contacts per page by default and can be filtered.",
     parameters: [
       paginate: [
         in: :query,

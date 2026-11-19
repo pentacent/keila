@@ -13,21 +13,42 @@ defmodule KeilaWeb.ApiCampaignController do
 
   operation(:index,
     summary: "Index campaigns",
-    description: "Retrieve all campaigns from your project.",
-    parameters: [],
+    description:
+      "Retrieve campaigns from your project. Results are paginated with 50 campaigns per page by default.",
+    parameters: [
+      paginate: [
+        in: :query,
+        style: :deepObject,
+        description: "Pagination",
+        schema: %OpenApiSpex.Schema{
+          type: :object,
+          properties: %{
+            page: %OpenApiSpex.Schema{
+              type: :integer,
+              minimum: 0,
+              maximum: 1_000_000,
+              example: 0
+            },
+            page_size: %OpenApiSpex.Schema{type: :integer, minimum: 1, maximum: 1000, example: 50}
+          }
+        }
+      ]
+    ],
     responses: [
       ok: {"Campaign index response", "application/json", Schemas.MailingsCampaign.IndexResponse}
     ]
   )
 
   @spec index(Plug.Conn.t(), Map.t()) :: Plug.Conn.t()
-  def index(conn, _params) do
-    campaigns =
-      Mailings.get_project_campaigns(project_id(conn))
-      |> then(fn campaigns ->
-        count = Enum.count(campaigns)
-        %Keila.Pagination{data: campaigns, page: 0, page_count: 1, count: count}
-      end)
+  def index(conn, params) do
+    paginate =
+      params
+      |> Map.get(:paginate, %{})
+      |> Map.put_new(:page, 0)
+      |> Map.put_new(:page_size, 50)
+      |> Map.to_list()
+
+    campaigns = Mailings.get_project_campaigns(project_id(conn), paginate: paginate)
 
     render(conn, "campaigns.json", %{campaigns: campaigns})
   end
