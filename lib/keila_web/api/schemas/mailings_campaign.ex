@@ -227,3 +227,82 @@ defmodule KeilaWeb.Api.Schemas.MailingsCampaign.DeliveryQueuedResponse do
     }
   })
 end
+
+defmodule KeilaWeb.Api.Schemas.MailingsCampaign.StatsResponse do
+  use KeilaWeb.Api.Schema
+
+  build_open_api_schema(%{
+    campaign_id: %{
+      type: :string,
+      description: "Campaign ID",
+      example: "mc_12345"
+    },
+    status: %{
+      type: :string,
+      enum: [:unsent, :preparing, :sending, :sent, :insufficient_credits, :account_not_active],
+      description: "Current status of the campaign"
+    },
+    recipients_count: %{
+      type: :integer,
+      description: "Total number of recipients",
+      example: 1000
+    },
+    sent_count: %{
+      type: :integer,
+      description: "Number of sent messages",
+      example: 950
+    },
+    open_count: %{
+      type: :integer,
+      description: "Number of unique opens",
+      example: 450
+    },
+    click_count: %{
+      type: :integer,
+      description: "Number of unique clicks",
+      example: 120
+    },
+    failed_count: %{
+      type: :integer,
+      description: "Number of failed deliveries",
+      example: 5
+    },
+    unsubscribe_count: %{
+      type: :integer,
+      description: "Number of unsubscribes",
+      example: 3
+    },
+    hard_bounce_count: %{
+      type: :integer,
+      description: "Number of hard bounces",
+      example: 2
+    },
+    complaint_count: %{
+      type: :integer,
+      description: "Number of complaints (spam reports)",
+      example: 1
+    },
+    opened_at_series: %{
+      type: :array,
+      description: "Time series of opens (hour, count) over 24 hours after sending",
+      items: %{
+        type: :map,
+        properties: %{
+          hour: %{type: :integer, description: "Hour offset from sent_at"},
+          count: %{type: :integer, description: "Number of opens in this hour"}
+        }
+      }
+    },
+    clicked_at_series: %{
+      type: :array,
+      description: "Time series of clicks (hour, count) over 24 hours after sending",
+      items: %{
+        type: :map,
+        properties: %{
+          hour: %{type: :integer, description: "Hour offset from sent_at"},
+          count: %{type: :integer, description: "Number of clicks in this hour"}
+        }
+      }
+    }
+  })
+end
