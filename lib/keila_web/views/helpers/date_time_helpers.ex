@@ -21,7 +21,7 @@ defmodule KeilaWeb.DateTimeHelpers do
       data_value: DateTime.to_iso8601(datetime),
       x_data: "{}",
       data_resolution: resolution,
-      x_init: "Hooks.SetLocalDateTimeContent.mounted.call({el: $el})"
+      x_text: "Hooks.SetLocalDateTimeContent.format($el)"
     )
   end
 

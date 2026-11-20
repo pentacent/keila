@@ -35,12 +35,9 @@ export const SetLocalDateValue = {
  * This hook replaces the inner text of an element with a formatted local date.
  * Specify a UTC ISO 8601 string as data-value.
  */
-const putLocalDateTime = el => {
-  const rawDate = el.dataset.value
-  if (!rawDate) return
-
-  const date = new Date(rawDate)
-  el.innerText = date.toLocaleString(undefined, {
+const formatLocalDateTime = el => {
+  const date = new Date(el.dataset.value)
+  return date.toLocaleString(undefined, {
     weekday: "short",
     year: "numeric",
     month: "short",
@@ -50,7 +47,14 @@ const putLocalDateTime = el => {
     second: el.dataset.resolution === "second" ? "2-digit" : undefined
   })
 }
+
+const putLocalDateTime = el => {
+  if (!el.dataset.value) return
+  el.innerText = formatLocalDateTime(el)
+}
+
 export const SetLocalDateTimeContent = {
+  format: formatLocalDateTime,
   mounted() {
     putLocalDateTime(this.el)
   },
