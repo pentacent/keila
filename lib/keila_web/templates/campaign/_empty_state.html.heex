@@ -14,7 +14,7 @@
       <p class="flex flex-wrap gap-4">
         <a
           class="button button--cta button--large"
-          href={Routes.campaign_path(@conn, :new, @current_project.id)}
+          href={~p"/projects/#{@current_project.id}/campaigns/new"}
         >
           {render_icon(:document_add)}
           {gettext("Create your first campaign")}

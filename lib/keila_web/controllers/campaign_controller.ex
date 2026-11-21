@@ -4,7 +4,8 @@ defmodule KeilaWeb.CampaignController do
   import Ecto.Changeset
   import Phoenix.LiveView.Controller
 
-  plug :authorize when action not in [:index, :new, :post_new, :delete]
+  plug :authorize
+       when action not in [:index, :index_scheduled, :index_sent, :new, :post_new, :delete]
 
   @external_resource "priv/email_templates/default-text-content.txt"
   @default_text_body File.read!("priv/email_templates/default-text-content.txt")
@@ -16,13 +17,24 @@ defmodule KeilaWeb.CampaignController do
   @default_html_body File.read!("priv/email_templates/default-html-content.html")
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
-  def index(conn, _params) do
-    campaigns = Mailings.get_project_campaigns(current_project(conn).id)
+  def index(conn, _params), do: render_index(conn, :draft)
 
+  @spec index_scheduled(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def index_scheduled(conn, _params), do: render_index(conn, :scheduled)
+
+  @spec index_sent(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def index_sent(conn, _params), do: render_index(conn, :sent)
+
+  defp render_index(conn, campaigns_status) do
     conn
-    |> assign(:campaigns, campaigns)
     |> put_meta(:title, gettext("Campaigns"))
-    |> render("index.html")
+    |> live_render(KeilaWeb.CampaignIndexLive,
+      session: %{
+        "project_id" => current_project(conn).id,
+        "campaigns_status" => campaigns_status,
+        "locale" => Gettext.get_locale()
+      }
+    )
   end
 
   @spec new(Plug.Conn.t(), map()) :: Plug.Conn.t()

@@ -1,0 +1,134 @@
+<div class="container flex pt-8 sm:pt-11 mb-6">
+  <div class="flex-grow gap-4 flex flex-col sm:flex-row sm:items-center">
+    <h1 class="text-2xl sm:text-3xl text-gray-100">
+      {gettext("Campaigns")}
+    </h1>
+    <div class="flex-grow flex flex-row-reverse justify-end gap-4 sm:flex-row">
+      <a href={~p"/projects/#{@current_project.id}/campaigns/new"} class="button">
+        {render_icon(:document_add)}
+        {gettext("Create new campaign")}
+      </a>
+    </div>
+  </div>
+</div>
+
+<%= if @campaigns_counts.total == 0 do %>
+  {render("_empty_state.html", assigns)}
+<% else %>
+  <div class="container flex flex-col gap-4 mb-8 sm:flex-row sm:items-center sm:justify-between">
+    <nav class="inline-flex self-start rounded-t-md overflow-hidden bg-gray-800">
+      <%= for {status, label} <- [draft: gettext("Drafts"), scheduled: gettext("Scheduled"), sent: gettext("Sent")] do %>
+        <button
+          type="button"
+          phx-click="change-status"
+          phx-value-status={status}
+          aria-current={if @selected_status == status, do: "page"}
+          class={
+            "px-4 py-2 flex items-center gap-2 #{if @selected_status == status, do: "bg-emerald-700 text-white", else: "text-gray-300 hover:bg-gray-700"}"
+          }
+        >
+          {label}
+          <%= if status == :scheduled and @campaigns_counts.scheduled > 0 do %>
+            <span class={
+              "rounded-full px-2 text-sm #{if @selected_status == :scheduled, do: "bg-emerald-900 text-white", else: "bg-emerald-500 text-black"}"
+            }>
+              {@campaigns_counts.scheduled}
+            </span>
+          <% end %>
+        </button>
+      <% end %>
+    </nav>
+
+    <form id="campaign-search-form" phx-change="search" phx-submit="search">
+      <input
+        type="search"
+        name="search"
+        value={@search}
+        placeholder={gettext("Search subject and content")}
+        phx-debounce="300"
+        class="w-full sm:w-80 text-white bg-gray-800"
+      />
+    </form>
+  </div>
+
+  <%= if @campaigns.count == 0 do %>
+    <p class="container text-gray-400">
+      {gettext("No campaigns found.")}
+    </p>
+  <% end %>
+
+  <div class="container grid gap-x-8 gap-y-12 sm:grid-cols-2 xl:grid-cols-3">
+    <%= for campaign <- @campaigns.data do %>
+      <div id={"campaign-#{campaign.id}"} class="flex flex-col">
+        <KeilaWeb.PreviewIframe.thumbnail_iframe
+          href={~p"/projects/#{@current_project.id}/campaigns/#{campaign.id}"}
+          src={~p"/projects/#{@current_project.id}/campaigns/#{campaign.id}/preview"}
+          title={campaign.subject}
+        />
+        <h2 class="text-xl text-gray-100 mb-1 truncate" title={campaign.subject}>
+          <a
+            href={~p"/projects/#{@current_project.id}/campaigns/#{campaign.id}"}
+            class="hover:underline"
+          >
+            {campaign.subject}
+          </a>
+        </h2>
+        <p class="text-sm text-gray-400 flex flex-wrap items-center gap-x-2 whitespace-nowrap">
+          {cond do
+            campaign.sent_at ->
+              [
+                content_tag(:span, render_icon(:cake), class: "inline-flex h-5 w-5"),
+                gettext("Sent at:"),
+                " ",
+                local_datetime_tag(campaign.sent_at)
+              ]
+
+            campaign.scheduled_for ->
+              [
+                content_tag(:span, render_icon(:clock), class: "inline-flex h-5 w-5"),
+                gettext("Scheduled for:"),
+                " ",
+                local_datetime_tag(campaign.scheduled_for)
+              ]
+
+            true ->
+              [
+                gettext("Updated at:"),
+                " ",
+                local_datetime_tag(campaign.updated_at)
+              ]
+          end}
+        </p>
+        <div class="flex flex-row gap-4 mt-4">
+          <%= if is_nil(campaign.sent_at) do %>
+            <a href={~p"/projects/#{@current_project.id}/campaigns/#{campaign.id}"} class="button">
+              {render_icon(:pencil_alt)}
+              {gettext("Edit")}
+            </a>
+          <% else %>
+            <a
+              href={~p"/projects/#{@current_project.id}/campaigns/#{campaign.id}/stats"}
+              class="button"
+            >
+              {render_icon(:chart_bar)}
+              {gettext("Stats")}
+            </a>
+          <% end %>
+          <a
+            href={~p"/projects/#{@current_project.id}/campaigns/#{campaign.id}/clone"}
+            class="button button--text"
+          >
+            {render_icon(:duplicate)}
+            {gettext("Clone")}
+          </a>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <%= if @campaigns.page_count > 1 do %>
+    <div class="container flex gap-3 justify-center py-8">
+      <.pagination_nav pagination={@campaigns} phx_click="change-page" />
+    </div>
+  <% end %>
+<% end %>

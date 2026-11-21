@@ -59,6 +59,10 @@ let liveSocket = new LiveSocket("/live", Socket, {
 window.addEventListener("phx:page-loading-start", info => NProgress.start())
 window.addEventListener("phx:page-loading-stop", info => NProgress.done())
 
+window.addEventListener("phx:replace-url", e => {
+  window.history.replaceState(window.history.state, "", e.detail.url)
+})
+
 // connect if there are any LiveViews on the page
 liveSocket.connect()
 
