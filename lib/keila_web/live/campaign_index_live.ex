@@ -69,6 +69,7 @@ defmodule KeilaWeb.CampaignIndexLive do
       socket
       |> assign(:page, String.to_integer(page))
       |> put_campaigns()
+      |> push_event("scroll-top", %{})
 
     {:noreply, socket}
   end

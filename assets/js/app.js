@@ -63,6 +63,8 @@ window.addEventListener("phx:replace-url", e => {
   window.history.replaceState(window.history.state, "", e.detail.url)
 })
 
+window.addEventListener("phx:scroll-top", () => window.scrollTo(0, 0))
+
 // connect if there are any LiveViews on the page
 liveSocket.connect()
 
