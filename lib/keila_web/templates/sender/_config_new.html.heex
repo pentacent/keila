@@ -10,14 +10,22 @@
     end
 
   tab_data =
-    "{ tab: '#{tab}', senderType: $el.querySelector('#form_config_type,#shared_sender_config_type').value }" %>
+    "{ tab: '#{tab}', senderType: $el.querySelector('#form_config_type,#shared_sender_config_type').value }"
+
+  sender_types =
+    if assigns[:shared_senders] do
+      shared_sender_types = Enum.map(@shared_senders, &"shared_#{&1.config.type}") |> Enum.uniq()
+      @sender_adapters ++ shared_sender_types
+    else
+      @sender_adapters
+    end %>
 
   <div
     class="tabs"
     x-data={tab_data}
     x-init="$nextTick(() => { if (! $el.querySelector('button.tab-label.active')) {$el.querySelector('button.tab-label').click()} })"
   >
-    {select(fc, :type, @sender_adapters, x_model: "senderType", class: "hidden")}
+    {select(fc, :type, sender_types, x_model: "senderType", class: "hidden")}
 
     <%= for adapter <- @sender_adapters do %>
       <% class = "{ 'active': tab === '#{adapter}' }"
